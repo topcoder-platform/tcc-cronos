@@ -70,6 +70,7 @@ public class InformixProjectPersistenceAccuracyTest extends TestCase {
         // create the instance of InformixProjectPersistence
         persistence = new InformixProjectPersistence(
             "com.topcoder.management.project.persistence.InformixProjectPersistence.default");
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
     }
 
     /**
@@ -93,7 +94,7 @@ public class InformixProjectPersistenceAccuracyTest extends TestCase {
     public void testInformixProjectPersistence_WithDefaultConfiguration() throws Exception {
         InformixProjectPersistence persistence = new InformixProjectPersistence(
                 "com.topcoder.management.project.persistence.InformixProjectPersistence.default");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // test the connectionName
         String connectionName = (String) getPrivateObject(persistence, "connectionName");
         assertNull("The connectionName should be null.", connectionName);
@@ -120,7 +121,7 @@ public class InformixProjectPersistenceAccuracyTest extends TestCase {
     public void testInformixProjectPersistence_WithAnotherConfiguration() throws Exception {
         InformixProjectPersistence persistence = new InformixProjectPersistence(
                 "com.topcoder.management.project.persistence.InformixProjectPersistence.another");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // test the connectionName
         String connectionName = (String) getPrivateObject(persistence, "connectionName");
         assertEquals("The connectionName is incorrect.", "dbconnection", connectionName);

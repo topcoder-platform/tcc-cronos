@@ -48,6 +48,12 @@ public class InformixProjectPersistence extends
 	/** Logger instance using the class name as category */
     private static final Log LOGGER = LogManager.getLog(InformixProjectPersistence.class.getName()); 
 
+    /**
+     * this property use for unmanaged environments/test cases 
+     */
+    private boolean useManualCommit;
+    
+
     
     /**
      * <p>
@@ -134,7 +140,9 @@ public class InformixProjectPersistence extends
         Connection conn = Helper.createConnection(getConnectionFactory(),
                 connectionName);
         try {
-            conn.setAutoCommit(false);
+        	if(useManualCommit)  {
+        		conn.setAutoCommit(false);
+        	}
             return conn;
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs when setting "
@@ -161,8 +169,10 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-        	LOGGER.log(Level.INFO, "committing transaction");
-            Helper.commitTransaction(connection);
+        	if(useManualCommit) { 
+        		LOGGER.log(Level.INFO, "committing transaction");        	
+        		Helper.commitTransaction(connection);
+        	}
         } finally {
             Helper.closeConnection(connection);
         }
@@ -185,8 +195,10 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-        	LOGGER.log(Level.INFO, "rollback transaction");
-            Helper.rollBackTransaction(connection);
+        	if(useManualCommit) {
+        		LOGGER.log(Level.INFO, "rollback transaction");
+        		Helper.rollBackTransaction(connection);
+        	}
         } finally {
             Helper.closeConnection(connection);
         }
@@ -199,4 +211,22 @@ public class InformixProjectPersistence extends
 	protected Log getLogger() {
 		return LOGGER;
 	}
+	
+	/**
+	 * <p>Return the useManualCommit.</p>
+	 * @return the boolean 
+	 */
+	public boolean isUseManualCommit() {
+		return useManualCommit;
+	}
+	
+	/**
+	 * set useManualCommit
+	 * @param useManualCommit
+	 */
+	public void setUserManualCommit(boolean useManualCommit) {
+		this.useManualCommit = useManualCommit;
+	}
+	
+	
 }

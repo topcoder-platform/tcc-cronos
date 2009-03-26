@@ -799,6 +799,7 @@ public class InformixProjectPersistenceTest extends TestCase {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
 
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // get the sample project object
         Project project = getSampleProject1();
 
@@ -870,6 +871,7 @@ public class InformixProjectPersistenceTest extends TestCase {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
 
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // get the sample project object
         Project project = getSampleProject1();
         // add a property that can not be found in project_info_type_lu table
@@ -923,6 +925,7 @@ public class InformixProjectPersistenceTest extends TestCase {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
 
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         try {
             persistence.createProject(null, "user");
         } catch (IllegalArgumentException e) {
@@ -944,7 +947,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject2() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
 
         try {
@@ -968,7 +971,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject3() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
 
         try {
@@ -992,7 +995,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject4() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace.NonExistConnectionName");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         try {
             persistence.createProject(project, "user");
@@ -1017,7 +1020,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject5() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.setId(1);
 
@@ -1051,7 +1054,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject7() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // create the connection
         Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
             .createConnection();
@@ -1086,7 +1089,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject8() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.getProjectStatus().setId(100);
 
@@ -1111,7 +1114,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject9() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.getProjectCategory().setId(100);
 
@@ -1136,7 +1139,8 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureCreateProject10() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
+        
         Project project = getSampleProject1();
         project.getProjectCategory().getProjectType().setId(100);
 
@@ -1559,6 +1563,7 @@ public class InformixProjectPersistenceTest extends TestCase {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
 
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         // get the sample project object
         Project project1 = getSampleProject1();
         persistence.createProject(project1, "user1");
@@ -1630,7 +1635,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects1() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         try {
             persistence.updateProject(null, "some reason", "user");
         } catch (IllegalArgumentException e) {
@@ -1652,7 +1657,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects2() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
 
         try {
@@ -1676,7 +1681,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects3() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.setId(1);
 
@@ -1701,7 +1706,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects5() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.setId(1);
 
@@ -1726,7 +1731,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects6() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.setId(1);
 
@@ -1751,7 +1756,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects7() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         project.setId(1);
 
@@ -1776,8 +1781,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects8() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
-        Project project = getSampleProject1();
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);        Project project = getSampleProject1();
         persistence.createProject(project, "user1");
 
         // create the connection
@@ -1812,7 +1816,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProjects9() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         persistence.createProject(project, "user1");
 
@@ -1840,7 +1844,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProject11() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         persistence.createProject(project, "user1");
 
@@ -1893,7 +1897,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testFailureUpdateProject13() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
         persistence.createProject(project, "user1");
 
@@ -1924,6 +1928,8 @@ public class InformixProjectPersistenceTest extends TestCase {
 
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
+        
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         try {
             persistence.createProject(project, "user");
             fail("PersistenceException is expected.");
@@ -1958,7 +1964,7 @@ public class InformixProjectPersistenceTest extends TestCase {
     public void testUpdateProjectRollback() throws Exception {
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
         Project project = getSampleProject1();
 
         persistence.createProject(project, "user");

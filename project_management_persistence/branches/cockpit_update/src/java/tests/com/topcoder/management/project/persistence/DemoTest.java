@@ -200,6 +200,9 @@ public class DemoTest extends TestCase {
         // create the instance with the given namespace
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
+        
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
+        
     }
 
     /**
@@ -211,7 +214,9 @@ public class DemoTest extends TestCase {
         // first create an instance of InformixProjectPersistence class
         ProjectPersistence persistence = new InformixProjectPersistence(
             "InformixProjectPersistence.CustomNamespace");
-
+        
+        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
+        
         // get all project categories from the persistence
         ProjectCategory[] projectCategories = persistence.getAllProjectCategories();
 
