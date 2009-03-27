@@ -11,10 +11,13 @@ import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.SaleStatus;
+import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
@@ -28,6 +31,7 @@ import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.template.PhaseTemplate;
 import com.topcoder.project.phases.template.PhaseTemplateException;
 import com.topcoder.project.service.ConfigurationException;
+import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectDoesNotExistException;
 import com.topcoder.project.service.ProjectServices;
@@ -135,6 +139,11 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *  &lt;/CMConfig&gt;
  * </pre>
  *
+ * </p>
+ *
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: new methods added to support creating/updating/query contest
+ * sale for software contest.
  * </p>
  *
  * <p>
@@ -736,6 +745,10 @@ public class ProjectServicesImpl implements ProjectServices {
      * This method retrieves the project along with all known associated information. Returns null
      * if not found.
      * </p>
+     * 
+     * <p>
+     * Module Contest Service Software Contest Sales Assembly change: fetch the contest sale info.
+     * </p>
      *
      * @return the project along with all known associated information
      * @param projectId
@@ -809,6 +822,9 @@ public class ProjectServicesImpl implements ProjectServices {
             } else {
                 logDebug("Project " + projectId + " is missing external reference");
             }
+
+            // get the contest sale
+            fullProjectData.setContestSales(this.getContestSales(projectId));
         } catch (NumberFormatException ex) {
             log(Level.ERROR, "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");
             throw new ProjectServicesException("PhaseManagementException occurred when retrieving project phases.",
@@ -892,6 +908,10 @@ public class ProjectServicesImpl implements ProjectServices {
      * The logging must performed in the same manner of other methods. Read the 1.4.1 section of
      * Component Specification for further details.
      * </p>
+     * 
+     * <p>
+     * Module Contest Service Software Contest Sales Assembly change: return the wrapped value for project header, phases, resources info.
+     * </p>
      *
      * @param projectHeader
      *            the project's header, the main project's data
@@ -902,6 +922,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *            treated like empty.
      * @param operator
      *            the operator used to audit the operation, cannot be null or empty
+     * @return the created project.
      * @throws IllegalArgumentException
      *             if any case in the following occurs:
      *             <ul>
@@ -918,7 +939,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *             if there is a system error while performing the create operation
      * @since 1.1
      */
-    public void createProject(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+    public FullProjectData createProject(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProject method.");
 
@@ -988,6 +1009,22 @@ public class ProjectServicesImpl implements ProjectServices {
                 resourceManager.updateResources(projectResources, projectHeader.getId(), operator);
                 Util.log(logger, Level.DEBUG, "Finished calling ResourceManager#updateResources method.");
             }
+
+            // creates an instance of FullProjectData with phaseProject
+            FullProjectData projectData = new FullProjectData(projectPhases.getStartDate(), projectPhases.getWorkdays());
+            projectData.setId(projectPhases.getId());
+            Phase[] allPhases = projectPhases.getAllPhases();
+            for (int i = 0; i < allPhases.length; i++) {
+            	projectData.addPhase(allPhases[i]);
+            }
+
+            // sets the project header
+            projectData.setProjectHeader(projectHeader);
+
+            // sets the resources to fullProjectData
+            projectData.setResources(projectResources);
+
+            return projectData;
         } catch (PersistenceException e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "PersisteceException occurred in ProjectServicesImpl#createProject method : " + e.getMessage(), e);
@@ -1080,7 +1117,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *             if there is a system error while performing the update operation
      * @since 1.1
      */
-    public void updateProject(Project projectHeader, String projectHeaderReason,
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateProject method.");
 
@@ -1130,6 +1167,23 @@ public class ProjectServicesImpl implements ProjectServices {
                 resourceManager.updateResources(projectResources, projectHeader.getId(), operator);
                 Util.log(logger, Level.DEBUG, "Finished calling ResourceManager#updateResources method.");
             }
+
+
+			// creates an instance of FullProjectData with phaseProject
+            FullProjectData projectData = new FullProjectData(projectPhases.getStartDate(), projectPhases.getWorkdays());
+            projectData.setId(projectPhases.getId());
+            Phase[] allPhases = projectPhases.getAllPhases();
+            for (int i = 0; i < allPhases.length; i++) {
+            	projectData.addPhase(allPhases[i]);
+            }
+
+            // sets the project header
+            projectData.setProjectHeader(projectHeader);
+
+            // sets the resources to fullProjectData
+            projectData.setResources(projectResources);
+
+            return projectData;
         } catch (PersistenceException e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "PersistenceException occurred in ProjectServicesImpl#updateProject method : " + e.getMessage(),
@@ -1156,6 +1210,222 @@ public class ProjectServicesImpl implements ProjectServices {
         } finally {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#updateProject method.");
         }
+    }
+
+    /**
+     * <p>
+     * Creates a new contest sale and returns the created contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to create
+     *
+     * @return the created contest sale.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSaleData createContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createContestSale method.");
+
+        ExceptionUtils.checkNull(contestSaleData, null, null, "The parameter[contestSaleData] should not be null.");
+
+        try {
+            ContestSale contestSale = convertContestSaleData(contestSaleData);
+
+            contestSale = projectManager.createContestSale(contestSale);
+
+            return convertContestSale(contestSale);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#createContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createContestSale method.");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sale by id, and return the retrieved contest sale. If
+     * the contest sale doesn't exist, null is returned.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return the retrieved contest sale, or null if id doesn't exist
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSaleData getContestSale(long contestSaleId) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#getContestSale method.");
+
+        try {
+            ContestSale contestSale = projectManager.getContestSale(contestSaleId); 
+
+            return convertContestSale(contestSale);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#getContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#getContestSale method.");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sales by contest id, and return the retrieved contest sales.
+     * </p>
+     *
+     * @param contestId the contest id of the contest sale
+     *
+     * @return the retrieved contest sales, or empty if none exists
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public List<ContestSaleData> getContestSales(long contestId) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#getContestSales method.");
+
+        try {
+            List<ContestSale> contestSales = projectManager.getContestSales(contestId); 
+
+            List<ContestSaleData> ret = new ArrayList<ContestSaleData>();
+
+            for (ContestSale contestSale : contestSales) {
+            	ret.add(convertContestSale(contestSale));
+            }
+
+            return ret;
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#getContestSales method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#getContestSales method.");
+        }
+    }
+
+    /**
+     * <p>
+     * Updates the contest sale data.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public void editContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#editContestSale method.");
+
+        ExceptionUtils.checkNull(contestSaleData, null, null, "The parameter[contestSaleData] should not be null.");
+
+        try {
+            ContestSale contestSale = convertContestSaleData(contestSaleData);
+
+            projectManager.editContestSale(contestSale);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#editContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#editContestSale method.");
+        }
+    }
+
+    /**
+     * <p>
+     * Removes contest sale, return true if the contest sale exists and
+     * removed successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return true if the contest sale exists and removed successfully,
+     *         return false if it doesn't exist
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public boolean removeContestSale(long contestSaleId) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#removeContestSale method.");
+
+        try {
+            return projectManager.removeContestSale(contestSaleId);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#removeContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#removeContestSale method.");
+        }
+    }
+
+    /**
+     * This method used to convert ContestSaleData object into ContestSale object.
+     *
+     * @param data ContestSaleData object to convert.
+     *
+     * @return converted ContestSale instance
+     *
+     * @throws PersistenceException when error reported by manager
+     */
+    private ContestSale convertContestSaleData(ContestSaleData data) throws PersistenceException {
+        ContestSale result = new ContestSale();
+        result.setContestSaleId(data.getContestSaleId());
+        result.setContestId(data.getContestId());
+        result.setPayPalOrderId(data.getPaypalOrderId());
+        result.setPrice(data.getPrice());
+        result.setCreateDate(data.getCreateDate());
+
+        SaleStatus status = projectManager.getSaleStatus(data.getSaleStatusId());
+        result.setStatus(status);
+        result.setSaleReferenceId(data.getSaleReferenceId());
+
+        SaleType saleType = projectManager.getSaleType(data.getSaleTypeId());
+        result.setSaleType(saleType);
+
+        return result;
+    }
+
+    /**
+     * This method converts ContestSale object into ContestSaleData object.
+     *
+     * @param contestSale ContestSale instance to convert
+     *
+     * @return converted ContestSaleDate object
+     */
+    private ContestSaleData convertContestSale(ContestSale contestSale) {
+        ContestSaleData contestSaleData = new ContestSaleData();
+        contestSaleData.setContestSaleId(contestSale.getContestSaleId());
+        contestSaleData.setContestId(contestSale.getContestId());
+        contestSaleData.setPaypalOrderId(contestSale.getPayPalOrderId());
+        contestSaleData.setPrice(contestSale.getPrice());
+        contestSaleData.setCreateDate(contestSale.getCreateDate());
+        contestSaleData.setSaleStatusId(contestSale.getStatus().getSaleStatusId());
+        contestSaleData.setSaleReferenceId(contestSale.getSaleReferenceId());
+        contestSaleData.setSaleTypeId(contestSale.getSaleType().getSaleTypeId());
+
+        return contestSaleData;
     }
 
     /**
@@ -1189,10 +1459,11 @@ public class ProjectServicesImpl implements ProjectServices {
         // for each phase: if the phase.object is not equal to projectPhases or the
         // projectPhases.phases.project.id is not equal to projectHeader.id, throws IAE
         for (Phase phase : projectPhases.getAllPhases()) {
-            if (!phase.getProject().equals(projectPhases)) {
+			phase.setProject(projectPhases);
+            /*if (!phase.getProject().equals(projectPhases)) {
                 throw new IllegalArgumentException(
                         "The Project of phase in projectPhases should equal to the projectPhases.");
-            }
+            }*/
         }
     }
 
@@ -1317,7 +1588,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *             if there is a system error while performing the create operation
      * @since BUGR-1473
      */
-    public void createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
 
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
@@ -1361,9 +1632,8 @@ public class ProjectServicesImpl implements ProjectServices {
 					p.setScheduledEndDate(p.calcEndDate());
             }
 
-
             
-            this.createProject(projectHeader, newProjectPhases, projectResources, operator);
+            return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
         } catch (PhaseTemplateException e) {
             ProjectServicesException pse = new ProjectServicesException(

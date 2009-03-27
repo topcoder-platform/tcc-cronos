@@ -13,6 +13,10 @@
                 <method-name>createProject</method-name>
                 <transaction-timeout>3600</transaction-timeout>
               </method>
+              <method>
+                <method-name>updateProject</method-name>
+                <transaction-timeout>3600</transaction-timeout>
+              </method>
             </method-attributes>
         </session>
     </enterprise-beans>

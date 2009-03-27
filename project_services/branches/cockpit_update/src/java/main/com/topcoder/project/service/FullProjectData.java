@@ -4,9 +4,11 @@
 package com.topcoder.project.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.topcoder.date.workdays.Workdays;
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.team.TeamHeader;
@@ -23,6 +25,11 @@ import com.topcoder.management.team.TeamHeader;
  * <code>Project</code>, and another to set all fields in this class plus the two required fields
  * for the super class.
  * </p>
+ * 
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: contest sale DTO is added.
+ * </p>
+ *
  * <p>
  * Thread Safety: This class is mutable and not thread safe.
  * </p>
@@ -90,6 +97,19 @@ public class FullProjectData extends com.topcoder.project.phases.Project impleme
 
     /**
      * <p>
+     * Represents the contestSales applicable in this project.
+     * </p>
+     *
+     * <p>
+     * This value will can be null. It is set in the setter, and accessed with the getter.
+     * </p>
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private List<ContestSaleData> contestSales;
+
+    /**
+     * <p>
      * Constructs an instance of this class with given startDate and workdays.
      * </p>
      * @param startDate
@@ -99,7 +119,7 @@ public class FullProjectData extends com.topcoder.project.phases.Project impleme
      * @throws IllegalArgumentException
      *             If startDate or workdays is null
      */
-    public FullProjectData(Date startDate, Workdays workdays) {
+    public FullProjectData(Date startDate, DefaultWorkdays workdays) {
         super(startDate, workdays);
         this.resources = new Resource[0];
         this.projectHeader = null;
@@ -141,7 +161,7 @@ public class FullProjectData extends com.topcoder.project.phases.Project impleme
      *             elements, or projectHeader is null, or startDate or workdays is null
      */
     public FullProjectData(Resource[] resources, Project projectHeader, TeamHeader[] teams,
-        String[] technologies, Date startDate, Workdays workdays) {
+        String[] technologies, Date startDate, DefaultWorkdays workdays) {
         super(startDate, workdays);
 
         setResources(resources);
@@ -255,6 +275,32 @@ public class FullProjectData extends com.topcoder.project.phases.Project impleme
         } else {
             Util.checkStringArrayHasNullOrEmptyEle(technologies, "technologies");
             this.technologies = technologies;
+        }
+    }
+
+    /**
+     * Gets the contestSales.
+     * 
+     * @return the contestSales.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public List<ContestSaleData> getContestSales() {
+        return contestSales;
+    }
+
+    /**
+     * Sets the contestSales.
+     * 
+     * @param contestSales the contestSales to set.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public void setContestSales(List<ContestSaleData> contestSales) {
+        if (contestSales == null) {
+            this.contestSales = new ArrayList<ContestSaleData>();
+        } else {
+            this.contestSales = contestSales;
         }
     }
 }

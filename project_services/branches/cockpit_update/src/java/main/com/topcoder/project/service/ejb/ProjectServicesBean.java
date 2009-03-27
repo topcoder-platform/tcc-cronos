@@ -3,10 +3,13 @@
  */
 package com.topcoder.project.service.ejb;
 
+import java.util.List;
+
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.project.service.ConfigurationException;
+import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
@@ -83,6 +86,11 @@ import javax.ejb.TransactionAttributeType;
  *  &lt;/ejb-jar&gt;
  * </pre>
  *
+ * </p>
+ * 
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: new methods added to support creating/updating/query contest
+ * sale for software contest.
  * </p>
  *
  * <p>
@@ -374,6 +382,10 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * This method retrieves the project along with all known associated information. Returns null
      * if not found.
      * </p>
+     * 
+     * <p>
+     * Module Contest Service Software Contest Sales Assembly change: fetch the contest sale info.
+     * </p>
      *
      * @return the project along with all known associated information
      * @param projectId
@@ -424,6 +436,10 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
      * Resource class and therefore will be persisted as new resources'.
      * </p>
+     * 
+     * <p>
+     * Module Contest Service Software Contest Sales Assembly change: return the wrapped value for project header, phases, resources info.
+     * </p>
      *
      * @param projectHeader
      *            the project's header, the main project's data
@@ -434,6 +450,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      *            treated like empty.
      * @param operator
      *            the operator used to audit the operation, can be null but not empty
+     * @return the created project.
      * @throws IllegalArgumentException
      *             if any case in the following occurs:
      *             <ul>
@@ -449,7 +466,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * @throws ProjectServicesException
      *             if there is a system error while performing the create operation
      */
-    public void createProject(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+    public FullProjectData createProject(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
         String method = "ProjectServicesBean#createProject(Project projectHeader, com.topcoder.project.phases.Project"
                 + " projectPhases, Resource[] projectResources, String operator) method.";
@@ -457,7 +474,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
 
         try {
-            getProjectServices().createProject(projectHeader, projectPhases, projectResources, operator);
+            return getProjectServices().createProject(projectHeader, projectPhases, projectResources, operator);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
@@ -526,7 +543,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * @throws ProjectServicesException
      *             if there is a system error while performing the update operation
      */
-    public void updateProject(Project projectHeader, String projectHeaderReason,
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, String operator) {
         String method = "ProjectServicesBean#updateProject(Project projectHeader,"
                 + " String projectHeaderReason, com.topcoder.project.phases.Project projectPhases,"
@@ -535,8 +552,151 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
 
         try {
-            getProjectServices().updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources,
+            return getProjectServices().updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources,
                     operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a new contest sale and returns the created contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to create
+     *
+     * @return the created contest sale.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSaleData createContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        String method = "ProjectServicesBean#createContestSale(ContestSaleData contestSaleData) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().createContestSale(contestSaleData);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sale by id, and return the retrieved contest sale. If
+     * the contest sale doesn't exist, null is returned.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return the retrieved contest sale, or null if id doesn't exist
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSaleData getContestSale(long contestSaleId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getContestSale(long contestSaleId) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getContestSale(contestSaleId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sales by contest id, and return the retrieved contest sales.
+     * </p>
+     *
+     * @param contestId the contest id of the contest sale
+     *
+     * @return the retrieved contest sales, or empty if none exists
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public List<ContestSaleData> getContestSales(long contestId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getContestSales(long contestId) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getContestSales(contestId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>
+     * Updates the contest sale data.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public void editContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        String method = "ProjectServicesBean#editContestSale(ContestSaleData contestSale) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            getProjectServices().editContestSale(contestSaleData);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>
+     * Removes contest sale, return true if the contest sale exists and
+     * removed successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return true if the contest sale exists and removed successfully,
+     *         return false if it doesn't exist
+     *
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public boolean removeContestSale(long contestSaleId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#removeContestSale(long contestSaleId) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().removeContestSale(contestSaleId);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
@@ -641,7 +801,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      *             if there is a system error while performing the create operation
      * @since BUGR-1473
      */
-    public void createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
         String method = "ProjectServicesBean#createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project"
                 + " projectPhases, Resource[] projectResources, String operator) method.";
@@ -649,7 +809,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
 
         try {
-            getProjectServices().createProjectWithTemplate(projectHeader, projectPhases, projectResources, operator);
+            return getProjectServices().createProjectWithTemplate(projectHeader, projectPhases, projectResources, operator);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
