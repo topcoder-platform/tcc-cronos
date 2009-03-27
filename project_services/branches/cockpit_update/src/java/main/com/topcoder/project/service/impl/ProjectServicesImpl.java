@@ -1606,12 +1606,12 @@ public class ProjectServicesImpl implements ProjectServices {
 			String templateName = null;
 			for (String t : templates )
 			{
-				if (category.equals(t))
+				if (category.equalsIgnoreCase(t))
 				{
 					templateName = t;
 					break;
 				}
-				else if (type.equals(t))
+				else if (type.equalsIgnoreCase(t))
 				{
 					templateName = t;
 					break;
