@@ -12,6 +12,7 @@
 <%@ page import="java.net.URL" %>
 <%@ page import="javax.xml.ws.Service" %>
 <%@ page import="com.topcoder.service.facade.contest.ContestServiceFacade" %>
+<%@ page import="com.topcoder.service.facade.contest.ContestServiceException" %>
 <%@ page import="org.jboss.ws.core.StubExt" %>
 <%@ page import="javax.xml.ws.BindingProvider" %>
 <%@ page import="java.util.List" %>
@@ -52,12 +53,94 @@
 <%@ page import="com.topcoder.management.project.ProjectCategory" %>
 <%@ page import="com.topcoder.management.project.ProjectStatus" %>
 <%@ page import="com.topcoder.date.workdays.DefaultWorkdaysFactory" %>
+<%@ page import="com.topcoder.date.workdays.DefaultWorkdays" %>
 <%@ page import="com.topcoder.project.phases.PhaseType" %>
 <%@ page import="com.topcoder.project.phases.PhaseStatus" %>
 <%@ page import="javax.activation.DataHandler" %>
 <%@ page import="javax.activation.FileDataSource" %>
+<%@ page import="com.topcoder.service.payment.CreditCardPaymentData" %>
+<%@ page import="com.topcoder.service.payment.TCPurhcaseOrderPaymentData" %>
+<%@ page import="com.topcoder.service.payment.PaymentResult" %>
+<%@ page import="com.topcoder.project.service.ContestSaleData" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%!
+SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throws ContestServiceException {
+    Category javaCategory = null;
+    Category ejb3Category = null;
 
+    List<Category> categories = port.getActiveCategories();
+    for (Category category : categories) {
+        if (javaCategory == null) {
+            javaCategory = category;
+        } else if (ejb3Category == null) {
+            ejb3Category = category;
+        }
+    }
+
+    Technology java15Technology = null;
+    Technology informixTechnology = null;
+
+    List<Technology> technologies = port.getActiveTechnologies();
+    for (Technology technology : technologies) {
+        if (java15Technology == null) {
+            java15Technology = technology;
+        } else if (informixTechnology == null) {
+            informixTechnology = technology;
+        }
+    }            
+    
+    AssetDTO newAsset = new AssetDTO();
+    newAsset.setName("Catalog Services");
+    newAsset.setVersionText("1.0");
+    newAsset.setShortDescription("short");
+    newAsset.setDetailedDescription("detailed");
+    newAsset.setFunctionalDescription("functional");
+    // set the root category
+    newAsset.setRootCategory(javaCategory);
+
+    // assign categories which this asset belongs to
+    newAsset.setCategories(Arrays.asList(ejb3Category));
+
+    newAsset.setTechnologies(Arrays.asList(
+        java15Technology,
+        informixTechnology
+    ));
+    newAsset.setDocumentation(new ArrayList<CompDocumentation>());
+
+    ProjectType projectType = new ProjectType(1, "Component");
+    ProjectCategory projectCategory = new ProjectCategory(1, "Design", projectType);
+    ProjectStatus projectStatus = new ProjectStatus(1, "projectStatus");
+    com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
+        projectCategory, projectStatus);
+    projectHeader.setTcDirectProjectId(1);
+    projectHeader.setProperty("Payments", "1000");
+
+    com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
+            (DefaultWorkdays)new DefaultWorkdaysFactory().createWorkdaysInstance());
+    PhaseType phaseTypeOne = new PhaseType(1, "one");
+    com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
+    phaseOne.setPhaseType(phaseTypeOne);
+    phaseOne.setFixedStartDate(new Date());
+    phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+    phaseOne.setProject(null);
+    phaseOne.setScheduledStartDate(new Date());
+    phaseOne.setScheduledEndDate(new Date());
+
+    Resource resource = new Resource();
+    ResourceRole resourceRole = new ResourceRole(13);
+    resource.setResourceRole(resourceRole);
+    Resource[] projectResources = new Resource[] {resource};
+
+    SoftwareCompetition contest = new SoftwareCompetition();
+    contest.setAssetDTO(newAsset);
+    contest.setProjectHeader(projectHeader);
+    contest.setProjectPhases(projectPhases);
+    contest.setProjectResources(projectResources);
+    contest.setType(CompetionType.SOFTWARE);
+
+    return contest;
+}
+%>
 <%
     String calledOperation = null;
     Object callResult = null;
@@ -499,6 +582,20 @@
                     append("<br/>");
             b.append("    Technologies: ").append(contest.getProjectData().getTechnologies()).
                     append("<br/>");
+            b.append("    ContestSales: ");
+
+            List<ContestSaleData> contestSales = contest.getProjectData().getContestSales();
+            for (ContestSaleData contestSale : contestSales) {
+                b.append("    ContestSale: ID = ").append(contestSale.getContestSaleId()).append(", contestId = ").append(contestSale.getContestId()).
+                        append(", saleStatusId = ").append(contestSale.getSaleStatusId()).
+                        append(", paypalOrderId = ").append(contestSale.getPaypalOrderId()).
+                        append(", price = ").append(contestSale.getPrice()).
+                        append(", createDate = ").append(contestSale.getCreateDate()).
+                        append(", saleTypeId = ").append(contestSale.getSaleTypeId()).
+                        append(", saleReferenceId = ").append(contestSale.getSaleReferenceId()).
+                        append("<br/>");
+            }
+
             callResult = "Retrieved projects:<br/>" + b.toString();
         } else if ("createSoftwareContest".equals(operation)) {
             String tcDirectProjectId = request.getParameter("cid51");
@@ -552,7 +649,7 @@
                 projectCategory, projectStatus);
 
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
-                    new DefaultWorkdaysFactory().createWorkdaysInstance());
+                    (DefaultWorkdays)new DefaultWorkdaysFactory().createWorkdaysInstance());
            // PhaseType phaseTypeOne = new PhaseType(1, "one");
            // com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
            // phaseOne.setPhaseType(phaseTypeOne);
@@ -628,7 +725,7 @@
                 projectCategory, projectStatus);
 
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
-                    new DefaultWorkdaysFactory().createWorkdaysInstance());
+                    (DefaultWorkdays)new DefaultWorkdaysFactory().createWorkdaysInstance());
             PhaseType phaseTypeOne = new PhaseType(1, "one");
             com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
             phaseOne.setPhaseType(phaseTypeOne);
@@ -694,6 +791,25 @@
             port.addSubmitter(Long.parseLong(projectId), Long.parseLong(userId));
 
             callResult = "addSubmitter successfully";
+        } else if ("processContestCreditCardSale".equals(operation)) {
+            SoftwareCompetition contest = generateSoftwareCompetition(port);
+
+            CreditCardPaymentData paymentData = new CreditCardPaymentData();
+            paymentData.setCardNumber("4111111111111111");
+            paymentData.setCardType("visa");
+            paymentData.setCardExpiryMonth("12");
+            paymentData.setCardExpiryYear("2010");
+            PaymentResult result = port.processContestCreditCardSale(contest, paymentData);
+
+            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getReferenceNumber();
+        } else if ("processContestPurchaseOrderSale".equals(operation)) {
+            SoftwareCompetition contest = generateSoftwareCompetition(port);
+
+            TCPurhcaseOrderPaymentData paymentData = new TCPurhcaseOrderPaymentData();
+            paymentData.setPoNumber("PoNumber");
+            PaymentResult result = port.processContestPurchaseOrderSale(contest, paymentData);
+
+            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getReferenceNumber();
         }
 
     } catch (Throwable e) {

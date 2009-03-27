@@ -14,6 +14,7 @@ import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
 import com.topcoder.management.project.Project;
+import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
@@ -95,6 +96,11 @@ import java.util.Date;
  * <p>
  * TopCoder Service Layer Integration 3 Assembly change: expose the methods of Category Services, Project Services and
  * Online Review Upload Services.
+ * </p>
+ *
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: new methods added to support processing contest
+ * sale for software contest.
  * </p>
  *
  * @author TCSDEVELOPER
@@ -216,6 +222,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	private static final long CONTEST_PAYMENT_STATUS_PAID = 1;
 
+	/**
+	 * Private constant specifying active & public status id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+	 */
+	private static final long CONTEST_SALE_STATUS_PAID = 1;
+
     private static final long CONTEST_COMPLETED_STATUS = 8;
 
     /**
@@ -223,10 +236,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final long PAYMENT_TYPE_PAYPAL_PAYFLOW = 1;
 
+    /**
+     * Private constant specifying active & public status id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final long SALE_TYPE_PAYPAL_PAYFLOW = 1;
+
 	/**
 	 * Private constant specifying active & public status id.
 	 */
 	private static final long PAYMENT_TYPE_TC_PURCHASE_ORDER = 2;
+
+	/**
+	 * Private constant specifying active & public status id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+	 */
+	private static final long SALE_TYPE_TC_PURCHASE_ORDER = 2;
+
+	/**
+	 * Private constant specifying payments project info type.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+	 */
+	private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
 
     /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
@@ -1266,6 +1300,141 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
     /**
      * <p>
+     * Processes the contest sale.
+     * </p>
+     *
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     *
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public PaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
+        throws ContestServiceException {
+        return processContestSaleInternal(competition, paymentData);
+    }
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     *
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     *
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public PaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
+        TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException {
+        return processContestSaleInternal(competition, paymentData);
+    }
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     *
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     *
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private PaymentResult processContestSaleInternal(SoftwareCompetition competition, PaymentData paymentData)
+        throws ContestServiceException {
+        Logger.getLogger(this.getClass()).info("SoftwareCompetition: " + competition);
+        Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
+
+        try {
+        	long contestId = competition.getProjectHeader().getId();
+
+            SoftwareCompetition tobeUpdatedCompetition = null;
+
+            if (contestId >= 0) {
+                tobeUpdatedCompetition = this.getFullProjectData(contestId);
+            }
+
+            if (tobeUpdatedCompetition == null) {
+                tobeUpdatedCompetition = this.createSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());
+            } else {
+            	tobeUpdatedCompetition = competition;
+            }
+
+            Project contest = tobeUpdatedCompetition.getProjectHeader();
+
+            PaymentResult result = null;
+            String payments = (String) contest.getProperty(PAYMENTS_PROJECT_INFO_TYPE);
+            double fee = payments == null ? 0 : Double.parseDouble(payments) * 0.2;
+
+            if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                // processing purchase order is not in scope of this assembly.
+                result = new PaymentResult();
+                result.setReferenceNumber(((TCPurhcaseOrderPaymentData) paymentData).getPoNumber());
+            } else if (paymentData instanceof CreditCardPaymentData) {
+                // ideally client should be sending the amount,
+                // but as client has some inconsistency
+                // so in this case we would use the amount from contest data.
+                CreditCardPaymentData creditCardPaymentData = (CreditCardPaymentData) paymentData;
+
+                creditCardPaymentData.setAmount(String.valueOf(fee));
+                creditCardPaymentData.setComment1("Contest Fee");
+                creditCardPaymentData.setComment2(String.valueOf(contest.getId()));
+                result = paymentProcessor.process(paymentData);
+            }
+
+            // TODO, to be fixed later
+			// tobeUpdatedCompetition.getContestData().setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
+			// tobeUpdatedCompetition.getContestData().setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
+			
+            ContestSaleData contestSaleData = new ContestSaleData();
+            contestSaleData.setPaypalOrderId(result.getReferenceNumber());
+            contestSaleData.setSaleReferenceId(result.getReferenceNumber());
+
+            if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+            	contestSaleData.setSaleTypeId(SALE_TYPE_TC_PURCHASE_ORDER);
+            }
+            // TODO, how relate to payflow
+            else if (paymentData instanceof CreditCardPaymentData) {
+                contestSaleData.setSaleTypeId(SALE_TYPE_PAYPAL_PAYFLOW);
+            }
+
+            contestSaleData.setContestId(contest.getId());
+            contestSaleData.setSaleStatusId(CONTEST_SALE_STATUS_PAID);
+            contestSaleData.setPrice(fee);
+
+            this.projectServices.createContestSale(contestSaleData);
+
+            // DONOT create for now
+            // create forum for the contest. 
+            //long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
+            //tobeUpdatedCompetition.getContestData().setForumId(forumid);
+
+			// update contest
+            tobeUpdatedCompetition.setProjectHeaderReason("Updated for Contest Sale");
+            this.updateSoftwareContest(tobeUpdatedCompetition, contest.getTcDirectProjectId());
+
+            return result;
+        } catch (ContestServiceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        } catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * <p>
      * Processes the submission payment. It does following steps:
      * <ul>
      * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
@@ -1635,7 +1804,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 return null;
             }
 
-			com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+			java.util.Set phaseSet = projectData.getPhases();
+			com.topcoder.project.phases.Phase[] allPhases = (com.topcoder.project.phases.Phase[])phaseSet.toArray(new Phase[phaseSet.size()]); 
             for (int i = 0; i < allPhases.length; i++) {
                 allPhases[i].setProject(null);
             }
@@ -1667,31 +1837,58 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException {
-        if (contest.getType() == CompetionType.SOFTWARE) {
-            try {
-                AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+        throws ContestServiceException 
+		
+	{
+		try
+		{
+				if (contest.getType() == CompetionType.SOFTWARE) 
+				{
+		
+					if (contest.getAssetDTO() != null)
+					{
+			
+						AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+						contest.setAssetDTO(assetDTO);
+					}
 
-                contest.setAssetDTO(assetDTO);
-            } catch (com.topcoder.catalog.service.PersistenceException e) {
-                throw new ContestServiceException("Operation failed in the catalogService.", e);
-            }
+					if (contest.getProjectHeader() != null) 
+					{
+						UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                
+						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+						FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
+								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            try {
-            	contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
-                projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
-
-            } catch (ProjectServicesException e) {
-                throw new ContestServiceException("Operation failed in the projectServices.", e);
-            }
-
-            return contest;
-        } else {
-            throw new IllegalArgumentWSException("Unsupported contest type",
-                    "Contest type is not supported: " + contest.getType());
-        }
+						contest.setProjectHeader(projectData.getProjectHeader());
+						contest.setProjectPhases(projectData);
+						contest.setProjectResources(projectData.getResources());
+						contest.setProjectData(projectData);
+					} 
+				
+					return contest;
+				} 
+				else 
+				{
+						 throw new IllegalArgumentWSException("Unsupported contest type",
+									"Contest type is not supported: " + contest.getType());
+				}
+		}
+		catch (com.topcoder.catalog.service.PersistenceException e) 
+		{
+			sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
+		 catch (ProjectServicesException e) 
+		 {
+				sessionContext.setRollbackOnly();
+                throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
+		 catch (Exception e) 
+		 {
+				sessionContext.setRollbackOnly();
+                throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
     }
 
     /**
@@ -1708,28 +1905,52 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public void updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException {
-        if (contest.getType() == CompetionType.SOFTWARE) {
-            try {
-                this.catalogService.updateAsset(contest.getAssetDTO());
-            } catch (EntityNotFoundException e) {
-                throw new ContestServiceException("Operation failed in the catalogService.", e);
-            } catch (com.topcoder.catalog.service.PersistenceException e) {
-                throw new ContestServiceException("Operation failed in the catalogService.", e);
-            }
+					throws ContestServiceException
+	{
+		try
+		{
+				if (contest.getType() == CompetionType.SOFTWARE) 
+				{
+					if (contest.getAssetDTO() != null) 
+					{
+							this.catalogService.updateAsset(contest.getAssetDTO());
+					}
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            try {
-            	contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
-                projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
-                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
-            } catch (ProjectServicesException e) {
-                throw new ContestServiceException("Operation failed in the projectServices.", e);
-            }
-        } else {
-            throw new IllegalArgumentWSException("Unsupported contest type",
-                    "Contest type is not supported: " + contest.getType());
-        }
+					if (contest.getProjectHeader() != null) 
+					{
+						UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+						
+							contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+							projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
+									contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+					}
+				} 
+				else 
+				{
+					throw new IllegalArgumentWSException("Unsupported contest type",
+							"Contest type is not supported: " + contest.getType());
+				}
+		}
+		catch (com.topcoder.catalog.service.PersistenceException e) 
+		{
+			sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
+		 catch (ProjectServicesException e) 
+		 {
+				sessionContext.setRollbackOnly();
+                throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
+		 catch (EntityNotFoundException e) 
+		 {
+				sessionContext.setRollbackOnly();
+                throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
+		 catch (Exception e) 
+		 {
+				sessionContext.setRollbackOnly();
+                throw new ContestServiceException("Operation failed in the contest service facade.", e);
+         }
     }
 
     /**

@@ -48,6 +48,11 @@ import java.util.List;
  * TopCoder Service Layer Integration 3 Assembly change: expose the methods of Category Services, Project Services and
  * Online Review Upload Services.
  * </p>
+ * 
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: new methods added to support processing contest
+ * sale for software contest.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.0
@@ -636,6 +641,40 @@ public interface ContestServiceFacade {
 
     public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException;
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     *
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     *
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public PaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     *
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     *
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public PaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
+        TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException;
 
     /**
      * <p>
