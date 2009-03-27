@@ -262,6 +262,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
 
+
+
+	/**
+	 * Private constant specifying project type info's component id key.
+	 * 
+	 * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+	 */
+	private static final String PROJECT_TYPE_INFO_COMPONENT_ID_KEY = "Component ID";
+	
+	/**
+     * Private constant specifying project type info's version id key.
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String PROJECT_TYPE_INFO_VERSION_ID_KEY = "Version ID";
+
     /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
      * 
@@ -1804,8 +1820,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 return null;
             }
 
-			java.util.Set phaseSet = projectData.getPhases();
-			com.topcoder.project.phases.Phase[] allPhases = (com.topcoder.project.phases.Phase[])phaseSet.toArray(new Phase[phaseSet.size()]); 
+			com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
             for (int i = 0; i < allPhases.length; i++) {
                 allPhases[i].setProject(null);
             }
@@ -1836,43 +1851,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
+    @SuppressWarnings({ "unchecked" })
     public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException 
 		
 	{
 		try
 		{
-				if (contest.getType() == CompetionType.SOFTWARE) 
+				if (contest.getAssetDTO() != null)
 				{
 		
-					if (contest.getAssetDTO() != null)
-					{
+					AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+					contest.setAssetDTO(assetDTO);
+				}
+
+				if (contest.getProjectHeader() != null) 
+				{
+					UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 			
-						AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
-						contest.setAssetDTO(assetDTO);
+					contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+					FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
+							contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+
+					com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+					for (int i = 0; i < allPhases.length; i++) {
+						allPhases[i].setProject(null);
+						allPhases[i].clearDependencies();
 					}
 
-					if (contest.getProjectHeader() != null) 
-					{
-						UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                
-						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
-						FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+					contest.setProjectHeader(projectData.getProjectHeader());
+					contest.setProjectPhases(projectData);
+					contest.setProjectResources(projectData.getResources());
+					contest.setProjectData(projectData);
 
-						contest.setProjectHeader(projectData.getProjectHeader());
-						contest.setProjectPhases(projectData);
-						contest.setProjectResources(projectData.getResources());
-						contest.setProjectData(projectData);
-					} 
-				
-					return contest;
+					
 				} 
-				else 
-				{
-						 throw new IllegalArgumentWSException("Unsupported contest type",
-									"Contest type is not supported: " + contest.getType());
-				}
+			
+				return contest;
+
 		}
 		catch (com.topcoder.catalog.service.PersistenceException e) 
 		{
@@ -1909,27 +1925,27 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	{
 		try
 		{
-				if (contest.getType() == CompetionType.SOFTWARE) 
-				{
-					if (contest.getAssetDTO() != null) 
-					{
-							this.catalogService.updateAsset(contest.getAssetDTO());
-					}
 
-					if (contest.getProjectHeader() != null) 
-					{
-						UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-						
-							contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
-							projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
-									contest.getProjectPhases(), contest.getProjectResources(), p.getName());
-					}
-				} 
-				else 
+				if (contest.getAssetDTO() != null) 
 				{
-					throw new IllegalArgumentWSException("Unsupported contest type",
-							"Contest type is not supported: " + contest.getType());
+						this.catalogService.updateAsset(contest.getAssetDTO());
 				}
+
+				if (contest.getProjectHeader() != null) 
+				{
+					UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+					
+						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+						FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
+								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+						com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+						// this is to avoid cycle
+						for (int i = 0; i < allPhases.length; i++) {
+							allPhases[i].setProject(null);
+							allPhases[i].clearDependencies();
+						}
+				}
+
 		}
 		catch (com.topcoder.catalog.service.PersistenceException e) 
 		{

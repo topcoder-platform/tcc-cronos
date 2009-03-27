@@ -726,14 +726,14 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
 
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
                     (DefaultWorkdays)new DefaultWorkdaysFactory().createWorkdaysInstance());
-            PhaseType phaseTypeOne = new PhaseType(1, "one");
+            /*PhaseType phaseTypeOne = new PhaseType(1, "one");
             com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
             phaseOne.setPhaseType(phaseTypeOne);
             phaseOne.setFixedStartDate(new Date());
             phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
             phaseOne.setProject(null);
             phaseOne.setScheduledStartDate(new Date());
-            phaseOne.setScheduledEndDate(new Date());
+            phaseOne.setScheduledEndDate(new Date());*/
 
             Resource resource = new Resource();
             ResourceRole resourceRole = new ResourceRole(13);
@@ -745,7 +745,7 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             contest.setProjectHeader(projectHeader);
             contest.setProjectPhases(projectPhases);
             contest.setProjectResources(projectResources);
-            contest.setType(CompetionType.SOFTWARE);
+            contest.setType(CompetionType.COMPONENT_DESIGN);
             contest = port.createSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
 
             contest.setProjectHeaderReason("projectHeaderReason");
