@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
-import com.topcoder.date.workdays.Workdays;
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.phase.AbstractDbPhasePersistence;
 import com.topcoder.management.phase.ConfigurationException;
@@ -877,7 +877,7 @@ public abstract class AbstractInformixPhasePersistence extends
         ResultSet rs = null;
 
         // create workdays to be used to create the project
-        Workdays workdays = new DefaultWorkdaysFactory()
+        DefaultWorkdays workdays = (DefaultWorkdays)new DefaultWorkdaysFactory()
                 .createWorkdaysInstance();
 
         try {
