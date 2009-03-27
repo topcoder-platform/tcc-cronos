@@ -12,45 +12,60 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
 
-    public class ObjectTranslatorUtils
-    {
-        public static function xmlDecode(xml:XMLDocument, toClass:Class):ArrayCollection
-        {
-               var coll:ArrayCollection=new ArrayCollection();
-               var xmlDecoder:SimpleXMLDecoder=new SimpleXMLDecoder();
-            
-               if (xml.firstChild.childNodes.length > 0)
-               {
-                   var objectTree:Object=xmlDecoder.decodeXML(xml.firstChild);
-                   var objs:Array;
-                
-                   if (objectTree is Array)
-                   {
+    public class ObjectTranslatorUtils {
+
+        /**
+        * Tries to decode given xml document to the specified class instance.
+        * 
+        * @param xml xml document to be decoded.
+        * @param toClass concrete type.
+        * 
+        * @return array of decoded objects of specified toClass type.
+        */
+        public static function xmlDecode(xml:XMLDocument, toClass:Class):ArrayCollection {
+            var coll:ArrayCollection=new ArrayCollection();
+            var xmlDecoder:SimpleXMLDecoder=new SimpleXMLDecoder();
+
+            if (xml.firstChild.childNodes.length > 0) {
+                var objectTree:Object=xmlDecoder.decodeXML(xml.firstChild);
+                var objs:Array;
+
+                if (objectTree is Array) {
                     objs=objectTree as Array;
-                   }
-                   else
-                   {
+                } else {
                     objs=new Array(objectTree);
-                   }
-                
-                   for(var i:int=0; i < objs.length; i++)
-                   {
-                       var obj:*=ObjectTranslator.objectToInstance(objs[i], toClass);
-                       coll.addItem(obj);
-                   }
-               }
-            
-               return coll;
+                }
+
+                for (var i:int=0; i < objs.length; i++) {
+                    var obj:*=ObjectTranslator.objectToInstance(objs[i], toClass);
+                    coll.addItem(obj);
+                }
+            }
+
+            return coll;
         }
-        
-        public static function translateCollection(fromObj:Object, toClass:Class):ArrayCollection
-        {
+
+        /**
+        * Translates given object instance to array of specified concrete types.
+        * 
+        * @param fromObj object to be translated.
+        * @param toClass concrete type element of the array.
+        * 
+        * @return array of translated objects of specified class type.
+        */
+        public static function translateCollection(fromObj:Object, toClass:Class):ArrayCollection {
             trace("fromObj is ArrayCollection: " + fromObj);
+
+            //
+            // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+            // Updated to avoid 'duplicate variable definition' warning
+            //
+            var retColl:ArrayCollection=null;
             if (fromObj is ArrayCollection) {
-                
-                var coll:ArrayCollection = fromObj as ArrayCollection;
-                var retColl:ArrayCollection = new ArrayCollection();
-                for (var i:int = 0; i < coll.length; i++) {
+
+                var coll:ArrayCollection=fromObj as ArrayCollection;
+                retColl=new ArrayCollection();
+                for (var i:int=0; i < coll.length; i++) {
                     trace("@@@@ before translate: " + coll[i]);
                     var obj:*=translate(coll[i], toClass);
                     trace("@@@@ after translate: " + obj);
@@ -58,12 +73,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                 }
                 
                 return retColl;
-            }
-            else {
-                var retColl:ArrayCollection = new ArrayCollection();
-                var obj:*=translate(fromObj, toClass);
-                retColl.addItem(obj);
-                
+            } else {
+                //
+                // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+                // Updated to avoid 'duplicate variable definition' warning
+                //
+                retColl=new ArrayCollection();
+                var obj2:*=translate(fromObj, toClass);
+                retColl.addItem(obj2);
+
                 return retColl;
             }
             

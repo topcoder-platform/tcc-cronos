@@ -7,14 +7,19 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.ProgressWindow;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.SoftwareCompetitionUtils;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetitionPrize;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
     
     import flash.display.DisplayObject;
     import flash.net.URLRequest;
@@ -101,6 +106,22 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var clientProjectNames:ArrayCollection = new ArrayCollection();
         
         /**
+         * Variable that holds 'software competition' related data.
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        [Bindable]
+        private var _softwareCompetition:SoftwareCompetition;
+
+        /**
+         * Variable that holds competition
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        [Bindable]
+        private var _competitionType:String;
+
+        /**
          * ProjectWidgetCodeBehind constructor.
          */
         public function LaunchWidgetCodeBehind() {
@@ -163,11 +184,57 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function set competition(comp:StudioCompetition):void {
             this._competition = comp;
         }
-        
-        public function resetWidget():void{
-    		reload();
-    	}
-                
+
+        /**
+         * Gets the software competition data.
+         *
+         * @return <code>SoftwareCompetition</code>
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        [Bindable]
+        public function get softwareCompetition():SoftwareCompetition {
+            return this._softwareCompetition;
+        }
+
+        /**
+         * Sets the software competition data.
+         *
+         * @param comp a <code>SoftwareCompetition</code>
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        public function set softwareCompetition(comp:SoftwareCompetition):void {
+            this._softwareCompetition=comp;
+        }
+
+        /**
+         * Gets the competition type.
+         *
+         * @return <code>String</code>
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        [Bindable]
+        public function get competitionType():String {
+            return this._competitionType;
+        }
+
+        /**
+         * Sets the competition type.
+         *
+         * @param a <code>String</code> competition type.
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        public function set competitionType(s:String):void {
+            this._competitionType=s;
+        }
+
+        public function resetWidget():void {
+            reload();
+        }
+
         /**
          * This action will reload this widget.
          */
@@ -346,41 +413,43 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
-        	if(map["contestid"])
-        	{
-        		contestid=map["contestid"];
-        		
-        		trace("@@@@ To get contest for: " + contestid); 
-        		_emptyStart = false;
-			resetWidget();
-        		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
-			getContestOp.addEventListener("result", getContestHandler);
-			getContestOp.send(parseInt(contestid));
-        	}
+            if (map["contestid"]) {
+                contestid=map["contestid"];
+
+                trace("@@@@ To get contest for: " + contestid);
+                _emptyStart=false;
+                resetWidget();
+                var getContestOp:AbstractOperation=_csws.getOperation("getContest");
+                getContestOp.addEventListener("result", getContestHandler);
+                getContestOp.send(parseInt(contestid));
+            }
         }
         
         private function getContestHandler(e:ResultEvent):void
         {
             trace("getContestHandler: " + e + ", " + e.result);
-        	if(e && e.result)
-        	{
-        		var c:StudioCompetition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
-            		trace("getContestHandler:: c: " + c);
-        		(container.contents as LaunchWidget).competition=c;
-        		(container.contents as LaunchWidget).currentState = "ContestSelectionState";
-        		(container.contents as LaunchWidget).onCreateComplete(2);
-				
-				//_framework.openWidget("Launch Contests","Launch Contest");
-        	}
+            if (e && e.result) {
+                var c:StudioCompetition=ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+                trace("getContestHandler:: c: " + c);
+                (container.contents as LaunchWidget).competition=c;
+                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                (container.contents as LaunchWidget).onCreateComplete(2);
+
+                    //_framework.openWidget("Launch Contests","Launch Contest");
+            }
         }
-        
-        public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void
-        {
+
+        public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
             competition._id=competition.id;
             competition._type=competition.type;
             competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
             competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
-            
+
+            //
+            // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+            // Updated to avoid 'duplicate variable definition' warning
+            //
+            var processContestPaymentOp:AbstractOperation=null;
             if (type == "PayPalCreditCard") {
                 var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
 
@@ -402,9 +471,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 creditCardPaymentData.email=Model.instance.email;
                 creditCardPaymentData.ipAddress="10.10.10.10";
                 creditCardPaymentData.sessionId="";
-                
-                var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestCreditCardPayment");
-            
+
+                processContestPaymentOp=_csws.getOperation("processContestCreditCardPayment");
+
                 processContestPaymentOp.addEventListener("result", eventHandler);
                 processContestPaymentOp.addEventListener("fault", faultEventHandler);
                 processContestPaymentOp.send(competition, creditCardPaymentData);
@@ -415,9 +484,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 purchaseOrderPaymentData.type=new PaymentType();
                 purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
                 purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
-                
-                var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestPurchaseOrderPayment");
-            
+
+                processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
+
                 processContestPaymentOp.addEventListener("result", eventHandler);
                 processContestPaymentOp.addEventListener("fault", faultEventHandler);
                 processContestPaymentOp.send(competition, purchaseOrderPaymentData);
@@ -428,87 +497,159 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	
             PopUpManager.centerPopUp(p);
         }
-        
-        public function saveAsDraft():void{
-        	competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
-        	saveContest();
-        }
-        
-        private function saveContest():void{
-        	//var type:CompetionType = new CompetionType();
-        	var competionType:String = "STUDIO";
-        	this.competition.type = competionType;
-        	if (isNaN(competition.id) || competition.id < 0){
-        		createContest();
-        	} else {
-        		updateContest();
-        	}
-        	p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
-														this.parentApplication),ProgressWindow, true));;
-        	
+
+        /**
+         * Updated to support save of software contests too.
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        public function saveAsDraft():void {
+            //var type:CompetionType = new CompetionType();
+            if (this.competitionType == "STUDIO") {
+                competition.contestData.statusId=CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+                competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_DRAFT;
+                var competionType:String="STUDIO";
+                this.competition.type=competionType;
+                if (isNaN(competition.id) || competition.id < 0) {
+                    createStudioContest();
+                } else {
+                    updateStudioContest();
+                }
+            } else {
+                if (isNaN(softwareCompetition.id) || softwareCompetition.id < 0) {
+                    createSoftwareContest();
+                } else {
+                    // implementing update is out of scope of this assembly.
+                    //updateSoftwareContest();
+                }
+            }
+
+            p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(this.parentApplication), ProgressWindow, true));
+
             PopUpManager.centerPopUp(p);
         }
-        
-         private function createContest():void
-        {
-            var createContestOp:AbstractOperation = _csws.getOperation("createContest");
+
+        /**
+         * Creates software contest.
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        private function createSoftwareContest():void {
+
+            // set dynamic properties before save.
+            var prizes:Array=new Array();
+            for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
+                var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
+                prizes.push(p);
+            }
+
+            SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
+            SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
+            SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
             
-            competition._id=competition.id;
-            competition._type=competition.type;
+            var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
             
-            createContestOp.addEventListener("result", createContestHandler);
-            createContestOp.send(competition, competition.contestData.tcDirectProjectId);
+            createContestOp.addEventListener("result", createSoftwareContestHandler);
+            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
         }
-        
-        // TCCC-1023
-        private function createContestHandler(e:ResultEvent):void {
-        	trace("createContestHandler: " + e + ", " + e.result);
-        	if(p)
-			{
-				PopUpManager.removePopUp(p);
-        		p=null;
-			}
+
+        /**
+         * Handler for software contest create.
+         * 
+         * @param e a <code>ResultEvent</code>
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        private function createSoftwareContestHandler(e:ResultEvent):void {
+            trace("createContestHandler: " + e + ", " + e.result);
+            if (p) {
+                PopUpManager.removePopUp(p);
+                p=null;
+            }
             if (e && e.result) {
-            	this.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
-            	trace("createContestHandler:: this.competition: " + this.competition);
-            	
-            	//var type:CompetionType = new CompetionType();
-            	var competitionType:String = "STUDIO";
-            	this.competition.type = competitionType;
-    
-    		    Helper.showAlertMessage("Contest created successfully!");
-    		    (container.contents as LaunchWidget).sched.initData(); // BUGR-1445
+                this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
+                trace("createContestHandler:: this.competition: " + this.softwareCompetition);
+
+                Helper.showAlertMessage("Contest created successfully!");
             }
         }
-        
-        // TCCC-1023
-        private function updateContest():void{
-            var updateContestOp:AbstractOperation = _csws.getOperation("updateContest");
-            
-            updateContestOp.addEventListener("result", updateContestHandler);
+
+        /**
+         * Creates studio contest.
+         * 
+         * Just name has been updated in this version
+         */
+        private function createStudioContest():void {
+            var createContestOp:AbstractOperation=_csws.getOperation("createContest");
+
+            competition._id=competition.id;
+            competition._type=competition.type;
+
+            createContestOp.addEventListener("result", createStudioContestHandler);
+            createContestOp.send(competition, competition.contestData.tcDirectProjectId);
+        }
+
+        /**
+         * Handler for studio contest create.
+         * 
+         * @param e a <code>ResultEvent</code>
+         *
+         * Just name has been updated in this version
+         */
+        private function createStudioContestHandler(e:ResultEvent):void {
+            trace("createContestHandler: " + e + ", " + e.result);
+            if (p) {
+                PopUpManager.removePopUp(p);
+                p=null;
+            }
+            if (e && e.result) {
+                this.competition=ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+                trace("createContestHandler:: this.competition: " + this.competition);
+
+                //var type:CompetionType = new CompetionType();
+                var competitionType:String="STUDIO";
+                this.competition.type=competitionType;
+
+                Helper.showAlertMessage("Contest created successfully!");
+                (container.contents as LaunchWidget).sched.initData(); // BUGR-1445
+            }
+        }
+
+        /**
+         * Updates studio contest.
+         * 
+         * Just name has been updated in this version
+         */
+        private function updateStudioContest():void {
+            var updateContestOp:AbstractOperation=_csws.getOperation("updateContest");
+
+            updateContestOp.addEventListener("result", updateStudioContestHandler);
             updateContestOp.send(competition);
         }
-        
-        // TCCC-1023
-        private function updateContestHandler(event:ResultEvent):void{
-        	
-        	if(p)
-			{
-				PopUpManager.removePopUp(p);
-        		p=null;
-			}
-        	Helper.showAlertMessage("Contest updated successfully!");
-	    }
+
+        /**
+         * Handler for studio contest update.
+         * 
+         * @param e a <code>ResultEvent</code>
+         *
+         * Just name has been updated in this version
+         */
+        private function updateStudioContestHandler(event:ResultEvent):void {
+
+            if (p) {
+                PopUpManager.removePopUp(p);
+                p=null;
+            }
+            Helper.showAlertMessage("Contest updated successfully!");
+        }
 
 	/**
          * Simple setter for the allowclose of this widget.
          *
          * @param allow the flag allowclose of this widget.
          */
-        public function set allowclose(allow:Boolean):void
-        {
-        	_allowclose=allow;
+        public function set allowclose(allow:Boolean):void {
+            _allowclose=allow;
         }
 
         /**
@@ -516,9 +657,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          *
          * @return the allowclose flag fo this widget. Could be null if not set.
          */
-        public function get allowclose():Boolean
-        {
-        	return _allowclose;
+        public function get allowclose():Boolean {
+            return _allowclose;
         }
 
 	/**
@@ -526,9 +666,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          *
          * @param container of this widget.
          */
-        public function set container(container:IWidgetContainer):void
-        {
-        	_container=container;
+        public function set container(container:IWidgetContainer):void {
+            _container=container;
         }
 
         /**
@@ -536,25 +675,23 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          *
          * @return the container this widget. Could be null if not set.
          */
-        public function get container():IWidgetContainer
-        {
-        	if(_container==null)
-        	{
-        		_container=parent as IWidgetContainer;
-        	}
-        	return _container;
+        public function get container():IWidgetContainer {
+            if (_container == null) {
+                _container=parent as IWidgetContainer;
+            }
+            return _container;
         }
         
         public function previewContest():void {
-        	var url:String;
-        	
-        	if (isNaN(competition.contestData.contestId) || competition.contestData.contestId < 0){
-            		Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
-        	} else {
-			url = "http://"+Application.application.parameters.studioAddress+"/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+            var url:String;
 
-			navigateToURL(new URLRequest(url), "_blank");
-        	}
+            if (isNaN(competition.contestData.contestId) || competition.contestData.contestId < 0) {
+                Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+            } else {
+                url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+
+                navigateToURL(new URLRequest(url), "_blank");
+            }
         }
     }
 }

@@ -1,202 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="NewWidgetPanel"
-    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
-    width="100%" initialize="initWidget()" verticalScrollPolicy="off" horizontalScrollPolicy="off" creationComplete="onCreateComplete(1)" >
-    <mx:Style source="Style.css" />
+                           xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
+                           styleName="NewWidgetPanel"
+                           xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*"
+                           width="100%"
+                           initialize="initWidget()"
+                           verticalScrollPolicy="off"
+                           horizontalScrollPolicy="off"
+                           creationComplete="onCreateComplete(1)">
+    <mx:Style source="Style.css"/>
 
     <mx:Script>
         <![CDATA[
-        	import mx.events.CloseEvent;
-        	import mx.managers.PopUpManager;
-		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
-        	import com.topcoder.flex.model.IWidgetFramework;
-        	import mx.rpc.soap.SOAPHeader;
-	        import mx.controls.Image;
-		import mx.effects.Resize;
-		import mx.events.ResizeEvent;
-		import mx.events.StateChangeEvent;
-		import mx.events.EffectEvent;
-		import mx.effects.Fade;
-		import mx.containers.HBox;
-		import flash.net.URLLoader;
-		import flash.net.URLRequest;
-		import flash.events.Event;
-		import com.topcoder.flex.Helper;
-		import flash.utils.Timer;
-		import flash.events.TimerEvent;
-		import mx.events.SliderEvent;
-		    import mx.core.Application;
-		    import mx.rpc.events.ResultEvent;
-		    import mx.controls.Alert;
-		    import mx.rpc.events.FaultEvent;
-		    import mx.rpc.xml.SchemaTypeRegistry;
-		    import mx.controls.ButtonLabelPlacement;
-		    
-		    import mx.collections.ArrayCollection;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.model.IWidgetFramework;
+            import mx.rpc.soap.SOAPHeader;
+            import mx.controls.Image;
+            import mx.effects.Resize;
+            import mx.events.ResizeEvent;
+            import mx.events.StateChangeEvent;
+            import mx.events.EffectEvent;
+            import mx.effects.Fade;
+            import mx.containers.HBox;
+            import flash.net.URLLoader;
+            import flash.net.URLRequest;
+            import flash.events.Event;
+            import com.topcoder.flex.Helper;
+            import flash.utils.Timer;
+            import flash.events.TimerEvent;
+            import mx.events.SliderEvent;
+            import mx.core.Application;
+            import mx.rpc.events.ResultEvent;
+            import mx.controls.Alert;
+            import mx.rpc.events.FaultEvent;
+            import mx.rpc.xml.SchemaTypeRegistry;
+            import mx.controls.ButtonLabelPlacement;
 
-    		// BUGR-1141
-    		[Bindable]
-    		private var stepNumber:int = 1;
-			
-			// BUGR-1067
-			[Bindable]
-			private var totalStepsNumber:int;
-    		
-    		[Embed(source="../assets/done.png")] 
-    		private var doneImage:Class; 
-		
-		    private var username:String=Application.application.parameters.username;
-		    private var password:String = "";
-		    private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
-	   
-		    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
-	        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;   
-	     
- 
-	        [Bindable]
-	        private var isAdmin:Boolean;
-	        private var _tcDirectProjectId:String;
-	        
-		    // BUGR-1067
-	        private var isStudioContestType:Boolean = false;
-	        
-	        [Bindable]
-	        public function get studioContestType():Boolean {
-		       	return isStudioContestType; 	
-	        }
-	        
-	        public function set studioContestType(val:Boolean):void {
-	            trace("LAUNCH WIDGET:: Setting studio contest type: " + val);
-		       	isStudioContestType = val;
-		       	DETAILS_HEIGHT = (val ? 697 : 1350);	 	
-		       	REVIEW_HEIGHT = (val ? 1165 : 1350); // BUGR-1067
-		       	// BUGR-1067
-		       	stepNumber = 1;
-		       	setStep(step1box);
-		       	setStep(step2box);
-		       	setStep(step3box);
-		       	if(val) { 
-				 	setStep(step4box);
-				 }
-		       	setStep(step5box);
-		       	setStep(step6box);
-		       	setStep(step7box);
-		       	setStep(step8box);
-		       	totalStepsNumber = stepNumber - 1;
-		       	stepNumber = 1;
-		       	trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
-	        }
-	        
-	        /**
-	         * Represents the height of this widget on different states. BUGR-1134
-	         */
-	        private var INITIAL_WIDGET_HEIGHT:int = 460;
-	       	private var CONTEST_SELECTION_HEIGHT:int = 530;
-	       	private var OVERVIEW_HEIGHT:int = 770; // BUGR-1204 was 730
-	       	private var DETAILS_HEIGHT:int = 657;
-	       	private var SPECIFICATIONS_HEIGHT:int = 920; // BUGR-1362
-	       	private var ATTACH_FILES_HEIGHT:int = 660;
-	       	private var SCHEDULE_HEIGHT:int = 860;
-	       	private var REVIEW_HEIGHT:int = 1165;
-	       	private var ACTIVATE_HEIGHT:int = 930;
+            import mx.collections.ArrayCollection;
 
-		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+            // BUGR-1141
+            [Bindable]
+            private var stepNumber:int=1;
+
+            // BUGR-1067
+            [Bindable]
+            private var totalStepsNumber:int;
+
+            [Embed(source="../assets/done.png")]
+            private var doneImage:Class;
+
+            public var username:String=Application.application.parameters.username;
+            public var password:String="";
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+
+
+            [Bindable]
+            private var isAdmin:Boolean;
+            private var _tcDirectProjectId:String;
             
-        	public static function getHeader(username:String, password:String):SOAPHeader {
-    			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
-    			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-             			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
-    	            		<wsse:Username>{username}</wsse:Username>
-    	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
-             			</wsse:UsernameToken>
-          			</wsse:Security>;
-          		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
-          		return header;
-			}
-	       	
-	        public function set tcDirectProjectId(projectID:String):void
-	        {
-	        	_tcDirectProjectId=projectID;
-	        }
+            //
+            // Introduced to keep a map of step box to step number.
+            // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private var _stepBoxToStepNum:Dictionary=new Dictionary();
 
-        	public function closeWidget():void{
-        		resetWidget();
-        		container.startMinimize();
-        	}
-        
-        
-        public function get tcDirectProjectId():String
-        {
-        	return _tcDirectProjectId;
-        }
-	    private function initWidget():void{
-			this.currentState = "ContestSelectionState";
-			
-			trace("LAUNCH WIDGET::Setting studio contest type");
-			this.studioContestType = true;
-		    getDataService();
-        }
+            // BUGR-1067
+            private var isStudioContestType:Boolean=false;
 
-	    private function getDataService():void
-	    {	
-		    dataservice.getPassword();
-		    //dataservice.isUserInRole.send();
-        }
+            [Bindable]
+            public function get studioContestType():Boolean {
+                return isStudioContestType;
+            }
 
-	    private function processPassword(e:ResultEvent): void
-	    {
-		//Alert.show("--------"+e.result.toString());
-		if(e!=null && e.result!=null){
-			password = e.result.toString();
-			
-		}
+            public function set studioContestType(val:Boolean):void {
+                trace("LAUNCH WIDGET:: Setting studio contest type: " + val);
+                isStudioContestType=val;
+                DETAILS_HEIGHT=(val ? 697 : 1850);
+                REVIEW_HEIGHT=(val ? 1165 : 1350); // BUGR-1067
+                // BUGR-1067
+                stepNumber=1;
+                setStep(step1box);
+                setStep(step2box);
+                setStep(step3box);
+                if (val) {
+                    setStep(step4box);
+                }
+                setStep(step5box);
+                setStep(step6box);
+                setStep(step7box);
+                setStep(step8box);
+                totalStepsNumber=stepNumber - 1;
+                stepNumber=1;
+                trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
+            }
 
-		//Alert.show("========" + password);
-		initComponent();
+            /**
+             * Represents the height of this widget on different states. BUGR-1134
+             */
+            private var INITIAL_WIDGET_HEIGHT:int=460;
+            private var CONTEST_SELECTION_HEIGHT:int=530;
+            private var OVERVIEW_HEIGHT:int=770; // BUGR-1204 was 730
+            private var DETAILS_HEIGHT:int=657;
+            private var SPECIFICATIONS_HEIGHT:int=920; // BUGR-1362
+            private var ATTACH_FILES_HEIGHT:int=660;
+            private var SCHEDULE_HEIGHT:int=860;
+            private var REVIEW_HEIGHT:int=1165;
+            private var ACTIVATE_HEIGHT:int=930;
 
-	    }
-	    
-	    
+            private static const WSSE_SECURITY:QName=new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security");
 
-	    /*private function processRole(e:ResultEvent): void
-	    {
-			//Alert.show("--------"+e.result.toString());
-			if(e!=null && e.result!=null){
-				isAdmin=e.result as Boolean;
-				activate.wf1.byPass.enabled=isAdmin;
-			}
-	    }*/
-            
-            
-            
+            public function getHeader(username:String, password:String):SOAPHeader {
+               var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+               var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+               <wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+               <wsse:Username>{username}</wsse:Username>
+               <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+               </wsse:UsernameToken>
+               </wsse:Security>;
+               
+               var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+               return header;
+             }
+
+            public function set tcDirectProjectId(projectID:String):void {
+                _tcDirectProjectId=projectID;
+            }
+
+            public function closeWidget():void {
+                resetWidget();
+                container.startMinimize();
+            }
+
+
+            public function get tcDirectProjectId():String {
+                return _tcDirectProjectId;
+            }
+
+            private function initWidget():void {
+                this.currentState="ContestSelectionState";
+
+                trace("LAUNCH WIDGET::Setting studio contest type");
+                this.studioContestType=true;
+                getDataService();
+            }
+
+            private function getDataService():void {
+                dataservice.getPassword();
+            }
+
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    password=e.result.toString();
+
+                }
+
+                initComponent();
+            }
+
             public function initComponent():void {
-            	// modified lines below for BUGR-1134
-                this.height = 580;
-                mainPanel.horizontalScrollPolicy = "false";
-                
-                back.visible = false;
+                // modified lines below for BUGR-1134
+                this.height=580;
+                mainPanel.horizontalScrollPolicy="false";
+
+                back.visible=false;
                 //read hints.xml data
                 getData(null);
 
-				
-		details.widgetHeight = 940; // BUGR-1134
-                specf.widgetHeight = 800;
-                attch.height = 600;
-		sched.height = 750; 
-		overView.height = 645; // BUGR-1134
-		review.height = 1100; // BUGR-1134
-				
-		//initialWdt.mainWidget = this;
-		contestSelect.mainWidget = this;
-		overView.mainWidget = this;
-		details.mainWidget = this;
-                specf.mainWidget = this;
-                attch.mainWidget = this;
-                sched.mainWidget = this;
-    		review.mainWidget = this;
-  		activate.mainWidget = this;
+                details.widgetHeight=940; // BUGR-1134
+                specf.widgetHeight=800;
+                attch.height=600;
+                sched.height=750;
+                overView.height=645; // BUGR-1134
+                review.height=1100; // BUGR-1134
+                contestSelect.mainWidget=this;
+                overView.mainWidget=this;
+                details.mainWidget=this;
+                specf.mainWidget=this;
+                attch.mainWidget=this;
+                sched.mainWidget=this;
+                review.mainWidget=this;
+                activate.mainWidget=this;
 
                 // initialize web-services
                 initWebServices();
@@ -204,198 +211,152 @@
 		  //initialWdt.init();
 		  contestSelect.init();
 
-				 // BUGR-1141
-				 setCurStep(step1box);
-				 setNextStep(step2box);
-				 setNextStep(step3box);
-				 setNextStep(step4box);
-				 setNextStep(step5box);
-				 setNextStep(step6box);
-				 setNextStep(step7box);
-				 setNextStep(step8box);
-				 stepNumber = 1;
-				 onCreateComplete(2)
-		
+                // BUGR-1141
+                setCurStep(step1box);
+                setNextStep(step2box);
+                setNextStep(step3box);
+                setNextStep(step4box);
+                setNextStep(step5box);
+                setNextStep(step6box);
+                setNextStep(step7box);
+                setNextStep(step8box);
+                stepNumber=1;
+                onCreateComplete(2)
+
             }
             
             private function initWebServices():void {
                 var header:SOAPHeader=getHeader(username,password);
                 
                 // initialize contest service facade ws.
-			    ContestServiceFacadeBean.clearHeaders();
-			    ContestServiceFacadeBean.addHeader(header);
-			    this._csws = ContestServiceFacadeBean;
-			    
-			    // initialize project service facade ws.
-			    ProjectServiceFacadeBean.clearHeaders();
-			    ProjectServiceFacadeBean.addHeader(header);
-			    this._pws = ProjectServiceFacadeBean;
+                ContestServiceFacadeBean.clearHeaders();
+                ContestServiceFacadeBean.addHeader(header);
+                this._csws=ContestServiceFacadeBean;
+
+                // initialize project service facade ws.
+                ProjectServiceFacadeBean.clearHeaders();
+                ProjectServiceFacadeBean.addHeader(header);
+                this._pws=ProjectServiceFacadeBean;
             }
             
             private var flag:int=0;
-            public function onCreateComplete(f:int):void
-            {
-            	flag=flag+f;
-            	if(flag>=3 && competition && competition.competitionId>0)
-            	{
-            		flag=4;
-            		//var type:CompetionType = new CompetionType();
-        			var competitionType:String = "STUDIO";
-        			competition.type = competitionType;
-            		startLaunchProcess();
-            		next();
-            	}
+
+            public function onCreateComplete(f:int):void {
+                flag=flag + f;
+                if (flag >= 3 && competition && competition.competitionId > 0) {
+                    flag=4;
+                    var competitionType:String="STUDIO";
+                    competition.type=competitionType;
+                    startLaunchProcess();
+                    next();
+                }
             }
             
             
             //after loading the xml file, fetch data
             private function getData(event:Event):void {
-//                var loader:URLLoader = event.target as URLLoader;
-                configurableText = <launch_contest>
-  <steps>
-    <details>
-      <fields>
-        <field name="Title">
-            <hint>The title you choose is what competitors will see in the active contests list, so be as detailed as possible. Also, listing the entire prize purse in the title helps draw attention to your contest. For example, "$750 Furniture Wholesale Company Logo Design" works better than simply "New Logo".</hint>
-        </field>
-        <field name="Introduction">
-            <hint>This short paragraph will serve as the summary at the top of your contest description page. No need to get into full details here; just give an attention-grabbing brief description of the project so members can quickly determine if they are interested.</hint>
-        </field>
-        <field name="Primary Goal">
-            <hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
+                //                var loader:URLLoader = event.target as URLLoader;
+                configurableText=<launch_contest><steps><details><fields><field name="Title"><hint>The title you choose is what competitors will see in the active contests list, so be as detailed as possible. Also, listing the entire prize purse in the title helps draw attention to your contest. For example, "$750 Furniture Wholesale Company Logo Design" works better than simply "New Logo".</hint></field><field name="Introduction"><hint>This short paragraph will serve as the summary at the top of your contest description page. No need to get into full details here; just give an attention-grabbing brief description of the project so members can quickly determine if they are interested.</hint></field><field name="Primary Goal"><hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
 
-<b>What are the Primary Goals for This Contest?</b>
-The more information you can provide about your decision to get this design produced, the better.
+                                            <b>What are the Primary Goals for This Contest?</b>
+                                            The more information you can provide about your decision to get this design produced, the better.
 
-<b>Who is Your Target Audience?</b>
-Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
+                                            <b>Who is Your Target Audience?</b>
+                                            Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50 s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
 
-<b>Does This Project Have Any Branding Guidelines?</b>
-You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements. 
+                                            <b>Does This Project Have Any Branding Guidelines?</b>
+                                            You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements.
 
-<b>Are There Designs, Websites, etc. that You Like or Dislike? Why?</b>
-You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements. 
+                                            <b>Are There Designs, Websites, etc. that You Like or Dislike? Why?</b>
+                                            You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements.
 
-<b>What Criteria Must the Designers Meet to Win This Contest?</b>
-Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology. 
-	</hint>
-        </field>
-        <field name="Target Audience">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
-        </field>
-        <field name="Brand Guidelines">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
-        </field>
-        <field name="Like and Dislikes">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
-        </field>
-        <field name="Criteria">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
-        </field>
-        <field name="Colors">
-            <hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you dont have specific branding colors you need to stick to, feel free to give general directions such as, "Please use blue and orange." Or "Please do not use yellow."</hint>
-        </field>
-        <field name="Fonts">
-            <hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, "Do not use script fonts or anything that looks too feminine." Or "We need a cartoonish font that is kid-friendly."</hint>
-        </field>
-        <field name="Size">
-            <hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: "The web banner must be exactly 300 pixels wide by 90 pixels tall." Or "The logo must be wider than it is tall. Tall logos wont fit in our websites masthead."</hint>
-        </field>
-        <field name="Additional Requirements or Restrictions">
-            <hint>List any other instructions here that dont fit in the boxes above. Example: "All text must be surrounded by at least 200 pixels of white space."</hint>
-        </field>
-        <field name="File Description">
-            <hint>Please provide a short description such as "Our company logo" or "PSD files of our current web site."</hint>
-        </field>
-      </fields>
-      <hints>
-        <hint field="Introduction"></hint>
-        <hint field="Primary Goals"></hint>
-        <hint field="Introduction"></hint>
-        <hint field="Introduction"></hint>
-        <hint field="Introduction"></hint>
-        <hint field="Introduction"></hint>
-      </hints>
-    </details>
-  </steps>
-</launch_contest>;
-                details.titleHint = configurableText.steps.details.fields.field.(@name == "Title").hint;
-                details.introductionHint = configurableText.steps.details.fields.field.(@name == "Introduction").hint;
-                details.primaryGoalHint = configurableText.steps.details.fields.field.(@name == "Primary Goal").hint;
-                details.targetAudienceHint = configurableText.steps.details.fields.field.(@name == "Target Audience").hint;
-                details.brandGuidelinesHint = configurableText.steps.details.fields.field.(@name == "Brand Guidelines").hint;
-                details.likeAndDislikesHint = configurableText.steps.details.fields.field.(@name == "Like and Dislikes").hint;
-                details.criteriaHint = configurableText.steps.details.fields.field.(@name == "Criteria").hint;
-                specf.ColorsHint = configurableText.steps.details.fields.field.(@name == "Colors").hint;
-                specf.FontsHint = configurableText.steps.details.fields.field.(@name == "Fonts").hint;
-                specf.SizeHint = configurableText.steps.details.fields.field.(@name == "Size").hint;
-                specf.AdditionalHint = configurableText.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
-                attch.FileDescHint = configurableText.steps.details.fields.field.(@name == "File Description").hint;
+                                            <b>What Criteria Must the Designers Meet to Win This Contest?</b>
+                                            Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology.</hint></field><field name="Target Audience"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Brand Guidelines"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Like and Dislikes"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Criteria"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Colors"><hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you dont have specific branding colors you need to stick to, feel free to give general directions such as, "Please use blue and orange." Or "Please do not use yellow."</hint></field><field name="Fonts"><hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, "Do not use script fonts or anything that looks too feminine." Or "We need a cartoonish font that is kid-friendly."</hint></field><field name="Size"><hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: "The web banner must be exactly 300 pixels wide by 90 pixels tall." Or "The logo must be wider than it is tall. Tall logos wont fit in our websites masthead."</hint></field><field name="Additional Requirements or Restrictions"><hint>List any other instructions here that dont fit in the boxes above. Example: "All text must be surrounded by at least 200 pixels of white space."</hint></field><field name="File Description"><hint>Please provide a short description such as "Our company logo" or "PSD files of our current web site."</hint></field></fields><hints><hint field="Introduction"></hint><hint field="Primary Goals"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint></hints></details></steps></launch_contest>;
+                details.titleHint=configurableText.steps.details.fields.field.(@name == "Title").hint;
+                details.introductionHint=configurableText.steps.details.fields.field.(@name == "Introduction").hint;
+                details.primaryGoalHint=configurableText.steps.details.fields.field.(@name == "Primary Goal").hint;
+                details.targetAudienceHint=configurableText.steps.details.fields.field.(@name == "Target Audience").hint;
+                details.brandGuidelinesHint=configurableText.steps.details.fields.field.(@name == "Brand Guidelines").hint;
+                details.likeAndDislikesHint=configurableText.steps.details.fields.field.(@name == "Like and Dislikes").hint;
+                details.criteriaHint=configurableText.steps.details.fields.field.(@name == "Criteria").hint;
+                specf.ColorsHint=configurableText.steps.details.fields.field.(@name == "Colors").hint;
+                specf.FontsHint=configurableText.steps.details.fields.field.(@name == "Fonts").hint;
+                specf.SizeHint=configurableText.steps.details.fields.field.(@name == "Size").hint;
+                specf.AdditionalHint=configurableText.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
+                attch.FileDescHint=configurableText.steps.details.fields.field.(@name == "File Description").hint;
             }
-            
-			public function openOverViewPage():void {
-				   this.currentState = "OverViewState";
-					save.visible = true;
-					this.height = OVERVIEW_HEIGHT;  // BUGR-1134
-					back.visible = true;
-                   
-					setPreviousStep(step1box); // BUGR-1141
-					setCurStep(step2box);// BUGR-1141
-			}
+
+            public function openOverViewPage():void {
+                this.currentState="OverViewState";
+                save.visible=true;
+                this.height=OVERVIEW_HEIGHT; // BUGR-1134
+                back.visible=true;
+
+                setPreviousStep(step1box); // BUGR-1141
+                setCurStep(step2box); // BUGR-1141
+            }
 
             // BUGR-1445
             private function validateAndSaveAsDraft():void {
-        		if(this.currentState == "DetailsState") {
-            		if(!details.validateFields()) return;
-            	} else if(this.currentState == "SpecificationsState") {
-            		if(!specf.validateFields()) return;
-            	} else if (this.currentState == "ScheduleState") {
-        			if(!sched.validateFields()) return;
-        		} 
-	         	saveAsDraft();
+                if (this.currentState == "DetailsState") {
+                    if (!details.validateFields())
+                        return;
+                } else if (this.currentState == "SpecificationsState") {
+                    if (!specf.validateFields())
+                        return;
+                } else if (this.currentState == "ScheduleState") {
+                    if (!sched.validateFields())
+                        return;
+                }
+                saveAsDraft();
             }
 
-private var stateToStepNum:Dictionary = null;
-			private var stepBoxes:ArrayCollection = null;
-			
-			private function skipTo(step:int):void {
-			    
-			    if (!stateToStepNum) {
-			        stateToStepNum = new Dictionary();
-			        stateToStepNum["ContestSelectionState"] = 1;
-			        stateToStepNum["OverViewState"] = 2;
-			        stateToStepNum["DetailsState"] = 3;
-			        stateToStepNum["SpecificationsState"] = 4;
-			        stateToStepNum["AttachFilesState"] = 5;
-			        stateToStepNum["ScheduleState"] = 6;
-			        stateToStepNum["ReviewState"] = 7;
-			        stateToStepNum["ActivateState"] = 8;
-			    }
-			    
-			    if (!stepBoxes) {
-			        stepBoxes = new ArrayCollection();
-			        stepBoxes.addItem(step1box);
-			        stepBoxes.addItem(step2box);
-			        stepBoxes.addItem(step3box);
-			        stepBoxes.addItem(step4box);
-			        stepBoxes.addItem(step5box);
-			        stepBoxes.addItem(step6box);
-			        stepBoxes.addItem(step7box);
-			        stepBoxes.addItem(step8box);
-			    }
-			    
-			    var currentStep:int = stateToStepNum[this.currentState];
-			    var currentStepBox:Box = stepBoxes.getItemAt(currentStep - 1) as Box;
-			    var newStepBox:Box = stepBoxes.getItemAt(step - 1) as Box;
-			    
-			    // if we are on same state then do nothing.
-			    if (step == currentStep) {
-			        return;
-			    }
-			    
-			    // validate that first step is filled.
-			    if (step > 1) {
-			        if ((contestSelect.selectContests.selectedItem == null || contestSelect.selectContests.selectedItem.data ==-1) && contestSelect.prjInput.text == ""){
+            private var stateToStepNum:Dictionary=null;
+            private var stepBoxes:ArrayCollection=null;
+
+            //
+            // Updated to remove step number calculation.
+            // and moved assignment to review page in individual widgets.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function skipTo(step:int):void {
+
+                if (!stateToStepNum) {
+                    stateToStepNum=new Dictionary();
+                    stateToStepNum["ContestSelectionState"]=1;
+                    stateToStepNum["OverViewState"]=2;
+                    stateToStepNum["DetailsState"]=3;
+                    stateToStepNum["SpecificationsState"]=4;
+                    stateToStepNum["AttachFilesState"]=5;
+                    stateToStepNum["ScheduleState"]=6;
+                    stateToStepNum["ReviewState"]=7;
+                    stateToStepNum["ActivateState"]=8;
+                }
+
+                if (!stepBoxes) {
+                    stepBoxes=new ArrayCollection();
+                    stepBoxes.addItem(step1box);
+                    stepBoxes.addItem(step2box);
+                    stepBoxes.addItem(step3box);
+                    stepBoxes.addItem(step4box);
+                    stepBoxes.addItem(step5box);
+                    stepBoxes.addItem(step6box);
+                    stepBoxes.addItem(step7box);
+                    stepBoxes.addItem(step8box);
+                }
+
+                var currentStep:int=stateToStepNum[this.currentState];
+                var currentStepBox:Box=stepBoxes.getItemAt(currentStep - 1) as Box;
+                var newStepBox:Box=stepBoxes.getItemAt(step - 1) as Box;
+
+                // if we are on same state then do nothing.
+                if (step == currentStep) {
+                    return;
+                }
+
+                // validate that first step is filled.
+                if (step > 1) {
+                    if ((contestSelect.selectContests.selectedItem == null || contestSelect.selectContests.selectedItem.data == -1) && contestSelect.prjInput.text == "") {
                         Helper.showAlertMessage("New Project or Existing Project must have a value.");
                         return;
                     }
@@ -404,76 +365,70 @@ private var stateToStepNum:Dictionary = null;
                         Helper.showAlertMessage("Please select a contest type!");
                         return;
                     }
-                   //Currently only implement Studio constest type
-                   if (contestSelect.contestType.selectedValue != "STUDIO"){
-                       return;
-                   }
-			    }
-			    
-			    // validate that 2nd step is also filled.
-			    if (step > 2) {
-			        //validate input at overview page.
-					if (overView.validateFields() == false){
-						return;
-					}
-			    }
-			    
-			    var isCurrentStepComplete:Boolean = true;
-			    if (currentStep == 3) {
-			        isCurrentStepComplete = details.validateFieldsEx2(false,false);
-			    } else if (currentStep == 4) {
-			        isCurrentStepComplete = specf.validateFieldsEx2(false,false);
-			    } else if (currentStep == 5) {
-			        isCurrentStepComplete = true;
-			    } else if (currentStep == 6) {
-			        isCurrentStepComplete = sched.validateFieldsEx2(false,false);
-			    } else if (currentStep == 7 || currentStep == 8) {
-			        // if we are going back from review or activate page, then don't mark these complete.
-			        if (step < currentStep) {
-			            isCurrentStepComplete = false;
-			        }
-			    }
-			    
-			    if (step >= 8) {
-                   //validate input at details page (3)
-                   if (details.validateFieldsEx2(true,true) == false){
-                   		return;
-                   }
-                   
-                   //validate input at specification page. (4)
-                   if (specf.validateFieldsEx2(true,true) == false){
-                   		return;
-                   }
-                   
-                   //validate input at schedule page. (6)
-				   if (sched.validateFieldsEx2(true,true) == false){
-				        return;
-				   }	
-			    }
-			    
-			    switch (step) {
-			        case 1:
-			            
-			           this.currentState = "ContestSelectionState";
-                       this.height = CONTEST_SELECTION_HEIGHT;
-                       back.visible = false;
-         
-                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
-                       setCurStep(newStepBox);
-                       
-			            break;
-			        case 2:
-			            
-			            var ret:int = contestSelect.goToOverView();
-			            if (ret == 0) {
-    			            this.currentState = "OverViewState";
-                            save.visible = false;
-                            this.height = OVERVIEW_HEIGHT;
-                            back.visible = true;
-                               
-                            review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
-                            
-                            setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                }
+
+                // validate that 2nd step is also filled.
+                if (step > 2) {
+                    //validate input at overview page.
+                    if (overView.validateFields() == false) {
+                        return;
+                    }
+                }
+
+                var isCurrentStepComplete:Boolean=true;
+                if (currentStep == 3) {
+                    isCurrentStepComplete=details.validateFieldsEx2(false, false);
+                } else if (currentStep == 4) {
+                    isCurrentStepComplete=specf.validateFieldsEx2(false, false);
+                } else if (currentStep == 5) {
+                    isCurrentStepComplete=true;
+                } else if (currentStep == 6) {
+                    isCurrentStepComplete=sched.validateFieldsEx2(false, false);
+                } else if (currentStep == 7 || currentStep == 8) {
+                    // if we are going back from review or activate page, then don't mark these complete.
+                    if (step < currentStep) {
+                        isCurrentStepComplete=false;
+                    }
+                }
+
+                if (step >= 8) {
+                    //validate input at details page (3)
+                    if (details.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at specification page. (4)
+                    if (specf.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at schedule page. (6)
+                    if (sched.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+                }
+
+                switch (step) {
+                    case 1:
+
+                        this.currentState="ContestSelectionState";
+                        this.height=CONTEST_SELECTION_HEIGHT;
+                        back.visible=false;
+
+                        setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
+                        setCurStep(newStepBox);
+
+                        break;
+                    case 2:
+
+                        var ret:int=contestSelect.goToOverView();
+                        if (ret == 0) {
+                            this.currentState="OverViewState";
+                            save.visible=false;
+                            this.height=OVERVIEW_HEIGHT;
+                            back.visible=true;
+
+                            setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
                             setCurStep(newStepBox);
                                
                             result.type = contestSelect.contestType.selectedValue;
@@ -578,9 +533,13 @@ private var stateToStepNum:Dictionary = null;
 			    }
 			}
 
-            
-            public function next(event:EffectEvent = null):void {
-                if (this.currentState == "ContestSelectionState"){
+            //
+            // Updated to remove step number calculation.
+            // and moved assignment to review page in individual widgets.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            public function next(event:EffectEvent=null):void {
+                if (this.currentState == "ContestSelectionState") {
                     if (contestSelect.contestType.selectedValue == null) {
                         Helper.showAlertMessage("Please select a contest type!");
                         return;
@@ -608,190 +567,110 @@ private var stateToStepNum:Dictionary = null;
 						return;
 					}
 
-                   this.currentState = "DetailsState";
-                   save.visible = true; // BUGR-1445
-                   // BUGR-1067
-                   if(studioContestType) {
-                   review.cstTypeStep2 = overView.studioType.selection.label;
-                   review.firstPrize = overView.firstPlace.text;
-                   review.secondPrize = overView.secondPlace.text;
-                   review.thirdPrize = overView.thirdPlace.text;
-                   review.fourthPrize = overView.fourthPlace.text;
-                   review.fifthPrize = overView.fifthPlace.text;
-                   review.adminFee = overView.adminf.text;
-                   review.contestTotal = overView.cntstTtl.text;
-                   } else {
-                   		review.ns_firstPrizeS = overView.ns_firstPlace.text;
-                   		review.ns_secondPrizeS = overView.ns_secondPlace.text;
-                   		review.ns_reviewCostS = overView.ns_reviewCost.text;
-                   		review.ns_digitalRunS = overView.ns_dr.text;
-                   		review.ns_contestFeeS = overView.ns_contestf.text;
-                   		review.ns_contestTotalS = overView.ns_cntstTtl.text;
-                   }
-                   this.height = DETAILS_HEIGHT;  // BUGR-1134
+                    this.currentState="DetailsState";
+                    save.visible=true; // BUGR-1445
+                    this.height=DETAILS_HEIGHT; // BUGR-1134
                     setPreviousStep(step2box);
-                   setCurStep(step3box);
-                    //bottemline.height=mainPanel.height-530;
-                }
-                else if(this.currentState == "DetailsState"){
-                   //validate input
-                   if (details.validateFields() == false){
-                   		return;
-                   }
-				   // BUGR-1067
-                   if(studioContestType) {
-						review.contentTitleStr = details.ctInput.text;
-	                   review.IntroductionStr = details.introInput.text;
-						review.glsInputStr = details.glsInput.text;
-                   } else {
-                   		review.ns_componentNameS = details.ns_ctInput.text;
-                   		review.ns_shortDescS = details.ns_shortDesc.text;
-                   		review.ns_funcDescS = details.ns_funcDesc.text;
-                   		review.ns_detailedDescS = details.ns_detailedDesc.text;
-                   		review.ns_commentsS = details.ns_comments.text;
-                   		review.ns_techListS = details.ns_curTechList.dataProvider as ArrayCollection;
-	               }
-				   
-                   // BUGR-1067
-                   if(!studioContestType) {
-                   		this.currentState = "AttachFilesState";
-                   		this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
-                   		setPreviousStep(step3box);
-                   		setCurStep(step4box);
-                   		stepNumber--;
-                    	setPreviousStep(step4box);
-                   		setCurStep(step5box);
-                   		return;
-                   }
-				   
-                   specf.requestFileTypes.send();
-                   this.currentState = "SpecificationsState";
-                   save.visible = true; // BUGR-1445
-                   this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
-                   
-                   review.contentTitleStr = details.ctInput.text; // BUGR-1379
-                   review.IntroductionStr = competition.contestData.shortSummary; // BUGR-1279
-		   review.glsInputStr = competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
+                    setCurStep(step3box);
+                } else if (this.currentState == "DetailsState") {
+                    //validate input
+                    if (details.validateFields() == false) {
+                        return;
+                    }
 
-                  setPreviousStep(step3box);
-                   setCurStep(step4box);
-                    //bottemline.height=mainPanel.height-1000;
-                }
-                else if(this.currentState == "SpecificationsState"){
-                   //validate input
-                   if (specf.validateFields() == false){
-                   		return;
-                   }
-                   
-                   this.currentState = "AttachFilesState";
-                   save.visible = true; // BUGR-1445
-                   
-                   review.colorInputStr = specf.colorInput.text;
-                   review.fontInputStr = specf.fontInput.text;
-                   review.sizeInputStr = specf.sizeInput.text;
-                   review.addReInputStr = specf.addReInput.text;
-				 /* since BUGR-1039 
-					var fm:String = "";
-				   if (specf.psdChb.selected){
-                      fm = specf.psdChb.label;
-                   }
-                   if (specf.aiChb.selected){
-                       if (fm == "")
-                           fm = specf.aiChb.label;
-                       else
-                           fm += ", "+specf.aiChb.label;
-                   }
-                   if (specf.epsChb.selected){
-                       if (fm == "")
-                           fm = specf.epsChb.label;
-                       else
-                           fm  += ", "+specf.epsChb.label;
-                   }
-                   
-                   if (specf.fileFormatInput.text != "")
-                       review.fileFormatInputStr = fm+", "+specf.fileFormatInput.text;
-				  */
-                   review.fileFormatInputStr = competition.contestData.finalFileFormat;
-                   this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
+                    // BUGR-1067
+                    if (!studioContestType) {
+                        this.currentState="AttachFilesState";
+                        this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
+                        setPreviousStep(step3box);
+                        setCurStep(step4box);
+                        setPreviousStep(step4box);
+                        setCurStep(step5box);
+                        return;
+                    }
+
+                    specf.requestFileTypes.send();
+                    this.currentState="SpecificationsState";
+                    save.visible=true; // BUGR-1445
+                    this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
+                    review.contentTitleStr=details.ctInput.text; // BUGR-1379
+                    review.IntroductionStr=competition.contestData.shortSummary; // BUGR-1279
+                    review.glsInputStr=competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
+                    setPreviousStep(step3box);
+                    setCurStep(step4box);
+                } else if (this.currentState == "SpecificationsState") {
+                    //validate input
+                    if (specf.validateFields() == false) {
+                        return;
+                    }
+
+                    this.currentState="AttachFilesState";
+                    save.visible=true; // BUGR-1445
+                    
+                    this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                     setPreviousStep(step4box);
-                   setCurStep(step5box);
-                    //bottemline.height=mainPanel.height-400;
-                }
-                else if(this.currentState == "AttachFilesState"){
-                   //validate input
-				  sched.curContestType = Number(overView.studioType.selectedValue);
-                   sched.requestSchedule.send();
+                    setCurStep(step5box);
+                } else if (this.currentState == "AttachFilesState") {
+                    //validate input
+                    sched.curContestType=Number(overView.studioType.selectedValue);
+                    sched.requestSchedule.send();
 
-                   this.currentState = "ScheduleState";
-                   save.visible = true; // BUGR-1445
-                   
-                   this.height = SCHEDULE_HEIGHT;  // BUGR-1134
-                     setPreviousStep(step5box);
-                   setCurStep(step6box);
-                   //bottemline.height=mainPanel.height-800;
-                }
-                else if(this.currentState == "ScheduleState"){
-					if (sched.validateFields() == false){
-						return;
-					}	
-					
-                   this.currentState = "ReviewState";
-                   save.visible = true;
+                    this.currentState="ScheduleState";
+                    save.visible=true; // BUGR-1445
+                    this.height=SCHEDULE_HEIGHT; // BUGR-1134
+                    setPreviousStep(step5box);
+                    setCurStep(step6box);
+                } else if (this.currentState == "ScheduleState") {
+                    if (sched.validateFields() == false) {
+                        return;
+                    }
 
-                   review.fromDate = sched.dfStart.selectedDate;
-                   review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+sched.timezoneStart.text;
-                   review.toDate = sched.dfEnd.selectedDate;
-                   review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+sched.timezoneEnd.text;
+                    this.currentState="ReviewState";
+                    save.visible=true;
 
-                   review.setAllValues();
-
-                   this.height = REVIEW_HEIGHT;  // BUGR-1134
-                      setPreviousStep(step6box);
-                   setCurStep(step7box);
-                    //bottemline.height=mainPanel.height-1700;
+                    this.height=REVIEW_HEIGHT; // BUGR-1134
+                    setPreviousStep(step6box);
+                    setCurStep(step7box);
                 } else if (this.currentState == "ReviewState") {
                     // BUGR-1475
                     //validate input at details page (3)
-                   if (details.validateFieldsEx2(true,true) == false){
-                   		return;
-                   }
-                   
-                   //validate input at specification page. (4)
-                   if (specf.validateFieldsEx2(true,true) == false){
-                   		return;
-                   }
-                   
-                   //validate input at schedule page. (6)
-				   if (sched.validateFieldsEx2(true,true) == false){
-				        return;
-				   }	
-    				   
-                    this.currentState = "ActivateState";
-                    save.visible = false;
-                    this.height = ACTIVATE_HEIGHT;
-                     setPreviousStep(step7box);
+                    if (details.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at specification page. (4)
+                    if (specf.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at schedule page. (6)
+                    if (sched.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    this.currentState="ActivateState";
+                    save.visible=false;
+                    this.height=ACTIVATE_HEIGHT;
+                    setPreviousStep(step7box);
                     setCurStep(step8box);
                     setButton(1);
-                     //bottemline.height=mainPanel.height-800;
 
-                    activate.contentTitleStr = review.contentTitleStr;
-                    activate.contestTotal = review.adminFee;
-                    
+                    activate.contentTitleStr=review.contentTitleStr;
+                    activate.contestTotal=review.adminFee;
+
                     activate.initData();
                 } else if (this.currentState == "ActivateState") {
-                    save.visible = false;
-                    var index:int = activate.goToNext();
+                    save.visible=false;
+                    var index:int=activate.goToNext();
                     setButton(index);
                 }
-                
             }
 
-	     private function handleFault(event:FaultEvent):void
-		{
-			Helper.showAlertMessage(event.fault.faultDetail);
-		}
-        
-            
+            private function handleFault(event:FaultEvent):void {
+                Helper.showAlertMessage(event.fault.faultDetail);
+            }
+
+
             private function setButton(index:int):void {
                 switch (index) {
                     case 1:
@@ -810,14 +689,8 @@ private var stateToStepNum:Dictionary = null;
                         back.visible = true;
                         break;
                     case 4:
-                        //goNext.visible = false;
-                        //back.visible = false;
                         break;
                     case 5:
-                        //goNext.visible = false;
-                        //back.visible = false;
-
-                        //submitPurchase();
                         break;
                     default:
                         goNext.label = "continue >>";
@@ -825,7 +698,12 @@ private var stateToStepNum:Dictionary = null;
                         back.visible = true;
                 }       
             }
-            
+
+            //
+            // Updated to remove step number calculation.
+            // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
             private function previous():void {
                 if (this.currentState == "ActivateState") {
                     var index:int = activate.gotoPrev();
@@ -838,66 +716,50 @@ private var stateToStepNum:Dictionary = null;
                        setCurStep(step7box);
                        setNextStep(step8box); // BUGR-1141
                     }
-                } else if (this.currentState == "ReviewState"){
-                   this.currentState = "ScheduleState";
-                   this.height = SCHEDULE_HEIGHT;  // BUGR-1134
+                } else if (this.currentState == "ReviewState") {
+                    this.currentState="ScheduleState";
+                    this.height=SCHEDULE_HEIGHT; // BUGR-1134
+                    setCurStep(step6box);
+                    setNextStep(step7box); // BUGR-1141
+                } else if (this.currentState == "ScheduleState") {
+                    this.currentState="AttachFilesState";
+                    this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
+                    setCurStep(step5box);
+                    setNextStep(step6box); // BUGR-1141
+                } else if (this.currentState == "AttachFilesState") {
+                    // BUGR-1067
+                    if (!studioContestType) {
+                        this.currentState="DetailsState";
+                        this.height=DETAILS_HEIGHT; // BUGR-1134
+                        setCurStep(step4box);
+                        setNextStep(step5box);
+                        setCurStep(step3box);
+                        setNextStep(step4box);
+                        return;
+                    }
 
-                   setCurStep(step6box);
-                   setNextStep(step7box); // BUGR-1141
-                   //step7Text.setStyle("color", "#a8a8a8");
-                }
-                else if(this.currentState == "ScheduleState"){
-                   this.currentState = "AttachFilesState";
-                   this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
+                    this.currentState="SpecificationsState";
+                    this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
+                    setCurStep(step4box);
+                    setNextStep(step5box); // BUGR-1141
+                } else if (this.currentState == "SpecificationsState") {
+                    this.currentState="DetailsState";
+                    this.height=DETAILS_HEIGHT; // BUGR-1134
+                    setCurStep(step3box);
+                    setNextStep(step4box); // BUGR-1141
+                } else if (this.currentState == "DetailsState") {
+                    save.visible=true; // BUGR-1445
+                    this.currentState="OverViewState";
+                    this.height=OVERVIEW_HEIGHT; // BUGR-1134
+                    setCurStep(step2box);
+                    setNextStep(step3box); // BUGR-1141
+                } else if (this.currentState == "OverViewState") {
+                    this.currentState="ContestSelectionState";
+                    this.height=CONTEST_SELECTION_HEIGHT; // BUGR-1134
+                    back.visible=false;
 
-                   setCurStep(step5box);
-                   setNextStep(step6box); // BUGR-1141
-                   //step6Text.setStyle("color", "#a8a8a8");
-                }
-                else if(this.currentState == "AttachFilesState"){
-                	// BUGR-1067
-                   if(!studioContestType) {
-                   		this.currentState = "DetailsState";
-                   		this.height = DETAILS_HEIGHT;  // BUGR-1134
-                   		setCurStep(step4box);
-                   		setNextStep(step5box);
-                   		stepNumber++;
-                    	setCurStep(step3box);
-                  		setNextStep(step4box);
-                   		return;
-                   }
-				
-                   this.currentState = "SpecificationsState";
-                   this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
-
-                   setCurStep(step4box);
-                   setNextStep(step5box); // BUGR-1141
-                   //step5Text.setStyle("color", "#a8a8a8");
-                }
-                else if(this.currentState == "SpecificationsState"){
-                   this.currentState = "DetailsState";
-                   this.height = DETAILS_HEIGHT;  // BUGR-1134
-	    
-                  setCurStep(step3box);
-                  setNextStep(step4box); // BUGR-1141
-                  // step4Text.setStyle("color", "#a8a8a8");
-                }
-                else if(this.currentState == "DetailsState"){
-                	save.visible = true; // BUGR-1445
-                   this.currentState = "OverViewState";
-                   this.height = OVERVIEW_HEIGHT; // BUGR-1134
-                  setCurStep(step2box);
-                   setNextStep(step3box); // BUGR-1141
-                   //step3Text.setStyle("color", "#a8a8a8");
-                }
-                else if(this.currentState == "OverViewState"){
-                   this.currentState = "ContestSelectionState";
-                   this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
-                   back.visible = false;
-     
-                   setCurStep(step1box);
-                   setNextStep(step2box); // BUGR-1141
-                   //step2Text.setStyle("color", "#a8a8a8");
+                    setCurStep(step1box);
+                    setNextStep(step2box); // BUGR-1141
                 }
             }
             public function goToStep1():void {
@@ -939,11 +801,18 @@ private var stateToStepNum:Dictionary = null;
                 previous();
             }
 
-		private function setStep(stepBox:Box):void { // BUGR-1067
-            var label:Label = stepBox.getChildAt(0) as Label;
-            label.text = stepNumber.toString();
-            stepNumber++;
-		}
+            private function setStep(stepBox:Box):void { // BUGR-1067
+                var label:Label=stepBox.getChildAt(0) as Label;
+                label.text=stepNumber.toString();
+                
+                //
+                // Introduced to keep a map of step box to step number.
+                // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                _stepBoxToStepNum[stepBox]=stepNumber;
+                stepNumber++;
+            }
 
 	    private function setCurStep(stepBox:Box):void { // BUGR-1141
                 var box:HBox = stepBox.parent as HBox;
@@ -958,6 +827,12 @@ private var stateToStepNum:Dictionary = null;
                 }
                 stepBox.styleName = "curStep";
                 
+                //
+                // Introduced to read step number from step box mapping.
+                // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                stepNumber=_stepBoxToStepNum[stepBox];
             }
             
             private function setNextStep(stepBox:Box):void {  // BUGR-1141
@@ -967,9 +842,8 @@ private var stateToStepNum:Dictionary = null;
                     label.setStyle("color", "#666666");
                     var step:Box = box.getChildAt(0) as Box;
                 }
-                box.styleName = "prevStepBgr";
-            	stepBox.styleName = "nextStep";
-            	stepNumber--;
+                box.styleName="prevStepBgr";
+                stepBox.styleName="nextStep";
             }
             
             private function setPreviousStep(stepBox:Box):void {  // BUGR-1141
@@ -988,9 +862,8 @@ private var stateToStepNum:Dictionary = null;
                     completed.source = doneImage;
                     box.addChild(completed);
                 }
-                
-                stepBox.styleName = "prevStep";
-                stepNumber++;
+
+                stepBox.styleName="prevStep";
             }
             
             // BUGR-1475
@@ -1017,315 +890,511 @@ private var stateToStepNum:Dictionary = null;
                 if (box.numChildren == 3) {
                 	var label:Label = box.getChildAt(1) as Label;
                     label.setStyle("color", "#a8a8a8");
-                    var step:Box = box.getChildAt(0) as Box;
-                    //step.setStyle("background-image", "../assets/step_prev.png");
+                    var step:Box=box.getChildAt(0) as Box;
                 }
                 stepBox.styleName = "prevStep";
             }
-            
-            // BUGR-999
-            /*private function showArrow(arrow:Image):void {
-                arrow.visible = true;
-                arrow.includeInLayout = true;
-                var box:HBox = arrow.parent as HBox;
-                if (box.numChildren == 5) {
-                    var done:Image = box.getChildAt(4) as Image;
-                    if (done) {
-                        done.visible = false;
-                        done.includeInLayout = false;   
-                    }
-                    var label:Label = box.getChildAt(1) as Label;
-                    label.setStyle("color", "#000000");
-                }
-                
-            }*/
-            
-            /*private function hideArrow(arrow:Image):void {
-                arrow.visible = false;
-                arrow.includeInLayout = false;
-                var box:HBox = arrow.parent as HBox;
-                if (box.numChildren == 5) {
-                    var done:Image = box.getChildAt(4) as Image;
-                    if (done) {
-                        done.visible = true;
-                        done.includeInLayout = true;    
-                    }
-                    var label:Label = box.getChildAt(1) as Label;
-                    label.setStyle("color", "#a8a8a8");
-                }
-            }*/
-            
-            public function startLaunchProcess():void{
-                //initialWdt.width = 0;
-                //initialWdt.height = 0;
-                //initialWdt.visible = false;
-                //widgetFramework.maximize(parent);
-                // BUGR-1267
-                //width=parent.width-41;
-               // height=parent.height-10;
-                launchWdt.percentWidth = 100;
-                launchWdt.percentHeight = 100;
-                //launchWdt.visible = true;
-                // BUGR-1134 added
-                mainPanel.percentWidth = 100;
-                mainPanel.percentHeight = 100;
-                mainPanel.visible = true;
-                //this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
+
+            public function startLaunchProcess():void {
+                launchWdt.percentWidth=100;
+                launchWdt.percentHeight=100;
+                mainPanel.percentWidth=100;
+                mainPanel.percentHeight=100;
+                mainPanel.visible=true;
                 
                 contestSelect.initData();
                 overView.initData();
                 details.initData();
-                specf.initData();
-                attch.initData();
                 
+                //
+                // Specification page is only for studio contest type.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (isStudioContestType) {
+                    specf.initData();
+                }
+                
+                attch.initData();
+
                 sched.initData();
-		       activate.initData();
-		       //bottemline.height=mainPanel.height-contestSelect.height;
-		       save.visible=false;
+                activate.initData();
+                save.visible=false;
+            }
+
+            private function handleError(e:FaultEvent):void {
+                Helper.showAlertMessage(e.fault.faultString);
+            }
+
+            private function cancelBtn():void {
+                var alertDlg:Alert=Alert.show("Are you sure you want to cancel? Please save your work first if you want to keep this contest.", "Confirmation", Alert.YES | Alert.NO, null, doCancel);
+                alertDlg.height=150;
 
             }
-            private function handleError(e:FaultEvent):void
-            {
-            	Helper.showAlertMessage(e.fault.faultString);
-            }
-            
-            private function cancelBtn():void {
-            	var alertDlg:Alert = Alert.show("Are you sure you want to cancel? Please save your work first if you want to keep this contest.",
-                             "Confirmation", Alert.YES | Alert.NO, null, doCancel); 
-				alertDlg.height = 150;
-            	
-            }
-            private function doCancel(event:CloseEvent):void
-            {
-            	if (event.detail == Alert.YES) {
-            		resetWidget();
-            	}
+
+            private function doCancel(event:CloseEvent):void {
+                if (event.detail == Alert.YES) {
+                    resetWidget();
+                }
             }
             
             private function showWebserviceError(opName:String, event:FaultEvent):void {
-            	
-			    if(p)
-			    {
-				PopUpManager.removePopUp(p);
-        		p=null;
-			    }
+                if (p) {
+                    PopUpManager.removePopUp(p);
+                    p=null;
+                }
+                
                 Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
             }
 
-		private function goToOverViewPage():void {
-                var result:int = contestSelect.goToOverView();
+            private function goToOverViewPage():void {
+                var result:int=contestSelect.goToOverView();
                 if (result < 0)
                     return;
                 next();
             }
         ]]>
     </mx:Script>
-    
-<mx:WebService id="ProjectServiceFacadeBean" 
-		wsdl="{projectServiceFacadeWsdl}"> 
-	<mx:operation name="createProject" 
-		resultFormat="object" 
-		fault="showWebserviceError('createProject', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="getAllProjects" 
-		resultFormat="object" 
-		fault="showWebserviceError('getAllProjects', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="processContestPurchaseOrderPayment" 
-		resultFormat="object" 
-		fault="showWebserviceError('processContestPurchaseOrderPayment', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="getAllDocumentTypes" 
-		resultFormat="object" 
-		fault="showWebserviceError('getAllDocumentTypes', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="getClientProjectsByUser" 
-		resultFormat="object" 
-		fault="showWebserviceError('getClientProjectsByUser', event);"> 
-	</mx:operation>
-	
-</mx:WebService>    
 
-<mx:WebService id="ContestServiceFacadeBean" 
-		wsdl="{contestServiceFacadeWsdl}"> 
-	<mx:operation name="createContest" 
-		resultFormat="object" 
-		fault="showWebserviceError('createContest', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="getContest" 
-		resultFormat="object" 
-		fault="showWebserviceError('getContest', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="processContestCreditCardPayment" 
-		resultFormat="object"> 
-	</mx:operation>
-	
-	<mx:operation name="processContestPurchaseOrderPayment" 
-		resultFormat="object"> 
-	</mx:operation>
-	
-	<mx:operation name="getAllDocumentTypes" 
-		resultFormat="object" 
-		fault="showWebserviceError('getAllDocumentTypes', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="getMimeTypeId" 
-		resultFormat="object" 
-		fault="showWebserviceError('getMimeTypeId', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="updateContest" 
-		resultFormat="object" 
-		fault="showWebserviceError('updateContest', event);"> 
-	</mx:operation>
-	
-	<mx:operation name="uploadDocumentForContest" 
-		resultFormat="object" 
-		fault="showWebserviceError('uploadDocumentForContest', event);"> 
-	</mx:operation>
-</mx:WebService>
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{projectServiceFacadeWsdl}">
+        <mx:operation name="createProject"
+                      resultFormat="object"
+                      fault="showWebserviceError('createProject', event);">
+        </mx:operation>
 
-<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
-          
-	 fault="Helper.showAlertMessage(event.fault.faultString);">
-<mx:method name="getPassword"  result="processPassword(event)" 
-	                   fault="handleError(event)"/>
-	                   
- <!--<mx:method name="isUserInRole"  result="processRole(event)" 
-	                   fault="handleError(event)">
-   <mx:arguments>
-    <role>Cockpit Administrator</role>
-   </mx:arguments>
-</mx:method>-->
- </mx:RemoteObject>
-     
-     <!--<mx:Spacer height="5" />-->
-     <!--<pages:InitialWidget id="initialWdt" />-->
-     <mx:HBox id="launchWdt" width="100%" horizontalGap="0" paddingLeft="20">
-         <mx:VBox width="220" height="100%" paddingTop="0" verticalGap="0" 
-                horizontalScrollPolicy="off" styleName="stepsBgr">
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" styleName="stepsLabelBgr">
-             		<mx:Label width="100%" height="100%" textAlign="center" text="STEP {stepNumber} of {totalStepsNumber}" styleName="stepsLabel" /> 
+        <mx:operation name="getAllProjects"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllProjects', event);">
+        </mx:operation>
 
-             </mx:HBox>   
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" click="skipTo(1)">
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step1box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="1" styleName="whiteBoldText"/>
-                </mx:Box>
-            	<mx:Label id="step1Text" text="Contest Selection" fontWeight="bold" 
-                        fontFamily="Arial" fontSize="14" /> 
-                <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" click="skipTo(2)">
-                 <mx:Box  width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10"  id="step2box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="2" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step2Text" text="Overview" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" /> 
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" click="skipTo(3)">
-                 <mx:Box width="30" height="30" 
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step3box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="3" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step3Text" text="Details" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" visible="{studioContestType}" includeInLayout="{studioContestType}" click="skipTo(4)"> <!-- BUGR-1067 -->
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step4box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="4" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step4Text" text="Specifications" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="prevStepBgr" click="skipTo(5)">
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step5box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="5" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step5Text" text="Attach Files" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="nextStepBgr" click="skipTo(6)">
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step6box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="6" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step6Text" text="Schedule" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle"  styleName="nextStepBgr" click="skipTo(7)">
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step7box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="7" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step7Text" text="Review" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="nextStepBgr" click="skipTo(8)">
-                 <mx:Box width="30" height="30"
-                        paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step8box">
-                    <mx:Label width="100%" height="100%" textAlign="center" text="8" styleName="whiteBoldText"/>
-                </mx:Box>
-                 <mx:Label id="step8Text" text="Activate" fontWeight="bold" color="#a8a8a8"
-                        fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
-             </mx:HBox>
-         </mx:VBox>
-         <!--<mx:VRule height="100%" />-->
-         <mx:VBox width="100%" height="100%" verticalGap="0" paddingRight="8" paddingLeft="20" id="mainPanel">
-             <mx:Spacer height="5" />
-             <pages:ContestSelection id="contestSelect"  />
-             <pages:OverView id="overView"/>
-             <pages:Details id="details"/>
-             <pages:Specifications id="specf" />
-             <pages:AttachFiles id="attch" />
-             <pages:Schedule id="sched" />
-             <pages:Review id="review" />
-             <pages:PaymentContest id="activate" width="100%" />
-			 <mx:HRule width="100%" />
-             <!--<mx:Spacer  id="bottemline" height="100%"/>-->
-         </mx:VBox>
-     </mx:HBox>
-     <mx:HBox id="SaveAndContinueHBox" visible="{this.currentState == 'ContestSelectionState'}" height="{this.currentState == 'ContestSelectionState' ? 30 : 0}" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
-         <mx:Button label="NEXT" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="goToOverViewPage()" buttonMode="true"/>
-     </mx:HBox>
-     <mx:HBox id="BtnsHBox" paddingLeft="220" paddingTop="0" verticalAlign="top" horizontalAlign="center" width="100%" height="{SaveAndContinueHBox.visible ? 0 : 30}" visible="{!SaveAndContinueHBox.visible}" includeInLayout="{!SaveAndContinueHBox.visible}">
+        <mx:operation name="processContestPurchaseOrderPayment"
+                      resultFormat="object"
+                      fault="showWebserviceError('processContestPurchaseOrderPayment', event);">
+        </mx:operation>
 
-    <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
-         <mx:Button id="back" label="BACK" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="previous()"/>
-	<mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>         
-	<mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="validateAndSaveAsDraft()" includeInLayout="{save.visible}"/>
+        <mx:operation name="getAllDocumentTypes"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllDocumentTypes', event);">
+        </mx:operation>
 
-         <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-         
-         <mx:Button id="goNext" label="NEXT" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="next()"/>
-      </mx:HBox>
-      <mx:Spacer height="5"/>
+        <mx:operation name="getClientProjectsByUser"
+                      resultFormat="object"
+                      fault="showWebserviceError('getClientProjectsByUser', event);">
+        </mx:operation>
+
+    </mx:WebService>
+
+    <mx:WebService id="ContestServiceFacadeBean"
+                   wsdl="{contestServiceFacadeWsdl}">
+        <mx:operation name="createContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('createContest', event);">
+        </mx:operation>
+
+        <mx:operation name="getContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('getContest', event);">
+        </mx:operation>
+
+        <mx:operation name="processContestCreditCardPayment"
+                      resultFormat="object">
+        </mx:operation>
+
+        <mx:operation name="processContestPurchaseOrderPayment"
+                      resultFormat="object">
+        </mx:operation>
+
+        <mx:operation name="getAllDocumentTypes"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllDocumentTypes', event);">
+        </mx:operation>
+
+        <mx:operation name="getMimeTypeId"
+                      resultFormat="object"
+                      fault="showWebserviceError('getMimeTypeId', event);">
+        </mx:operation>
+
+        <mx:operation name="updateContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('updateContest', event);">
+        </mx:operation>
+
+        <mx:operation name="uploadDocumentForContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('uploadDocumentForContest', event);">
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        To retrieve list of catalog names and the categories -->
+        <mx:operation name="getActiveCategories"
+                      resultFormat="object"
+                      fault="showWebserviceError('getActiveCategories', event);">
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To retrieve list of technologies -->
+        <mx:operation name="getActiveTechnologies"
+                      resultFormat="object"
+                      fault="showWebserviceError('getActiveTechnologies', event);">
+        </mx:operation>              
+                      
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To create software contests -->
+        <mx:operation name="createSoftwareContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('createSoftwareContest', event);">              
+        </mx:operation>
+        
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{blazedsendpoint}"
+                     fault="Helper.showAlertMessage(event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="handleError(event)"/>
+
+        <!--<mx:method name="isUserInRole"  result="processRole(event)"
+             fault="handleError(event)">
+             <mx:arguments>
+             <role>Cockpit Administrator</role>
+             </mx:arguments>
+             </mx:method>-->
+    </mx:RemoteObject>
+
+    <!--<mx:Spacer height="5" />-->
+    <!--<pages:InitialWidget id="initialWdt" />-->
+    <mx:HBox id="launchWdt"
+             width="100%"
+             horizontalGap="0"
+             paddingLeft="10">
+        <mx:VBox width="210"
+                 height="100%"
+                 paddingTop="0"
+                 verticalGap="0"
+                 horizontalScrollPolicy="off"
+                 styleName="stepsBgr">
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="30"
+                     verticalAlign="middle"
+                     styleName="stepsLabelBgr">
+                <mx:Label width="100%"
+                          height="100%"
+                          textAlign="center"
+                          text="STEP {stepNumber} of {totalStepsNumber}"
+                          styleName="stepsLabel"/>
+
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(1)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step1box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="1"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step1Text"
+                          text="Contest Selection"
+                          fontWeight="bold"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(2)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step2box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="2"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step2Text"
+                          text="Overview"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(3)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step3box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="3"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step3Text"
+                          text="Details"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     visible="{studioContestType}"
+                     includeInLayout="{studioContestType}"
+                     click="skipTo(4)">
+                <!-- BUGR-1067 -->
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step4box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="4"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step4Text"
+                          text="Specifications"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="prevStepBgr"
+                     click="skipTo(5)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step5box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="5"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step5Text"
+                          text="Attach Files"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(6)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step6box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="6"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step6Text"
+                          text="Schedule"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(7)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step7box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="7"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step7Text"
+                          text="Review"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(8)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step8box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="8"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step8Text"
+                          text="Activate"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+        </mx:VBox>
+        <!--<mx:VRule height="100%" />-->
+        <mx:VBox width="100%"
+                 height="100%"
+                 verticalGap="0"
+                 paddingRight="8"
+                 paddingLeft="20"
+                 id="mainPanel">
+            <mx:Spacer height="5"/>
+            <pages:ContestSelection id="contestSelect"/>
+            <pages:OverView id="overView"/>
+            <pages:Details id="details"/>
+            <pages:Specifications id="specf"/>
+            <pages:AttachFiles id="attch"/>
+            <pages:Schedule id="sched"/>
+            <pages:Review id="review"/>
+            <pages:PaymentContest id="activate"
+                                  width="100%"/>
+            <mx:HRule width="100%"/>
+            <!--<mx:Spacer  id="bottemline" height="100%"/>-->
+        </mx:VBox>
+    </mx:HBox>
+    <mx:HBox id="SaveAndContinueHBox"
+             visible="{this.currentState == 'ContestSelectionState'}"
+             height="{this.currentState == 'ContestSelectionState' ? 30 : 0}"
+             paddingLeft="220"
+             paddingTop="0"
+             horizontalAlign="right"
+             width="100%">
+        <mx:Button label="NEXT"
+                   styleName="arrowRightBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.LEFT}"
+                   click="goToOverViewPage()"
+                   buttonMode="true"/>
+    </mx:HBox>
+    <mx:HBox id="BtnsHBox"
+             paddingLeft="220"
+             paddingTop="0"
+             verticalAlign="top"
+             horizontalAlign="center"
+             width="100%"
+             height="{SaveAndContinueHBox.visible ? 0 : 30}"
+             visible="{!SaveAndContinueHBox.visible}"
+             includeInLayout="{!SaveAndContinueHBox.visible}">
+
+        <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
+        <mx:Button id="back"
+                   label="BACK"
+                   buttonMode="true"
+                   styleName="arrowLeftBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                   click="previous()"/>
+        <mx:Button id="cancel"
+                   label="CANCEL"
+                   buttonMode="true"
+                   styleName="arrowLeftBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                   click="cancelBtn()"/>
+        <mx:Button id="save"
+                   buttonMode="true"
+                   styleName="arrowRightBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.LEFT}"
+                   label="save as draft"
+                   click="validateAndSaveAsDraft()"
+                   includeInLayout="{save.visible}"/>
+
+        <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
+
+        <mx:Button id="goNext"
+                   label="NEXT"
+                   buttonMode="true"
+                   styleName="arrowRightBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.LEFT}"
+                   click="next()"/>
+    </mx:HBox>
+    <mx:Spacer height="5"/>
     <tc:states>
         <mx:State name="ContestSelectionState">
             <mx:RemoveChild target="{overView}"/>

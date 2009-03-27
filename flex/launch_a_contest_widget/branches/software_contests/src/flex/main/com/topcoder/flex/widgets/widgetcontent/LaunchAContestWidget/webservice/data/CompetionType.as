@@ -1,28 +1,37 @@
-/**
- * CompetionType.as
- * This file was auto-generated from WSDL by the Apache Axis2 generator modified by Adobe
- * Any change made to this file will be overwritten when the code is re-generated.
+/*
+ * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
-
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data {
     import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
     import mx.rpc.soap.types.*;
+
     /**
      * Wrapper class for a operation required type
      */
-    
-    public class CompetionType
-    {
+
+    public class CompetionType {
+
         /**
          * Constructor, initializes the type class
          */
-public function CompetionType() {}
-                [Inspectable(category="Generated values", enumeration="STUDIO", type="String")]
-                   public var competionType:String;public function toString():String
-           		{
-           			return competionType.toString();
-           		}
-           		
-           	}
-      	 }
+        public function CompetionType() {
+        }
+        
+        /**
+        * Competition type value.
+        */
+        [Inspectable(category="Generated values", enumeration="STUDIO,CONCEPTUALIZATION,SPECIFICATION,ARCHITECTURE,DESIGN,DEVELOPMENT,ASSEMBLY,TESTING,SOFTWARE", type="String")]
+        public var competionType:String;
+
+        /**
+        * Returns the string value of competition type.
+        * 
+        * @return string value of competition type.
+        */
+        public function toString():String {
+            return competionType.toString();
+        }
+
+    }
+}
