@@ -2100,7 +2100,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Project project = (Project) projectMap.get(row[0]);
 
             // set the property to project
-            project.setProperty((String) row[1], row[2]);
+            project.setProperty((String) row[1], (String)row[2]);
         }         
         return projects;
         
