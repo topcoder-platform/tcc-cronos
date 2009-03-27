@@ -7,10 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -18,6 +20,7 @@ import java.util.Map.Entry;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.project.ConfigurationException;
+import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
@@ -25,6 +28,8 @@ import com.topcoder.management.project.ProjectPersistence;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.project.SaleStatus;
+import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
@@ -67,6 +72,12 @@ import com.topcoder.util.log.Log;
  * <code>Statement</code>s and <code>ResultSet</code>s are handled in this
  * abstract class.
  * </p>
+ * 
+ * <p>
+ * Module Contest Service Software Contest Sales Assembly change: new methods added to support creating/updating/query contest
+ * sale for software contest.
+ * </p>
+ *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
@@ -85,6 +96,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     public static final String PROJECT_ID_SEQUENCE_NAME = "project_id_seq";
+
+	/**
+     * <p>
+     * Represents the default value for Contest Sale Id sequence name. It is used to
+     * create id generator for contest_sale. This value will be overridden by
+     * 'ContestSaleIdSequenceName' configuration parameter if it exist.
+     * </p>
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public static final String CONTEST_SALE_ID_SEQUENCE_NAME = "contest_sale_id_seq";
 
     /**
      * <p>
@@ -114,6 +136,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String PROJECT_ID_SEQUENCE_NAME_PARAMETER = "ProjectIdSequenceName";
 
     /**
+     * Represents the name of contest sale id sequence name parameter in
+     * configuration.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String CONTEST_SALE_ID_SEQUENCE_NAME_PARAMETER = "ContestSaleIdSequenceName";
+
+    /**
      * Represents the name of project audit id sequence name parameter in
      * configuration.
      */
@@ -131,6 +161,40 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+    /**
+     * Represents the sql statement to query the sale status via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String QUERY_SALE_STATUS_BY_ID_SQL = "SELECT "
+            + "sale_status_id, sale_status_desc FROM sale_status_lu WHERE sale_status_id=?";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query the sale status via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final DataType[] QUERY_SALE_STATUS_BY_ID_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.STRING_TYPE };
+
+    /**
+     * Represents the sql statement to query the sale type via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String QUERY_SALE_TYPE_BY_ID_SQL = "SELECT "
+            + "sale_type_id, sale_type_name FROM sale_type_lu WHERE sale_type_id=?";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query the sale type via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final DataType[] QUERY_SALE_TYPE_BY_ID_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.STRING_TYPE };
 
     /**
      * Represents the sql statement to query all project categories.
@@ -283,6 +347,62 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "VALUES (?, ?, ?, ?, CURRENT, ?, CURRENT, ?)";
 
     /**
+     * Represents the sql statement to query the contest sale via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String QUERY_CONTEST_SALE_BY_ID_SQL = "SELECT "
+            + "contest_sale_id, contest_id, sale_status_id, price, paypal_order_id, create_date, sale_reference_id, sale_type_id "
+            + "FROM contest_sale WHERE contest_sale_id=?";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query the contest sale via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final DataType[] QUERY_CONTEST_SALE_BY_ID_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE };
+
+    /**
+     * Represents the sql statement to query the contest sale via contest id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String QUERY_CONTEST_SALE_BY_CONTEST_ID_SQL = "SELECT "
+            + "contest_sale_id, contest_id, sale_status_id, price, paypal_order_id, create_date, sale_reference_id, sale_type_id "
+            + "FROM contest_sale WHERE contest_id=?";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query the contest sale via contest id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final DataType[] QUERY_CONTEST_SALE_BY_CONTEST_ID_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE };
+
+    /**
+     * Represents the sql statement to create contest sale.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String CREATE_CONTEST_SALE_SQL = "INSERT INTO contest_sale "
+            + "(contest_sale_id, contest_id, sale_status_id, "
+            + "price, paypal_order_id, sale_reference_id, sale_type_id) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    /**
+     * Represents the sql statement to delete contest sale via id.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String DELETE_CONTEST_SALE_BY_ID_SQL = "DELETE FROM contest_sale "
+            + "WHERE contest_sale_id=?";
+
+    /**
      * Represents the sql statement to create project property.
      */
     private static final String CREATE_PROJECT_PROPERTY_SQL = "INSERT INTO project_info "
@@ -304,6 +424,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String UPDATE_PROJECT_SQL = "UPDATE project "
             + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date=CURRENT, tc_direct_project_id=? "
             + "WHERE project_id=?";
+
+    /**
+     * Represents the sql statement to update contest sale.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static final String UPDATE_CONTEST_SALE_SQL = "UPDATE contest_sale "
+            + "SET contest_id=?, sale_status_id=?, price=?, paypal_order_id=?, sale_reference_id=?, sale_type_id=? "
+            + "WHERE contest_sale_id=?";
 
     /**
      * Represents the sql statement to update project property.
@@ -349,6 +478,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private final IDGenerator projectIdGenerator;
 
+    /**
+     * <p>
+     * Represents the IDGenerator for contest_sale table. This variable is
+     * initialized in the constructor and never change after that. It will be
+     * used in createContestSale() method to generate new Id for contest_sale.
+     * </p>
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private final IDGenerator contestSaleIdGenerator;
+    
     /**
      * <p>
      * Represents the IDGenerator for project audit table. This variable is
@@ -442,6 +582,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             projectIdSequenceName = PROJECT_ID_SEQUENCE_NAME;
         }
 
+        // try to get contest sale id sequence name
+        String contestSaleIdSequenceName = Helper.getConfigurationParameterValue(
+                cm, namespace, CONTEST_SALE_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
+        // use default name if contest sale id sequence name is not provided
+        if (contestSaleIdSequenceName == null) {
+        	contestSaleIdSequenceName = CONTEST_SALE_ID_SEQUENCE_NAME;
+        }
+
         // try to get project audit id sequence name
         String projectAuditIdSequenceName = Helper
                 .getConfigurationParameterValue(cm, namespace,
@@ -459,6 +607,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         	getLogger().log(Level.ERROR, "The projectIdSequence [" + projectIdSequenceName+"] is invalid.");
             throw new PersistenceException("Unable to create IDGenerator for '"
                     + projectIdSequenceName + "'.", e);
+        }
+        try {
+            contestSaleIdGenerator = IDGeneratorFactory
+                    .getIDGenerator(contestSaleIdSequenceName);
+        } catch (IDGenerationException e) {
+        	getLogger().log(Level.ERROR, "The contestSaleIdSequence [" + contestSaleIdSequenceName+"] is invalid.");
+            throw new PersistenceException("Unable to create IDGenerator for '"
+                    + contestSaleIdSequenceName + "'.", e);
         }
         try {
             projectAuditIdGenerator = IDGeneratorFactory
@@ -1528,6 +1684,358 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 		
 	}
+
+    /**
+     * <p>
+     * Creates a new contest sale and returns the created contest sale.
+     * </p>
+     *
+     * @param contestSale the contest sale to create
+     *
+     * @return the created contest sale.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSale createContestSale(ContestSale contestSale) throws PersistenceException {
+        Helper.assertObjectNotNull(contestSale, "contestSale");
+
+        Connection conn = null;
+
+        // newId will contain the new generated Id for the contest sale
+        Long newId;
+
+        getLogger().log(Level.INFO, new LogMessage(null, null, "creating new contest sale"));
+        
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the contest_sale_id is already in the database
+            if (contestSale.getContestSaleId() > 0) {
+                if (Helper.checkEntityExists("contest_sale", "contest_sale_id", contestSale
+                        .getContestSaleId(), conn)) {
+                	throw new PersistenceException(
+                            "The contest_sale with the same id [" + contestSale.getContestSaleId()
+                                    + "] already exists.");
+                }
+            }
+
+            try {
+                // generate id for the contest sale
+                newId = new Long(contestSaleIdGenerator.getNextID());
+                getLogger().log(Level.INFO, new LogMessage(null, null, "generate id for new contest sale"));
+            } catch (IDGenerationException e) {
+                throw new PersistenceException(
+                        "Unable to generate id for the contest sale.", e);
+            }
+
+            // create the contest sale
+            Object[] queryArgs = new Object[] {newId, contestSale.getContestId(), contestSale.getStatus().getSaleStatusId(),
+            		contestSale.getPrice(), contestSale.getPayPalOrderId(),
+            		contestSale.getSaleReferenceId(), contestSale.getSaleType().getSaleTypeId()};
+            Helper.doDMLQuery(conn, CREATE_CONTEST_SALE_SQL, queryArgs);
+            
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR,
+        			new LogMessage(null, null, "Fails to create contest sale", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        // set the newId when no exception occurred
+        contestSale.setContestSaleId(newId.longValue());
+
+        return contestSale;
+    }
+
+    /**
+     * <p>
+     * Gets the sale status by given id.
+     * </p>
+     *
+     * @param saleStatusId the given sale status id.
+     *
+     * @return the sale status by given id.
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public SaleStatus getSaleStatus(long saleStatusId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the sale status
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_SALE_STATUS_BY_ID_SQL, new Object[] {saleStatusId},
+            		QUERY_SALE_STATUS_BY_ID_COLUMN_TYPES);
+
+            if (rows.length == 0) {
+                return null;
+            }
+
+            // create a new instance of SaleStatus class
+            SaleStatus saleStatus = new SaleStatus();
+            saleStatus.setSaleStatusId(((Long) rows[0][0]));
+            saleStatus.setDescription((String) rows[0][1]);
+
+            return saleStatus;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the sale status" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the sale type by given id.
+     * </p>
+     *
+     * @param saleTypeId the given sale type id.
+     *
+     * @return the sale type by given id.
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public SaleType getSaleType(long saleTypeId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the sale type
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_SALE_TYPE_BY_ID_SQL, new Object[] {saleTypeId},
+            		QUERY_SALE_TYPE_BY_ID_COLUMN_TYPES);
+
+            if (rows.length == 0) {
+                return null;
+            }
+
+            // create a new instance of SaleType class
+            SaleType saleType = new SaleType();
+            saleType.setSaleTypeId(((Long) rows[0][0]));
+            saleType.setDescription((String) rows[0][1]);
+
+            return saleType;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the sale type" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sale by id, and return the retrieved contest sale. If
+     * the contest sale doesn't exist, null is returned.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return the retrieved contest sale, or null if id doesn't exist
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public ContestSale getContestSale(long contestSaleId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_CONTEST_SALE_BY_ID_SQL, new Object[] {contestSaleId},
+            		QUERY_CONTEST_SALE_BY_ID_COLUMN_TYPES);
+
+            if (rows.length == 0) {
+                return null;
+            }
+
+            // create a new instance of ContestSale class
+            ContestSale contestSale = new ContestSale();
+            contestSale.setContestSaleId(((Long) rows[0][0]));
+            contestSale.setContestId((Long) rows[0][1]);
+            contestSale.setStatus(this.getSaleStatus((Long) rows[0][2]));
+            contestSale.setPrice((Double) rows[0][3]);
+            contestSale.setPayPalOrderId((String) rows[0][4]);
+            contestSale.setCreateDate((Date) rows[0][5]);
+            contestSale.setSaleReferenceId((String) rows[0][6]);
+            contestSale.setSaleType(this.getSaleType((Long) rows[0][7]));
+
+            return contestSale;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the contest sale" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest sales by contest id, and return the retrieved contest sales.
+     * </p>
+     *
+     * @param contestId the contest id of the contest sale
+     *
+     * @return the retrieved contest sales, or empty if none exists
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public List<ContestSale> getContestSales(long contestId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_CONTEST_SALE_BY_CONTEST_ID_SQL, new Object[] {contestId},
+            		QUERY_CONTEST_SALE_BY_CONTEST_ID_COLUMN_TYPES);
+
+            List<ContestSale> ret = new ArrayList<ContestSale>();
+
+            for (int i = 0; i < rows.length; i++) {
+                // create a new instance of ContestSale class
+                ContestSale contestSale = new ContestSale();
+                contestSale.setContestSaleId(((Long) rows[i][0]));
+                contestSale.setContestId((Long) rows[i][1]);
+                contestSale.setStatus(this.getSaleStatus((Long) rows[i][2]));
+                contestSale.setPrice((Double) rows[i][3]);
+                contestSale.setPayPalOrderId((String) rows[i][4]);
+                contestSale.setCreateDate((Date) rows[i][5]);
+                contestSale.setSaleReferenceId((String) rows[i][6]);
+                contestSale.setSaleType(this.getSaleType((Long) rows[i][7]));
+
+                ret.add(contestSale);
+            }
+
+            return ret;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the contest sales" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Updates the contest sale data.
+     * </p>
+     *
+     * @param contestSale the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public void editContestSale(ContestSale contestSale) throws PersistenceException {
+        Helper.assertObjectNotNull(contestSale, "contestSale");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, null, "updating contest sale"));
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the contest_sale_id is already in the database
+            if (!Helper.checkEntityExists("contest_sale", "contest_sale_id", contestSale
+                    .getContestSaleId(), conn)) {
+                throw new PersistenceException("The contest_sale id ["
+                        + contestSale.getContestSaleId() + "] does not exist in the database.");
+            }
+
+            // update the contest sale
+            Object[] queryArgs = new Object[] {
+                contestSale.getContestId(), contestSale.getStatus().getSaleStatusId(), contestSale.getPrice(), contestSale.getPayPalOrderId(),
+                contestSale.getSaleReferenceId(), contestSale.getSaleType().getSaleTypeId(), 
+                contestSale.getContestSaleId()};
+            Helper.doDMLQuery(conn, UPDATE_CONTEST_SALE_SQL, queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR,
+        			new LogMessage(null, null, "Fails to update contest sale", e));
+        	if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Removes contest sale, return true if the contest sale exists and
+     * removed successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param contestSaleId the contest sale id
+     *
+     * @return true if the contest sale exists and removed successfully,
+     *         return false if it doesn't exist
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    public boolean removeContestSale(long contestSaleId) throws PersistenceException {
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, null, "removing contest sale"));
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the contest_sale_id is already in the database
+            if (!Helper.checkEntityExists("contest_sale", "contest_sale_id", contestSaleId, conn)) {
+                return false;
+            }
+
+            // remove the contest sale
+            Object[] queryArgs = new Object[] {contestSaleId};
+            Helper.doDMLQuery(conn, DELETE_CONTEST_SALE_BY_ID_SQL, queryArgs);
+
+            closeConnection(conn);
+
+            return true;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR,
+        			new LogMessage(null, null, "Fails to remove contest sale", e));
+        	if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
 	/**
 	 * Retrieves an array of project
 	 * The project instances are retrieved with their properties.

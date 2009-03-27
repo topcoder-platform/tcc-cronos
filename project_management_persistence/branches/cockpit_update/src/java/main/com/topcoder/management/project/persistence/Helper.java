@@ -57,6 +57,17 @@ class Helper {
      * This constant provides the <code>DataType</code> instance that can be
      * used in the query methods to specify that a <code>ResultSet</code>
      * column of a query result should be returned as value of type
+     * <code>Double</code> or as <code>null</code> in case the
+     * <code>ResultSet</code> value was <tt>null</tt>.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    static final DataType DOUBLE_TYPE = new DoubleType();
+
+    /**
+     * This constant provides the <code>DataType</code> instance that can be
+     * used in the query methods to specify that a <code>ResultSet</code>
+     * column of a query result should be returned as value of type
      * <code>Date</code> or as <code>null</code> in case the
      * <code>ResultSet</code> value was <tt>null</tt>.
      */
@@ -161,6 +172,40 @@ class Helper {
 
             long aLong = resultSet.getLong(index);
             return resultSet.wasNull() ? null : new Long(aLong);
+        }
+    }
+
+    /**
+     * This class is a wrapper for type safe retrieval of values from a
+     * <code>ResultSet</code>. The values retrieved by the
+     * <code>getValue(java.sql.ResultSet, int)</code> implementation of this
+     * <code>DataType</code> are assured to be of type <code>Double</code> or
+     * to be <tt>null</tt> in case the <code>ResultSet</code> value was
+     * <tt>null</tt>.
+     * @author PE
+     * @version 1.0
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private static class DoubleType extends DataType {
+        /**
+         * This method retrieves the value at the given index from the given
+         * resultSet as instance of the subclass-dependent type.
+         * @param resultSet the result set from which to retrieve the value
+         * @param index the index at which to retrieve the value
+         * @return the retrieved value as <code>Double</code> or
+         *         <code>null</code> if the value in the
+         *         <code>ResultSet</code> was <code>null</code>.
+         * @throws IllegalArgumentException if resultSet is <code>null</code>
+         * @throws SQLException if error occurs while working with the given
+         *             ResultSet or the index does not exist in the result set
+         */
+        protected Object getValue(ResultSet resultSet, int index)
+            throws SQLException {
+            Helper.assertObjectNotNull(resultSet, "resultSet");
+
+            double aDouble = resultSet.getDouble(index);
+            return resultSet.wasNull() ? null : new Double(aDouble);
         }
     }
 
