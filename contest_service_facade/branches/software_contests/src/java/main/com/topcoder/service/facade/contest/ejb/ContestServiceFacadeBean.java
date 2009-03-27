@@ -1868,6 +1868,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				if (contest.getProjectHeader() != null) 
 				{
 					UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+					 //
+					// since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+					// set the project properties.
+					//
+					if (assetDTO != null) {
+						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY, assetDTO.getVersionId().toString());
+						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY, assetDTO.getId().toString());
+					}
 			
 					contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 					FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
