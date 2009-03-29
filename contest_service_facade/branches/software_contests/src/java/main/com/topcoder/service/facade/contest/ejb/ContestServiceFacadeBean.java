@@ -1857,11 +1857,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		
 	{
 		try
-		{
+		{	
+				AssetDTO assetDTO = null;
 				if (contest.getAssetDTO() != null)
 				{
 		
-					AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+					assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
 					contest.setAssetDTO(assetDTO);
 				}
 
