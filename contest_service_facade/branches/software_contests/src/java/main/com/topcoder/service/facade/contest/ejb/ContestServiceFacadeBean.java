@@ -279,6 +279,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final String PROJECT_TYPE_INFO_VERSION_ID_KEY = "Version ID";
 
     /**
+     * Private constant specifying project type info's version id key.
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY = "External Reference ID";
+
+    /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
      * 
      * @since BUGR-1239
@@ -1853,51 +1860,50 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @SuppressWarnings({ "unchecked" })
     public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException 
-		
-	{
-		try
-		{	
-				AssetDTO assetDTO = null;
-				if (contest.getAssetDTO() != null)
-				{
-		
-					assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
-					contest.setAssetDTO(assetDTO);
-				}
+            throws ContestServiceException
 
-				if (contest.getProjectHeader() != null) 
-				{
-					UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+    {
+        try {
+            AssetDTO assetDTO = null;
+            if (contest.getAssetDTO() != null) {
 
-					 //
-					// since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-					// set the project properties.
-					//
-					if (assetDTO != null) {
-						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY, assetDTO.getVersionId().toString());
-						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY, assetDTO.getId().toString());
-					}
-			
-					contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
-					FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-							contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+                assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+                contest.setAssetDTO(assetDTO);
+            }
 
-					com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
-					for (int i = 0; i < allPhases.length; i++) {
-						allPhases[i].setProject(null);
-						allPhases[i].clearDependencies();
-					}
+            if (contest.getProjectHeader() != null) {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 
-					contest.setProjectHeader(projectData.getProjectHeader());
-					contest.setProjectPhases(projectData);
-					contest.setProjectResources(projectData.getResources());
-					contest.setProjectData(projectData);
+                //
+                // since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                // set the project properties.
+                //
+                if (assetDTO != null) {
+                    contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY,
+                            assetDTO.getVersionId().toString());
+                    contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY,
+                            assetDTO.getVersionId().toString());
+                    contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY,
+                            assetDTO.getId().toString());
+                }
 
-					
-				} 
-			
-				return contest;
+                contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+                FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
+                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+
+                com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+                for (int i = 0; i < allPhases.length; i++) {
+                    allPhases[i].setProject(null);
+                    allPhases[i].clearDependencies();
+                }
+
+                contest.setProjectHeader(projectData.getProjectHeader());
+                contest.setProjectPhases(projectData);
+                contest.setProjectResources(projectData.getResources());
+                contest.setProjectData(projectData);
+            }
+
+            return contest;
 
 		}
 		catch (com.topcoder.catalog.service.PersistenceException e) 
