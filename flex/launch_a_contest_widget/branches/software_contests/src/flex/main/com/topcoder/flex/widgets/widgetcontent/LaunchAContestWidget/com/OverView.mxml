@@ -228,6 +228,12 @@
                     ns_firstPlace.setFocus();
                     return false;
                 }
+                
+                if (isNaN(Number(ns_reviewCost.text)) || Number(ns_reviewCost.text) <= 0) {
+                    Helper.showAlertMessage("Review cost not set");
+                    ns_reviewCost.setFocus();
+                    return false;
+                }
 
                 //
                 // Update competition and review data for studio contests.
@@ -365,10 +371,9 @@
 
                 if (firstPlace > 0) {
                     ns_secondPlace.text=new Number(firstPlace * 0.5).toFixed(0);
-                    ns_dr.text=(firstPlace + new Number(ns_secondPlace.text)).toFixed(0);
-                    ns_reviewCost.text=ns_secondPlace.text;
-                    ns_contestf.text="500";
-                    ns_cntstTtl.text=(firstPlace + new Number(ns_secondPlace.text) + new Number(ns_dr.text) + new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(0);
+                    ns_dr.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
+                    ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
+                    ns_cntstTtl.text=(new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(0);
                 }
             }
         ]]>
@@ -735,15 +740,15 @@
                     <mx:VBox verticalGap="7">
                         <mx:Label text="Review Cost: $"
                                   fontWeight="bold"/>
-                        <mx:Label text="Digital Run: $"
+                        <mx:Label text="Digital Run: "
                                   fontWeight="bold"/>
                     </mx:VBox>
                     <mx:VBox verticalGap="2">
                         <mx:TextInput id="ns_reviewCost"
                                       width="120"
                                       text=""
-                                      editable="false"
-                                      borderStyle="none"/>
+                                      editable="true"
+                                      change="ns_updateAmount()"/>
                         <mx:TextInput id="ns_dr"
                                       width="120"
                                       text=""

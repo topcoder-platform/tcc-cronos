@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas 
-	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-	xmlns:tc="com.topcoder.flex.util.editor.*" 
-          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           height="100%"
+           xmlns:tc="com.topcoder.flex.util.editor.*"
+           horizontalScrollPolicy="off"
+           verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
@@ -70,20 +72,6 @@
             private var _catalogToCategoriesMap:Dictionary=new Dictionary();
 
             //
-            // Currently selected catalog item. (item has label of type String  and data of type SoftwareCategory)
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            [Bindable]
-            private var _selectedCatalog:Object;
-
-            //
-            // Item list for currently selected catalog's categories.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            [Bindable]
-            private var _currCatalogCategories:ArrayCollection;
-
-            //
             // Item list for currently available master technologies.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
@@ -96,6 +84,20 @@
             //
             [Bindable]
             private var _boundCurrentTechnologies:ArrayCollection=new ArrayCollection();
+
+            //
+            // Item list for currently available master categories.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var _boundMasterCategories:ArrayCollection=new ArrayCollection();
+
+            //
+            // Item list for currently choosen categories.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
 
 
             public function initData():void {
@@ -113,13 +115,13 @@
                     glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
                 } else {
 
-                    ns_ctInput.htmlText="";
+                    ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
                     ns_funcDesc.htmlText="";
                     ns_detailedDesc.htmlText="";
                     ns_comments.htmlText="";
 
-                    ns_ctInput.htmlText=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
+                    ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
                     ns_funcDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.functionalDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
@@ -132,6 +134,8 @@
                     if (!_masterTechnologies) {
                         loadMasterTechnologies();
                     } else {
+                        _boundMasterTechnologies.removeAll();
+
                         for (var i:int=0; i < _masterTechnologies.length; i++) {
                             var o:Object=_masterTechnologies.getItemAt(i) as SoftwareTechnology;
                             _boundMasterTechnologies.addItem(o);
@@ -153,6 +157,9 @@
                         // assign root category.
                         setRootCategory();
 
+                        // set master categories.
+                        setMasterCategories(this.ns_catalogNameInput.selectedItem);
+
                         // assign list of categories.
                         setCategories();
                     }
@@ -169,6 +176,8 @@
                 if (!_masterTechnologies || !_boundMasterTechnologies) {
                     return;
                 }
+
+                _boundCurrentTechnologies.removeAll();
 
                 if (this.mainWidget.softwareCompetition.assetDTO.technologies) {
                     var technologies:Array=this.mainWidget.softwareCompetition.assetDTO.technologies;
@@ -199,12 +208,12 @@
                     for (var j:int=0; j < _catalogs.length; j++) {
                         var catalogObj:Object=_catalogs.getItemAt(j);
                         if (catalogObj && catalogObj.data && catalogObj.data.id == this.mainWidget.softwareCompetition.assetDTO.rootCategory.id) {
-                            this.ns_categoriesListInput.selectedItem=catalogObj;
+                            this.ns_catalogNameInput.selectedItem=catalogObj;
                         }
                     }
                 } else {
                     var emptyCatalogObj:Object=_catalogs.getItemAt(0);
-                    this.ns_categoriesListInput.selectedItem=emptyCatalogObj;
+                    this.ns_catalogNameInput.selectedItem=emptyCatalogObj;
                 }
             }
 
@@ -213,7 +222,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setCategories():void {
-                if (!_currCatalogCategories) {
+                if (!_boundMasterCategories || !_boundCurrentCategories) {
                     return;
                 }
 
@@ -222,10 +231,10 @@
                     for (var k:int=0; k < categories.length; k++) {
                         var category:SoftwareCategory=categories[k];
 
-                        for (var l:int=0; l < _currCatalogCategories.length; l++) {
-                            var sc:Object=_currCatalogCategories.getItemAt(l);
-                            if (sc.data.id == category.id) {
-                                ns_categoriesListInput.selectedItems.push(sc);
+                        for (var l:int=0; l < this._boundMasterCategories.length; l++) {
+                            var sc:Object=_boundMasterCategories.getItemAt(l);
+                            if (sc && sc.data && sc.data.id && sc.data.id == category.id) {
+                                addToCurrentCategoryList(sc);
                                 break;
                             }
                         }
@@ -250,6 +259,8 @@
             private function handleMasterTechnologiesLoad(e:ResultEvent):void {
                 trace("handleMasterTechnologiesLoad: " + e + ", " + e.result);
                 if (e && e.result) {
+                    _boundMasterTechnologies.removeAll();
+
                     var technologies:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SoftwareTechnology) as ArrayCollection;
 
                     _masterTechnologies=new ArrayCollection();
@@ -376,7 +387,12 @@
 
                     _catalogs.refresh();
 
+                    // set root category.
                     setRootCategory();
+
+                    // set master categories.
+                    setMasterCategories(this.ns_catalogNameInput.selectedItem);
+
                     setCategories();
                 }
             }
@@ -395,8 +411,8 @@
             public function ns_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean { // BUGR-1067
                 if (ns_ctInput.text == "") {
                     if (showMsg) {
-    	        		Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
-    	        		return false;
+                        Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+                        return false;
                     }
                 }
 
@@ -439,31 +455,31 @@
                     }
                 }
 
-                if (_currCatalogCategories && _currCatalogCategories.length > 0 && !ns_categoriesListInput.selectedItems) {
+                if (_boundMasterCategories && _boundMasterCategories.length > 0 && _boundCurrentCategories.length == 0) {
                     if (showMsg) {
                         Helper.showAlertMessage("Please select valid categories" + (showPageName ? " at Details Page" : ""));
                         return false;
                     }
                 }
 
-                this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.htmlText; // BUGR-1379
+                this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
                 this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.functionalDescription=ns_funcDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.comments=ns_comments.htmlText;
 
                 // assign root category.
-                this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_categoriesListInput.selectedItem.data;
+                this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
 
                 // assign list of categories.
-                if (this.ns_categoriesListInput.selectedItems) {
+                if (this._boundCurrentCategories) {
                     this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                    for (var k:int=0; k < this.ns_categoriesListInput.selectedItems.length; k++) {
-                        var item:Object=this.ns_categoriesListInput.selectedItems[k];
+                    for (var k:int=0; k < this._boundCurrentCategories.length; k++) {
+                        var item:Object=this._boundCurrentCategories[k];
                         if (!item || !item.data) {
                             continue;
                         }
-                        
+
                         this.mainWidget.softwareCompetition.assetDTO.categories.push(item.data);
                     }
                 }
@@ -491,8 +507,8 @@
                 this.mainWidget.review.ns_catalogNameStr=ns_catalogNameInput.selectedItem.label;
 
                 this.mainWidget.review.ns_categoriesData=new ArrayCollection();
-                for (var n:int=0; n < this.ns_categoriesListInput.selectedItems.length; n++) {
-                    this.mainWidget.review.ns_categoriesData.addItem(this.ns_categoriesListInput.selectedItems[n].label);
+                for (var n:int=0; n < this._boundCurrentCategories.length; n++) {
+                    this.mainWidget.review.ns_categoriesData.addItem(this._boundCurrentCategories[n].label);
                 }
 
                 return true;
@@ -578,29 +594,31 @@
                     mainWidget.height-=ADDEDHEIGHT;
                     widgetHeight-=ADDEDHEIGHT;
                 }
-	        }
-	        
-	        private function showGoalsHint(event:MouseEvent):void {
-                if (event.target.label == "[+ show hint]"){
-                    event.target.label = "[- show hint]";
-                    goalsHint.height = ADDEDHEIGHT_GOALS;
-                    goalsHint.htmlText = primaryGoalHint;
-                    goalsHint.visible = true;
-                    mainWidget.height += ADDEDHEIGHT_GOALS;
-                    widgetHeight += ADDEDHEIGHT_GOALS;
-                }else{
-                    event.target.label = "[+ show hint]";
-                    goalsHint.height = 0;
-                    goalsHint.htmlText = "";
-                    goalsHint.visible = false;
-                    mainWidget.height -= ADDEDHEIGHT_GOALS;
-                    widgetHeight -= ADDEDHEIGHT_GOALS;
+            }
+
+            private function showGoalsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    goalsHint.height=ADDEDHEIGHT_GOALS;
+                    goalsHint.htmlText=primaryGoalHint;
+                    goalsHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT_GOALS;
+                    widgetHeight+=ADDEDHEIGHT_GOALS;
+                } else {
+                    event.target.label="[+ show hint]";
+                    goalsHint.height=0;
+                    goalsHint.htmlText="";
+                    goalsHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT_GOALS;
+                    widgetHeight-=ADDEDHEIGHT_GOALS;
                 }
             }
 
-            /**
-             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-             */
+            //
+            // handler for adding technology to master list.
+            // this removes technology from current list and adds to master list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
             private function addToMasterTechList():void {
                 var item:Object=this.ns_curTechList.selectedItem;
 
@@ -646,6 +664,91 @@
                 }
 
                 _boundCurrentTechnologies.refresh();
+            }
+
+            //
+            // handler for adding category to master list.
+            // this removes technology from current list and adds to master list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToMasterCategoryList():void {
+                var item:Object=this.ns_curCategoryList.selectedItem;
+
+                // remove item from current technologies.
+                var index:int=_boundCurrentCategories.getItemIndex(item);
+                _boundCurrentCategories.removeItemAt(index);
+
+                // add item to master technologies.
+                _boundMasterCategories.addItem(item);
+
+                sortBoundMasterCategories();
+            }
+
+            //
+            // handler for adding category to current list.
+            // this removes technology from master list and adds to current list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToCurrentCategoryList(item:Object):void {
+                if (!item) {
+                    item=this.ns_masterCategories.selectedItem;
+                }
+
+                // remove item from master technologies;
+                var index:int=_boundMasterCategories.getItemIndex(item);
+                _boundMasterCategories.removeItemAt(index);
+
+                // add item to current technologies;
+                _boundCurrentCategories.addItem(item);
+
+                sortCurrentCategories();
+            }
+
+            //
+            // it sorts the current categories item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortCurrentCategories():void {
+                if (!_boundCurrentCategories.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundCurrentCategories.sort=sort;
+                }
+
+                _boundCurrentCategories.refresh();
+            }
+
+            //
+            // sort master categories item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortBoundMasterCategories():void {
+                if (!_boundMasterCategories.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundMasterCategories.sort=sort;
+                }
+
+                _boundMasterCategories.refresh();
+            }
+
+            //
+            // Sets the master categories for the specified catalog data.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function setMasterCategories(catalogData:Object):void {
+                _boundMasterCategories.removeAll();
+                _boundCurrentCategories.removeAll();
+                
+                if (catalogData && catalogData.data && catalogData.data.id) {
+                    // set master categories.
+                    var categories:ArrayCollection=this._catalogToCategoriesMap[catalogData.data.id];
+                    for each (var c:Object in categories) {
+                        _boundMasterCategories.addItem(c);
+                    }
+                    
+                    sortBoundMasterCategories();
+                }
             }
         ]]>
     </mx:Script>
@@ -907,7 +1010,7 @@
                     <mx:ComboBox id="ns_catalogNameInput"
                                  width="292"
                                  dataProvider="{_catalogs}"
-                                 change="_currCatalogCategories=_catalogToCategoriesMap[ComboBox(event.target).selectedItem.data.id]"/>
+                                 change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
                     <mx:LinkButton label="[+ show hint]"/>
                 </mx:HBox>
                 <mx:Text id="ns_catalogNameHints"
@@ -924,24 +1027,63 @@
                  since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                  Added catalog categories control.
             -->
-            <mx:VBox width="100%"
-                     verticalGap="0">
+            <mx:VBox verticalGap="0">
                 <mx:HBox>
-                    <mx:Label text="Categories:"
+                    <mx:Label text="Master Categories:"
                               fontWeight="bold"/>
-                    <mx:List id="ns_categoriesListInput"
-                             width="292"
-                             allowMultipleSelection="true"
-                             dataProvider="{_currCatalogCategories}"/>
+                    <mx:Spacer width="100"/>
+                    <mx:Label text="Current Project Categories:"
+                              fontWeight="bold"/>
                     <mx:LinkButton label="[+ show hint]"/>
                 </mx:HBox>
-                <mx:Text id="ns_categoriesListHints"
+                <mx:Text id="categoriesHint_ns"
+                         height="0"
                          color="0x888888"
                          width="500"
-                         height="0"
-                         visible="false">
-                </mx:Text>
+                         visible="false"
+                         verticalCenter="top"/>
             </mx:VBox>
+
+            <mx:HBox verticalAlign="top">
+                <mx:List id="ns_masterCategories"
+                         width="225"
+                         dataProvider="{_boundMasterCategories}"
+                         doubleClickEnabled="true"
+                         doubleClick="addToCurrentCategoryList(null)"/>
+                <mx:VBox verticalAlign="middle">
+                    <mx:Button id="toCurrentCategoryList"
+                               label=">"
+                               click="addToCurrentCategoryList(null)"/>
+                    <mx:Spacer height="5"/>
+                    <mx:Button id="toMasterCategoryList"
+                               label="&lt;"
+                               click="addToMasterCategoryList()"/>
+                </mx:VBox>
+                <mx:List id="ns_curCategoryList"
+                         width="225"
+                         dataProvider="{_boundCurrentCategories}"
+                         doubleClickEnabled="true"
+                         doubleClick="addToMasterCategoryList()"/>
+            </mx:HBox>
+
+            <!--<mx:VBox width="100%"
+                 verticalGap="0">
+                 <mx:HBox>
+                 <mx:Label text="Categories:"
+                 fontWeight="bold"/>
+                 <mx:List id="ns_categoriesListInput"
+                 width="292"
+                 allowMultipleSelection="true"
+                 dataProvider="{_currCatalogCategories}"/>
+                 <mx:LinkButton label="[+ show hint]"/>
+                 </mx:HBox>
+                 <mx:Text id="ns_categoriesListHints"
+                 color="0x888888"
+                 width="500"
+                 height="0"
+                 visible="false">
+                 </mx:Text>
+                 </mx:VBox>-->
 
         </mx:VBox>
     </mx:VBox>
