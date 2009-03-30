@@ -521,6 +521,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 } else {
                     // implementing update is out of scope of this assembly.
                     //updateSoftwareContest();
+		    return;
                 }
             }
 
