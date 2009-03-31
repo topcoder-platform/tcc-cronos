@@ -1630,6 +1630,7 @@ public class ProjectServicesImpl implements ProjectServices {
 					p.setPhaseStatus(PhaseStatus.SCHEDULED);
 					p.setScheduledStartDate(p.calcStartDate());
 					p.setScheduledEndDate(p.calcEndDate());
+					p.setFixedStartDate(p.calcStartDate());
             }
 
             
