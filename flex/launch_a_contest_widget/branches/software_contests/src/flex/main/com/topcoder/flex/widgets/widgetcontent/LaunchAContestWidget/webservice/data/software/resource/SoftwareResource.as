@@ -10,7 +10,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     * 
     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
     */
-    public class SoftwareResource {
+    public class SoftwareResource extends AuditableResourceStructure {
 
         /**
         * A default empty constructor.
@@ -51,5 +51,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         */
         [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.MapEntry")]
         public var properties:Array=null;
+
     }
 }
