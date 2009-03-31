@@ -1007,7 +1007,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 // call resourceManager.updateResources(projectResources, projectHeader.getId(),
                 // operator);
                 Util.log(logger, Level.DEBUG, "Starts calling ResourceManager#updateResources method.");
-                resourceManager.updateResources(projectResources, projectHeader.getId(), operator);
+                projectResources = resourceManager.updateResources(projectResources, projectHeader.getId(), operator);
                 Util.log(logger, Level.DEBUG, "Finished calling ResourceManager#updateResources method.");
             }
 
