@@ -246,6 +246,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * Names are self explanatory.
          */
         // CONSTANTS STARTS HERE
+        private static var PROJECT_INFO_TYPE_VERSION_ID_KEY:String="Version ID";
+        
         private static var PROJECT_INFO_TYPE_ROOT_CATALOG_ID_KEY:String="Root Catalog ID";
 
         private static var PROJECT_INFO_TYPE_NAME_KEY:String="Project Name";
@@ -313,11 +315,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
              
             var entry:MapEntry;
             var ret:Array=new Array();
+            
+            // 3
+            entry=new MapEntry();
+            entry.key=PROJECT_INFO_TYPE_VERSION_ID_KEY;
+            entry.value=getAssetVersionNumber().toString();
+            ret.push(entry);
 
             // 7
             entry=new MapEntry();
             entry.key=PROJECT_INFO_TYPE_VERSION_KEY;
-            entry.value=getAssetVersionNumber().toString();
+            entry.value=getAssetVersionText().toString();
             ret.push(entry);
 
             // 9

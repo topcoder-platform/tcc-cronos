@@ -372,8 +372,8 @@
                 if (firstPlace > 0) {
                     ns_secondPlace.text=new Number(firstPlace * 0.5).toFixed(0);
                     ns_dr.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
-                    ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
-                    ns_cntstTtl.text=(new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(0);
+                    ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(2);
+                    ns_cntstTtl.text=(new Number(ns_firstPlace.text) + new Number(ns_secondPlace.text) + new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(2);
                 }
             }
         ]]>

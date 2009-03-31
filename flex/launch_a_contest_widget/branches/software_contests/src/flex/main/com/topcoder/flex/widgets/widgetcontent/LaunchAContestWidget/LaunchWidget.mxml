@@ -440,15 +440,6 @@
 			            this.currentState = "DetailsState";
                        save.visible = true;
                        
-                       review.cstTypeStep2 = overView.studioType.selection.label;
-                       review.firstPrize = overView.firstPlace.text;
-                       review.secondPrize = overView.secondPlace.text;
-                       review.thirdPrize = overView.thirdPlace.text;
-                       review.fourthPrize = overView.fourthPlace.text;
-                       review.fifthPrize = overView.fifthPlace.text;
-                       review.adminFee = overView.adminf.text;
-                       review.contestTotal = overView.cntstTtl.text;
-                       
                        this.height = DETAILS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -462,10 +453,6 @@
                        save.visible = true;
                        this.height = SPECIFICATIONS_HEIGHT;
                        
-                       review.contentTitleStr = details.ctInput.text;
-                       review.IntroductionStr = competition.contestData.shortSummary;
-    		           review.glsInputStr = competition.contestData.contestDescriptionAndRequirements;
-    
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
 			            break;
@@ -474,12 +461,6 @@
 			            this.currentState = "AttachFilesState";
                        save.visible = true;
                        
-                       review.colorInputStr = specf.colorInput.text;
-                       review.fontInputStr = specf.fontInput.text;
-                       review.sizeInputStr = specf.sizeInput.text;
-                       review.addReInputStr = specf.addReInput.text;
-    				 
-                       review.fileFormatInputStr = competition.contestData.finalFileFormat;
                        this.height = ATTACH_FILES_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
@@ -502,13 +483,6 @@
 			            
 			           this.currentState = "ReviewState";
                        save.visible = true;
-    
-                       review.fromDate = sched.dfStart.selectedDate;
-                       review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+sched.timezoneStart.text;
-                       review.toDate = sched.dfEnd.selectedDate;
-                       review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+sched.timezoneEnd.text;
-    
-                       review.setAllValues();
     
                        this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -554,7 +528,6 @@
                    this.height = OVERVIEW_HEIGHT;  // BUGR-1134
                    back.visible = true;
                    
-                   review.cstTypeStep1 = contestSelect.contestType.selection.label; // BUGR-1067
                    setPreviousStep(step1box); // BUGR-1141
                    setCurStep(step2box);// BUGR-1141
                    
@@ -593,9 +566,6 @@
                     this.currentState="SpecificationsState";
                     save.visible=true; // BUGR-1445
                     this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
-                    review.contentTitleStr=details.ctInput.text; // BUGR-1379
-                    review.IntroductionStr=competition.contestData.shortSummary; // BUGR-1279
-                    review.glsInputStr=competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
                     setPreviousStep(step3box);
                     setCurStep(step4box);
                 } else if (this.currentState == "SpecificationsState") {
@@ -1043,6 +1013,13 @@
         <mx:operation name="createSoftwareContest"
                       resultFormat="object"
                       fault="showWebserviceError('createSoftwareContest', event);">              
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To update software contests -->
+        <mx:operation name="updateSoftwareContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('updateSoftwareContest', event);">              
         </mx:operation>
         
     </mx:WebService>

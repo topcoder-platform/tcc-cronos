@@ -520,8 +520,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     createSoftwareContest();
                 } else {
                     // implementing update is out of scope of this assembly.
-                    //updateSoftwareContest();
-		    return;
+                    updateSoftwareContest();
                 }
             }
 
@@ -562,16 +561,61 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
          */
         private function createSoftwareContestHandler(e:ResultEvent):void {
-            trace("createContestHandler: " + e + ", " + e.result);
+            trace("createSoftwareContestHandler: " + e + ", " + e.result);
             if (p) {
                 PopUpManager.removePopUp(p);
                 p=null;
             }
             if (e && e.result) {
                 this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
-                trace("createContestHandler:: this.competition: " + this.softwareCompetition);
+                trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
 
                 Helper.showAlertMessage("Contest created successfully!");
+            }
+        }
+        
+        /**
+         * Updates software contest.
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        private function updateSoftwareContest():void {
+
+            // set dynamic properties before save.
+            var prizes:Array=new Array();
+            for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
+                var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
+                prizes.push(p);
+            }
+
+	    // we need a reason for update
+	    this.softwareCompetition.projectHeaderReason = "user update";
+
+            SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
+            SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
+            SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
+            
+            var updateContestOp:AbstractOperation=_csws.getOperation("updateSoftwareContest");
+            
+            updateContestOp.addEventListener("result", updateSoftwareContestHandler);
+            updateContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
+        }
+
+        /**
+         * Handler for software contest update.
+         * 
+         * @param e a <code>ResultEvent</code>
+         *
+         * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+         */
+        private function updateSoftwareContestHandler(e:ResultEvent):void {
+            trace("updateSoftwareContestHandler: " + e + ", " + e.result);
+            if (p) {
+                PopUpManager.removePopUp(p);
+                p=null;
+            }
+            if (e && e.result) {
+                Helper.showAlertMessage("Contest updated successfully!");
             }
         }
 
