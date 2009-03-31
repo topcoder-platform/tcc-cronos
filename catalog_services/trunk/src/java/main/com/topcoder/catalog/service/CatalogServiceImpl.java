@@ -929,7 +929,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
             checkString("versionText", assetDTO.getVersionText());
             checkList("technologies", assetDTO.getTechnologies());
             populateVersionTechnologies(assetDTO, getEntityManager(), versionToUpdate);
-            if (versionToUpdate.getDocumentation() != null) {
+            if (versionToUpdate.getDocumentation() != null && versionToUpdate.getDocumentation().size() > 0) {
                 populateVersionDocumentation(assetDTO, getEntityManager(), versionToUpdate);
             }
             versionToUpdate.setVersionText(assetDTO.getVersionText());
