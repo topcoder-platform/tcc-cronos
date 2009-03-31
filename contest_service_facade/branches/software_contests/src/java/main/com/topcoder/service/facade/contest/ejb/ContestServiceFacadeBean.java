@@ -88,6 +88,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.Set;
+import java.util.Arrays;
 
 /**
  * <p>This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
@@ -1879,8 +1881,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // set the project properties.
                 //
                 if (assetDTO != null) {
-                    contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY,
-                            assetDTO.getVersionId().toString());
+                    /*contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY,
+                            assetDTO.getVersionId().toString());*/
                     contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY,
                             assetDTO.getVersionId().toString());
                     contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY,
@@ -1951,6 +1953,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				{
 					UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 					
+						Set phaseset = contest.getProjectPhases().getPhases();
+						com.topcoder.project.phases.Phase[] phases = 
+							      (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
+						// add back project on phase
+						for (int i = 0; i < phases.length; i++) {
+							phases[i].setProject(contest.getProjectPhases());
+						}
 						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 						FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
 								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
