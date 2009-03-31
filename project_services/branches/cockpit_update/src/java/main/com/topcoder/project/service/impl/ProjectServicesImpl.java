@@ -479,6 +479,7 @@ public class ProjectServicesImpl implements ProjectServices {
         this.template = phaseTemplate;
     }
 
+
     /**
      * <p>
      * Creates new object by ObjectFactory.
@@ -1131,6 +1132,12 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNullOrEmpty(projectHeaderReason, null, null,
                 "The parameter[projectHeaderReason] should not be null or empty.");
 
+		if (template != null)
+		{
+			projectPhases.setWorkdays(template.getWorkdays());
+		}
+			
+
         validateUpdatePhases(projectHeader, projectPhases);
         validateUpdateResources(projectHeader, projectPhases, projectResources);
 
@@ -1149,6 +1156,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.ERROR, pde.getMessage());
                 throw pde;
             }
+
 
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#updateProject method.");
