@@ -19,6 +19,7 @@ import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -29,12 +30,14 @@ import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
 import com.topcoder.service.project.SoftwareCompetition;
+import com.topcoder.service.project.CompetitionPrize;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.SubmissionFeedback;
 import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
@@ -51,6 +54,7 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
@@ -71,6 +75,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.activation.DataHandler;
+import javax.persistence.EntityManager;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -83,6 +88,7 @@ import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
 
 import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -398,6 +404,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		contestData.setContestAdministrationFee(total*0.2);
 		contestData.setDrPoints(total*0.1);
 
+		if(contestData.getLaunchDateAndTime() == null) { // BUGR-1445
+            /*
+               - start: current time + 1 hour (round the minutes up to the nearest 15) 
+               - end: start time + 3 days 
+             */
+		    GregorianCalendar startDate = new GregorianCalendar();
+		    startDate.setTime(new Date());
+		    startDate.add(Calendar.HOUR, 1);
+		    int m = startDate.get(Calendar.MINUTE);
+		    startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+		    contestData.setLaunchDateAndTime(getXMLGregorianCalendar(startDate.getTime()));
+		    contestData.setDurationInHours(24 * 3); // 3 days
+		}
+		
 		// BUGR-1088
 
         Date startDate = getDate(contestData.getLaunchDateAndTime());
@@ -429,7 +449,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public StudioCompetition getContest(long contestId) throws PersistenceException, ContestNotFoundException {
         ContestData studioContest = this.studioService.getContest(contestId);
-        return (StudioCompetition) convertToCompetition(CompetionType.STUDIO, studioContest);
+        // BUGR-1363
+        StudioCompetition competition = (StudioCompetition) convertToCompetition(CompetionType.STUDIO, studioContest);
+        competition.getContestData().setPayments(getContestPayments(contestId));
+        Logger.getLogger(this.getClass()).info("for contest " + contestId + ", payments #: " + competition.getContestData().getPayments().size());
+        return competition;
     }
 
     /**
@@ -462,7 +486,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public void updateContest(StudioCompetition contest) throws PersistenceException, ContestNotFoundException {
 
     	ContestData studioContest = convertToContestData(contest);
-
+    	
+    	// BUGR-1363
+        double total = 0;
+        for (PrizeData prize : studioContest.getPrizes()) {
+            total += prize.getAmount();
+        }
+        studioContest.setContestAdministrationFee(total * 0.2);
+        studioContest.setDrPoints(total * 0.1);
+        
     	Date startDate = getDate(studioContest.getLaunchDateAndTime());
         Date endDate = new Date((long) (startDate.getTime() + 60l * 60 * 1000 * studioContest.getDurationInHours()));
         Date winnerAnnouncementDeadlineDate;
@@ -832,15 +864,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
-     * <p>Gets the contest payment referenced by specified contest ID.</p>
-     *
-     * @param contestId a <code>long</code> providing the ID of a contest to get payment details for.
+     * <p>
+     * Gets the contest payment referenced by specified contest ID.
+     * </p>
+     * 
+     * @param contestId
+     *            a <code>long</code> providing the ID of a contest to get payment details for.
      * @return a <code>ContestPaymentData</code> representing the contest payment matching the specified ID; or
      *         <code>null</code> if there is no such contest.
-     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
      */
-    public ContestPaymentData getContestPayment(long contestId) throws PersistenceException {
-        return this.studioService.getContestPayment(contestId);
+    public List<ContestPaymentData> getContestPayments(long contestId) throws PersistenceException {
+        return this.studioService.getContestPayments(contestId);
     }
 
     /**
@@ -1145,8 +1181,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     *  @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestCreditCardPayment(StudioCompetition competition,
+    public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition,
             CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
 
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
@@ -1181,8 +1218,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
+    public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
             TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
             ContestNotFoundException {
 
@@ -1219,8 +1257,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    private PaymentResult processContestPaymentInternal(StudioCompetition competition, PaymentData paymentData)
+    private ContestPaymentResult processContestPaymentInternal(StudioCompetition competition, PaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException {
 
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
@@ -1243,7 +1282,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			if (tobeUpdatedCompetition == null) {
 				tobeUpdatedCompetition = createContest(competition, competition.getContestData().getTcDirectProjectId());
 			}
+			else
+			{
+				tobeUpdatedCompetition = competition;
+			}
 
+			// BUGR-1363
+			List<ContestPaymentData> payments =  tobeUpdatedCompetition.getContestData().getPayments();
+			double paymentAmount;
+            // how much user already paid
+			double paidFee = 0.0;
+			for(ContestPaymentData cpd : payments) {
+                paidFee += cpd.getPrice();
+            }
+			// calculate current contest fee
+            double currentFee = 0.0;
+            for (PrizeData prize : competition.getContestData().getPrizes()) {
+                currentFee += prize.getAmount();
+            }
+            currentFee *= 0.2;
+            // calculate the difference which user has to pay
+            paymentAmount = currentFee - paidFee;
+            Logger.getLogger(this.getClass()).info("extra payment is: " + paymentAmount);
+            if (Double.compare(paymentAmount, 0.0) <= 0) {
+                throw new PersistenceException("cannot decrease prize amount at this time", "");
+            }
+
+            
 			PaymentResult result = null;
 
         if (paymentData instanceof TCPurhcaseOrderPaymentData) {
@@ -1257,10 +1322,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             CreditCardPaymentData creditCardPaymentData = (CreditCardPaymentData) paymentData;
             
 
-            creditCardPaymentData.setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
-                    .getContestAdministrationFee()));
-            // BUGR-1239
-            creditCardPaymentData.setComment1("Contest Fee");
+            creditCardPaymentData.setAmount(Double.toString(paymentAmount)); // BUGR-1363
+            if (Double.compare(paidFee, 0.0) > 0) { // BUGR-1363
+                creditCardPaymentData.setComment1("Contest Fee (Prize Adjustment)");
+            } else {
+                // BUGR-1239
+                creditCardPaymentData.setComment1("Contest Fee");
+            }
             creditCardPaymentData.setComment2(String.valueOf(tobeUpdatedCompetition.getContestData().getContestId()));
             result = paymentProcessor.process(paymentData);
 		}
@@ -1282,7 +1350,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			}
 			contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
 			contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
-			contestPaymentData.setPrice(tobeUpdatedCompetition.getContestData().getContestAdministrationFee());
+			contestPaymentData.setPrice(paymentAmount);
 
 			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 			String userId = Long.toString(p.getUserId());
@@ -1297,8 +1365,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			// update contest.
 			updateContest(tobeUpdatedCompetition);
 
-
-			return result;
+			// BUGR-1494
+			ContestPaymentResult contestPaymentResult = new ContestPaymentResult();
+			contestPaymentResult.setPaymentResult(result);
+			contestPaymentResult.setContestData(getContest(tobeUpdatedCompetition.getContestData().getContestId()).getContestData());
+			return contestPaymentResult;
 		}
 		catch (PersistenceException e)
 		{
@@ -1645,6 +1716,54 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			throw new PaymentException(e.getMessage(), e);
 		}
 
+    }
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers in the rank order.
+     * </p>
+     * 
+     * @param submissionIdsInRankOrder
+     *            an array of long submission identifier in the rank order.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException {
+        try {
+            for (int i = 0; i < submissionIdsInRankOrder.length; i++) {
+                this.studioService.setSubmissionPlacement(submissionIdsInRankOrder[i], i + 1);
+            }
+
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Updates the submission feedback.
+     * </p>
+     * 
+     * @param feedbacks
+     *            an array of <code>SubmissionFeedback</code>
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException {
+        try {
+            for (SubmissionFeedback f : feedbacks) {
+                this.studioService.updateSubmissionFeedback(f);
+            }
+
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
     }
 
     /**

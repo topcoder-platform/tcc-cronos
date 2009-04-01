@@ -9,6 +9,7 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.SubmissionFeedback;
 import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -27,6 +28,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -429,8 +431,9 @@ public interface ContestServiceFacade {
      *         <code>null</code> if there is no such contest.
      * @throws PersistenceException if any error occurs when getting contest.
      * @tested
+     * @since BUGR-1363 changed method signature
      */
-    public ContestPaymentData getContestPayment(long contestId) throws PersistenceException;
+    public List<ContestPaymentData> getContestPayments(long contestId) throws PersistenceException;
 
     /**
      * <p>Updates specified contest payment data.</p>
@@ -635,11 +638,22 @@ public interface ContestServiceFacade {
      *             if any errors occurs in processing the payment.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestCreditCardPayment(StudioCompetition competition, CreditCardPaymentData paymentData)
+    public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition, CreditCardPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException;
 
-    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+    /**
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
+     * 
+     * @param competition
+     * @param paymentData
+     * @return
+     * @throws PersistenceException
+     * @throws PaymentException
+     * @throws ContestNotFoundException
+     */
+    public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
@@ -730,6 +744,32 @@ public interface ContestServiceFacade {
      */
     public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
             PersistenceException;
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers in the rank order.
+     * </p>
+     * 
+     * @param submissionIdsInRankOrder
+     *            an array of long submission identifier in the rank order.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Updates the submission feedback.
+     * </p>
+     * 
+     * @param feedbacks
+     *            an array of <code>SubmissionFeedback</code>
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException;
 
     /**
      * <p>Returns a list containing all active <code>Categories</code>.</p>
