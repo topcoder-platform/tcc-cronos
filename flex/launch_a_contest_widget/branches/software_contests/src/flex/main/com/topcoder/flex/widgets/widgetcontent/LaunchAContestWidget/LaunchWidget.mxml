@@ -101,6 +101,9 @@
                 isStudioContestType=val;
                 DETAILS_HEIGHT=(val ? 950 : 1850);
                 REVIEW_HEIGHT=(val ? 1165 : 1350); // BUGR-1067
+                details.widgetHeight=DETAILS_HEIGHT; // BUGR-1134
+                review.height=REVIEW_HEIGHT; // BUGR-1134
+                
                 // BUGR-1067
                 stepNumber=1;
                 setStep(step1box);
@@ -250,8 +253,8 @@
                 flag=flag + f;
                 if (flag >= 3 && competition && competition.competitionId > 0) {
                     flag=4;
-                    var competitionType:String="STUDIO";
-                    competition.type=competitionType;
+                    this.competitionType="STUDIO";
+                    competition.type=this.competitionType;
                     startLaunchProcess();
                     next();
                 }

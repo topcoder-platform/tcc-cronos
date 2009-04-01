@@ -13,7 +13,7 @@
             import mx.controls.Label;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import mx.collections.ArrayCollection;
-	    import mx.controls.ButtonLabelPlacement; // BUGR-1501
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501
 
             //step1 data
             public var cstTypeStep1:String;
@@ -121,12 +121,16 @@
                     ns_detailedDesc.text=ns_detailedDescStr;
                     ns_comments.text=ns_commentsStr;
 
+                    // fix repeat of technologies.
+                    ns_techList.htmlText="";
                     for each (var a:Object in ns_techListData) {
                         ns_techList.htmlText+=a.toString() + "<BR>";
                     }
 
                     ns_catalogName.text=ns_catalogNameStr;
 
+                    // fix repeat of categories.
+                    ns_categories.htmlText="";
                     for each (var b:Object in ns_categoriesData) {
                         ns_categories.htmlText+=b.toString() + "<BR>";
                     }
