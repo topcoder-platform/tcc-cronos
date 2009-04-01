@@ -349,7 +349,7 @@
             <mx:VBox visible="{mainWidget.studioContestType}"
                      includeInLayout="{mainWidget.studioContestType}">
                 <mx:HBox width="100%">
-                    <mx:Label text="Contest Type:"
+                    <mx:Label text="Type:"
                               fontWeight="bold"/>
                     <mx:Text id="contestType_step2"
                              text="Application Front End Design"/>
