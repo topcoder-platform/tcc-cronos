@@ -193,9 +193,9 @@
                 details.widgetHeight=940; // BUGR-1134
                 specf.widgetHeight=800;
                 attch.height=600;
-                sched.height=750;
-                overView.height=645; // BUGR-1134
-                review.height=1100; // BUGR-1134
+                sched.height=780;
+                overView.height=700; // BUGR-1134
+                review.height=1120; // BUGR-1134
                 contestSelect.mainWidget=this;
                 overView.mainWidget=this;
                 details.mainWidget=this;
@@ -541,8 +541,12 @@
 					}
 
                     this.currentState="DetailsState";
-                    save.visible=true; // BUGR-1445
-                    this.height=DETAILS_HEIGHT; // BUGR-1134
+                   save.visible = true; // BUGR-1445
+
+					if(getExtraContestFee() > 0) {// BUGR-1363
+                   		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
+                   }
+                  
                     setPreviousStep(step2box);
                     setCurStep(step3box);
                 } else if (this.currentState == "DetailsState") {
@@ -594,6 +598,10 @@
                     if (sched.validateFields() == false) {
                         return;
                     }
+                   save.label = getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
+                   if(getExtraContestFee() == 0) { // BUGR-1363
+                    	goNext.visible = false;
+                   }
 
                     this.currentState="ReviewState";
                     save.visible=true;
@@ -625,9 +633,8 @@
                     setCurStep(step8box);
                     setButton(1);
 
-                    activate.contentTitleStr=review.contentTitleStr;
-                    activate.contestTotal=review.adminFee;
-
+                    activate.contentTitleStr = review.contentTitleStr;
+                    activate.contestTotal = getExtraContestFee().toFixed(2); // BUGR-1363
                     activate.initData();
                 } else if (this.currentState == "ActivateState") {
                     save.visible=false;
@@ -644,17 +651,17 @@
             private function setButton(index:int):void {
                 switch (index) {
                     case 1:
-                        goNext.label = "Confirm Order";
+                        goNext.label = "CONFIRM ORDER";
                         goNext.visible = true;
                         back.visible = true;
                         break;
                     case 2:
-                        goNext.label = "Submit for Processing";
+                        goNext.label = "SUBMIT FOR PROCESSING";
                         goNext.visible = true;
                         back.visible = true;
                         break;
                     case 3:
-                        goNext.label = "Submit Purchase";
+                        goNext.label = "SUBMIT PURCHASE";
                         goNext.visible = true;
                         back.visible = true;
                         break;
@@ -707,7 +714,7 @@
                         setNextStep(step4box);
                         return;
                     }
-
+					goNext.visible = true; // BUGR-1363
                     this.currentState="SpecificationsState";
                     this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setCurStep(step4box);
@@ -908,11 +915,9 @@
             }
             
             private function showWebserviceError(opName:String, event:FaultEvent):void {
-                if (p) {
-                    PopUpManager.removePopUp(p);
-                    p=null;
-                }
-                
+            	
+			    hideLoadingProgress();
+			    
                 Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
             }
 

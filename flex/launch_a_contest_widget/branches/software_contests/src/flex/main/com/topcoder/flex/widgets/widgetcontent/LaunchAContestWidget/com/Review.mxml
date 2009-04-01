@@ -13,6 +13,7 @@
             import mx.controls.Label;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import mx.collections.ArrayCollection;
+	    import mx.controls.ButtonLabelPlacement; // BUGR-1501
 
             //step1 data
             public var cstTypeStep1:String;
@@ -251,13 +252,13 @@
         <mx:HBox horizontalAlign="right"
                  width="100%">
             <mx:Label text="Review"
-                      fontWeight="bold"
+                      styleName="sectionTitle"
                       width="80%"/>
             <mx:Spacer width="100"/>
-            <mx:LinkButton baseline="middle"
-                           styleName="linkBtn"
-                           label="Preview Contest"
-                           click="this.mainWidget.previewContest()"/>
+            <mx:Button styleName="arrowRightBtnStyle" 
+                       labelPlacement="{ButtonLabelPlacement.LEFT}" 
+                       label="PREVIEW CONTEST" 
+                       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
             <mx:Image source="@Embed('../../assets/more_info.png')"/>
         </mx:HBox>
 
@@ -269,25 +270,31 @@
             <mx:Label text="Contest Selection"
                       fontWeight="bold"/>
             <mx:Spacer height="15"/>
-            <mx:HBox width="100%">
-                <mx:Label text="Contest Type:"
-                          fontWeight="bold"/>
-                <mx:Text id="contestType_step1"
-                         text="Studio"/>
-                <mx:Spacer width="375"/>
-                <!--
-                     <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
-                -->
-            </mx:HBox>
+	        <mx:HBox width="100%">
+	            <mx:Label text="Contest Type:" fontWeight="bold" />
+	            <mx:Text id="contestType_step1" text="Studio" />
+	            <mx:Spacer width="375"/>
+		    <!--
+	            <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
+		    -->
+	        </mx:HBox>
+        </mx:VBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Overview" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+            <mx:Spacer height="15"/>
+
+	       
         </mx:VBox>
 
         <mx:HRule width="100%"
                   strokeColor="0x000000"/>
 
-        <mx:VBox width="100%"
-                 verticalGap="0">
-            <mx:Label text="Contest Overview"
-                      fontWeight="bold"/>
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Details" 
+                      styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
             <mx:VBox visible="{!mainWidget.studioContestType}"
                      includeInLayout="{!mainWidget.studioContestType}">
@@ -467,8 +474,7 @@
                  visible="{!mainWidget.studioContestType}"
                  includeInLayout="{!mainWidget.studioContestType}">
             <mx:Label text="Contest Details"
-                      fontWeight="bold"
-                      fontSize="12"/>
+                      styleName="subsectionTitle"/>
             <mx:Spacer height="15"/>
             <mx:HBox>
                 <mx:Label text="Component Name:"
@@ -541,38 +547,38 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:Label text="Contest Specifications"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Spacer height="15"/>
                 <mx:Label text="Colors:"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text id="colorInput"
                          width="500"
                          height="50"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Fonts:"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text id="fontInput"
                          width="500"
                          height="50"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Size:"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text id="sizeInput"
                          width="500"
                          height="50"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Additional Requirements or Restrictions:"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text id="addReInput"
                          width="500"
                          height="50"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Final File Formats:"
-                          fontWeight="bold"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text id="fileFormatInput"
                          width="500"
                          height="50"
@@ -593,7 +599,7 @@
         <mx:VBox width="100%"
                  verticalGap="0">
             <mx:Label text="Attach Files"
-                      fontWeight="bold"/>
+                     styleName="subsectionTitle"/>
 
             <mx:Spacer height="15"/>
             <mx:HRule width="100%"/>
@@ -617,7 +623,7 @@
         <mx:VBox width="100%"
                  verticalGap="0">
             <mx:Label text="Set the Contest Schedule"
-                      fontWeight="bold"/>
+                      styleName="subsectionTitle"/>
             <mx:Spacer height="15"/>
             <mx:HBox>
                 <mx:Label text="Start Date:"

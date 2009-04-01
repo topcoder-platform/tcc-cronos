@@ -2,15 +2,17 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
-		    import mx.rpc.events.FaultEvent;
+		        import mx.rpc.events.FaultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 			import mx.managers.PopUpManager;
 			import com.topcoder.flex.Helper;
+		        import mx.controls.ButtonLabelPlacement; // BUGR-1501			
 		
-		import mx.rpc.events.ResultEvent;
+		        import mx.rpc.events.ResultEvent;
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
        	
@@ -85,69 +87,71 @@
             }
             
             private function paymentFaultEventHandler(e:FaultEvent):void {
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
     			
                 Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
                         "Please be sure to save your work and try again if you think you received this message by mistake.");        
             }
             
+            // BUGR-1494
             private function processCreditCardPaymentResponse(e:ResultEvent):void
             {
                 //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
                 
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
 			
                 if (e && e.result) {
-                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
-            	    trace("processCreditCardPaymentResponse:: paymentResult: " + paymentResult);
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    wf2.showApproval(paymentResult.referenceNumber);
-                }
+                    wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                
+                	// update contest data   
+                	mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
+            	}
+				mainWidget.notifyMyProjectWidget();
             }
 
+			// BUGR-1494
             private function processPOPaymentResponse(e:ResultEvent):void
             {
                 //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
                 
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
     			
                 if (e && e.result) {
-                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
-            	    trace("processPOPaymentResponse:: paymentResult: " + paymentResult);
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processPOPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    wf3.showApproval(paymentResult.referenceNumber);
+                    wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                    
+                    // update contest data   
+                    mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
                 }
+				mainWidget.notifyMyProjectWidget();
             }
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%" styleName="boxStyle">
 		<mx:HBox horizontalAlign="right" width="100%">
-			<mx:Label styleName="header" text="{header}" width="80%"/>
+			<mx:Label text="{header}" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
 			<mx:Spacer width="100" />	
-			<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-			    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
 		</mx:HBox>
 		<mx:Text width="100%" htmlText="{text1}" styleName="content" />
 		<mx:Text width="100%" text="{text2}" styleName="content"/>
@@ -172,7 +176,7 @@
 					</mx:HBox>
 				</mx:GridItem>
 				<mx:GridItem horizontalAlign="center" width="165">
-					<mx:Text text="Contest Launch Fee" styleName="contentGrey" />
+					<mx:Text text="{mainWidget.getPaidContestFee() > 0 ? 'Contest Launch Fee\n(Prize Adjustment)' : 'Contest Launch Fee'}" styleName="contentGrey" /> <!-- BUGR-1363 -->
 				</mx:GridItem>
 				<mx:GridItem horizontalAlign="center" width="159">
 					<mx:Text id="textContestLaunchFee" styleName="contentGrey" />

@@ -4,7 +4,8 @@
            height="100%"
            xmlns:tc="com.topcoder.flex.util.editor.*"
            horizontalScrollPolicy="off"
-           verticalScrollPolicy="off">
+           verticalScrollPolicy="off"
+		   creationComplete="handleCreationComplete(event)">
     <mx:Script>
         <![CDATA[
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
@@ -19,15 +20,20 @@
             import flash.events.MouseEvent;
             import mx.containers.Panel;
             import com.topcoder.flex.util.editor.TCRichTextEditor;
-
-            import flash.utils.Dictionary;
-
-            import mx.rpc.AbstractOperation;
+	    import mx.controls.ButtonLabelPlacement; // BUGR-1501
+	    import flash.utils.Dictionary;
+	    import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.soap.mxml.WebService;
 
             import mx.collections.SortField;
             import mx.collections.Sort;
+
+	    private static const ADDEDHEIGHT:Number = 80;
+	    private static const ADDEDHEIGHT_GOALS:Number = 380;
+	    private var dx:Number = 0;
+	    private var dy:Number = 0;
+
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -41,8 +47,6 @@
             public var criteriaHint:String;
             public var parser:RteHtmlParser;
 
-            private static const ADDEDHEIGHT:Number=80;
-            private static const ADDEDHEIGHT_GOALS:Number=380;
 
             //
             // Stores master technology list as retrieved from web-service.
@@ -164,9 +168,22 @@
                         setCategories();
                     }
                 }
+	  }
 
-                parser=new RteHtmlParser();
-            }
+			  // BUGR-1458
+	        private function handleRTEMouseMove(event:MouseEvent):void {
+	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
+	        	if (editor && editor.isResizing) {
+	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
+		        		mainWidget.height += (stage.mouseY - dy);
+		        		widgetHeight += (stage.mouseY - dy);
+
+		        		dx = stage.mouseX;
+		        		dy = stage.mouseY;
+	        		}
+			}
+		}
+
 
             //
             // set current and master technologies to the controls.
@@ -176,6 +193,8 @@
                 if (!_masterTechnologies || !_boundMasterTechnologies) {
                     return;
                 }
+
+
 
                 _boundCurrentTechnologies.removeAll();
 
@@ -613,6 +632,20 @@
                     widgetHeight-=ADDEDHEIGHT_GOALS;
                 }
             }
+
+
+	        private function handleRTEDragStart(event:Event): void {
+	        	dx = stage.mouseX;
+	        	dy = stage.mouseY;
+	        }
+
+	        private function handleCreationComplete(event:Event):void {
+	        	introInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
+	        	introInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+
+	        	glsInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
+	        	glsInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+	        }
 
             //
             // handler for adding technology to master list.

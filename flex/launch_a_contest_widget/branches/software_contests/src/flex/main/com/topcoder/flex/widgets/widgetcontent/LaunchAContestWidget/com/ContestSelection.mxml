@@ -31,6 +31,7 @@
             import mx.utils.ObjectUtil;
             import com.topcoder.flex.Helper;
             import mx.rpc.AbstractOperation;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501			
 	        
 	        [Bindable]
             public var mainWidget:LaunchWidget;
@@ -81,12 +82,16 @@
                 getAllProjectsOp.send();
                 
 		getClientProjectsByUser();
+		
+		        mainWidget.showLoadingProgress();
 
                 selectContests.dataProvider = contestsData;
             }
             
             // TCCC-1023
             private function getAllProjectsHandler(e:ResultEvent):void{
+                mainWidget.hideLoadingProgress();
+                
                 if(e && e.result){
                     var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
                     if(!projects.sort) {
@@ -117,11 +122,15 @@
 			    if (getClientProjectsByUserOp) {
 				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
 				getClientProjectsByUserOp.send();
+				
+				mainWidget.showLoadingProgress();
 			    }
 	    }
 			
 	    private function getClientProjectsHandler(e:ResultEvent):void {
 			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+			    mainWidget.hideLoadingProgress();
+			    
             	if(e && e.result)
             	{
             	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
@@ -317,6 +326,8 @@
                         projectData.description=introInput.text;
                         
                         createProjectOp.send(projectData);
+                        
+                        mainWidget.showLoadingProgress();
                     }
                     return 0;
                 }
@@ -324,6 +335,8 @@
             
             // TCCC-1023
             private function createProjectHandler(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                
                 if(e && e.result) {
                     var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
                     mainWidget.tcDirectProjectId=projectData.projectId.toString();

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+		
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
            width="100%"
            height="100%"
@@ -29,9 +30,13 @@
             import mx.events.FlexEvent;
             import com.topcoder.flex.Helper;
             import mx.events.ItemClickEvent;
+	    import mx.formatters.NumberFormatter;
+	    import mx.controls.ButtonLabelPlacement; // BUGR-1501		
 
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 
+        	
+			
             private static var s_inputs:Array=["firstPlace", "secondPlace", "thirdPlace", "fourthPlace", "fifthPlace"];
             private static var ns_inputs:Array=["ns_firstPlace", "ns_secondPlace"];
             private static var s_inputsMap:Object={1: "firstPlace", 2: "secondPlace", 3: "thirdPlace", 4: "fourthPlace", 5: "fifthPlace"};
@@ -77,10 +82,15 @@
                     for (var i:int=0; i < mainWidget.competition.contestData.prizes.length; i++) {
                         var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
                         var p:int=prize.place as int;
-                        var input:TextInput=s_inputsMap[p] as TextInput;
-                        input.text=prize.amount.toString();
+			if (p <=5)
+			{
+				var input:TextInput=s_inputsMap[p] as TextInput;
+				input.text=prize.amount.toString();
+			}
                     }
                 }
+
+
 
                 s_updateAmount();
             }
@@ -94,8 +104,9 @@
                     for (var i:int=0; i < mainWidget.softwareCompetition.prizes.length; i++) {
                         var prize:PrizeData=mainWidget.softwareCompetition.prizes[i] as PrizeData;
                         var p:int=prize.place as int;
-                        var input:TextInput=s_inputsMap[p] as TextInput;
-                        input.text=prize.amount.toString();
+			var input:TextInput = ns_inputsMap[p] as TextInput;
+			input.text = prize.amount.toString();
+
                     }
                 }
 
@@ -293,7 +304,22 @@
 
                     return false;
                 }
-
+                // BUGR-1363
+				var diff:Number = mainWidget.getExtraContestFee();
+        		if(diff < 0) {
+        			var formatter:NumberFormatter = new NumberFormatter();
+        			formatter.precision = 2;
+        			formatter.useThousandsSeparator = true;
+        			formatter.thousandsSeparatorTo = ",";
+        			formatter.decimalSeparatorTo = ".";
+        			Helper.showAlertMessage("Decreasing the total prize amount is not permitted at this time. If you would like to decrease the overall prize amounts please contact directassist@topcoder.com." +
+        			"Your total prize amount must be at least equal to $" + formatter.format(mainWidget.getPaidContestFee() / 0.2), 160);
+        			return false;
+        		} 
+        		// check if we need step 8
+        		(mainWidget.step8box.parent as HBox).visible = diff > 0;
+        		(mainWidget.step8box.parent as HBox).includeInLayout = diff > 0;
+				mainWidget.save.label = diff == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
                 updateResult();
 
                 return true;
@@ -378,47 +404,26 @@
             }
         ]]>
     </mx:Script>
-    <mx:VBox width="100%"
-             height="100%">
-        <mx:VBox width="100%">
-            <mx:HBox horizontalAlign="right"
-                     width="100%">
-                <mx:Label text="Contest Overview"
-                          styleName="redText"
-                          fontSize="18"
-                          width="80%"/>
-                <mx:Spacer width="100"/>
-                <mx:LinkButton baseline="middle"
-                               styleName="linkBtn"
-                               label="Preview Contest"
-                               click="this.mainWidget.previewContest()"/>
-                <mx:Image source="@Embed('../../assets/more_info.png')"/>
-            </mx:HBox>
-            <!-- BUGR-1067 -->
-            <mx:VBox width="100%"
-                     visible="{mainWidget.studioContestType}"
-                     includeInLayout="{mainWidget.studioContestType}">
-
-                <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?"
-                          styleName="boldBlackText"/>
-                <mx:RadioButtonGroup id="studioType"
-                                     itemClick="handleSelect(event);"/>
-                <mx:HBox id="studioTypeBox"
-                         horizontalGap="25"
-                         styleName="smallBlackText">
-                </mx:HBox>
-                <mx:Spacer height="10"/>
-                <mx:HRule width="100%"/>
-                <!-- BUGR-1204 -->
-            </mx:VBox>
-
-            <mx:Label id="typeName"
-                      text="{mainWidget.competitionType}"
-                      styleName="redText"/>
-            <mx:Text width="100%"
-                     id="description"
-                     styleName="smallBlackText">
-                <mx:text>
+    <mx:VBox width="100%" styleName="boxStyle" height="100%">
+    	<mx:VBox width="100%" >
+    		
+		<mx:HBox horizontalAlign="right" width="100%">
+			<mx:Label text="Contest Overview" styleName="sectionTitle" width="80%"/> <!-- BUGR-1503 -->
+			<mx:Spacer width="100" />	
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
+		</mx:HBox>
+	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
+	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
+	        <mx:HBox id="studioTypeBox" horizontalGap="25" styleName="smallBlackText">
+	        </mx:HBox>
+		   </mx:VBox>
+		   <mx:VBox width="100%">
+			<mx:Spacer height="10" />
+	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+	        <mx:Label id="typeName" text="Web Page Design" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+	        <mx:Text width="100%" id="description" styleName="smallBlackText">
+	            <mx:text>
 					{contestOverview.contestType.(@id==curContestType).description}
 	            </mx:text>
             </mx:Text>
@@ -427,7 +432,7 @@
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
             <mx:Label text="Examples:"
-                      styleName="redText"/>
+                      styleName="subsectionTitle"/>
             <mx:HBox verticalAlign="top"
                      horizontalGap="0"
                      visible="{isPresentXml('example1') || isPresentXml('example2')}"
@@ -597,7 +602,7 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:Label text="Your Prize Amounts:"
-                          styleName="redText"/>
+                          styleName="subsectionTitle"/>
                 <mx:Text width="100%"
                          paddingTop="0"
                          styleName="smallBlackText">

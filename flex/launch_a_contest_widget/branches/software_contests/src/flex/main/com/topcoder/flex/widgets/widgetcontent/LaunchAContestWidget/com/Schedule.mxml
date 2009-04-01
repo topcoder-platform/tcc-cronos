@@ -18,6 +18,7 @@
             import mx.rpc.events.ResultEvent;
             import com.topcoder.flex.Helper;
             import com.topcoder.flex.util.date.DateUtil;
+			import mx.controls.ButtonLabelPlacement; // BUGR-1501	
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -305,23 +306,15 @@
             }
         ]]>
     </mx:Script>
-    <mx:VBox width="100%"
-             styleName="boxStyle"
-             height="100%">
-        <mx:HBox horizontalAlign="right"
-                 width="100%">
-            <mx:Label text="Set the Contest Schedule"
-                      fontWeight="bold"
-                      width="80%"/>
-            <mx:Spacer width="100"/>
-            <mx:LinkButton baseline="middle"
-                           styleName="linkBtn"
-                           label="Preview Contest"
-                           click="this.mainWidget.previewContest()"/>
-            <mx:Image source="@Embed('../../assets/more_info.png')"/>
-        </mx:HBox>
-        <mx:Text width="100%"
-                 id="attachFiles">
+    <mx:VBox width="100%" styleName="boxStyle" height="100%">
+	<mx:HBox horizontalAlign="right" width="100%">
+		<mx:Label text="Schedule" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->	
+		<mx:Spacer width="100" />	
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
+	</mx:HBox>
+		<mx:Label text="Set the Contest Schedule" width="80%" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+		<mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
                 <![CDATA[When scheduling your contest, consider the following: <br>
                 -	Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed?
@@ -345,7 +338,7 @@
                 ]]>
             </mx:htmlText>
         </mx:Text>
-        <mx:Spacer height="5"/>
+       <!-- <mx:Spacer height="5"/> BUGR-1503 -->
         <mx:VBox paddingLeft="10">
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="Start Date:"
@@ -401,8 +394,7 @@
         </mx:VBox>
         <mx:Spacer height="25"/>
         <mx:VBox verticalGap="0">
-            <mx:Label text="Terms and Conditions"
-                      fontWeight="bold"/>
+            <mx:Label text="Terms and Conditions" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Text text="Please read TopCoder's Term &amp; Conditions and indicate that you understand and agree."/>
             <mx:TextArea width="100%"
                          height="120">
@@ -442,6 +434,6 @@
             </mx:TextArea>
             <mx:CheckBox id="termCheckBox"
                          label="I have read and agree to these terms."/>
-        </mx:VBox>
+        </mx:VBox> 
     </mx:VBox>
 </mx:Canvas>

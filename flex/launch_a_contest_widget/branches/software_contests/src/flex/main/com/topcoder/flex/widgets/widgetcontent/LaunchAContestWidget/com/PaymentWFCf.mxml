@@ -5,6 +5,7 @@
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505		
 		
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
@@ -23,10 +24,10 @@
 		<mx:Grid width="100%">
 			<mx:GridRow width="100%">
 				<mx:GridItem width="100%">
-					<mx:Label text="Credit Card Information" styleName="header" />
+					<mx:Label text="Credit Card Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 				</mx:GridItem>
 				<mx:GridItem width="100%">
-					<mx:Label text="Billing Information" styleName="header" />
+					<mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 				</mx:GridItem>
 			</mx:GridRow>
 			<mx:GridRow width="100%">
@@ -39,13 +40,17 @@
 								<mx:Label text="Expiration Date:" styleName="contentBlack" />
 							</mx:VBox>
 							<mx:VBox width="100%">
-								<mx:Label text="{model.cardNum}" styleName="content" />
+								<!-- BUGR-1398 -->
+								<mx:HBox width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+									<mx:Label text="{model.cardNum}" styleName="content" />
+									<mx:Label text="{model.csc}" styleName="content" />	
+								</mx:HBox>
 								<mx:Label text="{model.cardType}" styleName="content" />
 								<mx:Label text="{model.cardExpDateStr}" styleName="content" />
 							</mx:VBox>
 						</mx:HBox>
 						<mx:VBox width="100%" id="approval" visible="false">
-							<mx:Label text="Approval Information" width="100%" styleName="header" />
+							<mx:Label text="Approval Information" width="100%" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 							<mx:HBox>
 								<mx:Label text="Reference Number:" width="100%" styleName="contentBlack" />
 								<mx:Label id="paymentReferenceNumber" width="100%" styleName="content" />
@@ -80,7 +85,7 @@
 		<!--<mx:Image source="../assets/verisign.png" />-->
 	</mx:HBox>
 	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="create another contest" styleName="RedButton" click="this.mainWidget.resetWidget()"/>
-		<mx:Button label="close" styleName="RedButton" click="this.mainWidget.closeWidget()"/>
+		<mx:Button label="CREATE NEW CONTEST" click="this.mainWidget.resetWidget()" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+		<mx:Button label="VIEW MY CONTESTS" click="this.mainWidget.closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	</mx:HBox>
 </mx:VBox>

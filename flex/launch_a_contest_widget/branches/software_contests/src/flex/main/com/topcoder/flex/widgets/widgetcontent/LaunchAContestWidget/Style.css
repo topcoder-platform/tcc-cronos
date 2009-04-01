@@ -208,3 +208,19 @@
     fontSize: 11;
     fontWeight: bold;
 }
+
+/* BUGR-1503 */
+.sectionTitle {
+	font-family: Arial;
+	color: #CC0000;
+	font-weight: bold;
+	font-size: 18;
+}
+
+/* BUGR-1503 */
+.subsectionTitle {
+	font-family: Arial;
+	color: #666666;
+	font-weight: bold;
+	font-size: 13;
+}

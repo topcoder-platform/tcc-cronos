@@ -3,6 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" >
     <mx:Script>
         <![CDATA[
+            import mx.effects.effectClasses.HideShowEffectTargetFilter;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
         	import mx.collections.IList;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
@@ -42,6 +43,8 @@
                 getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
                 getAllProjectsOp.send();
                 
+                mainWidget.showLoadingProgress();
+                
                 selectContests.dataProvider = contestsData;
                 
                 getClientProjectsByUser();
@@ -50,6 +53,8 @@
             // TCCC-1023
             private function getAllProjectsHandler(e:ResultEvent):void{
                 trace("getAllProjectsHandler: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
                 
             	if(e && e.result){
             	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
@@ -88,10 +93,14 @@
 			    if (getClientProjectsByUserOp) {
                     getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
                     getClientProjectsByUserOp.send();
+                    
+                    mainWidget.showLoadingProgress();
                 }
 			}
 			
 			private function getClientProjectsHandler(e:ResultEvent):void {
+			    mainWidget.hideLoadingProgress();
+			    
 			    trace("getClientProjectsHandler: " + e + ", " + e.result);
             	if(e && e.result)
             	{
@@ -187,6 +196,8 @@
                         projectData.description=introInput.text;
                         
                         createProjectOp.send(projectData);
+                        
+                        mainWidget.showLoadingProgress();
                     }
                 }
             }
@@ -194,6 +205,7 @@
             // TCCC-1023
             private function createProjectHandler(e:ResultEvent):void
             {
+                mainWidget.hideLoadingProgress();
                 trace("createProjectHandler: " + e + ", " + e.result);
             	if(e && e.result)
             	{
@@ -210,11 +222,13 @@
            		var getContestOp:AbstractOperation = mainWidget._csws.getOperation("getContest");
                 getContestOp.addEventListener("result", loadContestHandler);
                 getContestOp.send(new Number(contestId));
+                mainWidget.showLoadingProgress();
             }
             
             // TCCC-1023
             private function loadContestHandler(e:ResultEvent):void{
                 trace("loadContestHandler: " + e + ", " + e.result);
+                mainWidget.hideLoadingProgress();
                 
             	if (e && e.result) {
             	    mainWidget.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;

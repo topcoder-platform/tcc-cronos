@@ -24,8 +24,9 @@
 	        
 	        import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505			
             
-            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+                import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -109,11 +110,14 @@
 	            var getAllDocumentTypesOp:AbstractOperation = mainWidget._csws.getOperation("getAllDocumentTypes");
                 getAllDocumentTypesOp.addEventListener("result", getAllDocumentTypesHandler);
                 getAllDocumentTypesOp.send();
+					 mainWidget.showLoadingProgress();
             }
 
             // TCCC-1023
             private function getAllDocumentTypesHandler(e:ResultEvent):void {
                 trace("getAllDocumentTypesHandler: " + e + ", " + e.result);
+
+				 mainWidget.hideLoadingProgress();
 
                 if (e && e.result) {
                     var docTypes:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, DocumentType);
@@ -261,6 +265,8 @@
             	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
             	
                 getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
+                
+                mainWidget.showLoadingProgress();
             }
             
             private function getMimetypeByFileName(ext:String):String{
@@ -293,6 +299,8 @@
             private function loadMimeTypeIdHandler(e:ResultEvent):void{
                 trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
                 
+                mainWidget.hideLoadingProgress();
+                
             	if (e && e.result) {
             	    
             	    currentDoc.mimeTypeId = ObjectTranslatorUtils.translate(e.result, Number) as Number;
@@ -324,6 +332,8 @@
                     var uploadDocumentForContestOp:AbstractOperation=mainWidget._csws.getOperation("uploadDocumentForContest");
                     uploadDocumentForContestOp.addEventListener("result", uploadDocumentForContestHandler);
                     uploadDocumentForContestOp.send(currentDoc);
+                    
+                    mainWidget.showLoadingProgress();
             	} else {
             		addDoc(currentDoc);
             		//clear up
@@ -338,6 +348,8 @@
             private function uploadDocumentForContestHandler(e:ResultEvent):void {
                 
                 trace("getAllProjectsHandler: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
                 
             	if(e && e.result){
             	    var docUploaded:UploadedDocument = ObjectTranslatorUtils.translate(e.result, UploadedDocument) as UploadedDocument;
@@ -359,10 +371,10 @@
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle" >
 	<mx:HBox horizontalAlign="right" width="100%">
-		<mx:Label text="Attach Files" fontWeight="bold" width="80%"/>
+		<mx:Label text="Attach Files" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
 		<mx:Spacer width="100" />	
-		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
 	</mx:HBox>
         <mx:Text width="100%" id="attachFiles" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
             <mx:htmlText>
@@ -381,7 +393,12 @@
         		
         		
         	</mx:VBox>
-		    
+            <mx:HBox >
+                <mx:Label text="File to Upload:" fontWeight="bold"/>
+                <mx:TextInput id="fileToUpload" editable="false" />
+                               <mx:Button id="browse" buttonMode="true" label="BROWSE" click="browseFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+            </mx:HBox>
+
             <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox >
 	                <mx:Label text="File Description:" fontWeight="bold"/>
@@ -395,18 +412,8 @@
 	            <mx:TextArea id="fileDescInput" width="500" height="50" text=""/>
             </mx:VBox>
             <mx:Spacer height="5"/>
-            <mx:HBox >
-                <mx:Label text="File to Upload:" fontWeight="bold"/>
-                <mx:TextInput id="fileToUpload" editable="false" />
-                <mx:Button id="browse" buttonMode="true" label="Browse" click="browseFile()" styleName="RedButton"/>
-            </mx:HBox>
-            <mx:Spacer height="5"/> <!-- BUGR-1067 -->
-            <mx:HBox visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
-            	<mx:Label text="File Type:" fontWeight="bold" />
-            	<mx:ComboBox id="fileType" width="309" dataProvider="{fileTypes}"/>
-        	</mx:HBox>
-            <mx:VBox paddingLeft="90">
-            	<mx:Button id="upload" buttonMode="true" label="Upload File" click="uploadFile()" styleName="RedButton"/>
+            <mx:VBox>
+            	<mx:Button id="upload" buttonMode="true" label="UPLOAD FILE" click="uploadFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
             	<mx:Text text="You may add more files after uploading." color="0x888888"/>
             </mx:VBox>
         </mx:VBox>
