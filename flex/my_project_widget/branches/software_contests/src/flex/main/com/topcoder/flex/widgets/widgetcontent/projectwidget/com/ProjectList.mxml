@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off" styleName="ProjectList" verticalGap="0">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off" styleName="ProjectList" verticalGap="0">
 <mx:Script>
   <![CDATA[
     import mx.events.MenuEvent;
@@ -224,12 +224,6 @@
 					dict["title"]="Submission Viewer";
 					prjCt.widgetFramework.addWidgetWithProperties(dict );
 					
-					
-					/*
-					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"My Projects","My Projects",dict );
-					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Contest Monitor","Contest Monitor",dict );
-					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Submission Viewer","Submission Viewer",dict );
-					*/
                      
             }
 	]]>
@@ -248,12 +242,12 @@
     <mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="46" id="Table"
         verticalScrollPolicy="off" horizontalScrollPolicy="off">
       <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" labelPlacement="{ButtonLabelPlacement.LEFT}" label="VIEW DESCRIPTION"
-          left="10" click="toggleDescription()"/>
+          left="10" height="29" click="toggleDescription()"/>
       <mx:Button id="launch" buttonMode="true" styleName="openNewTabButton" y="6" labelPlacement="{ButtonLabelPlacement.LEFT}" label="OPEN IN NEW TAB"
-          left="{open.x+open.width+10}" click="openNewTabHandler(event)"/>
+          left="{open.x+open.width+10}" height="29" click="openNewTabHandler(event)"/>
 
       <mx:Button y="6" buttonMode="true" label="ADD NEW CONTEST" labelPlacement="{ButtonLabelPlacement.LEFT}"
-          right="28" styleName="addContestBtn" click="addcontest()"/>
+          height="29" right="28" styleName="addContestBtn" click="addcontest()"/>
       <mx:HBox x="0" y="47" height="100%" width="100%" backgroundColor="#e0e0e0"
           paddingTop="8" paddingLeft="5" paddingRight="5">
       <mx:Label width="100%" id="projectDesc" fontSize="12" color="#333333" textAlign="left" />

@@ -13,6 +13,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import mx.containers.Panel;
     import mx.rpc.soap.WebService;
     import mx.core.Application;
+    import com.topcoder.flex.widgets.layout.Util;
     
     // BUGR-1393
 	import com.topcoder.flex.util.progress.ProgressWindowManager;
@@ -78,6 +79,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         // 1.1.2
         // state variable to hold visible project count.
         public var visibleProjectCount:Number = 0;
+        
+        /**
+		 * The configuration xml which contains the urls to for loading the data.
+		 */
+		private var _config:XML = null;
         
         private var isMax:Boolean=false;
 
@@ -235,7 +241,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          *
          * @throws ArgumentError if the input is null.
          */
-        public function configure(config:XML):void {            
+        public function configure(config:XML):void {  
+        	this._config=config;
+        	if(_config && _config.pid)
+        	{
+        		_pid=Util.retrieveString(_config.pid);
+        	}
         }
 
         /**
@@ -262,7 +273,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * @return the xml configuration data for this widget.
          */
         public function getConfiguration():XML {
-            return null;
+        	 
+            return _config;
         }
 
         /**
@@ -336,6 +348,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         	if(map.hasOwnProperty("pid"))
         	{
         		_pid=map["pid"];
+        		_config= <widgetConfig/>
+        	    _config.pid=_pid;
         	}
         	
         	// BUGR-1470
