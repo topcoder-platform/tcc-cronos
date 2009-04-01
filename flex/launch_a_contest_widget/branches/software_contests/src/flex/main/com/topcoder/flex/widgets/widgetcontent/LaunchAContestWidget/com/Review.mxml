@@ -259,7 +259,6 @@
                        labelPlacement="{ButtonLabelPlacement.LEFT}" 
                        label="PREVIEW CONTEST" 
                        click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
-            <mx:Image source="@Embed('../../assets/more_info.png')"/>
         </mx:HBox>
 
         <mx:HRule width="100%"

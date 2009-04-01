@@ -414,7 +414,6 @@
 		           labelPlacement="{ButtonLabelPlacement.LEFT}" 
 			   label="PREVIEW CONTEST" 
 			   click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
-		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
 		</mx:HBox>
 	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
 	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
