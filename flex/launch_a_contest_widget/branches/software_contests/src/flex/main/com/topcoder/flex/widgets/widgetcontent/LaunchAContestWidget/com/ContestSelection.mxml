@@ -167,7 +167,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             public function initData():void {
-                if (mainWidget.competitionType != null) {
+                if (mainWidget.competition != null && mainWidget.competition.type != null && contestType != null) {
                     for (var i:int=0; i < contestType.numRadioButtons; i++) {
                         var bt:RadioButton=contestType.getRadioButtonAt(i);
                         if (bt.enabled && bt.value == mainWidget.competitionType) {

@@ -14,7 +14,6 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
             import mx.collections.ArrayCollection;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
-            import com.scuty.RteHtmlParser;
             import mx.events.FlexEvent;
             import com.topcoder.flex.Helper;
             import flash.events.MouseEvent;
@@ -45,7 +44,6 @@
             public var brandGuidelinesHint:String;
             public var likeAndDislikesHint:String;
             public var criteriaHint:String;
-            public var parser:RteHtmlParser;
 
 
             //
@@ -170,19 +168,7 @@
                 }
 	  }
 
-			  // BUGR-1458
-	        private function handleRTEMouseMove(event:MouseEvent):void {
-	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
-	        	if (editor && editor.isResizing) {
-	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
-		        		mainWidget.height += (stage.mouseY - dy);
-		        		widgetHeight += (stage.mouseY - dy);
 
-		        		dx = stage.mouseX;
-		        		dy = stage.mouseY;
-	        		}
-			}
-		}
 
 
             //
@@ -633,6 +619,19 @@
                 }
             }
 
+	        // BUGR-1458
+	        private function handleRTEMouseMove(event:MouseEvent):void {
+	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
+	        	if (editor && editor.isResizing) {
+	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
+		        		mainWidget.height += (stage.mouseY - dy);
+		        		widgetHeight += (stage.mouseY - dy);
+
+		        		dx = stage.mouseX;
+		        		dy = stage.mouseY;
+	        		}
+	        	}
+	        }
 
 	        private function handleRTEDragStart(event:Event): void {
 	        	dx = stage.mouseX;
