@@ -128,7 +128,7 @@
              * Represents the height of this widget on different states. BUGR-1134
              */
             private var INITIAL_WIDGET_HEIGHT:int=460;
-            private var CONTEST_SELECTION_HEIGHT:int=530;
+            private var CONTEST_SELECTION_HEIGHT:int=560;
             private var OVERVIEW_HEIGHT:int=770; // BUGR-1204 was 730
             private var DETAILS_HEIGHT:int=950;
             private var SPECIFICATIONS_HEIGHT:int=920; // BUGR-1362
@@ -607,8 +607,8 @@
                     if (sched.validateFields() == false) {
                         return;
                     }
-                   save.label = getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
-                   if(getExtraContestFee() == 0) { // BUGR-1363
+                   save.label = getExtraContestFee() == 0 && this.competitionType == "STUDIO" ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
+                   if(getExtraContestFee() == 0 && this.competitionType == "STUDIO" ) { // BUGR-1363
                     	goNext.visible = false;
                    }
 
