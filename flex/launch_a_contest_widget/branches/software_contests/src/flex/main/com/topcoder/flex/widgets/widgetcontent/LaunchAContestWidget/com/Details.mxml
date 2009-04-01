@@ -51,27 +51,27 @@
             // This is loaded only one time.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
-            private var _masterTechnologies:ArrayCollection;
+            private static var _masterTechnologies:ArrayCollection;
 
             //
             // Stores list of categories as retrieved from web-service.
             // This is loaded one time.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
-            private var _categories:ArrayCollection;
+            private static var _categories:ArrayCollection;
 
             //
             // Stores catalogs / root category.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             [Bindable]
-            private var _catalogs:ArrayCollection;
+            private static var _catalogs:ArrayCollection;
 
             //
             // Map of catalog id to categories list. 
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
-            private var _catalogToCategoriesMap:Dictionary=new Dictionary();
+            private static var _catalogToCategoriesMap:Dictionary=new Dictionary();
 
             //
             // Item list for currently available master technologies.
@@ -116,7 +116,6 @@
                     introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
                     glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
                 } else {
-
                     ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
                     ns_funcDesc.htmlText="";
@@ -128,7 +127,7 @@
                     ns_funcDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.functionalDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
                     ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.comments;
-
+                    
                     //
                     // load the master technologies if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -139,16 +138,17 @@
                         _boundMasterTechnologies.removeAll();
 
                         for (var i:int=0; i < _masterTechnologies.length; i++) {
-                            var o:Object=_masterTechnologies.getItemAt(i) as SoftwareTechnology;
+                            var o:Object=_masterTechnologies.getItemAt(i);
+                            
                             _boundMasterTechnologies.addItem(o);
                         }
-
+                        
                         sortBoundMasterTechnologies();
-
+                        
                         // assign technologies.
                         setTechnologies();
                     }
-
+                    
                     //
                     // load the catalog names and categories if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -774,7 +774,7 @@
                 
                 if (catalogData && catalogData.data && catalogData.data.id) {
                     // set master categories.
-                    var categories:ArrayCollection=this._catalogToCategoriesMap[catalogData.data.id];
+                    var categories:ArrayCollection=_catalogToCategoriesMap[catalogData.data.id];
                     for each (var c:Object in categories) {
                         _boundMasterCategories.addItem(c);
                     }
