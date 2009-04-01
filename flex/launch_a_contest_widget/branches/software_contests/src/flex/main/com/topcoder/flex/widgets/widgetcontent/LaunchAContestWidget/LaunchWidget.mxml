@@ -255,6 +255,7 @@
                     flag=4;
                     this.competitionType="STUDIO";
                     competition.type=this.competitionType;
+                    review.cstTypeStep1=this.competitionType;
                     startLaunchProcess();
                     next();
                 }
