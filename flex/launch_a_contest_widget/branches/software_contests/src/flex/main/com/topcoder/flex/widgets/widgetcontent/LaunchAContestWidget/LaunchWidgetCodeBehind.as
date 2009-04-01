@@ -507,8 +507,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function saveAsDraft():void {
             //var type:CompetionType = new CompetionType();
             if (this.competitionType == "STUDIO") {
-                competition.contestData.statusId=CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-                competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_DRAFT;
                 var competionType:String="STUDIO";
                 this.competition.type=competionType;
                 if (isNaN(competition.id) || competition.id < 0) {
@@ -775,21 +773,36 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 	// BUGR-1363
         public function getPaidContestFee():Number {
-        	if(!competition.contestData.payments) {
-        		return 0;
-        	}
-        	var paidFee:Number = 0;
-        	for(var i:int = 0; i < competition.contestData.payments.length; i++) {
-        		paidFee += (competition.contestData.payments[i] as ContestPaymentData).price;
-        	}
-        	return new Number(paidFee.toFixed(2));
+		if (this.competitionType == "STUDIO")
+		{
+        		if(!competition.contestData.payments) {
+        			return 0;
+        		}
+        		var paidFee:Number = 0;
+        		for(var i:int = 0; i < competition.contestData.payments.length; i++) {
+        			paidFee += (competition.contestData.payments[i] as ContestPaymentData).price;
+        		}
+        		return new Number(paidFee.toFixed(2));
+		}
+		else
+		{
+			return 0;
+		}
         }
         
         // BUGR-1363
         public function getExtraContestFee():Number {
-        	var me:LaunchWidget = container.contents as LaunchWidget; 
-        	var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
-        	return new Number(result.toFixed(2));
+		if (this.competitionType == "STUDIO")
+		{
+        		var me:LaunchWidget = container.contents as LaunchWidget; 
+        		var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
+        		return new Number(result.toFixed(2));
+		}
+		else
+		{
+			return 0;
+		}	
+
         }
     }
 }

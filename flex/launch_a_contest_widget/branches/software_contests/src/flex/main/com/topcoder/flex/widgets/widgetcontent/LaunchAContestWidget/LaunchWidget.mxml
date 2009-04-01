@@ -88,7 +88,7 @@
             //
             private var _stepBoxToStepNum:Dictionary=new Dictionary();
 
-            // BUGR-1067
+	    [Bindable]
             private var isStudioContestType:Boolean=false;
 
             [Bindable]
@@ -116,6 +116,11 @@
                 totalStepsNumber=stepNumber - 1;
                 stepNumber=1;
                 trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
+
+		if (val)
+		{
+			competitionType = "STUDIO";
+		}
             }
 
             /**
@@ -543,7 +548,7 @@
                     this.currentState="DetailsState";
                    save.visible = true; // BUGR-1445
 
-					if(getExtraContestFee() > 0) {// BUGR-1363
+			if(getExtraContestFee() > 0) {// BUGR-1363
                    		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
                    }
                   

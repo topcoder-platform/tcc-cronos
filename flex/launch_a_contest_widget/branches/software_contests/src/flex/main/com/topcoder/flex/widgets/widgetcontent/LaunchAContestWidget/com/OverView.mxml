@@ -453,7 +453,8 @@
                                  horizontalGap="0"
                                  width="100%">
                             <mx:Text text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}"
-                                     styleName="boldBlackText" width="100%"/>
+                                     styleName="boldBlackText" 
+				     width="100%"/>
                             <mx:HBox horizontalGap="0">
                                 <mx:Label text="Contest"
                                           width="82"
