@@ -28,6 +28,13 @@ public class ContestPayment implements Serializable {
     private static final long serialVersionUID = 2575579887608597669L;
 
     /**
+     * Represents the contest payment id.
+     * 
+     * @since BUGR-1363
+     */
+    private long contestPaymentId;
+
+    /**
      * Represents the contest id.
      */
     private long contestId;
@@ -236,5 +243,26 @@ public class ContestPayment implements Serializable {
      */
     public String getPaymentReferenceId() {
         return paymentReferenceId;
+    }
+
+    /**
+     * Returns the contestPaymentId.
+     * 
+     * @since BUGR-1363
+     * @return contest payment id
+     */
+    public long getContestPaymentId() {
+        return contestPaymentId;
+    }
+
+    /**
+     * Updates the contest payment id with the specified value.
+     * 
+     * @since BUGR-1363
+     * @param contestPaymentId
+     *            the contest payment id to set.
+     */
+    public void setContestPaymentId(long contestPaymentId) {
+        this.contestPaymentId = contestPaymentId;
     }
 }
