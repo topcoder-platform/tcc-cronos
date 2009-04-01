@@ -101,8 +101,6 @@
                 isStudioContestType=val;
                 DETAILS_HEIGHT=(val ? 950 : 1850);
                 REVIEW_HEIGHT=(val ? 1165 : 1350); // BUGR-1067
-                details.widgetHeight=DETAILS_HEIGHT; // BUGR-1134
-                review.height=REVIEW_HEIGHT; // BUGR-1134
                 
                 // BUGR-1067
                 stepNumber=1;
@@ -551,8 +549,10 @@
 
                     this.currentState="DetailsState";
                    save.visible = true; // BUGR-1445
+                   
+                   this.height = DETAILS_HEIGHT;  // BUGR-1134
 
-			if(getExtraContestFee() > 0) {// BUGR-1363
+			       if(getExtraContestFee() > 0) {// BUGR-1363
                    		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
                    }
                   
