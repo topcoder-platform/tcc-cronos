@@ -271,7 +271,7 @@
         <mx:VBox width="100%"
                  verticalGap="0">
             <mx:Label text="Contest Selection"
-                      fontWeight="bold"/>
+                      styleName="subsectionTitle"/>
             <mx:Spacer height="15"/>
 	        <mx:HBox width="100%">
 	            <mx:Label text="Contest Type:" fontWeight="bold" />
@@ -289,16 +289,6 @@
             <mx:Label text="Contest Overview" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
 
-	       
-        </mx:VBox>
-
-        <mx:HRule width="100%"
-                  strokeColor="0x000000"/>
-
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Details" 
-                      styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-            <mx:Spacer height="15"/>
             <mx:VBox visible="{!mainWidget.studioContestType}"
                      includeInLayout="{!mainWidget.studioContestType}">
                 <mx:HBox verticalAlign="top"
