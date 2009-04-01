@@ -793,10 +793,10 @@
                       fontWeight="bold"
                       width="80%"/>
             <mx:Spacer width="100"/>
-            <mx:LinkButton baseline="middle"
-                           styleName="linkBtn"
-                           label="Preview Contest"
-                           click="this.mainWidget.previewContest()"/>
+             <mx:Button styleName="arrowRightBtnStyle" 
+	               labelPlacement="{ButtonLabelPlacement.LEFT}" 
+		       label="PREVIEW CONTEST" 
+		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
             <mx:Image source="@Embed('../../assets/more_info.png')"/>
         </mx:HBox>
         <mx:Text width="100%"

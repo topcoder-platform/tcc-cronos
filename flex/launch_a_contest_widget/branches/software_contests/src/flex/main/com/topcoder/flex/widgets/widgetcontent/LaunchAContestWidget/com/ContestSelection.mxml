@@ -351,10 +351,10 @@
                  width="100%">
             <!--<mx:Label text="Contest Selection" fontFamily="Arial" fontWeight="bold" fontSize="11" width="80%"/>
                  <mx:Spacer width="100" />-->
-            <mx:LinkButton baseline="middle"
-                           styleName="linkBtn"
-                           label="Preview Contest"
-                           click="this.mainWidget.previewContest()"/>
+            <mx:Button styleName="arrowRightBtnStyle" 
+	               labelPlacement="{ButtonLabelPlacement.LEFT}" 
+		       label="PREVIEW CONTEST" 
+		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
             <mx:Image source="@Embed('../../assets/more_info.png')"/>
         </mx:HBox>
         <mx:HBox width="100%"
