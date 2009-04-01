@@ -450,9 +450,10 @@
                                   width="150"
                                   height="150"/>
                         <mx:VBox verticalGap="0"
-                                 horizontalGap="0">
+                                 horizontalGap="0"
+                                 width="100%">
                             <mx:Text text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}"
-                                     styleName="boldBlackText"/>
+                                     styleName="boldBlackText" width="100%"/>
                             <mx:HBox horizontalGap="0">
                                 <mx:Label text="Contest"
                                           width="82"
@@ -522,10 +523,12 @@
                                  paddingLeft="0"
                                  paddingRight="0"
                                  paddingTop="0"
-                                 verticalAlign="top">
+                                 verticalAlign="top"
+				 width="100%">
                             <!-- BUGR-1204 -->
                             <mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}"
-                                      styleName="boldBlackText"/>
+                                      styleName="boldBlackText"
+                                      width="100%"/>
                             <mx:HBox horizontalGap="0">
                                 <mx:Label text="Contest"
                                           width="82"
