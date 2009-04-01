@@ -33,7 +33,7 @@ import java.util.List;
         "sizeRequirements", "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat", "otherFileFormats",
         "statusId","detailedStatusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
         "prizeDescription", "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
-		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants"})
+		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants", "payments"}) // BUGR-1363})
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -384,6 +384,13 @@ public class ContestData implements Serializable {
      */
     private long numberOfRegistrants;
 
+    /**
+     * Represents the payments for this contest.
+     * 
+     * @since BUGR-1363
+     */
+    private List<ContestPaymentData> payments = new ArrayList<ContestPaymentData>();
+    
     /**
      * <p>
      * This is the default constructor. It does nothing.
@@ -1070,5 +1077,27 @@ public class ContestData implements Serializable {
      */
     public boolean isLaunchImmediately() {
         return launchImmediately;
+    }
+    
+    /**
+     * Returns the payments.
+     * 
+     * @return the payments.
+     * @since BUGR-1363
+     */
+    public List<ContestPaymentData> getPayments() {
+        return new ArrayList<ContestPaymentData>(payments);
+    }
+
+    /**
+     * Updates the payments with the specified value.
+     * 
+     * @param payments
+     *            the payments to set.
+     * @since BUGR-1363
+     */
+    public void setPayments(List<ContestPaymentData> payments) {
+        this.payments.clear();
+        this.payments.addAll(payments);
     }
 }

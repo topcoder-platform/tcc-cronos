@@ -520,12 +520,13 @@ public interface StudioService {
      * Gets contest payment by id, and return the retrieved contest payment. If the contest payment doesn't exist, null is returned.
      * </p>
      *
-     * @param contestPaymentId the contest payment id
+     * @param contestId the contest id
      * @return the retrieved contest, or null if id doesn't exist
      *
      * @throws ContestManagementException if any error occurs when getting contest.
+     * @since BUGR-1363 changed method signature
      */
-    public ContestPaymentData getContestPayment(long contestPaymentId) throws PersistenceException;
+    public List<ContestPaymentData> getContestPayments(long contestId) throws PersistenceException;
 
     /**
      * <p>
