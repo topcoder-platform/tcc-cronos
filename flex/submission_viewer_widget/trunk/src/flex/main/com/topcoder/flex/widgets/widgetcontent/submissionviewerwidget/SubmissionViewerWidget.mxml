@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the submission viewer widget.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
-    xmlns:tcimg="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.*"
-    creationComplete="init()" 
-    width="100%" 
-    height="100%" 
-    styleName="NewWidgetPanel"
-    horizontalAlign="left"
-   >
-    
-	<!-- BUGR-1142 -->
-    <mx:Style source="Style.css" />
+                                     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+                                     xmlns:tcimg="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.*"
+                                     creationComplete="init()"
+                                     width="100%"
+                                     height="100%"
+                                     styleName="NewWidgetPanel"
+                                     horizontalAlign="left">
+
+    <mx:Style source="Style.css"/>
 
     <mx:Script>
         <![CDATA[
-	    import mx.controls.ButtonLabelPlacement; // BUGR-1505        
+            import mx.core.Application;
             import mx.binding.utils.BindingUtils;
             import mx.controls.scrollClasses.ScrollBar;
             import mx.rpc.xml.SimpleXMLDecoder;
@@ -27,2320 +37,409 @@
             import mx.rpc.events.FaultEvent;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
-            import mx.rpc.soap.SOAPHeader;
-	    import mx.core.Application;
+
             import mx.core.Container;
             import flash.system.Security;
             import mx.controls.ButtonLabelPlacement;
-
-            
-        
             import mx.collections.SortField;
             import mx.collections.Sort;
-            
-    		import mx.utils.ObjectUtil;
-    		
-    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.ImageViewer;
-    		
-    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
-    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
-    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
-		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
-                import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
-    		
-    		import mx.rpc.AbstractOperation;
 
-            private var _rankList:ArrayCollection = new ArrayCollection();
-            
-            [Bindable]
-            private var _contestInfoList:ArrayCollection = new ArrayCollection();;
-            
-            [Bindable]
-            private var _contestList:ArrayCollection = new ArrayCollection();
-            
-            [Bindable]
-            private var _submissionList:ArrayCollection = new ArrayCollection();
-            
-            [Bindable]
-            private var _purchaseTotal:int = 0;
-            
-             [Bindable]
-            private var _selectedContestId:int;
-            
-            [Bindable]
-            private var _purchaseMoney:String = "0.00";
-            
-            [Bindable]
-            private var _selectedContestStatus:String = "";
-            
-            private var _selectedContestStatusId:int;
-            
-            [Bindable]
-            private var _currentItemLabel:String = "";
-            
-            [Bindable]
-            private var _purchaseList:ArrayCollection = new ArrayCollection();
-            
-            private var _isLocalTesting:Boolean=false;
+            import mx.rpc.soap.SOAPHeader;
 
-	       
-        	private var username:String = _isLocalTesting ? "user" : Application.application.parameters.username;
-			private var password:String = _isLocalTesting ? "password" : "";
-        	private var blazedsendpoint:String = _isLocalTesting ? "" : Application.application.parameters.blazedsendpoint;
-        	private var contestServiceFacadeWsdl:String= _isLocalTesting ? "" : Application.application.parameters.contestServiceFacadeWsdl;
-        	private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
-            
-            private var _statusTypeDictionary:Dictionary = new Dictionary();
-            private var _contestInfoDictionary:Dictionary = new Dictionary();
-            
-            private var IMAGE_ADDRESS:String ="http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
-		   
-		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
-		    
-			private var _activeContestTypeIds:Dictionary = new Dictionary();
-			private var _pastContestTypeIds:Dictionary = new Dictionary();
-			private var _actionRequiredContestTypeId:int;
-			private var _completedContestTypeId:int;
-			private var _noWinnerChosenContestTypeId:int;
-			private var _leastContestPrize:Number = 0;
-			private var _inDangerContestTypeId:int;
-			
-			private var _previousColumnCount:int = 0;
-			private var _currentColumnCount:int = 0;
-			
-			public static const ACTIVE_STATUS:int = 1;
-			
-			[Bindable]
-			private var _placeLabel:String = "";
-			
-			[Bindable]
-			private var _clientProjectNames:ArrayCollection=new ArrayCollection();
-			
-			public static function getHeader(username:String, password:String):SOAPHeader {
-				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
-				var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-	         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
-		            		<wsse:Username>{username}</wsse:Username>
-		            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
-	         			</wsse:UsernameToken>
-	      			</wsse:Security>;
-	      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
-	      		return header;
-			}
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.ImageViewer;
 
+            /**
+             * Reference to the blazeds end point url. This gets loaded from application parameters.
+             */
             [Bindable]
-            private var _downloadList:ArrayCollection = new ArrayCollection();
+            private var _blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+            /**
+             * Reference to the contest service facade url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+
+            /**
+             * Reference to the project service facade url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+
+            /**
+             * Current selected contest label.
+             */
+            [Bindable]
+            public var _currentItemLabel:String="";
+            
+            /**
+            * To be shown submission on maximize.
+            */
+            public var _tobeShownSubOnMaximize:Object=null;
+
+            /**
+             * Handler that gets called on creation complete of this component.
+             *
+             * - It assigns itself to various child viewers.
+             * - It initializes webservices.
+             * - It defines filter, maximize and restore callback functions
+             * - It calls data services to load password and hence load the data from webservices.
+             */
             private function init():void {
-            	restore();
-            	
-            	if (_isLocalTesting) {
-            		Security.allowDomain("*");
-					Security.allowInsecureDomain("*");
-					initComponent();
-            	}
-            	else {
-	                getDataService();
-	                //initComponent();
-            	}
+                trace("----------------------- init");
+
+                // assigns itself to various child viewers.
+                ThumbnailGallerySubmissionViewer(gallery).subViewer=this;
+                DefaultViewSubmissionViewer(minPage).subViewer=this;
+                AbandonConfirmationScreen(abandonConfirmationScreen).subViewer=this;
+                SubmissionsConfirmationPage(submissionsConfirmationScreen).subViewer=this;
+                SubmissionsCheckoutPage(submissionCheckoutScreen).subViewer=this;
+                SubmissionsDownloadPage(submissionsDownloadScreen).subViewer=this;
+
+                // defines filter, maximize and restore callback functions
+                this.contestFilterFn=doFilter;
+
+                this.maximizeFn=function():void {
+                    trace("@@@@ Maximizing");
+                    subViewer.selectedChild=gallery;
+                    
+                    //ThumbnailGallerySubmissionViewer(gallery).doFilter();
+                    
+                    if (_tobeShownSubOnMaximize) {
+                        ThumbnailGallerySubmissionViewer(gallery).showSubmission(_tobeShownSubOnMaximize);
+                    }
+                }
+
+                this.restoreFn=function():void {
+                    trace("@@@@ Restoring");
+                    subViewer.selectedChild=minPage;
+                }
+
+                // initialize webservices.
+                var header:SOAPHeader=getHeader(username, password);
+
+                ContestServiceFacadeBean.clearHeaders();
+                ContestServiceFacadeBean.addHeader(header);
+                this.contestServiceFacadeWS=ContestServiceFacadeBean;
+
+                ProjectServiceFacadeBean.clearHeaders();
+                ProjectServiceFacadeBean.addHeader(header);
+                this.projectServiceFacadeWS=ProjectServiceFacadeBean;
+
+                // restores the widget to default view.
+                restore();
+
+                // initializes components and download data from webservices.
+                if (!this._isLocalTesting) {
+                    getDataService();
+                } else {
+                    initComponent();
+                }
             }
 
-	    	private function getDataService():void {
-	    		if (!_isLocalTesting) {	
-		    		dataservice.getPassword();
-		    	}
+            /**
+             * Gets the password from remote service.
+             */
+            private function getDataService():void {
+                dataservice.getPassword();
             }
 
-	     	private function processPassword(e:ResultEvent): void {
-				if(e!=null && e.result!=null){
-					password = e.result.toString();
-				}
-	
-				initComponent();
-		    }
+            /**
+             * Handler for password retrieval.
+             */
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    this.password=e.result.toString();
+                }
 
-	    	private function initComponent():void {
-				// BUGR-1142
-	    		onPreviewResize();
+                // initialize component.
+                initComponent();
+            }
 
-	    		trace("Initializing Component");
-            	// add list of active contest types here.
-            	// Active Contests should show contests with a status of: 
-            	//		Active-Public = 2, 
-            	//		Active = 5, 
-            	//		Action Required = 6,
-            	//		In Danger = 10 
-            	//		or Extended = 12,
-            	_activeContestTypeIds[2] = true;
-            	_activeContestTypeIds[5] = true;
-            	_activeContestTypeIds[6] = true;
-            	_activeContestTypeIds[10] = true;
-            	_activeContestTypeIds[12] = true;
-            	
-            	// add list of past contest types here.
-            	// Past Contests should show contests with a status of:
-            	//		No Winner Chosen = 7, 
-            	//		Completed = 8, 
-            	//		Insufficient Submissions - Rerun Possible = 11, 
-            	//		or Insufficient Submissions = 13
-            	_pastContestTypeIds[7] = true;
-            	_pastContestTypeIds[8] = true;
-            	_pastContestTypeIds[11] = true;
-            	_pastContestTypeIds[13] = true;
-            	
-            	// add list of action required contest types here.
-            	_actionRequiredContestTypeId = 6;
-            	_completedContestTypeId = 8;
-            	_noWinnerChosenContestTypeId = 7;
-            	_inDangerContestTypeId = 10;
-            	
-            	
-            	
-            	if (!_isLocalTesting) {
-	                var header:SOAPHeader=getHeader(username,password);
-        			ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(header);
-        			
-        			this.contestServiceFacade = ContestServiceFacadeBean;
-        	
-        			ContestServiceFacadeBean.getStatusList();
-        			
-        			// BUGR-1393
-            	    showLoadingProgress();
-        			
-        			if (pid) {
-        			    ContestServiceFacadeBean.getContestDataOnlyByPID(pid);
-        			    
-        			    // BUGR-1393
-            	        showLoadingProgress();
-        			} 
-        			else {					  
-	            		ContestServiceFacadeBean.getContestDataOnly();
-	            		
-	            		// BUGR-1393
-            	        showLoadingProgress();
-        			}
-        			
-        			getClientProjectsByUser();
-            	}
-            	else {
-					var statuses:ArrayCollection = new ArrayCollection();
-					var status:Object = new Object();
-					status.name = "Action Required"
-					status.statusId = 6;
-					statuses.addItem(status);
-					
-					status = new Object();
-					status.name = "No winner chosen"
-					status.statusId = 7;
-					statuses.addItem(status);
-					
-					status = new Object();
-					status.name = "Completed"
-					status.statusId = 8;
-					statuses.addItem(status);
+            /**
+             * Initializes various components and loads data from webservices.
+             */
+            private function initComponent():void {
+                //trace("----------------------- initComponent");
+                this.loadData();
+            }
 
-					handleStatusList(new ResultEvent("STATUS_TYPES", false, true, statuses));
-					
-					var contests:ArrayCollection = new ArrayCollection();
-					var contest:Object = new Object();
-					contest.name = "Active Contest 1";
-					contest.contestId = 12345;
-					contest.statusId = 6;
-					contests.addItem(contest);
-					
-					contest = new Object();
-					contest.name = "Active Contest 2";
-					contest.contestId = 12346;
-					contest.statusId = 6;
-					contests.addItem(contest);
-
-					handleResult(new ResultEvent("CONTESTS", false, true, contests));
-            	}
-				
-				_maximize = function():void {
-					if (_contestList && _contestList.length > 0) { 
-						trace("_maximize Contest item: " + contestlist_minpage.selectedItem); 
-						trace("_maximize Contest index: " + contestlist_minpage.selectedIndex);
-						trace("_maximize Selected submission: " + list_minpage.selectedItem); 
-						trace("_maximize Selected submission index: " + list_minpage.selectedIndex);
-	            	
-						var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
-						trace("_maximize To be selected Index: " + index);
-						contestCombo.selectedIndex=index;
-						
-						// calculate the index in the thumbnail.
-						var subIndex:int = getItemIndex(_submissionList, list_minpage.selectedItem);
-						var subRow:int = subIndex / _currentColumnCount;
-						var maxRows:int = (_submissionList.length / _currentColumnCount) + (_submissionList.length % _currentColumnCount == 0 ? 0 : 1);
-						var maxAllowedIndex:int = maxRows - list.rowCount;
-						if (subRow > maxAllowedIndex) {
-							currentIndex = maxAllowedIndex;
-						}
-						else {
-							currentIndex = subRow;
-						}
-						
-						if (currentIndex < 0) {
-						    currentIndex = 0;
-						}
-						
-						trace("_maximize subIndex: " + subIndex);
-						trace("_maximize subRow: " + subRow);
-						trace("_maximize maxRows: " + maxRows);
-						trace("_maximize maxAllowedIndex: " + maxAllowedIndex);
-						trace("_maximize new currentIndex: " + currentIndex);
-						
-						list.select(list_minpage.selectedItem);
-						setSubmission();
-						
-						setSubmissionForMin();
-						
-						handleContest(null);
-					}
-				}
-				
-				_restore = function():void {
-					if (_contestList && _contestList.length > 0) {
-						trace("_restore Contest item: " + contestCombo.selectedItem); 
-						trace("_restore Contest index: " + contestCombo.selectedIndex);
-						trace("_restore Selected submission: " + list.selectedItem); 
-						trace("_restore Selected submission index: " + list.selectedIndex);
-	            	
-						var index:int = _contestList.getItemIndex(contestCombo.selectedItem);
-						trace("_restore To be selected Index: " + index);
-						contestlist_minpage.selectedIndex=index;
-						
-						var minpageColumnCount:int = minPage.width/list_minpage.columnWidth;
-						
-						// calculate the index in the thumbnail.
-						var subIndex:int = getItemIndex(_submissionList, list.selectedItem);
-						var subRow:int = subIndex / minpageColumnCount;
-						var maxRows:int = (_submissionList.length / minpageColumnCount) + (_submissionList.length % minpageColumnCount == 0 ? 0 : 1);
-						var maxAllowedIndex:int = maxRows - list.rowCount;
-						if (subRow > maxAllowedIndex) {
-							currentIndexMinPage = maxAllowedIndex;
-						}
-						else {
-							currentIndexMinPage = subRow;
-						}
-						
-						trace("_restore subIndex: " + subIndex);
-						trace("_restore subRow: " + subRow);
-						trace("_restore maxRows: " + maxRows);
-						trace("_restore maxAllowedIndex: " + maxAllowedIndex);
-						trace("_restore new currentIndex: " + currentIndexMinPage);
-						
-						if (currentIndexMinPage < 0) {
-						    currentIndexMinPage = 0;
-						}
-						
-						setSubmissionForMin();
-						list_minpage.select(list.selectedItem);
-						
-						setSubmission();
-						
-						handleContest(null);
-					}
-				}
-            }
-            
-            // since BUGR-1142
-            private function onPreviewResize():void {
-            	previewBox2.graphics.clear();
-            	
-            	drawGradient(previewBox2, [0x656565, 0x333333]);
-				drawInnerBorder(previewBox2);
-            }
-            
-            private function drawInnerBorder(c:Container):void {
-            	const H:int = 6;
-            	c.graphics.beginFill(0x000000, 0.2);
-				c.graphics.drawRect(0, 0, c.width, H);
-				c.graphics.drawRect(0, H, H, c.height - H);
-				c.graphics.drawRect(c.width - H, H, H, c.height - H);
-				c.graphics.drawRect(H, c.height - H, c.width - 2 * H, H);
-				c.graphics.endFill();
-            }
-            
-            private function drawGradient(c:Container, fillColors:Array):void {
-            	var matrix:Matrix = new Matrix();
-				matrix.createGradientBox(c.width, c.height, 90 * Math.PI / 180);
-				c.graphics.beginGradientFill("linear", fillColors, [1,1], [0, 255] , matrix, "pad", "rgb", 0.5);
-				c.graphics.drawRect(0, 0, c.width, c.height);
-				c.graphics.endFill();
-		    }
-			
-            [Bindable] 
-            private var activeSubmission:ArrayCollection = new ArrayCollection();
-            
-            [Bindable] 
-            private var activeSubmissionForMin:ArrayCollection = new ArrayCollection();
-            
-            
-            private function compareName(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.stringCompare(a.name,b.name,true);
-            }
-            private function handleResult(event:ResultEvent=null):void {
+            /**
+             * Handle successful credit card purchase.
+             */
+            private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void {
                 // BUGR-1393
                 hideLoadingProgress();
-                
-                _contestInfoList = new ArrayCollection();
-                if(event!=null && event.result!=null)
-                {
-                	var contests:ArrayCollection = new ArrayCollection();
-			
-			if(event.result is  ArrayCollection)
-			{
-				
-			  contests=event.result  as ArrayCollection;
-			}
-			else
-			{
-				contests=new ArrayCollection();
-				contests.addItem(event.result);
-			}
 
-                	var selectIdx:int=-1;
-                	
-                	if(!contests.sort)
-        			{
-        				var sort:Sort = new Sort();   
-	                	sort.compareFunction = compareName;
-	                	contests.sort = sort;
-        			}
-        			contests.refresh();
-                	
-                	
-                	for(var i:int=0 ;i< contests.length;i++)
-                	{
-                		var contestInfo:Dictionary=new Dictionary();
-                		var item:*=contests[i];
-                		contestInfo.name=item.name;
-                		contestInfo.id=item.contestId;
-                		contestInfo.statusId=item.statusId;
-                		
-                		// add prizes to contest info.
-                		contestInfo.prizes=new ArrayCollection();
-                		
-                		if (item.prizes && item.prizes is ArrayCollection) {
-                		    var prizes:ArrayCollection = item.prizes as ArrayCollection;
-                		    
-                		    for (var j:int=0; j < prizes.length && j < 5; j++) {
-                		        trace("Adding prize: " + prizes[j] + " to: " + contestInfo.name);
-                		        contestInfo.prizes.addItem(prizes[j] as Number);
-                		    }
-                		}
-                		
-                		//trace("Contest id: " + contestInfo.id);
-                		//trace("Contest name: " + contestInfo.name);
-                		//trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
-                		//trace("");
-                		
-                		// Module Cockpit My Projects Release Assembly 1
-                        // 1.1.7
-                        // show only the toBeLoadedContestId, as passed from my project widget.
-                		if (_activeContestTypeIds[contestInfo.statusId] == true 
-                				|| _pastContestTypeIds[contestInfo.statusId] == true) {
-                				
-                		    if (!this.toBeLoadedContestId || contestInfo.id == this.toBeLoadedContestId) {
-                		        
-                			    _contestInfoList.addItem(contestInfo);
-                			    _contestInfoDictionary[contestInfo.id]=contestInfo;
-                			}
-                		}
-                		else if (!this.toBeLoadedContestId || contestInfo.id == this.toBeLoadedContestId) {
-            			    _contestInfoList.addItem(contestInfo);
-            			    _contestInfoDictionary[contestInfo.id]=contestInfo;
-            			}
-                	}
+                Helper.showAlertMessage("Process submission payment successfully!!");
+                if (event && event.result) {
+                    this.paymentReferenceNumber=event.result as String;
 
-                	doFilter();
-                	
-                	//contestCombo.selectedIndex=selectIdx;
-                	//contestlist_minpage.selectedIndex=selectIdx;
+                    submissionCheckoutScreen.header.text="Your Transaction was Approved!";
+                    submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
+                    submissionCheckoutScreen.sub1.label="Download Submissions";
+                    submissionCheckoutScreen.wf2.paymentReferenceNumber.text=this.paymentReferenceNumber;
                 }
-            }
-            
-            private function handleStatusList(event:ResultEvent=null):void {
-                // BUGR-1393
-                hideLoadingProgress();
-                
-                if(event!=null && event.result!=null)
-                {
-                	for each(var item:* in event.result as ArrayCollection)
-                	{
-                		_statusTypeDictionary[item.statusId as int]=item;
-                	}
-                }
-            }
-            
-            private function handleSubResult(event:ResultEvent=null):void {
-                hideLoadingProgress();
-                
-                // clear rank list first.
-                _rankList.removeAll();
-                
-                for (var j:int = 0; j < 5; j++) {
-                    _rankList.addItem(new Object());
-                }
-                
-                _submissionList = new ArrayCollection();
-                
-                var sort:Sort = new Sort();
-                sort.compareFunction = compareNumber;
-                _submissionList.sort = sort;
-                if(event && event.result!=null){
-                	var submissions:ArrayCollection=new ArrayCollection();
-                	if((_isLocalTesting && event.result.submissions.submission is ArrayCollection)
-                	|| (!_isLocalTesting && event.result is ArrayCollection)) { 
-                		submissions=event.result as ArrayCollection;
-                	}
-                	else {
-                		submissions.addItem(event.result);
-                	}
-                	
-                	for(var i:int=0;i<submissions.length;i++) {
-                		var sub:Dictionary=new Dictionary();
-                		
-						
-						
-							sub.id=submissions[i].submissionId;
-                		
-							// placement in submission data is mapped to rank.
-							//sub.rank=submissions[i].placement;
-							if ( submissions[i].placement > 0 && submissions[i].placement < 6 ) { 
-								sub.rank=submissions[i].placement 
-							} 
-							else {	
-								sub.rank = ""
-							}
-							sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
-							sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
-							sub.submissionContent=submissions[i].submissionContent;
-							
-							// BUGR-1169: separate db price from app price.
-							sub.savedPrice=submissions[i].price;
-							
-							sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
-
-							sub.paidFor = Boolean(submissions[i].paidFor);
-							
-							var contestInfo = _contestInfoDictionary[_selectedContestId];
-        						
-    						trace("ContestInfo: " + contestInfo + ", selectedContestId: " + _selectedContestId);
-    						
-    						var prizes:ArrayCollection = contestInfo.prizes as ArrayCollection;
-    						
-    						trace("Prizes: " + prizes + ", selectedContestId: " + _selectedContestId);
-							
-							// BUGR-1169: give more priority to savedPrice (db price).
-							if (sub.savedPrice && sub.savedPrice > 0 && (sub.markedForPurchase || sub.paidFor)) {
-							    sub.price=sub.savedPrice;
-							}
-							else {
-        						if (prizes) {
-        						    if (sub.markedForPurchase) {
-        							    // if markedForPurchase is there,
-        							    // then price must be equal to 2nd place prize.
-        							    if (prizes.length > 1 && prizes[1] > 0) {
-        							        sub.price=prizes[1];
-        							    }
-        							   
-        							}
-        							else if (sub.rank && sub.rank > 0) {
-        							    // retrieve the price from contest info's prizeList.
-        							    if (prizes.length < sub.rank) {
-        							        // do nothing here.
-        							    }
-        							    else if (prizes[sub.rank - 1] > 0) {
-        							        sub.price=prizes[sub.rank - 1];
-        							    }
-        							} 
-        							else {
-        							    sub.price=0;
-        							}
-        			            }
-        			            else {
-        			                sub.price=0;
-        			            }
-        			        }
-							
-							if (prizes) {
-							    sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length && sub.price && sub.price > 0;
-							}
-							sub.purchased=sub.markedForPurchase || sub.mustPurchase || sub.paidFor;
-                		
-							_submissionList.addItem(sub);
-
-                            if (sub.rank && sub.rank > 0) {						
-						        //updateSubmission(true);
-						        updateRankList(sub);
-                            }
-                		
-							trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
-						}
-					
-                }
-                
-                // if there are no submissions then show no-submision screen.
-                if (_submissionList.length == 0) {
-                	contestViewerCenterPanel.selectedChild=noSubmissionScreen;
-                	min_thumbnails_stack.selectedChild=min_no_thumbnails;
-                	thumbnailPanel.visible=false;
-                }
-                else {
-                	// Note: ideally we should be rendering specific to the page
-                	// but somehow it is not working -- giving some untracable error.
-                	//if (!main.visible) {
-                		min_thumbnails_stack.selectedChild=min_thumbnails;
-	                	currentIndexMinPage = 0;
-	                	setSubmissionForMin();
-	                	list_minpage.select(activeSubmissionForMin.getItemAt(0));
-	                	//list_minpage.selectedIndex = 0;
-                	//}
-                	//else {
-                		contestViewerCenterPanel.selectedChild=imageViewerScreen;
-                		thumbnailPanel.visible=true;
-                		thumbnailPanel.selectedChild=thumbnailPanel_enabled;
-	                	currentIndex = 0;
-	                	setSubmission();
-	                	list.select(activeSubmission.getItemAt(0));
-	                	//list.selectedIndex = 0;
-	                	
-	                	updatePurchase();
-                		handleSelect();
-                	//}
-                }
-            }
-            
-            private function handleFail(event:FaultEvent):void {
-                hideLoadingProgress();
-                handleResult();
-            }
-            
-            private function handleSubFail(event:FaultEvent):void {
-                hideLoadingProgress();
-                handleSubResult();
-            }
-            
-            private function updateRankList(item:Object):void {
-                if (item.rank && (item.rank is Number || item.rank.length > 0 )) {
-                    var index:int = parseInt(item.rank) - 1;
-                    if (index > 4 || index < 0) {
-                    	// placement values can be more than 5 also.
-                    	return;
-                    }
-                    
-                    // get if there is already an object with the given rank.
-                    var obj:Object = _rankList.getItemAt(index);
-                    if (obj && obj.hasOwnProperty("id") && obj.hasOwnProperty("rank")) {
-                        obj.rank = "";
-                        obj.mustPurchase=false;
-                        obj.purchased=obj.markedForPurchase || obj.mustPurchase;
-			obj.price=0; 
-                    }
-                    
-                    _rankList.setItemAt(item, index);
-                }
-            }
-            
-            private function doFilter():void {
-                _contestList.removeAll();
-                for each (var item:* in _contestInfoList) {
-                    if (showActive.selected && _activeContestTypeIds[item.statusId] == true) {
-                        _contestList.addItem(item);
-                    } else if (showPast.selected && _pastContestTypeIds[item.statusId] == true) {
-                        _contestList.addItem(item);
-                    }
-                }
-
-				if (this.defaultcontestid) {
-					// after filter, need to check select index
-					for(var i:int=0 ;i<_contestList.length;i++) {
-						var item:*=_contestList[i];
-						
-						if (item.id == this.defaultcontestid)
-						{
-							contestCombo.selectedIndex=i;
-			                contestlist_minpage.selectedIndex=i;
-			                handleContest(null);
-							return;
-						} 
-					}
-				}
-				else {
-					trace("Selecting the combo box: " + 0);
-					contestCombo.selectedIndex=0;
-			        contestlist_minpage.selectedIndex=0;
-			        handleContest(null);
-				}
-            }
-            
-            private function removeAll(array:ArrayCollection, item:Object):int {
-                if (item.hasOwnProperty("id")) {
-                    for (var i:int = 0; i < array.length; i++) {
-                        var obj:Object = array.getItemAt(i);
-                        if (obj.hasOwnProperty("id") && obj.id == item.id) {
-                            array.removeItemAt(i);
-                        }
-                    }
-                }
-                return -1;
-            }
-            
-            private function getItemIndex(array:ArrayCollection, item:Object):int {
-                if (item && item.hasOwnProperty("id")) {
-                    for (var i:int = 0; i < array.length; i++) {
-                        var obj:Object = array.getItemAt(i);
-                        if (obj.hasOwnProperty("id") && obj.id == item.id) {
-                            return i;
-                        }
-                    }
-                }
-                return -1;
-            }
-            private function goPrev():void {
-                var selectedItem:* = list.selectedItem;
-                var index:int = getItemIndex(_submissionList, selectedItem);
-                if (index > 0) {
-                    var prevItem:* = _submissionList.getItemAt(index - 1);
-                    if (!activeSubmission.contains(prevItem)) {
-                        goUp(prevItem);
-                    }
-                    else {
-	                    trace("Previous item: " + prevItem.id);
-	                    list.select(prevItem);
-	                    //list.selectedItem = prevItem;
-	                    handleSelect();
-                    }
-                }
-            }
-            
-            private function goNext():void {
-                var selectedItem:* = list.selectedItem;
-                var index:int = getItemIndex(_submissionList, selectedItem);
-                if (index < _submissionList.length - 1) {
-                    var nextItem:* = _submissionList.getItemAt(index + 1);
-                    if (!activeSubmission.contains(nextItem)) {
-                        goDown(nextItem);
-                    }
-                    else {
-	                    trace("Next item: " + nextItem.id);
-	                    list.select(nextItem);
-	                    //list.selectedItem = nextItem;
-	                    handleSelect();
-                    }
-                }
-            }
-            
-            private var currentIndex:int = 0;
-            
-            private function goUp(item:Object):void {
-                if (currentIndex <= 0 || _submissionList.length == 0) {
-                    currentIndex = 0;
-                } else {
-                    if (activeSubmission.getItemAt(0) == 
-                            _submissionList.getItemAt(0)) {
-                            	// we are already at top.
-                        		// Do nothing here.
-                    } else {
-                    	var selectedIndex: int = getItemIndex(activeSubmission, list.selectedItem);
-                    	trace("goUp Selected Index: " + selectedIndex); 
-                    	
-                    	var maxActiveSubmissionListSize: int = list.rowCount * _currentColumnCount;
-                    	
-                    	var reselectSubmission:Boolean = false;
-	                	if (selectedIndex >= maxActiveSubmissionListSize - _currentColumnCount) {
-	                		reselectSubmission = true;
-	                	}
-                    	
-                    	// we need to remove all items which are at (maxActiveSubmissionListSize - _currentColumnCount)
-                    	// i.e. we will empty the full last row.
-                    	for (var j:int = 0; j < _currentColumnCount; j++) {
-                    		if (activeSubmission.length > maxActiveSubmissionListSize - _currentColumnCount) {
-                    			trace("goUp Removing item at: " + (maxActiveSubmissionListSize - _currentColumnCount));
-                    			activeSubmission.removeItemAt(maxActiveSubmissionListSize - _currentColumnCount);
-                    		}
-                    	}
-                    	
-                    	// we will add item which can fill full row.
-                    	for (var j:int = _currentColumnCount - 1; j >= 0; j--) {
-                    		var k:int = ((currentIndex - 1) * _currentColumnCount) + j;
-                    		trace("Adding item from k: " + k);
-                    		activeSubmission.addItemAt(_submissionList.getItemAt(k), 0);
-                    	}
-                    	
-                    	if (item) {
-                    		list.select(activeSubmission.getItemAt(getItemIndex(activeSubmission, item)));
-                    		handleSelect();
-                    	}
-                    	else {
-	                    	trace("goUp reselect submission: " + reselectSubmission);
-	                    	// select a submission to show.
-	                    	if (reselectSubmission) {
-	                    		list.select(activeSubmission.getItemAt(maxActiveSubmissionListSize - _currentColumnCount));
-	                    		handleSelect();
-	                    	}
-                    	}
-                    	
-                    	currentIndex--;
-                    	hideShowUpDownArrow();
-                    }
-                }
-            }
-            
-            private function goDown(item:Object):void {
-                if ((activeSubmission[activeSubmission.length - 1].id == _submissionList.getItemAt(_submissionList.length - 1).id)) {
-                	// we are already at the last thumbnail
-                	// do nothing.
-                }
-                else {
-                	var selectedIndex: int = getItemIndex(activeSubmission, list.selectedItem);
-                	trace("goDown Selected Index: " + selectedIndex);
-                	
-                	var reselectSubmission:Boolean = false;
-                	if (selectedIndex >= 0 && selectedIndex < _currentColumnCount) {
-                		reselectSubmission = true;
-                	}
-                	
-                	// remove the first row.
-                	for (var j:int = 0; j < _currentColumnCount; j++) {
-                		if (activeSubmission.length > 0) {
-                			trace("goDown Removing item at: 0");
-                			activeSubmission.removeItemAt(0);
-                		}
-                	}
-                	
-                	// we will add item which can fill the row.
-                	for (var j:int = 0; j < _currentColumnCount; j++) {
-                		var k:int = ((currentIndex + list.rowCount) * _currentColumnCount) + j;
-                		trace("Adding item from k: " + k);
-                		if (k < _submissionList.length) {
-                			activeSubmission.addItem(_submissionList.getItemAt(k));
-                		}
-                	}
-                	
-                	if (item) {
-                		list.select(activeSubmission.getItemAt(getItemIndex(activeSubmission, item)));
-                		handleSelect();
-                	}
-                	else {
-	                	trace("goDown reselect submission: " + reselectSubmission);
-	                	// select a submission to show.
-	                	if (reselectSubmission) {
-	                		// select the last submission.
-	                		list.select(activeSubmission.getItemAt(0));
-	                		handleSelect();
-	                	}
-	                }
-                	
-                	currentIndex++;
-                    hideShowUpDownArrow();
-                }
-            }
-            
-            private function setSubmission():void {
-            	trace("Setting active submissions: " + activeSubmission.length + "," + _submissionList.length);
-                activeSubmission = new ArrayCollection();
-                
-                _currentColumnCount = leftPanel.width / list.columnWidth;
-                
-                trace("leftPanel.width: " + leftPanel.width + ", list.columnWidth: " + list.columnWidth); 
-                //trace("Clean the active submission.");
-                for (var i:int = currentIndex; i < list.rowCount + currentIndex; i++) { // BUGR-1142 was 4
-                	trace("i: " + i + ", list.rowCount + currentIndex: " + (list.rowCount + currentIndex));
-                	for (var j:int = 0; j < _currentColumnCount; j++) {
-                		var k: int = i * (_currentColumnCount) + j;
-                		trace("i: " + i + ", j: " + j + ", _currentColumnCount: " + _currentColumnCount + ", k:" + k);
-                		if (k < _submissionList.length) {
-	                        var item:* = _submissionList.getItemAt(k);
-	                        trace("Get item at " + (k).toString() + " item: " + item);
-	                        activeSubmission.addItem(_submissionList.getItemAt(k));
-	                    } else {
-	                        break;
-	                    }
-                	}
-                }
-                
-                if (!list.dataProvider) {
-                	list.dataProvider = activeSubmission;
-                }
-                
-                hideShowUpDownArrow();
-            }
-            
-            
-            private var currentIndexMinPage:int = 0;
-            
-			// BUGR-1392
-            private function setSubmissionForMin():void {
-            	if (!_submissionList || _submissionList.length <= 0) {
-            		return;
-            	}
-            	
-            	//trace("Setting active submissions for min page: " + activeSubmission.length + "," + _submissionList.length);
-            	activeSubmissionForMin = new ArrayCollection();
-            	//currentIndexMinPage = 0;
-                //trace("Clean the active submission.");
-                for (var i:int = 0; i < list_minpage.rowCount; i++) {
-                	for (var j:int = 0; j < list_minpage.columnCount; j++) {
-	                	var k:int = i * list_minpage.columnCount + j;
-	                    if (k < _submissionList.length) {
-	                        var item:* = _submissionList.getItemAt(k);
-	                    	trace("Get item at " + k.toString() + " with id " + item.id);
-	                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(k));
-	                    } else {
-	                        break;
-	                    }
-                 	}
-                }
-                
-                if (list_minpage && !list_minpage.dataProvider && activeSubmissionForMin) {
-                	list_minpage.dataProvider = activeSubmissionForMin;
-                }
-                
-                hideShowUpDownArrowMinPage();
-            }
-            
-            // BUGR-1392
- 			private function goUpMinPage():void {
-                if (currentIndexMinPage <= 0 || _submissionList.length == 0) {
-                    currentIndexMinPage = 0;
-                } else {
-                    if (activeSubmissionForMin.getItemAt(0) == 
-                            _submissionList.getItemAt(0)) {
-                        // Do nothing here.
-                    } else {
-                        if (list_minpage.selectedIndex > activeSubmissionForMin.length - list_minpage.columnCount + 1) {
-                            list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex - list_minpage.columnCount);
-                        }
-                        var s:int = (list_minpage.rowCount - 1) * list_minpage.columnCount;
-                        while(activeSubmissionForMin.length > s) {
-                        	activeSubmissionForMin.removeItemAt(activeSubmissionForMin.length - 1);
-                        }
-                        
-                        for(var i:int = list_minpage.columnCount-1; i >=0 ; i--) {
-                        	var k:int = (currentIndexMinPage - 1) * list_minpage.columnCount + i;
-                        	if(k < _submissionList.length) {
-                        		activeSubmissionForMin.addItemAt(_submissionList.getItemAt(k) , 0);
-                        	}
-                        }
-                    }
-                    
-                    currentIndexMinPage--;
-                    hideShowUpDownArrowMinPage();
-                }
-            }
-            
-            // BUGR-1392
-            private function goDownMinPage():void {
-                if (_submissionList.length > 0 && currentIndexMinPage < _submissionList.length / list_minpage.columnCount - list_minpage.rowCount) {
-                    if (list_minpage.selectedIndex < list_minpage.columnCount) {
-                        list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex + list_minpage.columnCount);
-                    }
-                    
-                    for(var i:int = 0; i < list_minpage.columnCount; i++) {
-                    	activeSubmissionForMin.removeItemAt(0);
-                    }
-                    
-                    for(var i:int = 0; i < list_minpage.columnCount; i++) {
-                    	var k:int = (currentIndexMinPage + list_minpage.rowCount) * list_minpage.columnCount + i;
-                    	if (k < _submissionList.length) {
-                        	activeSubmissionForMin.addItem(_submissionList.getItemAt(k));
-                    	}
-                    }	
-                    currentIndexMinPage++;
-                    hideShowUpDownArrowMinPage();
-                }
-            }
-            
-            private function hideShowUpDownArrow():void {
-            	if (activeSubmission && activeSubmission.length > 0) {
-                	up.visible = (activeSubmission[0].id != _submissionList.getItemAt(0).id);
-                	down.visible = (activeSubmission[activeSubmission.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
-             	}              
-            }
-            
-            private function hideShowUpDownArrowMinPage():void {
-            	if (activeSubmissionForMin && activeSubmissionForMin.length > 0 && _submissionList && _submissionList.length > 0) {
-                	min_up.visible = (activeSubmissionForMin[0].id != _submissionList.getItemAt(0).id);
-                	min_down.visible = (activeSubmissionForMin[activeSubmissionForMin.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
-             	}              
-            }
-            
-            private function compareNumber(a:Object, b:Object, fields:Array = null):int {
-                var rank1:String = a.rank;
-                var rank2:String = b.rank;
-                if (!rank1 && !rank2) {
-                    return 0;
-                } else if (!rank1) {
-                    return 1;
-                } else if (!rank2) {
-                    return -1;
-                } else {
-                    var r1:int = parseInt(rank1);
-                    var r2:int = parseInt(rank2);
-                    if (r1 > r2) {
-                        return 1;
-                    } else if (r2 > r1) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-            
-            private function reorder():void {
-                currentIndex = 0;
-                var item:* = list.selectedItem;
-                if (!_submissionList.sort) {
-	                var sort:Sort = new Sort();
-	                sort.compareFunction = compareNumber;
-	                _submissionList.sort = sort;
-                }
-                _submissionList.refresh();
-                setSubmission();
-                if (activeSubmission.contains(item)) {
-                    //list.selectedItem = item;
-                    list.select(item);
-                } else {
-                    //list.selectedIndex = 0;
-                    list.select(activeSubmission.getItemAt(0));
-                }
-                
-                handleSelect();
-            }
-            
-            private function handleSelect():void {
-                var currentItem:* = list.selectedItem;
-                if (currentItem) {
-                	trace("Handling select of submission: " + currentItem.id);
-                    _currentItemLabel = contestCombo.text + " - #" + currentItem.id;
-                    currentImage.imageURL = currentItem.fullsizepreview;
-                    
-                    if (currentItem.rank) {
-                        rankBar.selectedIndex = parseInt(currentItem.rank) - 1;
-                        // BUGR-1142
-                        if(_selectedContestStatusId == _completedContestTypeId) {
-                      		_placeLabel = rankBar.dataProvider[parseInt(currentItem.rank) - 1].label.toString().substring(0, 3) + " PLACE:  ";
-                      	} else {
-                      		_placeLabel = "";
-                      	}
-                    } else {
-                        rankBar.selectedIndex = -1;
-						_placeLabel = "";
-                    }
-                    
-                    prev.visible = (list.selectedItem.id != _submissionList.getItemAt(0).id);
-                    next.visible = (list.selectedItem.id != _submissionList.getItemAt(_submissionList.length - 1).id);
-                    
-                    if (currentItem.purchased == true) {
-                    	purchase.selected = true;
-                    } else {
-                    	purchase.selected = false;
-                    }
-                    
-                    // enable purchase box accordingly.
-                    if (currentItem.mustPurchase == true) {
-                    	purchase.mouseEnabled=false;
-                    	purchase.mouseChildren=false;
-                    	purchase.focusEnabled=false;
-                    }
-                    else {
-                    	purchase.mouseEnabled=true;
-                    	purchase.mouseChildren=true;
-                    	purchase.focusEnabled=true;
-                    }
-                }
-            }
-            
-            private function rankSubmission(event:Event):void {
-            	updateSubmission(true);
-            }
-            
-            private function enableRatingSelector():void {
-            	rankBar.addEventListener("itemClick", rankSubmission);
-            	rankBar.mouseChildren=true;
-            	rankBar.mouseEnabled=true;
-            	rankBar.focusEnabled=true;
-            }
-            
-            private function disableRatingSelector():void {
-            	rankBar.removeEventListener("itemClick", rankSubmission);
-            	rankBar.mouseChildren=false;
-            	rankBar.mouseEnabled=false;
-            	rankBar.focusEnabled=false;
-            }
-            
-            private function enablePurchaseSelector():void {
-            	purchase_panel.visible=true;
-            	purchasePanel.selectedChild=purchase_enabled;
-		purchase_panel.includeInLayout=true;
-            }
-            
-            private function contestActivePurchaseSelector():void {
-            	purchase_panel.visible=true;
-            	purchasePanel.selectedChild=purchase_disabled;	
-            }
-            
-            private function disablePurchaseSelector():void {
-            	purchase_panel.visible=false;	
-            	purchase_panel.includeInLayout=false; //BUGR-1142
-            }
-            
-            private function enableNoWinnerSelector():void {
-            	noWinner.visible=true;
-            }
-            
-            private function disableNoWinnerSelector():void {
-            	noWinner.visible=false;
-            	noWinner.selected=false;	
-            }
-            
-            private function handleContest(event:Event):void {
-            	//contestRankingErrorLbl.visible=false;
-            	
-            	var isContestChanged:Boolean = true;
-                 if (main.visible && contestCombo && contestCombo.selectedItem) {
-                 	if (_selectedContestId && _selectedContestId == contestCombo.selectedItem.id) {
-                 		isContestChanged = false;
-                 	}
-                 	
-                	_selectedContestId=contestCombo.selectedItem.id;
-                	trace("Handling normal page contest: " + _selectedContestId);
-                	
-                	var statusId:int = _contestInfoDictionary[_selectedContestId].statusId;
-                	_selectedContestStatusId = statusId;
-                    _selectedContestStatus = _statusTypeDictionary[statusId].name;
-                    
-                    // let's get the status of current selected contest 
-                	// and accordingly activate following:
-                	//		purchase box -- active for action required only
-                	//		i can not choose winner -- active for action required only
-                	//		rating selector -- active for any active or action required only.
-                	//
-                	// I can do both save as draft or continue to checkout here.
-                	continue_contestViewer_btn.visible = true;
-                	//save_contestViewer_btn.visible = true;
-                	
-                	if (_selectedContestStatusId == _actionRequiredContestTypeId) {
-                		enablePurchaseSelector();
-                		enableNoWinnerSelector();
-                		enableRatingSelector();
-                	}
-                	else {
-                		disableNoWinnerSelector();
-                		
-	                	if (_activeContestTypeIds[_selectedContestStatusId] == true) {
-	                		// remove continue button from here.
-	                		if (_inDangerContestTypeId != _selectedContestStatusId) {
-	                		    continue_contestViewer_btn.visible = false;
-	                		}
-	                		enableRatingSelector();	
-	                		enablePurchaseSelector();
-	                	}
-	                	else {
-	                		// BUGR-1102
-	                		// Continue button should be disabled for No Winner Chosen (7), Insufficient Permissions - Rerun Possible (11),
-	                		// Insufficient Permissions (13) and Abandoned (14) 
-	                		// 
-	                		// The only "past" contest that has a Continue button is Completed (8)
-	                		
-	                		if (_selectedContestStatusId == 7
-	                			|| _selectedContestStatusId == 11
-	                			|| _selectedContestStatusId == 13
-	                			|| _selectedContestStatusId == 14) {
-								continue_contestViewer_btn.visible = false;	                				
-	                		}
-	                		
-	                		disableRatingSelector();
-	                	}
-	                	
-	                	if (_pastContestTypeIds[_selectedContestStatusId] == true
-	                			|| _selectedContestStatusId == _completedContestTypeId) {
-	                		// remove save as draft button from here.
-	                		//save_contestViewer_btn.visible = false;
-	                		disablePurchaseSelector();	
-	                	}
-                	}
-                 }
-                 else if(!main.visible  && contestlist_minpage && contestlist_minpage.selectedItem){
-                 	if (_selectedContestId && _selectedContestId == contestlist_minpage.selectedItem.id) {
-                 		isContestChanged = false;
-                 	}
-                 	
-                 	_selectedContestId=contestlist_minpage.selectedItem.id;
-                 }
-                 
-                 if (event && event != null || (isContestChanged && isContestChanged == true)) {
-	                 if(_submissionList && _submissionList.length > 0)_submissionList.removeAll();
-	                 
-	                 if (!_isLocalTesting && _contestList && _contestList.length > 0) {
-		            	var header:SOAPHeader=getHeader(username,password);
-						ContestServiceFacadeBean.clearHeaders();
-		        		ContestServiceFacadeBean.addHeader(header);
-		        		ContestServiceFacadeBean.retrieveSubmissionsForContest(_selectedContestId);
-		        		
-		        		// BUGR-1393
-		        		showLoadingProgress();
-	                 }
-	                 else {
-						//retrieveSubService.send();
-	                 }
-                 }
-                 else {
-                 	handleSelect();
-                 }
-            }
-            
-            private function gotoContestViewer():void {
-            	main.selectedChild=contestViewer;
-            	handleContest(null);
-            }
-            
-            private function gotoImageViewer():void {
-            	contestViewerCenterPanel.selectedChild=imageViewerScreen;
-            }
-            
-            private function gotoAbandonScreen(id:Container):void {
-            	contestViewerCenterPanel.selectedChild = id;
-            	if (id == abandonedScreen_3) {
-            		thumbnailPanel.selectedChild = thumbnailPanel_disabled; 
-            	}
-            	if (id == abandonedScreen_2) {
-            		updateAbandonToWS();
-            	}
-            }
-            
-            private function continueFromContestViewer():void {
-            	// action required
-            	//		continue to confirmation screen if everything okay.
-            	//		shows error text if  no submission selections + no winner not selected.
-            	//		continue to abandon screen if no winner is selected.
-            	if (_selectedContestStatusId == _actionRequiredContestTypeId ||
-            	    _selectedContestStatusId == _inDangerContestTypeId) {
-            		if (noWinner.selected) {
-            			gotoAbandonScreen(abandonConfirmationScreen);
-            		}
-            		else if (!areProperRanking()) { // no submissions ranked.
-            			// show error text.
-            			//contestRankingErrorLbl.visible=true;
-            			Helper.showAlertMessage("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
-            		}
-            		else {
-            			main.selectedChild=submissionsConfirmationScreen;
-            		}
-            	}
-            	else if (_selectedContestStatusId == _completedContestTypeId
-            				|| _pastContestTypeIds[_selectedContestStatusId] == true) {
-            		// TODO: do we need to check if there are earlier saved downloads.
-            		continueToSubmissionDownloadScreen();
-            	}
-            }
-            
-            private function areProperRanking():Boolean {
-            	var submissionsCount:int = _submissionList.length;
-            	var requiredRatingCount:int = Math.min(5, submissionsCount);
-            	
-            	var rankingCnt:int = 0;
-            	for (var i:int=0; i < _rankList.length; i++) {
-            		if (_rankList[i] && _rankList[i].rank && _rankList[i].rank > 0) {
-            			rankingCnt++;
-            		}
-            	}
-            	
-            	if (rankingCnt == requiredRatingCount) {
-            		return true;
-            	}
-            	
-            	return false;
-            }
-            
-            private function continueToSubmissionCheckoutScreen():void {
-            	main.selectedChild=submissionCheckoutScreen;
-            }
-            
-            private function continueToSubmissionDownloadScreen():void {
-            	main.selectedChild=submissionsDownloadScreen;
-            }
-            
-            private function saveContestAsDraft():void {
-            	// TODO: out of scope for this contest.	
-            	Helper.showAlertMessage("NOT IN SCOPE OF THIS CONTEST");
-            }
-            
-            private function gotoPurchase():void {
-				if (pay.selectedIndex == 0) {
-					var index:int = wf1.saveData();
-					if (index > 0 && index <= pay.numChildren) {
-						pay.selectedIndex = index - 1;
-						header.text = "Confirm Your Payment";
-						text1.htmlText = "You're almost done! Please confirm that the information below is correct.";
-						if (sub1) {
-							sub1.label = "Submit Purchase";
-						}
-						if (sub2) {
-							sub2.label = "Submit Purchase";
-						}
-					}
-				} else if (pay.selectedIndex == 1) {
-					if (sub1.label == "Submit Purchase") {
-						updatePurchaseToWS();
-					} else {
-						pay.selectedIndex = 0;
-						continueToSubmissionDownloadScreen();
-					}
-				} else if (pay.selectedIndex == 2) {
-					if (sub2.label == "Submit Purchase") {
-						updatePurchaseToWS();
-					} else {
-						pay.selectedIndex = 0;
-						continueToSubmissionDownloadScreen();
-					}
-				}
-            }
-            
-            private function handleContestStatusUpdate(event:ResultEvent):void {
-            	// do nothing	
-            	// BUGR-1393
-                hideLoadingProgress();
-            }
-            
-            private function handleSetSubmissionPlacement(event:ResultEvent):void {
-            	// do nothing
-            	// BUGR-1393
-                hideLoadingProgress();
-            }
-            
-            private function handleMarkForPurchase(event:ResultEvent):void {
-            	// do nothing
-            	// BUGR-1393
-                hideLoadingProgress();
-            }
-            
-            
-            private var _paymentReferenceNumber:String;
-            
-            private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void
-            {
-                // BUGR-1393
-                hideLoadingProgress();
-    			
-            	Helper.showAlertMessage("Process submission payment successfully!!");
-            	if (event && event.result) {
-                    _paymentReferenceNumber = event.result as String;	
-                    
-					header.text = "Your Transaction was Approved!";
-					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
-					sub1.label = "Download Submissions";
-					wf2.paymentReferenceNumber.text=_paymentReferenceNumber;
-            	}
             }
 
-            private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void
-            {
-                // BUGR-1393
+            /**
+             * Handle successful puchase order payment.
+             */
+            private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void {
                 hideLoadingProgress();
-    			
-            	Helper.showAlertMessage("Process submission payment successfully!!");
-            	if (event && event.result) {
-            	    _paymentReferenceNumber = event.result as String;
-            	    
-					header.text = "Your Transaction was Approved!";
-					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
-					sub2.label = "Download Submissions";
-					
-					// TODO: there is no payment reference being shown for subviewer on po orders.
-					// confirm with shannon if he wants it.
-					//wf3.paymentReferenceNumber.text=_paymentReferenceNumber;
-            	}
+
+                Helper.showAlertMessage("Process submission payment successfully!!");
+                if (event && event.result) {
+                    this.paymentReferenceNumber=event.result as String;
+
+                    submissionCheckoutScreen.header.text="Your Transaction was Approved!";
+                    submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
+                    submissionCheckoutScreen.sub2.label="Download Submissions";
+                }
             }
-            
-            private function updatePurchaseToWS():void {
-            	_contestInfoDictionary[_selectedContestId].statusId=_completedContestTypeId;
-            	
-            	if (!_isLocalTesting) {
-	            	var header:SOAPHeader=getHeader(username, password);
-	            	
-	            	var completedContestData:CompletedContestData = new CompletedContestData();
-	
-					//ContestServiceFacadeBean.clearHeaders();
-	            	//ContestServiceFacadeBean.addHeader(header);
-	            	//trace("Updating contest status for: " + _selectedContestId);
-	            	//ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _completedContestTypeId);
-	            	completedContestData.contestId=_selectedContestId;
-					
-					completedContestData.submissions = new Array();
-					
-					//var submissionIds:ArrayCollection = new ArrayCollection();
-					for (var i:int; i < _submissionList.length; i++) {
-						var item:Object = _submissionList[i];
-                        var shouldAdd:Boolean = false;						
-						var submissionPaymentData:SubmissionPaymentData = new SubmissionPaymentData();
-						submissionPaymentData.id = item.id;
-						if (item.rank && item.rank > 0) {
-							//ContestServiceFacadeBean.clearHeaders();
-	            			//ContestServiceFacadeBean.addHeader(header);
-	            			//trace("Updating submission placement for: " + item.id + " to: " + item.rank);
-							//ContestServiceFacadeBean.setSubmissionPlacement(item.id, item.rank);
-                            submissionPaymentData.rank = item.rank;
-                            shouldAdd = true;							
-						}
-						
-						if (item.purchased) {
-						    //submissionIds.addItem(item.id);
-						    submissionPaymentData.amount = item.price;
-						    shouldAdd = true;
-						}
-						
-						if (shouldAdd) {
-						    completedContestData.submissions.push(submissionPaymentData);
-						}
-					}
-					
-					ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(header);
-        			//trace("Marking for purchase: " + item.id);
-        			//ContestServiceFacadeBean.markForPurchase(item.id);
-        			//BUGR-1251
-        			//process submission payment is already doing markForPurchase.
-        			if (pay.selectedIndex == 1) {
-		                var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
-		                creditCardPaymentData.type="PayPalCreditCard";
-		                creditCardPaymentData.cardNumber=wf1.cardNum.text;
-		                creditCardPaymentData.cardType=wf1.cardTypeCombo.selectedItem.data;
-		                creditCardPaymentData.cardExpiryMonth=wf1.month.selectedItem.data;
-		                creditCardPaymentData.cardExpiryYear=wf1.year.selectedItem.data;
-		                creditCardPaymentData.firstName=wf1.cardname.text;
-		                creditCardPaymentData.lastName=wf1.cardname.text;
-		                creditCardPaymentData.address=wf1.address.text;
-		                creditCardPaymentData.city=wf1.city.text;
-		                creditCardPaymentData.state=wf1.state.text;
-		                creditCardPaymentData.zipCode=wf1.code.text;
-		                creditCardPaymentData.country=wf1.country.text;
-		                creditCardPaymentData.phone=wf1.phone.text;
-		                creditCardPaymentData.email=wf1.email.text;
-		                creditCardPaymentData.csc=wf1.csc.text; // BUGR-1398
-		                
-		                // TODO: read ip address from client.
-		                creditCardPaymentData.ipAddress="10.10.10.10";
-		                creditCardPaymentData.sessionId="";
-		                
-		                // set the amount.
-		                // TODO: later add taxes to it.
-		                creditCardPaymentData.amount=_totalPurchaseAmount.toString();
-		                
-                        ContestServiceFacadeBean.processSubmissionCreditCardPayment(completedContestData, creditCardPaymentData);
-        			}
-        			else if(pay.selectedIndex == 2) {
-		                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
-		                purchaseOrderPaymentData.type="TCPurchaseOrder";
-		                purchaseOrderPaymentData.poNumber=wf1.order.selectedItem.data as String;
-		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
-        			}
-        			
-        			// BUGR-1393
-        			showLoadingProgress();
-            	}
-            }
-            
+
+            /**
+             * Handler for purchase fault.
+             */
             private function paymentFaultEventHandler(e:FaultEvent):void {
-                // BUGR-1393
                 hideLoadingProgress();
-    			
-                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
-                        "Please be sure to save your work and try again if you think you received this message by mistake.");        
+                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + "Please be sure to save your work and try again if you think you received this message by mistake.");
             }
-            
-            private function updateAbandonToWS():void {
-            	_contestInfoDictionary[_selectedContestId].statusId=_noWinnerChosenContestTypeId;
-            	
-            	if (!_isLocalTesting) {
-	            	var header:SOAPHeader=getHeader(username, password);
-	
-					ContestServiceFacadeBean.clearHeaders();
-	            	ContestServiceFacadeBean.addHeader(header);
-	            	trace("Updating contest status for: " + _selectedContestId + " to statusId: " + _noWinnerChosenContestTypeId);
-					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _noWinnerChosenContestTypeId);
-					
-					showLoadingProgress();
-            	}
-            }
-            
-            private var _totalPurchaseAmount:Number = 0;
-            
-            private function updatePurchase():void {
-            	trace("Updating purchase info");
-            	_purchaseTotal = 0;
-            	var totalMoney:Number = 0;
-            	
-            	_purchaseList = new ArrayCollection();
-            	_downloadList = new ArrayCollection();
-            	
-            	for each (var item:Object in _submissionList) {
-            		//trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
-            		
-            		if ((item.rank && item.rank > 0) || item.purchased) {
-            		    _purchaseList.addItem(item);
-            		} 
-            		
-            		if (item.purchased && item.purchased == true) {
-            		    _purchaseTotal++;
-            			totalMoney += item.price;
-            			_downloadList.addItem(item);
-            		}
-            	}
-            	
-            	_purchaseMoney = moneyFormatter.format(totalMoney);
-            	_totalPurchaseAmount = totalMoney;
-            	var sort:Sort = new Sort();
-	            sort.compareFunction = compareNumber;
-	            _downloadList.sort = sort;
-	            _downloadList.refresh();
-	            
-	            _purchaseList.sort = sort;
-	            _purchaseList.refresh();
-            }
-            
-            private function updateSubmission(isRank:Boolean):void {
-            	trace("~~~In update submission: " + list.selectedItem + ", " + list.selectedIndex + ", " + isRank);
-            	
-				if (list && list.selectedItem && activeSubmission) {
-					var listSelectedIndex:int = list.selectedIndex;
-					var item:Object = activeSubmission[listSelectedIndex];
-					if (!item) {
-						// this should never happen.
-						item = new Object();
-						list.dataProvider[listSelectedIndex] = item;
-					}
-					
-					trace("Update submission before: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
 
-					if (isRank && rankBar.selectedIndex >= 0) {
-						var oldItem:Object = rankBar.dataProvider[rankBar.selectedIndex];
-				        trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
-				        // BUGR-1142
-				        var rank:String = rankBar.dataProvider[rankBar.selectedIndex].data.toString();
-				        
-				        if (item.rank && rank == item.rank) {
-				        	trace("removing rank for the id:" + item.id);
-				            rank = "";
-				            rankBar.selectedIndex = -1;
-				        } 
-				    	
-				    	item.rank = rank;
-				    } else if (!isRank) {
-						item.markedForPurchase = purchase.selected;
-					}
-					
-					// BUGR-1169
-					var contestInfo = _contestInfoDictionary[_selectedContestId];
-    				var prizes:ArrayCollection = contestInfo.prizes as ArrayCollection;
-    					
-					// if item is getting purchased separately, use the value from db.
-					if (item.savedPrice && item.savedPrice > 0 && (item.markedForPurchase || item.paidFor)) {
-					    item.price = item.savedPrice;
-					}
-					else {
-    					if (prizes) {
-    					    // give more priority to marked for purchase.
-    					    // as there can be cases where item is ranked
-    					    // but doesn't have the corresponding prize.
-    					    if (item.markedForPurchase) {
-    						    // if markedForPurchase is there,
-    						    // then price must be equal to 2nd place prize.
-    						    if (prizes.length > 1 && prizes[1] > 0) {
-    						        item.price=prizes[1];
-    						    }
-    						    
-    						}
-    						else if (item.rank && item.rank > 0) {
-    						    // retrieve the price from contest info's prizeList.
-    						    if (prizes.length < item.rank) {
-    						        // do nothing.
-    						    }
-    						    else if (prizes[item.rank - 1] > 0) {
-    						        item.price=prizes[item.rank - 1];
-    						    }
-    						} 
-    						else {
-    						    item.price=0;
-    						} 
-    		            }
-    		            else {
-    		                item.price=0;
-    		            }
-    	            }
-					
-					// set the purchased attribute correctly.
-					if (prizes) {
-					    item.mustPurchase=item.rank && item.rank > 0 && item.rank <= prizes.length && item.price && item.price > 0;
-					}
-					item.purchased=item.markedForPurchase || item.mustPurchase;
-					
-					trace("Update submission after: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
-					
-					if (item.purchased == true) {
-                    	purchase.selected = true;
+            /**
+             * Selects the gallery view.
+             */
+            public function gotoContestViewer():void {
+                trace("----------------------------------------------------------------- goToContestViewer");
+                subViewer.selectedChild=gallery;
+                handleContest(null);
+            }
+
+            /**
+             * Handles select of contest.
+             *
+             * It simply delegates to gallery or default view, depending which is visible.
+             */
+            public function handleContest(event:Event):void {
+                if (subViewer.selectedChild == gallery) {
+                    ThumbnailGallerySubmissionViewer(gallery).handleContest(event);
+                } else if (subViewer.selectedChild == minPage) {
+                    DefaultViewSubmissionViewer(minPage).handleContest(event);
+                }
+            }
+
+            /**
+             * Handles filter of contest.
+             *
+             * It simply delegates to gallery or default view, depending which is visible.
+             */
+            public function doFilter():void {
+                if (subViewer.selectedChild == gallery) {
+                    ThumbnailGallerySubmissionViewer(gallery).doFilter();
+                } else if (subViewer.selectedChild == minPage) {
+                    DefaultViewSubmissionViewer(minPage).doFilter();
+                }
+            }
+
+            /**
+             * Defines the logic for 'next' / 'continue' button click on gallery view.
+             * Depending on various options, flow goes to either submission confirmation, download, or abandon screen.
+             */
+            public function continueFromGallery():void {
+                // action required
+                //		continue to confirmation screen if everything okay.
+                //		shows error text if  no submission selections + no winner not selected.
+                //		continue to abandon screen if no winner is selected.
+                if (this.selectedContestStatusId == this.actionRequiredContestTypeId || this.selectedContestStatusId == this.inDangerContestTypeId) {
+                    if (!ThumbnailGallerySubmissionViewer(gallery).isWinnerSelected()) {
+                        subViewer.selectedChild=abandonConfirmationScreen;
+                    } else if (!areProperRanking()) { // no submissions ranked.
+                        // show error text.
+                        Helper.showAlertMessage("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
                     } else {
-                    	purchase.selected = false;
+                        subViewer.selectedChild=submissionsConfirmationScreen;
                     }
-				    
-				    if (item.mustPurchase == true) {
-                    	purchase.mouseEnabled=false;
-                    	purchase.mouseChildren=false;
-                    	purchase.focusEnabled=false;
-                    }
-                    else {
-                    	purchase.mouseEnabled=true;
-                    	purchase.mouseChildren=true;
-                    	purchase.focusEnabled=true;
-                    }
-					
-					if (!list.dataProvider) {
-						list.dataProvider=activeSubmission;
-					}
-					
-					list.dataProvider[listSelectedIndex]=item;
-					
-                    /*var index:int = getItemIndex(_submissionList, item);
-                    if (index >= 0) {
-                    	_submissionList.setItemAt(item, index);
-                    }*/
-                    
-                	if (_rankList.contains(item)) {
-                    	var index:int = getItemIndex(_rankList, item);
-                    	_rankList.setItemAt(new Object(), index);
-                	}
-                    
-                    // bugr-1101 - earlier code block is inserting new Object()
-                    // so rank list is getting disturbed for case of purchase.
-                    // it need to be re-initialized even for purchase case.
-                    //if (isRank) {
-                    updateRankList(item);
-                    //} 
-                    
-                    updatePurchase();
-                } 
+                } else if (this.selectedContestStatusId == this.completedContestTypeId || this.pastContestTypeIds[this.selectedContestStatusId] == true) {
+                    continueToSubmissionDownloadScreen();
+                }
             }
-            
-            private function maximizeScreen():void {
-            	trace("Contest item: " + contestlist_minpage.selectedItem); 
-            	trace("Contest index: " + contestlist_minpage.selectedIndex);
-            	trace("Selected submission: " + list_minpage.selectedItem); 
-            	trace("Selected submission index: " + list_minpage.selectedIndex);
-				
-		    if (this.container) {
-                this.container.startMaximize();
-    		}
- 		   else {
- 		       maximize();
- 		   }
-        }
-            
-            private function restoreScreen():void {
-            	trace("RESTORE Contest item: " + contestlist_minpage.selectedItem); 
-            	trace("RESTORE Contest index: " + contestlist_minpage.selectedIndex);
-            	trace("RESTORE Selected submission: " + list_minpage.selectedItem); 
-            	trace("RESTORE Selected submission index: " + list_minpage.selectedIndex);
-				
-				if (this.container) {
-            		this.container.startRestore();
-    			}
- 				else {
- 					restore();
- 				}
-            }
-            
-            private function openImageInNewWindow(event:MouseEvent):void {
-            	if (list.selectedItem) {
-            		var url:String = "http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + list.selectedItem.id;
-        			var u:URLRequest = new URLRequest(url);
-        			navigateToURL(u,"_blank");
-            	}
-     		}
 
-			// Prevent DividerDrag and MouseDown events from bubbling up to the SuperTabNavigator     		
-			public function onDividerDrag(event:Event):void {
-				event.stopImmediatePropagation();
-			}
-		
-	    public function onMouseDown(event:Event):void {
-	    	event.stopImmediatePropagation();
-	    }
-	    
-		public function linkHandler():void {
-			// Open the link in a new window.
-			navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + list.selectedItem.id), '_blank')
-		}
-		
-		private function getClientProjectsByUser():void {
-			    // add an empty item.
-			    var item:Object = null;
-			    
-			    item = new Object();
-			    item.label="";
-			    item.data="";
-			    _clientProjectNames.addItem(item);
-			    
-			    // get client projects by user.
-			    var header:SOAPHeader=getHeader(username,password);
-			    ProjectServiceFacadeBean.clearHeaders();
-        			ProjectServiceFacadeBean.addHeader(header);
-			    var getClientProjectsByUserOp:AbstractOperation = ProjectServiceFacadeBean.getOperation("getClientProjectsByUser");
-			    if (getClientProjectsByUserOp) {
-				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
-				getClientProjectsByUserOp.send();
-				
-				// BUGR-1393
-            	showLoadingProgress();
-			    }
-			}
-			
-			private function getClientProjectsHandler(e:ResultEvent):void { 
-				trace("getClientProjectsHandler: " + e + ", " + e.result); 
-				hideLoadingProgress();
-				 if(e && e.result) 
-				{ 
-				     if (e.result is ArrayCollection) { 
-					 var results:ArrayCollection=e.result as ArrayCollection; 
-					 for (var i:int = 0; i < results.length; i++) { 
-					 var result=results[i]; 
-					 // add client project name 
-					 var item:Object = new Object(); 
-					 var name:String = result.name; 
-					var poNumber:String = result.pOBoxNumber; 
-					item.label=name; 
-					item.data=poNumber; 
-					 _clientProjectNames.addItem(item); 
-					 } 
-				} 
-				else { 
-					     var result=e.result; 
-					     // add client project name 
-					     var item:Object = new Object(); 
-					     var name:String = result.name; 
-						var poNumber:String = result.pOBoxNumber; 
-					     item.label=name; 
-					     item.data=poNumber; 
-						_clientProjectNames.addItem(item); 
-				} 
-			 } 
-		} 
-		
+            /**
+             * Defines the ui logic to go to submission checkout screen.
+             */
+            public function continueToSubmissionCheckoutScreen():void {
+                subViewer.selectedChild=submissionCheckoutScreen;
+            }
+
+            /**
+             * Defines the ui logic to got to submission download screen.
+             */
+            public function continueToSubmissionDownloadScreen():void {
+                subViewer.selectedChild=submissionsDownloadScreen;
+            }
+
+            /**
+             * Defines the ui logic to go to submission purchase screens.
+             */
+            public function gotoPurchase():void {
+                if (submissionCheckoutScreen.pay.selectedIndex == 0) {
+                    var index:int=submissionCheckoutScreen.wf1.saveData();
+                    if (index > 0 && index <= submissionCheckoutScreen.pay.numChildren) {
+                        submissionCheckoutScreen.pay.selectedIndex=index - 1;
+                        submissionCheckoutScreen.header.text="Confirm Your Payment";
+                        submissionCheckoutScreen.text1.htmlText="You're almost done! Please confirm that the information below is correct.";
+                        if (submissionCheckoutScreen.sub1) {
+                            submissionCheckoutScreen.sub1.label="Submit Purchase";
+                        }
+                        if (submissionCheckoutScreen.sub2) {
+                            submissionCheckoutScreen.sub2.label="Submit Purchase";
+                        }
+                    }
+                } else if (submissionCheckoutScreen.pay.selectedIndex == 1) {
+                    if (submissionCheckoutScreen.sub1.label == "Submit Purchase") {
+                        updatePurchaseToWS(submissionCheckoutScreen);
+                    } else {
+                        submissionCheckoutScreen.pay.selectedIndex=0;
+                        continueToSubmissionDownloadScreen();
+                    }
+                } else if (submissionCheckoutScreen.pay.selectedIndex == 2) {
+                    if (submissionCheckoutScreen.sub2.label == "Submit Purchase") {
+                        updatePurchaseToWS(submissionCheckoutScreen);
+                    } else {
+                        submissionCheckoutScreen.pay.selectedIndex=0;
+                        continueToSubmissionDownloadScreen();
+                    }
+                }
+            }
+
+            /**
+             * Defines the ui logic to maximize the widget.
+             */
+            public function maximizeScreen(data:Object):void {
+                this._tobeShownSubOnMaximize=data;
+                if (this.container) {
+                    this.container.startMaximize();
+                } else {
+                    maximize();
+                }
+            }
+
+            /**
+             * Defines the ui logic to restore the widget.
+             */
+            public function restoreScreen():void {
+                if (this.container) {
+                    this.container.startRestore();
+                } else {
+                    restore();
+                }
+            }
+
+            /**
+             * Success handlers for submission feedback save.
+             */
+            private function handleUpdateSubmissionsFeedback(event:ResultEvent):void {
+                this.hideLoadingProgress();
+
+                if (event) {
+                    Helper.showAlertMessage("Feedback successfully persisted!");
+                }
+            }
+
+            /**
+             * Success handlers for submission rank save.
+             */
+            private function handleRankSubmissions(event:ResultEvent):void {
+                this.hideLoadingProgress();
+
+                if (event) {
+                    Helper.showAlertMessage("Submissions rank saved!");
+                }
+            }
         ]]>
     </mx:Script>
-    
-<mx:WebService id="ProjectServiceFacadeBean" 
-		wsdl="{projectServiceFacadeWsdl}"> 
 
-	<mx:operation name="getClientProjectsByUser" 
-		resultFormat="object" 
-		fault="hideLoadingProgress(); Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);"> 
-	</mx:operation>
-	
-</mx:WebService>      
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{_projectServiceFacadeWsdl}">
 
-<mx:WebService id="ContestServiceFacadeBean" 
-		wsdl="{contestServiceFacadeWsdl}"> 
-	<mx:operation name="getContestDataOnly" 
-		resultFormat="object" 
-		result="handleResult(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);"> 
-	</mx:operation>
-		
-	<mx:operation name="getStatusList" 
-		resultFormat="object" 
-		result="handleStatusList(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);"> 
-	</mx:operation>
+        <mx:operation name="getClientProjectsByUser"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);">
+        </mx:operation>
 
-	<mx:operation name="getContestDataOnlyByPID" 
-		resultFormat="object" 
-		result="handleResult(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
-	</mx:operation>
-		
-	<mx:operation name="retrieveSubmissionsForContest" 
-		resultFormat="object" 
-		result="handleSubResult(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);">
-	</mx:operation>
-	
-	<mx:operation name="updateContestStatus" 
-		resultFormat="object" 
-		result="handleContestStatusUpdate(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('updateContestStatus: ' + event.fault.faultString);"> 
-	</mx:operation>
-	
-	<mx:operation name="setSubmissionPlacement" 
-		resultFormat="object" 
-		result="handleSetSubmissionPlacement(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('setSubmissionPlacement: ' + event.fault.faultString);"> 
-	</mx:operation>
-	
-	<mx:operation name="markForPurchase" 
-		resultFormat="object" 
-		result="handleMarkForPurchase(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('markForPurchase: ' + event.fault.faultString);"> 
-	</mx:operation>
-	
-	<mx:operation name="processSubmissionCreditCardPayment" 
-        resultFormat="object" 
-        result="handleProcessSubmissionCreditCardPayment(event)"
-        fault="paymentFaultEventHandler(event)"> 
-    </mx:operation>
-    
-    <mx:operation name="processSubmissionPurchaseOrderPayment" 
-        resultFormat="object" 
-        result="handleProcessSubmissionPurchaseOrderPayment(event)"
-        fault="paymentFaultEventHandler(event)"> 
-    </mx:operation>
+    </mx:WebService>
 
-</mx:WebService>
+    <mx:WebService id="ContestServiceFacadeBean"
+                   wsdl="{_contestServiceFacadeWsdl}">
+        <mx:operation name="getContestDataOnly"
+                      resultFormat="object"
+                      result="handleResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);">
+        </mx:operation>
 
-<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
-		 fault="Helper.showAlertMessage('dataservice: ' + event.fault.faultString);">
-    <mx:method name="getPassword"  result="processPassword(event)" 
-		                   fault="Helper.showAlertMessage('getPassword: ' + event.fault.faultString);"/>
+        <mx:operation name="getStatusList"
+                      resultFormat="object"
+                      result="handleStatusList(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);">
+        </mx:operation>
 
-</mx:RemoteObject>
+        <mx:operation name="getContestDataOnlyByPID"
+                      resultFormat="object"
+                      result="handleResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);">
+        </mx:operation>
 
-<mx:DefaultTileListEffect id="myDTLE"
-    fadeInDuration="250"
-    fadeOutDuration="350"
-    moveDuration="200"
-    color="0xffffff"/>
-<mx:Fade alphaFrom="0" alphaTo="1" duration="10" id="fade" />
-    
-<mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
-<mx:ViewStack id="main" 
-	width="100%" 
-	height="100%"
-	resizeToContent="true">
-    <mx:HDividedBox id="contestViewer" 
-    	backgroundAlpha="1"
-        width="100%" 
-        height="100%" 
-        paddingTop="2" 
-        paddingLeft="0" 
-        paddingRight="0" 
-    	dividerDrag="onDividerDrag(event)" 
-    	mouseDown="onMouseDown(event)" 
+        <mx:operation name="retrieveSubmissionsForContest"
+                      resultFormat="object"
+                      result="handleSubResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);">
+        </mx:operation>
 
-    	resizeToContent="true">
-        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="125" minWidth="125" 
-        	verticalGap="0">
-            <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
-            	<mx:HBox id="thumbnailPanel_enabled" horizontalAlign="center"
-            		horizontalGap="0" 
-            		>
-	            	<mx:VBox horizontalAlign="center" width="100%"
-		                    paddingLeft="0" paddingRight="0" styleName="thumbnailBgr">
-		                
-		            	<mx:Spacer height="5" />
-		                <mx:Button buttonMode="true" id="up" styleName="up" click="goUp(null)" />
-		                <tc:CustomTileList id="list" 
-		                		rowCount="7" 
-		                		width="100%" 
-		                		columnWidth="123"
-		                		rowHeight="95"
-		                		columnCount="3"
-		                        selectionDuration="0"
+        <mx:operation name="processSubmissionCreditCardPayment"
+                      resultFormat="object"
+                      result="handleProcessSubmissionCreditCardPayment(event)"
+                      fault="paymentFaultEventHandler(event)">
+        </mx:operation>
 
-		                        dataProvider="{activeSubmission}" 
-		                        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
-		                        verticalScrollPolicy="off" 
-		                        horizontalScrollPolicy="off" 
-		                        borderStyle="none"
-		                        click="handleSelect()" 
-		                        allowMultipleSelection="false" 
-		                        allowDragSelection="false"
-		                        backgroundColor="#EEEEEE"
-								resize="{setSubmission()}"
-					            />
-		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
-		            	<mx:Spacer />
-		                <mx:Button buttonMode="true" click="reorder()" label="PRIORITIZE"  styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-	            	
-		            </mx:VBox>
-	            	<mx:VRule height="100%" strokeColor="#DBDBDB"/>
-	            </mx:HBox>
-	            <mx:VBox id="thumbnailPanel_disabled" 
-	            	width="100%" height="100%" 
-	            	paddingLeft="15" 
-	            	paddingRight="15" 
-	            	paddingTop="50">
-	            	<mx:Text width="100%" text="Contest submissions are no longer viewable."
-	            			fontFamily="Arial" fontSize="15" fontWeight="bold" />
-	            </mx:VBox>
-            </mx:ViewStack>
-        </mx:VBox>
-        <mx:VBox id="rightPanel" 
-                width="100%" 
-        		height="100%" 
-        		verticalGap="0"
-        		horizontalGap="0" 
-        		paddingLeft="2"
-        		paddingRight="2"
-        		
-        		verticalScrollPolicy="off">
-        	<mx:VBox 
-        	    width="100%"
-        	    height="100%">
-        	    <mx:Spacer height="9" width="100%"/>
-                <mx:HBox width="100%" 
-            		horizontalAlign="left"
-            		paddingLeft="10">
-                    <mx:Label text="Select a Contest to View:" styleName="normalText"/>
-                    <mx:ComboBox id="contestCombo" width="272" top="9"
-                            change="handleContest(event)" 
-                            labelField="name" 
-                            itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
-                    <mx:HBox horizontalAlign="right" width="100%" paddingRight="10">
-                        <mx:Label text="Filter By:" styleName="normalText"/>                
-                        <mx:CheckBox id="showActive" label="Active Contests" 
+        <mx:operation name="processSubmissionPurchaseOrderPayment"
+                      resultFormat="object"
+                      result="handleProcessSubmissionPurchaseOrderPayment(event)"
+                      fault="paymentFaultEventHandler(event)">
+        </mx:operation>
 
-                                selected="true" change="doFilter()" />
-                         <mx:CheckBox id="showPast" label="Past Contests" 
-                                selected="true" change="doFilter()" />    
-                    </mx:HBox>         
-                </mx:HBox>
-                <!-- BUGR-1142 -->
-                <mx:Spacer height="9"/>
-            	<mx:HRule width="100%" />
-            </mx:VBox>
+        <mx:operation name="updateSubmissionsFeedback"
+                      resultFormat="object"
+                      result="handleUpdateSubmissionsFeedback(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('updateSubmissionsFeedback: ' + event.fault.faultString);">
+        </mx:operation>
 
-            <mx:Spacer height="4"/>
-            <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
-	            <mx:VBox id="imageViewerScreen" 
-	            	horizontalAlign="center" 
-	            	verticalAlign="top"
-	            	width="100%" 
-	            	verticalGap="0"
-	            	>
+        <mx:operation name="rankSubmissions"
+                      resultFormat="object"
+                      result="handleRankSubmissions(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('rankSubmissions: ' + event.fault.faultString);">
+        </mx:operation>
 
-					<mx:HBox width="100%">
-						<mx:Label width="125" styleName="header" fontSize="16" text="{_placeLabel}" textAlign="right"/>
-		            	<mx:Label styleName="header" fontSize="16" text="{_currentItemLabel}"/>
-					</mx:HBox>
-					<mx:Label paddingLeft="128" text="(Status: {_selectedContestStatus})" width="100%" />
-	         		<mx:HBox width="100%" 
-			               horizontalAlign="center"
-			               verticalAlign="bottom"
-			               horizontalGap="0"
-			               verticalScrollPolicy="off" 
-			               horizontalScrollPolicy="off">
-			               
-	                  	
-			            <mx:Label text="You are viewing the Preview Image." baseline="20"/>
-			            <mx:LinkButton label="Download" click="{linkHandler()}" />
-			            <mx:Label text="the Full Submission here." />   
-                    </mx:HBox>
-	            	<mx:HBox horizontalAlign="center" width="100%" height="100%" paddingLeft="10" paddingRight="10">
-	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button buttonMode="true" id="prev" styleName="prev" click="goPrev()"/>
-	                    </mx:VBox>
-	                    <mx:Box height="100%" 
-	                    		width="100%" 
-	                    		minWidth="675" 
-	                            minHeight="415"
+    </mx:WebService>
 
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{_blazedsendpoint}"
+                     fault="Helper.showAlertMessage('dataservice: ' + event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="Helper.showAlertMessage('getPassword: ' + event.fault.faultString);"/>
 
+    </mx:RemoteObject>
 
-
-
-
-	                    		styleName="previewAreaBorder"
-	                    		id="previewBox1"
-	                    		horizontalAlign="center"
-	                    		verticalAlign="middle"
-	                    		horizontalScrollPolicy="off"
-	                    		verticalScrollPolicy="off"
-	                    		resize="{onPreviewResize()}"
-	                    		>
-	                    	<mx:HBox id="previewBox2" 
-	                    		width="{previewBox1.width - 17}" 
-	                    		height="{previewBox1.height - 18}"
-	                    		horizontalAlign="left"
-	                    		
-	                    		>
-	                            <mx:VBox horizontalAlign="left" id="zoomPanelButtons"
-	                            	paddingLeft="20" paddingTop="20" 
-	                    			>
-
-
-
-
-										<mx:Button buttonMode="true"
-											styleName="ZoomInButton"
-											toolTip="Zoom In"
-											click="{currentImage.zoom('in');}"
-											/>
-										
-
-
-
-
-										<mx:VSlider
-											minimum="{ currentImage.bitmapScaleFactorMin }" 
-											maximum="{ currentImage.bitmapScaleFactorMax }" 
-											value  ="{ currentImage.bitmapScaleFactor }"	
-											change ="{ currentImage.setZoom(VSlider(event.currentTarget).value) }"
-											snapInterval=".001"
-											liveDragging="true" 
-											styleName="sliderStyle"
-											sliderThumbClass="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.VSliderThumbSkin"
-											
-											/>	
-								
-										<mx:Button buttonMode="true"
-											styleName="ZoomOutButton"
-											toolTip="Zoom Out"
-											click="{ currentImage.zoom('out'); }"			
-											/>	
-									
-										<mx:Spacer/>
-										
-										<mx:Button buttonMode="true" styleName="ImageInNewWindowButton"
-										   toolTip="Click here to get full screen view in a new window"
-										   click="openImageInNewWindow(event)"
-										  />
-									</mx:VBox>	
-								<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
-		                        <mx:Canvas  
-		                            width="{previewBox2.width - 2 * (zoomPanelButtons.width) - 10}"
-		                            height="100%"
-		                            horizontalScrollPolicy="off"
-		                            verticalScrollPolicy="off"
-		                            id="imagePreviewerCanvas"
-		                            >
-		                            <tcimg:ImageViewer id="currentImage" smoothBitmap="true"
-											bitmapScaleFactorMax="5"
-											bitmapScaleFactorMin=".05"
-											
-											width="{imagePreviewerCanvas.width - 2}" 
-											height="{imagePreviewerCanvas.height - 2}" 
-											x="0" y="0"/>
-		                        </mx:Canvas>
-	                        </mx:HBox>
-	                    </mx:Box>
-	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button buttonMode="true" id="next" styleName="next" click="goNext()"/>
-	                    </mx:VBox>
-	                </mx:HBox>
-	                <mx:Spacer height="10" /> <!-- BUGR-1142 -->
-                    <mx:HBox width="100%" 
-			               horizontalAlign="center"
-			               verticalScrollPolicy="off" 
-			               horizontalScrollPolicy="off">
-			            <!--<mx:Spacer width="260" />-->
-                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
-                                id="rankBar" selectedIndex="-1"
-                                buttonWidth="85" 
-                                buttonHeight="24" 
-                                buttonStyleName="rankButton">
-                            <mx:Object label="1st Place" data="1" />    
-                            <mx:Object label="2nd Place" data="2" />
-                            <mx:Object label="3rd Place" data="3" />
-                            <mx:Object label="4th Place" data="4" />
-                            <mx:Object label="5th Place" data="5" />
-                        </mx:ToggleButtonBar>
-                        <!--<mx:Spacer width="100%" />-->
-                    </mx:HBox>
-                <!--    <mx:HBox width="100%" 
-			               horizontalAlign="center"
-			               verticalScrollPolicy="off" 
-			               horizontalScrollPolicy="off" horizontalGap="20">
-                            <mx:Label text="1st" height="23" fontWeight="bold"/>
-                            <mx:Label text="2nd" height="23" fontWeight="bold"/>
-                            <mx:Label text="3rd" height="23" fontWeight="bold"/>
-                            <mx:Label text="4th" height="23" fontWeight="bold"/>
-                            <mx:Label text="5th" height="23" fontWeight="bold"/>
-                    </mx:HBox> -->
-                    <mx:HBox width="100%" horizontalAlign="right"
-                           verticalScrollPolicy="off" 
-                           horizontalScrollPolicy="off">
-                           <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
-                    </mx:HBox>
-	                <mx:HBox id="purchase_panel" 
-	                	width="100%" 
-	                	horizontalAlign="center"
-	                	verticalScrollPolicy="off" 
-	                	horizontalScrollPolicy="off">
-		            	<mx:VBox width="320" 
-		            			height="100%" 
-		            			horizontalAlign="center" 
-		            			paddingLeft="0" 
-		            			paddingRight="0">
-		            		<mx:Canvas width="100%">
-		            			<mx:Label text="Purchase Option:" styleName="normalText" left="0"/>
-		            			<mx:LinkButton label="[+ show hint]" right="0" 
-		                            rollOverColor="#ffffff" selectionColor="#ffffff" />
-		            		</mx:Canvas>
-		            		<mx:ViewStack id="purchasePanel" 
-		            			width="100%" 
-		            			height="100%">
-		            			<mx:VBox id="purchase_enabled" 
-		            				borderStyle="solid" 
-		            				width="100%" 
-		            				borderColor="#DBDBDB"
-		            				verticalScrollPolicy="off" 
-			            			horizontalScrollPolicy="off"
-			            			height="90"
-			            			backgroundColor="#FAFAFA"
-			            			paddingLeft="18" 
-			            			paddingRight="18">
-			            			<mx:CheckBox id="purchase" label="I would like to purchase this submission." 
-			            					change="updateSubmission(false)" styleName="CheckBoxStyle" />
-			            			<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
-			            			<mx:Label text="{'Submission Selected to Purchase: ' + _purchaseTotal}" styleName="text" />
-			            			<mx:Label text="{'Estimated Total Cost: $' + _purchaseMoney}" styleName="text" />
-			            		</mx:VBox>
-			            		<mx:VBox id="purchase_disabled" 
-			            			borderStyle="solid" 
-			            			borderColor="#DBDBDB"
-			            			width="100%" 
-			            			height="90"
-			            			backgroundColor="#FAFAFA"
-			            			verticalScrollPolicy="off" 
-			            			horizontalScrollPolicy="off"
-			            			paddingLeft="18" 
-			            			paddingRight="18">
-		            				<mx:Text width="100%"
-		            						text="Your contest is still active. Once it has completed, you will have an opportunity to purchase your wining selections and any additional submissions." />
-		            				<mx:HBox horizontalAlign="left">
-		            					<mx:Label text="To learn more." color="#a4a4a4" />
-		            					<mx:LinkButton label="click here" color="#a4a4a4" 
-		            							rollOverColor="#ffffff" selectionColor="#ffffff" />
-		            				</mx:HBox>
-		            			</mx:VBox>
-		            		</mx:ViewStack>
-		            	</mx:VBox>
-	                </mx:HBox>
-	                <!-- BUGR-1142 -->
-	                <mx:Spacer height="10" />
-	                <mx:HRule width="100%" strokeColor="#DBDBDB" />
-	                <mx:HBox width="100%" horizontalAlign="center" paddingTop="10" paddingBottom="4" paddingRight="4"> 
-	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
-	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="CONTINUE" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="continueFromContestViewer()" />
-	                </mx:HBox>
-	            </mx:VBox>
-        		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" >
-        			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
-                            fontWeight="bold" fontSize="16" width="100%" />
-                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
-                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + _selectedContestStatus}" width="100%" />
-            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
-	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
-	                    		text="We know that picking a winner is difficult..." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="However, it is important to fulfill your commitment to this contest. If you decide to choose no winners, you will have no further responsiblity to puurchase any of the submitted designs." />
-	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="11"
-	                    		text="Before you choose this option, you should know:" />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="1. This is irreversible; you will not be able to purchase any of the submissions in the future." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="2. Your profile history will indicate that you ended a competition and chose no winner. This may discourage memebers from competing in your future contests." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="3. The contest administration fee you paid to launch this competition is non-refundable." />
-	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="11"
-	                    		text="Make a choice, but do something." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account." />
-        			</mx:VBox>
-        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Select a Winner" click="gotoImageViewer()" />
-        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
-        			</mx:HBox>
-                </mx:VBox>
-                <mx:VBox id="abandonedScreen_1" paddingTop="22" verticalGap="7" width="100%" >
-        			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
-                            fontWeight="bold" fontSize="16" width="100%" />
-                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
-                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}" width="100%" />
-            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
-	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
-	                    		text="You have chosen no winner for this contest." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="To help the competitors understand your decision, please include some feedback in the area below. This may be overall impression of the contest results or critique of individual submissions." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="The competitors may want to know why now winner was selected. If you choose not to provide any feedback, this may discourage members from competing in your future contests." />
-	     				<mx:TextArea paddingTop="9" width="90%" height="158" />
-        			</mx:VBox>
-        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Select a Winner" click="gotoImageViewer()"  />
-        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
-        			</mx:HBox>
-                </mx:VBox>
-                <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%" >
-        			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
-                            fontWeight="bold" fontSize="16" width="100%" />
-                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
-                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}" width="100%" />
-            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
-	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
-	                    		text="Care to try again?" />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="As a valued customer, you have the opportunity to post this contest one more time at no additional cost to you. This is great chance to analyze what worked (and didn't work) in your last contest." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="By simply making some minor modications to your descriptions, prize amounts, etc., you may increase your chances of getting more successful submissions." />
-	     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		htmlText="You can learn more about reposting contests by &lt;a href=&quot;#&quot; &gt;&lt;font color=&quot;#753535&quot;&gt;visiting our help section.&lt;/font&gt;&lt;/a&gt;" />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="So what would you like to do?" />
-        			</mx:VBox>
-        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Run this Contest Again" click="gotoImageViewer()" />
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="No, Thank You" click="gotoAbandonScreen(abandonedScreen_3)" />
-        			</mx:HBox>
-                </mx:VBox>
-                <mx:VBox id="abandonedScreen_3" paddingTop="22" verticalGap="7" width="100%" >
-        			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
-                            fontWeight="bold" fontSize="16" width="100%" />
-                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
-                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - Abandoned'}" width="100%" />
-            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
-	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
-	                    		text="Since this contest was abandoned..." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
-	                    		text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended." />
-        		</mx:VBox>
-                </mx:VBox>
-                <mx:VBox id="noSubmissionScreen" paddingTop="22" verticalGap="7" width="100%" >
-        			<mx:Label fontFamily="Arial"  text="There are currently no submissions for this contest."
-                            fontWeight="bold" fontSize="16" width="100%" />
-                </mx:VBox>
-            </mx:ViewStack>
-        </mx:VBox>
-    </mx:HDividedBox>    	
-	<mx:VBox id="submissionsConfirmationScreen" 
-		width="100%" 
-		height="100%" 
-		paddingTop="10" 
-		paddingBottom="25" 
-		paddingLeft="15" 
-		paddingRight="15"
-		verticalScrollPolicy="off" 
-		horizontalScrollPolicy="off">
-		<mx:Label text="Confirm your Selections" fontSize="16" styleName="header" />
-		<mx:Text width="100%" styleName="text" 
-				text="Please confirm your selection of the winning submissions as well as any additional submissions you wish to purchase." />
-		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
-        <mx:TileList id="purchaseList" width="100%" columnCount="2"
-                selectionDuration="0"
-                dataProvider="{_purchaseList}" 
-                itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.PurchaseListRenderer"
-                borderStyle="none"
-                allowMultipleSelection="false" 
-                allowDragSelection="false"
-                height="460"/>
-        <mx:Spacer height="100%" />
-        <mx:HBox width="100%">
-        	<mx:Button buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="Modify Selections" click="gotoContestViewer()" />
-        	<mx:Spacer width="100%" />
-        	<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Checkout" click="continueToSubmissionCheckoutScreen()" />
-        </mx:HBox>
-	</mx:VBox>
-	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
-		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="header" />
-		<mx:Text id="text1" width="100%" styleName="text" 
-				htmlText="Feedback will be here..." />
-		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
-		<mx:ViewStack height="100%" width="100%" id="pay">
-			<mx:VBox width="100%" height="100%">
-				<tc:PaymentWF id="wf1" width="100%" height="100%"  clientProjectNames="{_clientProjectNames}"/>
-				<mx:HBox width="100%">
-					<mx:Button buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="Add/Modify Selections" click="gotoContestViewer()" />
-					<mx:Spacer width="100%" />
-					<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Confirm Order" click="gotoPurchase()" />
-				</mx:HBox>
-			</mx:VBox>
-			<mx:VBox width="100%" height="100%">
-				<tc:PaymentWFCf id="wf2" paddingRight="6" />
-				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button buttonMode="true" id="sub1" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Submit Purchase" click="gotoPurchase()" />
-				</mx:HBox>
-			</mx:VBox>
-			<mx:VBox width="100%" height="100%">
-				<tc:PaymentWFCfPO id="wf3" paddingRight="6" />
-				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button buttonMode="true" id="sub2" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Submit Purchase" click="gotoPurchase()" />
-				</mx:HBox>
-			</mx:VBox>
-		</mx:ViewStack>
-	</mx:VBox>
-	<mx:VBox id="submissionsDownloadScreen" 
-		width="100%" 
-		height="100%" 
-		paddingTop="10" 
-		paddingBottom="25" 
-		paddingLeft="15" 
-		paddingRight="15"
-		verticalScrollPolicy="off" 
-		horizontalScrollPolicy="off"
-		>
-		<mx:Label text="Download Submissions" fontSize="16" styleName="header" />
-		<mx:Text width="100%" styleName="text" 
-				text="Here are the winning submissions and any submissions you decided to purchase from your contest. " />
-		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
-        <mx:TileList id="downloadList" 
-        	width="100%"
-        	height="480" 
-        	columnCount="3"
-                rowHeight="160"
-            selectionDuration="0"
-            dataProvider="{_downloadList}" 
-            itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.DownloadListRenderer"
-            borderStyle="none" 
-            allowMultipleSelection="false" 
-            allowDragSelection="false"/>
-        <mx:HBox width="100%">
-        	<mx:Button buttonMode="true" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="BACK" styleName="arrowLeftBtnStyle" click="gotoContestViewer()" />
-        </mx:HBox>
-	</mx:VBox>    	
-</mx:ViewStack>
-    
-<mx:VBox id="minPage" width="100%" height="100%" paddingLeft="10" paddingTop="10" paddingRight="5" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
-    <mx:HBox width="100%" horizontalGap="0">
-        <mx:Text text="Select a contest:" fontWeight="bold" />
-    </mx:HBox>
-    <mx:ComboBox id="contestlist_minpage" left="195" width="272" top="9" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
-    	 change="handleContest(event)"/>
-    <mx:HRule width="100%" strokeColor="#000000"/>
-    <mx:HBox width="100%" >
-        <mx:Text text="Total Submissions:" fontWeight="bold" />
-        <mx:Text text="{_submissionList.length}" id="SubNum" />
-    </mx:HBox>
-    
-	<mx:VBox horizontalAlign="center" width="100%" height="100%">
-	    <mx:Button buttonMode="true" id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
-	    <mx:ViewStack id="min_thumbnails_stack" width="100%" height="100%">
-	    	<mx:VBox id="min_thumbnails" width="100%" horizontalAlign="center" height="100%">
-		        <tc:CustomTileList id="list_minpage" rowCount="4" 
-		        	height="100%"
-		        	columnWidth="100"
-		        	columnCount="{((minPage.width)/list_minpage.columnWidth)}"
-		        	rowHeight="80"
-			        selectionDuration="0"
-			        dataProvider="{activeSubmissionForMin}" 
-			        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" 
-			        itemsChangeEffect="{myDTLE}"
-			        verticalScrollPolicy="off" 
-			        horizontalScrollPolicy="off" 
-			        borderStyle="none"
-			        doubleClickEnabled="true"
-			        doubleClick="maximizeScreen()" 
-			        allowMultipleSelection="false" 
-			        allowDragSelection="false"/>
-			</mx:VBox>
-			<mx:VBox id="min_no_thumbnails">
-					<mx:Label fontFamily="Arial"  text="No submissions for this contest."
-	                fontWeight="bold" fontSize="16" width="100%" />
-			</mx:VBox>
-		</mx:ViewStack>
-		<mx:Button buttonMode="true" id="min_down" styleName="down" click="goDownMinPage()" visible="false"/>
-	</mx:VBox>
-</mx:VBox>
-
+    <mx:ViewStack id="subViewer"
+                  width="100%"
+                  height="100%"
+                  resizeToContent="true">
+        <tc:DefaultViewSubmissionViewer id="minPage"/>
+        <tc:ThumbnailGallerySubmissionViewer id="gallery"/>
+        <tc:AbandonConfirmationScreen id="abandonConfirmationScreen"/>
+        <tc:SubmissionsConfirmationPage id="submissionsConfirmationScreen"/>
+        <tc:SubmissionsCheckoutPage id="submissionCheckoutScreen"/>
+        <tc:SubmissionsDownloadPage id="submissionsDownloadScreen"/>
+    </mx:ViewStack>
 </tc:SubmissionViewerWidgetCodeBehind>

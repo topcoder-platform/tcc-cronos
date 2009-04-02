@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This is item renderer for rank bar.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+                width="180"
+                height="206"
+                verticalScrollPolicy="off"
+                horizontalScrollPolicy="off"
+                borderStyle="none"
+                showCloseButton="{data &amp;&amp; data.showClose}"
+                close="removeRank()">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ThumbnailGalleryDataModel;
+            import mx.events.DragEvent;
+
+            /**
+             * Handler for setting the submission content on the rank box.
+             */
+            private function handleContent():void {
+                thumbnail.scaleContent=false;
+                thumbnail.content.height=151;
+                thumbnail.content.width=151;
+            }
+
+            /**
+             * Handler for setting the empty place on the rank box.
+             */
+            private function handleEmptyContent():void {
+                thumbnail_empty.scaleContent=false;
+                thumbnail_empty.content.height=151;
+                thumbnail_empty.content.width=151;
+            }
+
+            /**
+             * Handler for calculating the rank box label.
+             * If there is a valid submission, then label name has the id of submission.
+             * Else it is just the rank place.
+             *
+             * @param label default rank place.
+             * @id the submission identifier, if any.
+             */
+            private function handleLabel(label:String, id:int):String {
+                if (id) {
+                    return label + " " + id.toString();
+                }
+                return label;
+            }
+
+            /**
+             * Handler for removing the sumbission from the rank box.
+             */
+            private function removeRank():void {
+                var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+                if (data) {
+                    model.removeRank(data.id as Number);
+                }
+            }
+
+            /**
+             * Handler for the case when image load errors out.
+             */
+            private function onIoError(event:IOErrorEvent):void {
+                if (event.target is Image) {
+                    var image:Image;
+                    image=event.target as Image;
+                    image.source="";
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:ViewStack width="180"
+                  height="206"
+                  selectedIndex="{data &amp;&amp; data.thumbnail != null &amp;&amp; data.thumbnail != '' ? 1 : 0}">
+        <mx:VBox width="180"
+                 height="206"
+                 left="0"
+                 top="0"
+                 includeInLayout="false"
+                 paddingLeft="14"
+                 paddingRight="15"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off">
+            <mx:Image id="thumbnail_empty"
+                      width="151"
+                      height="151"
+                      source="@Embed(source='../../assets/dragdrop-box.png')"
+                      complete="handleEmptyContent()"
+                      ioError="onIoError(event)"/>
+            <mx:HBox width="100%"
+                     horizontalAlign="center">
+                <mx:Label text="{handleLabel(data.label, data.id)}"
+                          styleName="normalText"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox width="180"
+                 height="206"
+                 left="0"
+                 top="0"
+                 includeInLayout="false"
+                 paddingLeft="14"
+                 paddingRight="15"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off">
+            <mx:Canvas>
+                <mx:Image id="thumbnail"
+                          width="151"
+                          height="151"
+                          source="{data.thumbnail}"
+                          complete="handleContent()"
+                          ioError="onIoError(event)"/>
+                <mx:Canvas width="18"
+                           height="19"
+                           backgroundSize="100%"
+                           bottom="0"
+                           left="125"
+                           visible="{data.purchased == true}"
+                           styleName="purchaseLogo">
+                </mx:Canvas>
+            </mx:Canvas>
+
+            <mx:HBox width="100%"
+                     horizontalAlign="center">
+                <mx:Label text="{handleLabel(data.label, data.id)}"
+                          styleName="normalText"/>
+            </mx:HBox>
+        </mx:VBox>
+    </mx:ViewStack>
+</mx:TitleWindow>

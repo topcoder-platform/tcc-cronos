@@ -1,111 +1,301 @@
 /*
- * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
+ * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
+    import com.topcoder.flex.Helper;
     import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.util.progress.ProgressWindowManager;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
+    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
+    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
     
+    import flash.display.DisplayObject;
     import flash.utils.Dictionary;
     
+    import mx.binding.utils.ChangeWatcher;
+    import mx.collections.ArrayCollection;
+    import mx.collections.Sort;
+    import mx.collections.SortField;
     import mx.containers.Panel;
     import mx.containers.VBox;
     import mx.containers.ViewStack;
     import mx.controls.Alert;
+    import mx.core.Application;
+    import mx.formatters.NumberFormatter;
+    import mx.rpc.AbstractOperation;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.soap.SOAPHeader;
     import mx.rpc.soap.mxml.WebService;
-	import com.topcoder.flex.util.progress.ProgressWindowManager;
-	
-	import flash.display.DisplayObject;
+    import mx.utils.ObjectProxy;
+    import mx.utils.ObjectUtil;
 
     /**
      * <p>
-     * This is the code behind script part for the project widget. It implements the IWidget interface.
-     * It extends from the Panel.
+     * This is the code behind mxml widget component for the submission viewer widget. It implements the IWidget interface.
+     * It extends from the VBox.
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
-     * 
-     * @author TCSDEVELOPER
+     *
+     * @author shailendra_80
      * @version 1.0
+     * @since Flex Submission Viewer Overhaul
      */
-     public class SubmissionViewerWidgetCodeBehind extends VBox implements IWidget { // BUGR-1142
+    [Bindable]
+    public class SubmissionViewerWidgetCodeBehind extends VBox implements IWidget {
+        private static const WSSE_SECURITY:QName=new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security");
+
         /**
          * The name of the widget.
          */
-        private var _name:String = "Submission Viewer";
+        private var _name:String="Submission Viewer";
 
-		private var _framework:IWidgetFramework = null;
-
-		/**
-		 * The container for this widget.
-		 */
-		private var _container:IWidgetContainer;
-	
-		private var _minPage:VBox;
-        
-        private var _main:ViewStack;
-		
-		public var _maximize:Function;
-		
-		public var _restore:Function;
-		
-		// Module Cockpit My Projects Release Assembly 1
-        // 1.1.7
-        // Submission Viewer widget should only have the current contest in the drop down.
-        // to be selected contest id.
-		[Bindable]public var toBeLoadedContestId:Number;
-		
-		// Module Cockpit My Projects Release Assembly 1
-        // 1.1.7
-        // Submission Viewer widget should only have the current contest in the drop down.
-        // reference to ContestServiceFacade
-        public var contestServiceFacade:WebService = null;
-        
-        private var _pid:String=null;
-        [Bindable]public function get pid():String {
-            return this._pid;
-        }
-        public function set minPage(page:VBox):void
-        {
-        	_minPage=page;
-        }
-        
-        public function set main(page:ViewStack):void
-        {
-        	_main=page;
-        }
-        
-        public function get minPage():VBox
-        {
-        	return _minPage;
-        }
-        
-        public function get main():ViewStack
-        {
-        	return _main;
-        }
-
-		/**
-		 * The allowclose flag.
-		 */
-		private var _allowclose:Boolean=true;
-        
         /**
-         * The data for the widget.
+         * The reference to IWidgetFramework.
          */
-        [Bindable] private var _submissionData:String = null;
-        
-         /**
-         * The data for the widget.
+        private var _widgetFramework:IWidgetFramework=null;
+
+        /**
+         * The container for this widget.
          */
-        [Bindable] private var _contestData:String = null;
-        
+        private var _container:IWidgetContainer;
+
+        /**
+         * The allowclose flag.
+         */
+        private var _allowclose:Boolean=true;
+
+        /**
+         * Callback function on widget maximize.
+         */
+        private var _maximizeFn:Function;
+
+        /**
+         * Callback function on widget restore.
+         */
+        private var _restoreFn:Function;
+
+        /**
+         * Contest id of the only contest that should be shown in drop down.
+         */
+        private var _tobeLoadedContestId:Number;
+
+        /**
+         * Reference to contest service facade webservice.
+         */
+        private var _contestServiceFacadeWS:WebService=null;
+
+        /**
+         * Reference to project service facade webservice.
+         */
+        private var _projectServiceFacadeWS:WebService=null;
+
+        /**
+         * Id of the project for which contests should be downloaded from webservice.
+         */
+        private var _pid:String=null;
+
+        /**
+         * The default contest id.
+         */
+        private var _defaultContestId:int=0;
+
+        /**
+         * Prefix address of the image urls.
+         *
+         * Server address is retrieved from application parameters.
+         */
+        private var _imageAddress:String="http://" + Application.application.parameters.hostAddress + "/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
+
+        /**
+         * Array collection of all contests currently available in this widget.
+         */
+        private var _contestInfoList:ArrayCollection=new ArrayCollection;
+
+        /**
+         * Array collection of all contests currently selectable in this widget. This list gets created after filtering.
+         */
+        private var _contestList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Array collection of submissions in their rank order.
+         */
+        private var _rankList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Array collection of all submissions for the current contest.
+         */
+        private var _submissionList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Total purchased submissions.
+         */
+        private var _purchaseCount:int=0;
+
+        /**
+         * Id of the currently selected contest.
+         */
+        private var _selectedContestId:int;
+
+        /**
+         * Total purchase amount in displayable string format.
+         */
+        private var _purchaseMoney:String="0.00";
+
+        /**
+         * Status of the currently selected contest.
+         */
+        private var _selectedContestStatus:String="";
+
+        /**
+         * Status Id of the currently selected contest.
+         */
+        private var _selectedContestStatusId:int;
+
+        /**
+         * Array collection of the to be purchased submissions.
+         */
+        private var _purchaseList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Status type dictionary (status id --> status)
+         */
+        private var _statusTypeDictionary:Dictionary=new Dictionary();
+
+        /**
+         * Contest info dictionary (contest id --> contest info)
+         */
+        private var _contestInfoDictionary:Dictionary=new Dictionary();
+
+        /**
+         * Dictionary of active contest status ids.
+         */
+        private var _activeContestTypeIds:Dictionary=new Dictionary();
+
+        /**
+         * Dictionary of past contest status ids.
+         */
+        private var _pastContestTypeIds:Dictionary=new Dictionary();
+
+        /**
+         * Id of the action required contest status.
+         */
+        private var _actionRequiredContestTypeId:int;
+
+        /**
+         * Id of the completed contest status.
+         */
+        private var _completedContestTypeId:int;
+
+        /**
+         * If of the no winner chosen contest status.
+         */
+        private var _noWinnerChosenContestTypeId:int;
+
+        /**
+         * Id of the in danger contest status.
+         */
+        private var _inDangerContestTypeId:int;
+
+        /**
+         * Total purchase amount in number.
+         */
+        private var _totalPurchaseAmount:Number=0;
+
+        /**
+         * Payment reference number of successful payment.
+         */
+        private var _paymentReferenceNumber:String;
+
+        /**
+         * Array collection of to be downloaded submissions.
+         */
+        private var _downloadList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Array collection of client project names item for purchase order.
+         */
+        private var _clientProjectNames:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Current user.
+         */
+        private var _username:String=Application.application.parameters.username;
+
+        /**
+         * Password of the current user.
+         */
+        private var _password:String="";
+
+        /**
+         * Instance of the money formatter to format the amount.
+         */
+        private var _moneyFormatter:NumberFormatter;
+
+        /**
+         * Callback function to filter contests.
+         */
+        private var _contestFilterFn:Function;
+
+        /**
+         * True if this widget is running in local testing mode.
+         * In local testing mode, widget doesn't make any webservice call.
+         */
+        public var _isLocalTesting:Boolean=false;
+
         /**
          * SubmissionViewerWidgetCodeBehind constructor.
          */
         public function SubmissionViewerWidgetCodeBehind() {
-            super();            
+            super();
+            this.init();
         }
+
+        /**
+         * Initializes this class.
+         */
+        private function init():void {
+            // add list of active contest types here.
+            // Active Contests should show contests with a status of: 
+            //		Active-Public = 2, 
+            //		Active = 5, 
+            //		Action Required = 6,
+            //		In Danger = 10 
+            //		or Extended = 12,
+            _activeContestTypeIds[2]=true;
+            _activeContestTypeIds[5]=true;
+            _activeContestTypeIds[6]=true;
+            _activeContestTypeIds[10]=true;
+            _activeContestTypeIds[12]=true;
+
+            // add list of past contest types here.
+            // Past Contests should show contests with a status of:
+            //		No Winner Chosen = 7, 
+            //		Completed = 8, 
+            //		Insufficient Submissions - Rerun Possible = 11, 
+            //		or Insufficient Submissions = 13
+            _pastContestTypeIds[7]=true;
+            _pastContestTypeIds[8]=true;
+            _pastContestTypeIds[11]=true;
+            _pastContestTypeIds[13]=true;
+
+            // add list of action required contest types here.
+            _actionRequiredContestTypeId=6;
+            _completedContestTypeId=8;
+            _noWinnerChosenContestTypeId=7;
+            _inDangerContestTypeId=10;
+
+            this._moneyFormatter=new NumberFormatter();
+            this._moneyFormatter.precision=2;
+            this._moneyFormatter.useThousandsSeparator=true;
+            this._moneyFormatter.useNegativeSign=true;
+        }
+
         /**
          * goBack is intended to act as a "Back Button" only for the context of
          * the single widget.
@@ -117,101 +307,566 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * like a browser's "Back" button but it is specific to each widget.</p>
          */
         public function goBack():void {
-            
-        }
-        /**
-         * The submissions contents.
-         */
-        [Bindable]public function get submissionData():String {
-            return this._submissionData;
-        }
-        /**
-         * Sets the submission data for the widget.
-         */
-        public function set submissionData(value:String):void {
-            this._submissionData = value;
-        }
-        
-        /**
-         * The contests contents.
-         */
-        [Bindable]public function get contestData():String {
-            return this._contestData;
-        }
-        /**
-         * Sets the contests data for the widget.
-         */
-        public function set contestData(value:String):void {
-            this._contestData = value;
-        }
-        /**
-         * This action will reload this widget.
-         */
-        public function reload():void {
-            //trigger to load the data
-            this._submissionData = new String(this._submissionData);
-            this._contestData = new String(this._contestData);
+
         }
 
         /**
-         * This action will show the user the configuration xml for this widget.
+         * Gets the user name.
+         *
+         * @return the current user name.
          */
-        public function showConfiguration():void {
-            
+        public function get username():String {
+            return this._username;
         }
 
         /**
-         * This action signals that the widget should show the user help
-         * information.
+         * Sets the user name.
+         *
+         * @param name the user name.
          */
-        public function showHelp():void {
-            
+        public function set username(name:String):void {
+            this._username=name;
         }
 
         /**
-         * This action will close this widget (i.e. most probably remove it
-         * completely).
+         * Gets the password.
+         *
+         * @return the password.
          */
-        public function close():void {
-            
+        public function get password():String {
+            return this._password;
         }
 
         /**
-         * This action will minimize this widget.
+         * Sets the password.
+         *
+         * @param pwd the password.
          */
-        public function minimize():void {
-            
+        public function set password(pwd:String):void {
+            this._password=pwd;
+        }
+
+        public function get pid():String {
+            return this._pid;
+        }
+
+        public function set pid(id:String):void {
+            this._pid=id;
         }
 
         /**
-         * This action will restpre this widget (for example from a menu bar).
+         * Simple setter for the name of this widget.
+         *
+         * @param name the name of this widget.
          */
-        public function restore():void {
-			
-            main.visible=false;
-            main.includeInLayout=false;
-            
-            minPage.includeInLayout=true;
-            minPage.visible=true;
-			
-			if (_restore) {
-				_restore();
-			}
+        override public function set name(name:String):void {
+            this._name=name;
         }
 
         /**
-         * This action will maximize this widget.
+         * Simple getter for the name of this widget.
+         *
+         * @return the current set name fo this widget. Could be null if not set.
          */
-        public function maximize():void {
-        	main.visible=true;
-            main.includeInLayout=true;
-            
-            minPage.includeInLayout=false;
-            minPage.visible=false;
-			
-			if (_maximize) {
-				_maximize();
-			}
+        override public function get name():String {
+            return this._name;
+        }
+
+        /**
+         * Simple setter for the framework of this widget.
+         *
+         * @param framework the framework of this widget.
+         */
+        public function set widgetFramework(framework:IWidgetFramework):void {
+            this._widgetFramework=framework;
+        }
+
+        /**
+         * Simple getter for the framework of this widget.
+         *
+         * @return the current set framework fo this widget. Could be null if not set.
+         */
+        public function get widgetFramework():IWidgetFramework {
+            return this._widgetFramework;
+        }
+
+        /**
+         * Simple setter for the allowclose of this widget.
+         *
+         * @param allow the flag allowclose of this widget.
+         */
+        public function set allowclose(allow:Boolean):void {
+            this._allowclose=allow;
+        }
+
+        /**
+         * Simple getter for the name of this widget.
+         *
+         * @return the allowclose flag fo this widget. Could be null if not set.
+         */
+        public function get allowclose():Boolean {
+            return this._allowclose;
+        }
+
+        /**
+         * Simple setter for the container of this widget.
+         *
+         * @param container of this widget.
+         */
+        public function set container(container:IWidgetContainer):void {
+            this._container=container;
+        }
+
+        /**
+         * Simple getter for the container of this widget.
+         *
+         * @return the container this widget. Could be null if not set.
+         */
+        public function get container():IWidgetContainer {
+            return this._container;
+        }
+
+        /**
+         * Simple getter for the call back function on widget maximize.
+         *
+         * @return the call back function on widget maximize.
+         */
+        public function get maximizeFn():Function {
+            return this._maximizeFn;
+        }
+
+        /**
+         * Simple setter for the call back function on widget maximize.
+         *
+         * @param fn the call back function on widget maximize.
+         */
+        public function set maximizeFn(fn:Function):void {
+            this._maximizeFn=fn;
+        }
+
+        /**
+         * Simple getter for the call back function on widget restore.
+         *
+         * @return the call back function on widget restore.
+         */
+        public function get restoreFn():Function {
+            return this._restoreFn;
+        }
+
+        /**
+         * Simple setter for the call back function on widget restore.
+         *
+         * @param fn the call back function on widget restore.
+         */
+        public function set restoreFn(fn:Function):void {
+            this._restoreFn=fn;
+        }
+
+        /**
+         * Simple getter for default contest id.
+         *
+         * @return the default contest id.
+         */
+        public function get defaultContestId():int {
+            return _defaultContestId;
+        }
+
+        /**
+         * Simple setter for the default contest id.
+         *
+         * @param id the default contest id.
+         */
+        public function set defaultContestId(id:int):void {
+            this._defaultContestId=id;
+        }
+
+        /**
+         * Simple getter for to be loaded contest id - the only contest that should be shown in widget.
+         *
+         * @return the to be loaded contest id - the only contest that should be shown in widget.
+         */
+        public function get tobeLoadedContestId():Number {
+            return this._tobeLoadedContestId;
+        }
+
+        /**
+         * Simple setter for to be loaded contest id - the only contest that should be shown in widget.
+         *
+         * @param id the to be loaded contest id - the only contest that should be shown in widget.
+         */
+        public function set tobeLoadedContestId(id:Number):void {
+            this._tobeLoadedContestId=id;
+        }
+
+        /**
+         * Simple getter for the contest service facade webservice.
+         *
+         * @return the contest service facade webservice.
+         */
+        public function get contestServiceFacadeWS():WebService {
+            return this._contestServiceFacadeWS;
+        }
+
+        /**
+         * Simple setter for the contest service facade webservice.
+         *
+         * @param ws the contest service facade webservice.
+         */
+        public function set contestServiceFacadeWS(ws:WebService):void {
+            this._contestServiceFacadeWS=ws;
+        }
+
+        /**
+         * Simple getter for the project service facade webservice.
+         *
+         * @return the project service facade webservice.
+         */
+        public function get projectServiceFacadeWS():WebService {
+            return this._projectServiceFacadeWS;
+        }
+
+        /**
+         * Simple setter for the project service facade webservice.
+         *
+         * @param ws the project service facade webservice.
+         */
+        public function set projectServiceFacadeWS(ws:WebService):void {
+            this._projectServiceFacadeWS=ws;
+        }
+
+        /**
+         * Simple getter for the payment reference number - this gets set once the contest/submission has been purchased.
+         *
+         * @return the payment reference number - this gets set once the contest/submission has been purchased.
+         */
+        public function get paymentReferenceNumber():String {
+            return this._paymentReferenceNumber;
+        }
+
+        /**
+         * Simple setter for the payment reference number - this gets set once the contest/submission has been purchased.
+         *
+         * @param number the payment reference number - this gets set once the contest/submission has been purchased.
+         */
+        public function set paymentReferenceNumber(number:String):void {
+            this._paymentReferenceNumber=number;
+        }
+
+        /**
+         * Simple getter for the contest info list - array collection of all contests that are available in this widget.
+         *
+         * @return the contest info list - array collection of all contests that are available in this widget.
+         */
+        public function get contestInfoList():ArrayCollection {
+            return this._contestInfoList;
+        }
+
+        /**
+         * Simple getter for the contest list - array collection of all contests that are visible in this widget.
+         *
+         * @return the contest info list - array collection of all contests that are visible in this widget.
+         */
+        public function get contestList():ArrayCollection {
+            return this._contestList;
+        }
+
+        /**
+         * Simple setter for the contest list - array collection of all contests that are visible in this widget.
+         *
+         * @param list the contest info list - array collection of all contests that are visible in this widget.
+         */
+        public function set contestList(list:ArrayCollection):void {
+            this._contestList=list;
+        }
+
+        /**
+         * Simple getter for the client project names - client project names items used for purchase order combo box.
+         *
+         * @return the client project names - client project names items used for purchase order combo box.
+         */
+        public function get clientProjectNames():ArrayCollection {
+            return this._clientProjectNames;
+        }
+
+        /**
+         * Simple setter for the client project names - client project names items used for purchase order combo box.
+         *
+         * @param list the client project names - client project names items used for purchase order combo box.
+         */
+        public function set clientProjectNames(list:ArrayCollection):void {
+            this._clientProjectNames=list;
+        }
+
+        /**
+         * Simple getter for the array collection of to be downloaded submissions.
+         *
+         * @return the array collection of to be downloaded submissions.
+         */
+        public function get downloadList():ArrayCollection {
+            return this._downloadList;
+        }
+
+        /**
+         * Simple setter for the array collection of to be downloaded submissions.
+         *
+         * @param list the array collection of to be downloaded submissions.
+         */
+        public function set downloadList(list:ArrayCollection):void {
+            this._downloadList=list;
+        }
+
+        /**
+         * Simple getter for the array collection of to be puchased submissions.
+         *
+         * @return the array collection of to be puchased submissions.
+         */
+        public function get purchaseList():ArrayCollection {
+            return this._purchaseList;
+        }
+
+        /**
+         * Simple setter for the array collection of to be puchased submissions.
+         *
+         * @param list the array collection of to be puchased submissions.
+         */
+        public function set purchaseList(list:ArrayCollection):void {
+            this._purchaseList=list;
+        }
+
+        /**
+         * Simple getter for the array collection of all submissions for the current contest.
+         *
+         * @return the array collection of all submissions for the current contest.
+         */
+        public function get submissionList():ArrayCollection {
+            return this._submissionList;
+        }
+
+        /**
+         * Simple setter for the array collection of all submissions for the current contest.
+         *
+         * @param list the array collection of all submissions for the current contest.
+         */
+        public function set submissionList(list:ArrayCollection):void {
+            this._submissionList=list;
+        }
+
+        /**
+         * Simple getter for the status name of the current contest.
+         *
+         * @return the status name of the current contest.
+         */
+        public function get selectedContestStatus():String {
+            return this._selectedContestStatus;
+        }
+
+        /**
+         * Simple setter for the status name of the current contest.
+         *
+         * @param status the status name of the current contest.
+         */
+        public function set selectedContestStatus(status:String):void {
+            this._selectedContestStatus=status;
+        }
+
+        /**
+         * Simple getter for the callback function on contest data load.
+         *
+         * @return the callback function on contest data load.
+         */
+        public function get contestFilterFn():Function {
+            return this._contestFilterFn;
+        }
+
+        /**
+         * Simple setter for the callback function on contest data load.
+         *
+         * @param fn the callback function on contest data load.
+         */
+        public function set contestFilterFn(fn:Function):void {
+            this._contestFilterFn=fn;
+        }
+
+        /////
+
+        /**
+         * Simple getter for the array collection of currently ranked submissions, in their rank order.
+         *
+         * @return the array collection of currently ranked submissions, in their rank order.
+         */
+        public function get rankList():ArrayCollection {
+            return this._rankList;
+        }
+
+        /**
+         * Simple setter for the array collection of currently ranked submissions, in their rank order.
+         *
+         * @param list the array collection of currently ranked submissions, in their rank order.
+         */
+        public function set rankList(list:ArrayCollection):void {
+            this._rankList=list;
+        }
+
+        /**
+         * Simple getter for the current selected contest id.
+         *
+         * @return the current selected contest id
+         */
+        public function get selectedContestId():int {
+            return this._selectedContestId;
+        }
+
+        /**
+         * Simple setter for the current selected contest id.
+         *
+         * @param id the current selected contest id
+         */
+        public function set selectedContestId(id:int):void {
+            this._selectedContestId=id;
+        }
+
+        /**
+         * Simple getter for the status id of the current selected contest.
+         *
+         * @return the status id of the current selected contest.
+         */
+        public function get selectedContestStatusId():int {
+            return this._selectedContestStatusId;
+        }
+
+        /**
+         * Simple setter for the status id of the current selected contest.
+         *
+         * @param id the status id of the current selected contest.
+         */
+        public function set selectedContestStatusId(id:int):void {
+            this._selectedContestStatusId=id;
+        }
+
+        /**
+         * Simple getter for the status id to status info dictionary.
+         *
+         * @return the status id to status info dictionary
+         */
+        public function get statusTypeDictionary():Dictionary {
+            return this._statusTypeDictionary;
+        }
+
+        /**
+         * Simple getter for contest id to contest info dictionary.
+         *
+         * @return the contest id to contest info dictionary.
+         */
+        public function get contestInfoDictionary():Dictionary {
+            return this._contestInfoDictionary;
+        }
+
+        /**
+         * Simple getter for the dictionary of active contest status ids.
+         *
+         * @return the dictionary of active contest status ids.
+         */
+        public function get activeContestTypeIds():Dictionary {
+            return this._activeContestTypeIds;
+        }
+
+        /**
+         * Simple getter for the dictionary of past contest status ids.
+         *
+         * @return the dictionary of past contest status ids.
+         */
+        public function get pastContestTypeIds():Dictionary {
+            return this._pastContestTypeIds;
+        }
+
+        /**
+         * Simple getter for the status id of the action required contest type.
+         *
+         * @return the status id of the action required contest type.
+         */
+        public function get actionRequiredContestTypeId():int {
+            return this._actionRequiredContestTypeId;
+        }
+
+        /**
+         * Simple getter for the status id of the completed contest type.
+         *
+         * @return the status id of the completed contest type.
+         */
+        public function get completedContestTypeId():int {
+            return this._completedContestTypeId;
+        }
+
+        /**
+         * Simple getter for the status id of the no winner chosen contest type.
+         *
+         * @return the status id of the no winner chosen contest type.
+         */
+        public function get noWinnerChosenContestTypeId():int {
+            return this._noWinnerChosenContestTypeId;
+        }
+
+        /**
+         * Simple getter for the status id of the in danger contest type.
+         *
+         * @return the status id of the in danger contest type.
+         */
+        public function get inDangerContestTypeId():int {
+            return this._inDangerContestTypeId;
+        }
+
+        /**
+         * Simple getter for the count of total purchased submissions.
+         *
+         * @return the count of total purchased submissions.
+         */
+        public function get purchaseCount():int {
+            return this._purchaseCount;
+        }
+
+        /**
+         * Simple setter for the count of total purchased submissions.
+         *
+         * @oaram total the count of total purchased submissions.
+         */
+        public function set purchaseCount(total:int):void {
+            this._purchaseCount=total;
+        }
+
+        /**
+         * Simple getter for the displayable total purchase amount.
+         *
+         * @return the displayable total purchase amount
+         */
+        public function get purchaseMoney():String {
+            return this._purchaseMoney;
+        }
+
+        /**
+         * Simple setter for the displayable total purchase amount.
+         *
+         * @param money the displayable total purchase amount
+         */
+        public function set purchaseMoney(money:String):void {
+            this._purchaseMoney=money;
+        }
+
+        /**
+         * Simple getter for the total purchase amount.
+         *
+         * @return the total purchase amount
+         */
+        public function get totalPurchaseAmount():Number {
+            return this._totalPurchaseAmount;
+        }
+
+        /**
+         * Simple setter for the total purchase amount.
+         *
+         * @param amount the total purchase amount
+         */
+        public function set totalPurchaseAmount(amount:Number):void {
+            this._totalPurchaseAmount=amount;
         }
 
         /**
@@ -222,7 +877,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          *
          * @throws ArgumentError if either input is null.
          */
-        public function setAttributeValue(attributeKey:String, value:Object):void {         
+        public function setAttributeValue(attributeKey:String, value:Object):void {
         }
 
         /**
@@ -237,16 +892,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public function getAttributeValue(attributeKey:String):Object {
             return null;
-        }
-
-        /**
-         * Set the configuration for this widget based on the given xml.
-         *
-         * @param config the xml configuration data for this widget. Cannot be null.
-         *
-         * @throws ArgumentError if the input is null.
-         */
-        public function configure(config:XML):void {            
         }
 
         /**
@@ -277,42 +922,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
-         * Simple setter for the name of this widget.
-         *
-         * @param name the name of this widget.
-         */
-        override public function set name(name:String):void {
-            this._name = name;
-        }
-
-        /**
-         * Simple getter for the name of this widget.
-         *
-         * @return the current set name fo this widget. Could be null if not set.
-         */
-        override public function get name():String {
-            return _name;
-        }
-
-	 /**
-         * Simple setter for the framework of this widget.
-         *
-         * @param framework the framework of this widget.
-         */
-        public function set widgetFramework(framework:IWidgetFramework):void {
-        	this._framework = framework;
-        }
-
-        /**
-         * Simple getter for the framework of this widget.
-         *
-         * @return the current set framework fo this widget. Could be null if not set.
-         */
-        public function get widgetFramework():IWidgetFramework {
-        	return _framework;
-        }
-        
-        /**
          * Set the attributes for this widget based on the given Map.
          *
          * @param map the attributes for this widget. Cannot be null.
@@ -320,100 +929,930 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
-        	
-        	if(map["contestid"])
-        	{
-        		_defaultcontestid=map["contestid"];
-        	}
-        	if(map.hasOwnProperty("pid"))
-        	{
-        		_pid=map["pid"];
-        	}
-        	
-        	// Module Cockpit My Projects Release Assembly 1
+            if (map["contestid"]) {
+                this.defaultContestId=map["contestid"];
+            }
+            if (map.hasOwnProperty("pid")) {
+                this.pid=map["pid"];
+                trace("-------------------------------------------------- Setting pid: " + this.pid);
+            }
+
+            // Module Cockpit My Projects Release Assembly 1
             // 1.1.7
             // Submission Viewer widget should only have the current contest in the drop down.
-        	if(map.hasOwnProperty("toBeLoadedContestId"))
-        	{
-        		toBeLoadedContestId=map["toBeLoadedContestId"];
-        	}
-        	if(map.hasOwnProperty("reload"))
-        	{
-        	    showLoadingProgress();
-        	    
-        	    // reload the widget data.
-        	    if (pid) {
-    			    contestServiceFacade.getContestDataOnlyByPID(pid);
-    			} 
-    			else {					  
-            		contestServiceFacade.getContestDataOnly();
-    			}
-        	}
-        }
-        
-        /**
-         * The default contest id.
-         */
-        private var _defaultcontestid:int = 0;
-        
-        public function get defaultcontestid():int
-        {
-        	return _defaultcontestid;
-        }
+            if (map.hasOwnProperty("toBeLoadedContestId")) {
+                this.tobeLoadedContestId=map["toBeLoadedContestId"];
+                trace("-------------------------------------------------- Setting tobeLoadedContestId: " + this.tobeLoadedContestId);
+            }
+            if (map.hasOwnProperty("reload")) {
+                showLoadingProgress();
 
-	/**
-         * Simple setter for the allowclose of this widget.
-         *
-         * @param allow the flag allowclose of this widget.
-         */
-        public function set allowclose(allow:Boolean):void
-        {
-        	_allowclose=allow;
+                // reload the widget data.
+                if (pid) {
+                    this.contestServiceFacadeWS.getContestDataOnlyByPID(pid);
+                } else {
+                    this.contestServiceFacadeWS.getContestDataOnly();
+                }
+            }
         }
 
         /**
-         * Simple getter for the name of this widget.
-         *
-         * @return the allowclose flag fo this widget. Could be null if not set.
+         * This action will reload this widget.
          */
-        public function get allowclose():Boolean
-        {
-        	return _allowclose;
-        }
-
-
-	/**
-         * Simple setter for the container of this widget.
-         *
-         * @param container of this widget.
-         */
-        public function set container(container:IWidgetContainer):void
-        {
-        	_container=container;
+        public function reload():void {
         }
 
         /**
-         * Simple getter for the container of this widget.
-         *
-         * @return the container this widget. Could be null if not set.
+         * This action will show the user the configuration xml for this widget.
          */
-        public function get container():IWidgetContainer
-        {
-        	if(_container==null)
-        	{
-        		_container=parent as IWidgetContainer;
-        	}
-        	return _container;
+        public function showConfiguration():void {
+
         }
-        
-        // BUGR-1393
+
+        /**
+         * This action signals that the widget should show the user help
+         * information.
+         */
+        public function showHelp():void {
+
+        }
+
+        /**
+         * This action will close this widget (i.e. most probably remove it
+         * completely).
+         */
+        public function close():void {
+
+        }
+
+        /**
+         * This action will minimize this widget.
+         */
+        public function minimize():void {
+
+        }
+
+        /**
+         * This action will restpre this widget (for example from a menu bar).
+         */
+        public function restore():void {
+            if (this.restoreFn != null) {
+                this.restoreFn();
+            }
+        }
+
+        /**
+         * This action will maximize this widget.
+         */
+        public function maximize():void {
+            if (this.maximizeFn != null) {
+                this.maximizeFn();
+            }
+        }
+
+        /**
+         * Set the configuration for this widget based on the given xml.
+         *
+         * @param config the xml configuration data for this widget. Cannot be null.
+         *
+         * @throws ArgumentError if the input is null.
+         */
+        public function configure(config:XML):void {
+        }
+
+        /**
+         * Shows the loading progress window for this widget.
+         *
+         * Loading progress window is a modal window that hides the widget through transparent layer
+         * and it keeps showing animation.
+         *
+         * Loading progress window gets cancelled after some time automatically.
+         */
         public function showLoadingProgress():void {
             ProgressWindowManager.showProgressWindow(this.container);
         }
-        
-        // BUGR-1393
+
+        /**
+         * Hides the loading progress window for this widget.
+         *
+         * Loading progress window is a modal window that hides the widget through transparent layer
+         * and it keeps showing animation.
+         *
+         * Loading progress window gets cancelled after some time automatically.
+         */
         public function hideLoadingProgress():void {
             ProgressWindowManager.hideProgressWindow(this.container);
+        }
+
+        /**
+         * Webservice Callback function for handling the contest load.
+         *
+         * @param event webservice result event.
+         */
+        public function handleResult(event:ResultEvent=null):void {
+            this.contestInfoList.removeAll();
+
+            if (event != null && event.result != null) {
+                var contests:ArrayCollection=new ArrayCollection();
+
+                if (event.result is ArrayCollection) {
+                    contests=event.result as ArrayCollection;
+                } else {
+                    contests=new ArrayCollection();
+                    contests.addItem(event.result);
+                }
+
+                if (!contests.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareName;
+                    contests.sort=sort;
+                }
+
+                contests.refresh();
+
+                var selectIdx:int=-1;
+                for (var i:int=0; i < contests.length; i++) {
+                    var cinfo:Object=new Object();
+                    var contestInfo:ObjectProxy=new ObjectProxy(cinfo);
+                    var item:*=contests[i];
+                    contestInfo.name=item.name;
+                    contestInfo.id=item.contestId;
+                    contestInfo.statusId=item.statusId;
+
+                    // add prizes to contest info.
+                    contestInfo.prizes=new ArrayCollection();
+
+                    if (item.prizes && item.prizes is ArrayCollection) {
+                        var prizes:ArrayCollection=item.prizes as ArrayCollection;
+
+                        for (var j:int=0; j < prizes.length; j++) {
+                            trace("Adding prize: " + prizes[j] + " to: " + contestInfo.name);
+                            contestInfo.prizes.addItem(prizes[j] as Number);
+                        }
+                    }
+
+                    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.7
+                    // show only the toBeLoadedContestId, as passed from my project widget.
+                    if (this.activeContestTypeIds[contestInfo.statusId] == true || this.pastContestTypeIds[contestInfo.statusId] == true) {
+                        if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
+
+                            this.contestInfoList.addItem(contestInfo);
+                            this.contestInfoDictionary[contestInfo.id]=contestInfo;
+                        }
+                    } else if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
+                        this.contestInfoList.addItem(contestInfo);
+                        this.contestInfoDictionary[contestInfo.id]=contestInfo;
+                    }
+                }
+
+                if (this.contestFilterFn != null) {
+                    this.contestFilterFn();
+                }
+            }
+        }
+
+        /**
+         * Webservice Callback function for handling the status list load.
+         *
+         * @param event webservice result event.
+         */
+        public function handleStatusList(event:ResultEvent=null):void {
+            if (event != null && event.result != null) {
+                for each (var item:*in event.result as ArrayCollection) {
+                    this.statusTypeDictionary[item.statusId as int]=item;
+                }
+            }
+        }
+
+        /**
+         * Webservice Callback function for handling the submissions load.
+         *
+         * @param event webservice result event.
+         */
+        public function handleSubResult(event:ResultEvent=null):void {
+            hideLoadingProgress();
+
+            // clear rank list first.
+            this.rankList.removeAll();
+
+            for (var j:int=0; j < 5; j++) {
+                this.rankList.addItem(new Object());
+            }
+
+            this.submissionList=new ArrayCollection();
+
+            var sort:Sort=new Sort();
+            sort.compareFunction=compareNumber;
+            this.submissionList.sort=sort;
+            if (event && event.result != null) {
+                var submissions:ArrayCollection=new ArrayCollection();
+                if (event.result is ArrayCollection) {
+                    submissions=event.result as ArrayCollection;
+                } else {
+                    submissions.addItem(event.result);
+                }
+
+                for (var i:int=0; i < submissions.length; i++) {
+                    var sub:Object=new Object();
+
+                    sub.id=submissions[i].submissionId;
+
+                    // placement in submission data is mapped to rank.
+                    if (submissions[i].placement > 0) {
+                        sub.rank=submissions[i].placement;
+                    } else {
+                        sub.rank="";
+                    }
+
+                    var thumbVal:int=0;
+                    if (submissions[i].feedbackThumb) {
+                        thumbVal=submissions[i].feedbackThumb;
+                    }
+                    sub.upDown=thumbVal > 0 ? "up" : (thumbVal < 0 ? "down" : "");
+                    
+                    sub.feedback=submissions[i].feedbackText;
+                    sub.thumbnail=this._imageAddress + sub.id + "&sbt=thumb";
+                    sub.fullsizepreview=this._imageAddress + sub.id + "&sbt=full";
+                    sub.submissionContent=submissions[i].submissionContent;
+
+                    // BUGR-1169: separate db price from app price.
+                    sub.savedPrice=submissions[i].price;
+
+                    sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
+
+                    sub.paidFor=Boolean(submissions[i].paidFor);
+
+                    var contestInfo:*=this.contestInfoDictionary[this.selectedContestId];
+
+                    trace("ContestInfo: " + contestInfo + ", selectedContestId: " + this.selectedContestId);
+
+                    var prizes:ArrayCollection=contestInfo.prizes as ArrayCollection;
+
+                    trace("Prizes: " + prizes + ", selectedContestId: " + this.selectedContestId);
+
+                    // BUGR-1169: give more priority to savedPrice (db price).
+                    if (sub.savedPrice && sub.savedPrice > 0 && (sub.markedForPurchase || sub.paidFor)) {
+                        sub.price=sub.savedPrice;
+                    } else {
+                        if (prizes) {
+                            if (sub.markedForPurchase) {
+                                // if markedForPurchase is there,
+                                // then price must be equal to 2nd place prize.
+                                if (prizes.length > 1 && prizes[1] > 0) {
+                                    sub.price=prizes[1];
+                                }
+
+                            } else if (sub.rank && sub.rank > 0) {
+                                // retrieve the price from contest info's prizeList.
+                                if (prizes.length < sub.rank) {
+                                    // do nothing here.
+                                } else if (prizes[sub.rank - 1] > 0) {
+                                    sub.price=prizes[sub.rank - 1];
+                                }
+                            } else {
+                                sub.price=0;
+                            }
+                        } else {
+                            sub.price=0;
+                        }
+                    }
+
+                    if (prizes) {
+                        sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length && sub.price && sub.price > 0;
+                    }
+                    sub.purchased=sub.markedForPurchase || sub.mustPurchase || sub.paidFor;
+
+                    var subProxy:ObjectProxy=new ObjectProxy(sub);
+                    
+                    var watcherFn:Function = function():void {
+                        saveSubmissionsFeedback(subProxy);
+                    }
+                    // initialize a change watcher for the upDown property.
+                    var changeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "upDown", watcherFn);  
+
+                    this.submissionList.addItem(subProxy);
+
+                    if (sub.rank && sub.rank > 0) {
+                        updateRankList(subProxy);
+                    }
+
+                    trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
+                }
+            }
+
+        }
+
+        /**
+         * Webservice Fault Callback function for handling the contest load.
+         *
+         * @param event webservice result event.
+         */
+        public function handleFail(event:FaultEvent):void {
+            hideLoadingProgress();
+            handleResult();
+        }
+
+        /**
+         * Webservice Fault Callback function for handling the submission load.
+         *
+         * @param event webservice result event.
+         */
+        public function handleSubFail(event:FaultEvent):void {
+            hideLoadingProgress();
+            handleSubResult();
+        }
+
+        /**
+         * Alphabetically compares name attribute of the given object.
+         *
+         * @param a object one.
+         * @param b object two.
+         * @param fields currently ignored field.
+         */
+        private function compareName(a:Object, b:Object, fields:Array=null):int {
+            return ObjectUtil.stringCompare(a.name, b.name, true);
+        }
+
+        /**
+         * Numerically compares rank attribute of the given object.
+         *
+         * @param a object one.
+         * @param b object two.
+         * @param fields currently ignored field.
+         */
+        private function compareNumber(a:Object, b:Object, fields:Array=null):int {
+            var rank1:String=a.rank;
+            var rank2:String=b.rank;
+            if (!rank1 && !rank2) {
+                return 0;
+            } else if (!rank1) {
+                return 1;
+            } else if (!rank2) {
+                return -1;
+            } else {
+                var r1:int=parseInt(rank1);
+                var r2:int=parseInt(rank2);
+                if (r1 > r2) {
+                    return 1;
+                } else if (r2 > r1) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+
+        /**
+         * Updates the rank list with rank of specified item.
+         *
+         * @param item the submission item for which rank list need to be updated.
+         */
+        public function updateRankList(item:Object):void {
+            if (!item || !item.id) {
+                return;
+            }
+            
+            if (item.rank && (item.rank is Number || item.rank.length > 0)) {
+                var index:int=parseInt(item.rank) - 1;
+                //trace("---------------------------------- Submission Viewer RANK: " + item.id + "," + item.rank + "," + index);
+                if (index > 4 || index < 0) {
+                    // placement values can be more than 5 also.
+                    return;
+                }
+
+                // get if there is already an object with the given rank.
+                var obj:Object=this.rankList.getItemAt(index);
+                if (obj && obj.hasOwnProperty("id") && obj.hasOwnProperty("rank") && item.id != obj.id) {
+                    obj.rank="";
+                    obj.mustPurchase=false;
+                    obj.purchased=obj.markedForPurchase || obj.mustPurchase;
+                    obj.price=0;
+                }
+
+                //trace("---------------------------------- Setting item at: " + item.id + "," + item.rank + "," + index);
+                this.rankList.setItemAt(item, index);
+            } else {
+                var i:int = 0;
+                for each (var o:Object in this.rankList) {
+                    if (o && o.id == item.id) {
+                        //trace("Setting item NULL at i: " + i);
+                        this.rankList.setItemAt(null, i);
+                        break;
+                    }
+                    
+                    i++;
+                }
+            }
+        }
+
+        /**
+         * Loads the client project names from webservice.
+         */
+        private function getClientProjectsByUser():void {
+            // add an empty item.
+            var item:Object=null;
+
+            item=new Object();
+            item.label="";
+            item.data="";
+            this.clientProjectNames.addItem(item);
+
+            // get client projects by user.
+            var header:SOAPHeader=getHeader(this.username, this.password);
+            this.projectServiceFacadeWS.clearHeaders();
+            this.projectServiceFacadeWS.addHeader(header);
+            var getClientProjectsByUserOp:AbstractOperation=this.projectServiceFacadeWS.getOperation("getClientProjectsByUser");
+            if (getClientProjectsByUserOp) {
+                getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+                getClientProjectsByUserOp.send();
+            }
+        }
+
+        /**
+         * Webservice Callback function for handling the load of client projects.
+         *
+         * @param event webservice result event.
+         */
+        private function getClientProjectsHandler(e:ResultEvent):void {
+            trace("getClientProjectsHandler: " + e + ", " + e.result);
+            if (e && e.result) {
+                
+                if (e.result is ArrayCollection) {
+                    var results:ArrayCollection=e.result as ArrayCollection;
+                    for (var i:int=0; i < results.length; i++) {
+                        var result1:*=results[i];
+                        // add client project name 
+                        var item1:Object=new Object();
+                        var name1:String=result1.name;
+                        var poNumber1:String=result1.pOBoxNumber;
+                        item1.label=name1;
+                        item1.data=poNumber1;
+                        this.clientProjectNames.addItem(item1);
+                    }
+                } else {
+                    var result2:*=e.result;
+                    // add client project name 
+                    var item2:Object=new Object();
+                    var name2:String=result2.name;
+                    var poNumber2:String=result2.pOBoxNumber;
+                    item2.label=name2;
+                    item2.data=poNumber2;
+                    this.clientProjectNames.addItem(item2);
+                }
+            }
+        }
+
+        /**
+         * This updates the purchase amount, purchase count, purchase list, download list.
+         *
+         * It simply iterates over all submissions and recalculates purchase amount, purchase count, purchase list, download list.
+         * A submission is supposed to be purchased if its 'purchased' property is set to 'true'
+         */
+        public function updatePurchase():void {
+            //trace("Updating purchase info");
+            this.purchaseCount=0;
+            var totalMoney:Number=0;
+
+            this.purchaseList=new ArrayCollection();
+            this.downloadList=new ArrayCollection();
+
+            for each (var item:Object in this.submissionList) {
+                //trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+
+                if ((item.rank && item.rank > 0) || item.purchased) {
+                    this.purchaseList.addItem(item);
+                }
+
+                if (item.purchased && item.purchased == true) {
+                    this.purchaseCount++;
+                    totalMoney+=item.price;
+                    this.downloadList.addItem(item);
+                }
+            }
+
+            this.purchaseMoney=_moneyFormatter.format(totalMoney);
+            this.totalPurchaseAmount=totalMoney;
+            var sort:Sort=new Sort();
+            sort.compareFunction=compareNumber;
+            this.downloadList.sort=sort;
+            this.downloadList.refresh();
+
+            this.purchaseList.sort=sort;
+            this.purchaseList.refresh();
+        }
+
+        /**
+         * Updates contest abandon to webservice.
+         */
+        public function updateAbandonToWS():void {
+            this.contestInfoDictionary[this.selectedContestId].statusId=this.noWinnerChosenContestTypeId;
+
+            //trace("Updating contest status for: " + this.selectedContestId + " to statusId: " + this.noWinnerChosenContestTypeId);
+
+            this.contestServiceFacadeWS.updateContestStatus(this.selectedContestId, this.noWinnerChosenContestTypeId);
+        }
+
+        /**
+         * Updates contest / submisison purchase to websrvice.
+         *
+         * @param checkoutPage the ui page from where to read the purchase data.
+         */
+        public function updatePurchaseToWS(checkoutPage:SubmissionsCheckoutPage):void {
+            this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
+
+            var header:SOAPHeader=getHeader(this.username, this.password);
+
+            var completedContestData:CompletedContestData=new CompletedContestData();
+            completedContestData.contestId=this.selectedContestId;
+
+            completedContestData.submissions=new Array();
+
+            for (var i:int; i < this.submissionList.length; i++) {
+                var item:Object=this.submissionList[i];
+                var shouldAdd:Boolean=false;
+                var submissionPaymentData:SubmissionPaymentData=new SubmissionPaymentData();
+                submissionPaymentData.id=item.id;
+                if (item.rank && item.rank > 0) {
+                    submissionPaymentData.rank=item.rank;
+                    shouldAdd=true;
+                }
+
+                if (item.purchased) {
+                    submissionPaymentData.amount=item.price;
+                    shouldAdd=true;
+                }
+
+                if (shouldAdd) {
+                    completedContestData.submissions.push(submissionPaymentData);
+                }
+            }
+
+            this.contestServiceFacadeWS.clearHeaders();
+            this.contestServiceFacadeWS.addHeader(header);
+            if (checkoutPage.pay.selectedIndex == 1) {
+                var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
+                creditCardPaymentData.type="PayPalCreditCard";
+                creditCardPaymentData.cardNumber=checkoutPage.wf1.cardNum.text;
+                creditCardPaymentData.cardType=checkoutPage.wf1.cardTypeCombo.selectedItem.data;
+                creditCardPaymentData.cardExpiryMonth=checkoutPage.wf1.month.selectedItem.data;
+                creditCardPaymentData.cardExpiryYear=checkoutPage.wf1.year.selectedItem.data;
+                creditCardPaymentData.firstName=checkoutPage.wf1.cardname.text;
+                creditCardPaymentData.lastName=checkoutPage.wf1.cardname.text;
+                creditCardPaymentData.address=checkoutPage.wf1.address.text;
+                creditCardPaymentData.city=checkoutPage.wf1.city.text;
+                creditCardPaymentData.state=checkoutPage.wf1.state.text;
+                creditCardPaymentData.zipCode=checkoutPage.wf1.code.text;
+                creditCardPaymentData.country=checkoutPage.wf1.country.text;
+                creditCardPaymentData.phone=checkoutPage.wf1.phone.text;
+                creditCardPaymentData.email=checkoutPage.wf1.email.text;
+
+                creditCardPaymentData.ipAddress="10.10.10.10";
+                creditCardPaymentData.sessionId="";
+
+                // set the amount.
+                creditCardPaymentData.amount=this.totalPurchaseAmount.toString();
+
+                this.contestServiceFacadeWS.processSubmissionCreditCardPayment(completedContestData, creditCardPaymentData);
+            } else if (checkoutPage.pay.selectedIndex == 2) {
+                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
+                purchaseOrderPaymentData.type="TCPurchaseOrder";
+                purchaseOrderPaymentData.poNumber=checkoutPage.wf1.order.selectedItem.data as String;
+                this.contestServiceFacadeWS.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
+            }
+
+            showLoadingProgress();
+        }
+
+        /**
+         * Gets the webservice security header for given user name and password.
+         *
+         * @param username the user name.
+         * @param password the password.
+         */
+        public function getHeader(username:String, password:String):SOAPHeader {
+            var userToken:String="UsernameToken-" + Math.round(Math.random() * 999999).toString();
+            var headerXML:XML=<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+                   <wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+                   <wsse:Username>{username}</wsse:Username>
+                   <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+                   </wsse:UsernameToken>
+                 </wsse:Security>;
+            var header:SOAPHeader=new SOAPHeader(WSSE_SECURITY, headerXML);
+            return header;
+        }
+
+        /**
+         * Loads the contest data through webservice.
+         */
+        public function loadData():void {
+            if (!_isLocalTesting) {
+                showLoadingProgress();
+
+                var header:SOAPHeader=getHeader(username, password);
+                this.contestServiceFacadeWS.clearHeaders();
+                this.contestServiceFacadeWS.addHeader(header);
+
+                this.contestServiceFacadeWS.getStatusList();
+
+                if (pid) {
+                    this.contestServiceFacadeWS.getContestDataOnlyByPID(pid);
+                } else {
+                    this.contestServiceFacadeWS.getContestDataOnly();
+                }
+
+                getClientProjectsByUser();
+            } else {
+
+                var statuses:ArrayCollection=new ArrayCollection();
+                var status:Object=new Object();
+                status.name="Action Required"
+                status.statusId=6;
+                statuses.addItem(status);
+
+                status=new Object();
+                status.name="No winner chosen"
+                status.statusId=7;
+                statuses.addItem(status);
+
+                status=new Object();
+                status.name="Completed"
+                status.statusId=8;
+                statuses.addItem(status);
+
+                handleStatusList(new ResultEvent("STATUS_TYPES", false, true, statuses));
+
+                var contests:ArrayCollection=new ArrayCollection();
+                var contest:Object=new Object();
+                contest.name="Active Contest 1";
+                contest.contestId=12345;
+                contest.statusId=6;
+
+                contest.prizes=new ArrayCollection();
+                contest.prizes.addItem(1000);
+                contest.prizes.addItem(500);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contests.addItem(contest);
+
+                contest=new Object();
+                contest.name="Active Contest 2";
+                contest.contestId=12346;
+                contest.statusId=6;
+                contest.prizes=new ArrayCollection();
+                contest.prizes.addItem(1000);
+                contest.prizes.addItem(500);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contests.addItem(contest);
+
+                contest=new Object();
+                contest.name="Abandoned Contest 1";
+                contest.contestId=12347;
+                contest.statusId=7;
+                contest.prizes=new ArrayCollection();
+                contest.prizes.addItem(1000);
+                contest.prizes.addItem(500);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contests.addItem(contest);
+
+                contest=new Object();
+                contest.name="Completed Contest 1";
+                contest.contestId=12348;
+                contest.statusId=8;
+                contest.prizes=new ArrayCollection();
+                contest.prizes.addItem(1000);
+                contest.prizes.addItem(500);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contest.prizes.addItem(0);
+                contests.addItem(contest);
+
+                handleResult(new ResultEvent("CONTESTS", false, true, contests));
+            }
+        }
+
+        /**
+         * Loads the submission data through webservice.
+         *
+         * @param callbackFn the callback function to be called on submission data load.
+         */
+        public function loadSubmissions(callbackFn:Function):void {
+            if (this.submissionList && this.submissionList.length > 0) {
+                this.submissionList.removeAll();
+            }
+
+            if (this.contestList && this.contestList.length > 0) {
+                var wrapperFn:Function=function(event:ResultEvent):void {
+                    handleSubResult(event);
+                    callbackFn();
+                }
+
+                if (!_isLocalTesting) {
+                    showLoadingProgress();
+
+                    var header:SOAPHeader=getHeader(username, password);
+                    this.contestServiceFacadeWS.clearHeaders();
+                    this.contestServiceFacadeWS.addHeader(header);
+                    var retrieveSubmissionsForContest:AbstractOperation=this.contestServiceFacadeWS.getOperation("retrieveSubmissionsForContest");
+                    if (retrieveSubmissionsForContest) {
+                        retrieveSubmissionsForContest.addEventListener("result", wrapperFn);
+                        retrieveSubmissionsForContest.send(this.selectedContestId);
+                    }
+                } else {
+                    var submissionArray:ArrayCollection=new ArrayCollection();
+                    var sub:Object;
+
+                    sub=new Object();
+                    sub.submissionId=24053;
+                    sub.placement=2;
+                    sub.feedbackText="It's feedback text for 24053. Thumb is up.";
+                    sub.feedbackThumb=1;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24054;
+                    sub.feedbackText="It's feedback text for 24054. Thumb is down.";
+                    sub.feedbackThumb=-1;
+                    sub.placement=1;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24055;
+                    sub.placement=3;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24056;
+                    sub.placement=4;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24057;
+                    sub.placement=5;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24058;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24059;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24060;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24061;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24062;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24063;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24064;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24065;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24066;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24067;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24068;
+                    submissionArray.addItem(sub);
+
+                    sub=new Object();
+                    sub.submissionId=24069;
+                    submissionArray.addItem(sub);
+
+                    wrapperFn(new ResultEvent("SUBMISSIONS", false, true, submissionArray));
+                }
+            }
+        }
+
+        /**
+         * Determines if all required submissions has been ranked or not.
+         *
+         * If submission has 5 or more submissions than all atleast 5 submissions should be ranked.
+         *
+         * @return true if all required submissions has been ranked, else false.
+         */
+        public function areProperRanking():Boolean {
+            var submissionsCount:int=this.submissionList.length;
+            var requiredRatingCount:int=Math.min(5, submissionsCount);
+
+            var rankingCnt:int=0;
+            for (var i:int=0; i < this.rankList.length; i++) {
+                if (this.rankList[i] && this.rankList[i].rank && this.rankList[i].rank > 0) {
+                    rankingCnt++;
+                }
+            }
+
+            if (rankingCnt == requiredRatingCount) {
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * Saves all the submissions rank to webservice.
+         */
+        public function saveSubmissionsRank():void {
+
+            var submissionList:Array=new Array();
+
+            for (var i:int=0; i < this.rankList.length; i++) {
+                var item:Object=this.rankList.getItemAt(i);
+                var feedback:Object=new Object();
+
+                if (item.rank && (item.rank is Number || item.rank.length > 0)) {
+                    submissionList.push(item.id);
+                }
+            }
+
+            this.showLoadingProgress();
+
+            var header:SOAPHeader=getHeader(this.username, this.password);
+            this.contestServiceFacadeWS.clearHeaders();
+            this.contestServiceFacadeWS.addHeader(header);
+            var rankSubmissionsOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("rankSubmissions");
+            if (rankSubmissionsOp) {
+                //trace("Ranking submissions: " + submissionList);
+                rankSubmissionsOp.send(submissionList);
+            }
+        }
+
+        /**
+         * Saves given submisisons feedback and thumb to the webservice.
+         * 
+         * @param item submission item
+         */
+        public function saveSubmissionsFeedback(item:Object):void {
+            if (_isLocalTesting) {
+                Alert.show("Setting feedback: " + item);
+                return;
+            }
+            var feedbacks:ArrayCollection=new ArrayCollection();
+            var feedback:Object=new Object();
+
+            if (item.hasOwnProperty("id")) {
+                feedback.submissionId=item.id;
+            }
+
+            if (item.hasOwnProperty("feedback")) {
+                feedback.feedbackText=item.feedback;
+            }
+
+            if (item.hasOwnProperty("upDown")) {
+                var thumb:int=0;
+                if (item.upDown) {
+                    if (item.upDown == "up") {
+                        thumb=1;
+                    } else if (item.upDown == "down") {
+                        thumb=-1;
+                    }
+                }
+
+                feedback.feedbackThumb=thumb;
+            }
+
+            if (feedback.hasOwnProperty("submissionId")) {
+                //trace("--------------------------------- feedback: " + feedback.submissionId + "," + feedback.feedbackText + "," + feedback.feedbackThumb);
+
+                feedbacks.addItem(feedback);
+            }
+
+            //trace("--------------------------------- FEEDBACKS: " + feedbacks);
+
+            this.showLoadingProgress();
+
+            var header:SOAPHeader=getHeader(this.username, this.password);
+            this.contestServiceFacadeWS.clearHeaders();
+            this.contestServiceFacadeWS.addHeader(header);
+            var updateSubmissionsFeedbackOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("updateSubmissionsFeedback");
+            if (updateSubmissionsFeedbackOp) {
+                updateSubmissionsFeedbackOp.send(feedbacks);
+            }
         }
     }
 }

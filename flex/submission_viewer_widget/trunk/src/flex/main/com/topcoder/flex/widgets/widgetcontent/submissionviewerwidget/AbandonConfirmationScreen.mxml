@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for contest abandon screens.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         paddingTop="22"
+         verticalGap="7"
+         width="100%"
+         height="100%">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.core.Container;
+            import mx.controls.ButtonLabelPlacement;
+            
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+            
+            /**
+            * Handler for going back to image viewer.
+            */
+            private function gotoImageViewer():void
+            {
+                this.subViewer.gotoContestViewer();
+            }
+            
+            /**
+            * Handler for going to specified abandon screen.
+            * If the abandon screen is abandonedScreen_2, then it also makes webservice call to persist the state.
+            */
+            private function gotoAbandonScreen(id:Container):void
+            {
+                abandonScreen.selectedChild=id;
+                if (id == abandonedScreen_2) {
+                    this.subViewer.updateAbandonToWS();
+                }
+            }
+            
+        ]]>
+    </mx:Script>
+
+    <mx:ViewStack id="abandonScreen" width="100%" height="100%" resizeToContent="true">
+        <mx:VBox id="abandonedScreen_0"
+                 paddingTop="22"
+                 verticalGap="7"
+                 width="100%">
+
+            <mx:Label fontFamily="Arial"
+                      text="{this.subViewer._currentItemLabel}"
+                      fontWeight="bold"
+                      fontSize="16"
+                      width="100%"/>
+            <mx:Label fontFamily="Arial"
+                      fontWeight="normal"
+                      fontSize="14"
+                      htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + this.subViewer.selectedContestStatus}"
+                      width="100%"/>
+            <mx:VBox width="100%"
+                     paddingTop="35"
+                     paddingLeft="12"
+                     verticalGap="0">
+                <mx:Label width="100%"
+                          paddingTop="0"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="14"
+                          color="#621910"
+                          text="We know that picking a winner is difficult..."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="However, it is important to fulfill your commitment to this contest. If you decide to choose no winners, you will have no further responsiblity to puurchase any of the submitted designs."/>
+                <mx:Label width="100%"
+                          paddingTop="9"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="11"
+                          text="Before you choose this option, you should know:"/>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="1. This is irreversible; you will not be able to purchase any of the submissions in the future."/>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="2. Your profile history will indicate that you ended a competition and chose no winner. This may discourage memebers from competing in your future contests."/>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="3. The contest administration fee you paid to launch this competition is non-refundable."/>
+                <mx:Label width="100%"
+                          paddingTop="9"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="11"
+                          text="Make a choice, but do something."/>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account."/>
+            </mx:VBox>
+            <mx:HBox horizontalAlign="center"
+                     width="100%"
+                     paddingTop="35">
+                <mx:Button buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Select a Winner"
+                           click="gotoImageViewer()"/>
+                <mx:Button buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Do Not Choose a Winner"
+                           click="gotoAbandonScreen(abandonedScreen_1)"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox id="abandonedScreen_1"
+                 paddingTop="22"
+                 verticalGap="7"
+                 width="100%">
+            <mx:Label fontFamily="Arial"
+                      text="{this.subViewer._currentItemLabel}"
+                      fontWeight="bold"
+                      fontSize="16"
+                      width="100%"/>
+            <mx:Label fontFamily="Arial"
+                      fontWeight="normal"
+                      fontSize="14"
+                      htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}"
+                      width="100%"/>
+            <mx:VBox width="100%"
+                     paddingTop="35"
+                     paddingLeft="12"
+                     verticalGap="0">
+                <mx:Label width="100%"
+                          paddingTop="0"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="14"
+                          color="#621910"
+                          text="You have chosen no winner for this contest."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="To help the competitors understand your decision, please include some feedback in the area below. This may be overall impression of the contest results or critique of individual submissions."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="The competitors may want to know why now winner was selected. If you choose not to provide any feedback, this may discourage members from competing in your future contests."/>
+                <mx:TextArea paddingTop="9"
+                             width="90%"
+                             height="158"/>
+            </mx:VBox>
+            <mx:HBox horizontalAlign="center"
+                     width="100%"
+                     paddingTop="35">
+                <mx:Button buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Select a Winner"
+                           click="gotoImageViewer()"/>
+                <mx:Button buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Continue >>"
+                           click="gotoAbandonScreen(abandonedScreen_2)"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox id="abandonedScreen_2"
+                 paddingTop="22"
+                 verticalGap="7"
+                 width="100%">
+            <mx:Label fontFamily="Arial"
+                      text="{this.subViewer._currentItemLabel}"
+                      fontWeight="bold"
+                      fontSize="16"
+                      width="100%"/>
+            <mx:Label fontFamily="Arial"
+                      fontWeight="normal"
+                      fontSize="14"
+                      htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}"
+                      width="100%"/>
+            <mx:VBox width="100%"
+                     paddingTop="35"
+                     paddingLeft="12"
+                     verticalGap="0">
+                <mx:Label width="100%"
+                          paddingTop="0"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="14"
+                          color="#621910"
+                          text="Care to try again?"/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="As a valued customer, you have the opportunity to post this contest one more time at no additional cost to you. This is great chance to analyze what worked (and didn't work) in your last contest."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="By simply making some minor modications to your descriptions, prize amounts, etc., you may increase your chances of getting more successful submissions."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         htmlText="You can learn more about reposting contests by &lt;a href=&quot;#&quot; &gt;&lt;font color=&quot;#753535&quot;&gt;visiting our help section.&lt;/font&gt;&lt;/a&gt;"/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="So what would you like to do?"/>
+            </mx:VBox>
+            <mx:HBox horizontalAlign="center"
+                     width="100%"
+                     paddingTop="35">
+                <mx:Button buttonMode="true"
+                           styleName="ButtonStyle"
+                           label="Run this Contest Again"
+                           click="gotoImageViewer()"/>
+                <mx:Button buttonMode="true"
+                           styleName="ButtonStyle"
+                           label="No, Thank You"
+                           click="gotoAbandonScreen(abandonedScreen_3)"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox id="abandonedScreen_3"
+                 paddingTop="22"
+                 verticalGap="7"
+                 width="100%">
+            <mx:Label fontFamily="Arial"
+                      text="{this.subViewer._currentItemLabel}"
+                      fontWeight="bold"
+                      fontSize="16"
+                      width="100%"/>
+            <mx:Label fontFamily="Arial"
+                      fontWeight="normal"
+                      fontSize="14"
+                      htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - Abandoned'}"
+                      width="100%"/>
+            <mx:VBox width="100%"
+                     paddingTop="35"
+                     paddingLeft="12"
+                     verticalGap="0">
+                <mx:Label width="100%"
+                          paddingTop="0"
+                          fontFamily="Arial"
+                          fontWeight="bold"
+                          fontSize="14"
+                          color="#621910"
+                          text="Since this contest was abandoned..."/>
+                <mx:Text width="100%"
+                         paddingTop="9"
+                         fontFamily="Arial"
+                         fontWeight="normal"
+                         fontSize="11"
+                         text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended."/>
+            </mx:VBox>
+        </mx:VBox>
+    </mx:ViewStack>
+</mx:VBox>
