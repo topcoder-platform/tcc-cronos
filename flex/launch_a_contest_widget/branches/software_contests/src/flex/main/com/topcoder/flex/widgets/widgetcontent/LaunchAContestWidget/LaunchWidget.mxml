@@ -1372,7 +1372,7 @@
                    buttonMode="true"
                    styleName="arrowRightBtnStyle"
                    labelPlacement="{ButtonLabelPlacement.LEFT}"
-                   label="save as draft"
+                   label="SAVE AS DRAFT"
                    click="validateAndSaveAsDraft()"
                    includeInLayout="{save.visible}"/>
 
