@@ -1642,6 +1642,8 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         ret.setType(submission.getType());
         ret.setWidth(submission.getWidth());
 		ret.setPaymentId(submission.getPaymentId());
+		ret.setFeedbackText(submission.getFeedbackText());
+		ret.setFeedbackThumb(submission.getFeedbackThumb());
 
         return ret;
     }
@@ -1673,6 +1675,11 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
      * <p>
      * Gets the active submissions for the contest with the given id. Also, the selectFullSubmission will determine if
      * the full submission is returned to the caller.
+     * </p>
+     * 
+     * <p>
+     * @since Flex Submission Viewer Overhaul Assembly.
+     * Added feedback_text and feedback_thumb retrieval
      * </p>
      *
      * @param contest
@@ -1711,7 +1718,12 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
                 + " width,"
                 + " submission_status_id,"
                 + " (select submission_status_desc from submission_status_lu as sslu where sslu.submission_status_id = s.submission_type_id) as submission_status_desc,"
-                + " modify_date," + " or_submission_id," + " payment_id" + " from submission as s "
+                + " modify_date," 
+                + " or_submission_id," 
+                + " payment_id,"
+                + " feedback_text," // Added: Flex Submission Viewer Overhaul Assembly.
+                + " feedback_thumb" // Added: Flex Submission Viewer Overhaul Assembly.
+                + " from submission as s "
                 + " where s.contest_id = " + contestId;
 
         if (maxSubmissionsPerUser > 0) {
@@ -1829,6 +1841,16 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
                 // payment_id
                 if (os[19] != null)
                     s.setPaymentId(Long.parseLong(os[19].toString()));
+                
+                // Added: Flex Submission Viewer Overhaul Assembly.
+                // feedback_text
+                if (os[20] != null)
+                    s.setFeedbackText(os[20].toString());
+                
+                // Added: Flex Submission Viewer Overhaul Assembly.
+                // feedback thumb
+                if (os[21] != null)
+                    s.setFeedbackThumb(Integer.parseInt(os[21].toString()));
 
                 // NOTE: set contestResult, reviews, prizes to null for now.
                 // a good way to retrieve these list need to be figured out.
