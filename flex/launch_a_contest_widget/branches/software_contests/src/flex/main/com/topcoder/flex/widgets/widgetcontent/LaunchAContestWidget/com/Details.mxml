@@ -19,20 +19,19 @@
             import flash.events.MouseEvent;
             import mx.containers.Panel;
             import com.topcoder.flex.util.editor.TCRichTextEditor;
-	    import mx.controls.ButtonLabelPlacement; // BUGR-1501
-	    import flash.utils.Dictionary;
-	    import mx.rpc.AbstractOperation;
+	    	import mx.controls.ButtonLabelPlacement; // BUGR-1501
+	    	import flash.utils.Dictionary;
+	    	import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.soap.mxml.WebService;
 
             import mx.collections.SortField;
             import mx.collections.Sort;
 
-	    private static const ADDEDHEIGHT:Number = 80;
-	    private static const ADDEDHEIGHT_GOALS:Number = 380;
-	    private var dx:Number = 0;
-	    private var dy:Number = 0;
-
+		    private static const ADDEDHEIGHT:Number = 80;
+		    private static const ADDEDHEIGHT_GOALS:Number = 380;
+		    private var dx:Number = 0;
+		    private var dy:Number = 0;
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -68,7 +67,7 @@
             private static var _catalogs:ArrayCollection;
 
             //
-            // Map of catalog id to categories list. 
+            // Map of catalog id to categories list.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private static var _catalogToCategoriesMap:Dictionary=new Dictionary();
@@ -101,6 +100,11 @@
             [Bindable]
             private var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
 
+			// BUGR-1641
+			// The rich text editors in this view
+			private var rtEditors:Array = [
+        		introInput, glsInput, ns_shortDesc, ns_funcDesc, ns_detailedDesc, ns_comments
+        	];
 
             public function initData():void {
                 //
@@ -127,7 +131,7 @@
                     ns_funcDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.functionalDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
                     ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.comments;
-                    
+
                     //
                     // load the master technologies if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -139,16 +143,16 @@
 
                         for (var i:int=0; i < _masterTechnologies.length; i++) {
                             var o:Object=_masterTechnologies.getItemAt(i);
-                            
+
                             _boundMasterTechnologies.addItem(o);
                         }
-                        
+
                         sortBoundMasterTechnologies();
-                        
+
                         // assign technologies.
                         setTechnologies();
                     }
-                    
+
                     //
                     // load the catalog names and categories if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -348,7 +352,7 @@
 
                         if (t.catalogName) {
                             // it is the root category.
-                            // add this catalog name to list of catalog names. 
+                            // add this catalog name to list of catalog names.
                             var o:Object=new Object();
                             o.label=t.catalogName;
                             o.data=t;
@@ -639,11 +643,12 @@
 	        }
 
 	        private function handleCreationComplete(event:Event):void {
-	        	introInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
-	        	introInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
-
-	        	glsInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
-	        	glsInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+				for each (var rtEditor:TCRichTextEditor in rtEditors) {
+					if (rtEditor != null) {
+						rtEditor.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
+		        		rtEditor.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+	   				}
+				}
 	        }
 
             //
@@ -771,14 +776,14 @@
             private function setMasterCategories(catalogData:Object):void {
                 _boundMasterCategories.removeAll();
                 _boundCurrentCategories.removeAll();
-                
+
                 if (catalogData && catalogData.data && catalogData.data.id) {
                     // set master categories.
                     var categories:ArrayCollection=_catalogToCategoriesMap[catalogData.data.id];
                     for each (var c:Object in categories) {
                         _boundMasterCategories.addItem(c);
                     }
-                    
+
                     sortBoundMasterCategories();
                 }
             }
@@ -792,9 +797,9 @@
                       styleName="sectionTitle"
                       width="80%"/>
             <mx:Spacer width="100"/>
-             <mx:Button styleName="arrowRightBtnStyle" 
-	               labelPlacement="{ButtonLabelPlacement.LEFT}" 
-		       label="PREVIEW CONTEST" 
+             <mx:Button styleName="arrowRightBtnStyle"
+	               labelPlacement="{ButtonLabelPlacement.LEFT}"
+		       label="PREVIEW CONTEST"
 		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
         </mx:HBox>
         <mx:Text width="100%"
@@ -805,7 +810,7 @@
 				excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.
             </mx:text>
         </mx:Text>
-        
+
         <mx:Spacer height="5"/>
         <mx:VBox visible="{mainWidget.studioContestType}"
                  includeInLayout="{mainWidget.studioContestType}">
@@ -919,7 +924,8 @@
                 </mx:Text>
                 <tc:TCRichTextEditor id="ns_shortDesc"
                                      width="500"
-                                     height="200"/>
+                                     height="200"
+                                     minHeight="200" />
             </mx:VBox>
 
             <mx:Spacer height="5"/>
@@ -941,7 +947,8 @@
                 </mx:Text>
                 <tc:TCRichTextEditor id="ns_funcDesc"
                                      width="500"
-                                     height="200"/>
+                                     height="200"
+                                     minHeight="200" />
             </mx:VBox>
 
             <mx:VBox width="100%"
@@ -961,7 +968,8 @@
                 </mx:Text>
                 <tc:TCRichTextEditor id="ns_detailedDesc"
                                      width="500"
-                                     height="200"/>
+                                     height="200"
+                                     minHeight="200" />
             </mx:VBox>
 
             <!--
@@ -1022,7 +1030,8 @@
                          visible="false"/>
                 <tc:TCRichTextEditor id="ns_comments"
                                      width="500"
-                                     height="200"/>
+                                     height="200"
+                                     minHeight="200" />
             </mx:VBox>
 
             <mx:Spacer height="5"/>
