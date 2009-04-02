@@ -118,6 +118,7 @@
                 subTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleSubComplete);
 
                 footer.height=0;
+		model.showFooter=true;
             }
 
             /**
