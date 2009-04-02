@@ -10,18 +10,21 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 
 /**
- * <p> It is the DTO class which is used to transfer submission data. The information can be null or can be empty,
- * therefore this check is not present in the setters.  It's the related to the equivalent Submission entity.</p>
- *
- * <p> This class is not thread safe because it's highly mutable</p>
- *
+ * <p>
+ * It is the DTO class which is used to transfer submission data. The information can be null or can be empty, therefore
+ * this check is not present in the setters. It's the related to the equivalent Submission entity.
+ * </p>
+ * <p>
+ * This class is not thread safe because it's highly mutable
+ * </p>
+ * 
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "submissionData",
-        propOrder = {"submissionId", "submitterId", "contestId", "submittedDate", "submissionContent",
-                     "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank", "removed"})
+@XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
+        "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
+        "removed", "feedbackText", "feedbackThumb" })
 public class SubmissionData implements Serializable {
     /**
      * Represents submission rank.
@@ -40,14 +43,17 @@ public class SubmissionData implements Serializable {
     /**
      * Set submission rank.
      * 
-     * @param rank the rank to set
+     * @param rank
+     *            the rank to set
      */
     public void setRank(Integer rank) {
         this.rank = rank;
     }
 
     /**
-     * <p> Represents the submission Id</p>
+     * <p>
+     * Represents the submission Id
+     * </p>
      */
     private long submissionId = -1;
 
@@ -124,7 +130,27 @@ public class SubmissionData implements Serializable {
     private boolean markedForPurchase = false;
 
     /**
-     * <p> This is the default constructor. It does nothing.</p>
+     * <p>
+     * Represents the feedback text for the submission
+     * </p>
+     * 
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    private String feedbackText;
+
+    /**
+     * <p>
+     * Represents the feedback thumb for the submission
+     * </p>
+     * 
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    private int feedbackThumb;
+
+    /**
+     * <p>
+     * This is the default constructor. It does nothing.
+     * </p>
      */
     public SubmissionData() {
     }
@@ -308,4 +334,55 @@ public class SubmissionData implements Serializable {
     public void setMarkedForPurchase(boolean markedForPurchase) {
         this.markedForPurchase = markedForPurchase;
     }
+
+    /**
+     * <p>
+     * Gets the feedback text.
+     * </p>
+     * 
+     * @return the feedbackText
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    public String getFeedbackText() {
+        return this.feedbackText;
+    }
+
+    /**
+     * <p>
+     * Sets the feedback text.
+     * </p>
+     * 
+     * @param feedbackText
+     *            the feedbackText to set
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    public void setFeedbackText(String feedbackText) {
+        this.feedbackText = feedbackText;
+    }
+
+    /**
+     * <p>
+     * Gets the feedback thumb.
+     * </p>
+     * 
+     * @return the feedbackThumb
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    public int getFeedbackThumb() {
+        return this.feedbackThumb;
+    }
+
+    /**
+     * <p>
+     * Sets the feedback thumb.
+     * </p>
+     * 
+     * @param feedbackThumb
+     *            the feedbackThumb to set
+     * @since Flex Submission Viewer Overhaul Assembly.
+     */
+    public void setFeedbackThumb(int feedbackThumb) {
+        this.feedbackThumb = feedbackThumb;
+    }
+
 }
