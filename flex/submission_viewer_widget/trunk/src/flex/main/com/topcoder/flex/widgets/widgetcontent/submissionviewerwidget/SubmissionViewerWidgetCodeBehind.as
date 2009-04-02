@@ -33,6 +33,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.rpc.soap.mxml.WebService;
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
+    
+    import flash.events.Event;
 
     /**
      * <p>
@@ -1225,8 +1227,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                     var subProxy:ObjectProxy=new ObjectProxy(sub);
                     
-                    var watcherFn:Function = function():void {
-                        saveSubmissionsFeedback(subProxy);
+                    var watcherFn:Function = function(e:Event):void {
+                        if (e && e.target) {
+                            trace("SubProxy: " + e.target.id);
+                            saveSubmissionsFeedback(e.target);
+                        }
                     }
                     // initialize a change watcher for the upDown property.
                     var changeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "upDown", watcherFn);  
@@ -1844,7 +1849,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             //trace("--------------------------------- FEEDBACKS: " + feedbacks);
 
-            this.showLoadingProgress();
+            //this.showLoadingProgress();
 
             var header:SOAPHeader=getHeader(this.username, this.password);
             this.contestServiceFacadeWS.clearHeaders();

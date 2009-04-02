@@ -532,7 +532,7 @@
                 if (purchase) {
                     purchase.visible=true;
                     purchase.includeInLayout=true;
-                    purchase.enabled=false;
+                    purchase.enabled=true;
                 }
             }
 

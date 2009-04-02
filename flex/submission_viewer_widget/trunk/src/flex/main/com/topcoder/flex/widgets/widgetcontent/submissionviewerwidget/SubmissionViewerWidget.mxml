@@ -342,7 +342,7 @@
                 this.hideLoadingProgress();
 
                 if (event) {
-                    Helper.showAlertMessage("Feedback successfully persisted!");
+                    //Helper.showAlertMessage("Feedback successfully persisted!");
                 }
             }
 
