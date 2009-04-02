@@ -396,7 +396,7 @@
                                       fontWeight="bold"/>
                             <mx:Text id="adFee"
                                      text="$***"
-                                     width="54"/>
+                                     width="154"/> <!-- TCCC-1218 -->
                         </mx:HBox>
                         <mx:HBox>
                             <mx:Label text="Contest Total:"

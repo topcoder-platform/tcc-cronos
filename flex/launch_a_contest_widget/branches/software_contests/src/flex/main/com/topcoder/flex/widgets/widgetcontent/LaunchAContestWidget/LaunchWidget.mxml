@@ -552,7 +552,7 @@
                    
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
 
-			       if(getExtraContestFee() > 0) {// BUGR-1363
+			       if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
                    		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
                    }
                   
@@ -679,7 +679,7 @@
                     case 5:
                         break;
                     default:
-                        goNext.label = "continue >>";
+                        goNext.label = "NEXT"; //TCCC-1218
                         goNext.visible = true;
                         back.visible = true;
                 }       
