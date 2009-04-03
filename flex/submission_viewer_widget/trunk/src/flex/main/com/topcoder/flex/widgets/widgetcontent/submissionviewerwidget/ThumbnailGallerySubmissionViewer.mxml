@@ -1126,7 +1126,7 @@
             * Handle click on 'clear' button.
             */
             private function handleClearFeedback():void {
-                var submission:Object=model.activeSubmission.getItemAt(model.activeSubmissionIndex);
+                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                 submission.feedback="";
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
@@ -1136,7 +1136,7 @@
             */
             private function handleSaveFeedback():void {
                 //this.subViewer.saveSubmissionsRank();
-                var submission:Object=model.activeSubmission.getItemAt(model.activeSubmissionIndex);
+                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
 
@@ -1145,7 +1145,7 @@
             */
             private function handlePurchaseClick():void {
                 if (model.activeSubmissionIndex >= 0) {
-                    var submission:Object=model.activeSubmission.getItemAt(model.activeSubmissionIndex);
+                    var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                     submission.markedForPurchase=purchase.selected;
                     model.updateSubmission(submission);
                 }
@@ -1156,7 +1156,7 @@
             */
             private function handleFeedbackChange():void {
                 if (model.activeSubmissionIndex >= 0) {
-                    var submission:Object=model.activeSubmission.getItemAt(model.activeSubmissionIndex);
+                    var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                     submission.feedback=feed.text;
                 }
             }
