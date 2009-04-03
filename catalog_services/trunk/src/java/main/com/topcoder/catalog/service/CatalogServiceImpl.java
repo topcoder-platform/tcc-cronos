@@ -222,6 +222,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         entityComponent.setCurrentVersion(compVersion);
 
         final EntityManager em = getEntityManager();
+
         // save version first
         persistEntity(em, compVersion);
         // save the asset entity finally
@@ -327,6 +328,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         }
         // update the asset entity
         updateAsset(asset, entityComponent, versionToUpdate);
+
+		entityComponent.setCurrentVersion(versionToUpdate);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
     }
