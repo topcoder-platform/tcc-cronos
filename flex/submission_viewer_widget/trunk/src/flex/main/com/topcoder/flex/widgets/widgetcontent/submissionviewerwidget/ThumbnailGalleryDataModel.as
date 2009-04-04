@@ -54,6 +54,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public var activeSubmissionIndex:int=-1;
 
         /**
+         * Id of the active submission
+         */
+        public var activeSubmissionId:int=-1;
+
+        /**
          * Current index of the submission which is same as the first in the active submission list.
          */
         public var currentIndex:int=0;
@@ -144,10 +149,13 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             for each (var item:Object in this.subViewer.submissionList) {
                 if (item.id == id) {
                     activeSubmissionIndex=i;
+                    activeSubmissionId=id;
                 }
 
                 i++;
             }
+            
+            trace("@@@@@@@ activeSubmissionIndex: " + activeSubmissionIndex);
         }
 
         /**
@@ -232,7 +240,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //trace("----------------------------- ################# id: " + id);
             if (!id || id <= 0) {
                 if (activeSubmissionIndex >= 0) {
-                    id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
+                   //id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
+			id=getSubmission(activeSubmissionId).id as Number;
                 } else {
                     id=0;
                 }
@@ -304,7 +313,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //trace("Removing rank for id: " + id);
 
             if (!id || id <= 0) {
-                id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
+                //id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
+		id=getSubmission(activeSubmissionId).id as Number;
             }
             var index:int=0;
             for each (var obj:Object in rankedSubmissionList) {
@@ -451,7 +461,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Determines the rank of currently selected submission.
          */
         public function getRank():int {
-            var item:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
+           // var item:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
+	    var item:Object=getSubmission(activeSubmissionId);
             for (var i:int=0; i < rankedSubmissionList.length; i++) {
                 var rank:Object=rankedSubmissionList.getItemAt(i);
                 if (rank.id == item.id) {
@@ -531,7 +542,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             var contestInfo:Object=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId];
             var prizes:ArrayCollection=contestInfo.prizes as ArrayCollection;
 
-            //trace("Update submission before: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+            trace("Update submission before: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
             
             item.price=0;
 
@@ -548,6 +559,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         // if markedForPurchase is there,
                         // then price must be equal to 2nd place prize.
                         if (prizes.length > 1 && prizes[1] > 0) {
+                            trace("Prize: " + prizes[1]);
                             item.price=prizes[1];
                         }
 
@@ -573,6 +585,19 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //trace("Update submission after: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
 
             this.subViewer.updatePurchase();
+        }
+        
+        /**
+         * Gets the submission for given id.
+         */
+        public function getSubmission(id:int):Object {
+            for each (var item:Object in this.subViewer.submissionList) {
+                if (item.id == id) {
+                    return item;
+                }
+            }
+            
+            return null;
         }
     }
 }

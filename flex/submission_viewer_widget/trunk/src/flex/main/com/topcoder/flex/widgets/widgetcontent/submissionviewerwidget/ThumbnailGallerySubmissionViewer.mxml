@@ -73,6 +73,8 @@
              */
             [Bindable]
             private var _subViewer:SubmissionViewerWidget;
+            
+            public var _tobeShownSubmission:Object;
 
             /**
              * Gets the reference to the parent submission viewer widget.
@@ -112,13 +114,18 @@
              * This component simply calls handleComplete and handleSubComplete through timers, to produce smooth effect.
              */
             private function init():void {
+                trace("@@@@@@@@@@ CALLING CREATION COMPLETE @@@@@@@@@");
                 timer=new Timer(200, 1);
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleComplete);
                 subTimer=new Timer(200, 1);
                 subTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleSubComplete);
 
                 footer.height=0;
-		model.showFooter=true;
+                model.showFooter=true;
+                
+                if (_tobeShownSubmission) {
+                    showSubmission(_tobeShownSubmission);
+                }
             }
 
             /**
@@ -213,7 +220,7 @@
             public function handleContest(event:Event):void {
                 trace("Handle contest... event: " + event);
                  
-                if (contestCombo && contestCombo.selectedItem && content) {
+                if (contestCombo && contestCombo.selectedItem) {
                     if (!event) {
                         this.contestCombo.selectedItem=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId];
                     }
@@ -253,13 +260,6 @@
                         updateUIForPastContest();
                     }
 
-                    var item:Object=contestCombo.selectedItem;
-                    if (model.selectedIndex == 0) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    } else if (model.selectedIndex == 1) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    }
-
                     if ((isContestChanged && isContestChanged == true)) {
                         trace("Reloading submissions...");
                         this.subViewer.loadSubmissions(updateUIOnSubmissionsLoad);
@@ -267,9 +267,6 @@
                         trace("In handle contest:: update ui on submission");
                         this.updateUIOnSubmissionsLoad();
                     }
-
-                } else if (content) {
-                    content.htmlText="";
                 }
             }
 
@@ -618,6 +615,7 @@
             */
             private function setText(index1:int, index2:int):Boolean {
                 trace("Setting text..");
+                
                 handleContest(null);
                 return true;
             }
@@ -652,6 +650,17 @@
                 model.setSubmission();
                 model.updateRankList();
                 this.subViewer.updatePurchase();
+               
+                if (contestCombo && contestCombo.selectedItem && content) {
+                    var item:Object=contestCombo.selectedItem;
+                    if (model.selectedIndex == 0) {
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                    } else if (model.selectedIndex == 1) {
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                    }
+                } else if (content) {
+                    content.htmlText="";
+                }
             }
 
             /**
@@ -1109,8 +1118,10 @@
                     return;
                 }
                 if (value) {
+                    trace("~~~~~~~~~~~~~~~ Showing footer");
                     footShowEffect.play();
                 } else {
+                    trace("~~~~~~~~~~~~~~~ Hiding footer");
                     footHideEffect.play();
                 }
             }
@@ -1126,7 +1137,8 @@
             * Handle click on 'clear' button.
             */
             private function handleClearFeedback():void {
-                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+                //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+		var submission:Object=model.getSubmission(model.activeSubmissionId);
                 submission.feedback="";
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
@@ -1136,7 +1148,8 @@
             */
             private function handleSaveFeedback():void {
                 //this.subViewer.saveSubmissionsRank();
-                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+                //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+		var submission:Object=model.getSubmission(model.activeSubmissionId);
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
 
@@ -1144,8 +1157,9 @@
             * Handle click on purchase checkbox.
             */
             private function handlePurchaseClick():void {
-                if (model.activeSubmissionIndex >= 0) {
-                    var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+                if (model.activeSubmissionId >= 0) {
+                    //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
+		    var submission:Object=model.getSubmission(model.activeSubmissionId);
                     submission.markedForPurchase=purchase.selected;
                     model.updateSubmission(submission);
                 }
@@ -1167,12 +1181,15 @@
             * @param data submission object.
             */
             public function showSubmission(data:Object):void {
+                handleContest(null);
                 this.model.setCurrentSubmission(data.id);
                 if (data.hasOwnProperty("multi") && data.multi == true) {
                     this.model.selectedIndex=2
                 } else {
                     this.model.selectedIndex=1;
                 }
+                
+                _tobeShownSubmission = null;
             }
         ]]>
     </mx:Script>
@@ -1180,7 +1197,7 @@
                 destination="this.showSubDetail"/>
     <mx:Binding source="model.selectedIndex"
                 destination="this.handleLayout"/>
-    <mx:Binding source="model.activeSubmissionIndex"
+    <mx:Binding source="model.activeSubmissionId"
                 destination="this.currentSubRank"/>
     <mx:Binding source="model.showFooter"
                 destination="this.hideFoot"/>
@@ -1474,7 +1491,7 @@
                              borderColor="#797979"
                              fontFamily="Arial"
                              fontSize="12"
-                             text="{this.model.activeSubmissionIndex >= 0 ? this.model.activeSubmission.getItemAt(this.model.activeSubmissionIndex).feedback : ''}"
+                             text="{this.model.activeSubmissionId >= 0 ? this.model.getSubmission(this.model.activeSubmissionId).feedback : ''}"
                              change="handleFeedbackChange()"/>
             </mx:VBox>
             <mx:VBox paddingLeft="24"

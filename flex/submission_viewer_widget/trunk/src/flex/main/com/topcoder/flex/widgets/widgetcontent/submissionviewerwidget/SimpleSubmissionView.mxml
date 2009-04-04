@@ -66,7 +66,13 @@
              * @param value value from the caller.
              */
             override public function set data(value:Object):void {
-                super.data=model.submissionList.getItemAt(value as int);
+                if ((value as int) != -1) {
+                    super.data=null;
+                    super.data=model.getSubmission((value as int));
+                    trace("@@@@@@@@@@@@@ Setting data to:" + super.data.id);
+                } else {
+                    trace("@@@@@@@@@@@@@ Setting data to null.");
+                }
             }
 
             /**
@@ -91,7 +97,7 @@
             }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.activeSubmissionIndex"
+    <mx:Binding source="model.activeSubmissionId"
                 destination="data"/>
     <mx:VBox width="100%"
              height="100%"
