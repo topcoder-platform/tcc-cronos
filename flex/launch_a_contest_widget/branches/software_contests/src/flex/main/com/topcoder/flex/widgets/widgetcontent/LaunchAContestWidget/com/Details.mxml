@@ -100,11 +100,8 @@
             [Bindable]
             private var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
 
-			// BUGR-1641
-			// The rich text editors in this view
-			private var rtEditors:Array = [
-        		introInput, glsInput, ns_shortDesc, ns_funcDesc, ns_detailedDesc, ns_comments
-        	];
+            // BUGR-1641
+            private var currentResizingRTEditor:TCRichTextEditor = null;
 
             public function initData():void {
                 //
@@ -625,7 +622,7 @@
 
 	        // BUGR-1458
 	        private function handleRTEMouseMove(event:MouseEvent):void {
-	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
+	        	var editor:TCRichTextEditor = currentResizingRTEditor;
 	        	if (editor && editor.isResizing) {
 	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
 		        		mainWidget.height += (stage.mouseY - dy);
@@ -640,15 +637,24 @@
 	        private function handleRTEDragStart(event:Event): void {
 	        	dx = stage.mouseX;
 	        	dy = stage.mouseY;
+	        	currentResizingRTEditor = event.currentTarget as TCRichTextEditor;
 	        }
 
 	        private function handleCreationComplete(event:Event):void {
+	        	// BUGR-1641
+				// The rich text editors in this view
+				var rtEditors:Array = [
+	        		introInput, glsInput, ns_shortDesc, ns_funcDesc, ns_detailedDesc, ns_comments
+	        	];
+
 				for each (var rtEditor:TCRichTextEditor in rtEditors) {
 					if (rtEditor != null) {
 						rtEditor.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
 		        		rtEditor.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
 	   				}
 				}
+
+				this.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
 	        }
 
             //
@@ -790,7 +796,8 @@
         ]]>
     </mx:Script>
     <mx:VBox width="100%"
-             styleName="boxStyle">
+             styleName="boxStyle"
+             id="detailsContainer">
         <mx:HBox horizontalAlign="right"
                  width="100%">
             <mx:Label text="Contest Details"
