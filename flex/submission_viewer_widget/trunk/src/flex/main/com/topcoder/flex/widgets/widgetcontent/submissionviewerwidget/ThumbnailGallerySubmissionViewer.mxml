@@ -265,7 +265,7 @@
                         this.subViewer.loadSubmissions(updateUIOnSubmissionsLoad);
                     } else {
                         trace("In handle contest:: update ui on submission");
-                        this.updateUIOnSubmissionsLoad();
+                        this.updateUIOnSubmissionsLoad(false);
                     }
                 }
             }
@@ -643,24 +643,14 @@
             /**
             * Logic for updating ui on submission data load/reload.
             */
-            private function updateUIOnSubmissionsLoad():void {
+            private function updateUIOnSubmissionsLoad(fullReset:Boolean=true):void {
                 trace("------------------------ UPDATING UI ON SUBMISSIONS");
                 // TODO: do we need to show different ui when no submissions ?
-                model.reset();
-                model.setSubmission();
+                model.reset(fullReset);
+                model.setSubmission(fullReset);
                 model.updateRankList();
                 this.subViewer.updatePurchase();
-               
-                if (contestCombo && contestCombo.selectedItem && content) {
-                    var item:Object=contestCombo.selectedItem;
-                    if (model.selectedIndex == 0) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    } else if (model.selectedIndex == 1) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    }
-                } else if (content) {
-                    content.htmlText="";
-                }
+                setTitle();
             }
 
             /**
@@ -811,7 +801,6 @@
                     currentRank.selectedIndex=model.getRank();
 
                     updatePurchaseButton();
-
                 } else if (value == 0) {
                     trace("handle layout... for value == 0");
                     extraBtnPanel.visible=false;
@@ -913,6 +902,7 @@
                 timer.start();
                 isPrev=true;
                 model.goPrev();
+                setTitle();
             }
 
             /**
@@ -949,6 +939,7 @@
                 timer.start();
                 isPrev=false;
                 model.goNext();
+                setTitle();
             }
 
             /**
@@ -1067,6 +1058,7 @@
                 last=true;
                 subTimer.start();
                 model.prev();
+                setTitle();
             }
 
             /**
@@ -1101,6 +1093,7 @@
                 last=false;
                 subTimer.start();
                 model.next();
+                setTitle();
             }
 
             /**
@@ -1137,8 +1130,7 @@
             * Handle click on 'clear' button.
             */
             private function handleClearFeedback():void {
-                //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
-		var submission:Object=model.getSubmission(model.activeSubmissionId);
+                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                 submission.feedback="";
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
@@ -1148,8 +1140,7 @@
             */
             private function handleSaveFeedback():void {
                 //this.subViewer.saveSubmissionsRank();
-                //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
-		var submission:Object=model.getSubmission(model.activeSubmissionId);
+                var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                 this.subViewer.saveSubmissionsFeedback(submission);
             }
 
@@ -1157,9 +1148,8 @@
             * Handle click on purchase checkbox.
             */
             private function handlePurchaseClick():void {
-                if (model.activeSubmissionId >= 0) {
-                    //var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
-		    var submission:Object=model.getSubmission(model.activeSubmissionId);
+                if (model.activeSubmissionIndex >= 0) {
+                    var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
                     submission.markedForPurchase=purchase.selected;
                     model.updateSubmission(submission);
                 }
@@ -1191,6 +1181,23 @@
                 
                 _tobeShownSubmission = null;
             }
+            
+            /**
+            * Sets the title of the view.
+            */
+            private function setTitle():void {
+                if (contestCombo && contestCombo.selectedItem && content) {
+                    trace("@@@@@@ ----------------- Active sub index: " + model.activeSubmissionIndex);
+                    var item:Object=contestCombo.selectedItem;
+                    if (model.selectedIndex == 0) {
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                    } else if (model.selectedIndex == 1) {
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                    }
+                } else if (content) {
+                    content.htmlText="";
+                }  
+            }
         ]]>
     </mx:Script>
     <mx:Binding source="model.selectedSubmission"
@@ -1208,7 +1215,7 @@
              width="100%"
              verticalGap="0"
              paddingLeft="0"
-             paddingRight="0"
+             paddingRight="5"
              paddingTop="0"
              paddingBottom="0">
         <mx:HBox minWidth="755"
@@ -1225,12 +1232,11 @@
             <mx:ComboBox id="contestCombo"
                          left="195"
                          width="272"
-                         styleName="ComboBoxStyle"
                          change="handleContest(event)"
                          fontFamily="Arial"
                          fontSize="12"
                          labelField="name"
-                         itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.renderer.ComboRenderer"
+                         itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer"
                          dataProvider="{this.subViewer.contestList}"/>
             <mx:ToggleButtonBar id="activePanel"
                                 buttonStyleName="button"
@@ -1345,7 +1351,7 @@
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Checkout"
                                    id="checkout_top"
-                                   styleName="SaveContinueButtonStyle"
+                                   styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
@@ -1415,7 +1421,7 @@
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Checkout"
                                    id="checkout_bottom"
-                                   styleName="SaveContinueButtonStyle"
+                                   styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
@@ -1491,7 +1497,7 @@
                              borderColor="#797979"
                              fontFamily="Arial"
                              fontSize="12"
-                             text="{this.model.activeSubmissionId >= 0 ? this.model.getSubmission(this.model.activeSubmissionId).feedback : ''}"
+                             text="{this.model.activeSubmissionIndex >= 0 ? this.model.activeSubmission.getItemAt(this.model.activeSubmissionIndex).feedback : ''}"
                              change="handleFeedbackChange()"/>
             </mx:VBox>
             <mx:VBox paddingLeft="24"
@@ -1500,16 +1506,16 @@
                          paddingTop="0">
                     <mx:Button id="saveBtn"
                                label="Save"
-                               styleName="SaveContinueButtonStyle"
+                               styleName="ButtonStyle"
                                click="handleSaveFeedback()"/>
                     <mx:Button id="clearBtn"
                                label="Clear"
-                               styleName="SaveContinueButtonStyle"
+                               styleName="ButtonStyle"
                                click="handleClearFeedback()"/>
                 </mx:HBox>
                 <mx:Button id="checkout_detailed"
                            label="Check Out"
-                           styleName="SaveContinueButtonStyle"
+                           styleName="arrowRightBtnStyle"
                            click="handleCheckout()"/>
             </mx:VBox>
         </mx:HBox>

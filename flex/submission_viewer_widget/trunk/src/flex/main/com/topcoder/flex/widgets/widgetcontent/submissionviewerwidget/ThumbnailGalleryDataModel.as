@@ -52,7 +52,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Page index of currently active / visible submissions.
          */
         public var activeSubmissionIndex:int=-1;
-
+        
         /**
          * Id of the active submission
          */
@@ -240,8 +240,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //trace("----------------------------- ################# id: " + id);
             if (!id || id <= 0) {
                 if (activeSubmissionIndex >= 0) {
-                   //id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
-			id=getSubmission(activeSubmissionId).id as Number;
+                    id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
                 } else {
                     id=0;
                 }
@@ -313,8 +312,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //trace("Removing rank for id: " + id);
 
             if (!id || id <= 0) {
-                //id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
-		id=getSubmission(activeSubmissionId).id as Number;
+                id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
             }
             var index:int=0;
             for each (var obj:Object in rankedSubmissionList) {
@@ -407,11 +405,18 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         /**
          * It resets the model state.
          */
-        public function reset():void {
+        public function reset(fullReset:Boolean):void {
             currentIndex=0;
             //selectedIndex=0;
             selectedSubmission=null;
             selectedImage=null;
+            
+            if (fullReset) {
+                activeSubmission=null;
+                activeSubmissionIndex=-1;
+                activeSubmissionId=-1;
+                currentLast=0;
+            }
 
             rankedSubmissionList=new ArrayCollection();
 
@@ -431,7 +436,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          *
          * It gets called on submission data reload.
          */
-        public function setSubmission():void {
+        public function setSubmission(fullReset:Boolean=true):void {
             activeSubmission=new ArrayCollection();
             currentIndex=0;
             var i:int=0;
@@ -439,6 +444,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 activeSubmission.addItem(this.subViewer.submissionList.getItemAt(i));
             }
             currentLast=i - 1;
+            
+            if (fullReset) {
+                if (selectedIndex==1 || selectedIndex==2) {
+                    setCurrentSubmission(activeSubmission.getItemAt(0).id);
+                }
+            }
         }
 
         /**
@@ -461,8 +472,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Determines the rank of currently selected submission.
          */
         public function getRank():int {
-           // var item:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
-	    var item:Object=getSubmission(activeSubmissionId);
+            var item:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
             for (var i:int=0; i < rankedSubmissionList.length; i++) {
                 var rank:Object=rankedSubmissionList.getItemAt(i);
                 if (rank.id == item.id) {
@@ -485,6 +495,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function next():void {
             activeSubmissionIndex=Math.min(activeSubmissionIndex + 1, this.subViewer.submissionList.length - 1);
             var obj:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
+            activeSubmissionId=obj.id;
             if (obj.multi) {
                 selectedIndex=2;
             } else {
@@ -499,6 +510,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function prev():void {
             activeSubmissionIndex=Math.max(activeSubmissionIndex - 1, 0);
             var obj:Object=this.subViewer.submissionList.getItemAt(activeSubmissionIndex);
+            activeSubmissionId=obj.id;
             if (obj.multi) {
                 selectedIndex=2;
             } else {
