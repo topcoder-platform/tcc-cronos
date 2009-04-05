@@ -118,7 +118,11 @@
                             gallery._tobeShownSubmission=_tobeShownSubOnMaximize;
                         }
                     } else {
-                        gallery.handleContest(null);
+                         if (gallery.initialized) {
+                            gallery.model.selectedIndex=0;
+                        }
+                        //gallery.handleContest(null);
+
                     }
                     
                     _tobeShownSubOnMaximize=null;

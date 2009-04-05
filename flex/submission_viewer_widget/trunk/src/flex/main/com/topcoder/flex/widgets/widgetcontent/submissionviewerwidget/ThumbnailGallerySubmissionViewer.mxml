@@ -66,7 +66,7 @@
              *    - other required properties.
              */
             [Bindable]
-            private var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+            public var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
 
             /**
              * Reference to the parent submission viewer widget.
@@ -120,8 +120,8 @@
                 subTimer=new Timer(200, 1);
                 subTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleSubComplete);
 
-                //footer.height=0;
-                model.showFooter=true;
+                footer.height=0;
+                //model.showFooter=true;
                 
                 if (_tobeShownSubmission) {
                     showSubmission(_tobeShownSubmission);
@@ -1268,8 +1268,8 @@
                          width="100%"
                          textAlign="center"/>
                 <mx:HBox id="extraBtnPanel"
-                         visible="true"
-                         includeInLayout="true">
+                         visible="false"
+                         includeInLayout="false">
                     <mx:Button styleName="goPrev"
                                click="prevSub()"
                                id="prevBtn"
@@ -1499,7 +1499,7 @@
                              borderColor="#797979"
                              fontFamily="Arial"
                              fontSize="12"
-                             text="{this.model.activeSubmissionIndex >= 0 ? this.model.activeSubmission.getItemAt(this.model.activeSubmissionIndex).feedback : ''}"
+                             text="{this.model.activeSubmissionIndex >= 0 ? this.model.submissionList.getItemAt(this.model.activeSubmissionIndex).feedback : ''}"
                              change="handleFeedbackChange()"/>
             </mx:VBox>
             <mx:VBox paddingLeft="24"
