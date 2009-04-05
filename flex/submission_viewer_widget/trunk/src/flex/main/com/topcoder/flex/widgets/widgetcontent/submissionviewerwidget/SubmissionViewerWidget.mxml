@@ -106,9 +106,9 @@
 
                     //ThumbnailGallerySubmissionViewer(gallery).doFilter();
 
-                    if (!_tobeShownSubOnMaximize && submissionList.length > 0) {
+                    /*if (!_tobeShownSubOnMaximize && submissionList.length > 0) {
                         _tobeShownSubOnMaximize=submissionList.getItemAt(0);
-                    } 
+                    } */
                     
                     if (_tobeShownSubOnMaximize) {
                         trace("_tobeShownSubOnMaximize::" + _tobeShownSubOnMaximize.id);
@@ -117,6 +117,8 @@
                         } else {
                             gallery._tobeShownSubmission=_tobeShownSubOnMaximize;
                         }
+                    } else {
+                        gallery.handleContest(null);
                     }
                     
                     _tobeShownSubOnMaximize=null;

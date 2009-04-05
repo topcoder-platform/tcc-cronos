@@ -16,7 +16,7 @@
                 verticalScrollPolicy="off"
                 horizontalScrollPolicy="off"
                 borderStyle="none"
-                showCloseButton="{data &amp;&amp; data.showClose}"
+                showCloseButton="{ThumbnailGalleryDataModel.instance.isRankMode &amp;&amp; data &amp;&amp; data.showClose}"
                 close="removeRank()">
     <mx:Script>
         <![CDATA[

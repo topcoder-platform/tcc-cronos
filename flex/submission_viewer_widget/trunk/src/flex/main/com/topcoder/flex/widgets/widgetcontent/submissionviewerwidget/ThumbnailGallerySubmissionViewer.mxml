@@ -120,7 +120,7 @@
                 subTimer=new Timer(200, 1);
                 subTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleSubComplete);
 
-                footer.height=0;
+                //footer.height=0;
                 model.showFooter=true;
                 
                 if (_tobeShownSubmission) {
@@ -807,6 +807,7 @@
                     extraBtnPanel.includeInLayout=false;
                     showHideRank(true);
                     handleContest(null);
+                    model.showFooter=false;
                     footer.height=0;
                 }
             }
@@ -1171,6 +1172,7 @@
             * @param data submission object.
             */
             public function showSubmission(data:Object):void {
+                this.model.selectedIndex=-1;
                 handleContest(null);
                 this.model.setCurrentSubmission(data.id);
                 if (data.hasOwnProperty("multi") && data.multi == true) {
@@ -1506,11 +1508,11 @@
                          paddingTop="0">
                     <mx:Button id="saveBtn"
                                label="Save"
-                               styleName="ButtonStyle"
+                               styleName="arrowRightBtnStyle"
                                click="handleSaveFeedback()"/>
                     <mx:Button id="clearBtn"
                                label="Clear"
-                               styleName="ButtonStyle"
+                               styleName="arrowRightBtnStyle"
                                click="handleClearFeedback()"/>
                 </mx:HBox>
                 <mx:Button id="checkout_detailed"
