@@ -288,3 +288,339 @@ LinkButton
     fontSize: 11;
     fontWeight: bold;
 }
+
+
+
+/* CSS file */
+.toolTip {
+	skin: Embed("../assets/tooltips.png");
+}
+.button {
+	skin: Embed("../assets/button.png");
+	over-skin: Embed("../assets/button-hover.png");
+	down-skin: Embed("../assets/button.png");
+	selected-over-skin: Embed("../assets/button-hover.png");
+	selected-up-skin: Embed("../assets/button-hover.png");
+	selected-down-skin: Embed("../assets/button-hover.png");
+	font-weight: normal;
+	font-size: 11;
+	font-family: Arial;
+	color: #000000;
+}
+
+.button2 {
+	skin: Embed("../assets/rank-button.png");
+	over-skin: Embed("../assets/rank-button-hover.png");
+	down-skin: Embed("../assets/rank-button.png");
+	selected-over-skin: Embed("../assets/rank-button-hover.png");
+	selected-up-skin: Embed("../assets/rank-button-hover.png");
+	selected-down-skin: Embed("../assets/rank-button-hover.png");
+	font-weight: normal;
+	font-size: 9;
+	font-family: Arial;
+	color: #000000;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.button3 {
+	icon: Embed("../assets/sort-button-icon.png");
+	skin: Embed("../assets/button.png");
+	over-skin: Embed("../assets/button-hover.png");
+	down-skin: Embed("../assets/button.png");
+	selected-over-skin: Embed("../assets/button-hover.png");
+	selected-up-skin: Embed("../assets/button-hover.png");
+	selected-down-skin: Embed("../assets/button-hover.png");
+	font-weight: normal;
+	font-size: 11;
+	font-family: Arial;
+	color: #000000;
+}
+
+.pop {
+	border-skin: Embed("../assets/pop.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+.showPrev {
+	skin: Embed("../assets/icon-magnifying-glass.png");
+	up-skin: Embed("../assets/icon-magnifying-glass.png");
+	over-skin: Embed("../assets/icon-magnifying-glass.png");
+	down-skin: Embed("../assets/icon-magnifying-glass.png");
+}
+
+.popReverse {
+	border-skin: Embed("../assets/pop-revese.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 38;
+	
+}
+.CheckBoxStyle {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+	selected-down-icon: Embed("../assets/checkbox_checked.png");
+	selected-up-icon: Embed("../assets/checkbox_checked.png");
+	selected-over-icon: Embed("../assets/checkbox_checked.png");
+	icon: Embed("../assets/checkbox.png");
+}
+
+.downThumb {
+	skin: Embed("../assets/thumbs-down-off.png");
+	up-skin: Embed("../assets/thumbs-down-off.png");
+	over-skin: Embed("../assets/thumbs-down-hover.png");
+	down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-up-skin: Embed("../assets/thumbs-down-on.png");
+	selected-down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-over-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.upThumb {
+	skin: Embed("../assets/thumbs-up-off.png");
+	up-skin: Embed("../assets/thumbs-up-off.png");
+	over-skin: Embed("../assets/thumbs-up-hover.png");
+	down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-up-skin: Embed("../assets/thumbs-up-on.png");
+	selected-down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-over-skin: Embed("../assets/thumbs-up-on.png");	
+}
+
+.downThumbDisabled {
+	skin: Embed("../assets/thumbs-down-off.png");
+	up-skin: Embed("../assets/thumbs-down-off.png");
+	over-skin: Embed("../assets/thumbs-down-off.png");
+	down-skin: Embed("../assets/thumbs-down-off.png");
+	selected-up-skin: Embed("../assets/thumbs-down-on.png");
+	selected-down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-over-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.upThumbDisabled {
+	skin: Embed("../assets/thumbs-up-off.png");
+	up-skin: Embed("../assets/thumbs-up-off.png");
+	over-skin: Embed("../assets/thumbs-up-off.png");
+	down-skin: Embed("../assets/thumbs-up-off.png");
+	selected-up-skin: Embed("../assets/thumbs-up-on.png");
+	selected-down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-over-skin: Embed("../assets/thumbs-up-on.png");	
+}
+
+.showUp {
+	skin: Embed("../assets/thumbs-up-on.png");
+	up-skin: Embed("../assets/thumbs-up-on.png");
+	over-skin: Embed("../assets/thumbs-up-on.png");
+	down-skin: Embed("../assets/thumbs-up-on.png");
+}
+
+.showDown {
+	skin: Embed("../assets/thumbs-down-on.png");
+	up-skin: Embed("../assets/thumbs-down-on.png");
+	over-skin: Embed("../assets/thumbs-down-on.png");
+	down-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.showHideBtnClose {
+	skin: Embed("../assets/tab-close.png");
+	up-skin: Embed("../assets/tab-close.png");
+	over-skin: Embed("../assets/tab-close-hover.png");
+	down-skin: Embed("../assets/tab-close.png");
+}
+
+.showHideBtnOpen {
+	skin: Embed("../assets/tab-open.png");
+	up-skin: Embed("../assets/tab-open.png");
+	over-skin: Embed("../assets/tab-open-hover.png");
+	down-skin: Embed("../assets/tab-open.png");
+}
+
+.showHideBtnClose2 {
+	skin: Embed("../assets/tab-close2.png");
+	up-skin: Embed("../assets/tab-close2.png");
+	over-skin: Embed("../assets/tab-close2-hover.png");
+	down-skin: Embed("../assets/tab-close2.png");
+}
+
+.showHideBtnOpen2 {
+	skin: Embed("../assets/tab-open2.png");
+	up-skin: Embed("../assets/tab-open2.png");
+	over-skin: Embed("../assets/tab-open2-hover.png");
+	down-skin: Embed("../assets/tab-open2.png");
+}
+
+.normalText {
+	font-weight: bold;
+	font-size: 13;
+	font-family: Arial;
+	color: #000000;
+}
+
+.text {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+}	
+
+.prev {
+	skin: Embed("../assets/bt-bg.png");
+	over-skin: Embed("../assets/bt-bg.png");
+	down-skin: Embed("../assets/bt-bg.png");
+	up-skin: Embed("../assets/bt-bg.png");
+	icon: Embed("../assets/arrow-left.png");
+	over-icon: Embed("../assets/arrow-left-hover.png");
+	down-icon: Embed("../assets/arrow-left.png");
+}
+
+.next {
+	skin: Embed("../assets/bt-bg.png");
+	over-skin: Embed("../assets/bt-bg.png");
+	down-skin: Embed("../assets/bt-bg.png");
+	up-skin: Embed("../assets/bt-bg.png");
+	icon: Embed("../assets/arrow-right.png");
+	over-icon: Embed("../assets/arrow-right-hover.png");
+	down-icon: Embed("../assets/arrow-right.png");
+}
+
+.goPrev {
+	skin: Embed("../assets/arrow-left.png");
+	over-skin: Embed("../assets/arrow-left-hover.png");
+	down-skin: Embed("../assets/arrow-left.png");
+	up-skin: Embed("../assets/arrow-left.png");
+}
+
+.goNext {
+	skin: Embed("../assets/arrow-right.png");
+	over-skin: Embed("../assets/arrow-right-hover.png");
+	down-skin: Embed("../assets/arrow-right.png");
+	up-skin: Embed("../assets/arrow-right.png");
+}
+
+.gallery {
+	skin: Embed("../assets/gallery-icon.png");
+	over-skin: Embed("../assets/gallery-icon-hover.png");
+	down-skin: Embed("../assets/gallery-icon.png");
+	up-skin: Embed("../assets/gallery-icon.png");
+}
+	
+
+.buttonStyleName {
+	color: #000000;
+	/* skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank_over.png");
+	down-skin: Embed("../assets/rank_over.png");
+	selected-over-skin: Embed("../assets/rank_over.png");
+	selected-up-skin: Embed("../assets/rank_over.png");
+	selected-down-skin: Embed("../assets/rank_over.png"); */
+	padding-left:0;
+	padding-right:0;
+}
+
+.rankLogo {
+	color: #000000;
+	/* skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank.png");
+	down-skin: Embed("../assets/rank.png"); */
+	padding-left:0;
+	padding-right:0;
+}
+
+.purchaseLogo {
+	/* background-image: Embed("../assets/purchase.png"); */
+}
+
+.priorBtn {
+	/* skin: Embed("../assets/PriorButton.png");
+	over-skin: Embed("../assets/PriorButton_over.png");
+	down-skin: Embed("../assets/PriorButton.png"); */
+}
+
+.ComboBoxStyle {
+	up-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	over-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	down-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+}
+
+.CheckBoxStyle {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+/* 	selected-down-icon: Embed("../assets/checkbox_checked.png");
+	selected-up-icon: Embed("../assets/checkbox_checked.png");
+	selected-over-icon: Embed("../assets/checkbox_checked.png");
+	icon: Embed("../assets/checkbox.png"); */
+}
+
+.SaveContinueButtonStyle {
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+	color: #767676;
+	up-skin: Embed(source="../assets/button2.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	over-skin: Embed(source="../assets/button2_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	down-skin: Embed(source="../assets/button2_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26"); 
+}
+
+.first {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: left top;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.last {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: top right;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.middle {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+
+.NumericStepper {
+/*  	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up2.png");
+	down-arrow-skin: Embed(source="../assets/down2.png");  */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
