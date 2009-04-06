@@ -1574,7 +1574,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 
         List<Submission> submissions = getResultList(entityManager,
                 "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
-                        + " AND s.status.description != :description AND s.rank <= s.contest.maximumSubmissions", parameters, methodName);
+                        + " AND s.status.description != :description ", parameters, methodName);
         return submissions;
     }
 
