@@ -92,7 +92,7 @@
         </id>
         <properties name="CurrentCompVersion" unique="true">
             <many-to-one name="component" class="Component" column="component_id"/>
-            <property name="version" column="version"/>
+            <property name="version" column="version" insert="true" update="true"/>
         </properties>
          <property name="versionText" column="version_text"/>
         <many-to-one name="phase" class="Phase" column="phase_id"/>
@@ -240,7 +240,7 @@
         SELECT t FROM Technology t WHERE t.status=1
     </query>
     <query name="getActiveCategories">
-        SELECT c FROM Category c WHERE c.status=1 and c.viewable=true
+        SELECT c FROM Category c WHERE c.status=1
     </query>
 
 </hibernate-mapping>
