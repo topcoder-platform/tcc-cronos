@@ -119,6 +119,7 @@
                         }
                     } else {
                          if (gallery.initialized) {
+			    gallery.handleContest(null);
                             gallery.model.selectedIndex=0;
                         }
                         //gallery.handleContest(null);
