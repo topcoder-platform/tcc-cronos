@@ -2177,7 +2177,16 @@ public class StudioServiceBean implements StudioService {
             content += "&" + submissionContentSubmissionTypeParameterName + "="
                     + (sd.isPaidFor() ? submissionContentPaidParameterValue : submissionContentUnpaidParameterValue);
             sd.setSubmissionContent(content);
-
+            
+            // Added: Flex Submission Viewer Overhaul Assembly.
+            if (s.getFeedbackText() != null) {
+                sd.setFeedbackText(s.getFeedbackText());
+            }
+            
+            if (s.getFeedbackThumb() != null) {
+                sd.setFeedbackThumb(s.getFeedbackThumb());
+            }
+            
             result.add(sd);
         }
 
@@ -2200,6 +2209,10 @@ public class StudioServiceBean implements StudioService {
         submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
         submission.setRank(submissionData.getRank());
 		submission.setContest(contestManager.getContest(submissionData.getContestId()));
+		
+		// Added: Flex Submission Viewer Overhaul Assembly.
+		submission.setFeedbackText(submissionData.getFeedbackText());
+		submission.setFeedbackThumb(submissionData.getFeedbackThumb());
 
         return submission;
     }
