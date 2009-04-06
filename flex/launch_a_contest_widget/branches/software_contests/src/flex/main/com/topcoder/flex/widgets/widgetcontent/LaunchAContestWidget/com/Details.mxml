@@ -351,7 +351,7 @@
                             // it is the root category.
                             // add this catalog name to list of catalog names.
                             var o:Object=new Object();
-                            o.label=t.catalogName;
+                            o.label=t.name;
                             o.data=t;
                             _catalogs.addItem(o);
                         } else if (t.parentCategory) {
