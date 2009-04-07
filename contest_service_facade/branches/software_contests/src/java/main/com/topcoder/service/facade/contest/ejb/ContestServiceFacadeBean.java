@@ -2008,6 +2008,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             assetDTO.getId().toString());
                 }
 
+				if(contest.getProjectPhases().getStartDate() == null) { // BUGR-1445
+				/*
+				   - start: current time + 24 hour (round the minutes up to the nearest 15) 
+				 */
+					GregorianCalendar startDate = new GregorianCalendar();
+					startDate.setTime(new Date());
+					startDate.add(Calendar.HOUR, 24);
+					int m = startDate.get(Calendar.MINUTE);
+					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+					contest.getProjectPhases().setStartDate(startDate.getTime());
+				}
+
                 contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
                 FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
                         contest.getProjectPhases(), contest.getProjectResources(), p.getName());
