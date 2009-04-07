@@ -135,6 +135,13 @@ public class Component implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>CompVersion</code> instance or <tt>null</tt>.</p>
      */
+    private long currentVersionNumber;
+
+	/**
+     * <p>This field represents the current version of the component.</p>
+     * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
+     * <p>The acceptance region: any <code>CompVersion</code> instance or <tt>null</tt>.</p>
+     */
     private CompVersion currentVersion;
     /**
      * <p>This field represents the list of the categories this component belongs to.</p>
@@ -164,6 +171,14 @@ public class Component implements Serializable {
      * containing <code>null</code> is legal as well.</p>
      */
     private List<CompVersion> versions;
+
+	/**
+     * <p>This field represents the list of the versions of the component.</p>
+     * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
+     * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
+     * containing <code>null</code> is legal as well.</p>
+     */
+    private Set<CompVersion> versionsSet;
 
 
     /**
@@ -313,6 +328,31 @@ public class Component implements Serializable {
      */
     public void setCurrentVersion(CompVersion currentVersion) {
         this.currentVersion = currentVersion;
+		if (currentVersion.getVersion() != null)
+		{
+			this.currentVersionNumber = currentVersion.getVersion();
+		}
+		
+    }
+
+    /**
+     * <p>Retrieves the current version of the component.</p>
+     *
+     * @return {@link #currentVersion} property's value.
+     */
+    public long getCurrentVersionNumber() {
+        return currentVersionNumber;
+    }
+
+
+	/**
+     * <p>Sets a value to the {@link #currentVersion} field.</p>
+     * <p>The acceptance region: any <code>CompVersion</code> instance or <tt>null</tt>.</p>
+     *
+     * @param currentVersion the current version of the component.
+     */
+    public void setCurrentVersionNumber(long currentVersionNumber) {
+        this.currentVersionNumber = currentVersionNumber;
     }
 
     /**
@@ -321,7 +361,28 @@ public class Component implements Serializable {
      * @return {@link #currentVersion} property's value.
      */
     public CompVersion getCurrentVersion() {
-        return currentVersion;
+		if (currentVersion != null)
+		{
+			return currentVersion;
+		}
+
+		if (versions != null || versions.size() == 0)
+		{
+			return null;
+		}
+
+		for (Iterator<CompVersion> iterator = versions.iterator(); iterator.hasNext();) 
+		{
+            CompVersion cv = iterator.next();
+			if ((cv != null) && (cv.getVersion() != null) && cv.getVersion() == currentVersionNumber) 
+			{
+				currentVersion = cv;
+				return currentVersion;
+			}
+		}
+
+		return null;
+        
     }
 
     /**
@@ -394,7 +455,12 @@ public class Component implements Serializable {
      * @param versions the list of the versions of the component.
      */
     public void setVersions(List<CompVersion> versions) {
-        this.versions = versions;
+		if (versions != null)
+		{
+			 this.versions = versions;
+			 this.versionsSet = new HashSet(versions);
+		}
+       
     }
 
     /**
@@ -403,9 +469,14 @@ public class Component implements Serializable {
      * @return {@link #versions} property's value.
      */
     public List<CompVersion> getVersions() {
-        if (versions == null) return null;
 
-        List<CompVersion> v = new ArrayList<CompVersion>();
+		if (versionsSet != null)
+		{
+			return new ArrayList(versionsSet);
+		}
+        //if (versions == null) return null;
+
+        /*List<CompVersion> v = new ArrayList<CompVersion>();
         Set<Long> seenVersions = new HashSet<Long>();
         CompVersion cv;
         for (Iterator<CompVersion> iterator = versions.iterator(); iterator.hasNext();) {
@@ -415,7 +486,44 @@ public class Component implements Serializable {
                 v.add(cv);
             }
         }
-        return v;
+        return v; */
+		return null;
+    }
+
+
+	/**
+     * <p>Sets a value to the {@link #versions} field.</p>
+     * <p>The acceptable region: any set including <code>null</code> and empty one, a non-empty list
+     * containing <code>null</code> is legal as well.  However, when constructing the result list,
+     * this method will only include the non-<code>null</code> elements.  Furthermore, it will only
+     * include the first occurrence of elements with the same version number.</p>
+     *
+     * @param versions the list of the versions of the component.
+     */
+    public void setVersionsSet(Set<CompVersion> versionsSet) {
+        this.versionsSet = versionsSet;
+    }
+
+    /**
+     * <p>Retrieves the list of the versions of the component.</p>
+     *
+     * @return {@link #versions} property's value.
+     */
+    public Set<CompVersion> getVersionsSet() {
+        if (versionsSet == null) return null;
+
+        /*List<CompVersion> v = new ArrayList<CompVersion>();
+        Set<Long> seenVersions = new HashSet<Long>();
+        CompVersion cv;
+        for (Iterator<CompVersion> iterator = versions.iterator(); iterator.hasNext();) {
+            cv = iterator.next();
+            if ((cv != null) && (cv.getVersion() != null) && !seenVersions.contains(cv.getVersion())) {
+                seenVersions.add(cv.getVersion());
+                v.add(cv);
+            }
+        }
+        return v; */
+		return versionsSet;
     }
 
 }
