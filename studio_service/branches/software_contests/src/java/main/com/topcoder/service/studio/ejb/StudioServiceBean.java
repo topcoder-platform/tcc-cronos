@@ -3976,6 +3976,16 @@ public class StudioServiceBean implements StudioService {
 					submission.getContest().getContestId(),
 					prize.getPlace() == null ? 0 : prize.getPlace());
 
+				String client = "";
+				for (ContestConfig config : submission.getContest().getConfig()) {
+					if (config.getId().getProperty().getPropertyId() == contestPropertyCreateUserHandleId) {
+                        client = (config.getValue());
+						break;
+					}
+				}
+
+				payment.setClient(client);
+
 				payment = PactsServicesLocator.getService().addPayment(payment);
 
 				submission.setPaymentId(payment.getId());
