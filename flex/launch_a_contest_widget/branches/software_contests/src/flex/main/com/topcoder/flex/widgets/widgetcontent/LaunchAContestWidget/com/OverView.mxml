@@ -450,9 +450,11 @@
             <!-- BUGR-1204 -->
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
-            <mx:Label text="Examples:"
+            <mx:Label id="ExamplesLabel"
+        			  text="Examples:"
                       styleName="subsectionTitle"/>
-            <mx:HBox verticalAlign="top"
+            <mx:HBox id="ExamplesBox"
+                     verticalAlign="top"
                      horizontalGap="0"
                      visible="{isPresentXml('example1') || isPresentXml('example2')}"
                      includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}"

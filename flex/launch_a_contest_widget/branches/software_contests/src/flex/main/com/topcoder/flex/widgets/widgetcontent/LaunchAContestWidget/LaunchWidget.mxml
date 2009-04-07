@@ -174,9 +174,11 @@
                 getDataService();
             }
 
-            private function getDataService():void {
-                dataservice.getPassword();
-            }
+	    private function getDataService():void
+	    {	
+		    dataservice.getPassword();
+		    dataservice.isUserInRole.send();
+        }
 
             private function processPassword(e:ResultEvent):void {
                 if (e != null && e.result != null) {
@@ -534,7 +536,12 @@
                    save.visible = false;
                    this.height = OVERVIEW_HEIGHT;  // BUGR-1134
                    back.visible = true;
-                   
+		   // BUGR-1659
+		   if(this.competitionType != "STUDIO"){
+                       overView.ExamplesBox.visible=false;
+                       overView.ExamplesLabel.visible=false;
+                       overView.ExamplesBox.height=0;
+                    }                   
                    setPreviousStep(step1box); // BUGR-1141
                    setCurStep(step2box);// BUGR-1141
                    
@@ -936,6 +943,14 @@
                     return;
                 next();
             }
+            
+        private function processRole(e:ResultEvent): void
+	    {
+			if(e!=null && e.result!=null){
+				isAdmin=e.result as Boolean;
+				this.contestSelect.contestType.enabled=isAdmin;
+			}
+	    }
         ]]>
     </mx:Script>
 
@@ -1046,12 +1061,12 @@
                    result="processPassword(event)"
                    fault="handleError(event)"/>
 
-        <!--<mx:method name="isUserInRole"  result="processRole(event)"
+        <mx:method name="isUserInRole"  result="processRole(event)"
              fault="handleError(event)">
              <mx:arguments>
              <role>Cockpit Administrator</role>
              </mx:arguments>
-             </mx:method>-->
+             </mx:method>
     </mx:RemoteObject>
 
     <!--<mx:Spacer height="5" />-->
