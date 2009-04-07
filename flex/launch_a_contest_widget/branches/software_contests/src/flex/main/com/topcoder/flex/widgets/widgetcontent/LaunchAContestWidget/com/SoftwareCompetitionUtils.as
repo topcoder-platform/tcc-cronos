@@ -215,8 +215,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          */
         public function getDefaultProjectStatus():SoftwareProjectStatus {
             var status:SoftwareProjectStatus=new SoftwareProjectStatus();
-            status.id=2;
-            status.name="INACTIVE";
+            status.id=1;
+            status.name="ACTIVE";
 
             return status;
         }
@@ -255,7 +255,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         private static var PROJECT_INFO_TYPE_VERSION_KEY:String="Project Version";
 
         private static var PROJECT_INFO_TYPE_AUTOPILOT_OPTION_KEY:String="Autopilot Option";
-        private static var PROJECT_INFO_TYPE_AUTOPILOT_OPTION_VALUE:String="On";
+        private static var PROJECT_INFO_TYPE_AUTOPILOT_OPTION_VALUE:String="Off";
 
         private static var PROJECT_INFO_TYPE_STATUS_NOTIFICATION_KEY:String="Status Notification";
         private static var PROJECT_INFO_TYPE_STATUS_NOTIFICATION_VALUE:String="On";
