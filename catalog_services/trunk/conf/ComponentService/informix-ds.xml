@@ -5,13 +5,13 @@
 
       <jndi-name>InformixDS</jndi-name>
 
-      <connection-url>jdbc:informix-sqli://192.168.1.100:1526/catalog:INFORMIXSERVER=tcstest</connection-url>
+      <connection-url>jdbc:informix-sqli://174.129.103.205:2021/tcs_catalog:INFORMIXSERVER=informixoltp_tcp</connection-url>
+
 
       <driver-class>com.informix.jdbc.IfxDriver</driver-class>
 
-      <user-name>informix</user-name>
-
-      <password>informix</password>
+    <user-name>coder</user-name>
+        <password>c0d3r4T</password>
 
       <min-pool-size>1</min-pool-size>
       <max-pool-size>5</max-pool-size>

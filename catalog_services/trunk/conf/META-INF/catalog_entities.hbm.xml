@@ -19,10 +19,7 @@
         <property name="functionalDesc" column="function_desc"/>
         <property name="description" column="description"/>
         <many-to-one name="rootCategory" class="Category" column="root_category_id"/>
-        <many-to-one name="currentVersion" class="CompVersion" property-ref="CurrentCompVersion" cascade="save-update">
-            <formula>component_id</formula>
-            <column name="current_version" not-null="true" />
-        </many-to-one>
+		<property name="currentVersionNumber" column="current_version"/>
         <idbag name="categories" table="comp_categories" cascade="persist">
             <collection-id column="comp_categories_id" type="long">
                 <generator class="com.topcoder.catalog.entity.IdGenerator">
@@ -40,11 +37,10 @@
             <key column="component_id" not-null="true"/>
             <one-to-many class="CompClient"/>
         </set>
-        <list name="versions" table="comp_versions" cascade="save-update" access="field">
+        <set name="versionsSet" table="comp_versions" cascade="save-update" inverse="true">
             <key column="component_id"/>
-            <list-index column="version"/>
             <one-to-many class="CompVersion"/>
-        </list>
+        </set>
     </class>
     <class name="Category" table="categories">
         <id name="id" column="category_id">
@@ -90,10 +86,8 @@
                 <param name="sequence_name">COMPVERSION_SEQ</param>
             </generator>
         </id>
-        <properties name="CurrentCompVersion" unique="true">
-            <many-to-one name="component" class="Component" column="component_id"/>
-            <property name="version" column="version" insert="true" update="true"/>
-        </properties>
+		 <property name="version" column="version"/>
+		 <many-to-one name="component" class="Component" column="component_id"/>
          <property name="versionText" column="version_text"/>
         <many-to-one name="phase" class="Phase" column="phase_id"/>
         <property name="phaseTime" column="phase_time"/>

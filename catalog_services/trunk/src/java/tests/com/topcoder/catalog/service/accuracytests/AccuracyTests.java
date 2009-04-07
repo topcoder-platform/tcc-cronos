@@ -20,12 +20,12 @@ public class AccuracyTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(CatalogServiceImplAccuracyTest11.class);
+        /*suite.addTestSuite(CatalogServiceImplAccuracyTest11.class);
         
-        /*
-        suite.addTestSuite(AssetDTOAccuracyTest.class);
+        
+        suite.addTestSuite(AssetDTOAccuracyTest.class); */
         suite.addTestSuite(CatalogServiceImplAccuracyTest.class);
-        suite.addTestSuite(EntityNotFoundExceptionAccuracyTest.class);
+ /*       suite.addTestSuite(EntityNotFoundExceptionAccuracyTest.class);
         suite.addTestSuite(PersistenceExceptionAccuracyTest.class);
         suite.addTestSuite(SearchCriteriaAccuracyTest.class);
         */

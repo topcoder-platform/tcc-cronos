@@ -223,10 +223,13 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
         final EntityManager em = getEntityManager();
 
-        // save version first
-        persistEntity(em, compVersion);
+       
         // save the asset entity finally
         persistEntity(em, entityComponent);
+
+		 // save version
+        persistEntity(em, compVersion);
+
         // populate with ids of just stored entities
         asset.setId(entityComponent.getId());
         asset.setVersionId(compVersion.getId());
@@ -728,13 +731,12 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersion.setComponent(component);
         List<CompVersion> versions = component.getVersions();
         if (versions == null) {
-            versions = new ArrayList<CompVersion>();
-            component.setVersions(versions);
+            versions = new ArrayList<CompVersion>();   
         }
-
         populateCompVersionDates(assetDTO, compVersion);
 
         versions.add(compVersion);
+		component.setVersions(versions);
 
         return compVersion;
     }
