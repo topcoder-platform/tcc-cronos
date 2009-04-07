@@ -1023,7 +1023,8 @@
                          width="225"
                          dataProvider="{_boundMasterTechnologies}"
                          doubleClickEnabled="true"
-                         doubleClick="addToCurrentTechList(null)"/>
+                         doubleClick="addToCurrentTechList(null)"
+			 allowMultipleSelection="true"/>
                 <mx:VBox verticalAlign="middle">
                     <mx:Button id="toCurrentTechList"
                                label=">"
@@ -1037,7 +1038,8 @@
                          width="225"
                          dataProvider="{_boundCurrentTechnologies}"
                          doubleClickEnabled="true"
-                         doubleClick="addToMasterTechList()"/>
+                         doubleClick="addToMasterTechList()"
+			 allowMultipleSelection="true"/>
             </mx:HBox>
 
             <mx:VBox width="100%"
