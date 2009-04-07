@@ -663,7 +663,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function addToMasterTechList():void {
-                var items:Array = this.ns_curCategoryList.selectedItems;
+                var items:Array = this.ns_curTechList.selectedItems;
                 for each (var item:Object in items) {
                 	// remove item from current technologies.
 	                var index:int=_boundCurrentTechnologies.getItemIndex(item);
@@ -671,9 +671,9 @@
 
 	                // add item to master technologies.
 	                _boundMasterTechnologies.addItem(item);
-
-	                sortBoundMasterTechnologies();
                 }
+
+                sortBoundMasterTechnologies();
             }
 
             //
@@ -732,9 +732,9 @@
 
 	                // add item to master technologies.
 	                _boundMasterCategories.addItem(item);
-
-	                sortBoundMasterCategories();
                 }
+
+                sortBoundMasterCategories();
             }
 
             //
