@@ -1383,6 +1383,7 @@
                    styleName="arrowLeftBtnStyle"
                    labelPlacement="{ButtonLabelPlacement.RIGHT}"
                    click="cancelBtn()"/>
+		<mx:Spacer width="90%" /> <!-- BUGR-1643 -->        
         <mx:Button id="save"
                    buttonMode="true"
                    styleName="arrowRightBtnStyle"
