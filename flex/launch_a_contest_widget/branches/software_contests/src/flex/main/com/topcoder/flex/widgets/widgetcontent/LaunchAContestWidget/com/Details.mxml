@@ -663,16 +663,17 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function addToMasterTechList():void {
-                var item:Object=this.ns_curTechList.selectedItem;
+                var items:Array = this.ns_curCategoryList.selectedItems;
+                for each (var item:Object in items) {
+                	// remove item from current technologies.
+	                var index:int=_boundCurrentTechnologies.getItemIndex(item);
+	                _boundCurrentTechnologies.removeItemAt(index);
 
-                // remove item from current technologies.
-                var index:int=_boundCurrentTechnologies.getItemIndex(item);
-                _boundCurrentTechnologies.removeItemAt(index);
+	                // add item to master technologies.
+	                _boundMasterTechnologies.addItem(item);
 
-                // add item to master technologies.
-                _boundMasterTechnologies.addItem(item);
-
-                sortBoundMasterTechnologies();
+	                sortBoundMasterTechnologies();
+                }
             }
 
             //
@@ -682,15 +683,23 @@
             //
             private function addToCurrentTechList(item:Object):void {
                 if (!item) {
-                    item=this.ns_masterTech.selectedItem;
+                    var items:Array = this.ns_masterTech.selectedItems;
+                    for each (var itm:Object in items) {
+                    	// remove item from master technologies;
+		                var index:int=_boundMasterTechnologies.getItemIndex(itm);
+		                _boundMasterTechnologies.removeItemAt(index);
+
+		                // add item to current technologies;
+		                _boundCurrentTechnologies.addItem(itm);
+                    }
+                } else {
+	                // remove item from master technologies;
+	                var index:int=_boundMasterTechnologies.getItemIndex(item);
+	                _boundMasterTechnologies.removeItemAt(index);
+
+	                // add item to current technologies;
+	                _boundCurrentTechnologies.addItem(item);
                 }
-
-                // remove item from master technologies;
-                var index:int=_boundMasterTechnologies.getItemIndex(item);
-                _boundMasterTechnologies.removeItemAt(index);
-
-                // add item to current technologies;
-                _boundCurrentTechnologies.addItem(item);
 
                 sortCurrentTechnologies();
             }
@@ -715,16 +724,17 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function addToMasterCategoryList():void {
-                var item:Object=this.ns_curCategoryList.selectedItem;
+                var items:Array = this.ns_curCategoryList.selectedItems;
+                for each (var item:Object in items) {
+	                // remove item from current technologies.
+	                var index:int=_boundCurrentCategories.getItemIndex(item);
+	                _boundCurrentCategories.removeItemAt(index);
 
-                // remove item from current technologies.
-                var index:int=_boundCurrentCategories.getItemIndex(item);
-                _boundCurrentCategories.removeItemAt(index);
+	                // add item to master technologies.
+	                _boundMasterCategories.addItem(item);
 
-                // add item to master technologies.
-                _boundMasterCategories.addItem(item);
-
-                sortBoundMasterCategories();
+	                sortBoundMasterCategories();
+                }
             }
 
             //
@@ -734,15 +744,23 @@
             //
             private function addToCurrentCategoryList(item:Object):void {
                 if (!item) {
-                    item=this.ns_masterCategories.selectedItem;
+                    var items:Array = this.ns_masterCategories.selectedItems;
+                    for each (var itm:Object in items) {
+                    	// remove item from master technologies;
+		                var index:int=_boundMasterCategories.getItemIndex(itm);
+		                _boundMasterCategories.removeItemAt(index);
+
+		                // add item to current technologies;
+		                _boundCurrentCategories.addItem(itm);
+                    }
+                } else {
+	                // remove item from master technologies;
+	                var index:int=_boundMasterCategories.getItemIndex(item);
+	                _boundMasterCategories.removeItemAt(index);
+
+	                // add item to current technologies;
+	                _boundCurrentCategories.addItem(item);
                 }
-
-                // remove item from master technologies;
-                var index:int=_boundMasterCategories.getItemIndex(item);
-                _boundMasterCategories.removeItemAt(index);
-
-                // add item to current technologies;
-                _boundCurrentCategories.addItem(item);
 
                 sortCurrentCategories();
             }
@@ -1094,7 +1112,8 @@
                          width="225"
                          dataProvider="{_boundMasterCategories}"
                          doubleClickEnabled="true"
-                         doubleClick="addToCurrentCategoryList(null)"/>
+                         doubleClick="addToCurrentCategoryList(null)"
+                         allowMultipleSelection="true" />
                 <mx:VBox verticalAlign="middle">
                     <mx:Button id="toCurrentCategoryList"
                                label=">"
@@ -1108,7 +1127,8 @@
                          width="225"
                          dataProvider="{_boundCurrentCategories}"
                          doubleClickEnabled="true"
-                         doubleClick="addToMasterCategoryList()"/>
+                         doubleClick="addToMasterCategoryList()"
+                         allowMultipleSelection="true" />
             </mx:HBox>
 
             <!--<mx:VBox width="100%"
