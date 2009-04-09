@@ -97,7 +97,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
         * Production date of this asset.
         */
-        public var productionDate:Date;
+        public var productionDate:String;
 
         /**
         * Root category of type <code>SoftwareCategory</code> for this asset.

@@ -227,8 +227,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function ns_updateData():void {
-                var start:Date=getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart);
-                start.setTime(start.getTime() + ETtoUTC);
+                var start:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
                 mainWidget.softwareCompetition.assetDTO.productionDate=start;
 
                 this.mainWidget.review.fromDate=dfStart.selectedDate;

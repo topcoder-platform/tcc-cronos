@@ -203,7 +203,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          */
         public function getDefaultPhases():SoftwareProjectPhases {
             var projectPhases:SoftwareProjectPhases=new SoftwareProjectPhases();
-            projectPhases.startDate=new Date();
+            //projectPhases.startDate=new Date();
 
             return projectPhases;
         }
