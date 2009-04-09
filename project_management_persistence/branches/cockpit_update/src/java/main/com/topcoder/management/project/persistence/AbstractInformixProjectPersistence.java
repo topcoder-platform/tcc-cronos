@@ -975,6 +975,70 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
 
+	/**
+     * Retrieve scorecard id with given project type and scorecard type.
+	 *
+     * @param projectTypeId   the project type id
+     * @param scorecardTypeId the scorecard type id
+     * @return the scorecard id
+     */
+    public long getScorecardId(long projectTypeId, int scorecardTypeId) throws PersistenceException
+	{
+
+		getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getScorecardId method."));
+        Connection conn = null;
+		PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            ps = conn.prepareStatement("SELECT scorecard_id FROM default_scorecard " +
+                    "WHERE project_category_id = ? and scorecard_type_id = ? ");
+            ps.setLong(1, projectTypeId);
+            ps.setInt(2, scorecardTypeId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("scorecard_id");
+            } else {
+                throw new RuntimeException("Cannot find default scorecard id for project type: " +
+                        projectTypeId + ", scorecard type: " + scorecardTypeId);
+            }
+
+        } catch (Exception e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,"Fail to getScorecardId.", e));
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();	
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw new PersistenceException(e.getMessage());
+        }
+
+
+	}
+
     /**
      * Returns the database connection name that will be used by DB Connection
      * Factory.
