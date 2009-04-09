@@ -9,11 +9,16 @@ import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.CompLink;
 import com.topcoder.catalog.entity.CompVersion;
 import com.topcoder.catalog.entity.Technology;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>This class is a simple DTO which provides a representation of a component that is closer to business requirements
@@ -96,6 +101,12 @@ import java.util.ArrayList;
  * @version 1.1
  * @since 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", 
+                                              "detailedDescription", "functionalDescription", "rootCategory", "categories",
+											  "technologies", "productionDate", "link", "forum", "isCurrentVersionAlsoLatestVersion",
+											  "versionId", "userIds", "informationComplete", "documentation", "comments",
+											  "phase", "dependencies"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -178,7 +189,7 @@ public class AssetDTO implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      */
-    private Date productionDate;
+    private XMLGregorianCalendar productionDate;
     /**
      * <p>This field represents the link of this version of the asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
@@ -482,7 +493,7 @@ public class AssetDTO implements Serializable {
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      * @param productionDate the production date of this version of the asset.
      */
-    public void setProductionDate(Date productionDate) {
+    public void setProductionDate(XMLGregorianCalendar productionDate) {
         this.productionDate = productionDate;
     }
 
@@ -491,7 +502,7 @@ public class AssetDTO implements Serializable {
      *
      * @return the production date of this version of the asset.
      */
-    public Date getProductionDate() {
+    public XMLGregorianCalendar getProductionDate() {
         return productionDate;
     }
 

@@ -6,6 +6,7 @@ package com.topcoder.catalog.service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -15,6 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -62,6 +66,12 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      * <p>Collaboration phase ID.</p>
      */
     private static final long COLLABORATION_PHASE_ID = 111L;
+
+	private static final long DEVELOPMENT_PHASE_ID = 113L;
+
+	private static final long DESIGN_PHASE_ID = 112L;
+
+
     /**
      * <p>This field represents the entity manager which is used to communicate with the persistence.</p>
      * <p>It's automatically injected by EJB container.</p>
@@ -215,7 +225,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         checkNullVersionId(asset);
         // create a new asset entity
         final Component entityComponent = new Component();
-        entityComponent.setStatus(Status.REQUESTED);
+        entityComponent.setStatus(Status.APPROVED);
         // update the new asset entity and create a new version
         final CompVersion compVersion = updateAssetCreateVersion(asset, entityComponent);
         // set the created version as current
@@ -648,7 +658,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // extract production date, if it's available
         final CompVersionDates versionDates = compVersion.getVersionDates().get(compVersion.getPhase().getId());
         if (versionDates != null) {
-            assetDTO.setProductionDate(versionDates.getProductionDate());
+            assetDTO.setProductionDate(getXMLGregorianCalendar(versionDates.getProductionDate()));
         }
 
         // set version properties
@@ -817,8 +827,19 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     private void populateCompVersionDates(AssetDTO assetDTO, CompVersion compVersion) throws PersistenceException {
         // populate phase properties
         final Date zeroPointDate = buildDate(1976, 5, 5);
-        final Phase collaborationPhase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
-        compVersion.setPhase(collaborationPhase);
+        //final Phase collaborationPhase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
+		
+		Phase phase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
+		if (assetDTO.getPhase().equals("Development"))
+		{
+			phase = getEntityManager().find(Phase.class, DEVELOPMENT_PHASE_ID);
+		}
+		else if (assetDTO.getPhase().equals("Design"))
+		{
+			phase = getEntityManager().find(Phase.class, DESIGN_PHASE_ID);
+		}
+
+        compVersion.setPhase(phase);
         compVersion.setPhasePrice(0d);
         compVersion.setPhaseTime(zeroPointDate);
         // populate with CompVersionDates
@@ -827,9 +848,20 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersion.setVersionDates(versionDates);
 
         final CompVersionDates compVersionDates = createInitialCompVersionDates(assetDTO, zeroPointDate, stubDate);
-        compVersionDates.setPhase(collaborationPhase);
+        compVersionDates.setPhase(phase);
         compVersionDates.setCompVersion(compVersion);
-        versionDates.put(COLLABORATION_PHASE_ID, compVersionDates);
+		if (assetDTO.getPhase().equals("Development"))
+		{
+			versionDates.put(DEVELOPMENT_PHASE_ID, compVersionDates);
+		}
+		else if (assetDTO.getPhase().equals("Design"))
+		{
+			versionDates.put(DESIGN_PHASE_ID, compVersionDates);
+		}
+		else
+		{
+			versionDates.put(COLLABORATION_PHASE_ID, compVersionDates);
+		}
     }
 
     /**
@@ -1166,7 +1198,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersionDates.setLevelId(LEVEL_ID);
         compVersionDates.setStatus(Status.NEW_POST);
         // populate production date from the asset
-        compVersionDates.setProductionDate(asset.getProductionDate());
+        compVersionDates.setProductionDate(getDate(asset.getProductionDate()));
         return compVersionDates;
     }
 
@@ -1463,6 +1495,45 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                 + e.getMessage(), e);
         }
     }
+
+
+	/**
+     * Converts standard java Date object into XMLGregorianCalendar instance.
+     * Returns null if parameter is null.
+     *
+     * @param date
+     *            Date object to convert
+     * @return converted calendar instance
+     */
+    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            // can't create calendar, return null
+            return null;
+        }
+    }
+
+    /**
+     * Converts XMLGregorianCalendar date into standard java Date object.
+     * Returns null if argument is null.
+     *
+     * @param calendar
+     *            calendar instance to convert
+     * @return converted Date instance
+     */
+    private Date getDate(XMLGregorianCalendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+        return calendar.toGregorianCalendar().getTime();
+    }
+
 }
 
 
