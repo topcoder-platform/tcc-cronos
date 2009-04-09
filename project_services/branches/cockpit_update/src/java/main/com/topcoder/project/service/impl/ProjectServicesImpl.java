@@ -1639,6 +1639,28 @@ public class ProjectServicesImpl implements ProjectServices {
 					p.setScheduledStartDate(p.calcStartDate());
 					p.setScheduledEndDate(p.calcEndDate());
 					p.setFixedStartDate(p.calcStartDate());
+
+					if (p.getPhaseType().getName().equals("Registration"))
+					{
+						p.setAttribute("Registration Number", "0");
+					}
+					else if (p.getPhaseType().getName().equals("Submission"))
+					{
+						p.setAttribute("Submission Number", "0");
+					}
+					else if (p.getPhaseType().getName().equals("Screening"))
+					{
+						p.setAttribute("Scorecard ID", "0");
+					}
+					else if (p.getPhaseType().getName().equals("Review"))
+					{
+						p.setAttribute("Scorecard ID", "0");
+						p.setAttribute("Reviewer Number", "3");
+					}
+					else if (p.getPhaseType().getName().equals("Appeals"))
+					{
+						p.setAttribute("View Response During Appeals", "No");
+					}
             }
 
             
