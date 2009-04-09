@@ -2096,9 +2096,39 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (assetDTO != null) {
 
+				if(assetDTO.getProductionDate() == null) { // BUGR-1445
+				/*
+				   - start: current time + 24 hour (round the minutes up to the nearest 15) 
+				 */
+					GregorianCalendar startDate = new GregorianCalendar();
+					startDate.setTime(new Date());
+					startDate.add(Calendar.HOUR, 24);
+					int m = startDate.get(Calendar.MINUTE);
+					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
+				}
+
+
+				if (contest.getProjectHeader() != null) {
+					// design set phase to design
+					/*if (contest.getProjectHeader().getProjectCategory().getId() == 1)
+					{
+						assetDTO.setPhase("Design");
+					}
+					else */ if (contest.getProjectHeader().getProjectCategory().getId() == 2)
+					{
+						assetDTO.setPhase("Development");
+					} 
+					else 
+					{
+						assetDTO.setPhase("Design");
+					}
+
+
+				}
                 assetDTO = this.catalogService.createAsset(assetDTO);
                 contest.setAssetDTO(assetDTO);
-
+				
 				
 
 				// create forum
@@ -2142,20 +2172,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_DEVELOPER_FORUM_ID_KEY,
                             String.valueOf(forumId));
 					}
+
+					contest.getProjectPhases().setStartDate(getDate(assetDTO.getProductionDate()));
 					
                 }
-
-				if(contest.getProjectPhases().getStartDate() == null) { // BUGR-1445
-				/*
-				   - start: current time + 24 hour (round the minutes up to the nearest 15) 
-				 */
-					GregorianCalendar startDate = new GregorianCalendar();
-					startDate.setTime(new Date());
-					startDate.add(Calendar.HOUR, 24);
-					int m = startDate.get(Calendar.MINUTE);
-					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
-					contest.getProjectPhases().setStartDate(startDate.getTime());
-				}
 
 				com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[1];
 				resources[0] = new com.topcoder.management.resource.Resource();
@@ -2186,9 +2206,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
 
                 com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+				// TODO for now have to do these to avoid cycle
                 for (int i = 0; i < allPhases.length; i++) {
                     allPhases[i].setProject(null);
                     allPhases[i].clearDependencies();
+					allPhases[i].clearAttributes();
                 }
 
                 contest.setProjectHeader(projectData.getProjectHeader());
@@ -2469,4 +2491,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			return forumId;
 		}
 	}
+
+
 }
