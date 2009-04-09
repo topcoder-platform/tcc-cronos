@@ -197,7 +197,7 @@ public interface CatalogService {
      * @throws EntityNotFoundException if the asset is not found in persistence
      * @throws PersistenceException     if an error occurs when interacting with the persistence store.
      */
-    void updateAsset(AssetDTO asset) throws EntityNotFoundException, PersistenceException;
+    AssetDTO updateAsset(AssetDTO asset) throws EntityNotFoundException, PersistenceException;
 
     /**
      * By a given criteria returns a list of <code>AssetDTOs</code> containing only the following information:
@@ -274,6 +274,16 @@ public interface CatalogService {
      * @since version 1.1
      */
     List<AssetDTO> getAllAssetVersions(long assetId) throws PersistenceException, EntityNotFoundException;
+
+	/**
+     * <p>create comp forum</p>
+     *
+     * @param compVersId
+	 * @param jiveCategoryId
+     *
+     * @throws PersistenceException     if an error occurs when interacting with the persistence store.
+     */
+	void addCompForum(long compVersId, long jiveCategoryId) throws PersistenceException;
 }
 
 

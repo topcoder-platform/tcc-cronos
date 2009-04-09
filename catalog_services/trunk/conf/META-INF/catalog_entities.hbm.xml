@@ -177,11 +177,7 @@
         <property name="description" column="description"/>
     </class>
     <class name="CompForum" table="comp_jive_category_xref">
-        <id name="jiveCategoryId" column="jive_category_id">
-            <generator class="com.topcoder.catalog.entity.IdGenerator">
-                <param name="sequence_name">COMPFORUM_SEQ</param>
-            </generator>
-        </id>
+        <id name="jiveCategoryId" column="jive_category_id"></id>
         <many-to-one name="compVersion" column="comp_vers_id" unique="true" not-null="true"/>
     </class>
     <class name="CompLink" table="comp_link">
@@ -236,5 +232,7 @@
     <query name="getActiveCategories">
         SELECT c FROM Category c WHERE c.status=1
     </query>
+
+
 
 </hibernate-mapping>

@@ -311,7 +311,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      * @throws PersistenceException     if an error occurs when interacting with the persistence store.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void updateAsset(AssetDTO asset) throws PersistenceException, EntityNotFoundException {
+    public AssetDTO updateAsset(AssetDTO asset) throws PersistenceException, EntityNotFoundException {
         checkNotNull("asset", asset);
         checkComponentIdNotNull(asset);
         final EntityManager em = getEntityManager();
@@ -335,6 +335,10 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 		entityComponent.setCurrentVersion(versionToUpdate);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
+
+		return asset;
+
+
     }
 
     /**
@@ -465,6 +469,31 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         persistEntity(em, compUser);
         mergeEntity(em, entityComponent);
     }
+
+
+	/**
+     * <p>create comp forum</p>
+     *
+     * @param compVersId
+	 * @param jiveCategoryId
+     *
+     * @throws PersistenceException     if an error occurs when interacting with the persistence store.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void addCompForum(long compVersId, long jiveCategoryId) throws PersistenceException
+	{
+		// we have to create component and version first so that we can 
+		// create the forum, then we need to create compForum, since
+		// pk is forumId + compVersionsId, we have to use native query here
+
+		final EntityManager em = getEntityManager();
+		
+		Query query = em.createNamedQuery("addCompForum");
+		query.setParameter(1, compVersId);
+		query.setParameter(2, jiveCategoryId);
+		query.executeUpdate();
+
+	}
 
     /**
      * <p>Removes a specified user from a specified <code>assetDTO</code>.</p>
