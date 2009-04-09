@@ -1633,6 +1633,22 @@ public class ProjectServicesImpl implements ProjectServices {
             // apply a template with name category with a given start date
             com.topcoder.project.phases.Project newProjectPhases = template
                     .applyTemplate(templateName, projectPhases.getStartDate());
+
+			long screenTemplateId = 0L;
+		    long reviewTemplateId = 0L;
+			long projectTypeId = projectHeader.getProjectCategory().getId();
+			if (projectTypeId == 1 || projectTypeId == 2 || projectTypeId == 6 || projectTypeId == 7 || projectTypeId ==10)
+			{
+				screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
+				reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+			}
+			else
+			{	
+				//TODO since now assembly/concept/etc are belong to spec in admin, so try again with 6
+				screenTemplateId = projectManager.getScorecardId(6, 1);
+				reviewTemplateId = projectManager.getScorecardId(6, 2);
+			}
+			
         
             for (Phase p : newProjectPhases.getAllPhases()) {
 					p.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -1650,11 +1666,11 @@ public class ProjectServicesImpl implements ProjectServices {
 					}
 					else if (p.getPhaseType().getName().equals("Screening"))
 					{
-						p.setAttribute("Scorecard ID", "0");
+						p.setAttribute("Scorecard ID", String.valueOf(screenTemplateId));
 					}
 					else if (p.getPhaseType().getName().equals("Review"))
 					{
-						p.setAttribute("Scorecard ID", "0");
+						p.setAttribute("Scorecard ID", String.valueOf(reviewTemplateId));
 						p.setAttribute("Reviewer Number", "3");
 					}
 					else if (p.getPhaseType().getName().equals("Appeals"))
@@ -1667,6 +1683,13 @@ public class ProjectServicesImpl implements ProjectServices {
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
         } catch (PhaseTemplateException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } 
+		catch (PersistenceException e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
                     e);
