@@ -10,6 +10,8 @@ import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServic
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.entity.CompForum;
+import com.topcoder.catalog.entity.Status;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
@@ -65,6 +67,9 @@ import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.PrizeData;
+import com.topcoder.web.ejb.forums.Forums;
+import com.topcoder.web.ejb.forums.ForumsHome;
+import com.topcoder.management.resource.ResourceRole;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -96,6 +101,10 @@ import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.Set;
 import java.util.Arrays;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Properties;
 
 /**
  * <p>This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
@@ -181,6 +190,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @Resource(name = "payPalApiEnvironment")
     private String apiEnvironment;
+
+
+	@Resource(name = "createForum")
+    private boolean createForum = false;
+
+	@Resource(name = "forumBeanProviderUrl")
+    private String forumBeanProviderUrl;
 
 	/**
 	 * <p>
@@ -292,6 +308,93 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY = "External Reference ID";
+
+	/**
+     * Private constant specifying project type info's forum id key.
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String PROJECT_TYPE_INFO_DEVELOPER_FORUM_ID_KEY = "Developer Forum ID";
+	
+	/**
+     * Private constant specifying project type info's SVN Module key.
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String PROJECT_TYPE_INFO_SVN_MODULE_KEY = "SVN Module";
+
+	/**
+     * Private constant specifying project type info's Notes key.
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String PROJECT_TYPE_INFO_NOTES_KEY = "Notes";
+
+
+	/**
+     * Private constant specifying resource role manager id 
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final long RESOURCE_ROLE_MANAGER_ID = 13;
+
+	/**
+     * Private constant specifying resource role manager name 
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_ROLE_MANAGER_NAME = "Manger";
+
+	/**
+     * Private constant specifying resource role manager desc 
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_ROLE_MANAGER_DESC = "Manger";
+
+	/**
+     * Private constant specifying resource ext ref id 
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID = "External Reference ID";
+
+	/**
+     * Private constant specifying resource ext ref id 
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS = "22770213";
+
+	/**
+     * Private constant specifying resource handle
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_HANDLE = "Handle";
+
+	/**
+     * Private constant specifying resource handle
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_HANDLE_APPLICATIONS = "Applications";
+
+	/**
+     * Private constant specifying resource pay
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_PAYMENT_STATUS = "Payment Status";
+
+	/**
+     * Private constant specifying resource pay
+     * 
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+
+	
 
     /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
@@ -1985,15 +2088,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
     {
         try {
-            AssetDTO assetDTO = null;
-            if (contest.getAssetDTO() != null) {
+            AssetDTO assetDTO = contest.getAssetDTO();
+			long forumId = 0;
 
-                assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+
+            if (assetDTO != null) {
+
+                assetDTO = this.catalogService.createAsset(assetDTO);
                 contest.setAssetDTO(assetDTO);
+
+				
+
+				// create forum
+				
+				if (createForum)
+				{
+					forumId = createForum(assetDTO, p.getUserId());
+				}
+
+				// if forum created
+				if (forumId > 0)
+				{
+					
+					// create a comp forum 
+					CompForum compForum = new CompForum();
+					compForum.setJiveCategoryId(forumId);
+					assetDTO.setForum(compForum);
+					assetDTO = this.catalogService.updateAsset(assetDTO);
+				}
+				
             }
 
             if (contest.getProjectHeader() != null) {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                
 
                 //
                 // since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -2006,6 +2135,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             assetDTO.getVersionId().toString());
                     contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY,
                             assetDTO.getId().toString());
+					contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_SVN_MODULE_KEY, "");
+					contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_NOTES_KEY, "");
+					if (forumId > 0)
+					{
+						contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_DEVELOPER_FORUM_ID_KEY,
+                            String.valueOf(forumId));
+					}
+					
                 }
 
 				if(contest.getProjectPhases().getStartDate() == null) { // BUGR-1445
@@ -2020,9 +2157,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 					contest.getProjectPhases().setStartDate(startDate.getTime());
 				}
 
+				com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[1];
+				resources[0] = new com.topcoder.management.resource.Resource();
+				resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+				ResourceRole role = new ResourceRole();
+				role.setId(RESOURCE_ROLE_MANAGER_ID);
+				role.setName(RESOURCE_ROLE_MANAGER_NAME);
+				role.setDescription(RESOURCE_ROLE_MANAGER_DESC);
+				resources[0].setResourceRole(role);
+				resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(p.getUserId()));
+				resources[0].setProperty(RESOURCE_INFO_HANDLE, String.valueOf(p.getName()));
+				resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+
+				// comment out for now
+				/*resources[1] = new com.topcoder.management.resource.Resource();
+				resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+				resources[1].setResourceRole(role);
+				resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS);
+				resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
+				resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);*/
+
+				contest.setProjectResources(resources);
+
+
+
                 contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
                 FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+                        contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
 
                 com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
                 for (int i = 0; i < allPhases.length; i++) {
@@ -2268,4 +2429,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         }
     }
+
+
+	public long createForum(AssetDTO asset, long userId) {
+		long forumId = -1;
+		try {
+			Properties p = new Properties();
+			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+			p.put(Context.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");
+			p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+			Context c = new InitialContext(p);
+			ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+			Forums forums = forumsHome.create();
+
+			long phaseId = 0;
+			try
+			{
+				phaseId = Long.parseLong(asset.getPhase());
+			}
+			catch (Exception ee)
+			{
+			}
+			
+			forumId = forums.createSoftwareComponentForums(asset.getName(), asset.getId(), asset.getVersionId(), 
+				                                                phaseId, Status.REQUESTED.getStatusId(), asset.getRootCategory().getId(), asset.getShortDescription(),
+				                                                asset.getVersionText(), true);
+			if (forumId < 0) throw new Exception("createStudioForum returned -1");
+
+			Logger.getLogger(this.getClass()).error("Created forum " + forumId + " for " + asset.getName());
+
+			forums.createForumWatch(userId, forumId);
+
+			return forumId;
+		} catch (Exception e) {
+			Logger.getLogger(this.getClass()).error("*** Could not create a forum for " + asset.getName());
+			Logger.getLogger(this.getClass()).error(e);
+			return forumId;
+		}
+	}
 }

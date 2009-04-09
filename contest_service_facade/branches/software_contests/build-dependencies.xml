@@ -144,6 +144,7 @@
     <property name="user_project_data_store.jar" value="${tcs_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1/database_abstraction.jar"/>
+	<property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
@@ -225,6 +226,7 @@
         <pathelement location="${user_project_data_store.jar}"/>
         <pathelement location="${db_connection_factory.jar}"/>
         <pathelement location="${database_abstraction.jar}"/>
+		<pathelement location="${forums.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
