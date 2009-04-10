@@ -509,13 +509,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (this.competitionType == "STUDIO") {
                 var competionType:String="STUDIO";
                 this.competition.type=competionType;
-                if (isNaN(competition.id) || competition.id < 0) {
+                if (isNaN(competition.id) || competition.id <= 0) {
                     createStudioContest();
                 } else {
                     updateStudioContest();
                 }
             } else {
-                if (isNaN(softwareCompetition.id) || softwareCompetition.id < 0) {
+                if (isNaN(softwareCompetition.id) || softwareCompetition.id <= 0) {
                     createSoftwareContest();
                 } else {
                     // implementing update is out of scope of this assembly.
@@ -742,13 +742,28 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         public function previewContest():void {
             var url:String;
+            if(this.competitionType=="STUDIO"){
 
-            if (isNaN(competition.contestData.contestId) || competition.contestData.contestId < 0) {
-                Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
-            } else {
-                url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+            	if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
+                	Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+            	} else {
+                	url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
 
-                navigateToURL(new URLRequest(url), "_blank");
+                	navigateToURL(new URLRequest(url), "_blank");
+            	}
+            }
+            else 
+            {
+            	if(isNaN(this.softwareCompetition.projectHeader.id) ||this.softwareCompetition.projectHeader.id <= 0)
+                {
+                	Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+                }
+                else
+                {
+                	url = "http://"+Application.application.parameters.hostAddress+"/tc?module=ProjectDetail&pj=" + softwareCompetition.projectHeader.id;
+                	navigateToURL(new URLRequest(url), "_blank");
+                }
+           
             }
         }
         
