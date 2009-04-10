@@ -2107,18 +2107,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
 					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
 				}
+System.out.println("----------comments------"+assetDTO.getComments());
 
-
-				if (contest.getProjectHeader() != null) {
-					// design set phase to design
-					/*if (contest.getProjectHeader().getProjectCategory().getId() == 1)
-					{
-						assetDTO.setPhase("Design");
-					}
-					else */ if (contest.getProjectHeader().getProjectCategory().getId() == 2)
+				if (contest.getProjectHeader() != null) 
+				{
+					// comp development, set phase to dev
+					if (contest.getProjectHeader().getProjectCategory().getId() == 2)
 					{
 						assetDTO.setPhase("Development");
 					} 
+					// else set to design
 					else 
 					{
 						assetDTO.setPhase("Design");
@@ -2482,6 +2480,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			Logger.getLogger(this.getClass()).error("Created forum " + forumId + " for " + asset.getName());
 
+			forums.assignRole(userId, "Software_Moderators_" + forumId); // BUGR-1677
 			forums.createForumWatch(userId, forumId);
 
 			return forumId;
