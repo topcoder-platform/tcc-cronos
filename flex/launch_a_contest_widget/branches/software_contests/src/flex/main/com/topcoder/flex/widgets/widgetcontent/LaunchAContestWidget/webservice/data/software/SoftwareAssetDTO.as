@@ -35,7 +35,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
         * Detailed comment for this contest.
         */
-        public var comments:String;
+        public var compComments:String;
 
         /**
         * Determines whether current version of the asset is also the latest for the contest.

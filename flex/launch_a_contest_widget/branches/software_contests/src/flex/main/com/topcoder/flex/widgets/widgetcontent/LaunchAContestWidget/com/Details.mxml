@@ -127,7 +127,7 @@
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
                     ns_funcDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.functionalDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
-                    ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.comments;
+                    ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
 
                     //
                     // load the master technologies if they have not already been loaded.
@@ -472,7 +472,7 @@
                 this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.functionalDescription=ns_funcDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
-                this.mainWidget.softwareCompetition.assetDTO.comments=ns_comments.htmlText;
+                this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.htmlText;
 
                 // assign root category.
                 this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
