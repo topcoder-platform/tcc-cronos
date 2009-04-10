@@ -102,10 +102,10 @@ import javax.xml.bind.annotation.XmlType;
  * @since 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", 
+@XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", "compComments",
                                               "detailedDescription", "functionalDescription", "rootCategory", "categories",
 											  "technologies", "productionDate", "link", "forum", "isCurrentVersionAlsoLatestVersion",
-											  "versionId", "userIds", "informationComplete", "documentation", "comments",
+											  "versionId", "userIds", "informationComplete", "documentation",
 											  "phase", "dependencies"})
 public class AssetDTO implements Serializable {
     /**
@@ -247,7 +247,7 @@ public class AssetDTO implements Serializable {
      *  A new field add in bug fix.
      * </p>
      */
-    private String comments;
+    private String compComments;
 
     /**
      * <p>
@@ -651,8 +651,8 @@ public class AssetDTO implements Serializable {
      *
      * @param comments the comments of the compVersion.
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setCompComments(String compComments) {
+        this.compComments = compComments;
     }
 
     /**
@@ -667,8 +667,8 @@ public class AssetDTO implements Serializable {
      *
      * @return the comments of the compVersion.
      */
-    public String getComments() {
-        return comments;
+    public String getCompComments() {
+        return compComments;
     }
 
     /**

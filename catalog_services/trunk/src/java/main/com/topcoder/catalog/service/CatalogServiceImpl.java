@@ -651,7 +651,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
             }
         }
         assetDTO.setDependencies(dependencies);
-        assetDTO.setComments(compVersion.getComments());
+        assetDTO.setCompComments(compVersion.getComments());
         assetDTO.setPhase(compVersion.getPhase().getDescription());
         // end here.
 
@@ -753,7 +753,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // here is the new code line add in bug fix.
         // start here.
         populateVersionDependencies(assetDTO, em, compVersion);
-        compVersion.setComments(assetDTO.getComments());
+        compVersion.setComments(assetDTO.getCompComments());
         compVersion.getPhase().setDescription(assetDTO.getPhase());
         // end
 
