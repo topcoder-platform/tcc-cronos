@@ -463,7 +463,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
                 totalPrize+=p;
             }
 
-            addPaymentProp(softwareCompetition, totalPrize);
+            addPaymentProp(softwareCompetition, prizes[0]);
             addAdminFeeProp(softwareCompetition, totalPrize);
             addDrPointsProp(softwareCompetition, totalPrize);
         }
