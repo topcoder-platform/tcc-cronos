@@ -145,6 +145,12 @@ public class Submission implements Serializable {
      * @since BUGR-1366
      */
     private Integer feedbackThumb;
+    
+    /**
+     * Represents the rank given by user on submission.
+     * @since TCCC-1219
+     */
+    private Integer userRank;
 
     /**
      * Default constructor.
@@ -579,6 +585,30 @@ public class Submission implements Serializable {
      */
     public void setFeedbackThumb(Integer feedbackThumb) {
         this.feedbackThumb = feedbackThumb;
+    }
+    
+    /**
+     * <p>
+     * Gets the user rank for this submission.
+     * </p>
+     * 
+     * @return the userRank
+     * @since TCCC-1219
+     */
+    public Integer getUserRank() {
+        return this.userRank;
+    }
+
+    /**
+     * <p>
+     * Sets the user rank for this submission.
+     * </p>
+     * 
+     * @param userRank the userRank to set
+     * @since TCCC-1219
+     */
+    public void setUserRank(Integer userRank) {
+        this.userRank = userRank;
     }
 
     /**
