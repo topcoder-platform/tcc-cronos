@@ -358,10 +358,10 @@
              * Success handlers for submission feedback save.
              */
             private function handleUpdateSubmissionsFeedback(event:ResultEvent):void {
-                this.hideLoadingProgress();
+                //this.hideLoadingProgress();
 
                 if (event) {
-                    //Helper.showAlertMessage("Feedback successfully persisted!");
+                    trace("Feedback successfully persisted!");
                 }
             }
 
@@ -369,10 +369,10 @@
              * Success handlers for submission rank save.
              */
             private function handleRankSubmissions(event:ResultEvent):void {
-                this.hideLoadingProgress();
+                //this.hideLoadingProgress();
 
                 if (event) {
-                    Helper.showAlertMessage("Submissions rank saved!");
+                    trace("Submissions rank saved!");
                 }
             }
         ]]>
@@ -429,13 +429,13 @@
         <mx:operation name="updateSubmissionsFeedback"
                       resultFormat="object"
                       result="handleUpdateSubmissionsFeedback(event)"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('updateSubmissionsFeedback: ' + event.fault.faultString);">
+                      fault="Helper.showAlertMessage('updateSubmissionsFeedback: ' + event.fault.faultString);">
         </mx:operation>
 
         <mx:operation name="rankSubmissions"
                       resultFormat="object"
                       result="handleRankSubmissions(event)"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('rankSubmissions: ' + event.fault.faultString);">
+                      fault="Helper.showAlertMessage('rankSubmissions: ' + event.fault.faultString);">
         </mx:operation>
 
     </mx:WebService>

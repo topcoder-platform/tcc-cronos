@@ -238,7 +238,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public function updateRank(i:int, id:Number=0):void {
             //trace("----------------------------- ################# id: " + id);
-            if (!id || id <= 0) {
+            if (id < 0) {
                 if (activeSubmissionIndex >= 0) {
                     id=this.subViewer.submissionList.getItemAt(activeSubmissionIndex).id as Number;
                 } else {
@@ -264,7 +264,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             var data:Object=null;
 
             for each (var o:Object in this.subViewer.submissionList) {
-                if (o.id == id) {
+                if (id > 0 && o.id == id) {
                     data=o;
                     break;
                 }
@@ -274,11 +274,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             var rankObjProxy:ObjectProxy=new ObjectProxy(rankObj);
             
             if (data) {
+                trace("Setting rank: " + i + " for id: " + data.id);
                 // set the rank of ranked object.
                 if (data.rank && data.rank > 0) {
                     // first remove the item if it was at older place.
-                    data.rank=0;
-                    this.subViewer.updateRankList(data);
+                    //data.rank=0;
+                    this.subViewer.removeFromRankList(data);
                 }
                 
                 data.rank=i + 1;
@@ -293,7 +294,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                 rankedSubmissionList.setItemAt(rankObjProxy, i);
             } else {
-                //trace("Setting empty placeholder at i: " + i);
+                trace("Setting empty placeholder at i: " + i);
                 rankObj.thumbnail="";
                 rankObj.showClose=false;
                 rankObj.id=0;
