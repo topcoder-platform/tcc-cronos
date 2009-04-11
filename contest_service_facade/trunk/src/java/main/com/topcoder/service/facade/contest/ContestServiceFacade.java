@@ -721,4 +721,20 @@ public interface ContestServiceFacade {
      *             if any error occurs when retrieving/updating the data.
      */
     public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers and the rank.
+     * </p>
+     * 
+     * @param submissionId
+     *            identifier of the submission.
+     * @param rank
+     *            rank of the submission.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     * @since TCCC-1219
+     */
+    public boolean updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
 }

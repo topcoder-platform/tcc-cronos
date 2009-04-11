@@ -1477,7 +1477,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException {
         try {
             for (int i = 0; i < submissionIdsInRankOrder.length; i++) {
-                this.studioService.setSubmissionPlacement(submissionIdsInRankOrder[i], i + 1);
+                this.studioService.updateSubmissionUserRank(submissionIdsInRankOrder[i], i + 1);
             }
 
             return true;
@@ -1504,6 +1504,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 this.studioService.updateSubmissionFeedback(f);
             }
 
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers and the rank.
+     * </p>
+     * 
+     * @param submissionId
+     *            identifier of the submission.
+     * @param rank
+     *            rank of the submission.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     * @since TCCC-1219
+     */
+    public boolean updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException {
+        try {
+            this.studioService.updateSubmissionUserRank(submissionId, rank);
             return true;
         } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
