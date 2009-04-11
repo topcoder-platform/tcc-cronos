@@ -439,4 +439,21 @@ public interface SubmissionManager {
      */
     public void updateSubmissionFeedback(long submissionId, String feedbackText, int feedbackThumb)
             throws SubmissionManagementException;
+    
+    /**
+     * <p>
+     * Updates the user rank of the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to update
+     * @param rank
+     *            The rank of the submission
+     * @throws EntityNotFoundException
+     *             If the submission or status does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     * @since TCCC-1219
+     */
+    public void updateSubmissionUserRank(long submissionId, int rank) throws SubmissionManagementException;
 }
