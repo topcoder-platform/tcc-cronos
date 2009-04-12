@@ -46,7 +46,7 @@
 					var errors:Array = Validator.validateAll([ccv]);
 					var result:Boolean = true;
 					if (errors && errors.length > 0) {
-						result = true; //false;
+						result = false;
 					} else {
 						// Valid format for visa 4013 0714 3157 6550
 						// TODO: capture the price too.
@@ -83,7 +83,7 @@
 			}
 			
 			private function showErrorMsg():void {
-				Helper.showAlertMessage("Some fields are missing. Please check!");
+				Helper.showAlertMessage("Some fields are missing or incorrect. Please check! For incorrect field, you can hover to the input box to see the error message.");
 			}
 			
 			private function removeValidate(target:TextInput):void {
@@ -179,7 +179,7 @@
 					<mx:dataProvider>
 						<mx:Object label="Visa" data="Visa"/>
 						<mx:Object label="MasterCard" data="MasterCard"/>
-						<mx:Object label="American Express" data="Amex"/>
+						<mx:Object label="American Express" data="American Express"/>
 					</mx:dataProvider>
 				</mx:ComboBox>
         <mx:HBox width="100%">

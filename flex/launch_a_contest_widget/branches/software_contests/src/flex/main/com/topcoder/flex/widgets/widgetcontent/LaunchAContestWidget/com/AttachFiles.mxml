@@ -228,11 +228,17 @@
                     fileDescHint.height = ADDEDHEIGHT;
                     fileDescHint.text = FileDescHint;
                     fileDescHint.visible = true;
+                    this.height+=ADDEDHEIGHT;
+                    this.mainWidget.height+=ADDEDHEIGHT;
+                    //this.mainWidget.ATTACH_FILES_HEIGHT+=ADDEDHEIGHT;
                 }else{
                     event.target.label = "[+ show hint]";
                     fileDescHint.height = 0;
                     fileDescHint.text = "";
                     fileDescHint.visible = false;
+                    this.height-=ADDEDHEIGHT;
+                    this.mainWidget.height-=ADDEDHEIGHT;
+                    //this.mainWidget.ATTACH_FILES_HEIGHT-=ADDEDHEIGHT;
                 }
 	        }
 	        
