@@ -179,7 +179,8 @@
                 docVBox.addChild(spacer);
 
                 uploadFilesVBox.addChild(docVBox);
-
+                this.height=400+uploadFilesVBox.height>550?400+uploadFilesVBox.height:550;
+                this.mainWidget.height=this.height+50;
                 docUploads.push(doc);
             }
 
@@ -197,6 +198,8 @@
                     }
 
                     box.parent.removeChild(box);
+                    this.height=400+uploadFilesVBox.height>550?400+uploadFilesVBox.height:550;
+                    this.mainWidget.height=this.height+50;
                 }
             }
 
@@ -299,7 +302,7 @@
             private function loadMimeTypeIdHandler(e:ResultEvent):void{
                 trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
                 
-                mainWidget.hideLoadingProgress();
+            //    mainWidget.hideLoadingProgress();
                 
             	if (e && e.result) {
             	    
@@ -353,6 +356,7 @@
                 
             	if(e && e.result){
             	    var docUploaded:UploadedDocument = ObjectTranslatorUtils.translate(e.result, UploadedDocument) as UploadedDocument;
+            	 
             	    trace("uploadDocumentForContestHandler:: docUploaded: " + docUploaded);
             	    
                 	//Clear the content once the file has been uploaded to save memory
