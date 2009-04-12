@@ -788,4 +788,19 @@ public interface StudioService {
      *             when error reported by manager
      */
     public void updateSubmissionFeedback(SubmissionFeedback feedback) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Updates the submission user rank
+     * </p>
+     * 
+     * @param submissionId
+     *            a <code>long</code> id of the submission
+     * @param rank
+     *            a <code>int</code> rank of the submission.
+     * @throws PersistenceException
+     *             when error reported by manager
+     * @since TCCC-1219
+     */
+    public void updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
 }

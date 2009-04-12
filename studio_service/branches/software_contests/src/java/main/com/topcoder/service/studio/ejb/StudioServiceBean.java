@@ -2187,6 +2187,11 @@ public class StudioServiceBean implements StudioService {
                 sd.setFeedbackThumb(s.getFeedbackThumb());
             }
             
+            // since - TCCC-1219
+            if (s.getUserRank() != null) {
+                sd.setUserRank(s.getUserRank());
+            }
+            
             result.add(sd);
         }
 
@@ -2213,6 +2218,9 @@ public class StudioServiceBean implements StudioService {
 		// Added: Flex Submission Viewer Overhaul Assembly.
 		submission.setFeedbackText(submissionData.getFeedbackText());
 		submission.setFeedbackThumb(submissionData.getFeedbackThumb());
+		
+		// Added: TCCC-1219
+		submission.setUserRank(submissionData.getUserRank());
 
         return submission;
     }
@@ -4365,6 +4373,35 @@ public class StudioServiceBean implements StudioService {
 
             this.submissionManager.updateSubmissionFeedback(feedback.getSubmissionId(), feedback.getFeedbackText(),
                     feedback.getFeedbackThumb());
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
+    
+    /**
+     * <p>
+     * Updates the submission user rank
+     * </p>
+     * 
+     * @param submissionId
+     *            a <code>long</code> id of the submission
+     * @param rank
+     *            a <code>int</code> rank of the submission.
+     * @throws PersistenceException
+     *             when error reported by manager
+     * @since TCCC-1219
+     */
+    public void updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException {
+        try {
+            Submission submission = submissionManager.getSubmission(submissionId);
+            if (submission == null) {
+                String message = "submission not found. submission id: " + submissionId;
+                logDebug(message);
+                logExit("updateSubmissionUserRank");
+                throw new PersistenceException(message, message);
+            }
+            logDebug("Updating submission user rank for submission id: " + submissionId + ", rank: " + rank);
+            this.submissionManager.updateSubmissionUserRank(submissionId, rank);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManagement reports error.", e);
         }

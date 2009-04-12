@@ -24,13 +24,13 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
         "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
-        "removed", "feedbackText", "feedbackThumb" })
+        "removed", "feedbackText", "feedbackThumb", "userRank" })
 public class SubmissionData implements Serializable {
     /**
      * Represents submission rank.
      */
     private Integer rank;
-    
+
     /**
      * Returns submission rank.
      * 
@@ -146,6 +146,15 @@ public class SubmissionData implements Serializable {
      * @since Flex Submission Viewer Overhaul Assembly.
      */
     private int feedbackThumb;
+
+    /**
+     * <p>
+     * Represents the user rank for the submission
+     * </p>
+     * 
+     * @since TCCC-1219
+     */
+    private int userRank;
 
     /**
      * <p>
@@ -383,6 +392,31 @@ public class SubmissionData implements Serializable {
      */
     public void setFeedbackThumb(int feedbackThumb) {
         this.feedbackThumb = feedbackThumb;
+    }
+
+    /**
+     * <p>
+     * Gets the user rank of this submission.
+     * </p>
+     * 
+     * @return the userRank
+     * @since TCCC-1219
+     */
+    public int getUserRank() {
+        return this.userRank;
+    }
+
+    /**
+     * <p>
+     * Sets the user rank of this submission.
+     * </p>
+     * 
+     * @param userRank
+     *            the userRank to set
+     * @since TCCC-1219
+     */
+    public void setUserRank(int userRank) {
+        this.userRank = userRank;
     }
 
 }
