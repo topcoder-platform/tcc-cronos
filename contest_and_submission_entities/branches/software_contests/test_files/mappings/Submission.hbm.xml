@@ -87,6 +87,9 @@
         
         <!-- BUGR-1366 -->
         <property name="feedbackThumb" column="feedback_thumb" />
+        
+        <!-- TCCC-1219 -->
+        <property name="userRank" column="user_rank" />
 
 	</class>
 </hibernate-mapping>
