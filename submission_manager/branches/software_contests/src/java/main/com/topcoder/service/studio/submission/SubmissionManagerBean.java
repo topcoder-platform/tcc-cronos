@@ -2009,4 +2009,33 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 
         logExit(methodName);
     }
+    
+    /**
+     * <p>
+     * Updates the user rank of the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to update
+     * @param rank
+     *            The rank of the submission
+     * @throws EntityNotFoundException
+     *             If the submission or status does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     * @since TCCC-1219
+     */
+    public void updateSubmissionUserRank(long submissionId, int rank) throws SubmissionManagementException {
+        final String methodName = "updateSubmissionUserRank(long, int)";
+        logEnter(methodName);
+
+        EntityManager entityManager = getEntityManager(methodName);
+
+        Submission submission = getActiveSubmission(entityManager, submissionId, methodName);
+        submission.setUserRank(rank);
+
+        updateEntity(entityManager, submission, methodName);
+
+        logExit(methodName);
+    }
 }
