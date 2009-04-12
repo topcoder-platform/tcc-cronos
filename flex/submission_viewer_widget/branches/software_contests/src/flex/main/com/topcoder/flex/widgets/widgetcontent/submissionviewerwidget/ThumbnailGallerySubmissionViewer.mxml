@@ -76,6 +76,59 @@
             
             public var _tobeShownSubmission:Object;
 
+            //status icon class declaration
+            [Embed(source="../assets/icon/terminated.png")]
+            private var prjTerminated:Class;
+            [Embed(source="../assets/icon/completed.png")]
+            private var prjCompleted:Class;
+            [Embed(source="../assets/icon/draft.png")]
+            private var prjDraft:Class;
+            [Embed(source="../assets/icon/active.png")]
+            private var prjActive:Class;
+            [Embed(source="../assets/icon/scheduled.png")]
+            private var prjScheduled:Class;
+            [Embed(source="../assets/icon/in_danger.png")]
+            private var prjInDanger:Class;
+
+            private var _status:int;
+
+            // setter and getter of status propriety
+            // the status change the icon and the color of the label
+            public function set status(value:int):void {
+                _status=value;
+                contestStatus.text=this.subViewer.statusTypeDictionary[value].name;
+
+                if (value == this.subViewer.actionRequiredContestTypeId) {
+                    statusIcon.source=null;
+                    contestStatus.setStyle("color", "#ff0000");
+                } else if (value == this.subViewer.terminatedContestTypeId) {
+                    statusIcon.source=prjTerminated;
+                    contestStatus.setStyle("color", "#000000");
+                } else if (this.subViewer.activeContestTypeIds[value] == true) {
+                    statusIcon.source=prjActive;
+                    contestStatus.setStyle("color", "#95E840");
+                } else if (value == this.subViewer.draftContestTypeId) {
+                    statusIcon.source=prjDraft;
+                    contestStatus.setStyle("color", "#ADADAD");
+                } else if (value == this.subViewer.completedContestTypeId) {
+                    statusIcon.source=prjCompleted;
+                    contestStatus.setStyle("color", "#607FB2");
+                } else if (value == this.subViewer.scheduledContestTypeId) {
+                    statusIcon.source=prjScheduled;
+                    contestStatus.setStyle("color", "#9579C2");
+                } else if (value == this.subViewer.inDangerContestTypeId) {
+                    statusIcon.source=prjInDanger;
+                    contestStatus.setStyle("color", "#ff5F50");
+                } else {
+                    statusIcon.source="";
+                    contestStatus.setStyle("color", "#000000");
+                }
+            }
+
+            public function get status():int {
+                return _status;
+            }
+
             /**
              * Gets the reference to the parent submission viewer widget.
              *
@@ -122,7 +175,7 @@
 
                 footer.height=0;
                 //model.showFooter=true;
-                
+
                 if (_tobeShownSubmission) {
                     showSubmission(_tobeShownSubmission);
                 }
@@ -173,7 +226,7 @@
                         this.subViewer.contestList.addItem(item);
                     }
                 }
-                
+
                 trace("Selected contest id: " + this.subViewer.selectedContestId);
                 trace("Default contest id: " + this.subViewer.defaultContestId);
 
@@ -214,7 +267,7 @@
              * Depending on the contest type, it updates the ui.
              * If contest is different from last, then it loads the submission data through webservice.
              * Else it simply updates the ui for currently loaded submissions.
-             * 
+             *
              * @param event not used parameter.
              */
             public function handleContest(event:Event):void {
@@ -234,6 +287,7 @@
                     }
 
                     this.subViewer.selectedContestId=contestCombo.selectedItem.id;
+                    this.status=contestCombo.selectedItem.statusId;
                     //trace("Handling normal page contest: " + this.subViewer.selectedContestId);
 
                     var statusId:int=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId].statusId;
@@ -271,8 +325,8 @@
             }
 
             /**
-            * Hides the checkout button.
-            */
+             * Hides the checkout button.
+             */
             private function hideCheckout():void {
                 if (checkout_top) {
                     checkout_top.visible=false;
@@ -286,8 +340,8 @@
             }
 
             /**
-            * Shows the checkout button.
-            */
+             * Shows the checkout button.
+             */
             private function showCheckout():void {
                 if (checkout_top) {
                     checkout_top.visible=true;
@@ -709,10 +763,10 @@
             }
 
             /**
-            * Handles drop of dragged submission.
-            * 
-            * @param e the drag event.
-            */
+             * Handles drop of dragged submission.
+             *
+             * @param e the drag event.
+             */
             public function checkDrag(e:DragEvent):void {
                 if (e.currentTarget == ranked) {
                     DragManager.acceptDragDrop(ranked);
@@ -721,38 +775,47 @@
             }
 
             /**
-            * Handles drag complete of submission.
-            * 
-            * @param event the drag event.
-            */
+             * Handles drag complete of submission.
+             *
+             * @param event the drag event.
+             */
             public function handleDragComplete(event:DragEvent):void {
                 if (event.dragInitiator == list) {
                     var data:Object=list.selectedItem;
                     var i:int=findItemAt(ranked.mouseX, ranked.mouseY);
+                    trace("(1) --------------------- Setting id: " + data.id + " at: " + i);
                     model.updateRank(i, data.id as Number);
                 } else if (event.dragInitiator == ranked) {
                     var data2:Object=ranked.selectedItem;
                     var j:int=ranked.selectedIndex;
                     var k:int=findItemAt(ranked.mouseX, ranked.mouseY);
                     var data1:Object=this.model.rankedSubmissionList.getItemAt(k);
-                    
-                    //trace("Setting id: " + data2.id + " at: " + k);
+
+                    if (!data2.id) {
+                        data2.id=0;
+                    }
+
+                    if (!data1.id) {
+                        data1.id=0;
+                    }
+
+                    trace("(2) --------------------- Setting id: " + data2.id + " at: " + k);
                     model.updateRank(k, data2.id as Number);
-                    
-                    //trace("Setting id: " + data1.id + " at: " + j);
+
+                    trace("(2) --------------------- Setting id: " + data1.id + " at: " + j);
                     model.updateRank(j, data1.id as Number);
                 }
                 isDrag=false;
             }
 
             /**
-            * Find the item on which drag drop is happening.
-            * 
-            * @param px x position of the drop.
-            * @param py y position of the drop.
-            * 
-            * @return the item position in the rank bar.
-            */
+             * Find the item on which drag drop is happening.
+             *
+             * @param px x position of the drop.
+             * @param py y position of the drop.
+             *
+             * @return the item position in the rank bar.
+             */
             private function findItemAt(px:Number, py:Number):Number {
                 var colPos:Number=(px) / (ranked.columnWidth);
                 colPos=Math.floor(colPos);
@@ -761,8 +824,8 @@
             }
 
             /**
-            * Show / hide the rank bar.
-            */
+             * Show / hide the rank bar.
+             */
             private function showHideRank(show:Boolean):void {
                 contestSelection.visible=show;
                 if (show) {
@@ -776,18 +839,18 @@
             }
 
             /**
-            * Go to default gallery view.
-            */
+             * Go to default gallery view.
+             */
             private function gotoGallery():void {
                 //trace("Going to gallery");
                 model.selectedIndex=0;
             }
 
             /**
-            * Handle different gallery layout.
-            * 
-            * @param value the layout index.
-            */
+             * Handle different gallery layout.
+             *
+             * @param value the layout index.
+             */
             private function set handleLayout(value:int):void {
                 trace("handle layout... value: " + value);
                 //stack.selectedIndex=value;
@@ -813,17 +876,17 @@
             }
 
             /**
-            * Handler for updating the rank.
-            * 
-            * @param event
-            */
+             * Handler for updating the rank.
+             *
+             * @param event
+             */
             public function updateRank(event:Event):void {
                 model.updateRank(currentRank.selectedIndex);
             }
 
             /**
-            * Handler for setting current submission rank in the single image view.
-            */
+             * Handler for setting current submission rank in the single image view.
+             */
             public function set currentSubRank(value:int):void {
                 currentRank.selectedIndex=model.getRank();
                 prevBtn.toolTip=model.getPrevId();
@@ -1264,11 +1327,19 @@
                      height="100%"
                      horizontalAlign="center"
                      verticalAlign="middle">
-                <mx:Text id="content"
-                         width="100%"
-                         textAlign="center"/>
+                <mx:HBox width="100%"
+                         height="100%"
+                         horizontalAlign="center"
+                         verticalAlign="middle">
+                    <mx:Text id="content"
+                             textAlign="center"/>
+                    <mx:Label id="contestStatus"
+                              styleName="statusLabel"/>
+                    <mx:Image id="statusIcon"/>
+                </mx:HBox>
                 <mx:HBox id="extraBtnPanel"
                          visible="false"
+                         horizontalAlign="right"
                          includeInLayout="false">
                     <mx:Button styleName="goPrev"
                                click="prevSub()"

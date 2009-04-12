@@ -14,6 +14,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
     
     import flash.display.DisplayObject;
+    import flash.events.Event;
     import flash.utils.Dictionary;
     
     import mx.binding.utils.ChangeWatcher;
@@ -205,6 +206,21 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         private var _inDangerContestTypeId:int;
 
         /**
+         * Id of the terminated contest status.
+         */
+        private var _terminatedContestTypeId:int;
+        
+        /**
+         * Id of the draft contest status.
+         */
+        private var _draftContestTypeId:int;
+        
+        /**
+         * Id of the scheduled contest status.
+         */
+        private var _scheduledContestTypeId:int;
+
+        /**
          * Total purchase amount in number.
          */
         private var _totalPurchaseAmount:Number=0;
@@ -291,6 +307,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             _completedContestTypeId=8;
             _noWinnerChosenContestTypeId=7;
             _inDangerContestTypeId=10;
+            _terminatedContestTypeId=17;
+            _draftContestTypeId=15;
+            _scheduledContestTypeId=9;
 
             this._moneyFormatter=new NumberFormatter();
             this._moneyFormatter.precision=2;
@@ -818,6 +837,33 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
+         * Simple getter for the status id of the terminated contest type.
+         *
+         * @return the status id of the terminated contest type.
+         */
+        public function get terminatedContestTypeId():int {
+            return this._terminatedContestTypeId;
+        }
+        
+        /**
+         * Simple getter for the status id of the draft contest type.
+         *
+         * @return the status id of the draft contest type.
+         */
+        public function get draftContestTypeId():int {
+            return this._draftContestTypeId;
+        }
+        
+        /**
+         * Simple getter for the status id of the scheduled contest type.
+         *
+         * @return the status id of the scheduled contest type.
+         */
+        public function get scheduledContestTypeId():int {
+            return this._scheduledContestTypeId;
+        }
+
+        /**
          * Simple getter for the count of total purchased submissions.
          *
          * @return the count of total purchased submissions.
@@ -1159,12 +1205,22 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     var sub:Object=new Object();
 
                     sub.id=submissions[i].submissionId;
+                    
+                    trace("---------- this.selectedContestId: " + this.selectedContestId);
 
                     // placement in submission data is mapped to rank.
-                    if (submissions[i].placement > 0) {
-                        sub.rank=submissions[i].placement;
+                    if (this.activeContestTypeIds[this.contestInfoDictionary[this.selectedContestId].statusId] == true) {
+                        if (submissions[i].userRank > 0) {
+                            sub.rank=submissions[i].userRank;
+                        } else {
+                            sub.rank="";
+                        }
                     } else {
-                        sub.rank="";
+                        if (submissions[i].placement > 0) {
+                            sub.rank=submissions[i].placement;
+                        } else {
+                            sub.rank="";
+                        }
                     }
 
                     var thumbVal:int=0;
@@ -1227,14 +1283,23 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                     var subProxy:ObjectProxy=new ObjectProxy(sub);
                     
-                    var watcherFn:Function = function(e:Event):void {
+                    var thumbChangeWatcherFn:Function = function(e:Event):void {
                         if (e && e.target) {
-                            trace("SubProxy: " + e.target.id);
+                            trace("thumbChangeWatcherFn --- SubProxy: " + e.target.id);
                             saveSubmissionsFeedback(e.target);
                         }
                     }
                     // initialize a change watcher for the upDown property.
-                    var changeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "upDown", watcherFn);  
+                    var thumbChangeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "upDown", thumbChangeWatcherFn);
+                    
+                    var rankChangeWatcherFn:Function = function(e:Event):void {
+                        if (e && e.target) {
+                            trace("rankChangeWatcherFn --- SubProxy: " + e.target.id);
+                            saveSubmissionRank(e.target);
+                        }
+                    }
+                    // initialize a change watcher for the upDown property.
+                    var rankChangeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "rank", rankChangeWatcherFn);  
 
                     this.submissionList.addItem(subProxy);
 
@@ -1338,16 +1403,29 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 //trace("---------------------------------- Setting item at: " + item.id + "," + item.rank + "," + index);
                 this.rankList.setItemAt(item, index);
             } else {
-                var i:int = 0;
-                for each (var o:Object in this.rankList) {
-                    if (o && o.id == item.id) {
-                        //trace("Setting item NULL at i: " + i);
-                        this.rankList.setItemAt(null, i);
-                        break;
-                    }
-                    
-                    i++;
+                removeFromRankList(item);
+            }
+        }
+        
+        /**
+         * Removes the item from rank list.
+         *
+         * @param item the submission item for which rank list need to be updated.
+         */
+        public function removeFromRankList(item:Object):void {
+            if (!item || !item.id) {
+                return;
+            }
+            
+            var i:int = 0;
+            for each (var o:Object in this.rankList) {
+                if (o && o.id == item.id) {
+                    //trace("Setting item NULL at i: " + i);
+                    this.rankList.setItemAt(null, i);
+                    break;
                 }
+                
+                i++;
             }
         }
 
@@ -1780,35 +1858,28 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
-         * Saves all the submissions rank to webservice.
+         * Saves given submission rank to webservice.
          */
-        public function saveSubmissionsRank():void {
-
-            var submissionList:Array=new Array();
-
-            for (var i:int=0; i < this.rankList.length; i++) {
-                var item:Object=this.rankList.getItemAt(i);
-                var feedback:Object=new Object();
-
-                if (item.rank && (item.rank is Number || item.rank.length > 0)) {
-                    submissionList.push(item.id);
-                }
-            }
-
-            this.showLoadingProgress();
-
+        public function saveSubmissionRank(item:Object):void {
             var header:SOAPHeader=getHeader(this.username, this.password);
             this.contestServiceFacadeWS.clearHeaders();
             this.contestServiceFacadeWS.addHeader(header);
-            var rankSubmissionsOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("rankSubmissions");
+            var rankSubmissionsOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("updateSubmissionUserRank");
             if (rankSubmissionsOp) {
                 //trace("Ranking submissions: " + submissionList);
-                rankSubmissionsOp.send(submissionList);
+                var rank:Number=0;
+                if (item.rank && item.rank != "" && item.rank is Number) {
+                    rank=item.rank as Number;
+                }
+                
+                trace("------------------------- Saving rank: " + rank + ", for submission: " + item.id);
+                
+                rankSubmissionsOp.send(item.id, rank);
             }
         }
 
         /**
-         * Saves given submisisons feedback and thumb to the webservice.
+         * Saves given submisison feedback and thumb to the webservice.
          * 
          * @param item submission item
          */
