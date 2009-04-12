@@ -1007,4 +1007,20 @@ public interface ContestServiceFacade {
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public long addSubmitter(long projectId, long userId) throws ContestServiceException;
+
+	/**
+     * <p>
+     * Ranks the submissions, given submission identifiers and the rank.
+     * </p>
+     * 
+     * @param submissionId
+     *            identifier of the submission.
+     * @param rank
+     *            rank of the submission.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     * @since TCCC-1219
+     */
+    public boolean updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
 }
