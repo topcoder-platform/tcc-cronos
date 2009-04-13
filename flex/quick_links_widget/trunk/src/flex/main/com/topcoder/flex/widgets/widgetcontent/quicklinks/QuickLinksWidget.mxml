@@ -4,7 +4,8 @@
 	      verticalScrollPolicy="auto" 
 	      xmlns:mx="http://www.adobe.com/2006/mxml"
 	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.quicklinks.*"
-	      styleName="WidgetPanel" >
+	      styleName="WidgetPanel"
+              resizeEffect="{resize}">
 
     <mx:Style source="Style.css" />
 
@@ -44,7 +45,7 @@
             <mx:LinkButton click="linkHandler('http://www.topcoder.com/bugs');" height="34" width="100%" styleName="topcoderForums"/>
         </mx:VBox>
     </mx:Canvas>
-
+  <mx:Resize id="resize" /> 
 </tc:QuickLinksWidgetCodeBehind>
 	
 
