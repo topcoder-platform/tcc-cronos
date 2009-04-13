@@ -7,7 +7,8 @@
                            initialize="initWidget()"
                            verticalScrollPolicy="off"
                            horizontalScrollPolicy="off"
-                           creationComplete="onCreateComplete(1)">
+                           creationComplete="onCreateComplete(1)"
+						    resizeEffect="{resize}">
     <mx:Style source="Style.css"/>
 
     <mx:Script>
@@ -1483,5 +1484,5 @@
             <mx:RemoveChild target="{review}"/>
         </mx:State>
     </tc:states>
-    
+  <mx:Resize id="resize" /> 
 </tc:LaunchWidgetCodeBehind>
