@@ -308,7 +308,7 @@
             private function loadMimeTypeIdHandler(e:ResultEvent):void{
                 trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
                 
-            //    mainWidget.hideLoadingProgress();
+                mainWidget.hideLoadingProgress();
                 
             	if (e && e.result) {
             	    
