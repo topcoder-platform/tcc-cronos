@@ -4,7 +4,8 @@
   initialize="init()"
   horizontalAlign="left"
   headerHeight="5" width="100%"
-  creationComplete="jsonRequest.send()">
+  creationComplete="jsonRequest.send()"
+  resizeEffect="{resize}">
 
   <mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/tc?" resultFormat="text" result="handleJsonResult(event)" >
       <mx:request>
@@ -168,4 +169,5 @@
                 <mx:DataGridColumn dataField="status" headerText="Status" />
             </tc:columns>
         </tc:TCDataGrid>
+  <mx:Resize id="resize" /> 
 </tc:PipelineWidgetCodeBehind>
