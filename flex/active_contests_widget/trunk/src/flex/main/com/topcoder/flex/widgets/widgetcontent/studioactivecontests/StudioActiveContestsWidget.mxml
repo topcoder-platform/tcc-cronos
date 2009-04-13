@@ -3,7 +3,7 @@
   xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
   initialize="init()"
   horizontalAlign="left" headerHeight="5" width="100%"
-  creationComplete="complete()">
+  creationComplete="complete()" resizeEffect="{resize}">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
   <mx:Style source="DataGridStyle.css"/>
@@ -267,4 +267,5 @@
 
     </mx:DataGrid>
     -->
+  <mx:Resize id="resize" /> 
 </tc:StudioActiveContestsWidgetCodeBehind>
