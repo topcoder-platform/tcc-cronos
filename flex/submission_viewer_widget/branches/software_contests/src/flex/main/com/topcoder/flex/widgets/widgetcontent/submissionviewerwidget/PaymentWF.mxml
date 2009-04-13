@@ -136,7 +136,7 @@
 						<mx:dataProvider>
 							<mx:Object label="Visa" data="Visa"/>
 							<mx:Object label="MasterCard" data="MasterCard"/>
-							<mx:Object label="American Express" data="Amex"/>
+							<mx:Object label="American Express" data="American Express"/>
 						</mx:dataProvider>
 					</mx:ComboBox>          
 					<mx:HBox width="100%">
