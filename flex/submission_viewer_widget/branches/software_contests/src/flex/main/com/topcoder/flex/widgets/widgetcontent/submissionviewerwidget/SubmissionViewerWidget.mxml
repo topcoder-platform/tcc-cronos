@@ -18,7 +18,9 @@
                                      width="100%"
                                      height="100%"
                                      styleName="NewWidgetPanel"
-                                     horizontalAlign="left">
+                                     horizontalAlign="left"
+									 resizeEffect="{resize}">
+
 
     <mx:Style source="Style.css"/>
 
@@ -461,4 +463,5 @@
         <tc:SubmissionsCheckoutPage id="submissionCheckoutScreen"/>
         <tc:SubmissionsDownloadPage id="submissionsDownloadScreen"/>
     </mx:ViewStack>
+  <mx:Resize id="resize" /> 
 </tc:SubmissionViewerWidgetCodeBehind>
