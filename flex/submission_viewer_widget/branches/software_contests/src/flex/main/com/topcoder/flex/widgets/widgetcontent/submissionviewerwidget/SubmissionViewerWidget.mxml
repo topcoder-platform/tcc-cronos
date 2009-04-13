@@ -193,6 +193,7 @@
                 hideLoadingProgress();
 
                 Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
                     this.paymentReferenceNumber=event.result as String;
 
@@ -210,6 +211,7 @@
                 hideLoadingProgress();
 
                 Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
                     this.paymentReferenceNumber=event.result as String;
 

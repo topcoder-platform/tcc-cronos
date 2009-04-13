@@ -881,7 +881,7 @@
              * @param event
              */
             public function updateRank(event:Event):void {
-                model.updateRank(currentRank.selectedIndex);
+                model.updateRank(currentRank.selectedIndex, -1);
             }
 
             /**

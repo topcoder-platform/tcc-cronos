@@ -1542,7 +1542,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @param checkoutPage the ui page from where to read the purchase data.
          */
         public function updatePurchaseToWS(checkoutPage:SubmissionsCheckoutPage):void {
-            this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
+            
 
             var header:SOAPHeader=getHeader(this.username, this.password);
 
