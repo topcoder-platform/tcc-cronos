@@ -257,6 +257,7 @@
         verticalScrollPolicy="off" horizontalScrollPolicy="off">
       <mx:Label width="100%" textAlign="center" id="lblStartDate" text="START" />
       <mx:Label width="100%" textAlign="center" id="lblEndDate" text="END" />
+      <mx:Label width="100%" textAlign="center" id="lblType" text="TYPE" /> <!-- BUGR-1622 -->
       <mx:Label width="100%" textAlign="center" id="lblRegistrants" text="REGISTRANTS" />
       <mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMISSIONS" />
       <mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" />

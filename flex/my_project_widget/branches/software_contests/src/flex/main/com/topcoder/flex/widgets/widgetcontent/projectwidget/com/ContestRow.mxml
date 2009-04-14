@@ -47,6 +47,7 @@
 			forumPosts=_dataProvider.forumPosts
 		}
 		status=_dataProvider.status;
+		type=_dataProvider.type; // BUGR-1622
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
 		ContextId=_dataProvider.id;
@@ -92,6 +93,13 @@
   public function set contextName(temp:String):void{
     lblContextName.label = temp;
   }
+  public function get type():String{ // BUGR-1622
+    return lblType.text;
+  }
+  public function set type(temp:String):void{ // BUGR-1622
+    lblType.text = temp;
+  }
+  
   public function get status():String{
     return statusBtn.label;
   }
@@ -296,7 +304,6 @@
         	if(_dataProvider.status.toLocaleLowerCase()=="draft"
         	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published"
           	  || _dataProvider.status.toLocaleLowerCase()=="scheduled") // BUGR-1363
-
 		  {
         		editBtn.visible=true;
 		  }
@@ -353,6 +360,7 @@
         <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart1" />
         <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart2" />
     </mx:VBox>
+    <mx:Text width="100%" styleName="rowContentLabel" id="lblType" /> <!-- BUGR-1622 -->
     <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
     <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
         <mx:Button buttonMode="false" width="60" styleName="rowContentLink" id="lblSubmissions" />

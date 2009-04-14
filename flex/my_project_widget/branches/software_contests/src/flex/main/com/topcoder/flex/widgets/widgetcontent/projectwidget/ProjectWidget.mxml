@@ -166,6 +166,7 @@
         
         private function setProject(e:ResultEvent): void
         {
+        	var types:Array = ["Assembly", "Specification", "Component Design", "Component Development", "Studio", "Testing", "Conceptualization"]
             hideLoadingProgress();
             
         	if(e!=null && e.result!=null){
@@ -190,7 +191,7 @@
 						var c:Contest=new Contest(prjArray[i].contestId,prjArray[i].cname,prjArray[i].startDate,
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
 						prjArray[i].num_for, prjArray[i].forumId,
-						prjArray[i].sname);
+						prjArray[i].sname, types[prjArray[i].contestId % types.length]); // BUGR-1622
 						if (prjArray[i].endDate != null)
 						{
 							c.date= DateUtil.parseFromString(prjArray[i].endDate);  
