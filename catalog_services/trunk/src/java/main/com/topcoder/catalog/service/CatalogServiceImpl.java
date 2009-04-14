@@ -844,25 +844,29 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     	
     	// if any doc was updated on front-end, assetDTO.documentation will contain it, and uploadedFiles will
     	// contain it as well. need to remove old doc
-    	for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
-    		boolean found = false;
-    		for(CompDocumentation newDoc : docs) {
-				if(existingDoc.getDocumentName().equals(newDoc.getDocumentName()) &&
-						existingDoc.getDocumentType().equals(newDoc.getDocumentType())) {
-					checkedDocs.add(existingDoc);
-					found = true;
-					System.out.println("found: " + existingDoc.getUrl());
+		if (compVersion.getDocumentation() != null && compVersion.getDocumentation().size > 0)
+		{
+
+			for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
+				boolean found = false;
+				for(CompDocumentation newDoc : docs) {
+					if(existingDoc.getDocumentName().equals(newDoc.getDocumentName()) &&
+							existingDoc.getDocumentType().equals(newDoc.getDocumentType())) {
+						checkedDocs.add(existingDoc);
+						found = true;
+						System.out.println("found: " + existingDoc.getUrl());
+					}
 				}
-    		}
-    		if(!found) { // delete from file system
-    			String rootDir = uploadedFilesRootDir;
-    	        if (!rootDir.endsWith("/")) {
-    	            rootDir += "/";
-    	        }
-    	        rootDir += existingDoc.getUrl();
-    			System.out.println("deleting: " + rootDir);
-    	        deleteFileTree(new File(rootDir));
-    		}
+				if(!found) { // delete from file system
+					String rootDir = uploadedFilesRootDir;
+					if (!rootDir.endsWith("/")) {
+						rootDir += "/";
+					}
+					rootDir += existingDoc.getUrl();
+					System.out.println("deleting: " + rootDir);
+					deleteFileTree(new File(rootDir));
+				}
+		}
 		}
     	
     	// add uploaded docs

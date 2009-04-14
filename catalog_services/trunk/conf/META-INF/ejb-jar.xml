@@ -12,6 +12,12 @@
             <ejb-class>com.topcoder.catalog.service.CatalogServiceImpl</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
+			<!-- BUGR-1600 -->
+			<env-entry>
+			  <env-entry-name>uploadedFilesRootDir</env-entry-name> 
+			  <env-entry-type>java.lang.String</env-entry-type> 
+			  <env-entry-value>@build-rep.catalog_services.uploadedFilesRootDir@</env-entry-value> 
+			</env-entry>
             <persistence-context-ref>
                 <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
                 <persistence-unit-name>catalog_manager</persistence-unit-name>

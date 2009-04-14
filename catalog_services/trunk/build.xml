@@ -129,7 +129,7 @@
     <property name="catalog_entities.jar" value="${tcs_libdir}/${catalog_entities.path}/${catalog_entities.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
-    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
+    <property name="junit.jar" value="C:/junit3.8.2/junit3.8.2/junit.jar"/>
     <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
@@ -294,9 +294,20 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
+		<!-- BUGR-1600 -->
+        <property name="build.properties" location="${basedir}/build.properties" />
+		
+        <mkdir dir="${dist_conf}"/>
+        <copy todir="${dist_conf}">
+            <fileset dir="${configdir}" />
+			<filterset> <!-- BUGR-1600 -->
+              <filtersfile file="${build.properties}"/>
+            </filterset>
+        </copy>
+		
         <mkdir dir="${dist_lib}/${component_path}"/>
         <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" >
-            <metainf dir="${configdir}/META-INF/" includes="*" excludes="application.xml" />
+            <metainf dir="${dist_conf}/META-INF/" includes="*" excludes="application.xml" /> <!-- BUGR-1600 -->
         </jar>
         <jar jarfile="${id_generator_ejb.jar}" >
             <metainf dir="${configdir}/IDGenerator/META-INF/" includes="*" excludes="application.xml,DBConnectionFactory.xml" />
