@@ -191,7 +191,11 @@
 						var c:Contest=new Contest(prjArray[i].contestId,prjArray[i].cname,prjArray[i].startDate,
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
 						prjArray[i].num_for, prjArray[i].forumId,
-						prjArray[i].sname, types[prjArray[i].contestId % types.length]); // BUGR-1622
+						prjArray[i].sname, 
+						// Only have studio for now
+						"Studio");
+						//types[prjArray[i].contestId % types.length]); // BUGR-1622
+
 						if (prjArray[i].endDate != null)
 						{
 							c.date= DateUtil.parseFromString(prjArray[i].endDate);  
