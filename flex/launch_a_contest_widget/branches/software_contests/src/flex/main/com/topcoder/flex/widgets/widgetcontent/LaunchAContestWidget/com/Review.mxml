@@ -6,6 +6,7 @@
            verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
             import com.topcoder.flex.util.editor.*;
             import mx.controls.HRule;
@@ -173,45 +174,71 @@
                 // For now attach file need to be done only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) {
+                if (mainWidget.studioContestType) { // BUGR-1600
                     setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
+                } else {
+                	attachedFilesVBox.removeAllChildren();
+                	setAttachedFiles(mainWidget.softwareCompetition.assetDTO.documentation);
+                	setAttachedFiles(mainWidget.softwareCompetition.assetDTO.compUploadedFiles);
                 }
             }
 
             private function setAttachedFiles(documentationUploads:Array):void {
-                attachedFilesVBox.removeAllChildren();
-
-                for each (var doc:UploadedDocument in documentationUploads) {
-                    var hbox1:HBox=new HBox();
-                    attachedFilesVBox.addChild(hbox1);
-                    var labelDesc:Label=new Label();
-                    hbox1.addChild(labelDesc);
-                    labelDesc.text="File Description:";
-                    labelDesc.setStyle("fontWeight", "bold");
-
-                    var textDesc:Text=new Text();
-                    hbox1.addChild(textDesc);
-                    textDesc.text=doc.description;
-
-                    var hbox2:HBox=new HBox();
-                    attachedFilesVBox.addChild(hbox2);
-                    var labelName:Label=new Label();
-                    hbox2.addChild(labelName);
-                    labelName.text="File Name:";
-                    labelName.setStyle("fontWeight", "bold");
-
-                    var textName:Text=new Text();
-                    hbox2.addChild(textName);
-                    textName.text=doc.fileName;
-
-                    var spacer:Spacer=new Spacer();
-                    attachedFilesVBox.addChild(spacer);
-                    spacer.height=5;
-
-                    var ruler:HRule=new HRule();
-                    attachedFilesVBox.addChild(ruler);
-                    ruler.percentWidth=100;
-                }
+				if(this.mainWidget.studioContestType) { // BUGR-1600
+					attachedFilesVBox.removeAllChildren();
+	                for each (var doc:UploadedDocument in documentationUploads) {
+	                    var hbox1:HBox=new HBox();
+	                    attachedFilesVBox.addChild(hbox1);
+	                    var labelDesc:Label=new Label();
+	                    hbox1.addChild(labelDesc);
+	                    labelDesc.text="File Description:";
+	                    labelDesc.setStyle("fontWeight", "bold");
+	
+	                    var textDesc:Text=new Text();
+	                    hbox1.addChild(textDesc);
+	                    textDesc.text=doc.description;
+	
+	                    var hbox2:HBox=new HBox();
+	                    attachedFilesVBox.addChild(hbox2);
+	                    var labelName:Label=new Label();
+	                    hbox2.addChild(labelName);
+	                    labelName.text="File Name:";
+	                    labelName.setStyle("fontWeight", "bold");
+	
+	                    var textName:Text=new Text();
+	                    hbox2.addChild(textName);
+	                    textName.text=doc.fileName;
+	
+	                    var spacer:Spacer=new Spacer();
+	                    attachedFilesVBox.addChild(spacer);
+	                    spacer.height=5;
+	
+	                    var ruler:HRule=new HRule();
+	                    attachedFilesVBox.addChild(ruler);
+	                    ruler.percentWidth=100;
+	                }
+	   			} else {
+	   				for each (var x:Object in documentationUploads) {
+	                    var hbox2:HBox=new HBox();
+	                    attachedFilesVBox.addChild(hbox2);
+	                    var labelName:Label=new Label();
+	                    hbox2.addChild(labelName);
+	                    labelName.text="File Name:";
+	                    labelName.setStyle("fontWeight", "bold");
+	
+	                    var textName:Text=new Text();
+	                    hbox2.addChild(textName);
+	                    textName.text= (x is CompDocumentation ? x.url : x.fileName);
+	
+	                    var spacer:Spacer=new Spacer();
+	                    attachedFilesVBox.addChild(spacer);
+	                    spacer.height=5;
+	
+	                    var ruler:HRule=new HRule();
+	                    attachedFilesVBox.addChild(ruler);
+	                    ruler.percentWidth=100;
+	                }
+	   			}
             }
 
             private function goToStep1():void {

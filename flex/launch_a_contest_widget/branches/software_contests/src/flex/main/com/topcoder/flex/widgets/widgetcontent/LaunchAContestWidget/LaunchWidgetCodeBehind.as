@@ -509,13 +509,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (this.competitionType == "STUDIO") {
                 var competionType:String="STUDIO";
                 this.competition.type=competionType;
-                if (isNaN(competition.id) || competition.id <= 0) {
+                if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
                     createStudioContest();
                 } else {
                     updateStudioContest();
                 }
             } else {
-                if (isNaN(softwareCompetition.id) || softwareCompetition.id <= 0) {
+                if (isNaN(this.softwareCompetition.projectHeader.id) || this.softwareCompetition.projectHeader.id <= 0) {
                     createSoftwareContest();
                 } else {
                     // implementing update is out of scope of this assembly.

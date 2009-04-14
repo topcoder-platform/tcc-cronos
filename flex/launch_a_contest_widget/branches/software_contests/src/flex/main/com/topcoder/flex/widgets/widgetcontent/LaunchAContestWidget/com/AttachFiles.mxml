@@ -3,6 +3,8 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+   	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DocumentType;
 	    	import mx.collections.ArrayCollection;
 	    	import mx.controls.TextArea;
@@ -54,6 +56,9 @@
 
             private var currentDoc:UploadedDocument;
 
+			// BUGR-1600
+			private var catalogFile:CompUploadedFile;
+
             public function initData():void {
                 uploadFilesVBox.removeAllChildren();
 
@@ -71,6 +76,11 @@
                     }
 
                     this.mainWidget.competition.contestData.documentationUploads=docUploads;
+                } else { // BUGR-1600
+                	for each(var x:CompDocumentation in this.mainWidget.softwareCompetition.assetDTO.documentation) {
+                		addCatalogDoc(x);
+                	}
+                	this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles = new Array();
                 }
 
                 this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler);
@@ -184,6 +194,49 @@
                 docUploads.push(doc);
             }
 
+			// BUGR-1600
+			private function addCatalogDoc(doc:Object, existing:Boolean = true):void {
+				var docVBox:VBox=new VBox();
+				docVBox.percentWidth=100;
+				if(existing) {
+					docVBox.id=doc.documentId.toString();
+				} 
+				docVBox.data=doc;
+
+				var hbox2:HBox=new HBox();
+				docVBox.addChild(hbox2);
+
+				var nameLabel:Label=new Label();
+				hbox2.addChild(nameLabel);
+				nameLabel.text="File Name:";
+				nameLabel.setStyle("fontWeight", "bold");
+
+				var nameText:Text=new Text();
+				hbox2.addChild(nameText);
+				nameText.text= existing ? doc.url : doc.uploadedFileName;
+
+				var hbox3:HBox=new HBox();
+				docVBox.addChild(hbox3);
+				var removeBtn:LinkButton=new LinkButton();
+				removeBtn.label="remove";
+				removeBtn.data=docVBox;
+				removeBtn.addEventListener(MouseEvent.CLICK, removeCatalogDoc);
+				hbox3.addChild(removeBtn);
+
+				var hrule:HRule=new HRule();
+				hrule.percentWidth=100;
+				docVBox.addChild(hrule);
+
+				var spacer:Spacer=new Spacer();
+				spacer.height=5;
+				docVBox.addChild(spacer);
+
+				uploadFilesVBox.addChild(docVBox);
+				if(!existing) {
+					this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.push(doc);
+				}
+			}
+			
             private function removeDoc(e:MouseEvent):void {
                 if (e && e.target) {
                     var button:LinkButton=e.target as LinkButton;
@@ -198,8 +251,34 @@
                     }
 
                     box.parent.removeChild(box);
-                    this.height=400+uploadFilesVBox.height>550?400+uploadFilesVBox.height:550;
-                    this.mainWidget.height=this.height+50;
+                }
+            }
+
+			// BUGR-1600
+ 			private function removeCatalogDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var box:VBox=button.data as VBox;
+                    if(box.data is CompDocumentation) {
+	                    var doc:CompDocumentation=box.data as CompDocumentation;
+	
+	                    var index:int=this.mainWidget.softwareCompetition.assetDTO.documentation.indexOf(doc);
+	                    if (index != -1) {
+	                        this.mainWidget.softwareCompetition.assetDTO.documentation.splice(index, 1);
+	                    }
+	                    box.parent.removeChild(box);
+	                    trace("removed comp documentation");
+	                } else if(box.data is CompUploadedFile) {
+	                	
+	                	var x:CompUploadedFile=box.data as CompUploadedFile;
+	
+	                    var index:int=this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.indexOf(x);
+	                    if (index != -1) {
+	                        this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.splice(index, 1);
+	                    }
+	                    trace("removed upload");
+	                }
+	                box.parent.removeChild(box);
                 }
             }
 
@@ -245,7 +324,11 @@
 	        private function browseFile():void {
 	        	file= new FileReference();
 	        	file.addEventListener(Event.SELECT, selectHandler);
-	        	file.addEventListener(Event.COMPLETE, loadCompleteHandler);
+	        	if(mainWidget.studioContestType) { //BUGR-1600
+	        		file.addEventListener(Event.COMPLETE, loadCompleteHandler);
+	        	} else {
+	        		file.addEventListener(Event.COMPLETE, loadCatalogCompleteHandler);
+	        	}
 	        	file.browse();
 	        }
 	        
@@ -259,23 +342,25 @@
             		return;
             	}
             	
-            	if (fileDescInput.text == ""){
+				if (mainWidget.studioContestType && fileDescInput.text == ""){ // BUGR-1600
             		Helper.showAlertMessage("Please enter a description for the file");
             		return;
             	}
             	
             	file.load();
             	
-            	//load mimetype id via WebService
-            	var getMimeTypeIdOp:AbstractOperation = mainWidget._csws.getOperation("getMimeTypeId");
-                getMimeTypeIdOp.addEventListener("result", loadMimeTypeIdHandler);
-                
-                var dotpos:int=file.name.lastIndexOf('.');
-            	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
-            	
-                getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
-                
-                mainWidget.showLoadingProgress();
+            	if(mainWidget.studioContestType) { // BUGR-1600
+	            	//load mimetype id via WebService
+	            	var getMimeTypeIdOp:AbstractOperation = mainWidget._csws.getOperation("getMimeTypeId");
+	                getMimeTypeIdOp.addEventListener("result", loadMimeTypeIdHandler);
+	                
+	                var dotpos:int=file.name.lastIndexOf('.');
+	            	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
+	            	
+	                getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
+	                
+	                mainWidget.showLoadingProgress();
+	            }
             }
             
             private function getMimetypeByFileName(ext:String):String{
@@ -303,7 +388,16 @@
             		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
             	}
             }
-            
+
+            // BUGR-1600
+            private function loadCatalogCompleteHandler(event:Event):void{
+            	catalogFile = new CompUploadedFile();
+            	catalogFile.fileData = file.data;
+            	catalogFile.uploadedFileName = file.name;
+		        
+		addCatalogDoc(catalogFile, false);
+            }
+                        
             // TCCC-1023
             private function loadMimeTypeIdHandler(e:ResultEvent):void{
                 trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
@@ -409,7 +503,7 @@
                                <mx:Button id="browse" buttonMode="true" label="BROWSE" click="browseFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
             </mx:HBox>
 
-            <mx:VBox width="100%" verticalGap="0">
+            <mx:VBox width="100%" verticalGap="0" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}"> <!-- BUGR-1600 -->
 	            <mx:HBox >
 	                <mx:Label text="File Description:" fontWeight="bold"/>
 	                <mx:Spacer width="290"/>

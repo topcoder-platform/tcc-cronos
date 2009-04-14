@@ -56,8 +56,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
         * An array of <code>SoftwareCompDocumentation</code>
         */
-        //[ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCompDocumentation")]
+        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation")] // BUGR-1600
         public var documentation:Array;
+        
+        /**
+        * @since BUGR-1600 
+        */
+        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile")]
+        public var compUploadedFiles:Array;
 
         /**
         * A <code>SoftwareCompForum</code>
