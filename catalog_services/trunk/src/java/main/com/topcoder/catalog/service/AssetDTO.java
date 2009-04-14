@@ -5,6 +5,7 @@ package com.topcoder.catalog.service;
 
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
+import com.topcoder.catalog.entity.CompUploadedFile;
 import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.CompLink;
 import com.topcoder.catalog.entity.CompVersion;
@@ -103,10 +104,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", "compComments",
-                                              "detailedDescription", "functionalDescription", "rootCategory", "categories",
+                                           "compUploadedFiles", "detailedDescription", "functionalDescription", "rootCategory", "categories",
 											  "technologies", "productionDate", "link", "forum", "isCurrentVersionAlsoLatestVersion",
-											  "versionId", "userIds", "informationComplete", "documentation",
-											  "phase", "dependencies"})
+											  "versionId", "userIds", "informationComplete", "documentation",  "phase", "dependencies"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -236,6 +236,15 @@ public class AssetDTO implements Serializable {
      * @since 1.1
      */
     private List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
+
+	/**
+     * <p>This field represents the list of the uploadedFiles of the version.</p>
+     * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
+     * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
+     * containing <code>null</code> is legal as well.</p>
+     * @since 1.1
+     */
+    private List<CompUploadedFile> compUploadedFiles = new ArrayList<CompUploadedFile>();
 
     /**
      * <p>
@@ -734,6 +743,40 @@ public class AssetDTO implements Serializable {
     public List<Long> getDependencies() {
         return dependencies;
     }
+
+	/**
+     * <p>
+     * Sets a value to the {@link #dependencies} field.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @param dependencies the list of the technologies of the version.
+     */
+    public void setCompUploadedFiles(List<CompUploadedFile> compUploadedFiles) {
+        this.compUploadedFiles = compUploadedFiles;
+    }
+
+    /**
+     * <p>
+     * Retrieves the list of the dependencies of the version.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @return {@link #dependencies} property's value.
+     */
+    public List<CompUploadedFile> getCompUploadedFiles() {
+        return compUploadedFiles;
+    }
+
+
 }
 
 

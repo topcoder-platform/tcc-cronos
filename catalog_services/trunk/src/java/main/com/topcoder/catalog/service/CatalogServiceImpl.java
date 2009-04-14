@@ -3,6 +3,13 @@
  */
 package com.topcoder.catalog.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -41,6 +49,8 @@ import com.topcoder.catalog.entity.Component;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Status;
 import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.entity.CompUploadedFile;
+//import com.topcoder.file.TCSFile;
 
 /**
  * <p>This class implements the contract for the catalog services.</p>
@@ -79,6 +89,13 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * This is the root directory of uploaded files.
+     * @since BUGR-1600
+     */
+    @Resource(name = "uploadedFilesRootDir")
+    private String uploadedFilesRootDir;
+    
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>
      */
@@ -237,8 +254,12 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // save the asset entity finally
         persistEntity(em, entityComponent);
 
-		 // save version
+		populateVersionDocumentation(asset, em, compVersion); 
+
+		// save version
         persistEntity(em, compVersion);
+
+		 
 
         // populate with ids of just stored entities
         asset.setId(entityComponent.getId());
@@ -342,6 +363,9 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // update the asset entity
         updateAsset(asset, entityComponent, versionToUpdate);
 
+		 // BUGR-1600 update the compVersion with uploaded /removed docs and persist it again.
+        // Note that we need component entity to be existing for this, so persist twice here
+        populateVersionDocumentation(asset, em, versionToUpdate); 
 		entityComponent.setCurrentVersion(versionToUpdate);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
@@ -757,7 +781,6 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersion.getPhase().setDescription(assetDTO.getPhase());
         // end
 
-        populateVersionDocumentation(assetDTO, em, compVersion);
         compVersion.setVersionText(assetDTO.getVersionText());
         populateForumAndLink(assetDTO, compVersion);
         // create CompVersionDates
@@ -781,6 +804,85 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     }
 
     /**
+     * 
+     * @param file
+     * @since BUGR-1600
+     */
+    private void deleteFileTree(File file) {
+    	if(file.isDirectory()) {
+	    	for(File f : file.listFiles()) {
+	    		deleteFileTree(f);
+	    	}
+    	}
+    	file.delete();
+    }
+    
+    /**
+     * Updates the documentation.
+     * On the front-end, user has 2 options: 
+     * - delete existing doc (which means deleting item from assetDTO.documentation)
+     * - upload new doc (which means item in assetDTO.uploadedFiles) 
+     * 
+     * 
+     * @param assetDTO
+     * @param compVersion
+     * @throws PersistenceException 
+     * @throws PersistenceException
+     * @throws InterruptedException 
+     * @throws IOException 
+     * @since BUGR-1600
+     */
+    private List<CompDocumentation> checkAssetDocumentation(AssetDTO assetDTO, CompVersion compVersion) throws PersistenceException {
+    	System.out.println("Enter checkAssetDocumentation");
+    	List<CompDocumentation> checkedDocs = new ArrayList<CompDocumentation>();
+    	List<CompDocumentation> docs = new ArrayList<CompDocumentation>();
+    	
+    	Map<Long, String> docTypesMap = getAllDocumentTypes();
+    	for(CompUploadedFile uf : assetDTO.getCompUploadedFiles()) {
+    		docs.add(convertUploadedFileToCompDocumentation(compVersion.getComponent(), uf.getUploadedFileName(), docTypesMap));
+    	}
+    	
+    	// if any doc was updated on front-end, assetDTO.documentation will contain it, and uploadedFiles will
+    	// contain it as well. need to remove old doc
+    	for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
+    		boolean found = false;
+    		for(CompDocumentation newDoc : docs) {
+				if(existingDoc.getDocumentName().equals(newDoc.getDocumentName()) &&
+						existingDoc.getDocumentType().equals(newDoc.getDocumentType())) {
+					checkedDocs.add(existingDoc);
+					found = true;
+					System.out.println("found: " + existingDoc.getUrl());
+				}
+    		}
+    		if(!found) { // delete from file system
+    			String rootDir = uploadedFilesRootDir;
+    	        if (!rootDir.endsWith("/")) {
+    	            rootDir += "/";
+    	        }
+    	        rootDir += existingDoc.getUrl();
+    			System.out.println("deleting: " + rootDir);
+    	        deleteFileTree(new File(rootDir));
+    		}
+		}
+    	
+    	// add uploaded docs
+    	for(int i = 0; i < docs.size(); i++) {
+			System.out.println("adding: " + docs.get(i).getDocumentName());
+			try {
+				checkedDocs.addAll(storeUploadedFile(compVersion, assetDTO.getCompUploadedFiles().get(i)));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	System.out.println("Exit checkAssetDocumentation");
+    	return checkedDocs;
+    }
+  
+    /**
      * <p>Populates <code>CompVersion</code>'s documentation collection from the
      * given <code>assetDTO.documentation</code>.</p>
      * @param assetDTO the original assetDTO to take data from
@@ -791,8 +893,11 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      */
     private void populateVersionDocumentation(AssetDTO assetDTO, EntityManager em,
             CompVersion compVersion)throws PersistenceException {
-        final List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
+    	System.out.println("Enter populateVersionDocumentation");
+        //final List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
+        
         try {
+        	// check if front-end added any compDocumentations, which means error
             for (CompDocumentation compDocumentation : assetDTO.getDocumentation()) {
                 // try to find each one
                 final CompDocumentation foundCompDocumentation = em.find(CompDocumentation.class, compDocumentation.getId());
@@ -801,9 +906,13 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                     throw new PersistenceException("Invalid parameter passed: there is no document with id="
                         + foundCompDocumentation.getId());
                 }
-                documentation.add(foundCompDocumentation);
+                //documentation.add(foundCompDocumentation); BUGR-1600
             }
-            compVersion.setDocumentation(documentation);
+            // BUGR-1600
+            compVersion.setDocumentation(checkAssetDocumentation(assetDTO, compVersion));
+            System.out.println("doc count=" + compVersion.getDocumentation().size());
+            System.out.println("Exit populateVersionDocumentation");
+            
         } catch (javax.persistence.PersistenceException e) {
             // any other errors, e.g. on JDBC level are wrapped to it
             throw new PersistenceException("Unexpected error: " + e.getMessage(), e);
@@ -814,6 +923,279 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         }
     }
 
+    /**
+     * Stores uploaded file in the file system.
+     * 
+     * @param file uploaded file
+     * @throws IOException 
+     * @throws InterruptedException 
+     * @since BUGR-1600
+     */
+    private List<CompDocumentation> storeUploadedFile(CompVersion version, CompUploadedFile uf) throws PersistenceException, IOException, InterruptedException {
+    	System.out.println("Enter storeUploadedFile with filename=" + uf.getUploadedFileName());
+    	System.out.println("ROOTDIR = " + uploadedFilesRootDir);
+    	Component component = version.getComponent(); 
+    	Long lngComponent = component.getId();
+    	Long lngVersion = version.getVersion();
+    	Map<Long, String> docTypesMap = getAllDocumentTypes();
+    	List<CompDocumentation> result = new ArrayList<CompDocumentation>();
+    	
+    	String remoteFileName = uf.getUploadedFileName();
+    	
+    	String rootDir = uploadedFilesRootDir;
+        if (!rootDir.endsWith("/")) {
+            rootDir += "/";
+        }
+        String dir = lngComponent + "/" + lngVersion + "/";
+
+
+                if (uf.getFileData().length > 0) {
+                    String fileName = remoteFileName;
+
+                    String componentName = component.getName().replace(' ', '_');
+                    //System.out.println(componentName.toLowerCase() + "_docs.jar" + "=" + fileName);	
+                    // Check if that's an archive with bundled documentation files
+                    if (fileName.replace(' ', '_').toLowerCase().equals(componentName.toLowerCase() + "_docs.jar")
+                            || fileName.replace(' ', '_').toLowerCase().equals(componentName.toLowerCase() + "_docs.zip")) {
+
+                    	fileName = fileName.replace(' ', '_');
+                        // Generate the name for temporary directory and create that directory
+                        File tmpDir = new File(rootDir, "tmp" + System.currentTimeMillis());
+                        while (tmpDir.exists()) {
+                            tmpDir = new File(rootDir, "tmp" + System.currentTimeMillis());
+                        }
+                        tmpDir.mkdirs();
+
+                        // Upload file to temporary directory
+                        File url = new File(tmpDir, fileName);
+                        FileOutputStream fos = new FileOutputStream(url);
+
+                        ByteArrayInputStream is = new ByteArrayInputStream(uf.getFileData());
+                        int b = is.read();
+                        while (b != -1) {
+                            fos.write(b);
+                            b = is.read();
+                        }
+                        fos.close();
+                        is.close();
+
+                        // Extract the documents from archive
+                        
+                        System.out.println("Executing: jar -xf " + url.getAbsolutePath() + " in " + tmpDir.getAbsolutePath());
+                        Process process = Runtime.getRuntime().exec("jar -xf " + url.getAbsolutePath(), new String[0], tmpDir);
+                        process.waitFor();
+
+                        // Delete the uploaded documentation archive
+                        url.delete();
+
+                        File componentDir = new File(rootDir, dir);
+                        componentDir.mkdirs();
+
+                        // Register documents to component and move the files to appropriate directory
+                        File[] docFiles = tmpDir.listFiles();
+                        for (int i = 0; i < docFiles.length; i++) {
+                            if (docFiles[i].isDirectory()) {
+                                continue;
+                            }
+
+                            File targetDocFile = new File(componentDir, docFiles[i].getName());
+                            System.out.println("need file: " + targetDocFile);
+
+                            // Check if the target file already exists, if so then report an error
+                            if (targetDocFile.exists()) {
+								// TEMP IGNORE
+								continue;
+                            	//throw new PersistenceException("The file " + targetDocFile.getName() + " already exists");
+                            } else {
+                                // Otherwise move the documentation file from temporary directory to component directory
+                                // and register document to component
+                                docFiles[i].renameTo(targetDocFile);
+
+                                // Parse the name and type of the document
+                                
+                                CompDocumentation parsedDoc = this.convertUploadedFileToCompDocumentation(component, targetDocFile.getName(), docTypesMap);
+                                
+                                /*Object[] nameType = parseDocumentNameAndType(componentName,
+                                                                             targetDocFile.getName(),
+                                                                             docTypesMap);
+*/
+                                // Extract the Javadocs
+                                if (parsedDoc.getDocumentTypeId() == CompDocumentation.JAVADOCS) {
+                                    File jDocDir = new File(targetDocFile.getParent(), "javadoc");
+                                    jDocDir.mkdir();
+                                    System.out.println("Executing: jar -xf " + targetDocFile.getAbsolutePath() + " in " + jDocDir.getAbsolutePath());
+                                    Runtime.getRuntime().exec("jar -xf " + targetDocFile.getAbsolutePath(), new String[0], jDocDir).waitFor();
+                                }
+
+                                // Create document and register it to component
+                                parsedDoc.setUrl(dir + docFiles[i].getName());
+                                result.add(parsedDoc);
+                                /*Document document = new Document((String) nameType[0],
+                                                                 dir + docFiles[i].getName(),
+                                                                 ((Long) nameType[1]).longValue());
+                                componentManager.addDocument(document);*/
+                            }
+                        }
+
+                        // Delete temporary directory
+                        deleteFileTree(tmpDir);
+
+                    } else {
+                    	// Get the name and type of the document
+                    	CompDocumentation parsedDoc = this.convertUploadedFileToCompDocumentation(component, fileName, docTypesMap);
+                        
+                        long lngType = parsedDoc.getDocumentTypeId();
+
+                        // Upload file
+                        String url = dir + remoteFileName;
+                        System.out.println("url=" + url);
+                        
+                        ByteArrayInputStream is = new ByteArrayInputStream(uf.getFileData());
+                        new File(rootDir, dir).mkdirs();
+                        System.out.println("path=" + new File(rootDir, dir).getAbsolutePath());
+                        File f = new File(rootDir, url);
+                        
+                        if (!f.exists()) {
+                            FileOutputStream fos = new FileOutputStream(f);
+                            int b = is.read();
+                            while (b != -1) {
+                                fos.write(b);
+                                b = is.read();
+                            }
+                            fos.close();
+                            is.close();
+
+                            // Extract the Javadocs
+                            if (lngType == CompDocumentation.JAVADOCS) {
+                                File jDocDir = new File(f.getParent(), "javadoc");
+                                jDocDir.mkdir();
+                                System.out.println("Executing: jar -xf " + f.getAbsolutePath() + " in " + jDocDir.getAbsolutePath());
+                                Runtime.getRuntime().exec("jar -xf " + f.getAbsolutePath(), new String[0], jDocDir);
+                            }
+
+                            // Add document to component
+                            parsedDoc.setUrl(url);
+                            result.add(parsedDoc);
+                        } else {
+							//TEMP IGNORE
+                        	//throw new PersistenceException("The file " + f.getName() + " already exists");
+                        }
+                    }
+                
+                }
+                System.out.println("Exit storeUploadedFile");
+                return result;
+    }
+    
+	/**
+	 * Gets document types in the form (id, type name).
+	 * 
+	 * @return map of document types, key is document type id, value is document description
+	 * @throws PersistenceException
+	 * @since BUGR-1600
+	 */
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	private Map<Long, String> getAllDocumentTypes() throws PersistenceException {
+		System.out.println("Enter getAllDocumentTypes");
+		Query query = getEntityManager().createNativeQuery("SELECT A.document_type_id, A.description FROM doc_types A WHERE A.status_id=1");
+		List result = query.getResultList();
+		Map<Long, String> docTypes = new HashMap<Long, String>();
+		for(int i = 0; i < result.size(); i++) {
+			Object[] dt = (Object[]) result.get(i);
+			Long id = ((BigDecimal)dt[0]).longValue();
+			//System.out.println(id + "=" + (String)dt[1]);
+			docTypes.put(id, (String)dt[1]);
+		}
+		System.out.println("Exit getAllDocumentTypes");
+		return docTypes;
+	}
+
+	/**
+	 * Makes a conversion of UploadedFile to CompDocumentation the following way:
+	 * <pre>
+A. If the filename starts with the component name:
+	1. Convert all whitespace in the filename into underscore characters.  So example “Widget Component Use Case Diagram Main.gif” would be converted into “Widget_Component_Use_Case_Diagram_Main.gif”.
+	2. Next it will attempt to strip out the component name.  So in our example, if the component name was “Widget Component”, it would strip it to become “Use_Case_Diagram_Main.gif”.
+	3. The file extension is also stripped so it becomes “Use_Case_Diagram_Main”
+	4. It would then look for any DocTypes that start the name. (If a “Use Case Diagram” DocType existed, then it would match this one.
+	5. If a match was found, then the name of the document becomes the description of the DocType + “-“ + anything left over.  So the final resulting name would be “Use Case Diagram – Main”.
+
+
+B. If the filename is either “javadocs.jar” or “msdndocs.zip”:
+	1. A DocType of Javadocs [id = 23] is used.
+	2. For MSDN Docs, the name is “XML Documentation”.  For javadocs, the name is “Javadocs”.
+
+C. If the filename does not match either of the above:
+   1. A default name of “Other (misc)” is used.
+   2. A DocType of Other (misc. documents) [id = 6] is used.
+	  </pre>
+	 * 
+	 * @param component component for which the uploaded doc belongs
+	 * @param fileName the name of the file being converted
+	 * @param docTypesMap map with key=document type id, value=document type description.
+	 * @return
+	 * @since BUGR-1600
+	 */
+    private CompDocumentation convertUploadedFileToCompDocumentation(Component component, String fileName, Map<Long, String> docTypesMap) {
+    	System.out.println("Enter convertUploadedFileToCompDocumentation with filename=" + fileName);
+    	CompDocumentation doc = new CompDocumentation();
+    	fileName = fileName.replace(' ', '_');
+    	String componentName = component.getName().replace(' ', '_');
+        // Set the default values for document name and document type
+        String name = "Other (misc)";
+        long lngType = 6;
+        // Parse the document name and document type from file name
+        if (fileName.startsWith(componentName + "_")) {
+            // Strip out the component name from the file name
+            fileName = fileName.substring(componentName.length() + 1);
+            // Strip out the filename extension
+            fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+            // Iterate over each existing document type and check if the file corresponds to that type
+            String docTypeName;
+            Long docTypeId;
+            Iterator<Long> iterator = docTypesMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                docTypeId = (Long) iterator.next();
+                docTypeName = docTypesMap.get(docTypeId).replace(' ', '_');
+
+                // If the file corresponds to current document type then try to parse the name of the
+                // document which is expected to follow after the type
+                if (fileName.startsWith(docTypeName)) {
+                    lngType = docTypeId.longValue();
+                    name = docTypeName;
+
+                    // Strip out the document type
+                    fileName = fileName.substring(docTypeName.length()).trim();
+
+                    // If something has left then that's the document name
+                    if (fileName.length() > 0) {
+                        name += " - " + fileName.trim();
+                    }
+                }
+            }
+        } else if (fileName.equalsIgnoreCase("javadocs.jar")) {
+            lngType = CompDocumentation.JAVADOCS;
+            name = "Javadocs";
+        } else if (fileName.equalsIgnoreCase("msdndocs.zip")) {
+            lngType = CompDocumentation.JAVADOCS;
+            name = "XML Documentation";
+        }
+
+        name = name.replace('_', ' ').trim();
+        
+        doc.setCompVersion(component.getCurrentVersion());
+        doc.setDocumentName(name);
+        doc.setDocumentType(docTypesMap.get(lngType));
+        doc.setDocumentTypeId(lngType);
+        System.out.println("DocumentName=" + doc.getDocumentName());
+        System.out.println("DocumentType=" + doc.getDocumentType());
+        System.out.println("DocumentTypeId=" + doc.getDocumentTypeId());
+        
+        System.out.println("Exit convertUploadedFileToCompDocumentation");
+        return doc;
+    }
+    
+    
     /**
      * <p>Populates <code>CompVersion</code>'s <code>CompVersionDates</code> map from the
      * given <code>assetDTO</code>.</p>
@@ -995,9 +1377,9 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
             checkString("versionText", assetDTO.getVersionText());
             checkList("technologies", assetDTO.getTechnologies());
             populateVersionTechnologies(assetDTO, getEntityManager(), versionToUpdate);
-            if (versionToUpdate.getDocumentation() != null && versionToUpdate.getDocumentation().size() > 0) {
-                populateVersionDocumentation(assetDTO, getEntityManager(), versionToUpdate);
-            }
+            /*if (versionToUpdate.getDocumentation() != null) {
+                populateVersionDocumentation(assetDTO, getEntityManager(), versionToUpdate, component); // BUGR-1600
+            }*/
             versionToUpdate.setVersionText(assetDTO.getVersionText());
             populateForumAndLink(assetDTO, versionToUpdate);
         }
