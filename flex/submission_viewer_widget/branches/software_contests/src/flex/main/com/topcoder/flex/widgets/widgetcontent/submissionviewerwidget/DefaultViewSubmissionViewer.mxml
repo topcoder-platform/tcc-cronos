@@ -257,6 +257,36 @@
                     list_minpage.select(activeSubmissionForMin.getItemAt(0));
                 }
             }
+            
+            // BUGR-1392
+            private function handleResize():void {
+            	if(!subViewer || !getSubmissionList()) return;
+            	list_minpage.columnCount = width/list_minpage.columnWidth;
+            	list_minpage.rowCount = (min_thumbnails.height - 10) /list_minpage.rowHeight;
+            	list_minpage.validateNow();
+            	list_minpage.dataProvider = null;
+            	activeSubmissionForMin.removeAll();
+            	/*while(currentIndexMinPage > 0 && currentIndexMinPage >= getSubmissionList().length / list_minpage.columnCount - list_minpage.rowCount) {
+            		currentIndexMinPage--;
+            	}*/
+            	list_minpage.validateDisplayList();
+            	currentIndexMinPage = 0;
+            	for (var i:int=0; i < list_minpage.rowCount; i++) {
+                    for (var j:int=0; j < list_minpage.columnCount; j++) {
+                        var k:int=(i + currentIndexMinPage) * list_minpage.columnCount + j;
+                        if (k < getSubmissionList().length) {
+                            var item:*=getSubmissionList().getItemAt(k);
+                            trace("Get item at " + k.toString() + " with id " + item.id);
+                            activeSubmissionForMin.addItem(getSubmissionList().getItemAt(k));
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                list_minpage.dataProvider = activeSubmissionForMin;
+                list_minpage.validateNow();
+                hideShowUpDownArrowMinPage();
+            }
         ]]>
     </mx:Script>
 
@@ -302,7 +332,10 @@
             <mx:VBox id="min_thumbnails"
                      width="100%"
                      horizontalAlign="center"
-                     height="100%">
+                     height="100%"
+                     paddingLeft="0"
+                     paddingTop="0"
+                     >
                 <tc:CustomTileList id="list_minpage"
                                    rowCount="4"
                                    height="100%"
@@ -319,7 +352,9 @@
                                    doubleClickEnabled="true"
                                    doubleClick="handleThumbDoubleClick()"
                                    allowMultipleSelection="false"
-                                   allowDragSelection="false"/>
+                                   allowDragSelection="false"
+                                   resize="{handleResize()}"
+                                   />
             </mx:VBox>
             <mx:VBox id="min_no_thumbnails">
                 <mx:Label fontFamily="Arial"

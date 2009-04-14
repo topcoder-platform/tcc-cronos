@@ -26,6 +26,7 @@
 
     <mx:Script>
         <![CDATA[
+        	import mx.events.ResizeEvent;
             import mx.core.Application;
             import mx.binding.utils.BindingUtils;
             import mx.controls.scrollClasses.ScrollBar;
@@ -134,6 +135,7 @@
                 this.restoreFn=function():void {
                     trace("@@@@ Restoring");
                     subViewer.selectedChild=minPage;
+                    minPage.list_minpage.dispatchEvent(new ResizeEvent("resize")); // BUGR-1392
                 }
 
                 // initialize webservices.
