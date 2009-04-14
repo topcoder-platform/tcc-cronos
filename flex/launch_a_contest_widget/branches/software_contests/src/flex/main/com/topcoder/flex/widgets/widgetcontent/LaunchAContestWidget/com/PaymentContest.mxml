@@ -206,7 +206,7 @@
 	</mx:VBox>
 	
 	<mx:ViewStack width="100%" id="stack" styleName="boxStyle">	
-		<com:PaymentWF id="wf1" paddingTop="20" paddingRight="6" horizontalGap="126" />
+		<com:PaymentWF id="wf1" paddingTop="20" paddingRight="6"  /> <!-- BUGR-1623 horizontalGap="126" -->
 		<com:PaymentWFCf id="wf2" paddingTop="20" paddingRight="6" />
 		<com:PaymentWFCfPO id="wf3" paddingTop="20" paddingRight="6" />
 	</mx:ViewStack>
