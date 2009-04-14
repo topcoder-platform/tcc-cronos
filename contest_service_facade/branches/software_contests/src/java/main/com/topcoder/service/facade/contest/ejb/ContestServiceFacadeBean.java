@@ -2107,7 +2107,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
 					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
 				}
-System.out.println("-------comp---comments------"+assetDTO.getCompComments());
+System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles());
 
 				if (contest.getProjectHeader() != null) 
 				{
@@ -2215,6 +2215,7 @@ System.out.println("-------comp---comments------"+assetDTO.getCompComments());
                 contest.setProjectPhases(projectData);
                 contest.setProjectResources(projectData.getResources());
                 contest.setProjectData(projectData);
+				contest.setId(projectData.getProjectHeader().getId());
             }
 
             return contest;
