@@ -15,6 +15,12 @@ import java.io.Serializable;
  * @since 1.1
  */
 public class CompDocumentation implements Serializable {
+	
+	/**
+	 * @since BUGR-1600
+	 */
+	public static final Long JAVADOCS = 23L;
+	
     /**
      * <p>This field represents the id of the entity.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>

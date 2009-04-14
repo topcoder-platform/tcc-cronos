@@ -4,6 +4,7 @@
 package com.topcoder.catalog.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +183,7 @@ public class CompVersion implements Serializable {
      * containing <code>null</code> is legal as well.</p>
      * @since 1.1
      */
-    private List<CompDocumentation> documentation;
+    private List<CompDocumentation> documentation = new ArrayList<CompDocumentation>(); // BUGR-1600
 
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>
@@ -467,8 +468,9 @@ public class CompVersion implements Serializable {
      * @param documentation the list of the documentation of the version.
      * @since 1.1
      */
-    public void setDocumentation(List<CompDocumentation> documentation) {
-        this.documentation = documentation;
+    public void setDocumentation(List<CompDocumentation> documentation) { // BUGR-1600
+    	this.documentation.clear();
+        this.documentation.addAll(documentation);
     }
 
     /**
