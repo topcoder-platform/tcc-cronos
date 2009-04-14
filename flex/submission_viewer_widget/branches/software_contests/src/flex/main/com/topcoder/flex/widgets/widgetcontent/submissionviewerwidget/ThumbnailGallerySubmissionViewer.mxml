@@ -617,6 +617,12 @@
                 if (noWinner) {
                     noWinner.visible=true;
                 }
+                if (noWinner1) {
+                    noWinner1.visible=true;
+                }
+                if (noWinner2) {
+                    noWinner2.visible=true;
+                }
             }
 
             /**
@@ -626,6 +632,14 @@
                 if (noWinner) {
                     noWinner.visible=false;
                     noWinner.selected=false;
+                }
+                if (noWinner1) {
+                    noWinner1.visible = false;
+                    noWinner1.selected=false;
+                }
+                if (noWinner2) {
+                    noWinner2.visible = false;
+                    noWinner2.selected=false;
                 }
             }
 
@@ -1412,6 +1426,10 @@
                                    click="goPrev()"
                                    visible="{model.canGoPrev(model.activeSubmission.getItemAt(0))}"/>
                         <mx:Spacer width="50%"/>
+                        <mx:CheckBox id="noWinner1" selected="{noWinner2.selected}"
+                                     styleName="CheckBoxStyle"
+                                     label="I cannot choose a winner."/>
+                        <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
                                   left="0"
@@ -1482,6 +1500,10 @@
                                    click="goPrev()"
                                    visible="{model.canGoPrev(model.activeSubmission.getItemAt(0))}"/>
                         <mx:Spacer width="50%"/>
+                        <mx:CheckBox id="noWinner2" selected="{noWinner.selected}"
+                                     styleName="CheckBoxStyle"
+                                     label="I cannot choose a winner."/>
+                        <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
                                   left="0"
@@ -1539,7 +1561,7 @@
                 </mx:ToggleButtonBar>
                 <mx:HBox horizontalGap="45"
                          id="contestActionBtnContainer">
-                    <mx:CheckBox id="noWinner"
+                    <mx:CheckBox id="noWinner" selected="{noWinner1.selected}"
                                  styleName="CheckBoxStyle"
                                  label="I cannot choose a winner."/>
                     <mx:CheckBox id="purchase"
