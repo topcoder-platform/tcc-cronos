@@ -1607,7 +1607,7 @@ public abstract class AbstractInformixPhasePersistence extends
                 for (Iterator it = oldCriteria.keySet().iterator(); it
                         .hasNext();) {
                     String name = (String) it.next();
-                    deleteStatement.setLong(i++, ((Long) lookUp.get(name))
+                    deleteStatement.setLong(++i, ((Long) lookUp.get(name))
                             .longValue());
                 }
 
