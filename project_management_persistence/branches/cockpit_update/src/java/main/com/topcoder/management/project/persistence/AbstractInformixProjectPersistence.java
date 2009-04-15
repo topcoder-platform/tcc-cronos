@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 import java.util.Map.Entry;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -30,6 +33,7 @@ import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
+import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
@@ -210,9 +214,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query all project categories.
      */
+
+		private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST = " select p.project_id as contest_id, "
+			+ " (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph "
+			+ " where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+			+ " (select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
+			+ " (select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+			+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+			+ "  pcl.name as contest_type, psl.name as status, "
+			+ " 0 as num_reg, "
+			+ " 0 as num_sub, "
+			+ " 0 as num_for, "
+			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, "
+			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id ";
+	
+	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_USER = " select p.project_id as contest_id, "
+	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
+	+ "where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
+	+ "(select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+	+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+	+ "  pcl.name as contest_type, psl.name as status, "
+	+ " 0 as num_reg, "
+	+ " 0 as num_sub, "
+	+ " 0 as num_for , "
+	+ " tc_direct_project_id as project_id, tcd.name, tcd.description, "
+	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+	+" and project.create_user= ";
+	
+	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
+	+		" (select ptl.name from phase_type_lu ptl where phase_type_id =    (select min(phase_type_id) from project_phase ph " 
+	+ "where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
+	+ "(select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+	+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+	+ "  pcl.name as contest_type, psl.name as status, "
+	+ " 0 as num_reg, "
+	+ " 0 as num_sub, "
+	+ " 0 as num_for, "
+	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, "
+	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+	+" and p.tc_direct_project_id= ";
     private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+		/**
+	 * Represents the column types for the result set which is returned by
+	 * executing the sql statement to query all project categories.
+	 */
+	private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] {
+			Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+			Helper.DATE_TYPE,Helper.DATE_TYPE,
+			Helper.STRING_TYPE, Helper.STRING_TYPE
+			, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  Helper.LONG_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -2169,8 +2231,232 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return projects;
         
 	}
-        
-    
-    
+	
+	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException,ParseException {
+
+		Connection conn = null;
+		try {
+			// create the connection
+			conn = openConnection();
+
+			// get the project objects
+			// find projects in the table.
+			Object[][] rows = Helper.doQuery(conn,
+					QUERY_ALL_SIMPLE_PROJECT_CONTEST, new Object[] {},
+					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+
+			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
+			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+			for(int i=0;i<rows.length;i++)
+			{
+				ret[i]=new SimpleProjectContestData();
+				ret[i].setContestId((Long)rows[i][0]);
+				// if have phase, use phase as stutus, otherwise use project status
+				if (rows[i][1] != null)
+				{
+					ret[i].setSname((String)rows[i][1]);
+				}
+				else
+				{
+					ret[i].setSname((String)rows[i][6]);
+				}
+				
+				ret[i].setCname((String)rows[i][2]);
+				if (rows[i][3] != null)
+				{
+					ret[i].setStartDate(myFmt.parse(rows[i][3].toString()));
+				}
+				if (rows[i][4] != null)
+				{
+					ret[i].setEndDate(myFmt.parse(rows[i][4].toString()));
+				}
+				
+				ret[i].setType((String)rows[i][5]);
+				ret[i].setNum_reg(new Integer(((Long)rows[i][7]).intValue()));
+				ret[i].setNum_sub(new Integer(((Long)rows[i][8]).intValue()));
+				ret[i].setNum_for(new Integer(((Long)rows[i][9]).intValue()));
+				ret[i].setProjectId((Long)rows[i][10]);
+				ret[i].setPname((String)rows[i][11]);
+				ret[i].setDescription((String)rows[i][12]);
+				if (rows[i][13] != null)
+				{
+					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+				}
+				
+			}
+			return Arrays.asList(ret);
+		} catch (PersistenceException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		} catch (ParseException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		}
+
+	}
+	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException,ParseException {
+
+		Connection conn = null;
+		try {
+			// create the connection
+			conn = openConnection();
+
+			// get the project objects
+			// find projects in the table.
+			Object[][] rows = Helper.doQuery(conn,
+					QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID+pid, new Object[] {},
+					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+
+			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
+			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+			for(int i=0;i<rows.length;i++)
+			{
+				ret[i]=new SimpleProjectContestData();
+				ret[i].setContestId((Long)rows[i][0]);
+				// if have phase, use phase as stutus, otherwise use project status
+				if (rows[i][1] != null)
+				{
+					ret[i].setSname((String)rows[i][1]);
+				}
+				else
+				{
+					ret[i].setSname((String)rows[i][6]);
+				}
+				
+				ret[i].setCname((String)rows[i][2]);
+				if (rows[i][3] != null)
+				{
+					ret[i].setStartDate(myFmt.parse(rows[i][3].toString()));
+				}
+				if (rows[i][4] != null)
+				{
+					ret[i].setEndDate(myFmt.parse(rows[i][4].toString()));
+				}
+				
+				ret[i].setType((String)rows[i][5]);
+				ret[i].setNum_reg(new Integer(((Long)rows[i][7]).intValue()));
+				ret[i].setNum_sub(new Integer(((Long)rows[i][8]).intValue()));
+				ret[i].setNum_for(new Integer(((Long)rows[i][9]).intValue()));
+				ret[i].setProjectId((Long)rows[i][10]);
+				ret[i].setPname((String)rows[i][11]);
+				ret[i].setDescription((String)rows[i][12]);
+				if (rows[i][13] != null)
+				{
+					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+				}
+				
+			}
+			return Arrays.asList(ret);
+		} catch (PersistenceException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		} catch (ParseException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		}
+
+	}
+	
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException,ParseException {
+
+		Connection conn = null;
+		try {
+			// create the connection
+			conn = openConnection();
+
+			// get the project objects
+			// find projects in the table.
+			Object[][] rows = Helper.doQuery(conn,
+					QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_USER+createdUser, new Object[] {},
+					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+
+			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
+			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+			for(int i=0;i<rows.length;i++)
+			{
+				ret[i]=new SimpleProjectContestData();
+				ret[i].setContestId((Long)rows[i][0]);
+				// if have phase, use phase as stutus, otherwise use project status
+				if (rows[i][1] != null)
+				{
+					ret[i].setSname((String)rows[i][1]);
+				}
+				else
+				{
+					ret[i].setSname((String)rows[i][6]);
+				}
+				
+				ret[i].setCname((String)rows[i][2]);
+				if (rows[i][3] != null)
+				{
+					ret[i].setStartDate(myFmt.parse(rows[i][3].toString()));
+				}
+				if (rows[i][4] != null)
+				{
+					ret[i].setEndDate(myFmt.parse(rows[i][4].toString()));
+				}
+				
+				ret[i].setType((String)rows[i][5]);
+				ret[i].setNum_reg(new Integer(((Long)rows[i][7]).intValue()));
+				ret[i].setNum_sub(new Integer(((Long)rows[i][8]).intValue()));
+				ret[i].setNum_for(new Integer(((Long)rows[i][9]).intValue()));
+				ret[i].setProjectId((Long)rows[i][10]);
+				ret[i].setPname((String)rows[i][11]);
+				ret[i].setDescription((String)rows[i][12]);
+				if (rows[i][13] != null)
+				{
+					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+				}
+				
+			}
+			return Arrays.asList(ret);
+		} catch (PersistenceException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		} catch (ParseException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		}
+
+	}
 
 }
