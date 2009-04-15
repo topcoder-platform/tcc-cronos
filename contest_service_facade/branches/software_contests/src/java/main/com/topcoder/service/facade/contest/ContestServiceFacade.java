@@ -832,7 +832,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+    public SoftwareCompetition updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException;
 
     /**

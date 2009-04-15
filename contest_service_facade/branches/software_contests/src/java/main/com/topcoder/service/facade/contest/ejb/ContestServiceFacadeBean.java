@@ -2160,7 +2160,7 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                     /*contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY,
                             assetDTO.getVersionId().toString());*/
                     contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY,
-                            assetDTO.getVersionId().toString());
+                            assetDTO.getCompVersionId().toString());
                     contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY,
                             assetDTO.getId().toString());
 					contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_SVN_MODULE_KEY, "");
@@ -2217,7 +2217,8 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                 contest.setProjectData(projectData);
 				contest.setId(projectData.getProjectHeader().getId());
             }
-
+System.out.println("-------------------------created : "+contest.getAssetDTO().getCompVersionId());
+System.out.println("-------------------------createdddd : "+contest.getAssetDTO().getVersionNumber());
             return contest;
 
 		}
@@ -2251,7 +2252,7 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+    public SoftwareCompetition updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
 					throws ContestServiceException
 	{
 		try
@@ -2259,7 +2260,9 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
 
 				if (contest.getAssetDTO() != null) 
 				{
-						this.catalogService.updateAsset(contest.getAssetDTO());
+						// TODO: for some reason, versionid is not passed
+						contest.getAssetDTO().setCompVersionId(contest.getAssetDTO().getVersionNumber());
+						contest.setAssetDTO(this.catalogService.updateAsset(contest.getAssetDTO()));
 				}
 
 				if (contest.getProjectHeader() != null) 
@@ -2284,6 +2287,8 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
 							allPhases[i].clearDependencies();
 						}
 				}
+				
+				return contest;
 
 		}
 		catch (com.topcoder.catalog.service.PersistenceException e) 
@@ -2474,8 +2479,9 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
 			{
 			}
 			
-			forumId = forums.createSoftwareComponentForums(asset.getName(), asset.getId(), asset.getVersionId(), 
-				                                                phaseId, Status.REQUESTED.getStatusId(), asset.getRootCategory().getId(), asset.getShortDescription(),
+			forumId = forums.createSoftwareComponentForums(asset.getName(), asset.getId(), asset.getCompVersionId(), 
+				                                                phaseId, Status.REQUESTED.getStatusId(), asset.getRootCategory().getId(), 
+				                                                asset.getShortDescription(),
 				                                                asset.getVersionText(), true);
 			if (forumId < 0) throw new Exception("createStudioForum returned -1");
 
