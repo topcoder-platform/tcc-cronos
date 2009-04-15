@@ -130,7 +130,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
         * Version id of this asset.
         */
-        public var versionId:Number;
+        public var compVersionId:Number;
 
         /**
         * Version number of this asset.
