@@ -253,10 +253,13 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
        
         // save the asset entity finally
         persistEntity(em, entityComponent);
-
-		//TEMP OUT
-		//populateVersionDocumentation(asset, em, compVersion); 
-
+        
+        
+		populateVersionDocumentation(asset, em, compVersion); // BUGR-1600.2
+		for(CompDocumentation doc : compVersion.getDocumentation()) { // BUGR-1600.2
+			mergeEntity(em, doc);
+		}
+		
 		// save version
         persistEntity(em, compVersion);
 
@@ -372,9 +375,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
 		 // BUGR-1600 update the compVersion with uploaded /removed docs and persist it again.
         // Note that we need component entity to be existing for this, so persist twice here
-
-		// TEMP IGNORE for now
-        //populateVersionDocumentation(asset, em, versionToUpdate); 
+        populateVersionDocumentation(asset, em, versionToUpdate); 
 		entityComponent.setCurrentVersion(versionToUpdate);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
@@ -841,19 +842,21 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      * @throws IOException 
      * @since BUGR-1600
      */
-    private List<CompDocumentation> checkAssetDocumentation(AssetDTO assetDTO, CompVersion compVersion) throws PersistenceException {
-    	System.out.println("Enter checkAssetDocumentation "  +compVersion);
+    private void checkAssetDocumentation(AssetDTO assetDTO, CompVersion compVersion) throws PersistenceException { // BUGR-1600.2 do not return value
+    	System.out.println("Enter checkAssetDocumentation");
+    	System.out.println("docs from asset=" + assetDTO.getCompUploadedFiles().size());
     	List<CompDocumentation> checkedDocs = new ArrayList<CompDocumentation>();
     	List<CompDocumentation> docs = new ArrayList<CompDocumentation>();
     	
     	Map<Long, String> docTypesMap = getAllDocumentTypes();
     	for(CompUploadedFile uf : assetDTO.getCompUploadedFiles()) {
+    		if(uf == null) continue;
     		docs.add(convertUploadedFileToCompDocumentation(compVersion.getComponent(), uf.getUploadedFileName(), docTypesMap));
     	}
     	
     	// if any doc was updated on front-end, assetDTO.documentation will contain it, and uploadedFiles will
     	// contain it as well. need to remove old doc
-		if (compVersion.getDocumentation() != null && compVersion.getDocumentation().size() > 0)
+		if (compVersion.getDocumentation() != null && compVersion.getDocumentation().size() > 0) // BUGR-1600.2
 		{
 
 			for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
@@ -867,6 +870,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 					}
 				}
 				if(!found) { // delete from file system
+					compVersion.getDocumentation().remove(existingDoc); // BUGR-1600.2
 					String rootDir = uploadedFilesRootDir;
 					if (!rootDir.endsWith("/")) {
 						rootDir += "/";
@@ -882,7 +886,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     	for(int i = 0; i < docs.size(); i++) {
 			System.out.println("adding: " + docs.get(i).getDocumentName());
 			try {
-				checkedDocs.addAll(storeUploadedFile(compVersion, assetDTO.getCompUploadedFiles().get(i)));
+				compVersion.getDocumentation().addAll(storeUploadedFile(compVersion, assetDTO.getCompUploadedFiles().get(i)));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -892,7 +896,6 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 			}
     	}
     	System.out.println("Exit checkAssetDocumentation");
-    	return checkedDocs;
     }
   
     /**
@@ -921,8 +924,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                 }
                 //documentation.add(foundCompDocumentation); BUGR-1600
             }
-            // BUGR-1600
-            compVersion.setDocumentation(checkAssetDocumentation(assetDTO, compVersion));
+            // BUGR-1600.2
+            checkAssetDocumentation(assetDTO, compVersion);
             System.out.println("doc count=" + compVersion.getDocumentation().size());
             System.out.println("Exit populateVersionDocumentation");
             
@@ -1027,7 +1030,6 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                                 // Parse the name and type of the document
                                 
                                 CompDocumentation parsedDoc = this.convertUploadedFileToCompDocumentation(component, targetDocFile.getName(), docTypesMap);
-                                
                                 /*Object[] nameType = parseDocumentNameAndType(componentName,
                                                                              targetDocFile.getName(),
                                                                              docTypesMap);
