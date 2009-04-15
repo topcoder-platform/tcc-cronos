@@ -106,7 +106,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", "compComments",
                                            "compUploadedFiles", "detailedDescription", "functionalDescription", "rootCategory", "categories",
 											  "technologies", "productionDate", "link", "forum", "isCurrentVersionAlsoLatestVersion",
-											  "versionId", "userIds", "informationComplete", "documentation",  "phase", "dependencies"})
+											  "compVersionId", "userIds", "informationComplete", "documentation",  "phase", "dependencies"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -214,7 +214,7 @@ public class AssetDTO implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
      */
-    private Long versionId;
+    private Long compVersionId;
     /**
      * <p>This field represents the users of the asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
@@ -577,8 +577,8 @@ public class AssetDTO implements Serializable {
      * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
      * @param versionId the id of the asset's version.
      */
-    public void setVersionId(Long versionId) {
-        this.versionId = versionId;
+    public void setCompVersionId(Long compVersionId) {
+        this.compVersionId = compVersionId;
     }
 
     /**
@@ -586,8 +586,8 @@ public class AssetDTO implements Serializable {
      *
      * @return the id of the asset's version.
      */
-    public Long getVersionId() {
-        return versionId;
+    public Long getCompVersionId() {
+        return compVersionId;
     }
 
     /**

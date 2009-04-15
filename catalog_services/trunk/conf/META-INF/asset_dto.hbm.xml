@@ -12,7 +12,7 @@
     -->
     <class name="com.topcoder.catalog.service.AssetDTO" abstract="true">
         <id name="id" column="component_id"/>
-        <property name="versionId" column="comp_vers_id"/>
+        <property name="compVersionId" column="comp_vers_id"/>
         <property name="name" column="component_name"/>
         <property name="shortDescription" column="short_desc"/>
         <property name="versionText" column="version_text"/>

@@ -254,7 +254,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // save the asset entity finally
         persistEntity(em, entityComponent);
 
-		populateVersionDocumentation(asset, em, compVersion); 
+		//TEMP OUT
+		//populateVersionDocumentation(asset, em, compVersion); 
 
 		// save version
         persistEntity(em, compVersion);
@@ -263,7 +264,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
         // populate with ids of just stored entities
         asset.setId(entityComponent.getId());
-        asset.setVersionId(compVersion.getId());
+        asset.setCompVersionId(compVersion.getId());
+		asset.setVersionNumber(compVersion.getId());
 
         // and return it
         return asset;
@@ -318,7 +320,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         persistEntity(em, compVersion);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
-        asset.setVersionId(compVersion.getId()); // populate the versionId
+        asset.setCompVersionId(compVersion.getId()); // populate the versionId
         return asset;
     }
 
@@ -345,27 +347,34 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     public AssetDTO updateAsset(AssetDTO asset) throws PersistenceException, EntityNotFoundException {
         checkNotNull("asset", asset);
         checkComponentIdNotNull(asset);
+
         final EntityManager em = getEntityManager();
         // retrieve the asset entity
         final Component entityComponent = findComponentById(asset.getId());
         CompVersion versionToUpdate = null;
-        if (asset.getVersionId() != null) { // if there is a version to update
+        if (asset.getCompVersionId() != null) { // if there is a version to update
             for (CompVersion compVersion : entityComponent.getVersions()) {
-                if (compVersion.getId().equals(asset.getVersionId())) {
+                if (compVersion.getId().equals(asset.getCompVersionId())) {
                     versionToUpdate = compVersion;
                     break;
                 }
             }
             if (versionToUpdate == null) {
-                throw new EntityNotFoundException("CompVersion with id=" + asset.getVersionId() + " not found");
+                throw new EntityNotFoundException("CompVersion with id=" + asset.getCompVersionId() + " not found");
             }
         }
+		else
+		{
+			throw new EntityNotFoundException("Asset Version Id is null");
+		}
         // update the asset entity
         updateAsset(asset, entityComponent, versionToUpdate);
 
 		 // BUGR-1600 update the compVersion with uploaded /removed docs and persist it again.
         // Note that we need component entity to be existing for this, so persist twice here
-        populateVersionDocumentation(asset, em, versionToUpdate); 
+
+		// TEMP IGNORE for now
+        //populateVersionDocumentation(asset, em, versionToUpdate); 
 		entityComponent.setCurrentVersion(versionToUpdate);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
@@ -686,7 +695,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         }
 
         // set version properties
-        assetDTO.setVersionId(compVersion.getId());
+        assetDTO.setCompVersionId(compVersion.getId());
         assetDTO.setVersionText(compVersion.getVersionText());
         assetDTO.setVersionNumber(compVersion.getVersion());
         // force lazy collection
@@ -833,7 +842,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      * @since BUGR-1600
      */
     private List<CompDocumentation> checkAssetDocumentation(AssetDTO assetDTO, CompVersion compVersion) throws PersistenceException {
-    	System.out.println("Enter checkAssetDocumentation");
+    	System.out.println("Enter checkAssetDocumentation "  +compVersion);
     	List<CompDocumentation> checkedDocs = new ArrayList<CompDocumentation>();
     	List<CompDocumentation> docs = new ArrayList<CompDocumentation>();
     	
@@ -844,7 +853,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     	
     	// if any doc was updated on front-end, assetDTO.documentation will contain it, and uploadedFiles will
     	// contain it as well. need to remove old doc
-		if (compVersion.getDocumentation() != null && compVersion.getDocumentation().size > 0)
+		if (compVersion.getDocumentation() != null && compVersion.getDocumentation().size() > 0)
 		{
 
 			for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
@@ -1606,7 +1615,7 @@ C. If the filename does not match either of the above:
      * @throws IllegalArgumentException if <code>asset.versionId</code> is not <code>null</code>
      */
     private void checkNullVersionId(AssetDTO asset) {
-        if (asset.getVersionId() != null) {
+        if (asset.getCompVersionId() != null) {
             throw new IllegalArgumentException("CompVersion already has id=" + asset.getId()
                 + " and cannot be created.");
         }
