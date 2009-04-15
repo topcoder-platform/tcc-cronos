@@ -3,9 +3,12 @@
  */
 package com.topcoder.project.service;
 
+import java.text.ParseException;
 import java.util.List;
 
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.search.builder.filter.Filter;
 
@@ -401,4 +404,13 @@ public interface ProjectServices {
      * @since Module Contest Service Software Contest Sales Assembly
      */
     public boolean removeContestSale(long contestSaleId) throws ProjectServicesException;
+
+	public List<SimpleProjectContestData> getSimpleProjectContestData()
+			throws ProjectServicesException;
+
+	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
+			throws ProjectServicesException;
+
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
+			String user) throws ProjectServicesException;
 }

@@ -3,9 +3,12 @@
  */
 package com.topcoder.project.service.ejb;
 
+import java.text.ParseException;
 import java.util.List;
 
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.project.service.ConfigurationException;
@@ -817,4 +820,67 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }
 }
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<SimpleProjectContestData> getSimpleProjectContestData()
+			throws ProjectServicesException {
+
+		String method = "ProjectServicesBean#getSimpleProjectContestData() method.";
+
+		Util.log(logger, Level.INFO, "Enters " + method);
+
+		try {
+
+			if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+
+				return getProjectServices().getSimpleProjectContestData();
+			} else {
+				 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+				 return getProjectServices().getSimpleProjectContestDataByUser(String.valueOf(p.getUserId()));
+			}
+		} catch (ProjectServicesException e) {
+			Util.log(logger, Level.ERROR,
+					"ProjectServicesException occurred in " + method);
+			throw e;
+		} finally {
+			Util.log(logger, Level.INFO, "Exits " + method);
+		}
+
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
+			throws ProjectServicesException {
+		String method = "ProjectServicesBean#getSimpleProjectContestData(pid) method.";
+
+		Util.log(logger, Level.INFO, "Enters " + method);
+
+		try {
+			return getProjectServices().getSimpleProjectContestData(pid);
+		} catch (ProjectServicesException e) {
+			Util.log(logger, Level.ERROR,
+					"ProjectServicesException occurred in " + method);
+			throw e;
+		} finally {
+			Util.log(logger, Level.INFO, "Exits " + method);
+		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
+			String user) throws ProjectServicesException {
+		String method = "ProjectServicesBean#getSimpleProjectContestDataByUser(user) method.";
+
+		Util.log(logger, Level.INFO, "Enters " + method);
+
+		try {
+			return getProjectServices().getSimpleProjectContestDataByUser(user);
+		} catch (ProjectServicesException e) {
+			Util.log(logger, Level.ERROR,
+					"ProjectServicesException occurred in " + method);
+			throw e;
+		} finally {
+			Util.log(logger, Level.INFO, "Exits " + method);
+		}
+	}
 }

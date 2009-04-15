@@ -3,6 +3,7 @@
  */
 package com.topcoder.project.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
+import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
@@ -1699,4 +1701,112 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
+
+	public List<SimpleProjectContestData> getSimpleProjectContestData()
+			throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getSimpleProjectContestData method.");
+
+		// represents the active projects
+		List<SimpleProjectContestData> ret = null;
+		try {
+			// find all projects which have tc direct project id
+			logDebug("Starts calling ProjectManager#getSimpleProjectContestData method.");
+
+			ret = projectManager.getSimpleProjectContestData();
+
+			logDebug("Finished calling ProjectManager#getSimpleProjectContestData method.");
+
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} catch (ParseException e) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
+			throw new ProjectServicesException(
+					"ParseException occurred when operating ProjectManager.", e);
+
+		}
+
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
+		return ret;
+	}
+
+	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
+			throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getSimpleProjectContestData method.");
+
+		// represents the active projects
+		List<SimpleProjectContestData> ret = null;
+		try {
+			// find all projects which have tc direct project id
+			logDebug("Starts calling ProjectManager#getSimpleProjectContestData method.");
+
+			ret = projectManager.getSimpleProjectContestData(pid);
+
+			logDebug("Finished calling ProjectManager#getSimpleProjectContestData method.");
+
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} catch (ParseException e) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
+			throw new ProjectServicesException(
+					"ParseException occurred when operating ProjectManager.", e);
+
+		}
+
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
+		return ret;
+	}
+
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
+			String user) throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
+
+		// represents the active projects
+		List<SimpleProjectContestData> ret = null;
+		try {
+			// find all projects which have tc direct project id
+			logDebug("Starts calling ProjectManager#getSimpleProjectContestDataByUser method.");
+
+			ret = projectManager.getSimpleProjectContestDataByUser(user);
+
+			logDebug("Finished calling ProjectManager#getSimpleProjectContestDataByUser method.");
+
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} catch (ParseException e) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
+			throw new ProjectServicesException(
+					"ParseException occurred when operating ProjectManager.", e);
+
+		}
+
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
+		return ret;
+	}
 }
