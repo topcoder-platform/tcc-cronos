@@ -228,7 +228,7 @@
 	
 	                    var textName:Text=new Text();
 	                    hbox2.addChild(textName);
-	                    textName.text= (x is CompDocumentation ? x.url : x.fileName);
+	                    textName.text= (x is CompDocumentation ? x.url : x.uploadedFileName);
 	
 	                    var spacer:Spacer=new Spacer();
 	                    attachedFilesVBox.addChild(spacer);

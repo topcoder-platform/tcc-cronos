@@ -3,6 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import mx.controls.Alert;
    	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DocumentType;
@@ -213,7 +214,9 @@
 
 				var nameText:Text=new Text();
 				hbox2.addChild(nameText);
-				nameText.text= existing ? doc.url : doc.uploadedFileName;
+				var x:String;
+				
+				nameText.text = existing ? doc.url.substr(doc.url.lastIndexOf("/") + 1) : doc.uploadedFileName;
 
 				var hbox3:HBox=new HBox();
 				docVBox.addChild(hbox3);
@@ -263,6 +266,7 @@
 	                    var doc:CompDocumentation=box.data as CompDocumentation;
 	
 	                    var index:int=this.mainWidget.softwareCompetition.assetDTO.documentation.indexOf(doc);
+	                    //mx.controls.Alert.show("removing comp docu file " + index);
 	                    if (index != -1) {
 	                        this.mainWidget.softwareCompetition.assetDTO.documentation.splice(index, 1);
 	                    }
@@ -273,7 +277,8 @@
 	                	var x:CompUploadedFile=box.data as CompUploadedFile;
 	
 	                    var index:int=this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.indexOf(x);
-	                    if (index != -1) {
+	                    //mx.controls.Alert.show("removing uploaded file " + index);
+	                	if (index != -1) {
 	                        this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.splice(index, 1);
 	                    }
 	                    trace("removed upload");

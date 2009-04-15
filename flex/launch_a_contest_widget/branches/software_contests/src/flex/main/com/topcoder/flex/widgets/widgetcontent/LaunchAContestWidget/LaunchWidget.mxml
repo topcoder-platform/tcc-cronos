@@ -634,7 +634,7 @@
                     }
 
                     //validate input at specification page. (4)
-                    if (specf.validateFieldsEx2(true, true) == false) {
+                    if (studioContestType && specf.validateFieldsEx2(true, true) == false) { // BUGR-1600.2
                         return;
                     }
 
