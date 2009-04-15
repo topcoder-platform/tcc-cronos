@@ -12,6 +12,7 @@
      @since Submission Viewer Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
          width="100%"
          height="100%"
          paddingTop="0"
@@ -121,14 +122,14 @@
                 verticalScrollPolicy="off">
             <mx:Box width="100%"
                     horizontalAlign="center">
-                <mx:Image id="thumbnail"
-                          width="100%"
-                          height="100%"
-                          source="{data.fullsizepreview}"
-                          complete="adjustImage()"
-                          doubleClickEnabled="true"
-                          doubleClick="{openSubmissionInNewWindow()}"
-                          />  <!-- BUGR-1664 -->
+                <tc:TCImage id="thumbnail"
+                            width="100%"
+                            height="100%"
+                            source="{data.fullsizepreview}"
+                            complete="adjustImage()"
+                            doubleClickEnabled="true"
+                            doubleClick="{openSubmissionInNewWindow()}"
+                            />  <!-- BUGR-1664 -->
             </mx:Box>
         </mx:Box>
         <mx:HBox width="100%"

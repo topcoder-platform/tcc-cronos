@@ -335,7 +335,7 @@
                      height="100%"
                      paddingLeft="0"
                      paddingTop="0"
-                     >
+                     creationPolicy="all">
                 <tc:CustomTileList id="list_minpage"
                                    rowCount="4"
                                    height="100%"

@@ -12,6 +12,7 @@
      @since Submission Viewer Overhaul
 -->
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
          width="100%"
          height="100%"
          paddingTop="10"
@@ -120,11 +121,12 @@
                  verticalAlign="middle">
             <mx:Box width="100%"
                     horizontalAlign="center">
-                <mx:Image id="thumbnail"
-                          width="100%"
-                          height="100%"
-                          source="{model.selectedImage}"
-                          complete="adjustImage()"/>
+                <tc:TCImage id="thumbnail"
+                            width="100%"
+                            height="100%"
+                            source="{model.selectedImage}"
+                            complete="adjustImage()"
+                            autoLoad="true"/>
             </mx:Box>
             <mx:HBox width="100%"
                      horizontalAlign="center">

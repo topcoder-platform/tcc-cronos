@@ -11,6 +11,7 @@
      @since Submission Viewer Overhaul
 -->
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+                xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
                 width="180"
                 height="206"
                 verticalScrollPolicy="off"
@@ -92,7 +93,7 @@
                  paddingBottom="0"
                  verticalScrollPolicy="off"
                  horizontalScrollPolicy="off">
-            <mx:Image id="thumbnail_empty"
+            <tc:TCImage id="thumbnail_empty"
                       width="151"
                       height="151"
                       source="@Embed(source='../../assets/dragdrop-box.png')"
