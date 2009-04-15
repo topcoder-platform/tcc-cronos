@@ -122,7 +122,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                     // determine property type based on typeInfo XML "type" attribute matching that property name
                     var propertyClassName:String=typeInfo.factory.variable.(@name == key).@type.toString().replace(/::/, ".");
                     
-                    trace("Property key: " + key + ", propertyClassName: " + propertyClassName + ", toClass: " + classNameTo);
+                    trace("Property key: " + key + ", propertyClassName: " + propertyClassName + ", of-Class: " + classNameTo);
 
                     // only continue if target class contains this property and type lookup is successful
                     if (propertyClassName != null && propertyClassName != "")
@@ -145,7 +145,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                                 }
                             }
                         }
-                        else { 
+                        else {
                             var propertyClass:Class=getClassByName(propertyClassName);
                             // make recursive call to traverse any potential nested custom classes for this property
                             fromObj[key]=translate(fromObj[key], propertyClass)as propertyClass;
@@ -153,6 +153,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                         
                         trace("Result OBJ: " + fromObj[key]);
                     }
+                }
+            }
+            
+            if (classNameTo == "Object") {
+                if (classNameFrom == "int" || classNameFrom == "long" || classNameFrom == "double" || classNameFrom == "short" || classNameFrom == "float") {
+                    return fromObj as Number;            
+                } else if (classNameFrom == "String") {
+                    return fromObj as String;
+                } else {
+                    return fromObj.toString();
                 }
             }
 
