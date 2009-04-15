@@ -62,6 +62,7 @@
 <%@ page import="com.topcoder.service.payment.TCPurhcaseOrderPaymentData" %>
 <%@ page import="com.topcoder.service.payment.PaymentResult" %>
 <%@ page import="com.topcoder.project.service.ContestSaleData" %>
+<%@ page import="com.topcoder.service.facade.contest.CommonProjectContestData" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%!
 SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throws ContestServiceException {
@@ -391,7 +392,8 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             ;
         } else if ("getContestPayment".equals(operation)) {
             String cid = request.getParameter("cid7");
-            ContestPaymentData p = port.getContestPayment(Long.parseLong(cid));
+            List<ContestPaymentData> pl = port.getContestPayments(Long.parseLong(cid));
+			ContestPaymentData p = (ContestPaymentData)pl.get(1);
             callResult = "Retrieved contest payment details: <br/> Payment: contest ID = " + p.getContestId()
                          + ", date = " + p.getCreateDate() + ", status = " + p.getPaymentStatusId()
                          + ", price = " + p.getPrice() + ", PayPal Order ID = " + p.getPaypalOrderId();
@@ -811,6 +813,31 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
 
             callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getReferenceNumber();
         }
+        else if ("getSimpleProjectContestDatapid".equals(operation)) {
+        	String pid = request.getParameter("apid3");
+            StringBuilder b = new StringBuilder();
+            List<CommonProjectContestData> cs = port.getCommonProjectContestDataByPID(Long.parseLong(pid));
+            for (CommonProjectContestData c : cs) {
+                b.append("    ProjectId: ID = ").append(c.getProjectId()).append(", pname= ").append(c.getPname()).append(", cname = ").append(c.getCname()).
+                append(", status = ").append(c.getSname()).append(", startTime = ").append(c.getStartDate()).    
+                append(", forumId = ").append(c.getForumId()).    
+                append(", desc = ").append(c.getDescription()).    
+                append("<br/>");
+            }
+            callResult = "Retrieved mediums:<br/>" + b.toString();
+        } 
+        else if ("getSimpleProjectContestData".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            List<CommonProjectContestData> cs = port.getCommonProjectContestData();
+            for (CommonProjectContestData c : cs) {
+                b.append("    ProjectId: ID = ").append(c.getProjectId()).append(", cname = ").append(c.getCname()).
+                append(", startTime = ").append(c.getStartDate()).    
+                append(", forumId = ").append(c.getForumId()).    
+                append(", desc = ").append(c.getDescription()).    
+                append("<br/>");
+            }
+            callResult = "Retrieved mediums:<br/>" + b.toString();
+        } 
 
     } catch (Throwable e) {
         error = e;

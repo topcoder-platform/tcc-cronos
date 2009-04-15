@@ -61,6 +61,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.studio.submission.Prize;
@@ -2208,7 +2209,7 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                 for (int i = 0; i < allPhases.length; i++) {
                     allPhases[i].setProject(null);
                     allPhases[i].clearDependencies();
-					allPhases[i].clearAttributes();
+					//allPhases[i].clearAttributes();
                 }
 
                 contest.setProjectHeader(projectData.getProjectHeader());
@@ -2521,6 +2522,95 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
             sessionContext.setRollbackOnly();
             throw e;
         }
+    }
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException
+    {
+    	List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
+        for(SimpleProjectContestData data:studioService.getSimpleProjectContestData(pid)){
+        	CommonProjectContestData newData=new CommonProjectContestData();
+        	newData.setCname(data.getCname());
+        	newData.setContestId(data.getContestId());
+
+        	newData.setPname(data.getPname());
+        	newData.setDescription(data.getDescription());
+        	newData.setEndDate(data.getEndDate());
+        	newData.setForumId(data.getForumId());
+        	newData.setNum_for(data.getNum_for());
+        	newData.setNum_reg(data.getNum_reg());
+        	newData.setNum_sub(data.getNum_sub());
+        	newData.setProjectId(data.getProjectId());
+        	newData.setSname(data.getSname());
+        	newData.setStartDate(data.getStartDate());
+			newData.setType("Studio");
+        	ret.add(newData);
+        }
+        for(com.topcoder.management.project.SimpleProjectContestData data:projectServices.getSimpleProjectContestData(pid)){
+        	CommonProjectContestData newData=new CommonProjectContestData();
+        	newData.setCname(data.getCname());
+        	newData.setContestId(data.getContestId());
+			newData.setProjectId(data.getProjectId());
+        	newData.setPname(data.getPname());
+        	newData.setDescription(data.getDescription());
+        	newData.setEndDate(getXMLGregorianCalendar(data.getEndDate()));
+        	newData.setForumId(data.getForumId());
+        	newData.setNum_for(data.getNum_for());
+        	newData.setNum_reg(data.getNum_reg());
+        	newData.setNum_sub(data.getNum_sub());
+        	newData.setProjectId(data.getProjectId());
+        	newData.setSname(data.getSname());
+        	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
+        	ret.add(newData);
+        }
+    	return  ret;
+    }
+
+	/**
+     * <p>Gets the list of all existing contests for my project widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException {
+        List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
+        for(SimpleProjectContestData data:studioService.getSimpleProjectContestData()){
+        	CommonProjectContestData newData=new CommonProjectContestData();
+        	newData.setCname(data.getCname());
+        	newData.setContestId(data.getContestId());
+			newData.setProjectId(data.getProjectId());
+        	newData.setPname(data.getPname());
+        	newData.setDescription(data.getDescription());
+        	newData.setEndDate(data.getEndDate());
+        	newData.setForumId(data.getForumId());
+        	newData.setNum_for(data.getNum_for());
+        	newData.setNum_reg(data.getNum_reg());
+        	newData.setNum_sub(data.getNum_sub());
+        	newData.setProjectId(data.getProjectId());
+        	newData.setSname(data.getSname());
+        	newData.setStartDate(data.getStartDate());
+        	ret.add(newData);
+        }
+        for(com.topcoder.management.project.SimpleProjectContestData data:projectServices.getSimpleProjectContestData()){
+        	CommonProjectContestData newData=new CommonProjectContestData();
+        	newData.setCname(data.getCname());
+        	newData.setContestId(data.getContestId());
+			newData.setProjectId(data.getProjectId());
+        	newData.setPname(data.getPname());
+        	newData.setDescription(data.getDescription());
+        	newData.setEndDate(getXMLGregorianCalendar(data.getEndDate()));
+        	newData.setForumId(data.getForumId());
+        	newData.setNum_for(data.getNum_for());
+        	newData.setNum_reg(data.getNum_reg());
+        	newData.setNum_sub(data.getNum_sub());
+        	newData.setProjectId(data.getProjectId());
+        	newData.setSname(data.getSname());
+        	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
+        	ret.add(newData);
+        }
+    	return  ret;
     }
 
 

@@ -295,6 +295,16 @@ public interface ContestServiceFacade {
      */
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
+
+	/**
+     * <p>Gets the list of all existing contests for my project widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException;
+
     /**
      * <p>
      * Gets the list of all existing contests related to given project for my project widget.
@@ -306,7 +316,7 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(long pid) throws PersistenceException;
+    public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException;
 
     /**
      * <p>Gets the list of existing contests matching the specified criteria.</p>
