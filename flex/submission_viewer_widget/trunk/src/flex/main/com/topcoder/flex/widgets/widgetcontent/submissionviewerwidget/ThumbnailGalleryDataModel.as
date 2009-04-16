@@ -22,7 +22,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         /**
          * Singleton instance of this model class.
          */
-        private static var _instance:ThumbnailGalleryDataModel;
+        //private static var _instance:ThumbnailGalleryDataModel;
 
         /**
          * Reference to the main submission viewer widget.
@@ -103,12 +103,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          *
          * @return singleton instance of this model class.
          */
-        public static function get instance():ThumbnailGalleryDataModel {
+        /*public static function get instance():ThumbnailGalleryDataModel {
             if (!_instance) {
                 _instance=new ThumbnailGalleryDataModel();
             }
             return _instance;
-        }
+        }*/
 
         /**
          * Initializes this model.
@@ -126,6 +126,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 ranked.label=str;
                 ranked.thumbnail="";
                 ranked.showClose=false;
+                ranked.parentModel=this;
 
                 var rankedProxy:ObjectProxy=new ObjectProxy(ranked);
                 rankedSubmissionList.addItem(rankedProxy);
@@ -252,6 +253,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     ranked.label=rankLabel[index] as String;
                     ranked.thumbnail="";
                     ranked.showClose=false;
+                    ranked.parentModel=this;
 
                     var rankedProxy:ObjectProxy=new ObjectProxy(ranked);
 
@@ -291,6 +293,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 rankObj.id=data.id;
                 rankObj.label=rankLabel[i] as String;
                 rankObj.purchased=data.id ? data.purchased : false;
+                rankObj.parentModel=this;
 
                 rankedSubmissionList.setItemAt(rankObjProxy, i);
             } else {
@@ -300,6 +303,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 rankObj.id=0;
                 rankObj.label=rankLabel[i] as String;
                 rankObj.purchased=false;
+                rankObj.parentModel=this;
 
                 rankedSubmissionList.setItemAt(rankObjProxy, i);        
             }
@@ -322,6 +326,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     ranked.label=rankLabel[index] as String;
                     ranked.thumbnail="";
                     ranked.showClose=false;
+                    ranked.parentModel=this;
 
                     var rankedProxy:ObjectProxy=new ObjectProxy(ranked);
                     rankedSubmissionList.setItemAt(rankedProxy, index);
@@ -426,6 +431,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 ranked.label=str;
                 ranked.thumbnail="";
                 ranked.showClose=false;
+                ranked.parentModel=this;
 
                 var rankedProxy:ObjectProxy=new ObjectProxy(ranked);
                 rankedSubmissionList.addItem(rankedProxy);

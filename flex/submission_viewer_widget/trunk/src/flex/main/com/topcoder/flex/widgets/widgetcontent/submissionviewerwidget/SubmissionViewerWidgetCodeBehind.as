@@ -34,8 +34,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.rpc.soap.mxml.WebService;
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
-    
-    import flash.events.Event;
 
     /**
      * <p>
@@ -267,6 +265,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public var _isLocalTesting:Boolean=false;
 
         /**
+         * Instance of data model class for thumbnail gallery view.
+         */
+        public var model:ThumbnailGalleryDataModel;
+
+        /**
          * SubmissionViewerWidgetCodeBehind constructor.
          */
         public function SubmissionViewerWidgetCodeBehind() {
@@ -315,6 +318,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             this._moneyFormatter.precision=2;
             this._moneyFormatter.useThousandsSeparator=true;
             this._moneyFormatter.useNegativeSign=true;
+            
+            this.model=new ThumbnailGalleryDataModel();
         }
 
         /**
@@ -1203,6 +1208,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                 for (var i:int=0; i < submissions.length; i++) {
                     var sub:Object=new Object();
+                    
+                    sub.parentModel=this.model;
 
                     sub.id=submissions[i].submissionId;
                     
@@ -1542,7 +1549,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @param checkoutPage the ui page from where to read the purchase data.
          */
         public function updatePurchaseToWS(checkoutPage:SubmissionsCheckoutPage):void {
-            this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
+            
 
             var header:SOAPHeader=getHeader(this.username, this.password);
 

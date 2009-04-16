@@ -18,12 +18,15 @@
                                      width="100%"
                                      height="100%"
                                      styleName="NewWidgetPanel"
-                                     horizontalAlign="left">
+                                     horizontalAlign="left"
+									 resizeEffect="{resize}">
+
 
     <mx:Style source="Style.css"/>
 
     <mx:Script>
         <![CDATA[
+        	import mx.events.ResizeEvent;
             import mx.core.Application;
             import mx.binding.utils.BindingUtils;
             import mx.controls.scrollClasses.ScrollBar;
@@ -87,6 +90,8 @@
              */
             private function init():void {
                 trace("----------------------- init");
+                
+                this.model.subViewer=this;
 
                 // assigns itself to various child viewers.
                 ThumbnailGallerySubmissionViewer(gallery).subViewer=this;
@@ -132,6 +137,7 @@
                 this.restoreFn=function():void {
                     trace("@@@@ Restoring");
                     subViewer.selectedChild=minPage;
+                    minPage.list_minpage.dispatchEvent(new ResizeEvent("resize")); // BUGR-1392
                 }
 
                 // initialize webservices.
@@ -191,6 +197,7 @@
                 hideLoadingProgress();
 
                 Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
                     this.paymentReferenceNumber=event.result as String;
 
@@ -208,6 +215,7 @@
                 hideLoadingProgress();
 
                 Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
                     this.paymentReferenceNumber=event.result as String;
 
@@ -461,4 +469,5 @@
         <tc:SubmissionsCheckoutPage id="submissionCheckoutScreen"/>
         <tc:SubmissionsDownloadPage id="submissionsDownloadScreen"/>
     </mx:ViewStack>
+  <mx:Resize id="resize" /> 
 </tc:SubmissionViewerWidgetCodeBehind>

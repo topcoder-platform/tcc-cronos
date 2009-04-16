@@ -16,7 +16,7 @@
                 verticalScrollPolicy="off"
                 horizontalScrollPolicy="off"
                 borderStyle="none"
-                showCloseButton="{ThumbnailGalleryDataModel.instance.isRankMode &amp;&amp; data &amp;&amp; data.showClose}"
+                showCloseButton="{data.parentModel.isRankMode &amp;&amp; data &amp;&amp; data.showClose}"
                 close="removeRank()">
     <mx:Script>
         <![CDATA[
@@ -60,9 +60,9 @@
              * Handler for removing the sumbission from the rank box.
              */
             private function removeRank():void {
-                var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+                //var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
                 if (data) {
-                    model.removeRank(data.id as Number);
+                    data.parentModel.removeRank(data.id as Number);
                 }
             }
 

@@ -27,8 +27,8 @@
             /**
              * Reference to the gallery view model class.
              */
-            [Bindable]
-            private var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+            //[Bindable]
+            //private var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
 
             /**
              * Event handler for double click on submission.
@@ -38,11 +38,11 @@
              * @param event mouse event.
              */
             private function handleDoubleClick(event:MouseEvent):void {
-                model.setCurrentSubmission(data.id);
+                data.parentModel.setCurrentSubmission(data.id);
                 if (data.hasOwnProperty("multi") && data.multi == true) {
-                    model.selectedIndex=2
+                    data.parentModel.selectedIndex=2
                 } else {
-                    model.selectedIndex=1;
+                    data.parentModel.selectedIndex=1;
                 }
             }
 
@@ -50,21 +50,21 @@
              * Handler for showing preview of this submission.
              */
             private function handleShowPrev():void {
-                model.selectedSubmission=this.data;
+                data.parentModel.selectedSubmission=this.data;
             }
 
             /**
              * Handler for hiding preview of this submission.
              */
             private function handleHidePrev():void {
-                model.selectedSubmission=null;
+                data.parentModel.selectedSubmission=null;
             }
 
             /**
              * Handler for thumb up/down.
              */
             private function updateUpDown(up:Boolean):void {
-                if (!model.isRankMode) {
+                if (!data.parentModel.isRankMode) {
                     return;
                 }
                 
@@ -112,12 +112,12 @@
         <mx:Label text="{data.id}"
                   styleName="normalText"/>
         <mx:Button id="upData"
-                   styleName="{model.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
+                   styleName="{data.parentModel.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
                    click="updateUpDown(true)"
                    selected="{data.upDown == 'up'}"
                    toolTip="Feel Good"/>
         <mx:Button id="downData"
-                   styleName="{model.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
+                   styleName="{data.parentModel.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
                    click="updateUpDown(false)"
                    selected="{data.upDown == 'down'}"
                    toolTip="Not Interested"/>
