@@ -119,13 +119,11 @@
                 } else {
                     ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
-                    ns_funcDesc.htmlText="";
                     ns_detailedDesc.htmlText="";
                     ns_comments.htmlText="";
 
                     ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
-                    ns_funcDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.functionalDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
                     ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
 
@@ -429,12 +427,6 @@
                     }
                 }
 
-                if (ns_funcDesc.text == "") {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please enter functional description" + (showPageName ? " at Details Page" : ""));
-                        return false;
-                    }
-                }
 
                 if (ns_detailedDesc.text == "") {
                     if (showMsg) {
@@ -447,7 +439,7 @@
                 // technology, catalog name and categories are required fields.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (_boundCurrentTechnologies.length == 0) {
+                if (_boundCurrentTechnologies.length == 0 && !(this.mainWidget.competitionType == "SPECIFICATION" || this.mainWidget.competitionType == "CONCEPTUALIZATION")) {
                     if (showMsg) {
                         Helper.showAlertMessage("Please select some technologies" + (showPageName ? " at Details Page" : ""));
                         return false;
@@ -470,9 +462,8 @@
 
                 this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
                 this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
-                this.mainWidget.softwareCompetition.assetDTO.functionalDescription=ns_funcDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
-                this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.htmlText;
+                this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
 
                 // assign root category.
                 this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
@@ -502,7 +493,6 @@
 
                 this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
                 this.mainWidget.review.ns_shortDescStr=ns_shortDesc.text;
-                this.mainWidget.review.ns_funcDescStr=ns_funcDesc.text;
                 this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
                 this.mainWidget.review.ns_commentsStr=ns_comments.text;
                 this.mainWidget.review.ns_techListData=new ArrayCollection();
@@ -644,7 +634,7 @@
 	        	// BUGR-1641
 				// The rich text editors in this view
 				var rtEditors:Array = [
-	        		introInput, glsInput, ns_shortDesc, ns_funcDesc, ns_detailedDesc, ns_comments
+	        		introInput, glsInput, ns_shortDesc, ns_detailedDesc
 	        	];
 
 				for each (var rtEditor:TCRichTextEditor in rtEditors) {
@@ -949,32 +939,11 @@
                 </mx:Text>
                 <tc:TCRichTextEditor id="ns_shortDesc"
                                      width="500"
-                                     height="200"
-                                     minHeight="200" />
+                                     height="130"
+                                     minHeight="100" />
             </mx:VBox>
 
             <mx:Spacer height="5"/>
-
-            <mx:VBox width="100%"
-                     verticalGap="5">
-                <mx:HBox>
-                    <mx:Label text="Functional Description:"
-                              fontWeight="bold"/>
-                    <mx:Spacer width="270"/>
-                    <mx:LinkButton label="[+ show hint]"/>
-                </mx:HBox>
-                <mx:Text id="ns_funcDescHint"
-                         height="0"
-                         color="0x888888"
-                         width="500"
-                         visible="false"
-                         verticalCenter="top">
-                </mx:Text>
-                <tc:TCRichTextEditor id="ns_funcDesc"
-                                     width="500"
-                                     height="200"
-                                     minHeight="200" />
-            </mx:VBox>
 
             <mx:VBox width="100%"
                      verticalGap="0">
@@ -993,7 +962,7 @@
                 </mx:Text>
                 <tc:TCRichTextEditor id="ns_detailedDesc"
                                      width="500"
-                                     height="200"
+                                     height="360"
                                      minHeight="200" />
             </mx:VBox>
 
@@ -1001,7 +970,7 @@
                  since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                  Updated logic to handle add/remove of technologies both on button click and double click.
             -->
-            <mx:VBox verticalGap="0">
+            <mx:VBox id="tech1" verticalGap="0">
                 <mx:HBox>
                     <mx:Label text="Master Technologies:"
                               fontWeight="bold"/>
@@ -1018,14 +987,14 @@
                          verticalCenter="top"/>
             </mx:VBox>
 
-            <mx:HBox verticalAlign="top">
+            <mx:HBox id="tech2" verticalAlign="top">
                 <mx:List id="ns_masterTech"
                          width="225"
                          dataProvider="{_boundMasterTechnologies}"
                          doubleClickEnabled="true"
                          doubleClick="addToCurrentTechList(null)"
 			 allowMultipleSelection="true"/>
-                <mx:VBox verticalAlign="middle">
+                <mx:VBox height="150" verticalAlign="middle">
                     <mx:Button id="toCurrentTechList"
                                label=">"
                                click="addToCurrentTechList(null)"/>
@@ -1045,20 +1014,14 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
-                    <mx:Label text="Comments:"
+                    <mx:Label text="Clients:"
                               fontWeight="bold"/>
                     <mx:Spacer width="327"/>
                     <mx:LinkButton label="[+ show hint]"/>
                 </mx:HBox>
-                <mx:Text id="ns_commentsHints"
-                         height="0"
-                         color="0x888888"
-                         width="500"
-                         visible="false"/>
-                <tc:TCRichTextEditor id="ns_comments"
-                                     width="500"
-                                     height="200"
-                                     minHeight="200" />
+                <mx:TextInput id="ns_comments"
+                                  width="308"
+                                  maxChars="100"/>
             </mx:VBox>
 
             <mx:Spacer height="5"/>
@@ -1116,7 +1079,7 @@
                          doubleClickEnabled="true"
                          doubleClick="addToCurrentCategoryList(null)"
                          allowMultipleSelection="true" />
-                <mx:VBox verticalAlign="middle">
+                <mx:VBox height="150" verticalAlign="middle">
                     <mx:Button id="toCurrentCategoryList"
                                label=">"
                                click="addToCurrentCategoryList(null)"/>

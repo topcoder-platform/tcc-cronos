@@ -566,6 +566,19 @@
                   
                     setPreviousStep(step2box);
                     setCurStep(step3box);
+					
+                    if (contestSelect.contestType.selectedValue == "SPECIFICATION" || contestSelect.contestType.selectedValue == "CONCEPTUALIZATION" ){
+                       details.tech1.visible = false;
+                       details.tech2.visible = false;
+                       details.tech1.includeInLayout = false;
+                       details.tech2.includeInLayout = false;
+					} else {
+					   details.tech1.visible = true;
+                       details.tech2.visible = true;
+                       details.tech1.includeInLayout = true;
+                       details.tech2.includeInLayout = true;
+					}
+                    
                 } else if (this.currentState == "DetailsState") {
                     //validate input
                     if (details.validateFields() == false) {
