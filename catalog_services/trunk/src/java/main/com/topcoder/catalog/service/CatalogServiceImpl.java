@@ -768,7 +768,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         throws PersistenceException {
         // check the version text and the technologies are valid
         checkString("versionText", assetDTO.getVersionText());
-        checkList("technologies", assetDTO.getTechnologies());
+		// techonogies can be null for conceptualization and specification
+        //checkList("technologies", assetDTO.getTechnologies());
         List<CompDocumentation> documentation = assetDTO.getDocumentation();
         checkNotNull("documentation", documentation);
         if (documentation.contains(null)) {
@@ -1385,12 +1386,12 @@ C. If the filename does not match either of the above:
         checkString("name", assetDTO.getName());
         checkString("shortDescription", assetDTO.getShortDescription());
         checkString("detailedDescription", assetDTO.getDetailedDescription());
-        checkString("functionalDescription", assetDTO.getFunctionalDescription());
+        //checkString("functionalDescription", assetDTO.getFunctionalDescription());
         checkNotNull("rootCategory", assetDTO.getRootCategory());
         checkList("categories", assetDTO.getCategories());
         if (versionToUpdate != null) {
             checkString("versionText", assetDTO.getVersionText());
-            checkList("technologies", assetDTO.getTechnologies());
+            //checkList("technologies", assetDTO.getTechnologies());
             populateVersionTechnologies(assetDTO, getEntityManager(), versionToUpdate);
             /*if (versionToUpdate.getDocumentation() != null) {
                 populateVersionDocumentation(assetDTO, getEntityManager(), versionToUpdate, component); // BUGR-1600
