@@ -32,7 +32,7 @@
              * Reference to the gallery view model class.
              */
             [Bindable]
-            private var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+            public var model:ThumbnailGalleryDataModel;
 
             /**
              * Handler for thumb up/down.

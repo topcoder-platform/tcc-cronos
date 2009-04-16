@@ -66,7 +66,7 @@
              *    - other required properties.
              */
             [Bindable]
-            public var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+            public var model:ThumbnailGalleryDataModel;
 
             /**
              * Reference to the parent submission viewer widget.
@@ -91,6 +91,8 @@
             private var prjInDanger:Class;
 
             private var _status:int;
+            
+            private var _isInitialized:Boolean=false;
 
             // setter and getter of status propriety
             // the status change the icon and the color of the label
@@ -146,7 +148,12 @@
              */
             public function set subViewer(viewer:SubmissionViewerWidget):void {
                 this._subViewer=viewer;
-                model.subViewer=viewer;
+                this.model=viewer.model;
+                if (_isInitialized) {
+                    this.simpleSubViewer.model=this.model;
+                    this.multiSubViewer.model=this.model;
+                    this.multiImageViewer.model=this.model;
+                }
             }
 
             /**
@@ -167,7 +174,12 @@
              * This component simply calls handleComplete and handleSubComplete through timers, to produce smooth effect.
              */
             private function init():void {
-                trace("@@@@@@@@@@ CALLING CREATION COMPLETE @@@@@@@@@");
+                trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALLING CREATION COMPLETE: " + this.model);
+                _isInitialized=true;
+                this.simpleSubViewer.model=this.model;
+                this.multiSubViewer.model=this.model;
+                this.multiImageViewer.model=this.model;
+                
                 timer=new Timer(200, 1);
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleComplete);
                 subTimer=new Timer(200, 1);
@@ -1528,9 +1540,9 @@
                     </mx:HBox>
                     <mx:HRule width="100%"/>
                 </mx:VBox>
-                <tc:SimpleSubmissionView width="100%"/>
-                <tc:MultiSubmissionView width="100%"/>
-                <tc:MultiImageView width="100%"/>
+                <tc:SimpleSubmissionView id="simpleSubViewer" width="100%"/>
+                <tc:MultiSubmissionView id="multiSubViewer" width="100%"/>
+                <tc:MultiImageView id="multiImageViewer" width="100%"/>
             </mx:ViewStack>
         </mx:Canvas>
 

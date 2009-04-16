@@ -90,6 +90,8 @@
              */
             private function init():void {
                 trace("----------------------- init");
+                
+                this.model.subViewer=this;
 
                 // assigns itself to various child viewers.
                 ThumbnailGallerySubmissionViewer(gallery).subViewer=this;
