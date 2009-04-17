@@ -370,13 +370,16 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 		{
 			throw new EntityNotFoundException("Asset Version Id is null");
 		}
+
+		entityComponent.setCurrentVersion(versionToUpdate);
+
         // update the asset entity
         updateAsset(asset, entityComponent, versionToUpdate);
 
 		 // BUGR-1600 update the compVersion with uploaded /removed docs and persist it again.
         // Note that we need component entity to be existing for this, so persist twice here
         populateVersionDocumentation(asset, em, versionToUpdate); 
-		entityComponent.setCurrentVersion(versionToUpdate);
+		
         // update the asset entity finally
         mergeEntity(em, entityComponent);
 
@@ -1161,6 +1164,8 @@ C. If the filename does not match either of the above:
         String name = "Other (misc)";
         long lngType = 6;
         // Parse the document name and document type from file name
+		// COMMMENT OUT FOR NOW, assume it is RS
+		/*
         if (fileName.startsWith(componentName + "_")) {
             // Strip out the component name from the file name
             fileName = fileName.substring(componentName.length() + 1);
@@ -1195,14 +1200,14 @@ C. If the filename does not match either of the above:
         } else if (fileName.equalsIgnoreCase("msdndocs.zip")) {
             lngType = CompDocumentation.JAVADOCS;
             name = "XML Documentation";
-        }
+        }*/
 
         name = name.replace('_', ' ').trim();
         
         doc.setCompVersion(component.getCurrentVersion());
-        doc.setDocumentName(name);
-        doc.setDocumentType(docTypesMap.get(lngType));
-        doc.setDocumentTypeId(lngType);
+        doc.setDocumentName("Requirements Specification");
+        doc.setDocumentType("Requirements Specification");//docTypesMap.get(lngType));
+        doc.setDocumentTypeId(0L);//lngType);
         System.out.println("DocumentName=" + doc.getDocumentName());
         System.out.println("DocumentType=" + doc.getDocumentType());
         System.out.println("DocumentTypeId=" + doc.getDocumentTypeId());
