@@ -1,10 +1,13 @@
 package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 {
+    import flash.display.Loader;
     import flash.events.Event;
 
     import mx.controls.Image;
 
     public class TCImage extends Image {
+        private var loader:Loader = null;
+
         public function TCImage() {
             super();
 
@@ -15,8 +18,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 
         private function handleSourceChanged(event:Event):void {
             // load the image immediately, once the source is set
-            this.visible = true;
-            this.load(this.source);
+            if (loader == null) {
+                loader = new Loader();
+                loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleLoadComplete);
+            }
+        }
+
+        private function handleLoadComplete(event:Event):void {
+            this.source = event.currentTarget.content;
             this.validateNow();
         }
     }
