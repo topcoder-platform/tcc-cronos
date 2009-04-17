@@ -59,6 +59,8 @@
 
 			// BUGR-1600
 			private var catalogFile:CompUploadedFile;
+			// BUGR-1735
+			private var catalogDocNum:int=0;
 
             public function initData():void {
                 uploadFilesVBox.removeAllChildren();
@@ -197,6 +199,8 @@
 
 			// BUGR-1600
 			private function addCatalogDoc(doc:Object, existing:Boolean = true):void {
+				// BUGR-1735
+				catalogDocNum++;
 				var docVBox:VBox=new VBox();
 				docVBox.percentWidth=100;
 				if(existing) {
@@ -262,6 +266,8 @@
                 if (e && e.target) {
                     var button:LinkButton=e.target as LinkButton;
                     var box:VBox=button.data as VBox;
+                    // BUGR-1735
+                    catalogDocNum--;
                     if(box.data is CompDocumentation) {
 	                    var doc:CompDocumentation=box.data as CompDocumentation;
 	
@@ -344,6 +350,12 @@
             private function uploadFile():void {
             	if (file== null || file.name == ""){
             		Helper.showAlertMessage("Please select a file to upload");
+            		return;
+            	}
+            	// BUGR-1735
+            	if(!mainWidget.studioContestType && this.catalogDocNum>0)
+            	{
+            		Helper.showAlertMessage("Only one file can be upload for software contest.");
             		return;
             	}
             	
