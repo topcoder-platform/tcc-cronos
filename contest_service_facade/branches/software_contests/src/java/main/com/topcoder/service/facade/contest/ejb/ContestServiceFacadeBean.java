@@ -2281,6 +2281,12 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
 						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 						FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
 								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+
+						contest.setProjectHeader(projectData.getProjectHeader());
+						contest.setProjectPhases(projectData);
+						contest.setProjectResources(projectData.getResources());
+						contest.setProjectData(projectData);
+						contest.setId(projectData.getProjectHeader().getId());
 						com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
 						// this is to avoid cycle
 						for (int i = 0; i < allPhases.length; i++) {
