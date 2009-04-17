@@ -178,7 +178,7 @@
 	    private function getDataService():void
 	    {	
 		    dataservice.getPassword();
-		    dataservice.isUserInRole.send();
+		    dataservice.isAdmin.send();
         }
 
             private function processPassword(e:ResultEvent):void {
@@ -1075,11 +1075,8 @@
                    result="processPassword(event)"
                    fault="handleError(event)"/>
 
-        <mx:method name="isUserInRole"  result="processRole(event)"
+        <mx:method name="isAdmin"  result="processRole(event)"
              fault="handleError(event)">
-             <mx:arguments>
-             <role>Cockpit Administrator</role>
-             </mx:arguments>
              </mx:method>
     </mx:RemoteObject>
 
