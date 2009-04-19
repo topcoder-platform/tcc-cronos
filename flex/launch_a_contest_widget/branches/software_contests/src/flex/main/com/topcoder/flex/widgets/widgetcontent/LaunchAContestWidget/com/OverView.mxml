@@ -17,7 +17,12 @@
                     result="loadExamples(event)"
                     fault="Helper.showAlertMessage(event.fault.faultString);">
     </mx:HTTPService>
-
+    <mx:HTTPService id="requestContestFees"
+                    url="/i/cockpit/data/launch_a_contest/contestFees.xml"
+                    resultFormat="e4x"
+                    result="loadContestFees(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService> <!-- BUGR-1737 -->
     <mx:Script>
         <![CDATA[
             import mx.effects.easing.Back;
@@ -48,27 +53,31 @@
             private var contestOverview:XML;
 
             [Bindable]
+            private var contestFees:XML;
+            
+            [Bindable]
             private var curContestType:int;
 
             public function initData():void {
                 requestContestExamples.send();
-
+				requestContestFees.send(); // BUGR-1737
 
                 //var inputsMap:Object={1: firstPlace, 2: secondPlace, 3: thirdPlace, 4: fourthPlace, 5: fifthPlace};
 
                 for each (var inptName:String in s_inputs) {
                     this[inptName].text="";
                 }
-
-                //
+               	//
                 // For now contest types need to be loaded only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget.studioContestType) {
                     requestContestTypes.send();
+                    adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
                 } else {
-                    ns_setPrizes();
+                	ns_contestf.editable = mainWidget.isAdmin; // BUGR-1737
+                	ns_setPrizes();
                 }
             }
 
@@ -201,6 +210,8 @@
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
                 curContestType=Number(studioType.selectedValue);
+
+                adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
                 dispatchEvent(new Event("curContestTypeChanged"));
             }
 
@@ -223,10 +234,13 @@
                 }
 
                 if (sum > 0) {
-                    adminf.text=new Number(sum * 0.2).toFixed(2);
-                    cntstTtl.text=new Number(sum * 1.2).toFixed(2);
+                	if(isNaN(Number(adminf.text))) { // BUGR-1737
+                		adminf.text="";	
+                	}
+                    // adminf.text=new Number(sum * 0.2).toFixed(2); BUGR-1737
+                    cntstTtl.text= (sum + Number(adminf.text)).toFixed(2); // BUGR-1737
                 } else {
-                    adminf.text="";
+                    // adminf.text=""; BUGR-1737
                     cntstTtl.text="";
                 }
             }
@@ -244,6 +258,11 @@
                     return false;
                 }
 
+				if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) <= 0) { // BUGR-1737
+					Helper.showAlertMessage("Admin Fee not set");
+                    ns_reviewCost.setFocus();
+                    return false;
+				}
                 //
                 // Update competition and review data for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -302,6 +321,12 @@
 
                     return false;
                 }
+                
+             	if(mainWidget.isAdmin && isNaN(Number(adminf.text)) || Number(adminf.text) <= 0) { // BUGR-1737
+					Helper.showAlertMessage("Admin Fee not set");
+                    adminf.setFocus();
+                    return false;
+				}
                 // BUGR-1363
                 var diff:Number=mainWidget.getExtraContestFee();
                 if (diff < 0) {
@@ -330,6 +355,18 @@
                 }
             }
 
+            // since BUGR-1737
+            private function loadContestFees(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    contestFees=e.result as XML;
+       				if(!mainWidget.studioContestType) {
+						ns_contestf.text = contestFees.contestType.(@id==mainWidget.competitionType).contestFee; // BUGR-1737       					
+       				} else {
+       					adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
+                	}
+               }
+            }
+            
             [Bindable(event="curContestTypeChanged")]
             private function isPresentXml(prop:String):Boolean {
                 //trace("curContestType=" + curContestType + "; prop=" + prop + "; res=" + contestOverview.contestType.(@id==curContestType).hasOwnProperty(prop));
@@ -387,7 +424,7 @@
                     ns_secondPlace.text="";
                     ns_dr.text="";
                     ns_reviewCost.text="";
-                    ns_contestf.text="";
+                    // ns_contestf.text=""; BUGR-1737
                     ns_cntstTtl.text="";
                     return;
                 }
@@ -395,7 +432,7 @@
                 if (firstPlace > 0) {
                     ns_secondPlace.text=new Number(firstPlace * 0.5).toFixed(0);
                     ns_dr.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
-                    ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(2);
+                    // ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(2); BUGR-1737
                     ns_cntstTtl.text=(new Number(ns_firstPlace.text) + new Number(ns_secondPlace.text) + new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(2);
                 }
             }
@@ -734,7 +771,7 @@
                         <mx:TextInput id="adminf"
                                       text=""
                                       width="55"
-                                      editable="false"/>
+                                      /> <!-- BUGR-1737 -->
                         <mx:TextInput id="cntstTtl"
                                       text=""
                                       width="55"
@@ -798,8 +835,8 @@
                         <mx:TextInput id="ns_contestf"
                                       text=""
                                       width="55"
-                                      editable="false"
-                                      borderStyle="none"/>
+                                      borderStyle="none"
+                                      /> <!-- BUGR-1737 -->
                         <mx:TextInput id="ns_cntstTtl"
                                       text=""
                                       width="55"

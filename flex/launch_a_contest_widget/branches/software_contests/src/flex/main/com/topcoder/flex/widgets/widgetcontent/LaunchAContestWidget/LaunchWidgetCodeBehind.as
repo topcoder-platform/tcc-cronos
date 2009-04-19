@@ -4,6 +4,7 @@
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.Helper;
     import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.util.progress.ProgressWindowManager;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.SoftwareCompetitionUtils;
@@ -21,6 +22,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
     
     import flash.display.DisplayObject;
+    import flash.display.DisplayObjectContainer;
     import flash.net.URLRequest;
     import flash.net.navigateToURL;
     import flash.utils.Dictionary;
@@ -28,15 +30,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.collections.ArrayCollection;
     import mx.containers.VBox;
     import mx.core.Application;
+    import mx.events.FlexEvent;
     import mx.rpc.AbstractOperation;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
-    import mx.events.FlexEvent;
-    
-    // BUGR-1393
-	import com.topcoder.flex.util.progress.ProgressWindowManager;
-	import flash.display.DisplayObjectContainer;
 
     /**
      * <p>
@@ -120,6 +118,34 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable]
         private var _competitionType:String;
 
+		/**
+		 * Placed here instead of LaunchWidget
+		 * @since BUGR-1737
+		 */ 
+		[Bindable]
+        protected var _isAdmin:Boolean;
+            
+        /**
+        * @since BUGR-1737
+        */     
+        public function get isAdmin():Boolean {
+        	return _isAdmin;
+        }    
+
+		/**
+		 * If user is software admin
+		 * @since BUGR-1737
+		 */ 
+		[Bindable]
+        protected var _isSoftwareAdmin:Boolean;
+            
+        /**
+        * @since BUGR-1737
+        */     
+        public function get isSoftwareAdmin():Boolean {
+        	return _isSoftwareAdmin;
+        }  
+                    
         /**
          * ProjectWidgetCodeBehind constructor.
          */

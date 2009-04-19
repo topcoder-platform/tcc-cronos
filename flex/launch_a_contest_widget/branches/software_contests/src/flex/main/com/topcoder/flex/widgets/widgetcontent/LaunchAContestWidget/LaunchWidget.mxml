@@ -78,8 +78,8 @@
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
 
 
-            [Bindable]
-            private var isAdmin:Boolean;
+            //[Bindable]
+            //private var isAdmin:Boolean;
             private var _tcDirectProjectId:String;
             
             //
@@ -178,7 +178,8 @@
 	    private function getDataService():void
 	    {	
 		    dataservice.getPassword();
-		    dataservice.isAdmin.send();
+		    dataservice.isSoftwareAdmin.send(); // BUGR-1737
+		    dataservice.isAdmin.send(); // BUGR-1737
         }
 
             private function processPassword(e:ResultEvent):void {
@@ -958,11 +959,20 @@
                 next();
             }
             
-        private function processRole(e:ResultEvent): void
+        // BUGR-1737 changed name    
+        private function processAdminRole(e:ResultEvent): void
 	    {
 			if(e!=null && e.result!=null){
-				isAdmin=e.result as Boolean;
-				this.contestSelect.contestType.enabled=isAdmin;
+				_isAdmin=e.result as Boolean;
+			}
+	    }
+	    
+	   	// BUGR-1737
+	    private function processSoftwareAdminRole(e:ResultEvent): void
+	    {
+			if(e!=null && e.result!=null){
+				_isSoftwareAdmin=e.result as Boolean;
+				this.contestSelect.contestType.enabled=isSoftwareAdmin;
 			}
 	    }
         ]]>
@@ -1075,9 +1085,13 @@
                    result="processPassword(event)"
                    fault="handleError(event)"/>
 
-        <mx:method name="isAdmin"  result="processRole(event)"
+        <mx:method name="isAdmin"  result="processAdminRole(event)"
              fault="handleError(event)">
              </mx:method>
+             
+ 		<mx:method name="isSoftwareAdmin"  result="processSoftwareAdminRole(event)"
+             fault="handleError(event)">
+             </mx:method>             
     </mx:RemoteObject>
 
     <!--<mx:Spacer height="5" />-->
