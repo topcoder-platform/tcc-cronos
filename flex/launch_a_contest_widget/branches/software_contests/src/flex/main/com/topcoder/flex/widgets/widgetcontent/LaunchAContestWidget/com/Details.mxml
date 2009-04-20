@@ -317,13 +317,19 @@
             // load active categories from web-service.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
-            private function loadCategories():void {
+            public function loadCategories():void { // BUGR-1678
                 var getActiveCategoriesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveCategories");
                 getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
                 getActiveCategoriesOp.send();
             }
 
-            //
+			// BUGR-1678
+			private function isDesOrDevContestType():Boolean {
+				return mainWidget.softwareCompetition && 
+					(mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
+					mainWidget.softwareCompetition.type == "DESIGN");
+			}
+			//
             // handled for load of active categories from web-service.
             // this method identifies the child / parent relationship as mentioned in 1.1.4
             // and groups the categories into root and child categories.
@@ -333,6 +339,8 @@
             //
             private function handleCategoriesLoad(e:ResultEvent):void {
                 trace("handleCategoriesLoad: " + e + ", " + e.result);
+                const APPLICATION_DESCR:String = "Application"; // BUGR-1678
+                _catalogToCategoriesMap = new Dictionary();  // BUGR-1678 
                 if (e && e.result) {
                     _categories=ObjectTranslatorUtils.translateCollection(e.result, SoftwareCategory) as ArrayCollection;
 
@@ -348,6 +356,13 @@
                         if (t.catalogName) {
                             // it is the root category.
                             // add this catalog name to list of catalog names.
+                            
+                            if(t.catalogName == APPLICATION_DESCR && isDesOrDevContestType()) { // BUGR-1678
+                            	continue;
+                            }
+                            if(t.catalogName != APPLICATION_DESCR && !isDesOrDevContestType()) { // BUGR-1678
+                            	continue;
+                            }
                             var o:Object=new Object();
                             o.label=t.name;
                             o.data=t;
@@ -1014,7 +1029,7 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
-                    <mx:Label text="Clients:"
+                    <mx:Label text="Client:"
                               fontWeight="bold"/>
                     <mx:TextInput id="ns_comments" width="292" maxChars="100" /> 
                     <mx:LinkButton label="[+ show hint]"/>

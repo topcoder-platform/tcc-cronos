@@ -69,6 +69,7 @@
                     } else {
                         if (mainWidget.softwareCompetition) {
                             mainWidget.softwareCompetition.type=competionType;
+                            mainWidget.details.loadCategories(); // BUGR-1678
                         }
                     }
                 }
