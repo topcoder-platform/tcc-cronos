@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render contest row.
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         borderStyle="solid"
+         borderSides="bottom"
+         styleName="ContestRowStyle"
+         backgroundSize="100%"
+         mouseOver="mouseOverHandle()"
+         mouseOut="mouseOutHandle()">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.model.IWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+            import mx.formatters.DateFormatter;
+            import mx.collections.ArrayCollection;
+            import flash.utils.Dictionary;
+
+            /**
+             * Row number of this contest row.
+             */
+            private var _rowNum:int;
+
+            /**
+             * Contest for this contest row.
+             */
+            [Bindable]
+            private var contest:Contest;
+
+            /**
+             * Reference to singleton instance of the underlying model class.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+
+            /**
+             * The base url for the link of contents;
+             */
+            private var contentDetailUrlBase:String="http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+
+            /**
+             * The base url for the link of contents;
+             */
+            private var forumUrlBase:String="http://studio.topcoder.com/forums?module=ThreadList&forumID=";
+
+            /**
+             * Sets the data for this contest row.
+             *
+             * @param value the contest data.
+             */
+            override public function set data(value:Object):void {
+                contest=value as Contest;
+                super.data=value;
+                startDate=contest.startDate;
+                endDate=contest.endDate;
+            }
+
+            /**
+             * Sets the row number of this contest row.
+             *
+             * @param temp row number.
+             */
+            public function set rowNum(temp:Number):void {
+                _rowNum=temp;
+                if ((_rowNum % 2) == 0) {
+                    var o:Object=getStyle("oddRowColor");
+                    this.setStyle("backgroundColor", getStyle("oddRowColor"))
+                } else {
+                    this.setStyle("backgroundColor", getStyle("evenRowColor"))
+                }
+            }
+
+            /**
+             * Gets the row number of this contest row.
+             *
+             * @return the row number.
+             */
+            public function get rowNum():Number {
+                return _rowNum;
+            }
+
+            /**
+             * Handles the set of status label.
+             */
+            public function handleStatus(input:String):String {
+                statusBtn.label=input;
+                switch (input.toLowerCase()) {
+                    case "active":
+                    case "terminated":
+                    case "completed":
+                    case "draft":
+                    case "scheduled":
+                    case "danger":
+                        return input.toLocaleLowerCase();
+                    default:
+                        return "standard";
+                }
+            }
+
+            /**
+             * Handles the set of link properties (when specified value > 0) for forum and submissions.
+             *
+             * @param input the input value.
+             * @param linkButton the reference to link button.
+             * @param clickHandler the reference to click handler that need to be called on link button click.
+             */
+            private function setLinkProperties(input:int, linkButton:Button, clickHandler:Function):String {
+                if (input > 0) {
+                    linkButton.styleName="rowContentBtn";
+                    linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                    linkButton.buttonMode=true;
+                    linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                    linkButton.setStyle("textAlign", "right");
+                }
+
+                if (input == 0 && linkButton == lblForumPosts) {
+                    return "no forum";
+                }
+
+                return "" + input;
+            }
+
+            /**
+             * Shows the contest monitor widget for this contest row.
+             */
+            private function showStats():void {
+                // restore widget to normal width if it's not already.
+                if (model.projectWidget.isMaximized()) {
+                    model.projectWidget.restoreScreen();
+                }
+
+                // call method on widget to load the selected contest.
+                var tabName:String=model.projectWidget.widgetFramework.getActiveTabName();
+                var widgetName:String="Contest Monitor";
+                openWidget(tabName, widgetName);
+            }
+
+            /**
+             * Shows the submission viewer widget for this contest row.
+             */
+            private function showSubmission(event:MouseEvent):void {
+                if (contest.submissions > 0) {
+
+                    // restore widget to normal width if it's not already.
+                    if (model.projectWidget.isMaximized()) {
+                        model.projectWidget.restoreScreen();
+                    }
+
+                    var tabName:String=null;
+                    var widgetName:String=null;
+                    // open submission viewer widget and load the current contest.
+                    tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                    widgetName="Submission Viewer";
+                    openWidget(tabName, widgetName);
+
+                    // open contest monitor widget and load the current contest.
+                    tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                    widgetName="Contest Monitor";
+                    openWidget(tabName, widgetName);
+                }
+            }
+
+            /**
+             * utility function that creates / opens the Submission Viewer or Contest Monitor widget.
+             *
+             * @param tabName the tab in which to open the widget.
+             * @param widgetName name of the widget to be opened.
+             */
+            private function openWidget(tabName:String, widgetName:String):void {
+                var widget:IWidget=model.projectWidget.widgetFramework.openWidget(tabName, widgetName);
+
+                var props:Dictionary=new Dictionary();
+                props["pid"]=model.currentProj.id;
+                props["toBeLoadedContestId"]=contest.id;
+                if (widget == null) {
+                    // properties (or attributes) of widget that need to be created new.
+                    var propertiesObj:Dictionary=new Dictionary();
+                    propertiesObj["tabName"]=tabName;
+                    propertiesObj["name"]=widgetName;
+                    propertiesObj["title"]=widgetName;
+                    propertiesObj["column"]="2";
+                    propertiesObj["minimized"]="true";
+                    propertiesObj["maximized"]="false";
+                    propertiesObj["allowclose"]="true";
+                    propertiesObj["rowspan"]=1
+
+                    if (widgetName == "Submission Viewer") {
+                        propertiesObj["row"]="1";
+                        propertiesObj["columnspan"]=5;
+                    } else if (widgetName == "Contest Monitor") {
+                        propertiesObj["row"]="2";
+                        propertiesObj["columnspan"]=4;
+                    }
+
+                    propertiesObj["widgetConfig"]=props;
+                    model.projectWidget.widgetFramework.addWidgetWithProperties(propertiesObj);
+                } else {
+                    props["reload"]=true;
+                    widget.setAttributes(props);
+                }
+            }
+
+            /**
+             * Handler for contest label click.
+             */
+            private function handleClick():void {
+                navigateToURL(new URLRequest(contentDetailUrlBase + contest.id));
+            }
+
+            /**
+             * Handler for forum link click.
+             */
+            private function openForum(event:MouseEvent):void {
+                if (contest.forumId == null || contest.forumId == "-1") {
+                    return;
+                }
+                navigateToURL(new URLRequest(forumUrlBase + contest.forumId));
+            }
+
+            /**
+             * Row mouse over handler.
+             */
+            private function mouseOverHandle():void {
+                if (contest.status.toLocaleLowerCase() == "draft" || contest.status.toLocaleLowerCase() == "unactive - not yet published" || contest.status.toLocaleLowerCase() == "scheduled") {
+                    editBtn.visible=true;
+                }
+            }
+
+            /**
+             * Row mouse out handler.
+             */
+            private function mouseOutHandle():void {
+                editBtn.visible=false;
+            }
+
+            /**
+             * Handler for click on edit contest button.
+             */
+            private function editContest():void {
+
+                var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+                var props:Dictionary=new Dictionary();
+                props["contestid"]=contest.id;
+                widget.setAttributes(props);
+                model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+
+            /**
+             * Setters for start date of the contest
+             *
+             * @param temp start date.
+             */
+            private function set startDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    lblStartDatePart1.text=dataStrArr[0];
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblStartDatePart2.text=timeStrArray[0] + " GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2);
+                }
+            }
+
+            /**
+             * Setters for end date of the contest.
+             *
+             * @param temp end date of the contest.
+             */
+            private function set endDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    lblEndDatePart1.text=dataStrArr[0];
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblEndDatePart2.text=timeStrArray[0] + " GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2);
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%">
+        <mx:LinkButton width="100%"
+                       buttonMode="true"
+                       useHandCursor="true"
+                       id="lblContextName"
+                       styleName="linkBtn"
+                       label="{contest.name}"
+                       click="handleClick()"/>
+        <mx:Spacer width="100%"/>
+        <mx:LinkButton width="10%"
+                       id="editBtn"
+                       styleName="editBtn"
+                       labelPlacement="top"
+                       click="editContest()"
+                       visible="false"/>
+    </mx:HBox>
+    <mx:HBox width="100%"
+             styleName="rowContent">
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblStartDatePart1"/>
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblStartDatePart2"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblEndDatePart1"/>
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblEndDatePart2"/>
+        </mx:VBox>
+        <!--<mx:Text width="100%"
+             styleName="rowContentLabel"
+             id="lblStartDate"
+             text="{model.dateFormatter.format(contest.start)}"/>
+             <mx:Text width="100%"
+             styleName="rowContentLabel"
+             id="lblEndDate"
+             text="{model.dateFormatter.format(contest.end)}"/>-->
+        <mx:Text width="100%"
+                 styleName="rowContentLabel"
+                 id="lblRegistrants"
+                 htmlText="{contest.registrants}"/>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Button buttonMode="false"
+                       width="60"
+                       styleName="rowContentLink"
+                       id="lblSubmissions"
+                       label="{setLinkProperties(contest.submissions, lblSubmissions, showSubmission)}"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Button buttonMode="false"
+                       width="60"
+                       styleName="rowContentLink"
+                       id="lblForumPosts"
+                       label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 styleName="bottomAlign">
+            <mx:LinkButton buttonMode="true"
+                           id="statusBtn"
+                           styleName="{handleStatus(contest.status)}"
+                           labelPlacement="bottom"
+                           click="showStats()"/>
+        </mx:VBox>
+    </mx:HBox>
+</mx:VBox>

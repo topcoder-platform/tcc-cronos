@@ -1,3 +1,25 @@
+/* CSS file */
+.arrowBtnStyle {
+	skin: Embed("../assets/tab-slide-open.png");
+	up-skin: Embed("../assets/tab-slide-open.png");
+	over-skin: Embed("../assets/tab-slide-open-hover.png");
+	down-skin: Embed("../assets/tab-slide-open.png");
+	selected-up-skin: Embed("../assets/tab-slide-close.png");
+	selected-over-skin: Embed("../assets/tab-slide-close-hover.png");
+	selected-down-skin: Embed("../assets/tab-slide-close.png");
+}
+.button {
+	icon: Embed(source="../assets/arrow_right_icon.png");
+	font-weight: bold;
+	font-size: 11;
+	font-family: Arial;
+    themeColor: #AAAAAA;
+}
+.arrow {
+	background-image: Embed("../assets/arrow.png");
+	background-size: "100%";
+}
+
 @font-face 
 {
 	src:url("../assets/fonts/MyriadPro-Regular.otf");
@@ -11,189 +33,31 @@
 	fontWeight: bold;    
 	advancedAntiAliasing: true;
 }
-
-.editBtn
-{
-	up-skin: Embed("../assets/image/EditButton_Up.png");
-	over-skin: Embed("../assets/image/EditButton_Up.png");
-	down-skin: Embed("../assets/image/EditButton_Up.png");
-}
-.bottomAlign {
-	vertical-align: bottom;
-	horizontal-align: center;
-}
-
 .ContestRowStyle
 {
-  borderStyle: solid;
-  borderColor: #cccccc;
-  borderSides: bottom;
-  color: #000000;
-  verticalGap: 0;
-  paddingLeft: 7;
-  paddingRight: 7;
-  paddingTop: 2;
-  paddingBottom: 3;
+	border-style: none;
+	verticalGap: 0;
+	background-color: #ffffff;
+	/* background-image: Embed(source="../assets/image/contentBG.png",scaleGridTop="2",scaleGridLeft="2",scaleGridRight="260",scaleGridBottom="91"); */
+	paddingLeft: 7;
+	paddingRight: 7;
+	paddingTop: 2;
+	paddingBottom: 3;
 }
-.rowContent {
-	horizontal-gap: 0;
-	vertical-align: middle;
-	padding-top: 0; 
-}
-.nameLabel {
-	padding-top: 0;
-	padding-left: 0;
-	color: #000000;
-	font-size: 12;
-	font-weight: normal;
-	fontFamily: "Myriad Pro Regular";
-}
-.titleBar {
-	vertical-align: middle;
-	horizontal-gap: 10;
-	padding-left: 8;
-	padding-right: 11;
-	background-image:Embed(source="../assets/image/titleBG.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="257",scaleGridBottom="17"); 
-}
-.titleBarHover {
-  vertical-align: middle;
-  horizontal-gap: 10;
-  padding-left: 8;
-  padding-right: 11;
-  background-image:Embed(source="../assets/image/Row_Background.jpg",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="257",scaleGridBottom="17");
-}
-.statusLabel {
-	font-size: 12;
-	font-weight: normal;
-	fontFamily: "Myriad Pro Regular";
-	text-align: left;
-}
-.title {
-	horizontal-gap: 0;
-	background-color: #ff0000;
-	color: #ffffff;
-	font-size: 11;
+.standerd {
+	color: #ff0000;
+	text-roll-over-color: #ff0000;
+	text-selected-color: #ff0000;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
 	font-family: "Myriad Pro Semibold";
-	font-weight: bold;
-}
-.descPanel {
-  background-color: #cccccc
-}
-.rowContentLabel {
-  font-size: 11;
-  text-align: center;
-  color: #000000;
-  font-family: "Myriad Pro Regular";
-}
-.rowContentLink {
-  text-align: center;
-  color: #666666;
-  font-family: "Myriad Pro Semibold";
-  font-size: 11;
-  font-weight: bold;
-  skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  padding-top: 0;
-  padding-bottom: 0;
-  textRollOverColor: #ff0000;
-}
-.greyBtn {
-  skin: Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  over-skin: Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  up-skin:  Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  down-skin:  Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  icon: Embed(source="../assets/image/icon1.png");
-  over-icon: Embed(source="../assets/image/icon2.png");
-  down-icon: Embed(source="../assets/image/icon2.png");
-  up-icon: Embed(source="../assets/image/icon1.png");
-  font-family: "Myriad Pro Regular";
-  font-size: 12;
-  font-weight: normal;
-  color: #010101;
-  text-roll-over-color: #fafafa;
-  text-selected-color: #fafafa;
-  padding-left: 5;
-  padding-right: 7;
-  horizontal-gap: 4;
-}
-.blackBtn {
-  skin: Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  over-skin: Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  up-skin:  Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  down-skin:  Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  icon: Embed(source="../assets/image/icon2.png");
-  over-icon: Embed(source="../assets/image/icon1.png");
-  down-icon: Embed(source="../assets/image/icon1.png");
-  up-icon: Embed(source="../assets/image/icon2.png");
-  font-family: "Myriad Pro Regular";
-  font-size: 12;
-  font-weight: normal;
-  color: #fafafa;
-  text-roll-over-color: #010101;
-  text-selected-color: #010101;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
-}
-
-.blackBtnOpen {
-  skin: Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  over-skin: Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  up-skin:  Embed(source="../assets/image/btnBGBlack.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  down-skin:  Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  icon: Embed(source="../assets/image/icon2_open.png");
-  over-icon: Embed(source="../assets/image/icon1_open.png");
-  down-icon: Embed(source="../assets/image/icon1_open.png");
-  up-icon: Embed(source="../assets/image/icon2_open.png");
-  font-family: "Myriad Pro Regular";
-  font-size: 12;
-  font-weight: normal;
-  color: #fafafa;
-  text-roll-over-color: #010101;
-  text-selected-color: #010101;
-  label-placement: bottom;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
-}
-
-.linkBtn {
-  text-decoration: underline;
-  text-align: left;
-  color: #666666;
-  font-family: "Myriad Pro Semibold";
-  font-size: 11;
-  font-weight: bold;
-  skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-  padding-left: 0;
-  textRollOverColor: #ff0000;
-}
-
-.viewBtn {
-	padding-top: 5;
-	padding-bottom: 5;
 	font-size: 11;
 	text-align: center;
-	color: #ffffff;
-	font-family: "Myriad Pro Semibold";
-	font-weight: bold;
-	text-roll-over-color: #ffffff;
-	text-selected-color: #ffffff;
 	padding-top: 5;
 	padding-bottom: 5;
-	icon: Embed(source="../assets/image/view.png");
-	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	over-skin: Embed(source="../assets/image/noBG_over.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	down-skin:  Embed(source="../assets/image/noBG_over.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	
 }
-
 .active {
 	icon: Embed(source="../assets/icon/active.png");
 	color: #95E840;
@@ -288,108 +152,137 @@
 	padding-top: 5;
 	padding-bottom: 5;
 }
-/*
-.viewDescButton {
-  skin: Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  over-skin: Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  up-skin:  Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  down-skin:  Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  text-roll-over-color: #000000;
-  text-selected-color: #000000;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
+
+
+.rowContent {
+	horizontal-gap: 0;
+	vertical-align: middle;
+	padding-top: 0; 
 }
 
-.addContestBtn {
-  skin: Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  over-skin: Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  up-skin:  Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  down-skin:  Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  text-roll-over-color: #000000;
-  text-selected-color: #000000;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
+.linkBtn {
+	text-decoration: underline;
+	text-align: left;
+	color: #666666;
+	textRollOverColor: #ff0000;
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	font-weight: bold;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	padding-left: 0;
 }
 
-.menuBtn {
-  backgroundSkin: Embed(source="../assets/image/menu_btn.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="24",scaleGridBottom="5");
-  itemDownSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  itemOverSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  itemUpSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  padding-left: 15
-}*/
-
-.menuBtn {
-  backgroundSkin: Embed(source="../assets/image/menu_btn.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="2",scaleGridBottom="5");
-  itemDownSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  itemOverSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  itemUpSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  padding-left: 5
+.rowContentLabel {
+	font-size: 11;
+	text-align: center;
+	color: #1a1a1a;
+	font-family: "Myriad Pro Regular";
 }
 
-.viewDescButton {
-  icon: Embed(source="../assets/icon/arrow_right_icon_for_header.png");
-  fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
-  themeColor: #bbbbbb;
-  font-family: "Arial";
+.rowContentLink {
+  text-align: center;
+  color: #666666;
+  font-family: "Myriad Pro Semibold";
   font-size: 11;
   font-weight: bold;
-  color: #666666;
-  text-roll-over-color: #000000;
-  text-selected-color: #000000;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
+  skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  padding-top: 0;
+  padding-bottom: 0;
+  textRollOverColor: #ff0000;
 }
 
-.addContestBtn {
-  icon: Embed(source="../assets/icon/plus_icon_for_header.png");
-  fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
-  themeColor: #bbbbbb;
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  text-roll-over-color: #000000;
-  text-selected-color: #000000;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
+.bottomAlign {
+	vertical-align: bottom;
+	horizontal-align: center;
+}
+.title {
+	horizontal-gap: 0;
+	background-color: #ff0000;
+	color: #ffffff;
+	font-size: 11;
+	font-family: "Myriad Pro Semibold";
+	font-weight: bold;
 }
 
-.openNewTabButton {
-  icon: Embed(source="../assets/icon/arrow_right_icon_for_header.png");
-  fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
-  themeColor: #bbbbbb;
-  font-family: "Arial";
-  font-size: 11;
-  font-weight: bold;
-  color: #666666;
-  text-roll-over-color: #000000;
-  text-selected-color: #000000;
-  padding-left: 5;
-  padding-right: 12;
-  horizontal-gap: 4;
+.titleBar {
+	vertical-align: middle;
+	horizontal-gap: 10;
+	padding-left: 8;
+	padding-right: 11;
+	background-image:Embed(source="../assets/image/titleBG.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="257",scaleGridBottom="17"); 
+}
+.nameLabel {
+	padding-top: 0;
+	padding-left: 0;
+	color: #000000;
+	font-size: 15;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
 }
 
+.listStyle {
+	color: #000000;
+	font-size: 13;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+
+.normalStyle {
+    color: #000000;
+    font-size: 11;
+    font-weight: normal;
+    fontFamily: "Myriad Pro Regular";
+}
+
+.arrowRightBtnStyle{
+    icon: Embed(source="../assets/arrow_right_icon.png");
+    color: #000000;
+    font-size: 13;
+    font-weight: normal;
+    fontFamily: "Myriad Pro Regular";
+}
+
+.greyBtn {
+	skin: Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	over-skin: Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	up-skin:  Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	down-skin:  Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	font-family: "Myriad Pro Regular";
+	font-size: 11;
+	font-weight: normal;
+	color: #1a1a1a;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	padding-left: 5;
+	padding-right: 24;
+}
+
+.up {
+    skin: Embed("../assets/btn_top_arrow.png");
+    over-skin: Embed("../assets/btn_top_arrow_hover.png");
+    down-skin: Embed("../assets/btn_top_arrow_hover.png");   
+}
+
+.down {
+    skin: Embed("../assets/btn_bottom_arrow.png");
+    over-skin: Embed("../assets/btn_bottom_arrow_hover.png");
+    down-skin: Embed("../assets/btn_bottom_arrow_hover.png");    
+}
+.miniButton {
+    skin: Embed("../assets/date_chooser_icon.png");
+}
+.editBtn
+{
+	up-skin: Embed("../assets/image/EditButton_Up.png");
+	over-skin: Embed("../assets/image/EditButton_Up.png");
+	down-skin: Embed("../assets/image/EditButton_Up.png");
+}
 .rowContentBtn {
   icon: Embed(source="../assets/icon/arrow_right_icon.png");
   fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
