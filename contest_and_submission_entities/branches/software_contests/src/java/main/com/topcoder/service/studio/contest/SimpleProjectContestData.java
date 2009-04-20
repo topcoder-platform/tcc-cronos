@@ -17,12 +17,18 @@ import javax.xml.datatype.DatatypeConfigurationException;
  * <p>
  * Represents the entity class for contest info for myproject widget.
  * </p>
+ * 
+ * <p>
+ * Changes for My Projects Overhaul Assembly:
+ *      Added new field contestType which maps to sql column contest_type_desc.
+ *      Added new field createUser which maps to sql column create_user.
+ * </p>
  *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author will.xie
+ * @author will.xie, TCSDEVELOPER
  * @version 1.0
  */
 @SqlResultSetMapping(
@@ -39,7 +45,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 			            @FieldResult(name="num_sub",           column="num_sub"),
 			            @FieldResult(name="num_for",           column="num_for"),
 			            @FieldResult(name="forumId",           column="forum_id"),
-			            @FieldResult(name="description",           column="description")
+			            @FieldResult(name="description",           column="description"),
+			            @FieldResult(name="contestType",         column="contest_type_desc"),
+			            @FieldResult(name="createUser",         column="create_user")
 			            }
 		)})
 @Entity
@@ -112,6 +120,20 @@ public class SimpleProjectContestData {
      * Represents the description for project.
      */
     private String description;
+    
+    /**
+     * Represents the type of contest.
+     * 
+     * @since My Projects Overhaul Assembly
+     */
+    private String contestType;
+    
+    /**
+     * Represents the create user of contest.
+     * 
+     * @since My Projects Overhaul Assembly.
+     */
+    private String createUser;
 
 
     /**
@@ -371,4 +393,54 @@ public class SimpleProjectContestData {
 			return null;
 		}
 	}
+	
+    /**
+     * <p>
+     * Gets the type of contest.
+     * </p>
+     * 
+     * @return the contestType
+     * @since My Projects Overhaul Assembly
+     */
+    public String getContestType() {
+        return this.contestType;
+    }
+
+    /**
+     * <p>
+     * Sets the type of contest.
+     * </p>
+     * 
+     * @param contestType
+     *            the contestType to set
+     * @since My Projects Overhaul Assembly.
+     */
+    public void setContestType(String contestType) {
+        this.contestType = contestType;
+    }
+    
+    /**
+     * <p>
+     * Gets the create user.
+     * </p>
+     * 
+     * @return the create user
+     * @since My Projects Overhaul Assembly
+     */
+    public String getCreateUser() {
+        return this.createUser;
+    }
+
+    /**
+     * <p>
+     * Sets the create user.
+     * </p>
+     * 
+     * @param createUser
+     *            the create user to set
+     * @since My Projects Overhaul Assembly.
+     */
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
 }
