@@ -2789,6 +2789,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
     
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related to all available projects.
+     * </p>
+     *
+     * <p>
+     * Updated for My Project Overhaul Assembly: Included additional fields (contest owner, contest type) in SimpleProjectContestData
+     * </p>
+     * 
+     * @param the given project id
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws ContestManagementException {
@@ -2803,7 +2820,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
                     + " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
                     +     "  and rank is not null and rank <= (select NVL(property_value, 10000) from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
-                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user"
+
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
@@ -2813,36 +2833,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List list = query.getResultList();
 
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
-            SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-/*
-                SimpleProjectContestData c = new SimpleProjectContestData();
-                Object[] os = (Object[]) list.get(i);
-                if (os[0] != null)
-                    c.setProjectId(Long.parseLong(os[0].toString()));
-                if (os[1] != null)
-                    c.setPname(os[1].toString());
-                if (os[2] != null)
-                    c.setContestId(Long.parseLong(os[2].toString()));
-                if (os[3] != null)
-                    c.setCname(os[3].toString());
-
-                if (os[4] != null)
-                    c.setStartDate(myFmt.parse(os[4].toString()));
-                if (os[5] != null)
-                    c.setEndDate(myFmt.parse(os[5].toString()));
-                if (os[6] != null)
-                    c.setSname(os[6].toString());
-                if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
-                if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
-
-                if (os[9] != null)
-                    c.setNum_for(Integer.parseInt(os[9].toString()));
-
-                result.add(c);*/
             	result.add((SimpleProjectContestData) list.get(i));
 
             }
@@ -2860,6 +2852,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 	/**
      * <p>
      * This is going to fetch all the currently available contests related the given projects.
+     * </p>
+     *
+     * <p>
+     * Updated for My Project Overhaul Assembly: Included additional fields (contest owner, contest type) in SimpleProjectContestData
      * </p>
      * 
      * @param the given project id
@@ -2885,7 +2881,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
                     + " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
                     +     "  and rank is not null and rank <= (select NVL(property_value, 10000) from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
-                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user"
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -2917,7 +2915,24 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 		}
     }
 
-	 @PermitAll
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related the given user.
+     * </p>
+     *
+     * <p>
+     * Updated for My Project Overhaul Assembly: Included additional fields (contest owner, contest type) in SimpleProjectContestData
+     * </p>
+     * 
+     * @param the given project id
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+	@PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(long createdUser) throws ContestManagementException {
         try {
@@ -2931,12 +2946,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
                     + " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
                     +     "  and rank is not null and rank <= (select NVL(property_value, 10000) from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
-                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user"
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
                     // here we check both user in project and contest
-                    + "  and p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null)";
+                    + "  and p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null) "
+                    + " order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
