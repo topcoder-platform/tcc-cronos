@@ -505,7 +505,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		{
 			total+=prize.getAmount();
 		}
-		contestData.setContestAdministrationFee(total*0.2);
+		//contestData.setContestAdministrationFee(total*0.2);
 		contestData.setDrPoints(total*0.1);
 
 		if(contestData.getLaunchDateAndTime() == null) { // BUGR-1445
