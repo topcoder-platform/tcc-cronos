@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statuses>
+	<status>
+		<name>Action Required</name>
+		<statusId>6</statusId>
+	</status>
+	<status>
+		<name>Completed</name>
+		<statusId>8</statusId>
+	</status>
+	<status>
+		<name>No Winner Chosen</name>
+		<statusId>7</statusId>
+	</status>
+</statuses> 
