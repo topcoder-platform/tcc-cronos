@@ -49,5 +49,12 @@
 		<mapping resource="mappings/ContestPayment.hbm.xml" />
 		<mapping resource="mappings/Medium.hbm.xml" />
 		
+		<!-- 
+		from module Cockpit Contest Service Enhancement
+		merged in Cockpit Share Submission Integration
+		-->
+		<mapping resource="mappings/PermissionType.hbm.xml" />
+		<mapping resource="mappings/Permission.hbm.xml" />
+		
 	</session-factory>
 </hibernate-configuration>
