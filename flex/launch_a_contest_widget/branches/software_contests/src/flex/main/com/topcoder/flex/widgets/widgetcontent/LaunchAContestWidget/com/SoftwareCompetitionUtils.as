@@ -264,7 +264,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         private static var PROJECT_INFO_TYPE_TIMELINE_NOTIFICATION_VALUE:String="On";
 
         private static var PROJECT_INFO_TYPE_PUBLIC_KEY:String="Public";
-        private static var PROJECT_INFO_TYPE_PUBLIC_VALUE:String="Yes";
+        private static var PROJECT_INFO_TYPE_PUBLIC_VALUE:String="No";
 
         private static var PROJECT_INFO_TYPE_RATED_KEY:String="Rated";
         private static var PROJECT_INFO_TYPE_RATED_VALUE:String="Yes";
