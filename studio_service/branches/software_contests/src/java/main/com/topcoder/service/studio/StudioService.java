@@ -5,7 +5,10 @@ package com.topcoder.service.studio;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Remote;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.PaymentType;
@@ -17,6 +20,8 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.submission.Submission;
+import com.topcoder.service.studio.permission.Permission;
+import com.topcoder.service.studio.permission.PermissionType;
 
 /**
  * <p>
@@ -36,6 +41,15 @@ import com.topcoder.service.studio.submission.Submission;
  * (also in the methods) are optional: WebParam, WebMethod are not necessary
  * because if WebMethod is not used then automatically all methods are
  * WebMethod.
+ * </p>
+ * 
+ * <p>
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission
+ * and permission type are added.
+ * </p>
+ * 
+ * <p>
+ * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
  * 
  * @author fabrizyo, TCSDEVELOPER
@@ -803,4 +817,163 @@ public interface StudioService {
      * @since TCCC-1219
      */
     public void updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
+
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     *
+     * @return all the permissions that the user owned for any projects.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissionsByUser(long userid) throws PersistenceException;
+    
+    /**
+     * <p>
+     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that various users own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Cockpit Share Submission Integration
+     */
+    public List<Permission> getPermissionsByProject(long projectid) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that the user own for a given project.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissions(long userid, long projectid) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method retrieve all the permission types.
+     * </p>
+     *
+     * @return all the permission types.
+     *
+     * @throws PersistenceException if any error occurs when getting permission types.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<PermissionType> getAllPermissionType() throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will add a permission type, and return the added type entity.
+     * </p>
+     *
+     * @param type the permission type to add.
+     *
+     * @return the added permission type entity
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when adding the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public PermissionType addPermissionType(PermissionType type) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will add permission data, and return the added permission data.
+     * </p>
+     *
+     * @param permission the permission to add.
+     *
+     * @return the added permission entity
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when adding the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public Permission addPermission(Permission permission) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will update permission type data.
+     * </p>
+     *
+     * @param type the permission type to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when updating the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermissionType(PermissionType type) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will update permission data.
+     * </p>
+     *
+     * @param permission the permission to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when updating the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermission(Permission permission) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will update permission type data, return true if the permission type data exists and removed
+     * successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param typeid the permission type to delete.
+     *
+     * @return true if the permission type data exists and removed successfully.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermissionType(long typeid) throws PersistenceException;
+
+    /**
+     * <p>
+     * This method will remove permission data, return true if the permission data exists and removed successfully,
+     * return false if it doesn't exist.
+     * </p>
+     *
+     * @param permissionid the permission to delete.
+     *
+     * @return true if the permission data exists and removed successfully.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermission(long permissionid) throws PersistenceException;
 }
