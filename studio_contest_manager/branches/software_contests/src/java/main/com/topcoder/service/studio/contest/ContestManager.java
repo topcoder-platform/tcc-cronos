@@ -12,6 +12,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.permission.Permission;
+import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -37,6 +39,15 @@ import com.topcoder.service.studio.PaymentType;
  * <p>
  * 1.1 change: 2 new methods <code>searchContests(Filter)</code> and
  * <code>getAllContests()</code> are added.
+ * </p>
+ * 
+ * <p>
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission
+ * and permission type are added.
+ * </p>
+ * 
+ * <p>
+ * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
  * 
  * <p>
@@ -1198,4 +1209,154 @@ public interface ContestManager {
      *             if any error occurs
      */
     public PaymentType getPaymentType(long paymentTypeId) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     *
+     * @return all the permissions that the user owned for any projects.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissionsByUser(long userid) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that the user own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissions(long userid, long projectid) throws ContestManagementException;
+    
+    /**
+     * <p>
+     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that various users own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Cockpit Share Submission Integration
+     */
+    public List<Permission> getPermissionsByProject(long projectid) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method retrieve all the permission types.
+     * </p>
+     *
+     * @return all the permission types.
+     *
+     * @throws ContestManagementException if any error occurs when getting permission types.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<PermissionType> getAllPermissionType() throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will add a permission type, and return the added type entity.
+     * </p>
+     *
+     * @param type the permission type to add.
+     *
+     * @return the added permission type entity
+     *
+     * @throws ContestManagementException if any error occurs when adding the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public PermissionType addPermissionType(PermissionType type) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will add permission data, and return the added permission data.
+     * </p>
+     *
+     * @param permission the permission to add.
+     *
+     * @return the added permission entity
+     *
+     * @throws ContestManagementException if any error occurs when adding the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public Permission addPermission(Permission permission) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will update permission type data.
+     * </p>
+     *
+     * @param type the permission type to update.
+     *
+     * @throws ContestManagementException if any error occurs when updating the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermissionType(PermissionType type) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will update permission data.
+     * </p>
+     *
+     * @param permission the permission to update.
+     *
+     * @throws ContestManagementException if any error occurs when updating the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermission(Permission permission) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will update permission type data, return true if the permission type data exists and removed
+     * successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param typeid the permission type to delete.
+     *
+     * @return true if the permission type data exists and removed successfully.
+     *
+     * @throws ContestManagementException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermissionType(long typeid) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This method will remove permission data, return true if the permission data exists and removed successfully,
+     * return false if it doesn't exist.
+     * </p>
+     *
+     * @param permissionid the permission to delete.
+     *
+     * @return true if the permission data exists and removed successfully.
+     *
+     * @throws ContestManagementException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermission(long permissionid) throws ContestManagementException;
 }

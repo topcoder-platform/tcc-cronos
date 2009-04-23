@@ -68,6 +68,8 @@ import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
+import com.topcoder.service.studio.permission.Permission;
+import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -113,6 +115,15 @@ import com.topcoder.util.log.LogManager;
  *                                                             <code>getAllContests()</code>
  *                                                             are added.
  *                                                             </p>
+ * 
+ * <p>
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission
+ * and permission type are added.
+ * </p>
+ * 
+ * <p>
+ * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
+ * </p>
  * 
  *                                                             <p>
  *                                                             It should be
@@ -4200,6 +4211,407 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         } catch (DatatypeConfigurationException ex) {
             // can't create calendar, return null
             return null;
+        }
+    }
+	
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     *
+     * @return all the permissions that the user owned for any projects.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @SuppressWarnings("unchecked")
+	@PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Permission> getPermissionsByUser(long userid) throws ContestManagementException {
+        try {
+            logEnter("getPermissionsByUser(userid)");
+            logOneParameter(userid);
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select p from Permission p where p.userId = " + userid);
+
+            List<Permission> result = query.getResultList();
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getPermissionsByUser(userid)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that the user own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @SuppressWarnings("unchecked")
+	@PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Permission> getPermissions(long userid, long projectid) throws ContestManagementException {
+        try {
+            logEnter("getPermissions(userid, projectid)");
+            logTwoParameters(userid, projectid);
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select p from Permission p where p.userId = " + userid + " and p.projectId = " + projectid);
+
+            List<Permission> result = query.getResultList();
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getPermissions(userid, projectid)");
+        }
+    }
+    
+    /**
+     * <p>
+     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that various users own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Cockpit Share Submission Integration
+     */
+    @SuppressWarnings("unchecked")
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Permission> getPermissionsByProject(long projectid) throws ContestManagementException {
+        try {
+            logEnter("getPermissionsByProject(projectid)");
+            logOneParameter(projectid);
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select p from Permission p where p.projectId = " + projectid);
+
+            List<Permission> result = query.getResultList();
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getPermissionsByProject(projectid)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method retrieve all the permission types.
+     * </p>
+     *
+     * @return all the permission types.
+     *
+     * @throws ContestManagementException if any error occurs when getting permission types.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<PermissionType> getAllPermissionType() throws ContestManagementException {
+        try {
+            logEnter("getAllPermissionType()");
+
+            return getAll(PermissionType.class);
+
+        } finally {
+            logExit("getAllPermissionType()");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will add a permission type, and return the added type entity.
+     * </p>
+     *
+     * @param type the permission type to add.
+     *
+     * @return the added permission type entity
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any error occurs when adding the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public PermissionType addPermissionType(PermissionType type) throws ContestManagementException {
+        try {
+            logEnter("addPermissionType(type)");
+            Helper.checkNull(type, "type");
+            logOneParameter(type.getPermissionTypeId());
+
+            EntityManager em = getEntityManager();
+
+            if (type.getPermissionTypeId() != null && em.find(PermissionType.class, type.getPermissionTypeId()) != null) {
+                EntityAlreadyExistsException e = new EntityAlreadyExistsException("The permission type with id '"
+                        + type.getPermissionTypeId() + "' already exists.");
+                logException(e, "The permission type with id '" + type.getPermissionTypeId() + "' already exists.");
+                sessionContext.setRollbackOnly();
+
+                throw e;
+            }
+
+            em.persist(type);
+
+            return type;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("addPermissionType(type)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will add permission data, and return the added permission data.
+     * </p>
+     *
+     * @param permission the permission to add.
+     *
+     * @return the added permission entity
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any error occurs when adding the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Permission addPermission(Permission permission) throws ContestManagementException {
+        try {
+            logEnter("addPermission(permission)");
+            Helper.checkNull(permission, "permission");
+            logOneParameter(permission.getPermissionId());
+
+            EntityManager em = getEntityManager();
+
+            if (permission.getPermissionId() != null && em.find(Permission.class, permission.getPermissionId()) != null) {
+                EntityAlreadyExistsException e = new EntityAlreadyExistsException("The permission with id '"
+                        + permission.getPermissionId() + "' already exists.");
+                logException(e, "The permission with id '" + permission.getPermissionId() + "' already exists.");
+                sessionContext.setRollbackOnly();
+
+                throw e;
+            }
+
+            em.persist(permission);
+
+            return permission;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("addPermission(permission)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will update permission type data.
+     * </p>
+     *
+     * @param type the permission type to update.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the entity parameter doesn't exist in persistence.
+     * @throws ContestManagementException if any error occurs when updating the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void updatePermissionType(PermissionType type) throws ContestManagementException {
+        try {
+            logEnter("updatePermissionType(type)");
+            Helper.checkNull(type, "type");
+            logOneParameter(type.getPermissionTypeId());
+
+            EntityManager em = getEntityManager();
+
+            if (type.getPermissionTypeId() == null || em.find(PermissionType.class, type.getPermissionTypeId()) == null) {
+                throw wrapEntityNotFoundException("The permission type with id '" + type.getPermissionTypeId()
+                        + "' doesn't exist");
+            }
+
+            em.merge(type);
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while updating the entity.");
+        } finally {
+            logExit("updatePermissionType(type)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will update permission data.
+     * </p>
+     *
+     * @param permission the permission to update.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the entity parameter doesn't exist in persistence.
+     * @throws ContestManagementException if any error occurs when updating the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void updatePermission(Permission permission) throws ContestManagementException {
+        try {
+            logEnter("updatePermission(permission)");
+            Helper.checkNull(permission, "permission");
+            logOneParameter(permission.getPermissionId());
+
+            EntityManager em = getEntityManager();
+
+            if (permission.getPermissionId() == null || em.find(Permission.class, permission.getPermissionId()) == null) {
+                throw wrapEntityNotFoundException("The permission with id '" + permission.getPermissionId()
+                        + "' doesn't exist");
+            }
+
+            em.merge(permission);
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while updating the entity.");
+        } finally {
+            logExit("updatePermission(permission)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will update permission type data, return true if the permission type data exists and removed
+     * successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param typeid the permission type to delete.
+     *
+     * @return true if the permission type data exists and removed successfully.
+     *
+     * @throws ContestManagementException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deletePermissionType(long typeid) throws ContestManagementException {
+        try {
+            logEnter("removePermissionType(typeid)");
+            logOneParameter(typeid);
+
+            EntityManager em = getEntityManager();
+
+            PermissionType type = em.find(PermissionType.class, new Long(typeid));
+
+            if (type == null) {
+                return false;
+            }
+
+            em.remove(type);
+
+            return true;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while deleting the entity.");
+        } finally {
+            logExit("removePermissionType(typeid)");
+        }
+    }
+
+    /**
+     * <p>
+     * This method will remove permission data, return true if the permission data exists and removed successfully,
+     * return false if it doesn't exist.
+     * </p>
+     *
+     * @param permissionid the permission to delete.
+     *
+     * @return true if the permission data exists and removed successfully.
+     *
+     * @throws ContestManagementException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deletePermission(long permissionid) throws ContestManagementException {
+        try {
+            logEnter("removePermission(permissionid)");
+            logOneParameter(permissionid);
+
+            EntityManager em = getEntityManager();
+
+            Permission permission = em.find(Permission.class, new Long(permissionid));
+
+            if (permission == null) {
+                return false;
+            }
+
+            em.remove(permission);
+
+            return true;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while deleting the entity.");
+        } finally {
+            logExit("removePermission(permissionid)");
         }
     }
 }
