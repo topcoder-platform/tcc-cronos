@@ -35,6 +35,7 @@
 <span style="color:blue"><a href="contests.jsp"><b>Category/Project Services Operations Demo</b></a></span><br/>
 <span style="color:blue"><a href="onlinereview.jsp"><b>Online Review Upload Service Operations Demo</b></a></span><br/>
 <span style="color:blue"><a href="contestsale.jsp"><b>Contest Sale Related Operations Demo</b></a></span><br/>
+<span style="color:blue"><a href="permission.jsp"><b>Contest Services Permission Related Operations Demo</b></a></span><br/>
 <form action="callFacadeService.jsp" method="POST" name="Form" id="Form">
     <input type="hidden" name="operation" value="">
 <ul>

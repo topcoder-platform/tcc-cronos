@@ -57,6 +57,7 @@ import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
@@ -64,6 +65,8 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
+import com.topcoder.service.studio.permission.Permission;
+import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
@@ -112,13 +115,12 @@ import java.util.Properties;
  * holds a reference to {@link StudioService} which is delegated the fulfillment of requests.</p>
  * 
  * <p>
- * TopCoder Service Layer Integration 3 Assembly change: expose the methods of Category Services, Project Services and
- * Online Review Upload Services.
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission
+ * and permission type are added.
  * </p>
  *
  * <p>
- * Module Contest Service Software Contest Sales Assembly change: new methods added to support processing contest
- * sale for software contest.
+ * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
  *
  * @author TCSDEVELOPER
@@ -1146,6 +1148,184 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 		return this.studioService.getAllDocumentTypes();
 	}
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     *
+     * @return all the permissions that the user owned for any projects.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissionsByUser(long userid) throws PersistenceException {
+		return this.studioService.getPermissionsByUser(userid);
+    }
+    
+    /**
+     * <p>
+     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that various users own for a given project.
+     *
+     * @throws ContestManagementException if any error occurs when getting permissions.
+     *
+     * @since Cockpit Share Submission Integration
+     */
+    public List<Permission> getPermissionsByProject(long projectid) throws PersistenceException {
+        return this.studioService.getPermissionsByProject(projectid);
+    }
+
+    /**
+     * <p>
+     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
+     * permission found.
+     * </p>
+     *
+     * @param userid user id to look for
+     * @param projectid project id to look for
+     *
+     * @return all the permissions that the user own for a given project.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when getting permissions.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<Permission> getPermissions(long userid, long projectid) throws PersistenceException {
+		return this.studioService.getPermissions(userid, projectid);
+    }
+
+    /**
+     * <p>
+     * This method retrieve all the permission types.
+     * </p>
+     *
+     * @return all the permission types.
+     *
+     * @throws PersistenceException if any error occurs when getting permission types.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public List<PermissionType> getAllPermissionType() throws PersistenceException {
+		return this.studioService.getAllPermissionType();
+    }
+
+    /**
+     * <p>
+     * This method will add a permission type, and return the added type entity.
+     * </p>
+     *
+     * @param type the permission type to add.
+     *
+     * @return the added permission type entity
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when adding the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public PermissionType addPermissionType(PermissionType type) throws PersistenceException {
+		return this.studioService.addPermissionType(type);
+    }
+
+    /**
+     * <p>
+     * This method will add permission data, and return the added permission data.
+     * </p>
+     *
+     * @param permission the permission to add.
+     *
+     * @return the added permission entity
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when adding the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public Permission addPermission(Permission permission) throws PersistenceException {
+		return this.studioService.addPermission(permission);
+    }
+
+    /**
+     * <p>
+     * This method will update permission type data.
+     * </p>
+     *
+     * @param type the permission type to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when updating the permission type.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermissionType(PermissionType type) throws PersistenceException {
+    	this.studioService.updatePermissionType(type);
+    }
+
+    /**
+     * <p>
+     * This method will update permission data.
+     * </p>
+     *
+     * @param permission the permission to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when updating the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public void updatePermission(Permission permission) throws PersistenceException {
+    	this.studioService.updatePermission(permission);
+    }
+
+    /**
+     * <p>
+     * This method will update permission type data, return true if the permission type data exists and removed
+     * successfully, return false if it doesn't exist.
+     * </p>
+     *
+     * @param typeid the permission type to delete.
+     *
+     * @return true if the permission type data exists and removed successfully.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermissionType(long typeid) throws PersistenceException {
+    	return this.studioService.deletePermissionType(typeid);
+    }
+
+    /**
+     * <p>
+     * This method will remove permission data, return true if the permission data exists and removed successfully,
+     * return false if it doesn't exist.
+     * </p>
+     *
+     * @param permissionid the permission to delete.
+     *
+     * @return true if the permission data exists and removed successfully.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PersistenceException if any error occurs when deleting the permission.
+     *
+     * @since Module Cockpit Contest Service Enhancement Assembly
+     */
+    public boolean deletePermission(long permissionid) throws PersistenceException {
+    	return this.studioService.deletePermission(permissionid);
+    }
 
     /**
      * <p>Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be

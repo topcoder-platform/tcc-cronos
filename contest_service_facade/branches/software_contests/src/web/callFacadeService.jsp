@@ -39,6 +39,8 @@
 <%@ page import="com.topcoder.service.studio.ContestData" %>
 <%@ page import="com.topcoder.service.studio.contest.DocumentType" %>
 <%@ page import="javax.print.attribute.standard.Media" %>
+<%@ page import="com.topcoder.service.studio.permission.Permission" %>
+<%@ page import="com.topcoder.service.studio.permission.PermissionType" %>
 <%@ page import="com.topcoder.catalog.entity.Category" %>
 <%@ page import="com.topcoder.catalog.entity.Technology" %>
 <%@ page import="com.topcoder.catalog.entity.Phase" %>
@@ -838,6 +840,102 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             }
             callResult = "Retrieved mediums:<br/>" + b.toString();
         } 
+
+		else if ("getPermissionsByUser".equals(operation)) {
+            String userId = request.getParameter("cid11");
+            List<Permission> permissions = port.getPermissionsByUser(Long.parseLong(userId));
+            StringBuilder b = new StringBuilder();
+            for (Permission permission : permissions) {
+                b.append("    Permission: ID = ").append(permission.getPermissionId()).append(", userId = ").append(permission.getUserId()).
+                        append(", projectId = ").append(permission.getProjectId()).
+                        append(", permissionTypeId = ").append(permission.getPermissionType().getPermissionTypeId()).
+                        append(", permissionTypeName = ").append(permission.getPermissionType().getName()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved permissions:<br/>" + b.toString();
+        } else if ("getPermissions".equals(operation)) {
+            String userId = request.getParameter("cid21");
+            String projectId = request.getParameter("cid22");
+            List<Permission> permissions = port.getPermissions(Long.parseLong(userId), Long.parseLong(projectId));
+            StringBuilder b = new StringBuilder();
+            for (Permission permission : permissions) {
+                b.append("    Permission: ID = ").append(permission.getPermissionId()).append(", userId = ").append(permission.getUserId()).
+                        append(", projectId = ").append(permission.getProjectId()).
+                        append(", permissionTypeId = ").append(permission.getPermissionType().getPermissionTypeId()).
+                        append(", permissionTypeName = ").append(permission.getPermissionType().getName()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved permissions:<br/>" + b.toString();
+        } else if ("getAllPermissionType".equals(operation)) {
+            List<PermissionType> types = port.getAllPermissionType();
+            StringBuilder b = new StringBuilder();
+            for (PermissionType type : types) {
+                b.append("    PermissionType: ID = ").append(type.getPermissionTypeId()).append(", name = ").append(type.getName()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved permission types:<br/>" + b.toString();
+        } else if ("addPermissionType".equals(operation)) {
+            PermissionType type = new PermissionType();
+            String name = request.getParameter("cid31");
+            type.setName(name);
+            type = port.addPermissionType(type);
+            callResult = "Created permission type:<br/> PermissionType: permission type ID = " + type.getPermissionTypeId()
+                         + ", name = " + type.getName();
+        } else if ("addPermission".equals(operation)) {
+            Permission permission = new Permission();
+            String userId = request.getParameter("cid41");
+            String projectId = request.getParameter("cid42");
+            String permissionTypeId = request.getParameter("cid43");
+            permission.setUserId(Long.parseLong(userId));
+            permission.setProjectId(Long.parseLong(projectId));
+
+            List<PermissionType> types = port.getAllPermissionType();
+            for (PermissionType type : types) {
+                if (type.getPermissionTypeId().equals(Long.parseLong(permissionTypeId))) {
+                    permission.setPermissionType(type);
+                }
+            }
+
+            permission = port.addPermission(permission);
+            callResult = "Created permission:<br/> Permission: permission ID = " + permission.getPermissionId()
+                         + ", userId = " + permission.getUserId() + ", projectId = " + permission.getProjectId()
+                         + ", permissionTypeId = " + permission.getPermissionType().getPermissionTypeId()
+                         + ", permissionTypeName = " + permission.getPermissionType().getName();
+        } else if ("updatePermissionType".equals(operation)) {
+            PermissionType type = new PermissionType();
+            String permissionTypeId = request.getParameter("cid51");
+            String name = request.getParameter("cid52");
+            type.setPermissionTypeId(Long.parseLong(permissionTypeId));
+            type.setName(name);
+            port.updatePermissionType(type);
+            callResult = "Update Permission Type successfully";
+        } else if ("updatePermission".equals(operation)) {
+            Permission permission = new Permission();
+            String permissionId = request.getParameter("cid61");
+            String userId = request.getParameter("cid62");
+            String projectId = request.getParameter("cid63");
+            String permissionTypeId = request.getParameter("cid64");
+            permission.setPermissionId(Long.parseLong(permissionId));
+            permission.setUserId(Long.parseLong(userId));
+            permission.setProjectId(Long.parseLong(projectId));
+
+            List<PermissionType> types = port.getAllPermissionType();
+            for (PermissionType type : types) {
+                if (type.getPermissionTypeId().equals(Long.parseLong(permissionTypeId))) {
+                    permission.setPermissionType(type);
+                }
+            }
+            port.updatePermission(permission);
+            callResult = "Update Permission successfully";
+        } else if ("deletePermissionType".equals(operation)) {
+            String permissionTypeId = request.getParameter("cid71");
+            boolean result = port.deletePermissionType(Long.parseLong(permissionTypeId));
+            callResult = "Removed Permission Type. Deleted = " + result;
+        } else if ("deletePermission".equals(operation)) {
+            String permissionId = request.getParameter("cid81");
+            boolean result = port.deletePermission(Long.parseLong(permissionId));
+            callResult = "Removed Permission. Deleted = " + result;
+        }
 
     } catch (Throwable e) {
         error = e;
