@@ -336,8 +336,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
 
             // 10
             entry=new MapEntry();
-            entry.key=PROJECT_INFO_TYPE_TIMELINE_NOTIFICATION_KEY;
-            entry.value=PROJECT_INFO_TYPE_TIMELINE_NOTIFICATION_VALUE;
+            entry.key=PROJECT_INFO_TYPE_STATUS_NOTIFICATION_KEY;
+            entry.value=PROJECT_INFO_TYPE_STATUS_NOTIFICATION_VALUE;
             ret.push(entry);
 
             // 11
