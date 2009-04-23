@@ -2092,8 +2092,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             AssetDTO assetDTO = contest.getAssetDTO();
 			long forumId = 0;
 
-			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+			
+			XMLGregorianCalendar productionDate = null;
 
             if (assetDTO != null) {
 
@@ -2108,6 +2110,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
 					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
 				}
+
+				// product date is used to pass the project start date
+				// bcoz we need to use XMLGregorianCalendar and project start date 
+				// is Date and since it is not DTO and hard to change, we use
+				// product date for now, but we need to set it null so it will not
+				// saved in catalog
+				productionDate = assetDTO.getProductionDate();
+				assetDTO.setProductionDate(null);
+
 System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles());
 
 				if (contest.getProjectHeader() != null) 
@@ -2172,7 +2183,7 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                             String.valueOf(forumId));
 					}
 
-					contest.getProjectPhases().setStartDate(getDate(assetDTO.getProductionDate()));
+					contest.getProjectPhases().setStartDate(getDate(productionDate));
 					
                 }
 
@@ -2217,6 +2228,9 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                 contest.setProjectResources(projectData.getResources());
                 contest.setProjectData(projectData);
 				contest.setId(projectData.getProjectHeader().getId());
+
+				// set project start date in production date
+				contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
 System.out.println("-------------------------created : "+contest.getAssetDTO().getCompVersionId());
 System.out.println("-------------------------createdddd : "+contest.getAssetDTO().getVersionNumber());
@@ -2259,8 +2273,18 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
 		try
 		{
 
+				XMLGregorianCalendar productionDate = null;
+
 				if (contest.getAssetDTO() != null) 
 				{
+						// product date is used to pass the project start date
+						// bcoz we need to use XMLGregorianCalendar and project start date 
+						// is Date and since it is not DTO and hard to change, we use
+						// product date for now, but we need to set it null so it will not
+						// saved in catalog
+						productionDate = contest.getAssetDTO().getProductionDate();
+						contest.getAssetDTO().setProductionDate(null);
+
 						// TODO: for some reason, versionid is not passed
 						contest.getAssetDTO().setCompVersionId(contest.getAssetDTO().getVersionNumber());
 						contest.setAssetDTO(this.catalogService.updateAsset(contest.getAssetDTO()));
@@ -2278,6 +2302,9 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
 							phases[i].setProject(contest.getProjectPhases());
 						}
 
+
+						contest.getProjectPhases().setStartDate(getDate(productionDate));
+
 						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 						FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
 								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
@@ -2294,6 +2321,9 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
 							allPhases[i].clearDependencies();
 						}
 				}
+
+				// set project start date in production date
+				contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
 				
 				return contest;
 
