@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for rendering the component row.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           creationComplete="init()"
+           backgroundColor="#fdfdfd"
+           borderStyle="solid"
+           borderColor="#dadada"
+           borderSides="bottom"
+           mouseOver="handleMouseOver()"
+           verticalScrollPolicy="off"
+           horizontalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.vo.TCComponent;
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
+            import mx.events.EffectEvent;
+
+            /**
+             * Component progress status icon for specification.
+             */
+            [Embed("../../assets/specIcon.png")]
+            private var specIcon:Class;
+
+            /**
+             * Component progress status icon for development phase.
+             */
+            [Embed("../../assets/devIcon.png")]
+            private var devIcon:Class;
+
+            /**
+             * Component progress status icon for completed phase.
+             */
+            [Embed("../../assets/completeIcon.png")]
+            private var completeIcon:Class;
+
+            /**
+             * Component progress status icon for design phase.
+             */
+            [Embed("../../assets/desIcon.png")]
+            private var desIcon:Class;
+
+            /**
+             * Component progress status icon for java component types.
+             */
+            [Embed("../../assets/javaIcon.png")]
+            private var javaIcon:Class;
+
+            /**
+             * Component progress status icon for .net component types.
+             */
+            [Embed("../../assets/dNetIcon.png")]
+            private var dNetIcon:Class;
+
+            /**
+             * Reference to the current component.
+             */
+            [Bindable]
+            private var currentComponent:TCComponent;
+
+            /**
+             * Instance of the data model class for this widget.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+
+            /**
+             * Handler that gets called on creation complete of this component.
+             */
+            private function init():void {
+                updateType();
+                updateProgress();
+                initHeight=this.height;
+            }
+
+            /**
+             * Before show link height of the component row.
+             */
+            [Bindable]
+            private var initHeight:Number;
+
+            /**
+             * Sets the component data for this component renderer
+             *
+             * @param value component data.
+             */
+            override public function set data(value:Object):void {
+                if (value is TCComponent) {
+                    currentComponent=value as TCComponent;
+                    if (initialized) {
+                        updateType();
+                        updateProgress();
+                    }
+
+                }
+                super.data=value;
+            }
+
+            /**
+             * Handles the mouse over the component row.
+             */
+            private function handleMouseOver():void {
+                model.closeLastLink(this);
+            }
+
+            /**
+             * Shows the links through animation.
+             */
+            public function showLink(event:EffectEvent=null):void {
+
+                cCate.setStyle("color", 0xc68184);
+                cName.setStyle("color", 0xa9564e);
+                show.addEventListener(EffectEvent.EFFECT_END, showContent);
+                show.play();
+            }
+
+            /**
+             * Closes the links through animation.
+             */
+            public function closeLink(end:Function):void {
+                overContent.visible=false;
+
+                cCate.setStyle("color", 0x848484);
+                cName.setStyle("color", 0x575757);
+                hide.addEventListener(EffectEvent.EFFECT_END, end);
+                hide.play();
+            }
+
+            /**
+             * Animation effect handler for showing the content.
+             *
+             * @param event animation effect event.
+             */
+            public function showContent(event:EffectEvent):void {
+                overContent.visible=true;
+            }
+
+            /**
+             * Sets the component type icon.
+             */
+            private function updateType():void {
+                switch (currentComponent.categoryType) {
+                    case ".NET":
+                        type.source=dNetIcon;
+                        break;
+                    case "Java":
+                        type.source=javaIcon;
+                        break;
+                }
+            }
+
+            /**
+             * Sets the component progress status.
+             */
+            private function updateProgress():void {
+                switch (currentComponent.componentProgressStatus) {
+                    case "complete":
+                        progress.source=completeIcon;
+                        break;
+                    case "dev":
+                        progress.source=devIcon;
+                        break;
+                    case "des":
+                        progress.source=desIcon;
+                        break;
+                    case "spec":
+                        progress.source=specIcon;
+                        break;
+                }
+            }
+
+            /**
+             * Click Event handler for click on 'view details'
+             */
+            private function gotoDetail():void {
+                model.currentComponent=currentComponent;
+                model.currentMode="detail";
+            }
+
+            /**
+             * Click Event handler for click on 'download'
+             */
+            private function gotoDownload():void {
+                model.openDownload(currentComponent);
+            }
+        ]]>
+    </mx:Script>
+    <mx:Image id="progress"
+              left="15"
+              top="8"/>
+    <mx:Image id="type"
+              left="40"
+              top="6"/>
+    <mx:VBox width="100%"
+             height="100%"
+             left="89"
+             top="0"
+             paddingTop="6"
+             paddingBottom="3"
+             verticalGap="0">
+        <mx:Label width="100%"
+                  text="{currentComponent.categories}"
+                  id="cCate"
+                  fontFamily="Arial"
+                  fontSize="12"
+                  fontWeight="normal"
+                  color="#848484"
+                  paddingTop="0"
+                  paddingBottom="0"/>
+        <mx:Label width="100%"
+                  text="{currentComponent.componentName}"
+                  id="cName"
+                  fontFamily="Arial"
+                  fontSize="12"
+                  fontWeight="bold"
+                  color="#575757"
+                  paddingTop="0"
+                  paddingBottom="0"/>
+        <mx:HBox width="100%"
+                 id="overContent"
+                 horizontalAlign="left"
+                 visible="false"
+                 includeInLayout="false"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 height="20">
+            <mx:Button styleName="viewBtn"
+                       click="gotoDetail()"
+                       width="69"
+                       height="13"
+                       buttonMode="true"
+                       useHandCursor="true"/>
+            <mx:Label text="|"
+                      color="#858384"/>
+            <mx:LinkButton styleName="downBtn"
+                           click="gotoDownload()"
+                           width="69"
+                           height="13"
+                           buttonMode="true"
+                           useHandCursor="true"/>
+        </mx:HBox>
+    </mx:VBox>
+    <mx:Resize id="show"
+               target="{this}"
+               heightFrom="{initHeight}"
+               heightTo="{initHeight + 20}"
+               duration="500"
+               widthFrom="{this.width}"
+               widthTo="{this.width}"/>
+    <mx:Resize id="hide"
+               target="{this}"
+               heightFrom="{initHeight + 20}"
+               heightTo="{initHeight}"
+               duration="500"
+               widthFrom="{this.width}"
+               widthTo="{this.width}"/>
+</mx:Canvas>
