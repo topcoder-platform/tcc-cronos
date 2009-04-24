@@ -311,11 +311,11 @@
              backgroundSize="100%"
              id="title"
              verticalScrollPolicy="off"
-             horizontalScrollPolicy="off">
+             horizontalScrollPolicy="off"
+             click="handleClick()">
         <mx:Image width="16"
                   height="16"
                   id="winCtrlBut"
-                  click="handleClick()"
                   source="{winMin}"
                   buttonMode="true"
                   useHandCursor="true"/>

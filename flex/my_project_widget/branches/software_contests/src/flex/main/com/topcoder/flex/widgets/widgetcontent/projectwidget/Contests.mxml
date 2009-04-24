@@ -82,7 +82,7 @@
                     statusGroup=new Dictionary();
                     typeGroup=new Dictionary();
                     for each (var cont:Contest in value.contests) {
-                        var type:String=cont.type;
+                        var type:String=cont.typeGroup;
                         var status:String=cont.status;
                         if (!statusGroup[status]) {
                             statusGroup[status]=new ArrayCollection();
@@ -208,60 +208,67 @@
              height="100%"
              verticalGap="0"
              paddingTop="0"
-             paddingBottom="0">
-        <mx:HBox width="100%"
+             paddingBottom="5">
+        <mx:VBox width="100%"
                  horizontalAlign="right"
                  verticalAlign="middle"
+                 paddingRight="5"
+                 verticalGap="0"
                  id="topBar">
-            <mx:Label text="Group By:"
-                      styleName="normalStyle"/>
-            <mx:ComboBox id="groupCB"
-                         valueCommit="changeGroup()"
-                         width="85"
-                         styleName="normalStyle"
-                         enabled="{!model.showDateChooser}">
-                <mx:dataProvider>
-                    <mx:String>No Group</mx:String>
-                    <mx:String>Status Type</mx:String>
-                    <mx:String>Contest Type</mx:String>
-                </mx:dataProvider>
-            </mx:ComboBox>
-            <mx:Label text="Date Filter:"
-                      styleName="normalStyle"/>
-            <mx:Button styleName="miniButton"
-                       buttonMode="true"
-                       width="14"
-                       height="14"
-                       click="showDatePicker()"/>
-            <mx:VBox verticalGap="0">
-                <mx:Label text="From:"/>
+            <mx:HBox horizontalAlign="right">
+                <mx:Label text="From:"
+                          width="75"/>
+                <mx:Label text="To:"
+                          width="75"/>
+            </mx:HBox>
+            <mx:HBox verticalAlign="middle">
+                <mx:Label text="Group By:"
+                          styleName="normalStyle"/>
+                <mx:ComboBox id="groupCB"
+                             valueCommit="changeGroup()"
+                             width="85"
+                             styleName="normalStyle"
+                             enabled="{!model.showDateChooser}">
+                    <mx:dataProvider>
+                        <mx:String>No Group</mx:String>
+                        <mx:String>Status Type</mx:String>
+                        <mx:String>Contest Type</mx:String>
+                    </mx:dataProvider>
+                </mx:ComboBox>
+                <mx:Label text="Date Filter:"
+                          styleName="normalStyle"/>
+                <mx:Button styleName="miniButton"
+                           buttonMode="true"
+                           width="14"
+                           height="14"
+                           click="showDatePicker()"/>
                 <mx:TextInput id="fromDate"
                               text="{model.currentProj.startDateFilter}"
                               editable="false"
                               width="75"/>
-            </mx:VBox>
-            <mx:VBox verticalGap="0">
-                <mx:Label text="To:"/>
                 <mx:TextInput id="toDate"
                               text="{model.currentProj.endDateFilter}"
                               editable="false"
                               width="75"/>
-            </mx:VBox>
-        </mx:HBox>
+            </mx:HBox>
+        </mx:VBox>
         <mx:ViewStack width="100%"
                       id="stack">
             <flex:ContestShower id="shower"
                                 height="100%"
                                 width="100%"
+                                horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
                                 dataProvider="{proj.contests}"
                                 isTabMode="false"/>
             <flex:DragAbleAccordion width="100%"
+                                    horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
                                     id="group"/>
         </mx:ViewStack>
         <mx:Spacer height="100%"/>
         <mx:HBox width="100%"
                  horizontalAlign="right"
                  paddingRight="2"
+                 paddingTop="5"
                  paddingBottom="2"
                  id="bottomBar">
             <mx:Button label="ADD NEW CONTEST"

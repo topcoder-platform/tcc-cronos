@@ -82,6 +82,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * Type of the contest.
          */
         public var type:String;
+        
+        /**
+        * It's type group for the contest.
+        * Eg. Studio, Architecture etc.
+        */
+        public var typeGroup:String;
 
         /**
          * A simple constructor which assigns parameters to member variables.
@@ -114,6 +120,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
             this.end=DateUtil.parseFromString(this.endDate);
 
             this.type=_type;
+            this.typeGroup="Studio";
         }
     }
 }

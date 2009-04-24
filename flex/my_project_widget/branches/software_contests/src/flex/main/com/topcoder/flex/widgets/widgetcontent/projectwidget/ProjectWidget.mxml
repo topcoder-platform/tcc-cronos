@@ -386,9 +386,10 @@
              */
             public function maximizeScreen():void {
                 if (this.container) {
-                    isMaxMode=true;
                     this.container.startMaximize();
                 }
+                
+                isMaxMode=true;
             }
 
             /**
@@ -396,9 +397,10 @@
              */
             public function restoreScreen():void {
                 if (this.container) {
-                    isMaxMode=false;
                     this.container.startRestore();
                 }
+                
+                isMaxMode=false;
             }
         ]]>
     </mx:Script>

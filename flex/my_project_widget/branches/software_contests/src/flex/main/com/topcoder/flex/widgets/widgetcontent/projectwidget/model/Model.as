@@ -49,7 +49,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
         /**
          * If widget is in max mode.
          */
-        public var isMax:Boolean=false;
+        public var isMax:Boolean=true;
 
         /**
          * The currently selected project in the widget.

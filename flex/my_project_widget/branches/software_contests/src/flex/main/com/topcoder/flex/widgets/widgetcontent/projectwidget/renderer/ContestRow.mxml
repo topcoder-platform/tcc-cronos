@@ -330,6 +330,10 @@
                      styleName="rowContentLabel"
                      id="lblEndDatePart2"/>
         </mx:VBox>
+        <mx:Text width="100%"
+                 styleName="rowContentLabel"
+                 id="lblType"
+                 htmlText="{contest.type}"/>
         <!--<mx:Text width="100%"
              styleName="rowContentLabel"
              id="lblStartDate"

@@ -110,6 +110,10 @@
                   text="END"/>
         <mx:Label width="100%"
                   textAlign="center"
+                  id="lblType"
+                  text="TYPE"/>          
+        <mx:Label width="100%"
+                  textAlign="center"
                   id="lblRegistrants"
                   text="REGISTR"/>
         <mx:Label width="100%"
