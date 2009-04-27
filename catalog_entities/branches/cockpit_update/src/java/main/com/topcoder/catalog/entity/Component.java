@@ -366,12 +366,12 @@ public class Component implements Serializable {
 			return currentVersion;
 		}
 
-		if (versions != null || versions.size() == 0)
+		if (getVersions() == null || getVersions().size() == 0)
 		{
 			return null;
 		}
 
-		for (Iterator<CompVersion> iterator = versions.iterator(); iterator.hasNext();) 
+		for (Iterator<CompVersion> iterator = getVersions().iterator(); iterator.hasNext();) 
 		{
             CompVersion cv = iterator.next();
 			if ((cv != null) && (cv.getVersion() != null) && cv.getVersion() == currentVersionNumber) 
@@ -502,6 +502,7 @@ public class Component implements Serializable {
      */
     public void setVersionsSet(Set<CompVersion> versionsSet) {
         this.versionsSet = versionsSet;
+		this.versions =  new ArrayList(versionsSet);
     }
 
     /**
