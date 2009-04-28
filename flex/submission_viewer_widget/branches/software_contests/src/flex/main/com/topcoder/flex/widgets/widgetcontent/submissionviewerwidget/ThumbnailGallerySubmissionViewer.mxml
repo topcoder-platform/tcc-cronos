@@ -951,13 +951,16 @@
             /**
             * ui controls for animation effects.
             */
-            private var screens:UIComponent=null;
+            //private var screens:UIComponent=null;
 
             private var coms1:UIComponent=null;
             private var hbox:Canvas=null;
             private var isPrev:Boolean;
             private var timer:Timer;
             private var subTimer:Timer;
+            //BUGR-1754
+            private var coms2:UIComponent = null;
+            private var goTimes:Number = 2;
 
             /**
             * Go to previous page / submission in animated form.
@@ -970,18 +973,24 @@
                 prev_top.enabled=false;
                 next_bottom.enabled=false;
                 prev_bottom.enabled=false;
-                var bitmap1:BitmapData=new BitmapData(list.width, list.height);
-                bitmap1.draw(list);
-                var bit1:Bitmap=new Bitmap(bitmap1);
-                coms1=new UIComponent();
-                coms1.addChild(bit1);
+                //BUGR-1754
+                if (goTimes > 0) {
+                    var bitmap1:BitmapData=new BitmapData(list.width, list.height);
+                    bitmap1.draw(list);
+                    var bit1:Bitmap=new Bitmap(bitmap1);
+                    coms1=new UIComponent();
+                    coms1.addChild(bit1);
+                    coms1.x=list.width;
+                    coms1.y=0;
+                    hbox=new Canvas();
+                    hbox.x=-list.width;
+                    hbox.y=0;
+                    hbox.width=list.width * 2;
+                    hbox.addChild(coms1);
+                    goTimes--;
+                }
                 coms1.x=list.width;
-                coms1.y=0;
-                hbox=new Canvas();
                 hbox.x=-list.width;
-                hbox.y=0;
-                hbox.width=list.width * 2;
-                hbox.addChild(coms1);
                 listSub.width=list.width;
                 if (listSub.numChildren <= 2) {
                     listSub.addChild(hbox);
@@ -1006,19 +1015,25 @@
                 prev_top.enabled=false;
                 next_bottom.enabled=false;
                 prev_bottom.enabled=false;
-                var bitmap1:BitmapData=new BitmapData(list.width, list.height);
-                bitmap1.draw(list);
-                var bit1:Bitmap=new Bitmap(bitmap1);
-                coms1=new UIComponent();
-                coms1.addChild(bit1);
+                //BUGR-1754
+                if (goTimes > 0) {
+                    var bitmap1:BitmapData=new BitmapData(list.width, list.height);
+                    bitmap1.draw(list);
+                    var bit1:Bitmap=new Bitmap(bitmap1);
+                    coms1=new UIComponent();
+                    coms1.addChild(bit1);
+                    coms1.x=0;
+                    coms1.y=0;
+                    hbox=new Canvas();
+                    hbox.width=list.width * 2;
+                    hbox.addChild(coms1);
+                    hbox.x=0;
+                    hbox.y=0;
+                    goTimes--;
+                }
                 coms1.x=0;
-                coms1.y=0;
-                hbox=new Canvas();
-                listSub.width=list.width;
-                hbox.width=list.width * 2;
-                hbox.addChild(coms1);
                 hbox.x=0;
-                hbox.y=0;
+                listSub.width=list.width;
                 if (listSub.numChildren <= 2) {
                     listSub.addChild(hbox);
                 } else {
@@ -1041,12 +1056,16 @@
                 }
                 var bitmap2:BitmapData=new BitmapData(list.width, list.height);
                 bitmap2.draw(list);
+                //BUGR-1754
+                if (goTimes >= 0) {
                 var bit2:Bitmap=new Bitmap(bitmap2);
-                var coms2:UIComponent=new UIComponent();
-                coms2.addChild(bit2);
+                    coms2=new UIComponent();
+                    coms2.addChild(bit2);
+                    coms2.x=(isPrev) ? 0 : list.width;
+                    coms2.y=0;
+                    hbox.addChild(coms2);
+                }
                 coms2.x=(isPrev) ? 0 : list.width;
-                coms2.y=0;
-                hbox.addChild(coms2);
 
                 moves.target=hbox;
                 moves.xFrom=(isPrev) ? -list.width : 0;
@@ -1061,12 +1080,12 @@
                 if (hbox && listSub.contains(hbox)) {
                     listSub.removeChild(hbox);
                 }
-                coms1=null;
-                if (masks && canvas.contains(masks)) {
+                //BUGR-1754
+                //coms1=null;
+                if (canvas.contains(masks)) {
                     canvas.removeChild(masks);
                 }
-
-                masks=null;
+                //masks=null;
                 
                 if (next_top) {
                     next_top.enabled=true;
@@ -1112,9 +1131,10 @@
             /**
             * UI controls for animation on next / previous navigation of submission in single image view.
             */
-            private var currentSub:UIComponent=new UIComponent();
-            private var masks:Canvas=new Canvas();
+            private var currentSub:UIComponent=null;
+            private var masks:Canvas=null;
             private var last:Boolean=false;
+            private var isSubFirstTime:Boolean = true;
 
             /**
             * Go to previous submission in animated form.
@@ -1125,19 +1145,24 @@
                 }
                 nextBtn.enabled=false;
                 prevBtn.enabled=false;
-                var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
-                bitmap1.draw(stack);
-                var bit1:Bitmap=new Bitmap(bitmap1);
-                currentSub=new UIComponent();
-                currentSub.addChild(bit1);
-                currentSub.x=stack.width;
-                currentSub.y=0;
-                masks=new Canvas();
                 canvas.width=stack.width;
-                masks.width=stack.width * 2;
-                masks.addChild(currentSub);
+                if (isSubFirstTime) {
+                    var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
+                    bitmap1.draw(stack);
+                    var bit1:Bitmap=new Bitmap(bitmap1);
+                    currentSub=new UIComponent();
+                    currentSub.addChild(bit1);
+                    currentSub.x=stack.width;
+                    currentSub.y=0;
+                    masks=new Canvas();
+                    masks.width=stack.width * 2;
+                    masks.addChild(currentSub);
+                    masks.x=-stack.width;
+                    masks.y=0;
+                    isSubFirstTime = false;
+                }
+                currentSub.x=stack.width;
                 masks.x=-stack.width;
-                masks.y=0;
                 if (canvas.numChildren <= 1) {
                     canvas.addChild(masks);
                 } else {
@@ -1160,19 +1185,26 @@
                 }
                 nextBtn.enabled=false;
                 prevBtn.enabled=false;
-                var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
-                bitmap1.draw(stack);
-                var bit1:Bitmap=new Bitmap(bitmap1);
-                currentSub=new UIComponent();
-                currentSub.addChild(bit1);
-                currentSub.x=0;
-                currentSub.y=0;
-                masks=new Canvas();
+                //BUGR-1754
                 canvas.width=stack.width;
-                masks.width=stack.width * 2;
-                masks.addChild(currentSub);
+                if (isSubFirstTime) {
+                    var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
+                    bitmap1.draw(stack);
+                    var bit1:Bitmap=new Bitmap(bitmap1);
+                    currentSub=new UIComponent();
+                    currentSub.addChild(bit1);
+                    currentSub.x=0;
+                    currentSub.y=0;
+                    masks=new Canvas();
+                    masks.width=stack.width * 2;
+                    masks.addChild(currentSub);
+                    masks.x=0;
+                    masks.y=0;
+                    isSubFirstTime = false;
+                }
+                currentSub.x=0;
                 masks.x=0;
-                masks.y=0;
+                
                 if (canvas.numChildren <= 1) {
                     canvas.addChild(masks);
                 } else {
