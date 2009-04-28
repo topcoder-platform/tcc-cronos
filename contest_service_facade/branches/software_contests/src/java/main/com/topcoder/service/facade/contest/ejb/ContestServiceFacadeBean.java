@@ -2807,6 +2807,8 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
         	newData.setProjectId(data.getProjectId());
         	newData.setSname(data.getSname());
         	newData.setStartDate(data.getStartDate());
+			// studio set 'Studio' for now
+			newData.setType("Studio");
         	ret.add(newData);
         }
         for(com.topcoder.management.project.SimpleProjectContestData data:projectServices.getSimpleProjectContestData()){
@@ -2824,6 +2826,7 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
         	newData.setProjectId(data.getProjectId());
         	newData.setSname(data.getSname());
         	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
+			newData.setType(data.getType());
         	ret.add(newData);
         }
     	return  ret;
