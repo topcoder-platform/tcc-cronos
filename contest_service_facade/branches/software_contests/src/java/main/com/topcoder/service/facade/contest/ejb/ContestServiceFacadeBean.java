@@ -2828,6 +2828,57 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
         }
     	return  ret;
     }
+	
+	/**
+     * <p>
+     * BURG-1716:
+     * We need to add a method to get software contest by project id, the method wil get all OR project related data,
+     * then from project property to get comp version id then to call getAssetByVersionId to get assetDTO,
+     * please check create software contest to see what data need to be returned.
+     * </p>
+     * @param projectId the OR Project Id
+     * @return SoftwareCompetition
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * 
+     * @since BURG-1716
+     */
+    public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws ContestServiceException {
+    	SoftwareCompetition contest = new SoftwareCompetition();
+    	try {
+    		FullProjectData fullProjectData = this.projectServices.getFullProjectData(projectId);
+    		Long compVersionId = Long.parseLong(fullProjectData.getProjectHeader().getProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY));    		
+    		contest.setAssetDTO(this.catalogService.getAssetByVersionId(compVersionId));
+    		contest.setProjectHeader(fullProjectData.getProjectHeader());
+    		contest.setProjectData(fullProjectData);
+    		contest.setProjectPhases(fullProjectData);
+    		contest.setId(projectId);
+    		contest.setProjectResources(fullProjectData.getResources());
+
+			com.topcoder.project.phases.Phase[] allPhases = fullProjectData.getAllPhases();
+			// this is to avoid cycle
+			for (int i = 0; i < allPhases.length; i++) {
+				allPhases[i].setProject(null);
+				allPhases[i].clearDependencies();
+			}
+
+			// set project start date in production date
+			contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
+
+			// set null to avoid cycle
+			contest.getAssetDTO().setDependencies(null);
+			contest.getAssetDTO().getForum().setCompVersion(null);
+
+    		return contest;
+    	} catch(ProjectServicesException pse) {
+    		throw new ContestServiceException("Fail to get project data from project services.", pse);
+    	} catch(NumberFormatException nfe) {
+    		throw new ContestServiceException("the properites 'Version ID' is not of Long value in project.", nfe);
+    	} catch (EntityNotFoundException e) {
+    		throw new ContestServiceException("the version id does not exist.", e);
+		} catch (com.topcoder.catalog.service.PersistenceException e) {
+			throw new ContestServiceException("Fail to get project asset.", e);
+		}    	
+    }
 
 
 }

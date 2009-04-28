@@ -937,6 +937,14 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             callResult = "Removed Permission. Deleted = " + result;
         }
 
+			else if ( "getSoftwareContestByProjectId".equals(operation)) {
+        		String pid = request.getParameter("or_project_id_burg_1712");
+        		SoftwareCompetition result = port.getSoftwareContestByProjectId(Long.parseLong(pid));
+        	
+        		StringBuilder b = new StringBuilder();
+        		callResult = "Retrieved.<br/>";
+        	}
+
     } catch (Throwable e) {
         error = e;
     }

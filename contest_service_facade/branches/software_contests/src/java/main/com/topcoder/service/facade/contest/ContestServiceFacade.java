@@ -991,6 +991,20 @@ public interface ContestServiceFacade {
 
     /**
      * <p>
+     * BURG-1716:
+     * We need to add a method to get software contest by project id, the method wil get all OR project related data,
+     * then from project property to get comp version id then to call getAssetByVersionId to get assetDTO,
+     * please check create software contest to see what data need to be returned.
+     * </p>
+     * @param projectId the OR Project Id
+     * @return SoftwareCompetition
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * 
+     * @since BURG-1716
+     */
+    public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws ContestServiceException;
+    /**
+     * <p>
      * Updates a <code>SoftwareCompetition</code> in the persistence.
      * </p>
      *

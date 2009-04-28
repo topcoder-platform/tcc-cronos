@@ -12,7 +12,7 @@
 <datasources>
     <local-tx-datasource>
         <jndi-name>InformixDS</jndi-name>
-        <connection-url>jdbc:informix-sqli://env.topcoder.com:2021/common_oltp:INFORMIXSERVER=informixoltp_tcp</connection-url>
+        <connection-url>jdbc:informix-sqli://174.129.103.205:2021/tcs_catalog:INFORMIXSERVER=informixoltp_tcp</connection-url>
         <driver-class>com.informix.jdbc.IfxDriver</driver-class>
         <user-name>coder</user-name>
         <password>c0d3r4T</password>
@@ -154,6 +154,22 @@
             <type-mapping>InformixDB</type-mapping>
         </metadata>
     </local-tx-datasource>
+
+	 <local-tx-datasource>
+        <jndi-name>TimeDS</jndi-name>
+        <connection-url>jdbc:informix-sqli://env.topcoder.com:2021/time_oltp:INFORMIXSERVER=informixoltp_tcp</connection-url>
+        <driver-class>com.informix.jdbc.IfxDriver</driver-class>
+        <user-name>coder</user-name>
+        <password>c0d3r4T</password>
+    <!--    <check-valid-connection-sql>select '1' from dual</check-valid-connection-sql>-->
+
+        <track-statements>true</track-statements>
+        <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.InformixExceptionSorter</exception-sorter-class-name>
+        <metadata>
+            <type-mapping>InformixDB</type-mapping>
+        </metadata>
+    </local-tx-datasource>
+
 
 
 </datasources>

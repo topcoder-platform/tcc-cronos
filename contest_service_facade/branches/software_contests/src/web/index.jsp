@@ -189,6 +189,11 @@
         <input type="button" value="Execute" onclick="callService('updateContest');"/></li><br/>
 	<li>ContestService.getAllDocumentTypes() &nbsp; &nbsp;
         <input type="button" value="Execute" onclick="callService('getAllDocumentTypes');"/></li><br/>
+        
+    ------- BURG-1716
+    <li>ContestService.getSoftwareContestByProjectId(long projectId) &nbsp; &nbsp; <br/>
+    	Project ID: <input type="text" name="or_project_id_burg_1712" value=""> &nbsp; &nbsp;<br/>
+        <input type="button" value="Execute" onclick="callService('getSoftwareContestByProjectId');"/></li><br/>    
 </ul>
 </form>
 <br/>
