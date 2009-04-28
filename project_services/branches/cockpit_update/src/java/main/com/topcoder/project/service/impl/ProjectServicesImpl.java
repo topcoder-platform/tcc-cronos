@@ -812,7 +812,8 @@ public class ProjectServicesImpl implements ProjectServices {
             // sets the teams to fullProjectData
             fullProjectData.setTeams(teams);
 
-            String externalProjectIdStr = (String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID);
+//COMMENT OUT, we dont need to set technologies here
+/*            String externalProjectIdStr = (String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID);
             if (externalProjectIdStr != null) {
                 long externalProjectId = Long.parseLong(externalProjectIdStr);
                 // retrieves the external project with given project id
@@ -825,6 +826,7 @@ public class ProjectServicesImpl implements ProjectServices {
             } else {
                 logDebug("Project " + projectId + " is missing external reference");
             }
+*/
 
             // get the contest sale
             fullProjectData.setContestSales(this.getContestSales(projectId));
@@ -845,9 +847,6 @@ public class ProjectServicesImpl implements ProjectServices {
         } catch (ResourcePersistenceException ex) {
             log(Level.ERROR, "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");
             throw new ProjectServicesException("ResourcePersistenceException occurred when searching resources.", ex);
-        } catch (RetrievalException ex) {
-            log(Level.ERROR, "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");
-            throw new ProjectServicesException("RetrievalException occurred when retrieving external project.", ex);
         }
 
         log(Level.INFO, "Exits ProjectServicesImpl#getFullProjectData method.");
