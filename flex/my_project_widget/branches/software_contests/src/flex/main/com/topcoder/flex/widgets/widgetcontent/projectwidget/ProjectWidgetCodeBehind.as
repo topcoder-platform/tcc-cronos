@@ -154,11 +154,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
             if (pid) {
                 ContestServiceFacadeBean.clearHeaders();
                 ContestServiceFacadeBean.addHeader(getHeader(username, password));
-                ContestServiceFacadeBean.getSimpleProjectContestDataByPID.send();
+                ContestServiceFacadeBean.getCommonProjectContestDataByPID.send();
             } else {
                 ContestServiceFacadeBean.clearHeaders();
                 ContestServiceFacadeBean.addHeader(getHeader(username, password));
-                ContestServiceFacadeBean.getSimpleProjectContestData();
+                ContestServiceFacadeBean.getCommonProjectContestData();
             }
         }
 
