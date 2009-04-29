@@ -2856,6 +2856,18 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
 			newData.setCreateUser(data.getCreateUser());
         	ret.add(newData);
         }
+
+
+		// sort/group by project id
+		Collections.sort(ret, new Comparator()
+		{
+            public int compare(Object o1, Object o2) {
+                CommonProjectContestData p1 = (CommonProjectContestData) o1;
+                CommonProjectContestData p2 = (CommonProjectContestData) o2;
+               return p1.getProjectId().compareTo(p2.getProjectId());
+            }
+ 
+        });
     	return  ret;
     }
 	
