@@ -109,6 +109,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.Properties;
+import java.util.Comparator;
+import java.util.Collections;
 
 /**
  * <p>This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
@@ -2745,22 +2747,27 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
     {
     	List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
         for(SimpleProjectContestData data:studioService.getSimpleProjectContestData(pid)){
-        	CommonProjectContestData newData=new CommonProjectContestData();
-        	newData.setCname(data.getCname());
-        	newData.setContestId(data.getContestId());
-
-        	newData.setPname(data.getPname());
-        	newData.setDescription(data.getDescription());
-        	newData.setEndDate(data.getEndDate());
-        	newData.setForumId(data.getForumId());
-        	newData.setNum_for(data.getNum_for());
-        	newData.setNum_reg(data.getNum_reg());
-        	newData.setNum_sub(data.getNum_sub());
-        	newData.setProjectId(data.getProjectId());
-        	newData.setSname(data.getSname());
-        	newData.setStartDate(data.getStartDate());
-			newData.setType("Studio");
-        	ret.add(newData);
+        	if (data != null)
+			{
+				CommonProjectContestData newData=new CommonProjectContestData();
+				newData.setCname(data.getCname());
+				newData.setContestId(data.getContestId());
+				newData.setProjectId(data.getProjectId());
+				newData.setPname(data.getPname());
+				newData.setDescription(data.getDescription());
+				newData.setEndDate(data.getEndDate());
+				newData.setForumId(data.getForumId());
+				newData.setNum_for(data.getNum_for());
+				newData.setNum_reg(data.getNum_reg());
+				newData.setNum_sub(data.getNum_sub());
+				newData.setProjectId(data.getProjectId());
+				newData.setSname(data.getSname());
+				newData.setStartDate(data.getStartDate());
+				// studio set 'Studio' for now
+				newData.setType("Studio");
+				newData.setCreateUser(data.getCreateUser());
+				ret.add(newData);
+			}
         }
         for(com.topcoder.management.project.SimpleProjectContestData data:projectServices.getSimpleProjectContestData(pid)){
         	CommonProjectContestData newData=new CommonProjectContestData();
@@ -2777,8 +2784,22 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
         	newData.setProjectId(data.getProjectId());
         	newData.setSname(data.getSname());
         	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
+			newData.setType(data.getType());
+			newData.setCreateUser(data.getCreateUser());
         	ret.add(newData);
         }
+
+		// sort/group by project id
+		Collections.sort(ret, new Comparator()
+		{
+            public int compare(Object o1, Object o2) {
+                CommonProjectContestData p1 = (CommonProjectContestData) o1;
+                CommonProjectContestData p2 = (CommonProjectContestData) o2;
+               return p1.getProjectId().compareTo(p2.getProjectId());
+            }
+ 
+        });
+
     	return  ret;
     }
 
@@ -2793,23 +2814,28 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
     public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException {
         List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
         for(SimpleProjectContestData data:studioService.getSimpleProjectContestData()){
-        	CommonProjectContestData newData=new CommonProjectContestData();
-        	newData.setCname(data.getCname());
-        	newData.setContestId(data.getContestId());
-			newData.setProjectId(data.getProjectId());
-        	newData.setPname(data.getPname());
-        	newData.setDescription(data.getDescription());
-        	newData.setEndDate(data.getEndDate());
-        	newData.setForumId(data.getForumId());
-        	newData.setNum_for(data.getNum_for());
-        	newData.setNum_reg(data.getNum_reg());
-        	newData.setNum_sub(data.getNum_sub());
-        	newData.setProjectId(data.getProjectId());
-        	newData.setSname(data.getSname());
-        	newData.setStartDate(data.getStartDate());
-			// studio set 'Studio' for now
-			newData.setType("Studio");
-        	ret.add(newData);
+			if (data != null)
+			{
+				CommonProjectContestData newData=new CommonProjectContestData();
+				newData.setCname(data.getCname());
+				newData.setContestId(data.getContestId());
+				newData.setProjectId(data.getProjectId());
+				newData.setPname(data.getPname());
+				newData.setDescription(data.getDescription());
+				newData.setEndDate(data.getEndDate());
+				newData.setForumId(data.getForumId());
+				newData.setNum_for(data.getNum_for());
+				newData.setNum_reg(data.getNum_reg());
+				newData.setNum_sub(data.getNum_sub());
+				newData.setProjectId(data.getProjectId());
+				newData.setSname(data.getSname());
+				newData.setStartDate(data.getStartDate());
+				// studio set 'Studio' for now
+				newData.setType("Studio");
+				newData.setCreateUser(data.getCreateUser());
+				ret.add(newData);
+			}
+        	
         }
         for(com.topcoder.management.project.SimpleProjectContestData data:projectServices.getSimpleProjectContestData()){
         	CommonProjectContestData newData=new CommonProjectContestData();
@@ -2827,6 +2853,7 @@ System.out.println("-------------------------createdddd : "+contest.getAssetDTO(
         	newData.setSname(data.getSname());
         	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
 			newData.setType(data.getType());
+			newData.setCreateUser(data.getCreateUser());
         	ret.add(newData);
         }
     	return  ret;

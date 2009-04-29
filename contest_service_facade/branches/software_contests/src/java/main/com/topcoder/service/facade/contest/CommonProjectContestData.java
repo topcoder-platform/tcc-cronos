@@ -90,6 +90,13 @@ public class CommonProjectContestData {
      * Represents the description for project.
      */
     private String description;
+
+	 /**
+     * Represents the create user of contest.
+     * 
+     * @since My Projects Overhaul Assembly.
+     */
+    private String createUser;
     
     /**
      * Returns the contestId.
@@ -222,4 +229,30 @@ public class CommonProjectContestData {
 	public void setForumId(Integer forumId) {
 		this.forumId = forumId;
 	}
+
+
+	/**
+     * <p>
+     * Gets the create user.
+     * </p>
+     * 
+     * @return the create user
+     * @since My Projects Overhaul Assembly
+     */
+    public String getCreateUser() {
+        return this.createUser;
+    }
+
+    /**
+     * <p>
+     * Sets the create user.
+     * </p>
+     * 
+     * @param createUser
+     *            the create user to set
+     * @since My Projects Overhaul Assembly.
+     */
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
 }
