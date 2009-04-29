@@ -225,7 +225,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " 0 as num_reg, "
 			+ " 0 as num_sub, "
 			+ " 0 as num_for, "
-			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, "
+			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id,"
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id ";
@@ -240,7 +240,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ " 0 as num_reg, "
 	+ " 0 as num_sub, "
 	+ " 0 as num_for , "
-	+ " tc_direct_project_id as project_id, tcd.name, tcd.description, "
+	+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -256,7 +256,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ " 0 as num_reg, "
 	+ " 0 as num_sub, "
 	+ " 0 as num_for, "
-	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, "
+	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -274,7 +274,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Helper.DATE_TYPE,Helper.DATE_TYPE,
 			Helper.STRING_TYPE, Helper.STRING_TYPE
 			, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  Helper.LONG_TYPE};
+		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  Helper.STRING_TYPE, Helper.LONG_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -2279,9 +2279,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				ret[i].setProjectId((Long)rows[i][10]);
 				ret[i].setPname((String)rows[i][11]);
 				ret[i].setDescription((String)rows[i][12]);
-				if (rows[i][13] != null)
+				ret[i].setCreateUser((String)rows[i][13]);
+				if (rows[i][14] != null)
 				{
-					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
 			}
@@ -2354,9 +2355,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				ret[i].setProjectId((Long)rows[i][10]);
 				ret[i].setPname((String)rows[i][11]);
 				ret[i].setDescription((String)rows[i][12]);
-				if (rows[i][13] != null)
+				ret[i].setCreateUser((String)rows[i][13]);
+				if (rows[i][14] != null)
 				{
-					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
 			}
@@ -2430,9 +2432,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				ret[i].setProjectId((Long)rows[i][10]);
 				ret[i].setPname((String)rows[i][11]);
 				ret[i].setDescription((String)rows[i][12]);
-				if (rows[i][13] != null)
+				ret[i].setCreateUser((String)rows[i][13]);
+				if (rows[i][14] != null)
 				{
-					ret[i].setForumId(new Integer(((Long)rows[i][13]).intValue()));
+					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
 			}
