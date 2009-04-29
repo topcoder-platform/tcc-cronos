@@ -314,6 +314,7 @@
                     if(selectContests.selectedItem != null && selectContests.selectedItem.data != -1)
                     {
                         mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+			mainWidget.tcDirectProjectName = selectContests.selectedItem.label;
                         createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
                     }
                     else
@@ -323,6 +324,7 @@
                         createProjectOp.addEventListener("result", createProjectHandler);
                         
                         var projectData:ProjectData = new ProjectData();
+			mainWidget.tcDirectProjectName = prjInput.text;
                         projectData.name=prjInput.text;
                         projectData.description=introInput.text;
                         
@@ -341,6 +343,7 @@
                 if(e && e.result) {
                     var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
                     mainWidget.tcDirectProjectId=projectData.projectId.toString();
+					mainWidget.tcDirectProjectName = projectData.name;
                     createContestAndContinue(projectData.projectId);
                 }
             }

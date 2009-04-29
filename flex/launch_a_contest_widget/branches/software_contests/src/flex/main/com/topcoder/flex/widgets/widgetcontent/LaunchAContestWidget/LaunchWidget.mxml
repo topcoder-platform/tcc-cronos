@@ -81,6 +81,9 @@
             //[Bindable]
             //private var isAdmin:Boolean;
             private var _tcDirectProjectId:String;
+
+	    [Bindable]
+	    private var _tcDirectProjectName:String; // BUGR-1757
             
             //
             // Introduced to keep a map of step box to step number.
@@ -157,6 +160,14 @@
                 _tcDirectProjectId=projectID;
             }
 
+		[Bindable]
+		public function get tcDirectProjectName():String {
+			return _tcDirectProjectName;
+		}
+		public function set tcDirectProjectName(projectName:String):void {
+			_tcDirectProjectName = projectName;
+		}
+
             public function closeWidget():void {
                 resetWidget();
                 container.startMinimize();
@@ -203,9 +214,9 @@
                 details.widgetHeight=950; // BUGR-1134
                 specf.widgetHeight=800;
                 attch.height=600;
-                sched.height=780;
+                sched.height=800;
                 overView.height=700; // BUGR-1134
-                review.height=1120; // BUGR-1134
+                review.height=1140; // BUGR-1134
                 contestSelect.mainWidget=this;
                 overView.mainWidget=this;
                 details.mainWidget=this;

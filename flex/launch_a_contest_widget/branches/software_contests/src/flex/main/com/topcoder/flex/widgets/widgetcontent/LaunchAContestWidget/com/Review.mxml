@@ -72,6 +72,7 @@
 
             // Set all section values from previous steps
             public function setAllValues():void {
+			projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
                 contestType_step1.text=cstTypeStep1;
 
                 // step 2
@@ -291,6 +292,7 @@
                        label="PREVIEW CONTEST" 
                        click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
         </mx:HBox>
+		<mx:Label id="projectName" text="Project:" styleName="projectTitle"/>
 
         <mx:HRule width="100%"
                   strokeColor="0x000000"/>
