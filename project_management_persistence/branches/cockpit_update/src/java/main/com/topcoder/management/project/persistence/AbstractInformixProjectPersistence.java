@@ -244,7 +244,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-	+" and project.create_user= ";
+	+" and tcd.user_id = ";
 	
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id =    (select min(phase_type_id) from project_phase ph " 
