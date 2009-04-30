@@ -70,6 +70,21 @@
                 }
 
                 dfStart.selectedDate=startDate;
+                //BUGR-1789
+                if (!mainWidget.studioContestType) {
+                    if (startDate == null) {
+                        var currentTime:Date=new Date();
+                        //change current time to UMT-5
+                        var tzOffHours:Number=currentTime.timezoneOffset / 60;
+                        var defaultDate:Date = new Date(currentTime.getTime() - (5 - tzOffHours) * OneHour + 14*24*OneHour);
+                        dfStart.selectedDate = defaultDate;
+                        rangeEndDate = new Date(dfStart.selectedDate.getTime() - 1);
+                        dfEnd.displayedMonth = rangeEndDate.getMonth();
+                        dfEnd.displayedYear = rangeEndDate.getFullYear();
+                        dfEnd.selectedDate = null;
+                    }
+                }
+
                 setTimeControl(CmbHourStart, CmbMinuteStart, startDate);
 
                 //
@@ -286,6 +301,13 @@
                     dfEnd.displayedYear=rangeEndDate.getFullYear();
                     dfEnd.selectedDate=null;
                 }
+                //BUGR-1789
+                else {
+                    rangeEndDate=new Date(dfStart.selectedDate.getTime() - 1);
+                    dfEnd.displayedMonth=rangeEndDate.getMonth();
+                    dfEnd.displayedYear=rangeEndDate.getFullYear();
+                    dfEnd.selectedDate=null;
+                }
             }
 
             private function loadSchedule(e:ResultEvent):void {
@@ -299,9 +321,15 @@
                 //change current time to UMT-5
                 var tzOffHours:Number=currentTime.timezoneOffset / 60;
                 currentTime.setTime(currentTime.getTime() - (5 - tzOffHours) * OneHour);
-                // disable those days before the current day
+                // disable those days before the current day for studio contests
+                //disable current day - 14 days for software contests
                 var currentDayBegin:Date=new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
-                rangeStartDate=new Date(currentDayBegin.getTime() - 1);
+                //BUGR-1789
+                if (mainWidget.studioContestType) {
+                    rangeStartDate=new Date(currentDayBegin.getTime() - 1);
+                } else {
+                    rangeStartDate = new Date(currentDayBegin.getTime() + 14*24*OneHour - 1);
+                }
             }
         ]]>
     </mx:Script>
