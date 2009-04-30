@@ -258,7 +258,7 @@
                     return false;
                 }
 
-				if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) <= 0) { // BUGR-1737
+				if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) < 0) { // BUGR-1737
 					Helper.showAlertMessage("Admin Fee not set");
                     ns_reviewCost.setFocus();
                     return false;
@@ -322,7 +322,7 @@
                     return false;
                 }
                 
-             	if(mainWidget.isAdmin && isNaN(Number(adminf.text)) || Number(adminf.text) <= 0) { // BUGR-1737
+             	if(mainWidget.isAdmin && isNaN(Number(adminf.text)) || Number(adminf.text) < 0) { // BUGR-1737
 					Helper.showAlertMessage("Admin Fee not set");
                     adminf.setFocus();
                     return false;
@@ -774,6 +774,7 @@
                         <mx:TextInput id="adminf"
                                       text=""
                                       width="55"
+                                      change="s_updateAmount()"
                                       /> <!-- BUGR-1737 -->
                         <mx:TextInput id="cntstTtl"
                                       text=""
@@ -839,6 +840,7 @@
                                       text=""
                                       width="55"
                                       borderStyle="none"
+                                      change="ns_updateAmount()"
                                       /> <!-- BUGR-1737 -->
                         <mx:TextInput id="ns_cntstTtl"
                                       text=""
