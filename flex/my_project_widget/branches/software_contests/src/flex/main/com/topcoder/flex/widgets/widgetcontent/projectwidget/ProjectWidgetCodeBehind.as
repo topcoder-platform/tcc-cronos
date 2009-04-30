@@ -83,7 +83,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         /**
          * True if contest is in max mode else false.
          */
-        private var isMax:Boolean=false;
+        public var isMax:Boolean=false;
 
          /**
          * The allowclose flag.

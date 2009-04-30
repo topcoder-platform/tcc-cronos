@@ -10,32 +10,40 @@
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
 -->
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-           xmlns:flex="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
-           horizontalScrollPolicy="off"
-           verticalScrollPolicy="off"
-           width="100%"
-           height="100%"
-           creationComplete="init()">
-    <mx:Script>
-        <![CDATA[
-            import mx.collections.SortField;
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.utils.Status;
-            import mx.utils.ObjectUtil;
-            import mx.collections.Sort;
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
-            import mx.managers.PopUpManager;
-            import mx.collections.ArrayCollection;
-            import mx.controls.ButtonLabelPlacement;
-
-            /**
-             * Reference to singleton instance of Project Widget Model class.
-             */
-            [Bindable]
-            private var model:Model=Model.instance;
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:flex="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
+         horizontalScrollPolicy="auto"
+         verticalScrollPolicy="off"
+         width="100%"
+         height="100%"
+         creationComplete="init()">
+    <mx:Canvas horizontalScrollPolicy="off"
+               verticalScrollPolicy="off"
+               id="cnvs"
+               minWidth="{minPossibleWidth}"
+               maxWidth="{maxPossibleWidth}"
+               width="100%"
+               >
+        <mx:Script>
+            <![CDATA[
+                import mx.binding.utils.BindingUtils;
+                import mx.collections.SortField;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.utils.Status;
+                import mx.utils.ObjectUtil;
+                import mx.collections.Sort;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
+                import mx.managers.PopUpManager;
+                import mx.collections.ArrayCollection;
+                import mx.controls.ButtonLabelPlacement;
+                
+                /**
+                 * Reference to singleton instance of Project Widget Model class.
+                 */
+                [Bindable]
+                private var model:Model=Model.instance;
 
             /**
              * Project for this contest page.
@@ -49,19 +57,27 @@
             [Bindable]
             public var statusGroup:Dictionary=new Dictionary();
 
-            /**
-             * Type group for this contest page.
-             */
-            [Bindable]
-            public var typeGroup:Dictionary=new Dictionary();
-
-            /**
-             * It gets called on this component initialization
-             */
-            private function init():void {
-                this.shower.dataProvider=proj.contests;
-                setContest=this.proj;
-            }
+                /**
+                 * Type group for this contest page.
+                 */
+                [Bindable]
+                public var typeGroup:Dictionary=new Dictionary();
+                
+                [Bindable]
+                public var maxPossibleWidth:Number=0;
+                
+                [Bindable]
+                public var minPossibleWidth:Number=0;
+                
+                /**
+                 * It gets called on this component initialization
+                 */
+                private function init():void {
+                    if (this.proj) {
+                        this.shower.dataProvider=proj.contests;
+                        setContest=this.proj;
+                    }
+                }
 
             /**
              * Updates this contests page data.
@@ -99,12 +115,15 @@
                 }
             }
 
-            /**
-             * Handler logic for contest group change.
-             */
-            private function changeGroup():void {
-                if (groupCB.selectedIndex == 0) {
-                    stack.selectedChild=shower;
+                /**
+                 * Handler logic for contest group change.
+                 */
+                private function changeGroup():void {
+                    if (!this.proj) {
+                        return;
+                    }
+                    if (groupCB.selectedIndex == 0) {
+                        stack.selectedChild=shower;
 
                     // for no group sort the contests by name.
                     sortByName(proj.contests);
@@ -154,19 +173,31 @@
                 model.showDateChooser=!model.showDateChooser;
             }
 
-            /**
-             * Over-rides this component's updateDisplayList
-             *
-             * @param unscaledWidth unscaled width of the component.
-             * @param unscaledHeight unscaled height of the component.
-             */
-            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-
-                super.updateDisplayList(unscaledWidth, unscaledHeight);
-                if (initialized) {
-                    stack.height=this.height - topBar.height - bottomBar.height;
+                /**
+                 * Over-rides this component's updateDisplayList
+                 *
+                 * @param unscaledWidth unscaled width of the component.
+                 * @param unscaledHeight unscaled height of the component.
+                 */
+                override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+                    trace("---------------------> Contests -----------> : " + unscaledWidth + "," + unscaledHeight);
+                    trace("---------------------> this -----------> : " + this.width + "," + this.height);
+                    if (cnvs) {
+                        trace("---------------------> cnvs -----------> : " + cnvs.width + "," + cnvs.height);
+                        if (cnvs.width > 0) {
+                            minPossibleWidth=cnvs.width;
+                        }
+                    }
+                    
+                    if (this.width && this.width > maxPossibleWidth) {
+                        maxPossibleWidth=this.width;
+                    }
+                    
+                    super.updateDisplayList(unscaledWidth, unscaledHeight);
+                    if (initialized) {
+                        stack.height=this.height - topBar.height - bottomBar.height;
+                    }
                 }
-            }
 
             /**
              * Handler for click on add contest button.
@@ -192,94 +223,97 @@
                 coll.refresh();
             }
 
-            /**
-             * Callback function on sorting by name.
-             */
-            private function compareName(a:Object, b:Object, fields:Array=null):int {
-                return ObjectUtil.stringCompare(b.name, a.name, true);
-            }
-        ]]>
-    </mx:Script>
-    <mx:Binding source="model.currentProj"
-                destination="setContest"/>
-    <mx:Binding source="model.changeProj"
-                destination="update"/>
-    <mx:VBox width="100%"
-             height="100%"
-             verticalGap="0"
-             paddingTop="0"
-             paddingBottom="5">
+                /**
+                 * Callback function on sorting by name.
+                 */
+                private function compareName(a:Object, b:Object, fields:Array=null):int {
+                    return ObjectUtil.stringCompare(b.name, a.name, true);
+                }
+            ]]>
+        </mx:Script>
+        
         <mx:VBox width="100%"
-                 horizontalAlign="right"
-                 verticalAlign="middle"
-                 paddingRight="5"
+                 height="100%"
                  verticalGap="0"
-                 id="topBar">
-            <mx:HBox horizontalAlign="right">
-                <mx:Label text="From:"
-                          width="75"/>
-                <mx:Label text="To:"
-                          width="75"/>
-            </mx:HBox>
-            <mx:HBox verticalAlign="middle">
-                <mx:Label text="Group By:"
-                          styleName="normalStyle"/>
-                <mx:ComboBox id="groupCB"
-                             valueCommit="changeGroup()"
-                             width="85"
-                             styleName="normalStyle"
-                             enabled="{!model.showDateChooser}">
-                    <mx:dataProvider>
-                        <mx:String>No Group</mx:String>
-                        <mx:String>Status Type</mx:String>
-                        <mx:String>Contest Type</mx:String>
-                    </mx:dataProvider>
-                </mx:ComboBox>
-                <mx:Label text="Date Filter:"
-                          styleName="normalStyle"/>
-                <mx:Button styleName="miniButton"
-                           buttonMode="true"
-                           width="14"
-                           height="14"
-                           click="showDatePicker()"/>
-                <mx:TextInput id="fromDate"
-                              text="{model.currentProj.startDateFilter}"
-                              editable="false"
+                 paddingTop="0"
+                 paddingBottom="5">
+            <mx:VBox width="100%"
+                     horizontalAlign="right"
+                     verticalAlign="middle"
+                     paddingRight="5"
+                     verticalGap="0"
+                     id="topBar">
+                <mx:HBox horizontalAlign="right">
+                    <mx:Label text="From:"
                               width="75"/>
-                <mx:TextInput id="toDate"
-                              text="{model.currentProj.endDateFilter}"
-                              editable="false"
+                    <mx:Label text="To:"
                               width="75"/>
-            </mx:HBox>
-        </mx:VBox>
-        <mx:ViewStack width="100%"
-                      id="stack">
-            <flex:ContestShower id="shower"
-                                height="100%"
-                                width="100%"
-                                horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
-                                dataProvider="{proj.contests}"
-                                isTabMode="false"/>
-            <flex:DragAbleAccordion width="100%"
+                </mx:HBox>
+                <mx:HBox verticalAlign="middle">
+                    <mx:Label text="Group By:"
+                              styleName="normalStyle"/>
+                    <mx:ComboBox id="groupCB"
+                                 valueCommit="changeGroup()"
+                                 width="85"
+                                 styleName="normalStyle"
+                                 enabled="{!model.showDateChooser}">
+                        <mx:dataProvider>
+                            <mx:String>No Group</mx:String>
+                            <mx:String>Status Type</mx:String>
+                            <mx:String>Contest Type</mx:String>
+                        </mx:dataProvider>
+                    </mx:ComboBox>
+                    <mx:Label text="Date Filter:"
+                              styleName="normalStyle"/>
+                    <mx:Button styleName="miniButton"
+                               buttonMode="true"
+                               width="14"
+                               height="14"
+                               click="showDatePicker()"/>
+                    <mx:TextInput id="fromDate"
+                                  text="{model.currentProj.startDateFilter}"
+                                  editable="false"
+                                  width="75"/>
+                    <mx:TextInput id="toDate"
+                                  text="{model.currentProj.endDateFilter}"
+                                  editable="false"
+                                  width="75"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:ViewStack width="100%"
+                          id="stack">
+                <flex:ContestShower id="shower"
+                                    height="100%"
+                                    width="100%"
                                     horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
-                                    id="group"/>
-        </mx:ViewStack>
-        <mx:Spacer height="100%"/>
-        <mx:HBox width="100%"
-                 horizontalAlign="right"
-                 paddingRight="2"
-                 paddingTop="5"
-                 paddingBottom="2"
-                 id="bottomBar">
-            <mx:Button label="ADD NEW CONTEST"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       styleName="button"
-                       buttonMode="true"
-                       click="addContest()"/>
-        </mx:HBox>
-    </mx:VBox>
-    <flex:DateChooser right="5"
-                      top="30"
-                      id="popUp"
-                      visible="{model.showDateChooser}"/>
-</mx:Canvas>
+                                    dataProvider="{proj.contests}"
+                                    isTabMode="false"/>
+                <flex:DragAbleAccordion width="100%"
+                                        horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
+                                        id="group"/>
+            </mx:ViewStack>
+            <mx:Spacer height="100%"/>
+            <mx:HBox width="100%"
+                     horizontalAlign="right"
+                     paddingRight="2"
+                     paddingTop="5"
+                     paddingBottom="2"
+                     id="bottomBar">
+                <mx:Button label="ADD NEW CONTEST"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           styleName="button"
+                           buttonMode="true"
+                           click="addContest()"/>
+            </mx:HBox>
+            <mx:Spacer width="100%" height="20" visible="{!model.isMax}" includeInLayout="{!model.isMax}"/>
+        </mx:VBox>
+        <flex:DateChooser right="5"
+                          top="30"
+                          id="popUp"
+                          visible="{model.showDateChooser}"/>
+    </mx:Canvas>
+    <mx:Binding source="model.currentProj"
+                    destination="setContest"/>
+        <mx:Binding source="model.changeProj"
+                    destination="update"/>
+</mx:VBox>

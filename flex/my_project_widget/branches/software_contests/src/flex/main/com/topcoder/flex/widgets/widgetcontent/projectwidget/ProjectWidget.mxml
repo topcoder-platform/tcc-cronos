@@ -52,10 +52,7 @@
             [Bindable]
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
 
-            /**
-             * If the widget is in max mode.
-             */
-            public var isMaxMode:Boolean=false;
+       
 
             /**
              * Reference to the instance of data model class for this widget.
@@ -97,6 +94,9 @@
              * Page index for project list pagination.
              */
             private var index:int=0;
+            
+            //private var _maxWidth:Number=0;
+            //private var _maxHeight:Number=0;
 
             /**
              * Retrieves password from blazed data service.
@@ -165,9 +165,12 @@
              * @param value is max attribute.
              */
             [Bindable]
-            public function set isMax(value:Boolean):void {
+            public function set isMaxMode(value:Boolean):void {
                 model.isMax=value;
                 proList.invalidateSize();
+                viewContainer.invalidateSize();
+                
+                trace(">>>>>>>>>>>>>>>>>>>>>>>>>> isMax: " + isMaxMode);
             }
 
             /**
@@ -175,7 +178,7 @@
              *
              * @return is max attribute.
              */
-            public function get isMax():Boolean {
+            public function get isMaxMode():Boolean {
                 return model.isMax;
             }
 
@@ -198,13 +201,20 @@
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
+                trace(">>>>>>>>>>>>>>>>>>>>>>> doFadeOut - buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(1): " + stack.width + "," + stack.height);
+                trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(2): " + viewContainer.width + "," + viewContainer.height);
+                
+                var newWidth:Number=viewContainer.width - 3;
+                var newHeight:Number=viewContainer.height;
+                
                 model.showDateChooser=false;
-                var bm:BitmapData=new BitmapData(stack.width, stack.height);
+                var bm:BitmapData=new BitmapData(newWidth, newHeight);
                 bm.draw(stack);
                 coms=new UIComponent();
                 coms.addChild(new Bitmap(bm));
-                coms.width=stack.width;
-                coms.height=stack.height;
+                coms.width=newWidth;
+                coms.height=newHeight;
                 coms.x=3;
                 viewContainer.addChildAt(coms, 1);
                 _direction="TOP";
@@ -257,13 +267,34 @@
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
+                
+                //if (_maxWidth < stack.width) {
+                //    _maxWidth = stack.width;
+                //}
+                //if (_maxHeight < stack.height) {
+                //    _maxHeight=stack.height;
+                //}
+                
+                trace(">>>>>>>>>>>>>>>>>>>>>>> buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(1): " + stack.width + "," + stack.height);
+                trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(2): " + viewContainer.width + "," + viewContainer.height);
+                
+                var newWidth:Number=viewContainer.width - 3;
+                var newHeight:Number=viewContainer.height;
+                //if (buttonSelectedIndex == 1) {
+                    //newWidth=_maxWidth;
+                    //newHeight=_maxHeight;
+                    //stack.width=_maxWidth;
+                    //stack.height=_maxHeight;
+                //}
+                
                 model.showDateChooser=false;
-                var bm:BitmapData=new BitmapData(stack.width, stack.height);
+                var bm:BitmapData=new BitmapData(newWidth, newHeight);
                 bm.draw(stack);
                 coms=new UIComponent();
                 coms.addChild(new Bitmap(bm));
-                coms.width=stack.width;
-                coms.height=stack.height;
+                coms.width=newWidth;
+                coms.height=newHeight;
                 coms.x=3;
                 viewContainer.addChildAt(coms, 1);
                 v=true;
@@ -388,8 +419,6 @@
                 if (this.container) {
                     this.container.startMaximize();
                 }
-                
-                isMaxMode=true;
             }
 
             /**
@@ -399,11 +428,11 @@
                 if (this.container) {
                     this.container.startRestore();
                 }
-                
-                isMaxMode=false;
             }
         ]]>
     </mx:Script>
+    
+    <mx:Binding source="this.isMax" destination="this.isMaxMode"/>
     <mx:WebService id="ContestServiceFacadeBean"
                    wsdl="{contestServiceFacadeWsdl}">
         <mx:operation name="getCommonProjectContestData"
@@ -542,6 +571,7 @@
         <mx:Canvas minHeight="368"
                    height="100%"
                    id="viewContainer"
+                   verticalScrollPolicy="off"
                    width="100%">
             <mx:ViewStack width="100%"
                           left="3"
@@ -552,10 +582,11 @@
                           paddingRight="0"
                           paddingTop="15"
                           paddingBottom="0"
+                          resizeToContent="true"
                           id="stack">
-                <tc:ProjectDetails id="details"
+                <tc:ProjectDetails width="100%" height="100%" id="details"
                                    backgroundColor="#ffffff"/>
-                <tc:Contests id="contest"
+                <tc:Contests width="100%" height="100%" id="contest"
                              backgroundColor="#ffffff"/>
             </mx:ViewStack>
         </mx:Canvas>
