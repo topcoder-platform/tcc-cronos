@@ -647,7 +647,9 @@
 
                     this.currentState="ReviewState";
                     save.visible=true;
-
+                    //BUGR-1792
+                    if (!this.studioContestType)
+                        goNext.visible = false;
                     this.height=REVIEW_HEIGHT; // BUGR-1134
                     setPreviousStep(step6box);
                     setCurStep(step7box);
@@ -738,6 +740,9 @@
                 } else if (this.currentState == "ReviewState") {
                     this.currentState="ScheduleState";
                     this.height=SCHEDULE_HEIGHT; // BUGR-1134
+                    //BUGR-1792
+                    if (!this.studioContestType && !goNext.visible)
+                        goNext.visible = true;
                     setCurStep(step6box);
                     setNextStep(step7box); // BUGR-1141
                 } else if (this.currentState == "ScheduleState") {
