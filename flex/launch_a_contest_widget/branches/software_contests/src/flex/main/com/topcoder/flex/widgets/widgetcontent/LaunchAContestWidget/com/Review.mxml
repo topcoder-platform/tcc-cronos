@@ -455,7 +455,7 @@
                  includeInLayout="{mainWidget.studioContestType}">
             <mx:Label text="Contest Details"
                       styleName="subsectionTitle"/>
-            <mx:Spacer height="15"/>
+            <mx:Spacer height="10"/>
             <mx:HBox>
                 <mx:Label text="Content Title:"
                           fontWeight="bold"/>
@@ -575,35 +575,35 @@
                           fontWeight="bold"/>
                 <mx:Text id="colorInput"
                          width="500"
-                         height="50"
+                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Fonts:"
                           fontWeight="bold"/>
                 <mx:Text id="fontInput"
                          width="500"
-                         height="50"
+                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Size:"
                           fontWeight="bold"/>
                 <mx:Text id="sizeInput"
                          width="500"
-                         height="50"
+                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Additional Requirements or Restrictions:"
                           fontWeight="bold"/>
                 <mx:Text id="addReInput"
                          width="500"
-                         height="50"
+                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Final File Formats:"
                           fontWeight="bold"/>
                 <mx:Text id="fileFormatInput"
                          width="500"
-                         height="50"
+                         height="30"
                          text="test"/>
 
                 <mx:HBox width="100%">
@@ -623,7 +623,7 @@
             <mx:Label text="Attach Files"
                      styleName="subsectionTitle"/>
 
-            <mx:Spacer height="15"/>
+            <mx:Spacer height="10"/>
             <mx:HRule width="100%"/>
             <mx:VBox width="100%"
                      id="attachedFilesVBox">
@@ -646,7 +646,7 @@
                  verticalGap="0">
             <mx:Label text="Set the Contest Schedule"
                       styleName="subsectionTitle"/>
-            <mx:Spacer height="15"/>
+            <mx:Spacer height="10"/>
             <mx:HBox>
                 <mx:Label text="Start Date:"
                           fontWeight="bold"/>

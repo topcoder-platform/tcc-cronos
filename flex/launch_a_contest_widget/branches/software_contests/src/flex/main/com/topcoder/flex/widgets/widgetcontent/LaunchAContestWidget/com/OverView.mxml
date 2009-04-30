@@ -75,6 +75,7 @@
                     requestContestTypes.send();
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
+		    
                 } else {
                 	ns_contestf.editable = mainWidget.isAdmin; // BUGR-1737
                 	ns_setPrizes();
@@ -96,6 +97,12 @@
                         }
                     }
                 }
+
+		if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0)
+		    {	     
+			adminf.text =  mainWidget.competition.contestData.contestAdministrationFee.toString();
+
+		    }
 
                 s_updateAmount();
             }
@@ -159,6 +166,7 @@
                 }
 
                 mainWidget.competition.prizes=prizes;
+		mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
 
                 // assign values to review screen.
                 mainWidget.review.cstTypeStep2=studioType.selection.label;
@@ -195,6 +203,7 @@
                 }
 
                 mainWidget.softwareCompetition.prizes=prizes;
+		mainWidget.softwareCompetition.adminFee=Number(adminf.text);
 
                 mainWidget.review.ns_firstPrizeS=ns_firstPlace.text;
                 mainWidget.review.ns_secondPrizeS=ns_secondPlace.text;
@@ -211,7 +220,10 @@
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
                 curContestType=Number(studioType.selectedValue);
 
-                adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
+		if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0)
+		{
+			adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
+		}
                 dispatchEvent(new Event("curContestTypeChanged"));
             }
 
@@ -405,7 +417,11 @@
                         studioType.selectedValue=selectedValue;
                     }
                     curContestType=Number(selectedValue);
-                    adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
+		    if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0)
+		    {
+			adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
+		    }
+
                     dispatchEvent(new Event("curContestTypeChanged"));
                 }
             }

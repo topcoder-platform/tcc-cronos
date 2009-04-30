@@ -424,13 +424,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @param softwareCompetition specified competition
          * @param totalPrize total prize of the competition.
          */
-        private function addAdminFeeProp(softwareCompetition:SoftwareCompetition, totalPrize:Number):void {
+        public function addAdminFeeProp(softwareCompetition:SoftwareCompetition, fee:Number):void {
             var entry:MapEntry=new MapEntry();
 
-            var adminFee:Number=0.20 * totalPrize;
-
             entry.key=PROJECT_INFO_TYPE_ADMIN_FEE_KEY;
-            entry.value=adminFee.toFixed(2);
+            entry.value=fee.toFixed(2);
 
             softwareCompetition.projectHeader.properties.push(entry);
         }
@@ -464,7 +462,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             }
 
             addPaymentProp(softwareCompetition, prizes[0]);
-            addAdminFeeProp(softwareCompetition, totalPrize);
+            //addAdminFeeProp(softwareCompetition, totalPrize);
             addDrPointsProp(softwareCompetition, totalPrize);
         }
 
