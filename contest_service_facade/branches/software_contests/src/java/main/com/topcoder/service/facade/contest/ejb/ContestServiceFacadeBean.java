@@ -291,7 +291,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
 
-
+	private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
 
 	/**
 	 * Private constant specifying project type info's component id key.
@@ -510,7 +510,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			total+=prize.getAmount();
 		}
 		//contestData.setContestAdministrationFee(total*0.2);
-		contestData.setDrPoints(total*0.1);
+		//contestData.setDrPoints(total*0.1);
 
 		if(contestData.getLaunchDateAndTime() == null) { // BUGR-1445
             /*
@@ -600,8 +600,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         for (PrizeData prize : studioContest.getPrizes()) {
             total += prize.getAmount();
         }
-        studioContest.setContestAdministrationFee(total * 0.2);
-        studioContest.setDrPoints(total * 0.1);
+        //studioContest.setContestAdministrationFee(total * 0.2);
+        //studioContest.setDrPoints(total * 0.1);
         
     	Date startDate = getDate(studioContest.getLaunchDateAndTime());
         Date endDate = new Date((long) (startDate.getTime() + 60l * 60 * 1000 * studioContest.getDurationInHours()));
@@ -1582,11 +1582,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 paidFee += cpd.getPrice();
             }
 			// calculate current contest fee
-            double currentFee = 0.0;
-            for (PrizeData prize : competition.getContestData().getPrizes()) {
+            double currentFee = competition.getContestData().getContestAdministrationFee();
+/*            for (PrizeData prize : competition.getContestData().getPrizes()) {
                 currentFee += prize.getAmount();
             }
-            currentFee *= 0.2;
+            currentFee *= 0.2; */
             // calculate the difference which user has to pay
             paymentAmount = currentFee - paidFee;
             Logger.getLogger(this.getClass()).info("extra payment is: " + paymentAmount);
@@ -1755,8 +1755,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
             PaymentResult result = null;
-            String payments = (String) contest.getProperty(PAYMENTS_PROJECT_INFO_TYPE);
-            double fee = payments == null ? 0 : Double.parseDouble(payments) * 0.2;
+            //String payments = (String) contest.getProperty(PAYMENTS_PROJECT_INFO_TYPE);
+            //double fee = payments == null ? 0 : Double.parseDouble(payments) * 0.2;
+
+			String feestr = (String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE);
+			double fee =  Double.parseDouble(feestr);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
@@ -2287,7 +2290,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				 */
 					GregorianCalendar startDate = new GregorianCalendar();
 					startDate.setTime(new Date());
-					startDate.add(Calendar.HOUR, 24);
+					startDate.add(Calendar.HOUR, 24*14); //BUGR-1789
 					int m = startDate.get(Calendar.MINUTE);
 					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
 					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
