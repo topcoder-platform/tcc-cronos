@@ -961,6 +961,9 @@
             //BUGR-1754
             private var coms2:UIComponent = null;
             private var goTimes:Number = 2;
+            private var bit1:Bitmap = null;
+            private var bit2:Bitmap = null;
+            private var bit:Bitmap = null;
 
             /**
             * Go to previous page / submission in animated form.
@@ -974,10 +977,10 @@
                 next_bottom.enabled=false;
                 prev_bottom.enabled=false;
                 //BUGR-1754
+                var bitmap1:BitmapData=new BitmapData(list.width, list.height);
+                bitmap1.draw(list);
+                bit1=new Bitmap(bitmap1);
                 if (goTimes > 0) {
-                    var bitmap1:BitmapData=new BitmapData(list.width, list.height);
-                    bitmap1.draw(list);
-                    var bit1:Bitmap=new Bitmap(bitmap1);
                     coms1=new UIComponent();
                     coms1.addChild(bit1);
                     coms1.x=list.width;
@@ -988,6 +991,14 @@
                     hbox.width=list.width * 2;
                     hbox.addChild(coms1);
                     goTimes--;
+                } else {
+                    coms1.removeChildAt(0);
+                    coms1.addChild(bit1);
+                    coms1.x=list.width;
+                    coms1.y=0;
+                    hbox.x=-list.width;
+                    hbox.y=0;
+                    hbox.width=list.width * 2;
                 }
                 coms1.x=list.width;
                 hbox.x=-list.width;
@@ -1016,10 +1027,10 @@
                 next_bottom.enabled=false;
                 prev_bottom.enabled=false;
                 //BUGR-1754
+                var bitmap1:BitmapData=new BitmapData(list.width, list.height);
+                bitmap1.draw(list);
+                bit1=new Bitmap(bitmap1);
                 if (goTimes > 0) {
-                    var bitmap1:BitmapData=new BitmapData(list.width, list.height);
-                    bitmap1.draw(list);
-                    var bit1:Bitmap=new Bitmap(bitmap1);
                     coms1=new UIComponent();
                     coms1.addChild(bit1);
                     coms1.x=0;
@@ -1030,6 +1041,14 @@
                     hbox.x=0;
                     hbox.y=0;
                     goTimes--;
+                } else {
+                    coms1.removeChildAt(0);
+                    coms1.addChild(bit1);
+                    coms1.x=0;
+                    coms1.y=0;
+                    hbox.width=list.width * 2;
+                    hbox.x=0;
+                    hbox.y=0;
                 }
                 coms1.x=0;
                 hbox.x=0;
@@ -1057,13 +1076,18 @@
                 var bitmap2:BitmapData=new BitmapData(list.width, list.height);
                 bitmap2.draw(list);
                 //BUGR-1754
+                bit2=new Bitmap(bitmap2);
                 if (goTimes >= 0) {
-                var bit2:Bitmap=new Bitmap(bitmap2);
                     coms2=new UIComponent();
                     coms2.addChild(bit2);
                     coms2.x=(isPrev) ? 0 : list.width;
                     coms2.y=0;
                     hbox.addChild(coms2);
+                } else {
+                    coms2.removeChildAt(0);
+                    coms2.addChild(bit2);
+                    coms2.x=(isPrev) ? 0 : list.width;
+                    coms2.y=0;
                 }
                 coms2.x=(isPrev) ? 0 : list.width;
 
@@ -1082,11 +1106,22 @@
                 }
                 //BUGR-1754
                 //coms1=null;
-                if (canvas.contains(masks)) {
+                if (masks && canvas.contains(masks)) {
                     canvas.removeChild(masks);
                 }
                 //masks=null;
-                
+                if (bit1) {
+                    bit1.bitmapData.dispose();
+                    bit1 = null;
+                }
+                if (bit2) {
+                    bit2.bitmapData.dispose();
+                    bit2 = null;
+                }
+                if (bit) {
+                    bit.bitmapData.dispose();
+                    bit = null;
+                }
                 if (next_top) {
                     next_top.enabled=true;
                     prev_top.enabled=true;
@@ -1113,7 +1148,7 @@
                 if (masks) {
                     var bitmap:BitmapData=new BitmapData(stack.width, stack.height);
                     bitmap.draw(stack);
-                    var bit:Bitmap=new Bitmap(bitmap);
+                    bit=new Bitmap(bitmap);
                     var sub:UIComponent=new UIComponent();
                     sub.addChild(bit);
                     sub.x=(last) ? 0 : stack.width;
@@ -1143,13 +1178,14 @@
                 if (model.activeSubmissionIndex <= 0) {
                     return;
                 }
+                //BUGR-1754
+                var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
+                bitmap1.draw(stack);
+                bit1=new Bitmap(bitmap1);
                 nextBtn.enabled=false;
                 prevBtn.enabled=false;
                 canvas.width=stack.width;
                 if (isSubFirstTime) {
-                    var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
-                    bitmap1.draw(stack);
-                    var bit1:Bitmap=new Bitmap(bitmap1);
                     currentSub=new UIComponent();
                     currentSub.addChild(bit1);
                     currentSub.x=stack.width;
@@ -1160,6 +1196,14 @@
                     masks.x=-stack.width;
                     masks.y=0;
                     isSubFirstTime = false;
+                } else {
+                    currentSub.removeChildAt(0);
+                    currentSub.addChild(bit1);
+                    currentSub.x=stack.width;
+                    currentSub.y=0;
+                    masks.width=stack.width * 2;
+                    masks.x=-stack.width;
+                    masks.y=0;
                 }
                 currentSub.x=stack.width;
                 masks.x=-stack.width;
@@ -1187,10 +1231,10 @@
                 prevBtn.enabled=false;
                 //BUGR-1754
                 canvas.width=stack.width;
+                var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
+                bitmap1.draw(stack);
+                bit1=new Bitmap(bitmap1);
                 if (isSubFirstTime) {
-                    var bitmap1:BitmapData=new BitmapData(stack.width, stack.height);
-                    bitmap1.draw(stack);
-                    var bit1:Bitmap=new Bitmap(bitmap1);
                     currentSub=new UIComponent();
                     currentSub.addChild(bit1);
                     currentSub.x=0;
@@ -1201,6 +1245,14 @@
                     masks.x=0;
                     masks.y=0;
                     isSubFirstTime = false;
+                } else {
+                    currentSub.removeChildAt(0);
+                    currentSub.addChild(bit1);
+                    currentSub.x=0;
+                    currentSub.y=0;
+                    masks.width=stack.width * 2;
+                    masks.x=0;
+                    masks.y=0;
                 }
                 currentSub.x=0;
                 masks.x=0;
@@ -1555,7 +1607,7 @@
                         <mx:Button styleName="button3"
                                    click="model.reorderByUpDown()"/>
                         <mx:Button label="#"
-                                   styleName="button"
+                                   styleName="button3"
                                    click="model.reorderById()"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Checkout"
