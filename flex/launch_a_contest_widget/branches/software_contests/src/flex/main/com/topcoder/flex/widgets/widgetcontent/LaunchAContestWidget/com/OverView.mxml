@@ -203,7 +203,7 @@
                 }
 
                 mainWidget.softwareCompetition.prizes=prizes;
-		mainWidget.softwareCompetition.adminFee=Number(adminf.text);
+		mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
 
                 mainWidget.review.ns_firstPrizeS=ns_firstPlace.text;
                 mainWidget.review.ns_secondPrizeS=ns_secondPlace.text;
