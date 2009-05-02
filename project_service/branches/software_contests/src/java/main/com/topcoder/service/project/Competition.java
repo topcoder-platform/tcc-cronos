@@ -227,7 +227,7 @@ public abstract class Competition implements Serializable {
      * </p>
      * @return the admin fee for the competition.
      */
-    public abstract double getAdminFee();
+    public abstract Double getAdminFee();
 
     /**
      * <p>
@@ -235,7 +235,7 @@ public abstract class Competition implements Serializable {
      * </p>
      * @param adminFee the admin fee for the competition.
      */
-    public abstract void setAdminFee(double adminFee);
+    public abstract void setAdminFee(Double adminFee);
 
     /**
      * <p>

@@ -36,7 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "softwareCompetition", propOrder =  {
-    "id", "assetDTO", "projectHeader", "projectHeaderReason", "projectPhases", "projectResources", "projectData", "type"}
+    "id", "assetDTO", "projectHeader", "projectHeaderReason", "projectPhases", "projectResources", "projectData", "type", "adminFee"}
 )
 public class SoftwareCompetition extends Competition {
     /**
@@ -94,6 +94,9 @@ public class SoftwareCompetition extends Competition {
      * </p>
      */
     private CompetionType type;
+
+
+	private Double adminFee;
 
     /**
      * <p>
@@ -219,9 +222,9 @@ public class SoftwareCompetition extends Competition {
      * @return the admin fee for the competition.
      */
     @Override
-    public double getAdminFee() {
-        //TODO currently it is an empty implementation
-        return 0;
+    public Double getAdminFee() {
+        
+        return this.adminFee;
     }
 
     /**
@@ -443,8 +446,8 @@ public class SoftwareCompetition extends Competition {
      * @param fee the admin fee
      */
     @Override
-    public void setAdminFee(double fee) {
-        //TODO currently it is an empty implementation
+    public void setAdminFee(Double fee) {
+        this.adminFee = fee;
     }
 
     /**

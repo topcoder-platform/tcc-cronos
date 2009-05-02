@@ -101,7 +101,7 @@ public class StudioCompetition extends Competition {
      * @return the admin fee for the competition.
      */
     @Override
-    public double getAdminFee() {
+    public Double getAdminFee() {
         return contestData.getContestAdministrationFee();
     }
 
@@ -349,7 +349,7 @@ public class StudioCompetition extends Competition {
      * @return the admin fee for the competition.
      */
     @Override
-    public void setAdminFee(double fee) {
+    public void setAdminFee(Double fee) {
         contestData.setContestAdministrationFee(fee);
     }
 
