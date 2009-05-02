@@ -1743,9 +1743,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         try {
         	long contestId = competition.getProjectHeader().getId();
-        	System.out.println("contestId=" + contestId);
-System.out.println("11111111111111=" + competition.getAdminFee());
-System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader().getProperty(ADMIN_FEE_PROJECT_INFO_TYPE));
+
+
             SoftwareCompetition tobeUpdatedCompetition = null;
 
             if (contestId > 0) { // BUGR-1682
@@ -1755,7 +1754,7 @@ System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition = this.createSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());
             } else {
-            	tobeUpdatedCompetition = competition;
+            	tobeUpdatedCompetition = this.updateSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());;
             }
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
@@ -1766,7 +1765,6 @@ System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader
 
 			String feestr = (String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE);
 			double fee =  Double.parseDouble(feestr);
-			System.out.println("fee=====================" + fee);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
@@ -1813,8 +1811,8 @@ System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader
 
 			// update contest
 			// COMMENT OUT FOR NOW, nothing to update
-            tobeUpdatedCompetition.setProjectHeaderReason("Updated for Contest Sale");
-            tobeUpdatedCompetition = this.updateSoftwareContest(tobeUpdatedCompetition, contest.getTcDirectProjectId());
+            //tobeUpdatedCompetition.setProjectHeaderReason("Updated for Contest Sale");
+            //tobeUpdatedCompetition = this.updateSoftwareContest(tobeUpdatedCompetition, contest.getTcDirectProjectId());
 
             //return result;
             // BUGR-1682
@@ -2293,7 +2291,6 @@ System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader
             AssetDTO assetDTO = contest.getAssetDTO();
 			long forumId = 0;
 
-System.out.println("000000000000000000000=" + contest.getAdminFee());
 			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 			
 			XMLGregorianCalendar productionDate = null;
@@ -2320,7 +2317,6 @@ System.out.println("000000000000000000000=" + contest.getAdminFee());
 				productionDate = assetDTO.getProductionDate();
 				assetDTO.setProductionDate(null);
 
-System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles());
 
 				if (contest.getProjectHeader() != null) 
 				{
@@ -2437,7 +2433,7 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
 				// set project start date in production date
 				contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
-System.out.println("0000000000000000000001111111111111111111111111111111111111=" + contest.getAdminFee());
+
             return contest;
 
 		}
