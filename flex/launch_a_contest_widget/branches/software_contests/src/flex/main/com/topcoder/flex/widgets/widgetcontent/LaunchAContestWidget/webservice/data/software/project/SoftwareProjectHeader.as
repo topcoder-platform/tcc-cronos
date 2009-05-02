@@ -48,5 +48,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         */
         [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.MapEntry")]
         public var properties:Array=null;
+	
     }
 }

@@ -469,11 +469,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
 
         public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
-            competition._id=competition.id;
-            competition._type=competition.type;
-            competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
-            competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
-
+        	var studioContestType:Boolean = (this.container.contents as LaunchWidget).studioContestType; // BUGR-1682
+        	
+        	if(studioContestType) { // BUGR-1682
+	            competition._id=competition.id;
+	            competition._type=competition.type;
+	            competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
+	            competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
+        	}
             //
             // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
             // Updated to avoid 'duplicate variable definition' warning
@@ -502,24 +505,43 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 creditCardPaymentData.sessionId="";
                 creditCardPaymentData.csc=Model.instance.csc; // BUGR-1398
                 
-                var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestCreditCardPayment");
+                var processContestPaymentOp:AbstractOperation;
+                if(studioContestType) { // BUGR-1682
+                	processContestPaymentOp = _csws.getOperation("processContestCreditCardPayment");
+                	processContestPaymentOp.addEventListener("result", eventHandler);
+	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
+	                processContestPaymentOp.send(competition, creditCardPaymentData);
+                } else {
+
+			 prepareSoftwareContest();
             
-                processContestPaymentOp.addEventListener("result", eventHandler);
-                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                processContestPaymentOp.send(competition, creditCardPaymentData);
+
+                	processContestPaymentOp = _csws.getOperation("processContestCreditCardSale");
+                	processContestPaymentOp.addEventListener("result", eventHandler);
+	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
+	                processContestPaymentOp.send(softwareCompetition, creditCardPaymentData);
+                }
             }
             else {
-                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
+			var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
 
-                purchaseOrderPaymentData.type=new PaymentType();
-                purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
-                purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
+			purchaseOrderPaymentData.type=new PaymentType();
+			purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
+			purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
 
-                processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
-
-                processContestPaymentOp.addEventListener("result", eventHandler);
-                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                processContestPaymentOp.send(competition, purchaseOrderPaymentData);
+		if(studioContestType) { // BUGR-1682
+                	processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
+                	processContestPaymentOp.addEventListener("result", eventHandler);
+	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
+	                processContestPaymentOp.send(competition, purchaseOrderPaymentData);
+		} else {
+			prepareSoftwareContest();
+			
+			processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
+                	processContestPaymentOp.addEventListener("result", eventHandler);
+	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
+	                processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData);
+		}
             }
             
             showLoadingProgress();
@@ -561,7 +583,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         private function createSoftwareContest():void {
 
-            // set dynamic properties before save.
+            prepareSoftwareContest();
+            
+            var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
+            
+            createContestOp.addEventListener("result", createSoftwareContestHandler);
+            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
+        }
+
+	private function prepareSoftwareContest():void {
+		// set dynamic properties before save.
             var prizes:Array=new Array();
             for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
                 var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
@@ -572,12 +603,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
-            
-            var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
-            
-            createContestOp.addEventListener("result", createSoftwareContestHandler);
-            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
-        }
+
+	}
 
         /**
          * Handler for software contest create.
@@ -615,6 +642,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 	    // we need a reason for update
 	    this.softwareCompetition.projectHeaderReason = "user update";
 
+	    SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);

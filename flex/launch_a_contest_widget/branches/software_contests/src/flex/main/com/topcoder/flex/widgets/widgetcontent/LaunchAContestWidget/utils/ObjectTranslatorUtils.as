@@ -172,7 +172,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                 return fromObj;
                 // if a number conversion is necessary, simply rely on that
             }
-            else if (classNameFrom == "int" && classNameTo == "Number")
+            else if ((classNameFrom == "int" || classNameFrom == "long" || classNameFrom == "double" || classNameFrom == "short" || classNameFrom == "float") 
+	         && classNameTo == "Number")
             {
                 return fromObj as Number;
                 // otherwise, default to full object to instance conversion

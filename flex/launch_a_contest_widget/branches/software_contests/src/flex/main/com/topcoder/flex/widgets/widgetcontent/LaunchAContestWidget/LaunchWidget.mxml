@@ -521,8 +521,8 @@
                         
                         setButton(1);
     
-                        activate.contentTitleStr = review.contentTitleStr;
-                        activate.contestTotal = review.adminFee;
+                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? review.adminFee : review.ns_contestFeeS; // BUGR-1682
                         
                         activate.initData();
 			            break;
@@ -648,8 +648,9 @@
                     this.currentState="ReviewState";
                     save.visible=true;
                     //BUGR-1792
-                    if (!this.studioContestType)
+                    /*if (!this.studioContestType)
                         goNext.visible = false;
+                    BUGR-1682 */
                     this.height=REVIEW_HEIGHT; // BUGR-1134
                     setPreviousStep(step6box);
                     setCurStep(step7box);
@@ -677,8 +678,9 @@
                     setCurStep(step8box);
                     setButton(1);
 
-                    activate.contentTitleStr = review.contentTitleStr;
-                    activate.contestTotal = getExtraContestFee().toFixed(2); // BUGR-1363
+                    activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                    activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+
                     activate.initData();
                 } else if (this.currentState == "ActivateState") {
                     save.visible=false;
