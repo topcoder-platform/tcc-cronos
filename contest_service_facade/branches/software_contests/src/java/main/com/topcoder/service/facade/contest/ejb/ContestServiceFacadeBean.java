@@ -65,6 +65,7 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
+import com.topcoder.service.facade.contest.SoftwareContestPaymentResult;
 import com.topcoder.service.studio.permission.Permission;
 import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.Prize;
@@ -1688,13 +1689,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      *
-     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      *
      * @since Module Contest Service Software Contest Sales Assembly
+     * @since BUGR-1682 changed return value
      */
-    public PaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
+    public SoftwareContestPaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
         throws ContestServiceException {
         return processContestSaleInternal(competition, paymentData);
     }
@@ -1707,13 +1709,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      *
-     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      *
      * @since Module Contest Service Software Contest Sales Assembly
+     * @since BUGR-1682 changed return value
      */
-    public PaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
         TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException {
         return processContestSaleInternal(competition, paymentData);
     }
@@ -1726,24 +1729,27 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      *
-     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      *
      * @since Module Contest Service Software Contest Sales Assembly
+     * @since BUGR-1682 changed return value
      */
-    private PaymentResult processContestSaleInternal(SoftwareCompetition competition, PaymentData paymentData)
+    private SoftwareContestPaymentResult processContestSaleInternal(SoftwareCompetition competition, PaymentData paymentData)
         throws ContestServiceException {
         Logger.getLogger(this.getClass()).info("SoftwareCompetition: " + competition);
         Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
 
         try {
         	long contestId = competition.getProjectHeader().getId();
-
+        	System.out.println("contestId=" + contestId);
+System.out.println("11111111111111=" + competition.getAdminFee());
+System.out.println("feeeeeeeeeeeeeeeeeeeeeeeeee=" + competition.getProjectHeader().getProperty(ADMIN_FEE_PROJECT_INFO_TYPE));
             SoftwareCompetition tobeUpdatedCompetition = null;
 
-            if (contestId >= 0) {
-                tobeUpdatedCompetition = this.getFullProjectData(contestId);
+            if (contestId > 0) { // BUGR-1682
+                tobeUpdatedCompetition = this.getSoftwareContestByProjectId(contestId); // BUGR-1682
             }
 
             if (tobeUpdatedCompetition == null) {
@@ -1760,6 +1766,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			String feestr = (String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE);
 			double fee =  Double.parseDouble(feestr);
+			System.out.println("fee=====================" + fee);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
@@ -1805,10 +1812,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             //tobeUpdatedCompetition.getContestData().setForumId(forumid);
 
 			// update contest
+			// COMMENT OUT FOR NOW, nothing to update
             tobeUpdatedCompetition.setProjectHeaderReason("Updated for Contest Sale");
-            this.updateSoftwareContest(tobeUpdatedCompetition, contest.getTcDirectProjectId());
+            tobeUpdatedCompetition = this.updateSoftwareContest(tobeUpdatedCompetition, contest.getTcDirectProjectId());
 
-            return result;
+            //return result;
+            // BUGR-1682
+			SoftwareContestPaymentResult softwareContestPaymentResult = new SoftwareContestPaymentResult();
+			softwareContestPaymentResult.setPaymentResult(result);
+/*			for(com.topcoder.project.phases.Phase p : tobeUpdatedCompetition.getProjectPhases().getAllPhases()) {
+				p.setProject(null);
+			}*/
+			softwareContestPaymentResult.setSoftwareCompetition(tobeUpdatedCompetition);
+			return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
             throw e;
@@ -2277,7 +2293,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             AssetDTO assetDTO = contest.getAssetDTO();
 			long forumId = 0;
 
-
+System.out.println("000000000000000000000=" + contest.getAdminFee());
 			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 			
 			XMLGregorianCalendar productionDate = null;
@@ -2342,6 +2358,9 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
 					compForum.setJiveCategoryId(forumId);
 					assetDTO.setForum(compForum);
 					assetDTO = this.catalogService.updateAsset(assetDTO);
+					// avoid cycle
+					assetDTO.getForum().setCompVersion(null);
+
 				}
 				
             }
@@ -2413,12 +2432,12 @@ System.out.println("-------comppp---files------"+assetDTO.getCompUploadedFiles()
                 contest.setProjectResources(projectData.getResources());
                 contest.setProjectData(projectData);
 				contest.setId(projectData.getProjectHeader().getId());
+				contest.setAssetDTO(assetDTO);
 
 				// set project start date in production date
 				contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
-System.out.println("-------------------------created : "+contest.getAssetDTO().getCompVersionId());
-System.out.println("-------------------------createdddd : "+contest.getAssetDTO().getVersionNumber());
+System.out.println("0000000000000000000001111111111111111111111111111111111111=" + contest.getAdminFee());
             return contest;
 
 		}

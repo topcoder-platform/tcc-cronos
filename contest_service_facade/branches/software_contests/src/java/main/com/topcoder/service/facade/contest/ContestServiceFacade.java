@@ -839,8 +839,9 @@ public interface ContestServiceFacade {
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      *
      * @since Module Contest Service Software Contest Sales Assembly
+     * @since BUGR-1682 changed return value
      */
-    public PaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
+    public SoftwareContestPaymentResult processContestCreditCardSale(SoftwareCompetition competition, CreditCardPaymentData paymentData)
         throws ContestServiceException;
 
     /**
@@ -856,8 +857,9 @@ public interface ContestServiceFacade {
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      *
      * @since Module Contest Service Software Contest Sales Assembly
+     * @since BUGR-1682 changed return value
      */
-    public PaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
         TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException;
 
     /**
