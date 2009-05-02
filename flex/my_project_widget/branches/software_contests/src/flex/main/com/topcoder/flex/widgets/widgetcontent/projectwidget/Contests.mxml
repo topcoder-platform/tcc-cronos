@@ -20,10 +20,7 @@
     <mx:Canvas horizontalScrollPolicy="off"
                verticalScrollPolicy="off"
                id="cnvs"
-               minWidth="{minPossibleWidth}"
-               maxWidth="{maxPossibleWidth}"
-               width="100%"
-               >
+               width="100%">
         <mx:Script>
             <![CDATA[
                 import mx.binding.utils.BindingUtils;
@@ -87,33 +84,37 @@
                 setContest=model.currentProj;
             }
 
-            /**
-             * Sets the contest for this contests page.
-             *
-             * @param value project for this contest.
-             */
-            public function set setContest(value:Project):void {
-                this.proj=value;
-                if (initialized && proj) {
-                    statusGroup=new Dictionary();
-                    typeGroup=new Dictionary();
-                    for each (var cont:Contest in value.contests) {
-                        var type:String=cont.typeGroup;
-                        var status:String=cont.status;
-                        if (!statusGroup[status]) {
-                            statusGroup[status]=new ArrayCollection();
+                /**
+                 * Sets the contest for this contests page.
+                 *
+                 * @param value project for this contest.
+                 */
+                public function set setContest(value:Project):void {
+                    trace(">>>>>>>> setContest start: " + new Date());
+                    this.proj=value;
+                    if (initialized && proj) {
+                        statusGroup=new Dictionary();
+                        typeGroup=new Dictionary();
+                        for each (var cont:Contest in value.contests) {
+                            var type:String=cont.typeGroup;
+                            var status:String=cont.status;
+                            if (!statusGroup[status]) {
+                                statusGroup[status]=new ArrayCollection();
+                            }
+                            var arr:ArrayCollection=statusGroup[status] as ArrayCollection;
+                            arr.addItem(cont);
+                            if (!typeGroup[type]) {
+                                typeGroup[type]=new ArrayCollection();
+                            }
+                            arr=typeGroup[type] as ArrayCollection;
+                            arr.addItem(cont);
                         }
-                        var arr:ArrayCollection=statusGroup[status] as ArrayCollection;
-                        arr.addItem(cont);
-                        if (!typeGroup[type]) {
-                            typeGroup[type]=new ArrayCollection();
-                        }
-                        arr=typeGroup[type] as ArrayCollection;
-                        arr.addItem(cont);
+                        changeGroup();
                     }
-                    changeGroup();
+
+                    trace(">>>>>>>> setContest end: " + new Date());
+                    this.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
                 }
-            }
 
                 /**
                  * Handler logic for contest group change.
@@ -180,17 +181,22 @@
                  * @param unscaledHeight unscaled height of the component.
                  */
                 override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-                    trace("---------------------> Contests -----------> : " + unscaledWidth + "," + unscaledHeight);
-                    trace("---------------------> this -----------> : " + this.width + "," + this.height);
+                    trace(">>>>>>>> updateDisplayList start: " + new Date());
+                    //trace("---------------------> Contests -----------> : " + unscaledWidth + "," + unscaledHeight);
+                    //trace("---------------------> this -----------> : " + this.width + "," + this.height);
                     if (cnvs) {
-                        trace("---------------------> cnvs -----------> : " + cnvs.width + "," + cnvs.height);
-                        if (cnvs.width > 0) {
+                        //trace("---------------------> cnvs -----------> : " + cnvs.width + "," + cnvs.height);
+                        if (cnvs.width > 0 && (minPossibleWidth <= 0 || cnvs.width < minPossibleWidth)) {
                             minPossibleWidth=cnvs.width;
+                            cnvs.minWidth=minPossibleWidth;
                         }
                     }
                     
                     if (this.width && this.width > maxPossibleWidth) {
                         maxPossibleWidth=this.width;
+                        if (cnvs) {
+                            cnvs.maxWidth=maxPossibleWidth;
+                        }
                     }
                     
                     super.updateDisplayList(unscaledWidth, unscaledHeight);
@@ -253,7 +259,6 @@
                     <mx:Label text="Group By:"
                               styleName="normalStyle"/>
                     <mx:ComboBox id="groupCB"
-                                 valueCommit="changeGroup()"
                                  width="85"
                                  styleName="normalStyle"
                                  enabled="{!model.showDateChooser}">

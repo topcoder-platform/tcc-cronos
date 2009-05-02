@@ -78,7 +78,7 @@
             /**
              * Animation ui component.
              */
-            private var coms:UIComponent=new UIComponent();
+            private var coms:UIComponent=null;
 
             /**
              * Animation flip direction - top or left/right.
@@ -125,6 +125,14 @@
              */
             private function initWidget():void {
                 loadData();
+                if (this.contest) {
+                    this.contest.addEventListener("SET_CONTEST_COMPLETE", rotateInEventHandler);
+                }
+                
+                if (this.proDetail) {
+                    this.proDetail.addEventListener("SET_CONTEST_COMPLETE", rotateInEventHandler);
+                }
+                
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
             }
 
@@ -166,11 +174,13 @@
              */
             [Bindable]
             public function set isMaxMode(value:Boolean):void {
+                trace(">>>>>>>> isMaxMode start: " + new Date());
                 model.isMax=value;
                 proList.invalidateSize();
                 viewContainer.invalidateSize();
-                
-                trace(">>>>>>>>>>>>>>>>>>>>>>>>>> isMax: " + isMaxMode);
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>>>> isMax: " + isMaxMode);
+                trace(">>>>>>>> isMaxMode end: " + new Date());
             }
 
             /**
@@ -187,24 +197,30 @@
              * This initiates the vertical flip animation.
              */
             private function handleSelect():void {
+                trace(">>>>>>>> handleSelect start: " + new Date());
                 if (proList.selectedItem || (model.proList && proList.selectedIndex >= 0 && proList.selectedIndex < model.proList.length)) {
                     doFadeOut();
                 } else {
                     return;
                 }
+
+                trace(">>>>>>>> handleSelect end: " + new Date());
             }
 
             /**
              * Do the vertical flip animation.
              */
             private function doFadeOut():void {
+                trace(">>>>>>>> doFadeOut start: " + new Date());
+
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
-                trace(">>>>>>>>>>>>>>>>>>>>>>> doFadeOut - buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
-                trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(1): " + stack.width + "," + stack.height);
-                trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(2): " + viewContainer.width + "," + viewContainer.height);
-                
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>> doFadeOut - buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(1): " + stack.width + "," + stack.height);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(2): " + viewContainer.width + "," + viewContainer.height);
+
                 var newWidth:Number=viewContainer.width - 3;
                 var newHeight:Number=viewContainer.height;
                 
@@ -220,6 +236,8 @@
                 _direction="TOP";
                 v=false;
                 timer.start();
+
+                trace(">>>>>>>> doFadeOut end: " + new Date());
             }
 
             /**
@@ -228,6 +246,8 @@
              * @param event timer event.
              */
             private function rotate(event:TimerEvent):void {
+                trace(">>>>>>>> rotate start: " + new Date());
+                
                 if (v) {
 
                     stack.selectedIndex=buttonSelectedIndex;
@@ -237,6 +257,13 @@
                     } else {
                         _direction="RIGHT";
                     }
+                    
+                    if (contest) {
+                        contest.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
+                    } else {
+                        details.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
+                    }
+                    
                 } else {
                     if (proList.selectedItem) {
                         trace("change item");
@@ -245,17 +272,27 @@
                         model.currentProj=model.proList.getItemAt(proList.selectedIndex) as Project;
                     }
                 }
-                flipIn.target=coms;
-                flipIn.siblings=[stack];
-                flipIn.direction=_direction;
-                flipIn.duration=1000;
-                flipIn.play();
+
+                trace(">>>>>>>> rotate end: " + new Date());
+            }
+
+            private function rotateInEventHandler(e:Event):void {
+                trace(">>>>>>>> rotate before play: " + new Date());
+                if (coms) {
+                    flipIn.target=coms;
+                    flipIn.siblings=[stack];
+                    flipIn.direction=_direction;
+                    flipIn.duration=1000;
+                    flipIn.play();
+                }
             }
 
             /**
              * Do the horizontal flip animation.
              */
             private function doRotate(event:Event):void {
+                trace(">>>>>>>> doRotate start: " + new Date());
+
                 if (event.currentTarget.label == "DETAILS") {
                     buttonSelectedIndex=0;
                 } else {
@@ -267,27 +304,14 @@
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
-                
-                //if (_maxWidth < stack.width) {
-                //    _maxWidth = stack.width;
-                //}
-                //if (_maxHeight < stack.height) {
-                //    _maxHeight=stack.height;
-                //}
-                
-                trace(">>>>>>>>>>>>>>>>>>>>>>> buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
-                trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(1): " + stack.width + "," + stack.height);
-                trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(2): " + viewContainer.width + "," + viewContainer.height);
-                
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>> buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(1): " + stack.width + "," + stack.height);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(2): " + viewContainer.width + "," + viewContainer.height);
+
                 var newWidth:Number=viewContainer.width - 3;
                 var newHeight:Number=viewContainer.height;
-                //if (buttonSelectedIndex == 1) {
-                    //newWidth=_maxWidth;
-                    //newHeight=_maxHeight;
-                    //stack.width=_maxWidth;
-                    //stack.height=_maxHeight;
-                //}
-                
+
                 model.showDateChooser=false;
                 var bm:BitmapData=new BitmapData(newWidth, newHeight);
                 bm.draw(stack);
@@ -299,15 +323,20 @@
                 viewContainer.addChildAt(coms, 1);
                 v=true;
                 timer.start();
+                
+                trace(">>>>>>>> doRotate end: " + new Date());
             }
 
             /**
              * Sets the project list selected index.
              */
             public function set setList(value:int):void {
+                trace(">>>>>>>> setList start: " + new Date());
                 if (proList) {
                     proList.selectedIndex=0;
                 }
+
+                trace(">>>>>>>> setList end: " + new Date());
             }
 
             /**
@@ -316,6 +345,7 @@
              * @param up true if up pagination, false if down pagination.
              */
             private function moveList(up:Boolean):void {
+                trace(">>>>>>>> moveList start: " + new Date());
                 if (index > 0 && up) {
                     index--;
                     proList.verticalScrollPosition=proList.verticalScrollPosition - 1;
@@ -335,6 +365,8 @@
                 } else {
                     nextBtn.visible=true;
                 }
+
+                trace(">>>>>>>> moveList end: " + new Date());
             }
 
             /**
@@ -343,9 +375,9 @@
              * @param e webservice result event.
              */
             private function setProject(e:ResultEvent):void {
-                hideLoadingProgress();
+                trace(">>>>>>>> setProject start: " + new Date());
 
-                trace("------------- setProject:: " + e);
+                hideLoadingProgress();
 
                 if (e != null && e.result != null) {
                     var prjArray:ArrayCollection=new ArrayCollection;
@@ -388,6 +420,8 @@
                         model.index=1;
                     }
                 }
+
+                trace(">>>>>>>> setProject end: " + new Date());
             }
 
             /**
@@ -396,6 +430,7 @@
              * @param coll specified array collection to be sorted.
              */
             private function sortByName(coll:ArrayCollection):void {
+                trace(">>>>>>>> sortByName start: " + new Date());
                 if (!coll.sort) {
                     var sort:Sort=new Sort();
                     sort.compareFunction=compareName;
@@ -403,6 +438,8 @@
                 }
 
                 coll.refresh();
+
+                trace(">>>>>>>> sortByName end: " + new Date());
             }
 
             /**
@@ -416,9 +453,12 @@
              * force widget to a maximized view
              */
             public function maximizeScreen():void {
+                trace(">>>>>>>> maximizeScreen start: " + new Date());
                 if (this.container) {
                     this.container.startMaximize();
                 }
+
+                trace(">>>>>>>> maximizeScreen end: " + new Date());
             }
 
             /**
@@ -467,7 +507,8 @@
                               moveDuration="200"
                               color="0xffffff"/>
     <mxeffects:CubeRotate id="flipIn"
-                          duration="1000"/>
+                          duration="1000"
+                          suspendBackgroundProcessing="true"/>
     <mx:Resize widthFrom="160"
                widthTo="1"
                heightFrom="{proDetail.height}"
