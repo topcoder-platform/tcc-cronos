@@ -282,7 +282,7 @@
                     flipIn.target=coms;
                     flipIn.siblings=[stack];
                     flipIn.direction=_direction;
-                    flipIn.duration=1000;
+                    flipIn.duration=2000;
                     flipIn.play();
                 }
             }
