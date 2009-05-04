@@ -96,7 +96,7 @@
                         statusGroup=new Dictionary();
                         typeGroup=new Dictionary();
                         for each (var cont:Contest in value.contests) {
-                            var type:String=cont.typeGroup;
+                            var type:String=cont.type;
                             var status:String=cont.status;
                             if (!statusGroup[status]) {
                                 statusGroup[status]=new ArrayCollection();
