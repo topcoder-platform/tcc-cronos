@@ -150,15 +150,19 @@
                 mainWidget.competition.contestData.contestTypeId=Number(studioType.selectedValue);
 
                 var prizes:Array=new Array();
+		var sum:Number = 0;
                 mainWidget.competition.contestData.prizes=prizes;
                 for (var i:int=0; i < s_inputs.length; i++) {
                     var prizeData:PrizeData=new PrizeData();
+		    
 
                     var input:TextInput=this[s_inputs[i]] as TextInput;
                     var amount:Number=Number(input.text);
                     if (amount <= 0) {
                         break;
                     }
+
+		    sum = sum + amount;
 
                     prizeData.place=i + 1;
                     prizeData.amount=amount;
@@ -167,6 +171,8 @@
 
                 mainWidget.competition.prizes=prizes;
 		mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(0));
+		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(0));
 
                 // assign values to review screen.
                 mainWidget.review.cstTypeStep2=studioType.selection.label;
