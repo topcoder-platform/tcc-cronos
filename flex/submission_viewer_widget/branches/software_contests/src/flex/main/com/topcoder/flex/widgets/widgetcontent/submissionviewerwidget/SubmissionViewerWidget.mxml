@@ -56,6 +56,7 @@
              */
             [Bindable]
             private var _blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+	    private var _blazedssecureendpoint:String=Application.application.parameters.blazedssecureendpoint;
 
             /**
              * Reference to the contest service facade url. This gets loaded from application parameters.
@@ -396,8 +397,15 @@
 
     </mx:WebService>
 
-    <mx:WebService id="ContestServiceFacadeBean"
-                   wsdl="{_contestServiceFacadeWsdl}">
+     <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
+                    destination="contest-facade">
+		<mx:channelSet>
+			<mx:ChannelSet id="contestfacadeChannelSet">
+			    <mx:channels>
+				<mx:SecureAMFChannel uri="{_blazedssecureendpoint}"/>
+			    </mx:channels>
+			</mx:ChannelSet>
+		</mx:channelSet>
         <mx:operation name="getContestDataOnly"
                       resultFormat="object"
                       result="handleResult(event)"
