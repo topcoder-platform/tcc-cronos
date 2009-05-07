@@ -148,6 +148,8 @@ package com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model {
         public function handleCatalogLoad(e:ResultEvent):void {
             trace("Result: " + e);
 
+	    componentList.removeAll();
+
             if (e && e.result) {
                 var jsonStr:String=e.result as String;
                 var obj:Object=JSON.decode(jsonStr);
