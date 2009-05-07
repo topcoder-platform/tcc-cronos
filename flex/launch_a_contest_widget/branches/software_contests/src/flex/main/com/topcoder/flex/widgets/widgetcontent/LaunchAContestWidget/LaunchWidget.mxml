@@ -63,6 +63,9 @@
             [Bindable]
             private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
 
+	    [Bindable]
+            private var blazedssecureendpoint:String=Application.application.parameters.blazedssecureendpoint;
+
             //
             // Updated to avoid 'data binding' warning
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -1025,8 +1028,15 @@
 
     </mx:WebService>
 
-    <mx:WebService id="ContestServiceFacadeBean"
-                   wsdl="{contestServiceFacadeWsdl}">
+     <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
+                    destination="contest-facade">
+		<mx:channelSet>
+			<mx:ChannelSet id="contestfacadeChannelSet">
+			    <mx:channels>
+				<mx:SecureAMFChannel uri="{blazedssecureendpoint}"/>
+			    </mx:channels>
+			</mx:ChannelSet>
+		</mx:channelSet>
         <mx:operation name="createContest"
                       resultFormat="object"
                       fault="showWebserviceError('createContest', event);">
