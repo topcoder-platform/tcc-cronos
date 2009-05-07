@@ -56,7 +56,6 @@
              */
             [Bindable]
             private var _blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
-	    private var _blazedssecureendpoint:String=Application.application.parameters.blazedssecureendpoint;
 
             /**
              * Reference to the contest service facade url. This gets loaded from application parameters.
@@ -402,7 +401,7 @@
 		<mx:channelSet>
 			<mx:ChannelSet id="contestfacadeChannelSet">
 			    <mx:channels>
-				<mx:SecureAMFChannel uri="{_blazedssecureendpoint}"/>
+				<mx:SecureAMFChannel uri="{_blazedsendpoint}"/>
 			    </mx:channels>
 			</mx:ChannelSet>
 		</mx:channelSet>
