@@ -4,6 +4,8 @@
         <session>
             <ejb-name>ContestServiceFacadeBean</ejb-name>
             <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
+			
+
             <ejb-ref>
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
                 <jndi-name>StudioServiceBean/remote</jndi-name>
@@ -16,6 +18,12 @@
                 <ejb-ref-name>ejb/ProjectServicesBean</ejb-ref-name>
                 <jndi-name>ProjectServicesBean/remote</jndi-name>
             </ejb-ref>
+
+			<port-component>
+				<port-component-name>ContestServiceFacadeBean</port-component-name>
+				<port-component-uri>/ContestServiceFacadeBean</port-component-uri>
+				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+			</port-component>
         </session>
     </enterprise-beans>
 

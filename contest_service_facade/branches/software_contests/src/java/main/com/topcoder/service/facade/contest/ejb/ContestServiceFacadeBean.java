@@ -88,6 +88,7 @@ import javax.activation.DataHandler;
 import javax.persistence.EntityManager;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -96,6 +97,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
+import org.jboss.wsf.spi.annotation.WebContext;
 
 import java.rmi.RemoteException;
 import java.util.Calendar;
@@ -136,6 +138,13 @@ import java.util.Collections;
 @RolesAllowed({"Cockpit User" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@WebContext
+(
+  contextRoot="/contestfacade",
+  urlPattern="/ContestServiceFacadeBean",
+  transportGuarantee="CONFIDENTIAL",
+  secureWSDLAccess=false
+)
 public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, ContestServiceFacadeRemote {
 
     /**
