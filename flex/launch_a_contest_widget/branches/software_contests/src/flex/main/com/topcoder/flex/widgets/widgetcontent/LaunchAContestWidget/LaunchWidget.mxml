@@ -63,9 +63,6 @@
             [Bindable]
             private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
 
-	    [Bindable]
-            private var blazedssecureendpoint:String=Application.application.parameters.blazedssecureendpoint;
-
             //
             // Updated to avoid 'data binding' warning
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -1033,7 +1030,7 @@
 		<mx:channelSet>
 			<mx:ChannelSet id="contestfacadeChannelSet">
 			    <mx:channels>
-				<mx:SecureAMFChannel uri="{blazedssecureendpoint}"/>
+				<mx:SecureAMFChannel uri="{blazedsendpoint}"/>
 			    </mx:channels>
 			</mx:ChannelSet>
 		</mx:channelSet>
