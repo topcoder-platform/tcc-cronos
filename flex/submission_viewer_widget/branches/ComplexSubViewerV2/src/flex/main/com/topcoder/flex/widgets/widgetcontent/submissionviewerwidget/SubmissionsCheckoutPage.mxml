@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for submission checkout page.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns="*"
+         xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         width="100%"
+         height="100%"
+         paddingTop="10"
+         paddingBottom="25"
+         paddingLeft="15"
+         paddingRight="15">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Label id="header"
+              text="Purchase your Submissions"
+              fontSize="16"
+              styleName="header"/>
+    <mx:Text id="text1"
+             width="100%"
+             styleName="text"
+             htmlText="Feedback will be here..."/>
+    <tc:GridCanvas width="100%"
+                   height="150"
+                   listData="{this.subViewer.downloadList}"/>
+    <mx:ViewStack height="100%"
+                  width="100%"
+                  id="pay">
+        <mx:VBox width="100%"
+                 height="100%">
+            <tc:PaymentWF id="wf1"
+                          width="100%"
+                          height="100%"
+                          clientProjectNames="{this.subViewer.clientProjectNames}"/>
+            <mx:HBox width="100%">
+                <mx:Button buttonMode="true"
+                           styleName="arrowLeftBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                           label="Add/Modify Selections"
+                           click="this.subViewer.gotoContestViewer()"/>
+                <mx:Spacer width="100%"/>
+                <mx:Button buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Confirm Order"
+                           click="this.subViewer.gotoPurchase()"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 height="100%">
+            <tc:PaymentWFCf id="wf2"
+                            paddingRight="6"/>
+            <mx:HBox width="100%"
+                     horizontalAlign="right">
+                <mx:Button buttonMode="true"
+                           id="sub1"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Submit Purchase"
+                           click="this.subViewer.gotoPurchase()"/>
+            </mx:HBox>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 height="100%">
+            <tc:PaymentWFCfPO id="wf3"
+                              paddingRight="6"/>
+            <mx:HBox width="100%"
+                     horizontalAlign="right">
+                <mx:Button buttonMode="true"
+                           id="sub2"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="Submit Purchase"
+                           click="this.subViewer.gotoPurchase()"/>
+            </mx:HBox>
+        </mx:VBox>
+    </mx:ViewStack>
+</mx:VBox>
