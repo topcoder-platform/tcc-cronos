@@ -1573,8 +1573,9 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         parameters.put("description", DELETED_STATUS);
 
         List<Submission> submissions = getResultList(entityManager,
-                "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
-                        + " AND s.status.description != :description ", parameters, methodName);
+                "SELECT s FROM Submission s left outer join s.review as r WHERE s.contest.contestId=:contestId"
+                        + " AND s.status.description != :description " 
+                        + " AND (r.reviewerId is NULL or r.status.reviewStatusId <> 2)", parameters, methodName);
         return submissions;
     }
 
@@ -1605,8 +1606,9 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 		parameters.put("maxSubmissionsPerUser", new Integer(maxSubmissionsPerUser));
 
         List<Submission> submissions = getResultList(entityManager,
-                "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
-                        + " AND s.status.description != :description AND s.rank is not null AND s.rank <= :maxSubmissionsPerUser", parameters, methodName);
+                "SELECT s FROM Submission s left outer join s.review as r WHERE s.contest.contestId=:contestId"
+                        + " AND s.status.description != :description AND s.rank is not null AND s.rank <= :maxSubmissionsPerUser " 
+                        + " AND (r.reviewerId is NULL or r.status.reviewStatusId <> 2)", parameters, methodName);
         return submissions;
     }
 
