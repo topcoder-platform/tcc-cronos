@@ -124,86 +124,77 @@
              * @param clickHandler the reference to click handler that need to be called on link button click.
              */
             private function setLinkProperties(input:int, linkButton:Button, clickHandler:Function):String {
-		if (contest.type == STUDIO_TYPE)
-		{
-			if (input > 0) {
-			    linkButton.styleName="rowContentBtn";
-			    linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
-			    linkButton.buttonMode=true;
-			    linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
-			    linkButton.setStyle("textAlign", "right");
-			}
-
-			if (input == 0 && linkButton == lblForumPosts) {
-			    return "no forum";
-			}
-
-			return "" + input;
-		}
-		else
-		{
-			linkButton.styleName="rowContentBtn";
-			linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
-			linkButton.buttonMode=true;
-			linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
-			linkButton.setStyle("textAlign", "right");
-			return "" + input;
-		}
+                if (contest.type == STUDIO_TYPE) {
+                    if (input >= 0) {
+                        linkButton.styleName="rowContentBtn";
+                        linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                        linkButton.buttonMode=true;
+                        linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                        linkButton.setStyle("textAlign", "right");
+                    }
+                    
+                    if (input == 0 && linkButton == lblForumPosts) {
+                        return "no forum";
+                    }
+                    
+                    return "" + input;
+                } else {
+                    linkButton.styleName="rowContentBtn";
+                    linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                    linkButton.buttonMode=true;
+                    linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                    linkButton.setStyle("textAlign", "right");
+                    return "" + input;
+                }
             }
 
             /**
              * Shows the contest monitor widget for this contest row.
              */
             private function showStats():void {
-		if (contest.type == STUDIO_TYPE)
-		{
-			// restore widget to normal width if it's not already.
-			if (model.projectWidget.isMaximized()) {
-			    model.projectWidget.restoreScreen();
-			}
-
-			// call method on widget to load the selected contest.
-			var tabName:String=model.projectWidget.widgetFramework.getActiveTabName();
-			var widgetName:String="Contest Monitor";
-			openWidget(tabName, widgetName);
-		}
-		else
-		{
-			navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
-		}
+                if (contest.type == STUDIO_TYPE) {
+                    // restore widget to normal width if it's not already.
+                    if (model.projectWidget.isMaximized()) {
+                        model.projectWidget.restoreScreen();
+                    }
+                    
+                    // call method on widget to load the selected contest.
+                    var tabName:String=model.projectWidget.widgetFramework.getActiveTabName();
+                    var widgetName:String="Contest Monitor";
+                    openWidget(tabName, widgetName);
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
             }
 
             /**
              * Shows the submission viewer widget for this contest row.
              */
             private function showSubmission(event:MouseEvent):void {
-		if (contest.type == STUDIO_TYPE)
-		{
-
-			if (contest.submissions > 0) {
-
-			    // restore widget to normal width if it's not already.
-			    if (model.projectWidget.isMaximized()) {
-				model.projectWidget.restoreScreen();
-			    }
-
-			    var tabName:String=null;
-			    var widgetName:String=null;
-			    // open submission viewer widget and load the current contest.
-			    tabName=model.projectWidget.widgetFramework.getActiveTabName();
-			    widgetName="Submission Viewer";
-			    openWidget(tabName, widgetName);
-
-			    // open contest monitor widget and load the current contest.
-			    tabName=model.projectWidget.widgetFramework.getActiveTabName();
-			    widgetName="Contest Monitor";
-			    openWidget(tabName, widgetName);
-			}
-		}
-		else
-		{
-			navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
-		}
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.submissions > 0) {
+                        
+                        // restore widget to normal width if it's not already.
+                        if (model.projectWidget.isMaximized()) {
+                            model.projectWidget.restoreScreen();
+                        }
+                        
+                        var tabName:String=null;
+                        var widgetName:String=null;
+                        // open submission viewer widget and load the current contest.
+                        tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                        widgetName="Submission Viewer";
+                        openWidget(tabName, widgetName);
+                        
+                        // open contest monitor widget and load the current contest.
+                        tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                        widgetName="Contest Monitor";
+                        openWidget(tabName, widgetName);
+                    }
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
             }
 
             /**
@@ -250,33 +241,27 @@
              * Handler for contest label click.
              */
             private function handleClick():void {
-		if (contest.type == "Studio")
-		{
-			navigateToURL(new URLRequest(contentDetailUrlBase + contest.id));
-		}
-		else
-		{
-			navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
-		}
-
+                if (contest.type == "Studio") {
+                    navigateToURL(new URLRequest(contentDetailUrlBase + contest.id));
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            
             }
 
             /**
              * Handler for forum link click.
              */
             private function openForum(event:MouseEvent):void {
-		if (contest.type == STUDIO_TYPE)
-		{
-		
-			if (contest.forumId == null || contest.forumId == "-1") {
-			    return;
-			}
-			navigateToURL(new URLRequest(forumUrlBase + contest.forumId));
-		}
-		else
-		{
-			navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
-		}
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.forumId == null || contest.forumId == "-1") {
+                        return;
+                    }
+                    navigateToURL(new URLRequest(forumUrlBase + contest.forumId));
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
             }
 
             /**

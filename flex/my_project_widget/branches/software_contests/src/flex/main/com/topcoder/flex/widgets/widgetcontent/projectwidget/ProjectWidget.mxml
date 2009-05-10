@@ -25,6 +25,7 @@
     <mx:Style source="./Style.css"/>
     <mx:Script>
         <![CDATA[
+            import mx.events.EffectEvent;
             import mx.utils.ObjectUtil;
             import mx.collections.Sort;
             import com.topcoder.flex.util.date.DateUtil;
@@ -175,13 +176,13 @@
              */
             [Bindable]
             public function set isMaxMode(value:Boolean):void {
-                trace(">>>>>>>> isMaxMode start: " + new Date());
+                //trace(">>>>>>>> isMaxMode start: " + new Date());
                 model.isMax=value;
                 proList.invalidateSize();
                 viewContainer.invalidateSize();
 
                 //trace(">>>>>>>>>>>>>>>>>>>>>>>>>> isMax: " + isMaxMode);
-                trace(">>>>>>>> isMaxMode end: " + new Date());
+                //trace(">>>>>>>> isMaxMode end: " + new Date());
             }
 
             /**
@@ -198,22 +199,23 @@
              * This initiates the vertical flip animation.
              */
             private function handleSelect():void {
-                trace(">>>>>>>> handleSelect start: " + new Date());
+                //trace(">>>>>>>> handleSelect start: " + new Date());
                 if (proList.selectedItem || (model.proList && proList.selectedIndex >= 0 && proList.selectedIndex < model.proList.length)) {
                     doFadeOut();
                 } else {
                     return;
                 }
-
-                trace(">>>>>>>> handleSelect end: " + new Date());
+                
+                //trace(">>>>>>>> handleSelect end: " + new Date());
             }
 
             /**
              * Do the vertical flip animation.
              */
             private function doFadeOut():void {
-                trace(">>>>>>>> doFadeOut start: " + new Date());
-
+                //trace(">>>>>>>> doFadeOut start: " + new Date());
+                
+                
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
@@ -237,8 +239,8 @@
                 _direction="TOP";
                 v=false;
                 timer.start();
-
-                trace(">>>>>>>> doFadeOut end: " + new Date());
+                
+                //trace(">>>>>>>> doFadeOut end: " + new Date());
             }
 
             /**
@@ -247,7 +249,10 @@
              * @param event timer event.
              */
             private function rotate(event:TimerEvent):void {
-                trace(">>>>>>>> rotate start: " + new Date());
+                //trace(">>>>>>>> rotate start: " + new Date());
+                
+                // scroll to zero position so that animation is contained inside viewable area.
+                this.viewContainer.horizontalScrollPosition = 0;
                 
                 if (v) {
 
@@ -273,27 +278,30 @@
                         model.currentProj=model.proList.getItemAt(proList.selectedIndex) as Project;
                     }
                 }
-
-                trace(">>>>>>>> rotate end: " + new Date());
+                
+                //trace(">>>>>>>> rotate end: " + new Date());
             }
 
             private function rotateInEventHandler(e:Event):void {
-                trace(">>>>>>>> rotate before play: " + new Date());
+                //trace(">>>>>>>> rotate before play: " + new Date());
                 if (coms) {
                     flipIn.target=coms;
                     flipIn.siblings=[stack];
                     flipIn.direction=_direction;
-                    flipIn.duration=2000;
+                    flipIn.duration=1000;
                     flipIn.play();
                 }
             }
-
+            
+            private function effectEnd(e:EffectEvent):void {
+            }
+            
             /**
              * Do the horizontal flip animation.
              */
             private function doRotate(event:Event):void {
-                trace(">>>>>>>> doRotate start: " + new Date());
-
+                //trace(">>>>>>>> doRotate start: " + new Date());
+                
                 if (event.currentTarget.label == "DETAILS") {
                     buttonSelectedIndex=0;
                 } else {
@@ -302,6 +310,13 @@
                 if (buttonSelectedIndex == stack.selectedIndex) {
                     return;
                 }
+                
+                if (buttonSelectedIndex == 0) {
+                    _direction="left";
+                } else {
+                    _direction="right";
+                }
+                
                 if (viewContainer.numChildren > 1) {
                     viewContainer.removeChildAt(1);
                 }
@@ -325,19 +340,19 @@
                 v=true;
                 timer.start();
                 
-                trace(">>>>>>>> doRotate end: " + new Date());
+                //trace(">>>>>>>> doRotate end: " + new Date());
             }
 
             /**
              * Sets the project list selected index.
              */
             public function set setList(value:int):void {
-                trace(">>>>>>>> setList start: " + new Date());
+                //trace(">>>>>>>> setList start: " + new Date());
                 if (proList) {
                     proList.selectedIndex=0;
                 }
-
-                trace(">>>>>>>> setList end: " + new Date());
+                
+                //trace(">>>>>>>> setList end: " + new Date());
             }
 
             /**
@@ -346,7 +361,7 @@
              * @param up true if up pagination, false if down pagination.
              */
             private function moveList(up:Boolean):void {
-                trace(">>>>>>>> moveList start: " + new Date());
+                //trace(">>>>>>>> moveList start: " + new Date());
                 if (index > 0 && up) {
                     index--;
                     proList.verticalScrollPosition=proList.verticalScrollPosition - 1;
@@ -366,8 +381,8 @@
                 } else {
                     nextBtn.visible=true;
                 }
-
-                trace(">>>>>>>> moveList end: " + new Date());
+                
+                //trace(">>>>>>>> moveList end: " + new Date());
             }
 
             /**
@@ -376,8 +391,8 @@
              * @param e webservice result event.
              */
             private function setProject(e:ResultEvent):void {
-                trace(">>>>>>>> setProject start: " + new Date());
-
+                //trace(">>>>>>>> setProject start: " + new Date());
+                
                 hideLoadingProgress();
 
                 if (e != null && e.result != null) {
@@ -421,8 +436,8 @@
                         model.index=1;
                     }
                 }
-
-                trace(">>>>>>>> setProject end: " + new Date());
+                
+                //trace(">>>>>>>> setProject end: " + new Date());
             }
 
             /**
@@ -431,7 +446,7 @@
              * @param coll specified array collection to be sorted.
              */
             private function sortByName(coll:ArrayCollection):void {
-                trace(">>>>>>>> sortByName start: " + new Date());
+                //trace(">>>>>>>> sortByName start: " + new Date());
                 if (!coll.sort) {
                     var sort:Sort=new Sort();
                     sort.compareFunction=compareName;
@@ -439,8 +454,8 @@
                 }
 
                 coll.refresh();
-
-                trace(">>>>>>>> sortByName end: " + new Date());
+                
+                //trace(">>>>>>>> sortByName end: " + new Date());
             }
 
             /**
@@ -454,12 +469,12 @@
              * force widget to a maximized view
              */
             public function maximizeScreen():void {
-                trace(">>>>>>>> maximizeScreen start: " + new Date());
+                //trace(">>>>>>>> maximizeScreen start: " + new Date());
                 if (this.container) {
                     this.container.startMaximize();
                 }
-
-                trace(">>>>>>>> maximizeScreen end: " + new Date());
+                
+                //trace(">>>>>>>> maximizeScreen end: " + new Date());
             }
 
             /**
@@ -472,17 +487,19 @@
             }
         ]]>
     </mx:Script>
-    
-    <mx:Binding source="this.isMax" destination="this.isMaxMode"/>
-    <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
-                    destination="contest-facade">
-		<mx:channelSet>
-			<mx:ChannelSet id="contestfacadeChannelSet">
-			    <mx:channels>
-				<mx:SecureAMFChannel uri="{blazedsendpoint}"/>
-			    </mx:channels>
-			</mx:ChannelSet>
-		</mx:channelSet>
+
+    <mx:Binding source="this.isMax"
+                destination="this.isMaxMode"/>
+    <mx:WebService id="ContestServiceFacadeBean"
+                   useProxy="true"
+                   destination="contest-facade">
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                    <mx:SecureAMFChannel uri="{blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
 
         <mx:operation name="getCommonProjectContestData"
                       resultFormat="object"
@@ -517,7 +534,8 @@
                               color="0xffffff"/>
     <mxeffects:CubeRotate id="flipIn"
                           duration="1000"
-                          suspendBackgroundProcessing="true"/>
+                          suspendBackgroundProcessing="true"
+                          effectEnd="effectEnd(event)"/>
     <mx:Resize widthFrom="160"
                widthTo="1"
                heightFrom="{proDetail.height}"
@@ -633,6 +651,7 @@
                           paddingTop="15"
                           paddingBottom="0"
                           resizeToContent="true"
+                          clipContent="true"
                           id="stack">
                 <tc:ProjectDetails width="100%" height="100%" id="details"
                                    backgroundColor="#ffffff"/>

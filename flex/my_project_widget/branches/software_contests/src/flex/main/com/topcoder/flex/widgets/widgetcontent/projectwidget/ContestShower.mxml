@@ -25,7 +25,13 @@
             import mx.events.CollectionEvent;
             import mx.core.ScrollPolicy;
             import mx.collections.ArrayCollection;
-
+            
+            private var _maxCacheSize:int=50;
+            
+            private var _contestRowCache:ArrayCollection=new ArrayCollection();
+            
+            private var _currentCacheIndex:int=0;
+            
             /**
              * Data provider for this contest shower.
              */
@@ -41,11 +47,25 @@
                 if (!value) {
                     return;
                 }
+                _currentCacheIndex=0;
                 container.removeAllChildren();
-                for (var i:int; i < value.length; i++) {
+                for (var i:int=0; i < value.length; i++) {
                     var cnt:Contest=value.getItemAt(i) as Contest;
-                    var prjRow:ContestRow=new ContestRow();
-                    container.addChildAt(prjRow, 0);
+                    var prjRow:ContestRow=null;
+                    if (_contestRowCache.length > _currentCacheIndex) {
+                        prjRow=_contestRowCache.getItemAt(_currentCacheIndex) as ContestRow;
+                        _currentCacheIndex++;
+                    } else {
+                        prjRow=new ContestRow();
+                        
+                        if (_currentCacheIndex < _maxCacheSize) {
+                            _contestRowCache.addItem(prjRow);
+                            _currentCacheIndex++;
+                        }
+                    }
+                    
+                    trace("Adding row i: " + i + ", prj: " + prjRow);
+                    container.addChild(prjRow);
                     prjRow.data=cnt;
                     prjRow.rowNum=i;
                 }

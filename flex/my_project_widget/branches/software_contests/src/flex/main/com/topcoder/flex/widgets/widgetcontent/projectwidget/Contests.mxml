@@ -41,19 +41,18 @@
                  */
                 [Bindable]
                 private var model:Model=Model.instance;
-
-            /**
-             * Project for this contest page.
-             */
-            [Bindable]
-            public var proj:Project;
-
-            /**
-             * Status group for this contest page.
-             */
-            [Bindable]
-            public var statusGroup:Dictionary=new Dictionary();
-
+                
+                /**
+                 * Project for this contest page.
+                 */
+                public var proj:Project;
+                
+                /**
+                 * Status group for this contest page.
+                 */
+                [Bindable]
+                public var statusGroup:Dictionary=new Dictionary();
+                
                 /**
                  * Type group for this contest page.
                  */
@@ -70,49 +69,40 @@
                  * It gets called on this component initialization
                  */
                 private function init():void {
+                    //trace(">>>>>>>> init start: " + new Date());
                     if (this.proj) {
                         this.shower.dataProvider=proj.contests;
                         setContest=this.proj;
                     }
+                    
+                    //trace(">>>>>>>> init end: " + new Date());
                 }
-
-            /**
-             * Updates this contests page data.
-             * It simply calls setContest.
-             */
-            public function set update(nouse:Boolean):void {
-                setContest=model.currentProj;
-            }
-
+                
+                /**
+                 * Updates this contests page data.
+                 * It simply calls setContest.
+                 */
+                public function set update(nouse:Boolean):void {
+                    //trace(">>>>>>>> update start: " + new Date());
+                    setContest=model.currentProj;
+                    //trace(">>>>>>>> update end: " + new Date());
+                }
+                
                 /**
                  * Sets the contest for this contests page.
                  *
                  * @param value project for this contest.
                  */
                 public function set setContest(value:Project):void {
-                    trace(">>>>>>>> setContest start: " + new Date());
+                    //trace(">>>>>>>> setContest start: " + new Date());
                     this.proj=value;
                     if (initialized && proj) {
-                        statusGroup=new Dictionary();
-                        typeGroup=new Dictionary();
-                        for each (var cont:Contest in value.contests) {
-                            var type:String=cont.type;
-                            var status:String=cont.status;
-                            if (!statusGroup[status]) {
-                                statusGroup[status]=new ArrayCollection();
-                            }
-                            var arr:ArrayCollection=statusGroup[status] as ArrayCollection;
-                            arr.addItem(cont);
-                            if (!typeGroup[type]) {
-                                typeGroup[type]=new ArrayCollection();
-                            }
-                            arr=typeGroup[type] as ArrayCollection;
-                            arr.addItem(cont);
-                        }
+                        statusGroup=proj.statusGroup;
+                        typeGroup=proj.typeGroup;
                         changeGroup();
                     }
-
-                    trace(">>>>>>>> setContest end: " + new Date());
+                    
+                    //trace(">>>>>>>> setContest end: " + new Date());
                     this.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
                 }
 
@@ -120,60 +110,49 @@
                  * Handler logic for contest group change.
                  */
                 private function changeGroup():void {
+                    //trace(">>>>>>>> changeGroup start: " + new Date());
                     if (!this.proj) {
                         return;
                     }
                     if (groupCB.selectedIndex == 0) {
                         stack.selectedChild=shower;
-
-                    // for no group sort the contests by name.
-                    sortByName(proj.contests);
-
-                    shower.dataProvider=proj.contests;
-                } else {
-                    stack.selectedChild=group;
-                    model.contest=new ArrayCollection();
-                    if (groupCB.selectedIndex == 1) {
-
-                        for (var i:int=0; i < Status.STATUS_SORT_ORDER.length; i++) {
-                            var status:String=Status.STATUS_SORT_ORDER[i];
-                            var a1:ArrayCollection=statusGroup[status] as ArrayCollection;
-                            if (a1) {
-                                // sort contests within individual group by name.
-                                sortByName(a1);
-
-                                var cate:Cate=new Cate();
-                                cate.label=status;
-                                cate.contests=a1;
-
-                                model.contest.addItem(cate);
+                        
+                        shower.dataProvider=proj.contests;
+                    } else {
+                        stack.selectedChild=group;
+                        model.contest=new ArrayCollection();
+                        if (groupCB.selectedIndex == 1) {
+                            
+                            for (var i:int=0; i < Status.STATUS_SORT_ORDER.length; i++) {
+                                var status:String=Status.STATUS_SORT_ORDER[i];
+                                var a1:Cate=statusGroup[status] as Cate;
+                                if (a1) {
+                                    model.contest.addItem(a1);
+                                }
+                            }
+                        } else {
+                            for (var type:String in typeGroup) {
+                                var a2:Cate=typeGroup[type] as Cate;
+                                if (a2) {
+                                    model.contest.addItem(a2);
+                                }
                             }
                         }
-                    } else {
-                        for (var type:String in typeGroup) {
-                            var cate2:Cate=new Cate();
-                            cate2.label=type;
-                            cate2.contests=typeGroup[type] as ArrayCollection;
-
-                            // sort contests within individual group by name.
-                            sortByName(cate2.contests);
-
-                            model.contest.addItem(cate2);
-
-                        }
+                        group.dataProvider=model.contest;
                     }
-                    group.dataProvider=model.contest;
+                    
+                    invalidateDisplayList();
+                    
+                    //trace(">>>>>>>> changeGroup end: " + new Date());
                 }
-                invalidateDisplayList();
-            }
-
-            /**
-             * Shows the date picker.
-             */
-            private function showDatePicker():void {
-                model.showDateChooser=!model.showDateChooser;
-            }
-
+                
+                /**
+                 * Shows the date picker.
+                 */
+                private function showDatePicker():void {
+                    model.showDateChooser=!model.showDateChooser;
+                }
+                
                 /**
                  * Over-rides this component's updateDisplayList
                  *
@@ -181,11 +160,8 @@
                  * @param unscaledHeight unscaled height of the component.
                  */
                 override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-                    trace(">>>>>>>> updateDisplayList start: " + new Date());
-                    //trace("---------------------> Contests -----------> : " + unscaledWidth + "," + unscaledHeight);
-                    //trace("---------------------> this -----------> : " + this.width + "," + this.height);
+                    //trace(">>>>>>>> updateDisplayList start: " + new Date());
                     if (cnvs) {
-                        //trace("---------------------> cnvs -----------> : " + cnvs.width + "," + cnvs.height);
                         if (cnvs.width > 0 && (minPossibleWidth <= 0 || cnvs.width < minPossibleWidth)) {
                             minPossibleWidth=cnvs.width;
                             cnvs.minWidth=minPossibleWidth;
@@ -203,32 +179,39 @@
                     if (initialized) {
                         stack.height=this.height - topBar.height - bottomBar.height;
                     }
+                    //trace(">>>>>>>> updateDisplayList end: " + new Date());
                 }
-
-            /**
-             * Handler for click on add contest button.
-             */
-            private function addContest():void {
-                var dict:Dictionary=new Dictionary();
-                var tabDict:Dictionary=new Dictionary();
-                tabDict["columnNum"]=1;
-
-                model.projectWidget.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
-            }
-
-            /**
-             * Sorts the given collection by name
-             *
-             * @param coll specified array collection to be sorted.
-             */
-            private function sortByName(coll:ArrayCollection):void {
-                var sort:Sort=new Sort();
-                sort.compareFunction=compareName;
-                coll.sort=sort;
-
-                coll.refresh();
-            }
-
+                
+                /**
+                 * Handler for click on add contest button.
+                 */
+                private function addContest():void {
+                    //trace(">>>>>>>> addContest start: " + new Date());
+                    var dict:Dictionary=new Dictionary();
+                    var tabDict:Dictionary=new Dictionary();
+                    tabDict["columnNum"]=1;
+                    
+                    model.projectWidget.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
+                    
+                    //trace(">>>>>>>> addContest end: " + new Date());
+                }
+                
+                /**
+                 * Sorts the given collection by name
+                 *
+                 * @param coll specified array collection to be sorted.
+                 */
+                private function sortByName(coll:ArrayCollection):void {
+                    //trace(">>>>>>>> sortByName start: " + new Date());
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareName;
+                    coll.sort=sort;
+                    
+                    coll.refresh();
+                    
+                    //trace(">>>>>>>> sortByName end: " + new Date());
+                }
+                
                 /**
                  * Callback function on sorting by name.
                  */
@@ -261,6 +244,7 @@
                     <mx:ComboBox id="groupCB"
                                  width="85"
                                  styleName="normalStyle"
+                                 change="changeGroup()"
                                  enabled="{!model.showDateChooser}">
                         <mx:dataProvider>
                             <mx:String>No Group</mx:String>
@@ -291,7 +275,6 @@
                                     height="100%"
                                     width="100%"
                                     horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
-                                    dataProvider="{proj.contests}"
                                     isTabMode="false"/>
                 <flex:DragAbleAccordion width="100%"
                                         horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
@@ -310,7 +293,10 @@
                            buttonMode="true"
                            click="addContest()"/>
             </mx:HBox>
-            <mx:Spacer width="100%" height="20" visible="{!model.isMax}" includeInLayout="{!model.isMax}"/>
+            <mx:Spacer width="100%"
+                       height="20"
+                       visible="{!model.isMax}"
+                       includeInLayout="{!model.isMax}"/>
         </mx:VBox>
         <flex:DateChooser right="5"
                           top="30"
@@ -318,7 +304,7 @@
                           visible="{model.showDateChooser}"/>
     </mx:Canvas>
     <mx:Binding source="model.currentProj"
-                    destination="setContest"/>
-        <mx:Binding source="model.changeProj"
-                    destination="update"/>
+                destination="setContest"/>
+    <mx:Binding source="model.changeProj"
+                destination="update"/>
 </mx:VBox>

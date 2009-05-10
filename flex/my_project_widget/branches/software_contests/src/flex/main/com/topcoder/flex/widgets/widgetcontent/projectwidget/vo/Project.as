@@ -5,7 +5,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
 
     import mx.collections.ArrayCollection;
-
+    
+    import flash.utils.Dictionary;
+    
     /**
      * <p>
      * This is the DTO class to hold project data.
@@ -74,7 +76,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * End date filter that is applied on this project contests.
          */
         public var endDateFilter:String="";
-
+        
+        public var statusGroup:Dictionary=new Dictionary();
+        
+        public var typeGroup:Dictionary=new Dictionary();
+        
         /**
          * A simple constructor that sets the member variables from the parameters.
          *
@@ -93,6 +99,28 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
             this.owner=_owner;
             this.contests=_contests;
             contests.filterFunction=Model.filterDate;
+            
+            for each (var c:Contest in this.contests) {
+                var a1:Cate=this.statusGroup[c.status] as Cate;
+                if (!a1) {
+                    a1=new Cate();
+                    a1.label=c.status;
+                    a1.contests=new ArrayCollection();
+                    this.statusGroup[c.status]=a1;
+                }
+                
+                a1.contests.addItem(c);
+                
+                var a2:Cate=this.typeGroup[c.type] as Cate;
+                if (!a2) {
+                    a2=new Cate();
+                    a2.label=c.type;
+                    a2.contests=new ArrayCollection();
+                    this.typeGroup[c.type]=a2;
+                }
+                
+                a2.contests.addItem(c);
+            }
         }
     }
 }
