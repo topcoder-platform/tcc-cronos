@@ -124,8 +124,11 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * are automatically transformed to SOAP element. </p>
  *
  * <p>
- * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission
- * and permission type are added.
+ * Changes for Complex Submission Viewer Assembly - Part 2 --
+ *      - Added new resource based parameter 'submissionSiteBaseUrl'
+ *      - Added new resource based parameter 'submissionSiteFilePath'
+ *      - From mock implementations of 'artifactCount' and 'submissionUrl' in SubmissionData 
+ *        moved to actual implementations. 
  * </p>
  * 
  * <p>
@@ -577,6 +580,22 @@ public class StudioServiceBean implements StudioService {
 
     @Resource(name = "forumBeanProviderUrl")
     private String forumBeanProviderUrl;
+    
+    /**
+     * Represents the submission site base url.
+     * 
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    @Resource(name = "submissionSiteBaseUrl")
+    private String submissionSiteBaseUrl;
+    
+    /**
+     * Represents the submission site file path.
+     * 
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    @Resource(name = "submissionSiteFilePath")
+    private String submissionSiteFilePath;
 
 
     /**
@@ -2204,6 +2223,22 @@ public class StudioServiceBean implements StudioService {
             if (s.getUserRank() != null) {
                 sd.setUserRank(s.getUserRank());
             }
+
+            //
+            // @since Complex Submission Viewer Assembly - Part 2
+            //
+            sd.setArtifactCount(s.getArtifactCount());
+
+            //
+            // only for HTML Prototype, Flash, Flex and Widget application submission url need to be constructed.
+            // @since Complex Submission Viewer Assembly - Part 2
+            //
+            String contestType = s.getContest().getContestType().getDescription();
+            if (contestType != null
+                    && (contestType.equalsIgnoreCase("Prototype") || contestType.equalsIgnoreCase("FLASH")
+                            || contestType.equalsIgnoreCase("Widget") || contestType.equalsIgnoreCase("Flex"))) {
+                sd.setSubmissionUrl(submissionSiteBaseUrl + "/" + sd.getSubmissionId() + "/" + submissionSiteFilePath);
+            } 
             
             result.add(sd);
         }

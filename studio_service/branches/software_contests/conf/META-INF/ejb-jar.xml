@@ -262,6 +262,25 @@ Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>application/octet</env-entry-value>
             </env-entry>
+            <!-- 
+		Added build.properties based submission site base url parameter.
+			@since Complex Submission Viewer Assembly - Part 2             	
+		-->
+		<env-entry>
+		    <env-entry-name>submissionSiteBaseUrl</env-entry-name>
+		    <env-entry-type>java.lang.String</env-entry-type>
+		    <env-entry-value>@build-rep.studio_service.submissionSiteBaseUrl@</env-entry-value>
+		</env-entry>
+
+		<!-- 
+		Added site file path.
+		@since Complex Submission Viewer Assembly - Part 2             	
+		-->
+		<env-entry>
+		    <env-entry-name>submissionSiteFilePath</env-entry-name>
+		    <env-entry-type>java.lang.String</env-entry-type>
+		    <env-entry-value>@build-rep.studio_service.submissionSiteFilePath@</env-entry-value>
+            </env-entry>
 
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>

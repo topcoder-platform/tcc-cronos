@@ -24,8 +24,13 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
         "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
-        "removed", "feedbackText", "feedbackThumb", "userRank" })
+        "removed", "feedbackText", "feedbackThumb", "submissionUrl", "artifactCount", "userRank"  })
 public class SubmissionData implements Serializable {
+    /**
+     * Default serial version id.
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Represents submission rank.
      */
@@ -146,6 +151,25 @@ public class SubmissionData implements Serializable {
      * @since Flex Submission Viewer Overhaul Assembly.
      */
     private int feedbackThumb;
+
+    /**
+     * <p>
+     * Represents the url of submission.
+     * </p>
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    private String submissionUrl;
+    
+    /**
+     * <p>
+     * Represents the number of artifacts in submission.
+     * For example in multi image submission this value would be number of images.
+     * </p>
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    private int artifactCount;
 
     /**
      * <p>
@@ -392,6 +416,58 @@ public class SubmissionData implements Serializable {
      */
     public void setFeedbackThumb(int feedbackThumb) {
         this.feedbackThumb = feedbackThumb;
+    }
+
+    /**
+     * <p>
+     * Gets the submission url.
+     * </p>
+     * 
+     * @return the submissionURL
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public String getSubmissionUrl() {
+        return this.submissionUrl;
+    }
+
+    /**
+     * <p>
+     * sets the submission url.
+     * </p>
+     * 
+     * @param submissionURL the submissionURL to set
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public void setSubmissionUrl(String submissionUrl) {
+        this.submissionUrl = submissionUrl;
+    }
+
+    /**
+     * <p>
+     * Gets the artifact count.
+     * </p>
+     * 
+     * @return the artifactCount
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public int getArtifactCount() {
+        return this.artifactCount;
+    }
+
+    /**
+     * <p>
+     * Sets the artifact count.
+     * </p>
+     * 
+     * @param artifactCount the artifactCount to set
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public void setArtifactCount(int artifactCount) {
+        this.artifactCount = artifactCount;
     }
 
     /**
