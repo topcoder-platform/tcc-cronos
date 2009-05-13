@@ -71,10 +71,21 @@
             /**
              * Overrides the data method, so that caller can the properties on it.
              *
+             * <p>
+             * Changed for Cockpit Submission Viewer Widget Enhancement Part 1:
+             *    Data is set for the given submission-id rather than submission-index.
+             * </p>
+             *
              * @param value value from the caller.
              */
             override public function set data(value:Object):void {
-                super.data=model.submissionList.getItemAt(value as int);
+                if ((value as int) != -1) {
+                    super.data=null;
+                    super.data=model.getSubmission((value as int));
+                    trace("--------------- MultiImageView:: Setting data to:" + super.data.id);
+                } else {
+                    trace("--------------- MultiImageView:: Setting data to null.");
+                }
             }
 
             /**
@@ -105,9 +116,34 @@
                     thumbnail.height=thumbnail.content.height;
                 }
             }
+
+            /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens the submission in air viewer or external browser window.
+             * Submission gets opened in air viewer if submission has submissionUrl
+             * else it gets opened in external browser window.
+             *
+             * @param event mouse event.
+             *
+             * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                if (data.hasOwnProperty("submissionUrl") && data.submissionUrl != "") {
+                    this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
+                } else {
+                    // Open the link in a new window.
+                    navigateToURL(new URLRequest(model.selectedImage), '_blank');
+                }
+            }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.activeSubmissionIndex"
+
+    <!--
+         Binding should happen with activeSubmissionId
+         since: Cockpit Submission Viewer Widget Enhancement Part 1
+    -->
+    <mx:Binding source="model.activeSubmissionId"
                 destination="data"/>
     <mx:DefaultTileListEffect id="myDTLE"
                               fadeInDuration="10"
@@ -126,6 +162,8 @@
                             height="100%"
                             source="{model.selectedImage}"
                             complete="adjustImage()"
+						  doubleClick="handleDoubleClick(event)"
+                          doubleClickEnabled="true"
                             autoLoad="true"/>
             </mx:Box>
             <mx:HBox width="100%"

@@ -1366,7 +1366,7 @@
                     var item:Object=contestCombo.selectedItem;
                     if (model.selectedIndex == 0) {
                         content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    } else if (model.selectedIndex == 1) {
+                    } else if (model.selectedIndex == 1 || model.selectedIndex == 2 || model.selectedIndex == 3) {
                         content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
                     }
                 } else if (content) {
@@ -1607,7 +1607,7 @@
                         <mx:Button styleName="button3"
                                    click="model.reorderByUpDown()"/>
                         <mx:Button label="#"
-                                   styleName="button3"
+                                   styleName="button"
                                    click="model.reorderById()"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Checkout"

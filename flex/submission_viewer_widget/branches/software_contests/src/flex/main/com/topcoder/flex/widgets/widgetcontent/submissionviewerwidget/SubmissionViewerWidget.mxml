@@ -101,6 +101,13 @@
                 SubmissionsCheckoutPage(submissionCheckoutScreen).subViewer=this;
                 SubmissionsDownloadPage(submissionsDownloadScreen).subViewer=this;
 
+                //
+                // Setting self reference to the Air Viewer
+                // 
+                // since Cockpit Submission Viewer Widget Enhancement Part 1.
+                //
+                airViewer.subViewer=this;
+
                 // defines filter, maximize and restore callback functions
                 this.contestFilterFn=doFilter;
 

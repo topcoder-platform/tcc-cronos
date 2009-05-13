@@ -109,7 +109,27 @@
             private function openSubmissionInNewWindow():void {
 				// Open the link in a new window.
 				navigateToURL(new URLRequest("http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + data.id), '_blank');
-			}             
+			}   
+
+			 /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens the submission in air viewer or external browser window.
+             * Submission gets opened in air viewer if submission has submissionUrl
+             * else it gets opened in external browser window.
+             *
+             * @param event mouse event.
+             * 
+             * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                if (data.hasOwnProperty("submissionUrl") && data.submissionUrl != "") {
+                    this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
+                } else {
+                    // Open the link in a new window.
+                    navigateToURL(new URLRequest(data.fullsizepreview), '_blank');
+                }
+            }          
         ]]>
     </mx:Script>
     <mx:Binding source="model.activeSubmissionId"
@@ -128,7 +148,7 @@
                             source="{data.fullsizepreview}"
                             complete="adjustImage()"
                             doubleClickEnabled="true"
-                            doubleClick="{openSubmissionInNewWindow()}"
+                            doubleClick="handleDoubleClick(event)"
                             />  <!-- BUGR-1664 -->
             </mx:Box>
         </mx:Box>

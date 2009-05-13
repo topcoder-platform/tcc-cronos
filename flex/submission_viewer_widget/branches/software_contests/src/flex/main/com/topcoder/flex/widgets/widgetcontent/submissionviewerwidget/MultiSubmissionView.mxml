@@ -71,14 +71,25 @@
             /**
              * Overrides the data method, so that caller can the properties on it.
              *
+             * <p>
+             * Changed for Cockpit Submission Viewer Widget Enhancement Part 1:
+             *    Now multi images are read from fullsizepreviewList.
+             * </p>
+             *
              * @param value value from the caller.
              */
             override public function set data(value:Object):void {
-                super.data=model.submissionList.getItemAt(value as int);
-                if (main && data.hasOwnProperty("multi") && data.multi == true && data.hasOwnProperty("fullsizepreview")) {
-                    var obj:Object=data.fullsizepreview;
-                    if (obj.hasOwnProperty("item")) {
-                        var items:ArrayCollection=data.fullsizepreview.item as ArrayCollection;
+                trace("--------------- MultiSubmissionView:: value: " + value);
+
+                if ((value as int) != -1) {
+                    super.data=null;
+                    trace("--------------- MultiSubmissionView:: active submission id: " + model.activeSubmissionId);
+                    super.data=model.getSubmission((value as int));
+
+                    trace("--------------- MultiSubmissionView:: Setting data to:" + super.data);
+
+                    if (main && data.hasOwnProperty("multi") && data.multi == true && data.hasOwnProperty("fullsizepreviewList")) {
+                        var items:ArrayCollection=data.fullsizepreviewList as ArrayCollection;
                         if (items) {
                             main.removeAllChildren();
                             for each (var item:String in items) {
@@ -96,6 +107,8 @@
                             }
                         }
                     }
+                } else {
+                    trace("--------------- MultiSubmissionView:: Setting data to null.");
                 }
             }
             
@@ -119,18 +132,23 @@
                 if (item) {
                     model.selectedIndex=3;
                     model.selectedImage=item;
-                    model.imageList=data.fullsizepreview.item;
+                    model.imageList=data.fullsizepreviewList as ArrayCollection;
                 }
             }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.activeSubmissionIndex"
+
+    <!--
+         Binding should happen with activeSubmissionId
+         since: Cockpit Submission Viewer Widget Enhancement Part 1
+    -->
+    <mx:Binding source="model.activeSubmissionId"
                 destination="data"/>
     <mx:Spacer height="50%"/>
     <tc:CustomBox width="100%"
                   verticalAlign="middle"
                   id="main"
-                  creationComplete="data = data">
+                  creationComplete="data = model.activeSubmissionId">
     </tc:CustomBox>
     <mx:HBox width="100%"
              horizontalAlign="center">

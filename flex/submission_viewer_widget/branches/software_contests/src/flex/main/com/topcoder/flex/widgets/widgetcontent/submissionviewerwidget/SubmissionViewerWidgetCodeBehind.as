@@ -270,6 +270,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Instance of data model class for thumbnail gallery view.
          */
         public var model:ThumbnailGalleryDataModel;
+		/**
+        * Reference to air viewer - this class provides method to launch a url in external air viewer.
+        * 
+        * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+        */
+        private var _airViewer:AirViewer;
 
         /**
          * SubmissionViewerWidgetCodeBehind constructor.
@@ -322,6 +328,13 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             this._moneyFormatter.useNegativeSign=true;
             
             this.model=new ThumbnailGalleryDataModel();
+			
+			//
+            // Create new instance of AirViewer.
+            //
+            // since Cockpit Submission Viewer Widget Enhancement Part 1.
+            //
+            this._airViewer=new AirViewer();
         }
 
         /**
@@ -925,6 +938,28 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
+         * Simple getter for the air viewer.
+         *
+         * @return the air viewer.
+         * 
+         * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+         */
+        public function get airViewer():AirViewer {
+            return this._airViewer;
+        }
+
+        /**
+         * Simple setter for the air viewer.
+         *
+         * @param viewer the air viewer.
+         * 
+         * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+         */
+        public function set airViewer(viewer:AirViewer):void {
+            this._airViewer=viewer;
+        }
+
+        /**
          * Set a specific attribute value for the given key.
          *
          * @param attributeKey the key for the attribute. Cannot be null.
@@ -1239,8 +1274,64 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     sub.upDown=thumbVal > 0 ? "up" : (thumbVal < 0 ? "down" : "");
                     
                     sub.feedback=submissions[i].feedbackText;
+                    
+                    //
+                    // Represents the artifact count of submissions.
+                    // In multi image submission artifact count > 1
+                    //
+                    // since: Cockpit Submission Viewer Widget Enhancement Part 1.
+                    //
+                    sub.artifactCount=submissions[i].artifactCount;
+                    
+                    //
+                    // A submission having more than 1 artifact is considered as multi image submission.
+                    //
+                    // since: Cockpit Submission Viewer Widget Enhancement Part 1.
+                    //
+                    if (sub.artifactCount > 1) {
+                        sub.multi=true;
+                    } else {
+                        sub.multi=false;
+                    }
+                    
+                    //
+                    // Represents the submission url of submission.
+                    // A submission which is openable in Air Viewer would have valid submissionUrl.
+                    //
+                    // since: Cockpit Submission Viewer Widget Enhancement Part 1.
+                    //
+                    if (submissions[i].hasOwnProperty("submissionUrl") && submissions[i].submissionUrl && submissions[i].submissionUrl != "") {
+                        sub.submissionUrl=submissions[i].submissionUrl;
+                    }
+                    
                     sub.thumbnail=this._imageAddress + sub.id + "&sbt=thumb";
+                    
+                    // even in case of multi image submission, this is valid
+                    // and this would point to first (0th index) image of the submission.
                     sub.fullsizepreview=this._imageAddress + sub.id + "&sbt=full";
+                    
+                    trace("For submission: " + sub.id + ", Image full path: " + sub.fullsizepreview);
+                    
+                    //
+                    // In case of multi image submission we also populate 'fullsizepreviewList'
+                    //
+                    // since: Cockpit Submission Viewer Widget Enhancement Part 1.
+                    //
+                    if (sub.multi) {
+                        sub.fullsizepreviewList=new ArrayCollection();
+                        for (var k:int=1; k<sub.artifactCount; k++) {
+                            //
+                            // - Updated the submission image index parameter name that matches the url on production - 'sfi'
+                            // - Image index on production is 1 based.
+                            // since: Complex Submission Viewer Assembly - Part 2
+                            //
+                            // image index is 1 based.
+                            var path:String=this._imageAddress + sub.id + "&sbt=full" + "&sfi=" + k;
+                            sub.fullsizepreviewList.addItem(path);
+                            trace("For submission: " + sub.id + ", Image full path: " + path);
+                        }
+                    }
+                    
                     sub.submissionContent=submissions[i].submissionContent;
 
                     // BUGR-1169: separate db price from app price.
@@ -1759,11 +1850,17 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     var submissionArray:ArrayCollection=new ArrayCollection();
                     var sub:Object;
 
+                    //
+                    // Setting test data.
+                    // 
+                    // since Cockpit Submission Viewer Widget Enhancement Part 1.
+                    // 
                     sub=new Object();
                     sub.submissionId=24053;
                     sub.placement=2;
                     sub.feedbackText="It's feedback text for 24053. Thumb is up.";
                     sub.feedbackThumb=1;
+                    sub.artifactCount=4;
                     submissionArray.addItem(sub);
 
                     sub=new Object();
@@ -1771,6 +1868,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     sub.feedbackText="It's feedback text for 24054. Thumb is down.";
                     sub.feedbackThumb=-1;
                     sub.placement=1;
+                    sub.submissionUrl="http://www.google.com";
                     submissionArray.addItem(sub);
 
                     sub=new Object();
