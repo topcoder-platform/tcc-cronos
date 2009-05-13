@@ -75,6 +75,8 @@ import com.topcoder.service.studio.PrizeData;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -2941,6 +2943,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			throw new ContestServiceException("Fail to get project asset.", e);
 		}    	
     }
+
+
+	
+	/**
+	 * TCCC-1329
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws PersistenceException
+	{
+		return studioService.getSimpleProjectPermissionDataForUser(createdUser);
+	}
+
+
+	/**
+	 * TCCC-1329
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<User> searchUser(String key) throws PersistenceException
+    {
+		return studioService.searchUser(key);
+	}
 
 
 }

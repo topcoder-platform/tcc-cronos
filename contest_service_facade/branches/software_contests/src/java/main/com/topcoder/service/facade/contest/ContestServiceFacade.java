@@ -38,6 +38,8 @@ import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 
 import javax.activation.DataHandler;
 import javax.jws.WebService;
@@ -1209,4 +1211,11 @@ public interface ContestServiceFacade {
      * @since TCCC-1219
      */
     public boolean updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
+
+
+	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws PersistenceException;
+
+
+    public List<User> searchUser(String key) throws PersistenceException;
 }
