@@ -37,7 +37,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
         /**
          * The name of the widget.
          */
-        private var _name:String="Submission Viewer";
+        private var _name:String="Project Admin";
 
         /**
          * The reference to IWidgetFramework.
