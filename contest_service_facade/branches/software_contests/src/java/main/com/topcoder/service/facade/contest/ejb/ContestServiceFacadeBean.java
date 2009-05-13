@@ -138,13 +138,6 @@ import java.util.Collections;
 @RolesAllowed({"Cockpit User" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@WebContext
-(
-  contextRoot="/contestfacade",
-  urlPattern="/ContestServiceFacadeBean",
-  transportGuarantee="CONFIDENTIAL",
-  secureWSDLAccess=false
-)
 public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, ContestServiceFacadeRemote {
 
     /**
