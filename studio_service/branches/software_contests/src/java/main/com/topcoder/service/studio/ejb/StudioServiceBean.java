@@ -78,12 +78,14 @@ import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.permission.Permission;
 import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.ContestResult;
@@ -4718,5 +4720,44 @@ public class StudioServiceBean implements StudioService {
         }
 
         return false;
+    }
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws PersistenceException{
+    	logEnter("SimpleProjectPermissionDataForUser");
+
+        try {
+            List<SimpleProjectPermissionData> contests;
+            
+            contests = contestManager.getSimpleProjectPermissionDataForUser(createdUser);
+            if(contests==null) contests= new ArrayList<SimpleProjectPermissionData>();
+
+            logExit("SimpleProjectPermissionDataForUser", contests.size());
+            return contests;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getSimpleProjectPermission.", e);
+        }
+
+        return null;
+    }
+    
+    public List<User> searchUser(String key) throws PersistenceException
+    {
+    	logEnter("searchUser("+key+")");
+
+        try {
+            List<User> users;
+            
+            users = contestManager.searchUser(key);
+            if(users==null) users= new ArrayList<User>();
+
+            logExit("searchUser("+key+")");
+            return users;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while search user.", e);
+        }
+
+        return null;
     }
 }

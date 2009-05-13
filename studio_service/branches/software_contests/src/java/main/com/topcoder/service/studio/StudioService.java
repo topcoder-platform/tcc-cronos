@@ -18,7 +18,9 @@ import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.permission.Permission;
 import com.topcoder.service.studio.permission.PermissionType;
@@ -976,4 +978,11 @@ public interface StudioService {
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
     public boolean deletePermission(long permissionid) throws PersistenceException;
+    
+   
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws PersistenceException;
+
+
+    public List<User> searchUser(String key) throws PersistenceException;
 }
