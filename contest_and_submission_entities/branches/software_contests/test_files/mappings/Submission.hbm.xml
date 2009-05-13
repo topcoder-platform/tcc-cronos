@@ -90,6 +90,10 @@
         
         <!-- TCCC-1219 -->
         <property name="userRank" column="user_rank" />
+        
+        <!-- @since Complex Submission Viewer Assembly - Part 2 -->
+        <property name="artifactCount" formula="(select count(*) from submission as s join submission_image as si on s.submission_id = si.submission_id and s.submission_id = submission_id join image as i on si.image_id = i.image_id and i.image_type_id = 30 group by s.submission_id)"
+			not-null="true" />
 
 	</class>
 </hibernate-mapping>

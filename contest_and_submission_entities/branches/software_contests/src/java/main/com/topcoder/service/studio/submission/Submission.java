@@ -20,10 +20,15 @@ import com.topcoder.service.studio.contest.MimeType;
  * </p>
  *
  * <p>
+ * Changes for Complex Submission Viewer Assembly - Part 2 -
+ *      added artifactCount member variable to represent the number of artifacts in submission.
+ * </p>
+ *
+ * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
+ * @author tushak, cyberjag, TCSDEVELOPER
  * @version 1.0
  */
 public class Submission implements Serializable {
@@ -151,6 +156,15 @@ public class Submission implements Serializable {
      * @since TCCC-1219
      */
     private Integer userRank;
+
+    /**
+     * Represents the number of artifacts (images) for this submission.
+     * For single image submission this value would always be 1.
+     * While for multi image submission it would be > 1.
+     * 
+     * @since Cockpit Submission Viewer Assembly - Part 2
+     */
+    private Integer artifactCount;
 
     /**
      * Default constructor.
@@ -635,5 +649,29 @@ public class Submission implements Serializable {
     @Override
     public int hashCode() {
         return Helper.calculateHash(submissionId);
+    }
+
+    /**
+     * <p>
+     * Gets the artifact count for this submission.
+     * </p>
+     * 
+     * @return the artifactCount
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public Integer getArtifactCount() {
+        return this.artifactCount;
+    }
+
+    /**
+     * <p>
+     * Sets the artifact count for this submission.
+     * </p>
+     * 
+     * @param artifactCount the artifactCount to set
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public void setArtifactCount(Integer artifactCount) {
+        this.artifactCount = artifactCount;
     }
 }
