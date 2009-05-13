@@ -71,6 +71,15 @@ public class SimpleContestData {
     private List<Double> prizes;
 
     /**
+     * <p>
+     * Represents the type of content.
+     * </p>
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    private String contestType;
+
+    /**
      * Default constructor.
      */
     public SimpleContestData() {
@@ -236,5 +245,31 @@ public class SimpleContestData {
      */
     public void setPrizes(List<Double> prizes) {
         this.prizes = prizes;
+    }
+
+    /**
+     * <p>
+     * Gets the contest type.
+     * </p>
+     * 
+     * @return the contestType
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public String getContestType() {
+        return this.contestType;
+    }
+
+    /**
+     * <p>
+     * Sets the contest type.
+     * </p>
+     * 
+     * @param contestType the contestType to set
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public void setContestType(String contestType) {
+        this.contestType = contestType;
     }
 }

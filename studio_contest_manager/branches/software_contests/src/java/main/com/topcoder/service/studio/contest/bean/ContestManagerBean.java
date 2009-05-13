@@ -3117,6 +3117,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * If pid == -1, then no filter is applied on tc_project_id
      * </p>
      * 
+     * <p>
+     * Changes for Cockpit Submission Viewer Widget Enhancement Part 1: Included contest_type_desc field in native query
+     * and setting the same in SimpleContestData.
+     * </p>
+     * 
      * @param createdUser
      *            create_user_id for which to get list of <code>SimpleContestData</code>. If this value is -1, then all
      *            users are considered.
@@ -3135,33 +3140,36 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-            String qstr = "select contest_id,  "
-                    + " name,  "
-                    + " contest_detailed_status_id,  "
-                    + " (select contest_detailed_status_desc  "
-                    + " from contest_detailed_status_lu ds "
-                    + " where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, "
-                    + " NVL((select amount "
-                    + " from prize as p "
-                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-                    + " and p.place = 1),0) as prize_1, "
-                    + " NVL((select amount "
-                    + " from prize as p "
-                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-                    + " and p.place = 2),0) as prize_2, "
-                    + " NVL((select amount "
-                    + " from prize as p "
-                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-                    + " and p.place = 3),0) as prize_3, "
-                    + " NVL((select amount "
-                    + " from prize as p "
-                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-                    + " and p.place = 4),0) as prize_4, "
-                    + " NVL((select amount "
-                    + " from prize as p "
-                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-                    + " and p.place = 5),0) as prize_5 " + " from contest c  "
-                    + " where not c.tc_direct_project_id is null  " + " and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
+            String qstr = "select contest_id,   "
+                + "name,   "
+                + "contest_detailed_status_id,   "
+                + "(select contest_detailed_status_desc   "
+                + "from contest_detailed_status_lu ds  "
+                + "where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname,  "
+                + "NVL((select amount  "
+                + "from prize as p  "
+                + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
+                + "and p.place = 1),0) as prize_1,  "
+                + "NVL((select amount  "
+                + "from prize as p  "
+                + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
+                + "and p.place = 2),0) as prize_2,  "
+                + "NVL((select amount  "
+                + "from prize as p  "
+                + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
+                + "and p.place = 3),0) as prize_3,  "
+                + "NVL((select amount  "
+                + "from prize as p  "
+                + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
+                + "and p.place = 4),0) as prize_4,  "
+                + "NVL((select amount  "
+                + "from prize as p  "
+                + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
+                + "and p.place = 5),0) as prize_5, "
+                + "(select contest_type_desc from contest_type_lu as ctlu where ctlu.contest_type_id = c.contest_type_id)  as contest_type_desc "
+                + "from contest c   "
+                + "where not c.tc_direct_project_id is null   and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
+
             if (createdUser != -1) {
                 qstr = qstr + " and c.create_user_id = " + createdUser;
             }
@@ -3202,6 +3210,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     if (os[j + 4] != null)
                         prizeList.set(j, Double.parseDouble(os[j + 4].toString()));
                 }
+                
+                // since: Cockpit Submission Viewer Widget Enhancement Part 1
+                if (os[9] != null)
+                    c.setContestType(os[9].toString());
 
                 result.add(c);
             }
