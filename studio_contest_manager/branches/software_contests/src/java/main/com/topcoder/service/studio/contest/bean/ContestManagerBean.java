@@ -66,7 +66,9 @@ import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
 import com.topcoder.service.studio.permission.Permission;
 import com.topcoder.service.studio.permission.PermissionType;
@@ -4651,15 +4653,147 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             em.remove(permission);
 
-            return true;
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e, "The EntityManager is closed.");
-        } catch (TransactionRequiredException e) {
-            throw wrapContestManagementException(e, "This method is required to run in transaction.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e, "There are errors while deleting the entity.");
-        } finally {
-            logExit("removePermission(permissionid)");
-        }
-    }
+			return true;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (TransactionRequiredException e) {
+			throw wrapContestManagementException(e,
+					"This method is required to run in transaction.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while deleting the entity.");
+		} finally {
+			logExit("removePermission(permissionid)");
+		}
+	}
+
+	@PermitAll
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws ContestManagementException {
+		try {
+			logEnter("getSimpleProjectPermissionDataForUser()");
+
+			EntityManager em = getEntityManager();
+
+			String qstr = "select contest_id, name, "
+					+ " tc_direct_project_id, "
+					+ " ( select name from tc_direct_project p where c.tc_direct_project_id = p.project_id) as pname, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.tc_direct_project_id  and user_id= "
+					+ createdUser
+					+ " and permission_type_id=1 ) as pread, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.tc_direct_project_id  and user_id=  "
+					+ createdUser
+					+ " and permission_type_id=2 ) as pwrite, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.tc_direct_project_id  and user_id=  "
+					+ createdUser
+					+ " and permission_type_id=3 ) as pfull, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.contest_id  and user_id=  "
+					+ createdUser
+					+ " and permission_type_id=4 ) as cread, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.contest_id  and user_id=  "
+					+ createdUser
+					+ " and permission_type_id=5 ) as cwrite, "
+					+ " (select count( *)  from user_permission_grant as upg  where project_id=c.contest_id  and user_id=  "
+					+ createdUser
+					+ " and permission_type_id=6 ) as cfull "
+					+ " from contest c  "
+					+ " where not c.tc_direct_project_id is null     and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<SimpleProjectPermissionData> result = new ArrayList<SimpleProjectPermissionData>();
+
+			for (int i = 0; i < list.size(); i++) {
+
+				SimpleProjectPermissionData c = new SimpleProjectPermissionData();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					c.setContestId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					c.setCname(os[1].toString());
+				if (os[2] != null)
+					c.setProjectId(Long.parseLong(os[2].toString()));
+				if (os[3] != null)
+					c.setPname(os[3].toString());
+
+				if(os[4]!=null){
+					c.setPread(Integer.parseInt(os[4].toString()));
+				}
+				if(os[5]!=null){
+					c.setPwrite(Integer.parseInt(os[5].toString()));
+				}
+				if(os[6]!=null){
+					c.setPfull(Integer.parseInt(os[6].toString()));
+				}
+				int cp=0;
+				if(os[7]!=null){
+					c.setCread(Integer.parseInt(os[7].toString()));
+					cp++;
+				}
+				if(os[8]!=null){
+					c.setCwrite(Integer.parseInt(os[8].toString()));
+					cp++;
+				}
+				if(os[9]!=null){
+					c.setCfull(Integer.parseInt(os[9].toString()));
+					cp++;
+				}
+				if(cp>0){
+					result.add(c);
+				}
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("getSimpleProjectPermissionDataForUser()");
+		}
+	}
+	public List<User> searchUser(String key) throws ContestManagementException 
+	{
+		try {
+			logEnter("searchUser("+key+")");
+
+			EntityManager em = getEntityManager();
+
+			String qstr = "select user_id, handle from user where handle like '%"+key+"%'";
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<User> result = new ArrayList<User>();
+
+			for (int i = 0; i < list.size(); i++) {
+
+				User u=new User();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					u.setUserId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					u.setHandle(os[1].toString());
+				
+				result.add(u);
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("searchUser()");
+		}
+	}
 }

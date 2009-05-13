@@ -1359,4 +1359,9 @@ public interface ContestManager {
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
     public boolean deletePermission(long permissionid) throws ContestManagementException;
+    
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+			long createdUser) throws ContestManagementException ;
+    
+    public List<User> searchUser(String key) throws ContestManagementException ;
 }
