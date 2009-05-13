@@ -85,7 +85,8 @@
                 }
                 parentWidget.model.keyWords=searchKey.text;
                 parentWidget.model.highLight=false;
-                parentWidget.model.doSearch();
+                //parentWidget.model.doSearch();
+                parentWidget.searchUser(searchKey.text);
 
             }
         ]]>
