@@ -129,6 +129,7 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  *      - Added new resource based parameter 'submissionSiteFilePath'
  *      - From mock implementations of 'artifactCount' and 'submissionUrl' in SubmissionData 
  *        moved to actual implementations. 
+ *        Several new methods related to the permission and permission type are added.
  * </p>
  * 
  * <p>
@@ -2227,7 +2228,9 @@ public class StudioServiceBean implements StudioService {
             //
             // @since Complex Submission Viewer Assembly - Part 2
             //
-            sd.setArtifactCount(s.getArtifactCount());
+			if (s.getArtifactCount() != null) {
+				sd.setArtifactCount(s.getArtifactCount());
+			}
 
             //
             // only for HTML Prototype, Flash, Flex and Widget application submission url need to be constructed.
@@ -2576,9 +2579,10 @@ public class StudioServiceBean implements StudioService {
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             long userId = p.getUserId();
 
-            if (contest.getCreatedUser() != userId) {
+			// TODO we update the logic for permission, and comment out here for now
+            /*if (contest.getCreatedUser() != userId) {
                 throw new UserNotAuthorizedException("Access denied for the contest " + id, userId);
-            }
+            } */
 
             return contest;
 
@@ -2807,7 +2811,7 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<SimpleContestData> contests;
-            
+            /*
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getContestDataOnly();
@@ -2815,8 +2819,10 @@ public class StudioServiceBean implements StudioService {
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 logInfo("User " + p.getUserId() + " is non-admin.");
                 contests = contestManager.getContestDataOnlyForUser(p.getUserId());
-            }
+            }*/
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             
+            contests = contestManager.getContestDataOnlyForUser(p.getUserId());
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
             logExit("getContestDataOnly", contests.size());
@@ -2848,8 +2854,10 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<SimpleContestData> contests;
+
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             
-            contests = contestManager.getContestDataOnly(pid);
+            contests = contestManager.getContestDataOnly(p.getUserId(), pid);
             
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
