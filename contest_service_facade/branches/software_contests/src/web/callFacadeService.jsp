@@ -65,6 +65,7 @@
 <%@ page import="com.topcoder.service.payment.PaymentResult" %>
 <%@ page import="com.topcoder.project.service.ContestSaleData" %>
 <%@ page import="com.topcoder.service.facade.contest.CommonProjectContestData" %>
+<%@ page import="com.topcoder.service.studio.contest.SimpleContestData" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%!
 SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throws ContestServiceException {
@@ -944,6 +945,17 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
         		StringBuilder b = new StringBuilder();
         		callResult = "Retrieved.<br/>";
         	}
+			 else if ("getContestDataOnly".equals(operation)) {
+        	List<SimpleContestData> ret = port.getContestDataOnly();
+        	
+        	StringBuilder b = new StringBuilder();
+            for (SimpleContestData data : ret) {
+                b.append("    contest: ID = ").append(data.getContestId()).append(", permission = ").append(data.getPermission()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved permission types:<br/>" + b.toString();
+        }
+
 
     } catch (Throwable e) {
         error = e;

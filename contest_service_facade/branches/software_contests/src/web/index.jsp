@@ -39,6 +39,9 @@
 <form action="callFacadeService.jsp" method="POST" name="Form" id="Form">
     <input type="hidden" name="operation" value="">
 <ul>
+	<li>ContestService.getContestDataOnly() &nbsp; &nbsp;
+        <input type="button" value="Execute" onclick="callService('getContestDataOnly');"/></li><br/>
+   
     <li>ContestService.getSimpleProjectContestData() &nbsp; &nbsp;<br/>
         Project ID: <input type="text" name="apid3" value=""> &nbsp; &nbsp;<br/>
         <input type="button" value="Execute" onclick="callService('getSimpleProjectContestDatapid');"/></li><br/>
