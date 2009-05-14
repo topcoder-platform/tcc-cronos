@@ -3076,11 +3076,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException {
+    public List<SimpleContestData> getContestDataOnly(long craetedUser, long pid) throws ContestManagementException {
         try {
             logEnter("getContestDataOnly(pid)");
 
-            return getContestDataOnlyInternal(-1, pid);
+            return getContestDataOnlyInternal(craetedUser, pid);
 
         } finally {
             logExit("getContestDataOnly(pid)");
@@ -3166,17 +3166,22 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 + "from prize as p  "
                 + "where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id)  "
                 + "and p.place = 5),0) as prize_5, "
-                + "(select contest_type_desc from contest_type_lu as ctlu where ctlu.contest_type_id = c.contest_type_id)  as contest_type_desc "
+                + "(select contest_type_desc from contest_type_lu as ctlu where ctlu.contest_type_id = c.contest_type_id)  as contest_type_desc, "
+				+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where (project_id=c.contest_id or project_id = c.tc_direct_project_id)  "
+                    + " and user_id= "+createdUser
+                    + " ),0)) as permission "
                 + "from contest c   "
                 + "where not c.tc_direct_project_id is null   and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
 
-            if (createdUser != -1) {
+            /* if (createdUser != -1) {
                 qstr = qstr + " and c.create_user_id = " + createdUser;
-            }
+            } */
 
             if (pid != -1) {
                 qstr = qstr + " and c.tc_direct_project_id = " + pid;
             }
+
 
             Query query = em.createNativeQuery(qstr);
 
@@ -3215,7 +3220,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[9] != null)
                     c.setContestType(os[9].toString());
 
-                result.add(c);
+
+				if(os[10]!=null){
+                	c.setPermission(os[10].toString());
+                	result.add(c);
+                }
+
+                //result.add(c);
             }
 
             return result;

@@ -80,6 +80,15 @@ public class SimpleContestData {
     private String contestType;
 
     /**
+     * <p>
+     * Represents the user permission.
+     * </p>
+     * 
+     * @since BUGR-1797 .
+     */
+    private String permission;
+
+    /**
      * Default constructor.
      */
     public SimpleContestData() {
@@ -272,4 +281,30 @@ public class SimpleContestData {
     public void setContestType(String contestType) {
         this.contestType = contestType;
     }
+
+    /**
+     * <p>
+     * Sets the permission.
+     * </p>
+     * 
+     * @param permission user permission to set
+     * 
+     * @since BUGR-1797.
+     */
+	public String getPermission() {
+		return permission;
+	}
+
+	/**
+     * <p>
+     * Sets the permission.
+     * </p>
+     * 
+     * @return permission user permission to set
+     * 
+     * @since BUGR-1797.
+     */
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
 }

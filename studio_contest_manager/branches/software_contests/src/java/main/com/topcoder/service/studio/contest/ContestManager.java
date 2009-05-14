@@ -818,7 +818,7 @@ public interface ContestManager {
      * 
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException;
+    public List<SimpleContestData> getContestDataOnly(long createdUser, long pid) throws ContestManagementException;
 
 	/**
      * <p>
