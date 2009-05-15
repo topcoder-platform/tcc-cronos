@@ -122,6 +122,7 @@
                 
                 if (getSimpleProjectPermissionDataForUser) {
                     trace("Sending userid: " + this.userid + ", " + this.contestServiceFacadeWS.wsdl);
+                    showLoadingProgress();
                     getSimpleProjectPermissionDataForUser.send(this.userid);
                 }
             }
@@ -451,6 +452,7 @@
             
             private function handleSimpleProjectPermissionDataForUser(event:ResultEvent):void
             {
+            	hideLoadingProgress();
             	if(event && event.result && event.result is ArrayCollection)
             	{
             		if(_pcIds==null){
@@ -472,11 +474,13 @@
             				var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
                 
                 			if (getSimpleProjectPermissionDataForUser) {
+                				showLoadingProgress();
                 				getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
                             }
             			}
             			else
             			{
+            				//this.searchResultViewer.dataProvider=true;
             				model.userList.filterFunction=model.doFilter;
                             model.doSearch();
                         }
@@ -489,15 +493,24 @@
             	var searchUserOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("searchUser");
                 
                 if (searchUserOp) {
+                	showLoadingProgress();
                     searchUserOp.send(key);
                 }
             }
             
             private function handleSearchUser(event:ResultEvent):void
             {
-            	if(event && event.result && event.result is ArrayCollection)
+            	hideLoadingProgress();
+            	if(event && event.result )
             	{
-            		var _userIds:ArrayCollection=event.result as ArrayCollection;
+            		var _userIds:ArrayCollection=new ArrayCollection();
+            		if(event.result is ArrayCollection){
+            		     _userIds=event.result as ArrayCollection;
+            		}
+            		else
+            		{
+            			_userIds.addItem(event.result);
+            		}
             		model.userList=new ArrayCollection();
                     for each (var u:Object in _userIds) {
                         var user:User=new User();
@@ -510,16 +523,15 @@
                     	var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
                         _modelUserIdx=0;
                 		if (getSimpleProjectPermissionDataForUser) {
+                			showLoadingProgress();
                 			getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(0).id);
                         }
                     }
-                    else
-                    {
-                        model.userList.filterFunction=model.doFilter;
-                        model.doSearch();
-                    }
-                    //model.userList.filterFunction=model.doFilter;
-                    //model.doSearch();
+                    
+            	}
+            	else
+            	{
+                    model.doSearch();
             	}
             }
             

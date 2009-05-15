@@ -30,6 +30,8 @@
              */
             [Bindable]
             private var _parentWidget:ProjectAdminWidget=null;
+            
+            private var containers:VBox=null;
 
             /**
              * Gets the reference of parent project admin widget.
@@ -54,7 +56,8 @@
              * Handler for initializing this component.
              */
             private function init():void {
-            	/*
+            	this.addChild(tab);
+            	   	 /*
                 if (parentWidget.model.userList) {
                     container.removeAllChildren();
                     for each (var item:User in parentWidget.model.userList) {
@@ -73,7 +76,12 @@
              */
             public function set dataProvider(nouse:Boolean):void {
                 if ( parentWidget.model.userList) {
-                	//containers=new VBox();
+                	if(containers==null){
+                	   containers=new VBox();
+                	   containers.percentWidth=100;
+                	   containers.percentHeight=100;
+                	   this.addChild(containers);
+                	}
                    containers.removeAllChildren();
                    for(var i:int=0;i<parentWidget.model.userList.length;i++){
                    	   var item:User= parentWidget.model.userList.getItemAt(i) as User;
@@ -110,9 +118,11 @@
                        styleName="linkBtn"
                        click="parentWidget.model.highLight = !parentWidget.model.highLight"/>
     </mx:HBox>
+    <!--
     <mx:VBox id="containers"
              width="100%"
              height="100%"
              paddingRight="5"
              verticalGap="3"/>
+             -->
 </mx:VBox>

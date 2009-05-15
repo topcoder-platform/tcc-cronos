@@ -161,7 +161,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.model {
          * Does the search.
          */
         public function doSearch():void {
-            if (userList) {
+            if (userList && userList.length>0) {
                 userList.refresh();
                 refresh=!refresh;
                 selectedIndex=1;
