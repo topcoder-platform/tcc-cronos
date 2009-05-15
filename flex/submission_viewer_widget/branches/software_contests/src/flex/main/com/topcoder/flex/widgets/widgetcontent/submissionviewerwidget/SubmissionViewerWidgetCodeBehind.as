@@ -1165,9 +1165,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     var cinfo:Object=new Object();
                     var contestInfo:ObjectProxy=new ObjectProxy(cinfo);
                     var item:*=contests[i];
+
                     contestInfo.name=item.name;
                     contestInfo.id=item.contestId;
                     contestInfo.statusId=item.statusId;
+                    contestInfo.permission=item.permission;
 
                     // add prizes to contest info.
                     contestInfo.prizes=new ArrayCollection();

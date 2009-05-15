@@ -162,8 +162,8 @@
                             height="100%"
                             source="{model.selectedImage}"
                             complete="adjustImage()"
-						  doubleClick="handleDoubleClick(event)"
-                          doubleClickEnabled="true"
+			    doubleClick="handleDoubleClick(event)"
+                            doubleClickEnabled="true"
                             autoLoad="true"/>
             </mx:Box>
             <mx:HBox width="100%"
@@ -174,12 +174,14 @@
                            styleName="{model.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
                            click="updateUpDown(true)"
                            selected="{data.upDown == 'up'}"
-                           toolTip="Feel Good"/>
+                           toolTip="Feel Good"
+			   enabled="{!model.isPermissionReadOnly()}"/>
                 <mx:Button id="downData"
                            styleName="{model.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
                            click="updateUpDown(false)"
                            selected="{data.upDown == 'down'}"
-                           toolTip="Not Interested"/>
+                           toolTip="Not Interested"
+			   enabled="{!model.isPermissionReadOnly()}"/>
             </mx:HBox>
         </mx:VBox>
         <mx:Button id="btn"

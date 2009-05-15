@@ -98,6 +98,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public var rankLabel:Array=["1st Place", "2nd Place", "3rd Place", "4th Place", "5th Place"];
 
+
+	private static const CONTEST_READ_PERMISSION:String = "contest_read";
+
+	private static const PROJECT_READ_PERMISSION:String = "project_read";
+
         /**
          * Gets the singleton instance of this model class.
          *
@@ -618,5 +623,16 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             
             return null;
         }
+
+	/**
+	 * check if contest is read only
+	 */
+	public function isPermissionReadOnly():Boolean {
+		
+		 var contestInfo:Object=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId];
+		 return (contestInfo.permission == CONTEST_READ_PERMISSION || contestInfo.permission == PROJECT_READ_PERMISSION);
+
+	    }
+
     }
 }
