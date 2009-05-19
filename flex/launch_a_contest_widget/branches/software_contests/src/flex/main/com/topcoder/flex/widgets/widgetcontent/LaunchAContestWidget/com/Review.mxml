@@ -421,7 +421,7 @@
                     </mx:VBox>
                     <mx:VBox>
                         <mx:HBox>
-                            <mx:Label text="20% Admin Fee:"
+                            <mx:Label text="Contest Fee:"
                                       fontWeight="bold"/>
                             <mx:Text id="adFee"
                                      text="$***"

@@ -277,7 +277,7 @@
                 }
 
 				if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) < 0) { // BUGR-1737
-					Helper.showAlertMessage("Admin Fee not set");
+					Helper.showAlertMessage("Contest Fee not set");
                     ns_reviewCost.setFocus();
                     return false;
 				}
@@ -341,7 +341,7 @@
                 }
                 
              	if(mainWidget.isAdmin && isNaN(Number(adminf.text)) || Number(adminf.text) < 0) { // BUGR-1737
-					Helper.showAlertMessage("Admin Fee not set");
+					Helper.showAlertMessage("Contest Fee not set");
                     adminf.setFocus();
                     return false;
 				}
@@ -780,7 +780,7 @@
                     <mx:VBox verticalGap="7"
                              styleName="smallBlackText">
                         <mx:HBox horizontalGap="0">
-                            <mx:Label text="&#8226; Admin Fee"
+                            <mx:Label text="&#8226; Contest Fee"
                                       width="90"
                                       fontSize="11"/>
                             <mx:Label text=":$"/>
