@@ -599,7 +599,15 @@
                 if (purchase) {
                     purchase.visible=true;
                     purchase.includeInLayout=true;
-                    purchase.enabled=true;
+
+		    if (!model.isPermissionReadOnly)
+		    {
+			purchase.enabled=true;
+		    }
+		    else
+		    {
+			purchase.enabled=false;
+		    }
                 }
             }
 
