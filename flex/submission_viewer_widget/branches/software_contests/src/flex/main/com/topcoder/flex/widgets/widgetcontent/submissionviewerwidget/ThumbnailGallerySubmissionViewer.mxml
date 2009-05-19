@@ -600,7 +600,7 @@
                     purchase.visible=true;
                     purchase.includeInLayout=true;
 
-		    if (!model.isPermissionReadOnly)
+		    if (!model.isPermissionReadOnly())
 		    {
 			purchase.enabled=true;
 		    }
@@ -1686,7 +1686,7 @@
                                  styleName="CheckBoxStyle"
                                  label="Purchase this submission."
                                  click="handlePurchaseClick()"
-				 enabled="{!isPermissionReadOnly()}"/>
+				 enabled="{!model.isPermissionReadOnly()}"/>
                 </mx:HBox>
                 <mx:HBox horizontalGap="45"
                          id="purchaseTotalContainer">
