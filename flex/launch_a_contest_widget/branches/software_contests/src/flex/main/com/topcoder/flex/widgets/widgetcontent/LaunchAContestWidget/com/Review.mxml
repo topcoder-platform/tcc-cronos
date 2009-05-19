@@ -370,7 +370,7 @@
                             <mx:Spacer width="112"/>
                             <mx:Button styleName="EditButton"
                                        buttonMode="true"
-                                       click="goToStep2()"/>
+                                       click="goToStep3()"/><!-- BUGR-1893 -->
                         </mx:HBox>
                     </mx:VBox>
                 </mx:HBox>
@@ -556,7 +556,7 @@
                 <mx:Spacer width="515"/>
                 <mx:Button styleName="EditButton"
                            buttonMode="true"
-                           click="goToStep3()"/>
+                           click="goToStep4()"/><!-- BUGR-1893 -->
             </mx:HBox>
         </mx:VBox>
 
