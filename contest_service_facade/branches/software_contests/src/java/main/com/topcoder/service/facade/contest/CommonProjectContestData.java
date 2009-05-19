@@ -97,6 +97,17 @@ public class CommonProjectContestData {
      * @since My Projects Overhaul Assembly.
      */
     private String createUser;
+
+
+	/**
+     * Represents the permission for contest.
+     */
+    private String cperm;
+    
+    /**
+     * Represents the permissionfor project.
+     */
+    private String pperm;
     
     /**
      * Returns the contestId.
@@ -255,4 +266,17 @@ public class CommonProjectContestData {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
+	public String getCperm() {
+		return cperm;
+	}
+	public void setCperm(String cperm) {
+		this.cperm = cperm;
+	}
+	public String getPperm() {
+		return pperm;
+	}
+	public void setPperm(String pperm) {
+		this.pperm = pperm;
+	}
 }
