@@ -47,7 +47,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 			            @FieldResult(name="forumId",           column="forum_id"),
 			            @FieldResult(name="description",           column="description"),
 			            @FieldResult(name="contestType",         column="contest_type_desc"),
-			            @FieldResult(name="createUser",         column="create_user")
+			            @FieldResult(name="createUser",         column="create_user"),
+			            @FieldResult(name="cperm",           column="cperm"),
+			            @FieldResult(name="pperm",           column="pperm")
 			            }
 		)})
 @Entity
@@ -134,6 +136,17 @@ public class SimpleProjectContestData {
      * @since My Projects Overhaul Assembly.
      */
     private String createUser;
+
+
+	 /**
+     * Represents the permission for contest.
+     */
+    private String cperm;
+    
+    /**
+     * Represents the permissionfor project.
+     */
+    private String pperm;
 
 
     /**
@@ -443,4 +456,17 @@ public class SimpleProjectContestData {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
+	public String getCperm() {
+		return cperm;
+	}
+	public void setCperm(String cperm) {
+		this.cperm = cperm;
+	}
+	public String getPperm() {
+		return pperm;
+	}
+	public void setPperm(String pperm) {
+		this.pperm = pperm;
+	}
 }
