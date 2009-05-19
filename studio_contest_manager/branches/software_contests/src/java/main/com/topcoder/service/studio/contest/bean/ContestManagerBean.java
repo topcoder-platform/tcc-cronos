@@ -2867,7 +2867,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=c.contest_id  "
+					+ " ),0)) as cperm, "
+					
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=p.project_id  "
+					+ " ),0)) as pperm "
 
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -2880,7 +2887,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
 
             for (int i = 0; i < list.size(); i++) {
-            	result.add((SimpleProjectContestData) list.get(i));
+				SimpleProjectContestData data = (SimpleProjectContestData) list.get(i);
+				if (data != null && (data.getCperm() != null || data.getPperm() != null))
+				{
+					result.add(data);
+				}
+            	
 
             }
             return result;
@@ -2936,7 +2948,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=c.contest_id  "
+					+ " ),0)) as cperm, "
+					
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=p.project_id  "
+					+ " ),0)) as pperm "
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -2952,8 +2971,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			for (int i = 0; i < list.size(); i++) {
 
-
-            	result.add((SimpleProjectContestData) list.get(i));
+				SimpleProjectContestData data = (SimpleProjectContestData) list.get(i);
+				if (data != null && (data.getCperm() != null || data.getPperm() != null))
+				{
+					result.add(data);
+				}
+            	
+            	//result.add((SimpleProjectContestData) list.get(i));
 
 			}
 			return result;
@@ -3009,7 +3033,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=c.contest_id  "
+					+ " ),0)) as cperm, "
+					
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where project_id=p.project_id  "
+					+ " ),0)) as pperm "
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3025,7 +3056,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-            	result.add((SimpleProjectContestData) list.get(i));
+            	//result.add((SimpleProjectContestData) list.get(i));
+				SimpleProjectContestData data = (SimpleProjectContestData) list.get(i);
+				if (data != null && (data.getCperm() != null || data.getPperm() != null))
+				{
+					result.add(data);
+				}
+            	
 
             }
             return result;
