@@ -140,6 +140,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         protected var _isSoftwareAdmin:Boolean;
             
         /**
+        * Current user id.
+        */
+        private var _userid:Number=Application.application.parameters.userid;
+            
+        /**
         * @since BUGR-1737
         */     
         public function get isSoftwareAdmin():Boolean {
@@ -873,6 +878,24 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 			return 0;
 		}	
 
+        }
+        
+         /**
+         * Gets the user id.
+         *
+         * @return the current user id.
+         */
+        public function get userid():Number {
+            return this._userid;
+        }
+
+        /**
+         * Sets the user id.
+         *
+         * @param name the user id.
+         */
+        public function set userid(id:Number):void {
+            this._userid=id;
         }
     }
 }

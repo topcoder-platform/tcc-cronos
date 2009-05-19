@@ -345,6 +345,17 @@
                     mainWidget.tcDirectProjectId=projectData.projectId.toString();
 					mainWidget.tcDirectProjectName = projectData.name;
                     createContestAndContinue(projectData.projectId);
+                    
+                    var addPermission:AbstractOperation=mainWidget._csws.getOperation("addPermission");
+            		if (addPermission) {
+            			var perm:Object=new Object();
+            			perm.userId=mainWidget.userid;
+            			perm.projectId=mainWidget.tcDirectProjectId;
+           				perm.permissionType=new Object();
+           				perm.permissionType.name="project_full";
+                		perm.permissionType.permissionTypeId=3;
+            			addPermission.send(perm);
+            		}
                 }
             }
 	      ]]>
