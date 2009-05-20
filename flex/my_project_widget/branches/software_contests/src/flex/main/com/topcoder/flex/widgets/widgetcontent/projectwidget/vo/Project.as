@@ -81,6 +81,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
         
         public var typeGroup:Dictionary=new Dictionary();
         
+        public var permission:String;
+        
         /**
          * A simple constructor that sets the member variables from the parameters.
          *

@@ -27,6 +27,7 @@
             import mx.formatters.DateFormatter;
             import mx.collections.ArrayCollection;
             import flash.utils.Dictionary;
+            import com.topcoder.flex.Helper;
 
             /**
              * Row number of this contest row.
@@ -284,12 +285,18 @@
              * Handler for click on edit contest button.
              */
             private function editContest():void {
-
+            	if(contest.permission=="contest_full" || contest.permission=="contest_write"){
                 var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
                 var props:Dictionary=new Dictionary();
                 props["contestid"]=contest.id;
+                props["projectid"]=contest.projId;
+                props["projectName"]=contest.projName;
                 widget.setAttributes(props);
                 model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+             }else
+             {
+             	Helper.showAlertMessage("You have no permission to edit this contest");
+             }
             }
 
             /**

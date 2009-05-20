@@ -90,6 +90,18 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
         public var typeGroup:String;
 
         /**
+        * It's project name for the contest.
+        */
+        public var projName:String;
+        
+        /**
+        * It's project id for the contest.
+        */
+        public var projId:String;
+        
+        public var permission:String;
+
+        /**
          * A simple constructor which assigns parameters to member variables.
          *
          * @param _id id of the contest.
@@ -103,7 +115,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * @param _sts status type of the contest.
          * @param _type type of the contest.
          */
-        public function Contest(_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String) {
+        public function Contest(_pName:String, _pid:String,_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String) {
+            this.projName=_pName;
+            this.projId=_pid;
             this.id=_id;
             this.name=_name;
 
