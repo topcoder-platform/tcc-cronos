@@ -4778,15 +4778,27 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setProjectId(Long.parseLong(os[2].toString()));
 				if (os[3] != null)
 					c.setPname(os[3].toString());
-
+				
+				if(createdUser<0){
+					// admin
+					c.setPfull(1);
+					c.setCfull(1);
+					result.add(c);
+					continue;
+				}
+				
+				int pp=0;
 				if(os[4]!=null){
 					c.setPread(Integer.parseInt(os[4].toString()));
+					pp++;
 				}
 				if(os[5]!=null){
 					c.setPwrite(Integer.parseInt(os[5].toString()));
+					pp++;
 				}
 				if(os[6]!=null){
 					c.setPfull(Integer.parseInt(os[6].toString()));
+					pp++;
 				}
 				int cp=0;
 				if(os[7]!=null){
@@ -4801,7 +4813,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setCfull(Integer.parseInt(os[9].toString()));
 					cp++;
 				}
-				if(cp>0){
+				if(pp>0 || cp>0){
 					result.add(c);
 				}
 
