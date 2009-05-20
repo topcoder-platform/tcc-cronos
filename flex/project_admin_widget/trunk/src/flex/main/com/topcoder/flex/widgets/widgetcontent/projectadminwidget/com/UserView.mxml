@@ -272,6 +272,7 @@
                 var a:Alert=Alert.show(message, title, Alert.OK | Alert.CANCEL, parentSprite, closeHandler);
                 a.height=height;
                 PopUpManager.centerPopUp(a);
+                
                 if (!Application.application || !Application.application.getWindowCenterX || !Application.application.getWindowCenterY) {
                     return;
                 }

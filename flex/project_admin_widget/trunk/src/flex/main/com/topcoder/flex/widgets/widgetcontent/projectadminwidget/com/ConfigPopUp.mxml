@@ -130,7 +130,9 @@
                         }
                     }
 
-                } else if (this._data is Contest) {
+                } 
+                /*
+                else if (this._data is Contest) {
                     // if this is contest then check parent project permissions.
                     // show error message that contest permission can not be more than project permission.
                     var parentProjectAccess:String=this._data.project.access;
@@ -139,7 +141,7 @@
                         return;
                     }
                 }
-
+                */
                 this._data.access=_mode;
                 parentWidget.model.refreshTree=!parentWidget.model.refreshTree;
                 this.visible=false;

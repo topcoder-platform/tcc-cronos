@@ -246,171 +246,14 @@
              */
             private var _pcIds:Dictionary=null;
             
+            
+            private var _currentProjList:ArrayCollection=null;
+            
+           
             private var _modelUserIdx:int=0;
 
-            /**
-             * Webservice result event handler for getPermissionsByUser
-             */
-             /*
-            private function handlePermissionsByUser(e:ResultEvent):void {
-                if (e && e.result && e.result is ArrayCollection) {
-                    var permList:ArrayCollection=e.result as ArrayCollection;
-                    for each (var perm:Object in permList) {
-                        // if current user has full permission on project,
-                        // then select the project.
-                        if (perm.permissionType && perm.permissionType.name == "project_full") {
-                            var projectId:Number=perm.projectId as Number;
-                            trace("------------------ ProjectAdmin:: user has full permission for : " + projectId);
-                            _myProjectIds[perm.projectId]=perm.projectName;
-                            _tobeRetrievedPermissionCount++;
-                            _tobeRetrievedContestByProjectCount++;
-
-                            // load all permissions for the project. 
-                            loadContestsByProject(projectId);
-                            loadPermissionsByProjectOrContest(projectId);
-                        }
-                    }
-                }
-            }*/
-
-            /**
-             * Loads the permission by give project / contest id from facade.
-             *
-             * @param id id of the project / contest.
-             */
-            private function loadPermissionsByProjectOrContest(id:Number):void {
-                var header:SOAPHeader=getHeader(username, password);
-                this.contestServiceFacadeWS.clearHeaders();
-                this.contestServiceFacadeWS.addHeader(header);
-                var getPermissionsByProject:AbstractOperation=this.contestServiceFacadeWS.getOperation("getPermissionsByProject");
-                if (getPermissionsByProject) {
-                    //trace("------------------ ProjectAdmin:: loading permission for project/contest: " + id);
-                    getPermissionsByProject.send(id);
-                }
-            }
 
 
-            /**
-             * Webservice result event handler for getPermissionsByProject
-             *
-             * @param e webservice result event.
-             */
-            private function handlePermissionsByProject(e:ResultEvent):void {
-                _tobeRetrievedPermissionCount--;
-
-                if (e && e.result && e.result is ArrayCollection) {
-                    var permList:ArrayCollection=e.result as ArrayCollection;
-                    for each (var perm:Object in permList) {
-                        // store permission by project id.
-                        if (!_projectIdsToPermission[perm.projectId]) {
-                            _projectIdsToPermission[perm.projectId]=new Dictionary();
-                        }
-
-                        //trace("------------------ ProjectAdmin:: adding permission for project: " + perm.projectId + ", user: " + perm.userId + ", access: " + perm.permissionType.name);
-                        _projectIdsToPermission[perm.projectId][perm.userId]=perm;
-
-                        // store user ids.
-                        _userIds[perm.userId]=perm.userHandle;
-                    }
-                }
-
-                //trace("------------------ COUNT _tobeRetrievedPermissionCount: " + _tobeRetrievedPermissionCount + ", _tobeRetrievedContestByProjectCount: " + _tobeRetrievedContestByProjectCount);
-                if (_tobeRetrievedPermissionCount <= 0 && _tobeRetrievedContestByProjectCount <= 0) {
-                    trace("------------------ COUNT IS ZERO");
-                    // populate model data structure.
-                    var userList:ArrayCollection=new ArrayCollection();
-                    for (var u:Object in _userIds) {
-                        var user:User=new User();
-                        user.id=u as Number;
-                        user.name=_userIds[u];
-
-                        userList.addItem(user);
-
-                        //trace("------------------ ProjectAdmin:: created user: " + user.id);
-
-                        for (var pid:Object in _myProjectIds) {
-                            var proj:Project=new Project();
-                            proj.id=pid as Number;
-                            proj.name=_myProjectIds[pid];
-                            if (_projectIdsToPermission[pid]) {
-                                if (_projectIdsToPermission[pid][user.id]) {
-                                    var permission:Object=_projectIdsToPermission[pid][user.id];
-                                    proj.persistedPermissionId=permission.permissionId;
-                                    var permissionType:String=permission.permissionType.name;
-                                    if (permissionType == "project_full") {
-                                        proj.access="Full";
-                                        proj.persistedAccess="Full";
-                                    } else if (permissionType == "project_write") {
-                                        proj.access="Write";
-                                        proj.persistedAccess="Write";
-                                    } else if (permissionType == "project_read") {
-                                        proj.access="Read";
-                                        proj.persistedAccess="Read";
-                                    } else {
-                                        proj.access="";
-                                        proj.persistedAccess="";
-                                    }
-                                }
-                            } else {
-                                proj.access="";
-                                proj.persistedAccess="";
-                                proj.persistedPermissionId=0;
-                            }
-
-                            //trace("------------------ ProjectAdmin:: created project: " + proj.id + " and access: " + proj.access);
-                            proj.user=user;
-                            user.projects.addItem(proj);
-
-                            for each (var c:Object in _projectIdsToContests[pid]) {
-                                var contest:Contest=new Contest();
-                                contest.id=c.contestId;
-                                contest.name=c.name;
-
-                                if (_projectIdsToPermission[contest.id]) {
-                                    if (_projectIdsToPermission[contest.id][user.id]) {
-                                        var cpermission:Object=_projectIdsToPermission[contest.id][user.id];
-                                        contest.persistedPermissionId=cpermission.permissionId;
-                                        var cpermissionType:String=cpermission.permissionType.name;
-                                        if (cpermissionType == "contest_full") {
-                                            contest.access="Full";
-                                            contest.persistedAccess="Full";
-                                        } else if (cpermissionType == "contest_write") {
-                                            contest.access="Write";
-                                            contest.persistedAccess="Write";
-                                        } else if (cpermissionType == "contest_read") {
-                                            contest.access="Read";
-                                            contest.persistedAccess="Read";
-                                        } else {
-                                            contest.access="";
-                                            contest.persistedAccess="";
-                                        }
-                                    }
-                                } else {
-                                    contest.access="";
-                                    contest.persistedAccess="";
-                                    contest.persistedPermissionId=0;
-                                }
-
-                                //trace("------------------ ProjectAdmin:: created contest: " + contest.id + " for project: " + proj.id + " and access: " + contest.access);
-                                contest.project=proj;
-                                proj.contests.addItem(contest);
-                            }
-                            
-                            sortByName(proj.contests);
-                        }
-                        
-                        sortByName(user.projects);
-                    }
-
-                    // set the model's user list.
-                    //trace("------------------ ProjectAdmin:: setting the model's user list");
-                    sortByName(userList);
-                    model.userList=new ArrayCollection(userList.source.slice(0, 10));
-                    sortByName(model.userList);
-                    model.userList.filterFunction=model.doFilter;
-                }
-            }
-            
             /**
              * Sorts the given collection by name
              *
@@ -433,7 +276,7 @@
                 
                 return ObjectUtil.stringCompare(a.name, b.name, true);
             }
-
+            
             /**
              * Callback function on sorting by projectId.
              */
@@ -442,6 +285,16 @@
                 return ObjectUtil.compare(a.projectId, b.projectId);
             }
             
+            public function loadDataforUser(idx:int):void
+            {
+            	_modelUserIdx=idx;
+            	var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
+                
+                 if (getSimpleProjectPermissionDataForUser) {
+            		showLoadingProgress();
+                	getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
+                 }
+            }
             
             private function handleSimpleProjectPermissionDataForUser(event:ResultEvent):void
             {
@@ -449,7 +302,8 @@
             	if(event && event.result && event.result is ArrayCollection)
             	{
             		if(_pcIds==null){
-            			getProjectList(event.result as ArrayCollection);
+            			
+            			_currentProjList=getProjectList(event.result as ArrayCollection);
             		}
             		else
             		{
@@ -461,23 +315,11 @@
             			}
             			u.projects=projects;
             			
-            			this._modelUserIdx++;
-            			if(this._modelUserIdx<this.model.userList.length)
-            			{
-            				var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
-                
-                			if (getSimpleProjectPermissionDataForUser) {
-                				showLoadingProgress();
-                				getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
-                            }
-            			}
-            			else
-            			{
-            				//this.searchResultViewer.dataProvider=true;
-            				model.userList.filterFunction=model.doFilter;
-                            model.doSearch();
-                        }
-            		}
+            			//model.userList.filterFunction=model.doFilter;
+                        model.currentUser=model.userList.getItemAt(_modelUserIdx) as User;
+                        model.refresh=!model.refresh;
+                        model.selectedIndex=2;
+                    }
             	}
             }
             
@@ -505,21 +347,38 @@
             			_userIds.addItem(event.result);
             		}
             		model.userList=new ArrayCollection();
-                    for each (var u:Object in _userIds) {
+                    //for each (var u:Object in _userIds) {
+                    for(var i:int=0;i<_userIds.length;i++){
+                    	var u:Object=_userIds.getItemAt(i);
                         var user:User=new User();
                         user.id=u.userId;
                         user.name=u.handle;
-
+                        user.projLen=this._currentProjList.length;
+                        /*
+                        var permissions:ArrayCollection=new ArrayCollection();
+                        for(var j:int=i;j<_userIds.length;j++){
+                        	var uj:Object=_userIds.getItemAt(j);
+                        	if(uj.userId!=user.id)break;
+                        	permissions.addItem(uj.permission);
+                        }
+                        var projects:ArrayCollection=getProjectList(permissions);
+            			for each(var p:Project in projects)
+            			{
+            				p.user=user;
+            			}
+            			user.projects=projects;
+            			
+            			
+                        i=j;
+*/
                         model.userList.addItem(user);
                     }
+                    /*
                     if(model.userList.length>0){
-                    	var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
-                        _modelUserIdx=0;
-                		if (getSimpleProjectPermissionDataForUser) {
-                			showLoadingProgress();
-                			getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(0).id);
-                        }
-                    }
+                    	
+            			model.userList.filterFunction=model.doFilter;
+                        model.doSearch();
+                    }*/
                     
             	}
             	else
@@ -620,24 +479,7 @@
                 </mx:channels>
             </mx:ChannelSet>
         </mx:channelSet>
-                   <!--
-        <mx:operation name="getPermissionsByUser"
-                      resultFormat="object"
-                      result="handlePermissionsByUser(event)"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('getPermissionsByUser: ' + event.fault.faultString);">
-        </mx:operation>
-        -->
-
-        <mx:operation name="getPermissionsByProject"
-                      resultFormat="object"
-                      result="handlePermissionsByProject(event)"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('getPermissionsByProject: ' + event.fault.faultString);">
-        </mx:operation>
-
-        <mx:operation name="getSimpleContestDataByPID"
-                      resultFormat="object"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('getSimpleContestDataByPID: ' + event.fault.faultString);">
-        </mx:operation>
+    
 
         <mx:operation name="addPermission"
                       resultFormat="object"

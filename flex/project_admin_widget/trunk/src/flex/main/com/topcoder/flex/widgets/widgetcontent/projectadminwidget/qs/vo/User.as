@@ -2,8 +2,6 @@
  * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
-    import flash.utils.Dictionary;
-
     import mx.collections.ArrayCollection;
 
     /**
@@ -33,6 +31,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          * Collection of projects for the user.
          */
         public var projects:ArrayCollection=new ArrayCollection();
+        
+        
+        private var _projLen:int=0;
 
         /**
          * An empty default constructor.
@@ -47,7 +48,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          * @return project count.
          */
         public function get projLen():int {
-            return projects.length;
+            return _projLen;//projects.length;
+        }
+        public function set projLen(v:int):void{
+             _projLen=v;//projects.length;
         }
 
         /**

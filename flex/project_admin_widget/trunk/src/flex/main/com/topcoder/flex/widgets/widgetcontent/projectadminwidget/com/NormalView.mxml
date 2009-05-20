@@ -56,9 +56,12 @@
             private function handleClick(event:ListEvent):void {
 
                 var user:User=parentWidget.model.userList.getItemAt(event.rowIndex) as User;
+                parentWidget.loadDataforUser(event.rowIndex);
+                /*
                 parentWidget.model.currentUser=user;
                 parentWidget.model.refresh=!parentWidget.model.refresh;
                 parentWidget.model.selectedIndex=2;
+                */
 
             }
 
