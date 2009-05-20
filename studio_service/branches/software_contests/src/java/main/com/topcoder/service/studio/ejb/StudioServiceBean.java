@@ -4770,8 +4770,26 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<SimpleProjectPermissionData> contests;
-            
-            contests = contestManager.getSimpleProjectPermissionDataForUser(createdUser);
+            if(createdUser<0){
+            	// retrieve data for current user
+            	if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                    logInfo("User is admin.");
+                    contests = contestManager.getSimpleProjectPermissionDataForUser(-1);
+                    
+                } 
+            	else
+            	{
+            		UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    logInfo("User " + p.getUserId() + " is non-admin.");
+                    contests = contestManager.getSimpleProjectPermissionDataForUser(p.getUserId());
+            	}
+            	
+            }
+            else
+            {
+            	contests = contestManager.getSimpleProjectPermissionDataForUser(createdUser);
+                
+            }
             if(contests==null) contests= new ArrayList<SimpleProjectPermissionData>();
 
             logExit("SimpleProjectPermissionDataForUser", contests.size());
