@@ -3035,17 +3035,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where project_id=c.contest_id  "
+					+ " from user_permission_grant as upg  where project_id=c.contest_id  and user_id = " + createdUser
 					+ " ),0)) as cperm, "
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where project_id=p.project_id  "
+					+ " from user_permission_grant as upg  where project_id=p.project_id and user_id = " + createdUser 
 					+ " ),0)) as pperm "
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
-                    // here we check both user in project and contest
-                    + "  and p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null) "
+
                     + " order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
