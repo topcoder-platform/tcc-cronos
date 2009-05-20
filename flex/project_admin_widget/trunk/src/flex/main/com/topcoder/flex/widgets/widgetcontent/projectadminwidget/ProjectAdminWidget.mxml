@@ -110,20 +110,13 @@
                 var header:SOAPHeader=getHeader(username, password);
                 this.contestServiceFacadeWS.clearHeaders();
                 this.contestServiceFacadeWS.addHeader(header);
-                /*
-                var getPermissionsByUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getPermissionsByUser");
                 
-                if (getPermissionsByUser) {
-                    trace("Sending userid: " + this.userid + ", " + this.contestServiceFacadeWS.wsdl);
-                    getPermissionsByUser.send(this.userid);
-                }
-                */
                 var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
                 
                 if (getSimpleProjectPermissionDataForUser) {
                     trace("Sending userid: " + this.userid + ", " + this.contestServiceFacadeWS.wsdl);
                     showLoadingProgress();
-                    getSimpleProjectPermissionDataForUser.send(this.userid);
+                    getSimpleProjectPermissionDataForUser.send(-1);//this.userid);
                 }
             }
 
