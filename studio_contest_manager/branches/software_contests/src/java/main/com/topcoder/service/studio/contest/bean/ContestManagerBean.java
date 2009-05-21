@@ -4836,7 +4836,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select user_id, handle from user where handle like '%"+key+"%'";
+			String qstr = "select user_id, handle from user where UPPER(handle) like UPPER('%"+key+"%')";
 
 			Query query = em.createNativeQuery(qstr);
 

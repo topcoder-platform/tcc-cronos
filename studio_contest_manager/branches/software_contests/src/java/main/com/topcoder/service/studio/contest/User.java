@@ -13,7 +13,7 @@ public class User {
 	private Long userId;
 
 	/**
-	 * Represents the project name.
+	 * Represents the user handle.
 	 */
 	private String handle;
 
