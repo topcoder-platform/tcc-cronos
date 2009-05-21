@@ -78,12 +78,7 @@
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
 
 
-            //[Bindable]
-            //private var isAdmin:Boolean;
-            private var _tcDirectProjectId:String;
-
-	    [Bindable]
-	    private var _tcDirectProjectName:String; // BUGR-1757
+            
             
             //
             // Introduced to keep a map of step box to step number.
@@ -156,27 +151,11 @@
                return header;
              }
 
-            public function set tcDirectProjectId(projectID:String):void {
-                _tcDirectProjectId=projectID;
-            }
-
-		[Bindable]
-		public function get tcDirectProjectName():String {
-			return _tcDirectProjectName;
-		}
-		public function set tcDirectProjectName(projectName:String):void {
-			_tcDirectProjectName = projectName;
-		}
-
             public function closeWidget():void {
                 resetWidget();
                 container.startMinimize();
             }
 
-
-            public function get tcDirectProjectId():String {
-                return _tcDirectProjectId;
-            }
 
             private function initWidget():void {
                 this.currentState="ContestSelectionState";
@@ -269,6 +248,7 @@
                     this.competitionType="STUDIO";
                     competition.type=this.competitionType;
                     review.cstTypeStep1=this.competitionType;
+                    
                     startLaunchProcess();
                     next();
                 }

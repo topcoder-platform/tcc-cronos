@@ -176,6 +176,15 @@
                             break;
                         }
                     }
+                    
+                    // set the project id.
+                    for each (var p:Object in selectContests.dataProvider) {
+                        trace("------------ p.data: " + p.data + ", selected-proj-id: " + mainWidget.tcDirectProjectId);
+                        if (p.data == mainWidget.tcDirectProjectId) {
+                            // select the project.
+                            selectContests.selectedItem=p;
+                        }
+                    }
                 }
             }
 

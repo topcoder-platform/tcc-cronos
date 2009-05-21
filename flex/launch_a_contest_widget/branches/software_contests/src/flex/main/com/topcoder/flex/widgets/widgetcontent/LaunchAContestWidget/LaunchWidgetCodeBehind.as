@@ -13,7 +13,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetitionPrize;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
@@ -138,7 +137,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		 */ 
 		[Bindable]
         protected var _isSoftwareAdmin:Boolean;
-            
+        
+        [Bindable]
+        private var _tcDirectProjectId:String;
+
+        [Bindable]
+	    private var _tcDirectProjectName:String=""; // BUGR-1757
+        
         /**
         * Current user id.
         */
@@ -449,7 +454,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         		
         		trace("@@@@ To get contest for: " + contestid); 
         		_emptyStart = false;
-			resetWidget();
+			    resetWidget();
+			
+			    (container.contents as LaunchWidget).contestid=map["contestid"];
+			    (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
+			    (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
         		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
 			getContestOp.addEventListener("result", getContestHandler);
 			getContestOp.send(parseInt(contestid));
@@ -896,6 +905,24 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         public function set userid(id:Number):void {
             this._userid=id;
+        }
+        
+        public function set tcDirectProjectId(projectID:String):void {
+            _tcDirectProjectId=projectID;
+        }
+
+        [Bindable]
+		public function get tcDirectProjectName():String {
+			return _tcDirectProjectName;
+		}
+		
+		public function set tcDirectProjectName(projectName:String):void {
+			_tcDirectProjectName = projectName;
+		}
+		
+		[Bindable]
+		public function get tcDirectProjectId():String {
+            return _tcDirectProjectId;
         }
     }
 }
