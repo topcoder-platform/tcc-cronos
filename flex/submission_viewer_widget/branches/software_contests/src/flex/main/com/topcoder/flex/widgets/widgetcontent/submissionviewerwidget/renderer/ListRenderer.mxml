@@ -64,7 +64,7 @@
              * Handler for thumb up/down.
              */
             private function updateUpDown(up:Boolean):void {
-                if (!data.parentModel.isRankMode) {
+                if (!data.parentModel.isRankMode || data.parentModel.isPermissionReadOnly()) {
                     return;
                 }
                 

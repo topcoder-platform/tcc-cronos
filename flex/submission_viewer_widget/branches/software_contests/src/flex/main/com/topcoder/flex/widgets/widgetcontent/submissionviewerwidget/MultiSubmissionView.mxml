@@ -42,7 +42,7 @@
              * Handler for thumb up/down.
              */
             private function updateUpDown(up:Boolean):void {
-                if (!model.isRankMode) {
+                if (!model.isRankMode || model.isPermissionReadOnly()) {
                     return;
                 }
 

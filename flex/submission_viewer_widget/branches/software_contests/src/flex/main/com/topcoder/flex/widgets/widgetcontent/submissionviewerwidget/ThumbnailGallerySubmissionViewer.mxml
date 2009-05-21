@@ -361,16 +361,31 @@
                 if (checkout_top) {
                     checkout_top.visible=true;
                     checkout_top.label="Check out";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_top.enabled=true;
+                    } else {
+                        checkout_top.enabled=false;
+                    }
                 }
                 
                 if (checkout_bottom) {
                     checkout_bottom.visible=true;
                     checkout_bottom.label="Check out";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_bottom.enabled=true;
+                    } else {
+                        checkout_bottom.enabled=false;
+                    }
                 }
                 
                 if (checkout_detailed) {
                     checkout_detailed.visible=true;
                     checkout_detailed.label="Check out";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_detailed.enabled=true;
+                    } else {
+                        checkout_detailed.enabled=false;
+                    }
                 }
             }
 
@@ -381,16 +396,31 @@
                 if (checkout_top) {
                     checkout_top.visible=true;
                     checkout_top.label="Download";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_top.enabled=true;
+                    } else {
+                        checkout_top.enabled=false;
+                    }
                 }
                 
                 if (checkout_bottom) {
                     checkout_bottom.visible=true;
                     checkout_bottom.label="Download";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_bottom.enabled=true;
+                    } else {
+                        checkout_bottom.enabled=false;
+                    }
                 }
                 
                 if (checkout_detailed) {
                     checkout_detailed.visible=true;
                     checkout_detailed.label="Download";
+                    if (!model.isPermissionReadOnly()) {
+                        checkout_detailed.enabled=true;
+                    } else {
+                        checkout_detailed.enabled=false;
+                    }
                 }
             }
 
@@ -400,10 +430,7 @@
             private function updateUIForCompletedContest():void {
                 model.isRankMode=false;
                 
-                if (rankContainer) {
-                    rankContainer.visible=true;
-                    rankContainer.includeInLayout=true;
-                }
+                setRankBarVisible();
                 
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
@@ -430,12 +457,13 @@
             * Updates ui for 'action required' contest.
             */
             private function updateUIForActionRequiredContest():void {
-                model.isRankMode=true;
-                
-                if (rankContainer) {
-                    rankContainer.visible=true;
-                    rankContainer.includeInLayout=true;
+                if (!model.isPermissionReadOnly()) {
+                    model.isRankMode=true;
+                } else {
+                    model.isRankMode=false;
                 }
+                
+                setRankBarVisible();
                 
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
@@ -450,6 +478,13 @@
                 if (feedbackContainer) {
                     feedbackContainer.visible=true;
                     feedbackContainer.includeInLayout=true;
+                    if (feed) {
+                        if (!model.isPermissionReadOnly()) {
+                            feed.enabled=true;
+                        } else {
+                            feed.enabled=false;
+                        }
+                    }
                 }
                 
                 enableNoWinnerSelector();
@@ -462,12 +497,13 @@
             * Updates ui for active but not action required contests.
             */
             private function updateUIForActiveContest():void {
-                model.isRankMode=true;
-                
-                if (rankContainer) {
-                    rankContainer.visible=true;
-                    rankContainer.includeInLayout=true;
+                if (!model.isPermissionReadOnly()) {
+                    model.isRankMode=true;
+                } else {
+                    model.isRankMode=false;
                 }
+                
+                setRankBarVisible();
                 
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
@@ -482,6 +518,13 @@
                 if (feedbackContainer) {
                     feedbackContainer.visible=true;
                     feedbackContainer.includeInLayout=true;
+                    if (feed) {
+                        if (!model.isPermissionReadOnly()) {
+                            feed.enabled=true;
+                        } else {
+                            feed.enabled=false;
+                        }
+                    }
                 }
                 
                 disableNoWinnerSelector();
@@ -554,23 +597,36 @@
                 disableSaveClearBtns();
             }
 
+			private function setRankBarVisible():void {
+                if (rankContainer) {
+                    rankContainer.visible=true;
+                    rankContainer.includeInLayout=true;
+                    
+                    if (!model.isPermissionReadOnly()) {
+                        currentRank.removeEventListener("itemClick", updateRank);
+                        currentRank.addEventListener("itemClick", updateRank);
+                        currentRank.mouseChildren=true;
+                        currentRank.mouseEnabled=true;
+                        currentRank.focusEnabled=true;
+                    } else {
+                        currentRank.removeEventListener("itemClick", updateRank);
+                        currentRank.mouseChildren=false;
+                        currentRank.mouseEnabled=false;
+                        currentRank.focusEnabled=false;
+                    }
+                }
+            }
+
             /**
             * Enables rating selector.
             */
             private function enableRatingSelector():void {
-                if (rankContainer) {
-                    rankContainer.visible=true;
-                    rankContainer.includeInLayout=true;
-                }
+                setRankBarVisible();
                 
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
                 }
-            /*rankBar.addEventListener("itemClick", rankSubmission);
-               rankBar.mouseChildren=true;
-               rankBar.mouseEnabled=true;
-             rankBar.focusEnabled=true;*/
             }
 
             /**
@@ -586,10 +642,6 @@
                     contentActionControlContainer.visible=false;
                     contentActionControlContainer.includeInLayout=false;
                 }
-            /*rankBar.removeEventListener("itemClick", rankSubmission);
-               rankBar.mouseChildren=false;
-               rankBar.mouseEnabled=false;
-             rankBar.focusEnabled=false;*/
             }
 
             /**
@@ -639,12 +691,27 @@
             private function enableNoWinnerSelector():void {
                 if (noWinner) {
                     noWinner.visible=true;
+                    if (!model.isPermissionReadOnly()) {
+                        noWinner.enabled=true;
+                    } else {
+                        noWinner.enabled=false;
+                    }
                 }
                 if (noWinner1) {
                     noWinner1.visible=true;
+                    if (!model.isPermissionReadOnly()) {
+                        noWinner1.enabled=true;
+                    } else {
+                        noWinner1.enabled=false;
+                    }
                 }
                 if (noWinner2) {
                     noWinner2.visible=true;
+                    if (!model.isPermissionReadOnly()) {
+                        noWinner2.enabled=true;
+                    } else {
+                        noWinner2.enabled=false;
+                    }
                 }
             }
 
@@ -688,11 +755,21 @@
                 if (saveBtn) {
                     saveBtn.visible=true;
                     saveBtn.includeInLayout=true;
+                    if (!model.isPermissionReadOnly()) {
+                        saveBtn.enabled=true;
+                    } else {
+                        saveBtn.enabled=false;
+                    }
                 }
                 
                 if (clearBtn) {
                     clearBtn.visible=true;
                     clearBtn.includeInLayout=true;
+                    if (!model.isPermissionReadOnly()) {
+                        clearBtn.enabled=true;
+                    } else {
+                        clearBtn.enabled=false;
+                    }
                 }
             }
 
@@ -914,10 +991,8 @@
 
             /**
              * Handler for updating the rank.
-             *
-             * @param event
              */
-            public function updateRank(event:Event):void {
+            public function updateRank():void {
                 model.updateRank(currentRank.selectedIndex, -1);
             }
 
@@ -1673,20 +1748,17 @@
                                     buttonWidth="61"
                                     paddingBottom="0"
                                     selectedIndex="-1"
-                                    itemClick="updateRank(event)"
-				    enabled="{!isPermissionReadOnly()}">
+                                    itemClick="updateRank()">
                 </mx:ToggleButtonBar>
                 <mx:HBox horizontalGap="45"
                          id="contestActionBtnContainer">
                     <mx:CheckBox id="noWinner" selected="{noWinner1.selected}"
                                  styleName="CheckBoxStyle"
-                                 label="I cannot choose a winner."
-				 enabled="{!isPermissionReadOnly()}"/>
+                                 label="I cannot choose a winner."/>
                     <mx:CheckBox id="purchase"
                                  styleName="CheckBoxStyle"
                                  label="Purchase this submission."
-                                 click="handlePurchaseClick()"
-				 enabled="{!model.isPermissionReadOnly()}"/>
+                                 click="handlePurchaseClick()"/>
                 </mx:HBox>
                 <mx:HBox horizontalGap="45"
                          id="purchaseTotalContainer">
