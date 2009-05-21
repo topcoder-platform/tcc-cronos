@@ -109,6 +109,8 @@
             public function onClose():void {
 
                 // for full mode we don't need to restrict permission.
+                
+                /*
                 if (this._data is Project && _mode != "Full") {
                     // check all contest permissions if this is project.
                     // silently make all contests permissions not more than project permission.
@@ -131,7 +133,6 @@
                     }
 
                 } 
-                /*
                 else if (this._data is Contest) {
                     // if this is contest then check parent project permissions.
                     // show error message that contest permission can not be more than project permission.

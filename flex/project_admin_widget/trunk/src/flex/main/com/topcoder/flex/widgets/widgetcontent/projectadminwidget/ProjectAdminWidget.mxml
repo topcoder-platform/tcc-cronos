@@ -373,6 +373,7 @@
 */
                         model.userList.addItem(user);
                     }
+                    model.selectedIndex=0;
                     /*
                     if(model.userList.length>0){
                     	

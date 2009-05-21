@@ -3,8 +3,8 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
     import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
-
-    import mx.printing.PrintDataGrid;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.AbstractOperation;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.SOAPHeader;
@@ -47,7 +47,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
         /**
          * Id of the persisted permission.
          */
-        public var persistedPermissionId:Number=0;
+        //public var persistedPermissionId:Number=0;
 
         /**
          * Reference to the parent project.
@@ -70,16 +70,30 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
             var header:SOAPHeader=projectWidget.getHeader(projectWidget.username, projectWidget.password);
             projectWidget.contestServiceFacadeWS.clearHeaders();
             projectWidget.contestServiceFacadeWS.addHeader(header);
-            var updatePermission:AbstractOperation=projectWidget.contestServiceFacadeWS.getOperation("updatePermission");
-            if (updatePermission) {
-                updatePermission.addEventListener("result", function(e:ResultEvent):void {
+            var getPermission:AbstractOperation=projectWidget.contestServiceFacadeWS.getOperation("getPermissions");
+            if (getPermission) {
+                getPermission.addEventListener("result", function(e:ResultEvent):void {
                         projectWidget.hideLoadingProgress();
-                        if (e) {
-                            persistedAccess=access;
+                        if (e!=null && e.result!=null) {
+                            var deleted:ArrayCollection=new ArrayCollection();
+                            if(e.result is ArrayCollection)
+                            {
+                            	deleted=e.result as ArrayCollection;
+                            }
+                            else
+                            {
+                            	deleted.addItem(e.result);
+                            }
+                            for(var i:int=0;i<deleted.length;i++)
+                            {
+                            	deletePermission(projectWidget,deleted.getItemAt(i).permissionId);
+                            }
+                             
                         }
+                        addPermission(projectWidget);
                     });
 
-                updatePermission.send(getPermissionDTO());
+                getPermission.send(project.user.id,id);
             }
         }
 
@@ -88,7 +102,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          *
          * @param reference to project admin widget.
          */
-        public function deletePermission(projectWidget:ProjectAdminWidget):void {
+        public function deletePermission(projectWidget:ProjectAdminWidget,permissionid:int):void {
             projectWidget.showLoadingProgress();
             var header:SOAPHeader=projectWidget.getHeader(projectWidget.username, projectWidget.password);
             projectWidget.contestServiceFacadeWS.clearHeaders();
@@ -97,13 +111,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
             if (deletePermission) {
                 deletePermission.addEventListener("result", function(e:ResultEvent):void {
                         projectWidget.hideLoadingProgress();
-                        if (e && e.result) {
-                            persistedPermissionId=0;
-                            persistedAccess="";
-                        }
+                        
                     });
 
-                deletePermission.send(persistedPermissionId);
+                deletePermission.send(permissionid);
             }
         }
 
@@ -121,10 +132,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
             if (addPermission) {
                 addPermission.addEventListener("result", function(e:ResultEvent):void {
                         projectWidget.hideLoadingProgress();
-                        if (e && e.result) {
-                            persistedPermissionId=e.result.permissionId;
-                            persistedAccess=access;
-                        }
+                        
                     });
 
                 addPermission.send(getPermissionDTO());
@@ -138,9 +146,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          */
         private function getPermissionDTO():Object {
             var perm:Object=new Object();
+            /*
             if (persistedPermissionId && persistedPermissionId > 0) {
                 perm.permissionId=persistedPermissionId;
-            }
+            }*/
             perm.userId=project.user.id;
             perm.projectId=id;
             perm.permissionType=new Object();

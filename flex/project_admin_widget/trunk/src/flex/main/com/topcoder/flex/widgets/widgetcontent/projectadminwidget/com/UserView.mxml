@@ -210,21 +210,7 @@
                             if (project.access == project.persistedAccess) {
                                 // do nothing.
                             } else {
-                                if (project.persistedPermissionId && project.persistedPermissionId > 0) {
-                                    if (project.access == "") {
-                                        // delete here.
-                                        trace(">>>>>>>>>>>>>>>>>>>>>> DELETE REQUIRED: persisted access there but not current access for project: " + project.id);
-                                        project.deletePermission(parentWidget);
-                                    } else {
-                                        // update here.
-                                        trace(">>>>>>>>>>>>>>>>>>>>>> UPDATE REQUIRED: persisted access and current access differs for project: " + project.id);
-                                        project.updatePermission(parentWidget);
-                                    }
-                                } else {
-                                    // add here.
-                                    trace(">>>>>>>>>>>>>>>>>>>>>> ADD REQUIRED: persisted access is not there but current access is there for project: " + project.id);
-                                    project.addPermission(parentWidget);
-                                }
+                                project.updatePermission(parentWidget);
                             }
 
                             for (var j:int=0; j < project.contests.length; j++) {
@@ -233,21 +219,7 @@
                                 if (contest.access == contest.persistedAccess) {
                                     // do nothing.
                                 } else {
-                                    if (contest.persistedPermissionId && contest.persistedPermissionId > 0) {
-                                        if (contest.access == "") {
-                                            // delete here.
-                                            trace(">>>>>>>>>>>>>>>>>>>>>> DELETE REQUIRED: persisted access there but not current access for contest: " + contest.id);
-                                            contest.deletePermission(parentWidget);
-                                        } else {
-                                            // update here.
-                                            trace(">>>>>>>>>>>>>>>>>>>>>> UPDATE REQUIRED: persisted access and current access differs for contest: " + contest.id);
-                                            contest.updatePermission(parentWidget);
-                                        }
-                                    } else {
-                                        // add here.
-                                        trace(">>>>>>>>>>>>>>>>>>>>>> ADD REQUIRED: persisted access is not there but current access is there for contest: " + contest.id);
-                                        contest.addPermission(parentWidget);
-                                    }
+                                    contest.updatePermission(parentWidget);
                                 }
                             }
                         }
@@ -272,7 +244,7 @@
                 var a:Alert=Alert.show(message, title, Alert.OK | Alert.CANCEL, parentSprite, closeHandler);
                 a.height=height;
                 PopUpManager.centerPopUp(a);
-                
+                /*
                 if (!Application.application || !Application.application.getWindowCenterX || !Application.application.getWindowCenterY) {
                     return;
                 }
@@ -289,6 +261,7 @@
                 else
                     alertY=alertY - 168;
                 a.move(alertX, alertY);
+                */
             }
         ]]>
     </mx:Script>
