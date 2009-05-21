@@ -1747,8 +1747,7 @@
                                     buttonHeight="26"
                                     buttonWidth="61"
                                     paddingBottom="0"
-                                    selectedIndex="-1"
-                                    itemClick="updateRank()">
+                                    selectedIndex="-1">
                 </mx:ToggleButtonBar>
                 <mx:HBox horizontalGap="45"
                          id="contestActionBtnContainer">
