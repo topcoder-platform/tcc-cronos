@@ -269,8 +269,15 @@
              * Row mouse over handler.
              */
             private function mouseOverHandle():void {
-                if (contest.status.toLocaleLowerCase() == "draft" || contest.status.toLocaleLowerCase() == "unactive - not yet published" || contest.status.toLocaleLowerCase() == "scheduled") {
-                    editBtn.visible=true;
+                if (contest.status.toLocaleLowerCase() == "draft" || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
+		              || contest.status.toLocaleLowerCase() == "scheduled") {
+
+		    if(contest.permission=="contest_full" || contest.permission=="contest_write"
+		              || (contest.permission==null && 
+			               (model.currentProj.permission=="project_full" 
+				            || model.currentProj.permission=="project_write"))){
+			editBtn.visible=true;
+		    }
                 }
             }
 
@@ -285,18 +292,14 @@
              * Handler for click on edit contest button.
              */
             private function editContest():void {
-            	if(contest.permission=="contest_full" || contest.permission=="contest_write"){
-                var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
-                var props:Dictionary=new Dictionary();
-                props["contestid"]=contest.id;
-                props["projectid"]=contest.projId;
-                props["projectName"]=contest.projName;
-                widget.setAttributes(props);
-                model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
-             }else
-             {
-             	Helper.showAlertMessage("You have no permission to edit this contest");
-             }
+
+			var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+			var props:Dictionary=new Dictionary();
+			props["contestid"]=contest.id;
+			props["projectid"]=contest.projId;
+			props["projectName"]=contest.projName;
+			widget.setAttributes(props);
+			model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
 
             /**
