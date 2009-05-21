@@ -55,8 +55,10 @@
             import mx.controls.Image;
             import mx.rpc.events.ResultEvent;
             import mx.collections.ArrayCollection;
-	    import com.topcoder.flex.Helper;
-
+            import com.topcoder.flex.Helper;
+            
+            import flash.events.Event;
+            
             /**
              * The data model class which stores various state behavior for this view.
              * It basically stores,
@@ -992,7 +994,7 @@
             /**
              * Handler for updating the rank.
              */
-            public function updateRank():void {
+            public function updateRank(event:Event):void {
                 model.updateRank(currentRank.selectedIndex, -1);
             }
 
@@ -1416,8 +1418,8 @@
             }
 
             /**
-            * Handle change in feedback text.
-            */
+             * Handle change in feedback text.
+             */
             private function handleFeedbackChange():void {
                 if (model.activeSubmissionIndex >= 0) {
                     var submission:Object=model.submissionList.getItemAt(model.activeSubmissionIndex);
@@ -1426,10 +1428,10 @@
             }
             
             /**
-            * Shows a given submission in full size view.
-            * 
-            * @param data submission object.
-            */
+             * Shows a given submission in full size view.
+             *
+             * @param data submission object.
+             */
             public function showSubmission(data:Object):void {
                 this.model.selectedIndex=-1;
                 handleContest(null);
@@ -1442,15 +1444,15 @@
                 
                 _tobeShownSubmission = null;
             }
-
-	    public function isPermissionReadOnly():Boolean {
-		
-		return this.model.isPermissionReadOnly();
-	    }
+            
+            public function isPermissionReadOnly():Boolean {
+                
+                return this.model.isPermissionReadOnly();
+            }
             
             /**
-            * Sets the title of the view.
-            */
+             * Sets the title of the view.
+             */
             private function setTitle():void {
                 if (contestCombo && contestCombo.selectedItem && content) {
                     trace("@@@@@@ ----------------- Active sub index: " + model.activeSubmissionIndex);
@@ -1462,7 +1464,7 @@
                     }
                 } else if (content) {
                     content.htmlText="";
-                }  
+                }
             }
         ]]>
     </mx:Script>
@@ -1600,7 +1602,7 @@
                                      dataProvider="{model.rankedSubmissionList}"
                                      itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.renderer.RankedRenderer"
                                      borderStyle="none"
-                                     dragEnabled="{model.isRankMode &lt; !isPermissionReadOnly()}"
+                                     dragEnabled="{model.isRankMode}"
                                      dragEnter="checkDrag(event)"
                                      dragDrop="handleDragComplete(event)"/>
                     </mx:HBox>
@@ -1613,10 +1615,11 @@
                                    click="goPrev()"
                                    visible="{model.canGoPrev(model.activeSubmission.getItemAt(0))}"/>
                         <mx:Spacer width="50%"/>
-                        <mx:CheckBox id="noWinner1" selected="{noWinner2.selected}"
+                        <mx:CheckBox id="noWinner1"
+                                     selected="{noWinner2.selected}"
                                      styleName="CheckBoxStyle"
                                      label="I cannot choose a winner."
-				     enabled="{!isPermissionReadOnly()}"/>
+                                     enabled="{!isPermissionReadOnly()}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
@@ -1632,7 +1635,7 @@
                                    id="checkout_top"
                                    styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"
-				   enabled="{!isPermissionReadOnly()}"/>
+                                   enabled="{!isPermissionReadOnly()}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
                                    labelPlacement="left"
@@ -1671,7 +1674,7 @@
                                          allowMultipleSelection="false"
                                          allowDragSelection="true"
                                          dragStart="doDrag()"
-                                         dragEnabled="{model.isRankMode &lt; !isPermissionReadOnly()}"/>
+                                         dragEnabled="{model.isRankMode}"/>
 
                             <tc:SubmissionDetailViewer includeInLayout="false"
                                                        visible="false"
@@ -1689,10 +1692,11 @@
                                    click="goPrev()"
                                    visible="{model.canGoPrev(model.activeSubmission.getItemAt(0))}"/>
                         <mx:Spacer width="50%"/>
-                        <mx:CheckBox id="noWinner2" selected="{noWinner.selected}"
+                        <mx:CheckBox id="noWinner2"
+                                     selected="{noWinner.selected}"
                                      styleName="CheckBoxStyle"
                                      label="I cannot choose a winner."
-				     enabled="{!isPermissionReadOnly()}"/>
+                                     enabled="{!isPermissionReadOnly()}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
@@ -1708,7 +1712,7 @@
                                    id="checkout_bottom"
                                    styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"
-				   enabled="{!isPermissionReadOnly()}"/>
+                                   enabled="{!isPermissionReadOnly()}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
                                    labelPlacement="left"
@@ -1719,9 +1723,12 @@
                     </mx:HBox>
                     <mx:HRule width="100%"/>
                 </mx:VBox>
-                <tc:SimpleSubmissionView id="simpleSubViewer" width="100%"/>
-                <tc:MultiSubmissionView id="multiSubViewer" width="100%"/>
-                <tc:MultiImageView id="multiImageViewer" width="100%"/>
+                <tc:SimpleSubmissionView id="simpleSubViewer"
+                                         width="100%"/>
+                <tc:MultiSubmissionView id="multiSubViewer"
+                                        width="100%"/>
+                <tc:MultiImageView id="multiImageViewer"
+                                   width="100%"/>
             </mx:ViewStack>
         </mx:Canvas>
 
@@ -1751,7 +1758,8 @@
                 </mx:ToggleButtonBar>
                 <mx:HBox horizontalGap="45"
                          id="contestActionBtnContainer">
-                    <mx:CheckBox id="noWinner" selected="{noWinner1.selected}"
+                    <mx:CheckBox id="noWinner"
+                                 selected="{noWinner1.selected}"
                                  styleName="CheckBoxStyle"
                                  label="I cannot choose a winner."/>
                     <mx:CheckBox id="purchase"
@@ -1783,8 +1791,7 @@
                              fontFamily="Arial"
                              fontSize="12"
                              text="{this.model.activeSubmissionIndex >= 0 ? this.model.submissionList.getItemAt(this.model.activeSubmissionIndex).feedback : ''}"
-                             change="handleFeedbackChange()"
-			     enabled="{!isPermissionReadOnly()}"/>
+                             change="handleFeedbackChange()"/>
             </mx:VBox>
             <mx:VBox paddingLeft="24"
                      paddingTop="30">
@@ -1793,19 +1800,16 @@
                     <mx:Button id="saveBtn"
                                label="Save"
                                styleName="arrowRightBtnStyle"
-                               click="handleSaveFeedback()"
-			       enabled="{!isPermissionReadOnly()}"/>
+                               click="handleSaveFeedback()"/>
                     <mx:Button id="clearBtn"
                                label="Clear"
                                styleName="arrowRightBtnStyle"
-                               click="handleClearFeedback()"
-			       enabled="{!isPermissionReadOnly()}"/>
+                               click="handleClearFeedback()"/>
                 </mx:HBox>
                 <mx:Button id="checkout_detailed"
                            label="Check Out"
                            styleName="arrowRightBtnStyle"
-                           click="handleCheckout()"
-			   enabled="{!isPermissionReadOnly()}"/>
+                           click="handleCheckout()"/>
             </mx:VBox>
         </mx:HBox>
     </mx:VBox>
