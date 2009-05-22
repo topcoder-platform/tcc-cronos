@@ -1320,14 +1320,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     //
                     if (sub.multi) {
                         sub.fullsizepreviewList=new ArrayCollection();
-                        for (var k:int=1; k<sub.artifactCount; k++) {
+                        for (var k:int=0; k<sub.artifactCount; k++) {
                             //
                             // - Updated the submission image index parameter name that matches the url on production - 'sfi'
                             // - Image index on production is 1 based.
                             // since: Complex Submission Viewer Assembly - Part 2
                             //
                             // image index is 1 based.
-                            var path:String=this._imageAddress + sub.id + "&sbt=full" + "&sfi=" + k;
+                            var path:String=this._imageAddress + sub.id + "&sbt=full" + "&sfi=" + (k+1);
                             sub.fullsizepreviewList.addItem(path);
                             trace("For submission: " + sub.id + ", Image full path: " + path);
                         }

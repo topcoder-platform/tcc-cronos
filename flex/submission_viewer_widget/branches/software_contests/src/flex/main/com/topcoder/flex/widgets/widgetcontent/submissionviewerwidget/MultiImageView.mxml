@@ -27,6 +27,7 @@
     <mx:Script>
         <![CDATA[
             import mx.events.ListEvent;
+	    import mx.core.Application; 
 
             /**
              * Reference to the gallery view model class.
@@ -136,6 +137,11 @@
                     navigateToURL(new URLRequest(model.selectedImage), '_blank');
                 }
             }
+
+	    private function downloadLinkHandler():void {
+		// Open the link in a new window.
+		navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + data.id), '_blank');
+	   }
         ]]>
     </mx:Script>
 
@@ -181,6 +187,10 @@
                            selected="{data.upDown == 'down'}"
                            toolTip="Not Interested"/>
             </mx:HBox>
+	     <mx:HBox width="100%" horizontalAlign="center">  <!-- BUGR-1664 -->
+    		<mx:LinkButton label="Download Full Preview" click="{downloadLinkHandler()}" />
+    	     </mx:HBox>
+
         </mx:VBox>
         <mx:Button id="btn"
                    styleName="showHideBtnOpen2"
@@ -198,11 +208,12 @@
                  itemsChangeEffect="{myDTLE}"
                  dataProvider="{model.imageList}"
                  itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.renderer.ImageRenderer"
-                 verticalScrollPolicy="off"
+                 verticalScrollPolicy="auto"
                  horizontalScrollPolicy="off"
                  borderStyle="none"
                  allowMultipleSelection="false"
                  allowDragSelection="true"
                  selectable="true"
-                 change="handleChange(event)"/>
+                 change="handleChange(event)"
+		 rowCount="6"/>
 </mx:HBox>
