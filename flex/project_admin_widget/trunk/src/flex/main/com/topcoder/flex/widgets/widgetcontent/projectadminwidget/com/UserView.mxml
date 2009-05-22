@@ -168,13 +168,9 @@
                     }
                 }
             }
-
-            /**
-             * Handles cancel of permission for given user.
-             */
-            public function cancelAction():void {
-                showAlertMessage("Do you want to cancel permission changes ?", "Confirm Cancel", this, function(e:CloseEvent):void {
-                        if (e.detail == Alert.CANCEL) {
+            
+            public function handleCancelAction(e:CloseEvent){
+            	if (e.detail == Alert.CANCEL) {
                             return;
                         }
 
@@ -189,16 +185,10 @@
                         }
 
                         parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
-                    });
             }
-
-            /**
-             * Handles save of permission for given user.
-             */
-            public function saveAction():void {
-
-                showAlertMessage("Do you want to save permission changes ?", "Confirm Save", this, function(e:CloseEvent):void {
-                        if (e.detail == Alert.CANCEL) {
+            
+            public function handleSaveAction(e:CloseEvent){
+            	if (e.detail == Alert.CANCEL) {
                             return;
                         }
 
@@ -231,8 +221,24 @@
                     	{
                     	addPermissions();
                    		 }
-                        
-                    });
+            }
+            
+            
+            /**
+             * Handles cancel of permission for given user.
+             */
+            public function cancelAction():void {
+                showAlertMessage("Do you want to cancel permission changes ?", "Confirm Cancel", this, 
+                         handleCancelAction);
+            }
+
+            /**
+             * Handles save of permission for given user.
+             */
+            public function saveAction():void {
+
+                showAlertMessage("Do you want to save permission changes ?", "Confirm Save", this, 
+                        handleSaveAction);
                    
             }
             
