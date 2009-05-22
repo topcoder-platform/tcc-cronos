@@ -77,27 +77,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
             projectWidget.contestServiceFacadeWS.addHeader(header);
             var getPermission:AbstractOperation=projectWidget.contestServiceFacadeWS.getOperation("getPermissions");
             if (getPermission) {
-                getPermission.addEventListener("result", function(e:ResultEvent):void {
-                        projectWidget.hideLoadingProgress();
-                        if (e!=null && e.result!=null) {
-                            var deleted:ArrayCollection=new ArrayCollection();
-                            if(e.result is ArrayCollection)
-                            {
-                            	deleted=e.result as ArrayCollection;
-                            }
-                            else
-                            {
-                            	deleted.addItem(e.result);
-                            }
-                            for(var i:int=0;i<deleted.length;i++)
-                            {
-                            	deletePermission(projectWidget,deleted.getItemAt(i).permissionId);
-                            }
-                             
-                        }
-                        addPermission(projectWidget);
-                    });
-
                 getPermission.send(user.id,id);
             }
         }

@@ -251,6 +251,11 @@
             
            
             private var _modelUserIdx:int=0;
+            
+            
+            public var deletedPermissionNumber=0;
+            
+             public var getPermissionNumber=0;
 
 
 
@@ -465,6 +470,50 @@
                 }
                 return ret;
             }
+            
+            private function handleGetPermissions(e:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	this.getPermissionNumber--;
+                if (e!=null && e.result!=null) {
+                       var deleted:ArrayCollection=new ArrayCollection();
+                       if(e.result is ArrayCollection)
+                       {
+                           	deleted=e.result as ArrayCollection;
+                       }
+                       else
+                       {
+                          	deleted.addItem(e.result);
+                       }
+                       deletedPermissionNumber+=deleted.length;
+                       if(getPermissionNumber==0 && deletedPermissionNumber==0)
+                		{
+                		userViewer.addPermissions();
+                		}
+                       for(var i:int=0;i<deleted.length;i++)
+                       {
+                          	ContestServiceFacadeBean.deletePermission(deleted.getItemAt(i).permissionId);
+                       }
+                             
+                }
+                else
+                {
+                	if(getPermissionNumber==0 && deletedPermissionNumber==0)
+                		{
+                		userViewer.addPermissions();
+                		}
+                }
+                
+            }
+            private function handleDeletePermissions(e:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	deletedPermissionNumber--;
+            	if(getPermissionNumber==0 && deletedPermissionNumber==0)
+            	{
+            		userViewer.addPermissions();
+            	}
+            }
 
             
         ]]>
@@ -480,6 +529,12 @@
                 </mx:channels>
             </mx:ChannelSet>
         </mx:channelSet>
+
+		<mx:operation name="getPermissions"
+                      resultFormat="object"
+                      result="handleGetPermissions(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('addPermission: ' + event.fault.faultString);">
+        </mx:operation>
     
 
         <mx:operation name="addPermission"
@@ -494,6 +549,7 @@
 
         <mx:operation name="deletePermission"
                       resultFormat="object"
+                      result="handleDeletePermissions(event)"
                       fault="hideLoadingProgress(); Helper.showAlertMessage('deletePermission: ' + event.fault.faultString);">
         </mx:operation>
         

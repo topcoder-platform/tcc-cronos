@@ -203,13 +203,16 @@
                         }
 
                         config.visible=false;
-
+                        
+                        parentWidget.deletedPermissionNumber=0;
+                        parentWidget.getPermissionNumber=0;
                         for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
                             var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
 
                             if (project.access == project.persistedAccess) {
                                 // do nothing.
                             } else {
+                            	parentWidget.getPermissionNumber++;
                                 project.updatePermission(parentWidget);
                             }
 
@@ -219,13 +222,41 @@
                                 if (contest.access == contest.persistedAccess) {
                                     // do nothing.
                                 } else {
+                                	parentWidget.getPermissionNumber++;
                                     contest.updatePermission(parentWidget);
                                 }
                             }
                         }
-
-                        parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
+                         if(parentWidget.getPermissionNumber==0)
+                    	{
+                    	addPermissions();
+                   		 }
+                        
                     });
+                   
+            }
+            
+            public function addPermissions():void
+            {
+            	 for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                            var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+
+                            if (project.access != project.persistedAccess
+                                 && project.access !="") {
+                                
+                                project.addPermission(parentWidget);
+                            }
+
+                            for (var j:int=0; j < project.contests.length; j++) {
+                                var contest:Contest=project.contests.getItemAt(j) as Contest;
+
+                                if (contest.access != contest.persistedAccess
+                                   && contest.access!="") {
+                                  contest.addPermission(parentWidget);
+                                   }
+                            }
+                        }
+                        parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
             }
 
             /**
