@@ -2811,7 +2811,7 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<SimpleContestData> contests;
-            /*
+            
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getContestDataOnly();
@@ -2819,10 +2819,10 @@ public class StudioServiceBean implements StudioService {
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 logInfo("User " + p.getUserId() + " is non-admin.");
                 contests = contestManager.getContestDataOnlyForUser(p.getUserId());
-            }*/
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            }
+            //UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             
-            contests = contestManager.getContestDataOnlyForUser(p.getUserId());
+            //contests = contestManager.getContestDataOnlyForUser(p.getUserId());
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
             logExit("getContestDataOnly", contests.size());
@@ -2855,9 +2855,18 @@ public class StudioServiceBean implements StudioService {
         try {
             List<SimpleContestData> contests;
 
-			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+			//UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+			if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                logInfo("User is admin.");
+                contests = contestManager.getContestDataOnly(-1, pid);
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                logInfo("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getContestDataOnly(p.getUserId(), pid);
+            }
             
-            contests = contestManager.getContestDataOnly(p.getUserId(), pid);
+            //contests = contestManager.getContestDataOnly(p.getUserId(), pid);
             
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
