@@ -3256,9 +3256,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[9] != null)
                     c.setContestType(os[9].toString());
 
+				// if permission not null, or if user -1 (admin)
+				if(os[10]!=null || createdUser == -1){
 
-				if(os[10]!=null){
-                	c.setPermission(os[10].toString());
+                	
+					if (createdUser == -1)
+					{
+						c.setPermission("contest_full");
+					}
+					else
+					{
+						c.setPermission(os[10].toString());
+					}
                 	result.add(c);
                 }
 
