@@ -816,7 +816,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             	if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
                 	Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
             	} else {
-                	url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+                	//url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+			url="http://" + Application.application.parameters.studioAddress + "/direct/cockpit/impersonation/cockpitStudio.do?module=ViewContestDetails&ct=" + competition.contestData.contestId;
 
                 	navigateToURL(new URLRequest(url), "_blank");
             	}
