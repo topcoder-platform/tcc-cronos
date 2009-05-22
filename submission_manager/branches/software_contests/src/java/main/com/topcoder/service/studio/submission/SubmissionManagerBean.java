@@ -1646,6 +1646,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 		ret.setPaymentId(submission.getPaymentId());
 		ret.setFeedbackText(submission.getFeedbackText());
 		ret.setFeedbackThumb(submission.getFeedbackThumb());
+		ret.setUserRank(submission.getUserRank());
 		
 		// @since Complex Submission Viewer Assembly - Part 2
 		ret.setArtifactCount(submission.getArtifactCount());
