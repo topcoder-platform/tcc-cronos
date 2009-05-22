@@ -2,6 +2,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 {
     import flash.display.Loader;
     import flash.events.Event;
+    import flash.system.LoaderContext;
 
     import mx.controls.Image;
 
@@ -10,6 +11,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 
         public function TCImage() {
             super();
+	    this.loaderContext = new LoaderContext();
+	    this.loaderContext.checkPolicyFile = true; 
 
             // Listen for the event dispatched after the image
             // source has been changed
