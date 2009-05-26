@@ -98,8 +98,13 @@
             public function set studioContestType(val:Boolean):void {
                 trace("LAUNCH WIDGET:: Setting studio contest type: " + val);
                 isStudioContestType=val;
-                DETAILS_HEIGHT=(val ? 950 : 1850);
+                DETAILS_HEIGHT=(val ? 950 : 1350);
                 REVIEW_HEIGHT=(val ? 1165 : 1350); // BUGR-1067
+				OVERVIEW_HEIGHT=(val ? 770 : 630);
+				if(!val) {
+					details.widgetHeight = 800;
+					overView.height = 580;
+				}
                 
                 // BUGR-1067
                 stepNumber=1;

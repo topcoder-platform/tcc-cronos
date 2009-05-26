@@ -103,6 +103,9 @@
             // BUGR-1641
             private var currentResizingRTEditor:TCRichTextEditor = null;
 
+	    private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
+	    private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
+
             public function initData():void {
                 //
                 // depending on the competition type set/reset the data.
@@ -838,10 +841,7 @@
 		</mx:HBox>
         <mx:Text width="100%"
                  id="contestDetails">
-            <mx:text>
-				A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative
-				juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized,
-				excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.
+            <mx:text> {mainWidget.studioContestType ? ST_PROJECT_DESCRIPTION : SW_PROJECT_DESCRIPTION }
             </mx:text>
         </mx:Text>
 
@@ -926,7 +926,7 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
-                    <mx:Label text="Component Name:"
+                    <mx:Label text="{mainWidget.studioContestType ? 'Component Name:' : 'Contest Name'}"
                               fontWeight="bold"/>
                     <mx:TextInput id="ns_ctInput"
                                   width="292"/>

@@ -58,6 +58,8 @@
             [Bindable]
             private var curContestType:int;
 
+	    private var SW_PRIZE_AMOUNT_DESCRIPTION:String = "Please enter a first place prize amount. The remaining fields will be calculated for you. During checkout, you will only be charged for the Contest Fee. The remainder of the contest cost will be billed upon completion of the contest.";
+
             public function initData():void {
                 requestContestExamples.send();
 				requestContestFees.send(); // BUGR-1737
@@ -498,7 +500,7 @@
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
             <mx:Label id="typeName"
-                      text="{mainWidget.competitionType}"
+                      text="{mainWidget.contestSelect.contestType.selection.label}"
                       styleName="subsectionTitle"/>
             <!-- BUGR-1503 -->
             <mx:Text width="100%"
@@ -693,9 +695,7 @@
                 <mx:Text width="100%"
                          paddingTop="0"
                          styleName="smallBlackText">
-                    <mx:text>
-		                When entering prizes, please note that each prize amount must be the same or lower than 
-		                the amount in the places above it.
+                    <mx:text>{mainWidget.studioContestType ? 'When entering prizes, please note that each prize amount must be the same or lower than the amount in the places above it.' : SW_PRIZE_AMOUNT_DESCRIPTION}
 		            </mx:text>
                 </mx:Text>
             </mx:VBox>

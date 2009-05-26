@@ -347,7 +347,7 @@
 			<mx:Spacer width="100%" />
 		</mx:HBox>
 		<mx:Label text="Set the Contest Schedule" width="80%" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-		<mx:Text width="100%" id="attachFiles">
+		<mx:Text width="100%" id="attachFiles" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
             <mx:htmlText>
                 <![CDATA[When scheduling your contest, consider the following: <br>
                 -	Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed?
@@ -359,12 +359,21 @@
                 -	Try not to end your contest during a time when you are unavailable to answer forum questions. Many members have last-minute questions before they submit.
                 ]]>
             </mx:htmlText>
+	 </mx:Text>
+	 <mx:Text width="100%" visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+            <mx:htmlText>
+                <![CDATA[When scheduling your contest, consider the following:<br/>
+                -	Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed? 
+                -	Pipeline capacity. How many similar contests will be launching at the same time? 
+                -	Try not to end your contest during a time when you are unavailable to answer forum questions. Many members have last-minute questions before they submit. 
+                ]]>
+            </mx:htmlText>
         </mx:Text>
         <mx:Text text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the suggested timelines are:" />
         <mx:Label text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
         <mx:Label text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
         <mx:Label text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>
-        <mx:Text>
+        <mx:Text visible="{mainWidget.studioContestType}">
             <mx:htmlText>
                 <![CDATA[
                 ** NOTE: Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **
