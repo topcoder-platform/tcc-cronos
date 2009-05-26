@@ -113,6 +113,21 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             _projectCategoryIds["ASSEMBLY"]=14;
 	    _projectTypeNames["ASSEMBLY"]="Application";
 
+            _competitionTypes.addItem("UICOMPONENT");
+            _projectTypeIds["UICOMPONENT"]=2;
+            _projectCategoryIds["UICOMPONENT"]=25;
+	    _projectTypeNames["UICOMPONENT"]="Application";
+
+            _competitionTypes.addItem("UIBUILD");
+            _projectTypeIds["UIBUILD"]=2;
+            _projectCategoryIds["UIBUILD"]=24;
+	    _projectTypeNames["UIBUILD"]="Application";
+
+            _competitionTypes.addItem("UIPROTOTYPE");
+            _projectTypeIds["UIPROTOTYPE"]=2;
+            _projectCategoryIds["UIPROTOTYPE"]=19;
+	    _projectTypeNames["UIPROTOTYPE"]="Application";
+
             _competitionTypes.addItem("TESTING");
             _projectTypeIds["TESTING"]=2;
             _projectCategoryIds["TESTING"]=13;

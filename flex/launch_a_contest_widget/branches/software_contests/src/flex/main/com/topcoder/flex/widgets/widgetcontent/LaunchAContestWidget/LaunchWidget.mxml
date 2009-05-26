@@ -127,7 +127,7 @@
              * Represents the height of this widget on different states. BUGR-1134
              */
             private var INITIAL_WIDGET_HEIGHT:int=460;
-            private var CONTEST_SELECTION_HEIGHT:int=560;
+            private var CONTEST_SELECTION_HEIGHT:int=720;
             private var OVERVIEW_HEIGHT:int=770; // BUGR-1204 was 730
             private var DETAILS_HEIGHT:int=950;
             private var SPECIFICATIONS_HEIGHT:int=920; // BUGR-1362
@@ -183,7 +183,7 @@
 
             public function initComponent():void {
                 // modified lines below for BUGR-1134
-                this.height=580;
+                this.height=710;
                 mainPanel.horizontalScrollPolicy="false";
 
                 back.visible=false;

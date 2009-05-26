@@ -414,19 +414,6 @@
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
                                         groupName="contestType"
-                                        id="componentDesign"
-                                        label="Component Design"
-                                        value="DESIGN"
-                                        enabled="true"/>
-                        <mx:Text width="100%"
-                                 text="Component design contest"
-                                 paddingTop="-10"/>
-                    </mx:VBox>
-                    <mx:Spacer height="3"/>
-                    <mx:VBox width="100%">
-                        <mx:RadioButton fontWeight="bold"
-                                        fontSize="10"
-                                        groupName="contestType"
                                         id="conceptualization"
                                         label="Software Conceptualization"
                                         value="CONCEPTUALIZATION"
@@ -466,12 +453,64 @@
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
                                         groupName="contestType"
+                                        id="componentDesign"
+                                        label="Component Design"
+                                        value="DESIGN"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Component design contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="3"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
                                         id="componentDev"
                                         label="Component Development"
                                         value="DEVELOPMENT"
                                         enabled="true"/>
                         <mx:Text width="100%"
                                  text="Software Development contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="3"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="UIComponent"
+                                        label="UI Component"
+                                        value="UICOMPONENT"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="UI Component contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="3"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="UIBuild"
+                                        label="UI Build"
+                                        value="UIBUILD"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="UI Build contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="3"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="UIPrototype"
+                                        label="UI Prototype"
+                                        value="UIPROTOTYPE"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="UI Prototype contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
                     <mx:Spacer height="3"/>
