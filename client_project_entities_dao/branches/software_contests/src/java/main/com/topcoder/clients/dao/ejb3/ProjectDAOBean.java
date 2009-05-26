@@ -147,7 +147,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
                 .checkEntityManager(getEntityManager());
 
         try {
-            String queryString = "select p from Project p"
+            String queryString = "select p from com.topcoder.clients.model.Project p"
                     + " where p.deleted = false and p.active = true order by upper(p.name) ";
             Query query = entityManager.createQuery(queryString);
 
