@@ -1758,6 +1758,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition = this.createSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());
             } else {
+				competition.setProjectHeaderReason("User Update");
             	tobeUpdatedCompetition = this.updateSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());;
             }
 
