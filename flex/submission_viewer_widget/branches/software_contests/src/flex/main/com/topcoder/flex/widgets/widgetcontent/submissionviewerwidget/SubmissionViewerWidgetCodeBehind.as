@@ -113,7 +113,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          *
          * Server address is retrieved from application parameters.
          */
-        private var _imageAddress:String="http://" + Application.application.parameters.studioAddress + "/direct/cockpit/impersonation/cockpitStudio.do?module=DownloadSubmission&sbmid=";
+        private var _imageAddress:String="http://" + Application.application.parameters.hostAddress + "/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
         /**
          * Array collection of all contests currently available in this widget.
          */
