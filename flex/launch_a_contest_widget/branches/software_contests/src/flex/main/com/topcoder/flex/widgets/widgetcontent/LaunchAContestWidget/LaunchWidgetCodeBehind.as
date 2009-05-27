@@ -613,6 +613,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 prizes.push(p);
             }
 
+	    // we need a reason for update
+	    this.softwareCompetition.projectHeaderReason = "user update";
+
 	    SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
