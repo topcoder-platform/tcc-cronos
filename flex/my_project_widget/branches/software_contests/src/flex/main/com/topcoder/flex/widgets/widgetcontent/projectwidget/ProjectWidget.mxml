@@ -258,9 +258,12 @@
 
                     stack.selectedIndex=buttonSelectedIndex;
                     if (buttonSelectedIndex == 0) {
-
+			       		detailsBtn.enabled = true;
+						contestBtn.enabled = false;
                         _direction="LEFT";
                     } else {
+						detailsBtn.enabled = false;
+						contestBtn.enabled = true;
                         _direction="RIGHT";
                     }
                     
@@ -303,9 +306,9 @@
                 //trace(">>>>>>>> doRotate start: " + new Date());
                 
                 if (event.currentTarget.label == "DETAILS") {
-                    buttonSelectedIndex=0;
-                } else {
                     buttonSelectedIndex=1;
+                } else {
+                    buttonSelectedIndex=0;
                 }
                 if (buttonSelectedIndex == stack.selectedIndex) {
                     return;
@@ -630,6 +633,7 @@
             <mx:Spacer width="5"/>
             <mx:Button id="contestBtn"
                        label="CONTESTS"
+		       		   enabled="false"
                        labelPlacement="{ButtonLabelPlacement.LEFT}"
                        styleName="button"
                        buttonMode="true"
@@ -657,10 +661,10 @@
                           resizeToContent="true"
                           clipContent="true"
                           id="stack">
-                <tc:ProjectDetails width="100%" height="100%" id="details"
-                                   backgroundColor="#ffffff"/>
                 <tc:Contests width="100%" height="100%" id="contest"
                              backgroundColor="#ffffff"/>
+                <tc:ProjectDetails width="100%" height="100%" id="details"
+                                   backgroundColor="#ffffff"/>
             </mx:ViewStack>
         </mx:Canvas>
     </mx:VBox>
