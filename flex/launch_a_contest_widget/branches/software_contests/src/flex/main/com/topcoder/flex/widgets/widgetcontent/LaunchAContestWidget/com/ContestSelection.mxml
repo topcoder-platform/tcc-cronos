@@ -479,12 +479,12 @@
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
                                         groupName="contestType"
-                                        id="UIComponent"
-                                        label="UI Component"
-                                        value="UICOMPONENT"
+                                        id="RIAComponent"
+                                        label="RIA Component"
+                                        value="RIACOMPONENT"
                                         enabled="true"/>
                         <mx:Text width="100%"
-                                 text="UI Component contest"
+                                 text="RIA Component contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
                     <mx:Spacer height="3"/>
@@ -492,12 +492,12 @@
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
                                         groupName="contestType"
-                                        id="UIBuild"
-                                        label="UI Build"
-                                        value="UIBUILD"
+                                        id="RIABuild"
+                                        label="RIA Build"
+                                        value="RIABUILD"
                                         enabled="true"/>
                         <mx:Text width="100%"
-                                 text="UI Build contest"
+                                 text="RIA Build contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
                     <mx:Spacer height="3"/>
