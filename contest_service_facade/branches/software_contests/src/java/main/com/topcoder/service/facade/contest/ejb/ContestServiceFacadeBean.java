@@ -2724,7 +2724,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			forumId = forums.createSoftwareComponentForums(asset.getName(), asset.getId(), asset.getCompVersionId(), 
 				                                                phaseId, Status.REQUESTED.getStatusId(), asset.getRootCategory().getId(), 
 				                                                asset.getShortDescription(),
-				                                                asset.getVersionText(), true);
+				                                                asset.getVersionText(), false);
 			if (forumId < 0) throw new Exception("createStudioForum returned -1");
 
 			Logger.getLogger(this.getClass()).error("Created forum " + forumId + " for " + asset.getName());
