@@ -63,6 +63,7 @@
 <%@ page import="com.topcoder.service.payment.CreditCardPaymentData" %>
 <%@ page import="com.topcoder.service.payment.TCPurhcaseOrderPaymentData" %>
 <%@ page import="com.topcoder.service.payment.PaymentResult" %>
+<%@ page import="com.topcoder.service.facade.contest.SoftwareContestPaymentResult" %>
 <%@ page import="com.topcoder.project.service.ContestSaleData" %>
 <%@ page import="com.topcoder.service.facade.contest.CommonProjectContestData" %>
 <%@ page import="com.topcoder.service.studio.contest.SimpleContestData" %>
@@ -215,7 +216,7 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             calendar2.setTime(new Date(System.currentTimeMillis() + 20 * 24 * 3600 * 1000L));
             ContestData data = new ContestData();
             StudioCompetition newContest = new StudioCompetition(data);
-            newContest.setAdminFee(100);
+            newContest.setAdminFee(100.00);
             newContest.setCompetitionId(-1L);
             newContest.setCreatorUserId(((UserProfilePrincipal) request.getUserPrincipal()).getUserId());
             newContest.setDrPoints(50);
@@ -804,17 +805,17 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
             paymentData.setCardType("visa");
             paymentData.setCardExpiryMonth("12");
             paymentData.setCardExpiryYear("2010");
-            PaymentResult result = port.processContestCreditCardSale(contest, paymentData);
+            SoftwareContestPaymentResult result = port.processContestCreditCardSale(contest, paymentData);
 
-            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getReferenceNumber();
+            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getPaymentResult().getReferenceNumber();
         } else if ("processContestPurchaseOrderSale".equals(operation)) {
             SoftwareCompetition contest = generateSoftwareCompetition(port);
 
             TCPurhcaseOrderPaymentData paymentData = new TCPurhcaseOrderPaymentData();
             paymentData.setPoNumber("PoNumber");
-            PaymentResult result = port.processContestPurchaseOrderSale(contest, paymentData);
+            SoftwareContestPaymentResult result = port.processContestPurchaseOrderSale(contest, paymentData);
 
-            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getReferenceNumber();
+            callResult = "processContestCreditCardSale successfully: <br/> Payment result: referenceNumber = " + result.getPaymentResult().getReferenceNumber();
         }
         else if ("getSimpleProjectContestDatapid".equals(operation)) {
         	String pid = request.getParameter("apid3");
@@ -943,7 +944,7 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
         		SoftwareCompetition result = port.getSoftwareContestByProjectId(Long.parseLong(pid));
         	
         		StringBuilder b = new StringBuilder();
-        		callResult = "Retrieved.<br/>";
+        		callResult = "Retrieved.  " + result.getAssetDTO() + "<br/>";
         	}
 			 else if ("getContestDataOnly".equals(operation)) {
         	List<SimpleContestData> ret = port.getContestDataOnly();

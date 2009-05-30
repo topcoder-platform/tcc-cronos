@@ -14,6 +14,7 @@ import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.Status;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
+import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.service.EntityNotFoundException;
 import com.topcoder.management.project.Project;
 import com.topcoder.project.service.ContestSaleData;
@@ -2941,7 +2942,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			// set null to avoid cycle
 			contest.getAssetDTO().setDependencies(null);
-			contest.getAssetDTO().getForum().setCompVersion(null);
+			if (contest.getAssetDTO().getForum() != null)
+			{
+				contest.getAssetDTO().getForum().setCompVersion(null);
+			}
+			if (contest.getAssetDTO().getLink() != null)
+			{
+				contest.getAssetDTO().getLink().setCompVersion(null);
+			}
+			if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0)
+			{
+				for (CompDocumentation doc : contest.getAssetDTO().getDocumentation())
+				{
+					doc.setCompVersion(null);
+				}
+			}
 
     		return contest;
     	} catch(ProjectServicesException pse) {
