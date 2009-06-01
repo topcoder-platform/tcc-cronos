@@ -103,9 +103,13 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
             var str:String="";
 
             var i:int=0;
+            //BUGR-1925
+            var Pattern:RegExp =  new RegExp("\"", "g");
             for each (var p:Project in projects) {
                 var nodeStr:String;
                 var poutput:String=p.name;
+                //BUGR-1925
+                poutput = poutput.replace(Pattern, "&quot;");
                 if (p.access.toLowerCase().indexOf("read") >= 0) {
                     poutput+="[Read]";
                 }
@@ -124,6 +128,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
                 var j:int=0;
                 for each (var c:Contest in p.contests) {
                     var output:String=c.name;
+                    //BUGR-1925
+                    output = output.replace(Pattern, "&quot;");
                     if (c.access.toLowerCase().indexOf("read") >= 0) {
                         output+="[Read]";
                     }
