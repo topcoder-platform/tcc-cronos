@@ -944,7 +944,7 @@ SoftwareCompetition generateSoftwareCompetition(ContestServiceFacade port) throw
         		SoftwareCompetition result = port.getSoftwareContestByProjectId(Long.parseLong(pid));
         	
         		StringBuilder b = new StringBuilder();
-        		callResult = "Retrieved.  " + result.getAssetDTO() + "<br/>";
+        		callResult = "Retrieved.  " + result.getAssetDTO() + ", name is " + result.getAssetDTO().getName() + "<br/>";
         	}
 			 else if ("getContestDataOnly".equals(operation)) {
         	List<SimpleContestData> ret = port.getContestDataOnly();
