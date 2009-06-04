@@ -104,12 +104,16 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
 
             var i:int=0;
             //BUGR-1925
-            var Pattern:RegExp =  new RegExp("\"", "g");
+            var quotPattern:RegExp =  new RegExp("\"", "g");
+            var lABPattern:RegExp =  new RegExp("<", "g");
+            var rABPattern:RegExp = new RegExp(">", "g");
             for each (var p:Project in projects) {
                 var nodeStr:String;
                 var poutput:String=p.name;
                 //BUGR-1925
-                poutput = poutput.replace(Pattern, "&quot;");
+                poutput = poutput.replace(quotPattern, "&quot;");
+                poutput = poutput.replace(lABPattern, "&lt;");
+                poutput = poutput.replace(rABPattern, "&gt;");
                 if (p.access.toLowerCase().indexOf("read") >= 0) {
                     poutput+="[Read]";
                 }
@@ -129,7 +133,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
                 for each (var c:Contest in p.contests) {
                     var output:String=c.name;
                     //BUGR-1925
-                    output = output.replace(Pattern, "&quot;");
+                    output = output.replace(quotPattern, "&quot;");
+                    output = output.replace(lABPattern, "&lt;");
+                    output = output.replace(rABPattern, "&gt;");
                     if (c.access.toLowerCase().indexOf("read") >= 0) {
                         output+="[Read]";
                     }
