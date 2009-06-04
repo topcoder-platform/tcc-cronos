@@ -452,7 +452,10 @@
 			            
 			            this.currentState = "DetailsState";
                        save.visible = true;
-                       
+                       details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+						details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+						details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+						details.ns_detailedDesc.htmlText = details.ns_detailedDesc.htmlText; //BUGR-1895
                        this.height = DETAILS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -560,7 +563,10 @@
 
                     this.currentState="DetailsState";
                    save.visible = true; // BUGR-1445
-                   
+				   details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+					details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+					details.ns_detailedDesc.htmlText = details.ns_detailedDesc.htmlText; //BUGR-1895
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
 
 			       if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
@@ -746,6 +752,8 @@
                 } else if (this.currentState == "AttachFilesState") {
                     // BUGR-1067
                     if (!studioContestType) {
+						details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+						details.ns_detailedDesc.htmlText = details.ns_detailedDesc.htmlText; //BUGR-1895
                         this.currentState="DetailsState";
                         this.height=DETAILS_HEIGHT; // BUGR-1134
                         setCurStep(step4box);
@@ -760,6 +768,8 @@
                     setCurStep(step4box);
                     setNextStep(step5box); // BUGR-1141
                 } else if (this.currentState == "SpecificationsState") {
+					details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                     this.currentState="DetailsState";
                     this.height=DETAILS_HEIGHT; // BUGR-1134
                     setCurStep(step3box);
