@@ -723,7 +723,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 var competitionType:String="STUDIO";
                 this.competition.type=competitionType;
 
-                Helper.showAlertMessage("Contest created successfully!");
+                //Helper.showAlertMessage("Contest created successfully!");
                 (container.contents as LaunchWidget).sched.initData(); // BUGR-1445
 
 		// BUGR-1470 - mark refresh of my project.
