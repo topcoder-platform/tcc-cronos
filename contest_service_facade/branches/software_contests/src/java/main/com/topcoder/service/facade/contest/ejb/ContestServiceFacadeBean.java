@@ -2927,6 +2927,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     		contest.setProjectHeader(fullProjectData.getProjectHeader());
     		contest.setProjectData(fullProjectData);
     		contest.setProjectPhases(fullProjectData);
+			contest.getProjectPhases().setId(fullProjectData.getProjectHeader().getId());
     		contest.setId(projectId);
     		contest.setProjectResources(fullProjectData.getResources());
 
