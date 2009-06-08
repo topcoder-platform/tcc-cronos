@@ -54,8 +54,8 @@
                 //var type:CompetionType = new CompetionType();
                 if (event.item) {
                     var competionType:String=event.item.toString();
-
-                    if (mainWidget && mainWidget.competitionType) {
+                    
+                    if (mainWidget) {
                         mainWidget.competitionType=competionType;
                     }
 
@@ -168,7 +168,8 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             public function initData():void {
-                if (mainWidget.competition != null && mainWidget.competition.type != null && contestType != null) {
+                trace("IN INIT DATA FOR CONTEST SELECTION");
+                if (mainWidget && mainWidget.competitionType != null && contestType != null) {
                     for (var i:int=0; i < contestType.numRadioButtons; i++) {
                         var bt:RadioButton=contestType.getRadioButtonAt(i);
                         if (bt.enabled && bt.value == mainWidget.competitionType) {
@@ -177,17 +178,19 @@
                         }
                     }
                     
-                    // set the project id.
-                    for each (var p:Object in selectContests.dataProvider) {
-                        trace("------------ p.data: " + p.data + ", selected-proj-id: " + mainWidget.tcDirectProjectId);
-                        if (p.data == mainWidget.tcDirectProjectId) {
-                            // select the project.
-                            selectContests.selectedItem=p;
+                    if (selectContests.dataProvider) {
+                        // set the project id.
+                        for each (var p:Object in selectContests.dataProvider) {
+                            trace("------------ p.data: " + p.data + ", selected-proj-id: " + mainWidget.tcDirectProjectId);
+                            if (p.data == mainWidget.tcDirectProjectId) {
+                                // select the project.
+                                selectContests.selectedItem=p;
+                            }
                         }
                     }
                 }
             }
-
+            
             //
             // It finds the competition type by iterating over radio box and finding which one is selected.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-           width="100%"
-           height="100%"
-           horizontalScrollPolicy="off"
-           verticalScrollPolicy="off">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         horizontalScrollPolicy="off"
+         verticalScrollPolicy="off">
 
     <mx:HTTPService id="requestContestTypes"
                     url="/i/cockpit/data/launch_a_contest/contestTypes.xml"
                     resultFormat="xml"
                     result="preprocessTypes(event)">
     </mx:HTTPService>
-    <mx:HTTPService id="requestContestExamples"
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestOverviewData"
                     url="/i/cockpit/data/launch_a_contest/overview.xml"
                     resultFormat="e4x"
-                    result="loadExamples(event)"
+                    result="loadOverviewData(event)"
                     fault="Helper.showAlertMessage(event.fault.faultString);">
     </mx:HTTPService>
     <mx:HTTPService id="requestContestFees"
@@ -22,7 +26,8 @@
                     resultFormat="e4x"
                     result="loadContestFees(event)"
                     fault="Helper.showAlertMessage(event.fault.faultString);">
-    </mx:HTTPService> <!-- BUGR-1737 -->
+    </mx:HTTPService>
+    <!-- BUGR-1737 -->
     <mx:Script>
         <![CDATA[
             import mx.effects.easing.Back;
@@ -38,11 +43,11 @@
             import mx.formatters.NumberFormatter;
             import mx.controls.ButtonLabelPlacement; // BUGR-1501		
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
-
-
-
+            
             private static var s_inputs:Array=["firstPlace", "secondPlace", "thirdPlace", "fourthPlace", "fifthPlace"];
+            
             private static var ns_inputs:Array=["ns_firstPlace", "ns_secondPlace"];
+            
             //private static var s_inputsMap:Object={1: "firstPlace", 2: "secondPlace", 3: "thirdPlace", 4: "fourthPlace", 5: "fifthPlace"};
             //private static var ns_inputsMap:Object={1: "ns_firstPlace", 2: "ns_secondPlace"};
 
@@ -57,15 +62,32 @@
             
             [Bindable]
             private var curContestType:int;
-
-	    private var SW_PRIZE_AMOUNT_DESCRIPTION:String = "Please enter a first place prize amount. The remaining fields will be calculated for you. During checkout, you will only be charged for the Contest Fee. The remainder of the contest cost will be billed upon completion of the contest.";
-
+            
+            //
+            // Updated for Cockpit Release Assembly 1 v1.0
+            //    - To avoid binding can not detect error.
+            //
+            [Bindable]
+            private var SW_PRIZE_AMOUNT_DESCRIPTION:String="Please enter a first place prize amount. The remaining fields will be calculated for you. During checkout, you will only be charged for the Contest Fee. The remainder of the contest cost will be billed upon completion of the contest.";
+            
+            /**
+             * Indicates whether example one should be shown or not.
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable]
+            private var showExampleOne:Boolean=false;
+            
+            /**
+             * Indicates whether example two should be shown or not.
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable]
+            private var showExampleTwo:Boolean=false;
+            
+            /**
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+             */
             public function initData():void {
-                requestContestExamples.send();
-				requestContestFees.send(); // BUGR-1737
-
-                //var inputsMap:Object={1: firstPlace, 2: secondPlace, 3: thirdPlace, 4: fourthPlace, 5: fifthPlace};
-
                 for each (var inptName:String in s_inputs) {
                     this[inptName].text="";
                 }
@@ -74,13 +96,19 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget.studioContestType) {
+                    // For studio contest it is loaded inside handler for requestContestTypes.
                     requestContestTypes.send();
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
-		    
                 } else {
-                	ns_contestf.editable = mainWidget.isAdmin; // BUGR-1737
-                	ns_setPrizes();
+                    requestContestFees.send(); // BUGR-1737
+                    //
+                    // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //    - Changed the name to more generic 'overview data' rather than 'examples'
+                    //
+                    requestOverviewData.send();
+                    ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
+                    ns_setPrizes();
                 }
             }
 
@@ -89,7 +117,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function s_setPrizes():void {
-                if (mainWidget.competition.contestData.prizes) {
+                if (mainWidget && mainWidget.competition && mainWidget.competition.contestData.prizes) {
                     for (var i:int=0; i < mainWidget.competition.contestData.prizes.length; i++) {
                         var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
                         var p:int=prize.place as int;
@@ -99,13 +127,12 @@
                         }
                     }
                 }
-
-		if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0)
-		    {	     
-			adminf.text =  mainWidget.competition.contestData.contestAdministrationFee.toString();
-
-		    }
-
+                
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0) {
+                    adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
+                    
+                }
+                
                 s_updateAmount();
             }
 
@@ -114,15 +141,28 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function ns_setPrizes():void {
-                if (mainWidget.softwareCompetition.prizes) {
-                    for (var i:int=0; i < mainWidget.softwareCompetition.prizes.length; i++) {
-                        var prize:PrizeData=mainWidget.softwareCompetition.prizes[i] as PrizeData;
-                        var p:int=prize.place as int;
-                        if (p <= 2) {
-                            var input:TextInput=this[ns_inputs[p - 1]] as TextInput;
-                            input.text=prize.amount.toString();
+                trace("IN NS_SETPRIZES: " + mainWidget.softwareCompetition);
+                if (mainWidget.softwareCompetition) {
+                    if (mainWidget.softwareCompetition.prizes && mainWidget.softwareCompetition.prizes.length > 0) {
+                        for (var i:int=0; i < mainWidget.softwareCompetition.prizes.length; i++) {
+                            var prize:PrizeData=mainWidget.softwareCompetition.prizes[i] as PrizeData;
+                            var p:int=prize.place as int;
+                            if (p <= 2) {
+                                var input:TextInput=this[ns_inputs[p - 1]] as TextInput;
+                                input.text=prize.amount.toString();
+                            }
+                            
                         }
-
+                    } else {
+                        trace("SETTING PRIZE READING PROJECT HEADER");
+                        var firstPlacePrize:Number=SoftwareCompetitionUtils.instance().getFirstPrize(mainWidget.softwareCompetition);
+                        var secondPlacePrize:Number=firstPlacePrize * 0.50;
+                        
+                        var reviewCost:Number=SoftwareCompetitionUtils.instance().getReviewCost(mainWidget.softwareCompetition);
+                        
+                        (this[ns_inputs[0]] as TextInput).text=firstPlacePrize.toFixed(0);
+                        (this[ns_inputs[1]] as TextInput).text=secondPlacePrize.toFixed(0);
+                        ns_reviewCost.text=reviewCost.toFixed(0);
                     }
                 }
 
@@ -211,8 +251,19 @@
                 }
 
                 mainWidget.softwareCompetition.prizes=prizes;
-		mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
-
+                mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
+                
+                // set dynamic properties before save.
+                var pns:Array=new Array();
+                for (var k:int=0; k < mainWidget.softwareCompetition.prizes.length; k++) {
+                    var p:Number=PrizeData(mainWidget.softwareCompetition.prizes[k]).amount;
+                    pns.push(p);
+                }
+                
+                SoftwareCompetitionUtils.instance().addAdminFeeProp(mainWidget.softwareCompetition, mainWidget.softwareCompetition.adminFee);
+                SoftwareCompetitionUtils.instance().addPrizeProps(mainWidget.softwareCompetition, pns);
+                SoftwareCompetitionUtils.instance().addReviewCostProp(mainWidget.softwareCompetition, new Number(ns_reviewCost.text));
+                
                 mainWidget.review.ns_firstPrizeS=ns_firstPlace.text;
                 mainWidget.review.ns_secondPrizeS=ns_secondPlace.text;
                 mainWidget.review.ns_reviewCostS=ns_reviewCost.text;
@@ -222,16 +273,31 @@
 
                 return true;
             }
-
-
+            
+            
+            /**
+             * Handles the select for sub contest type.
+             *
+             * Updated to set / unset whether exampleOne and exampleTwo box should be shown or not.
+             *
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
                 curContestType=Number(studioType.selectedValue);
-
-		if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0)
-		{
-			adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
-		}
+                
+                if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                    adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
+                }
+                
+                if (mainWidget.studioContestType) {
+                    showExampleOne=isPresentXml('example1');
+                    showExampleTwo=isPresentXml('example2');
+                } else {
+                    showExampleOne=false;
+                    showExampleTwo=false;
+                }
+                
                 dispatchEvent(new Event("curContestTypeChanged"));
             }
 
@@ -366,36 +432,91 @@
 
                 return true;
             }
-
-            // since BUGR-1039
-            private function loadExamples(e:ResultEvent):void {
+            
+            /**
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             *    - Changed the name to more generic 'overview data' rather than 'examples'
+             */
+            private function loadOverviewData(e:ResultEvent):void {
                 // Do not need to change it as this is not coming through webservice. 
                 if (e != null && e.result != null && e.result is XML) {
                     contestOverview=e.result as XML;
+                    
+                    if (mainWidget.studioContestType) {
+                        showExampleOne=isPresentXml('example1');
+                        showExampleTwo=isPresentXml('example2');
+                    } else {
+                        showExampleOne=false;
+                        showExampleTwo=false;
+                    }
+                    
+                    //
+                    // once data is loaded fire curContestTypeChanged event
+                    // so that ui gets updated with description etc.
+                    //
+                    dispatchEvent(new Event("curContestTypeChanged"));
                 }
             }
 
             // since BUGR-1737
+            // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
             private function loadContestFees(e:ResultEvent):void {
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
-       				if(!mainWidget.studioContestType) {
-						ns_contestf.text = contestFees.contestType.(@id==mainWidget.competitionType).contestFee; // BUGR-1737       					
-       				} 
-               }
+                    if (!mainWidget.studioContestType) {
+                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737       					
+                    } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
+                    }
+                }
             }
             
+            /**
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             *
+             * Determines whether the current contest type xml has the specified property or not.
+             * It returns true if it has, otherwise it returns false.
+             *
+             * @return whether the current contest type xml has the specified property or not.
+             */
             [Bindable(event="curContestTypeChanged")]
             private function isPresentXml(prop:String):Boolean {
-                //trace("curContestType=" + curContestType + "; prop=" + prop + "; res=" + contestOverview.contestType.(@id==curContestType).hasOwnProperty(prop));
-                return contestOverview.contestType.(@id == curContestType).hasOwnProperty(prop);
+                var xml:XML=getCurrentContestTypeXml();
+                if (xml) {
+                    return xml.hasOwnProperty(prop);
+                } else {
+                    return false;
+                }
+            }
+            
+            /**
+             * Gets the current contest type's config xml node.
+             *
+             * If the contest type is studio then the path is STUDIO/contest-type-id.
+             * Otherwise the path is contest-type-name (or competition type name).
+             *
+             * @return whether the current contest type xml has the specified property or not.
+             *
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable(event="curContestTypeChanged")]
+            private function getCurrentContestTypeXml():XML {
+                if (mainWidget.studioContestType) {
+                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType)[0];
+                } else {
+                    return contestOverview.contestType.(@id == mainWidget.competitionType)[0];
+                }
             }
 
             private function preprocessTypes(e:ResultEvent):void {
                 studioTypeBox.removeAllChildren();
                 studioType.selection=null;
-
-                var contestType:String=mainWidget.competition.contestData.contestTypeId.toString();
+                
+                var contestType:String="";
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
+                    contestType=mainWidget.competition.contestData.contestTypeId.toString();
+                }
+                
                 var selectedValue:Number=-1;
 
                 if (e != null && e.result != null && e.result is XMLNode) {
@@ -425,12 +546,18 @@
                         studioType.selectedValue=selectedValue;
                     }
                     curContestType=Number(selectedValue);
-		    if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0)
-		    {
-			adminf.text = contestFees.contestType.(@id==mainWidget.competitionType).subType.(@id==curContestType).contestFee; // BUGR-1737
-		    }
-
-                    dispatchEvent(new Event("curContestTypeChanged"));
+                    
+                    //
+                    // request overview data after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    requestOverviewData.send();
+                    
+                    //
+                    // request contest fees after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    requestContestFees.send();
                 }
             }
 
@@ -479,10 +606,13 @@
                            click="this.mainWidget.previewContest()"/>
                 <!-- BUGR-1501 -->
             </mx:HBox>
-			<mx:HBox horizontalAlign="right" width="100%">
-				<mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
-				<mx:Spacer width="100%" />
-			</mx:HBox>
+            <mx:HBox horizontalAlign="right"
+                     width="100%">
+                <mx:Label text="Project: {mainWidget.tcDirectProjectName}"
+                          styleName="projectTitle"
+                          width="80%"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
             <!-- BUGR-1067 -->
             <mx:VBox width="100%"
                      visible="{mainWidget.studioContestType}"
@@ -507,7 +637,7 @@
                      id="description"
                      styleName="smallBlackText">
                 <mx:text>
-					{contestOverview.contestType.(@id==curContestType).description}
+					{getCurrentContestTypeXml().description}
 	            </mx:text>
             </mx:Text>
             <mx:Spacer height="5"/>
@@ -515,27 +645,29 @@
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
             <mx:Label id="ExamplesLabel"
-        			  text="Examples:"
-                      styleName="subsectionTitle"/>
+                      text="Examples:"
+                      styleName="subsectionTitle"
+                      visible="{showExampleOne || showExampleTwo}"
+                      includeInLayout="{showExampleOne || showExampleTwo}"/>
             <mx:HBox id="ExamplesBox"
                      verticalAlign="top"
                      horizontalGap="0"
-                     visible="{isPresentXml('example1') || isPresentXml('example2')}"
-                     includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}"
+                     visible="{showExampleOne || showExampleTwo}"
+                     includeInLayout="{showExampleOne || showExampleTwo}"
                      width="100%">
                 <mx:VBox verticalGap="0"
                          width="50%"
-                         visible="{isPresentXml('example1')}"
-                         includeInLayout="{isPresentXml('example1')}">
+                         visible="{showExampleOne}"
+                         includeInLayout="{showExampleOne}">
                     <mx:HBox width="100%">
-                        <mx:Image source="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.thumbImage : ''}"
-                                  click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.fullsizeImage : '')}"
+                        <mx:Image source="{showExampleOne ? getCurrentContestTypeXml().example1.thumbImage : ''}"
+                                  click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.fullsizeImage : '')}"
                                   width="150"
                                   height="150"/>
                         <mx:VBox verticalGap="0"
                                  horizontalGap="0"
                                  width="100%">
-                            <mx:Text text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}"
+                            <mx:Text text="{showExampleOne ? getCurrentContestTypeXml().example1.name : ''}"
                                      styleName="boldBlackText"
                                      width="100%"/>
                             <mx:HBox horizontalGap="0">
@@ -544,7 +676,7 @@
                                           styleName="smallBlackText"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.contestLink : '')}"/>
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.contestLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <mx:HBox horizontalGap="0">
@@ -553,7 +685,7 @@
                                           styleName="smallBlackText"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissionsLink : '')}"/>
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.submissionsLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <mx:HBox horizontalGap="0">
@@ -562,29 +694,29 @@
                                           width="82"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.winnersLink : '')}"/>
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.winnersLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <!--<mx:Spacer height="17" /> -->
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Prizes"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.prizes : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Duration"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.duration : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Registrants"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.registrants : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Submissions"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.submissions : ''}"/>
                             </mx:HBox>
                         </mx:VBox>
                     </mx:HBox>
@@ -593,11 +725,11 @@
                 <mx:VBox horizontalGap="0"
                          verticalGap="0"
                          width="50%"
-                         visible="{isPresentXml('example2')}"
-                         includeInLayout="{isPresentXml('example2')}">
+                         visible="{showExampleTwo}"
+                         includeInLayout="{showExampleTwo}">
                     <mx:HBox width="100%">
-                        <mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}"
-                                  click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}"
+                        <mx:Image source="{showExampleTwo ? getCurrentContestTypeXml().example2.thumbImage : ''}"
+                                  click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.fullsizeImage : '')}"
                                   styleName="clickableImage"
                                   width="150"
                                   height="150"/>
@@ -610,7 +742,7 @@
                                  verticalAlign="top"
                                  width="100%">
                             <!-- BUGR-1204 -->
-                            <mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}"
+                            <mx:Label text="{showExampleTwo ? getCurrentContestTypeXml().example2.name : ''}"
                                       styleName="boldBlackText"
                                       width="100%"/>
                             <mx:HBox horizontalGap="0">
@@ -619,7 +751,7 @@
                                           styleName="smallBlackText"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.contestLink : '')}"/>
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.contestLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <mx:HBox horizontalGap="0">
@@ -628,7 +760,7 @@
                                           styleName="smallBlackText"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissionsLink : '')}"/>
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.submissionsLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <mx:HBox horizontalGap="0">
@@ -637,29 +769,29 @@
                                           styleName="smallBlackText"/>
                                 <mx:LinkButton styleName="linkBtn"
                                                label="link"
-                                               click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.winnersLink : '')}"/>
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.winnersLink : '')}"/>
                                 <mx:Image source="@Embed('../../assets/more_info.png')"/>
                             </mx:HBox>
                             <!--<mx:Spacer height="17" />-->
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Prizes"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.prizes : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Duration"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.duration : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Registrants"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.registrants : ''}"/>
                             </mx:HBox>
                             <mx:HBox styleName="smallBlackText">
                                 <mx:Label text="Submissions"
                                           width="80"/>
-                                <mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.submissions : ''}"/>
                             </mx:HBox>
                         </mx:VBox>
                     </mx:HBox>
@@ -673,13 +805,13 @@
                           styleName="redText"/>
                 <mx:HBox horizontalGap="25"
                          styleName="smallBlackText">
-                    <mx:Label text="&#8226; Minimum: {isPresentXml('minPrize') ? contestOverview.contestType.(@id==curContestType).minPrize : ''}"
+                    <mx:Label text="&#8226; Minimum: {isPresentXml('minPrize') ? getCurrentContestTypeXml().minPrize : ''}"
                               visible="{isPresentXml('minPrize')}"
                               includeInLayout="{isPresentXml('minPrize')}"/>
-                    <mx:Label text="&#8226; Average: {isPresentXml('averagePrize') ? contestOverview.contestType.(@id==curContestType).averagePrize : ''}"
+                    <mx:Label text="&#8226; Average: {isPresentXml('averagePrize') ? getCurrentContestTypeXml().averagePrize : ''}"
                               visible="{isPresentXml('averagePrize')}"
                               includeInLayout="{isPresentXml('averagePrize')}"/>
-                    <mx:Label text="&#8226; High Exposure: {isPresentXml('maxExposure') ? contestOverview.contestType.(@id==curContestType).maxExposure : ''}"
+                    <mx:Label text="&#8226; High Exposure: {isPresentXml('maxExposure') ? getCurrentContestTypeXml().maxExposure : ''}"
                               visible="{isPresentXml('maxExposure')}"
                               includeInLayout="{isPresentXml('maxExposure')}"/>
                 </mx:HBox>
@@ -874,4 +1006,4 @@
             </mx:HBox>
         </mx:VBox>
     </mx:VBox>
-</mx:Canvas>
+</mx:VBox>

@@ -7,8 +7,8 @@
                            initialize="initWidget()"
                            verticalScrollPolicy="off"
                            horizontalScrollPolicy="off"
-                           creationComplete="onCreateComplete(1)"
-						    resizeEffect="{resize}">
+                           resizeEffect="{resize}"
+                           creationComplete="onCreateComplete(1)">
     <mx:Style source="Style.css"/>
 
     <mx:Script>
@@ -86,10 +86,10 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private var _stepBoxToStepNum:Dictionary=new Dictionary();
-
-	    [Bindable]
-            private var isStudioContestType:Boolean=false;
-
+            
+            [Bindable]
+            private var isStudioContestType:Boolean=true;
+            
             [Bindable]
             public function get studioContestType():Boolean {
                 return isStudioContestType;
@@ -100,17 +100,16 @@
                 isStudioContestType=val;
                 DETAILS_HEIGHT=(val ? 950 : 1350);
                 REVIEW_HEIGHT=(val ? 1165 : 1350); // BUGR-1067
-		OVERVIEW_HEIGHT=(val ? 770 : 630);
-		if(!val) {
-			if(contestSelect.contestType.selection.value == "CONCEPTUALIZATION" || contestSelect.contestType.selection.value == "SPECIFICATION") {
-				DETAILS_HEIGHT = 1230;
-				details.widgetHeight = 670;
-			}
-			else {
-				details.widgetHeight = 800;
-			}
-			overView.height = 580;
-		}
+                OVERVIEW_HEIGHT=(val ? 770 : 630);
+                if (!val) {
+                    if (competitionType == "CONCEPTUALIZATION" || competitionType == "SPECIFICATION") {
+                        DETAILS_HEIGHT=1230;
+                        //details.widgetHeight=670;
+                    } else {
+                        //details.widgetHeight=800;
+                    }
+                        //overView.height = 580;
+                }
                 
                 // BUGR-1067
                 stepNumber=1;
@@ -127,11 +126,10 @@
                 totalStepsNumber=stepNumber - 1;
                 stepNumber=1;
                 trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
-
-		if (val)
-		{
-			competitionType = "STUDIO";
-		}
+                
+                if (val) {
+                    competitionType="STUDIO";
+                }
             }
 
             /**
@@ -163,16 +161,16 @@
              }
 
             public function closeWidget():void {
-                resetWidget();
+                resetWidget(true);
                 container.startMinimize();
             }
 
 
             private function initWidget():void {
                 this.currentState="ContestSelectionState";
-
-                trace("LAUNCH WIDGET::Setting studio contest type");
-                this.studioContestType=true;
+                
+                //trace("LAUNCH WIDGET::Setting studio contest type");
+                //this.studioContestType=true;
                 getDataService();
             }
 
@@ -193,6 +191,7 @@
             }
 
             public function initComponent():void {
+                trace("IN INIT COMPONENT OF LAUNCH WIDGET");
                 // modified lines below for BUGR-1134
                 this.height=710;
                 mainPanel.horizontalScrollPolicy="false";
@@ -200,12 +199,12 @@
                 back.visible=false;
                 //read hints.xml data
                 getData(null);
-
-                details.widgetHeight=950; // BUGR-1134
+                
+                //details.widgetHeight=950; // BUGR-1134
                 specf.widgetHeight=800;
                 attch.height=600;
                 sched.height=800;
-                overView.height=700; // BUGR-1134
+                //overView.height=700; // BUGR-1134
                 review.height=1080; // BUGR-1134
                 contestSelect.mainWidget=this;
                 overView.mainWidget=this;
@@ -218,10 +217,10 @@
 
                 // initialize web-services
                 initWebServices();
-           // BUGR-1235
-		  //initialWdt.init();
-		  contestSelect.init();
-
+                // BUGR-1235
+                //initialWdt.init();
+                contestSelect.init();
+                
                 // BUGR-1141
                 setCurStep(step1box);
                 setNextStep(step2box);
@@ -232,8 +231,8 @@
                 setNextStep(step7box);
                 setNextStep(step8box);
                 stepNumber=1;
-                onCreateComplete(2)
-
+                
+                onCreateComplete(2);
             }
             
             private function initWebServices():void {
@@ -250,19 +249,36 @@
                 this._pws=ProjectServiceFacadeBean;
             }
             
-            private var flag:int=0;
-
+            private var flag:int = 0;
+            
             public function onCreateComplete(f:int):void {
-                flag=flag + f;
-                if (flag >= 3 && competition && competition.competitionId > 0) {
-                    flag=4;
-                    this.competitionType="STUDIO";
-                    competition.type=this.competitionType;
-                    review.cstTypeStep1=this.competitionType;
-                    
-                    startLaunchProcess();
-                    next();
-                }
+                flag = flag + f;
+                trace("IN ON CREATE COMPLETE:: " + this.competition + "," + this.softwareCompetition + "," + this.competitionType + "," + flag);
+                if (flag >= 3) {
+                    if (this.initWidgetCallbackFn!=null) {
+                        initWidgetCallbackFn();
+                        initWidgetCallbackFn=null;
+                    }
+                
+                    if (competition && competition.competitionId > 0) {
+                        trace("IN ON CREATE COMPLETE OF STUDIO COMPETITION :: EDIT");
+                        //this.competitionType="STUDIO";
+                        competition.type=this.competitionType;
+                        review.cstTypeStep1=this.competitionType;
+                        
+                        startLaunchProcess();
+                        next();
+                    } else if (softwareCompetition) {
+                        trace("IN ON CREATE COMPLETE OF SOFTWARE COMPETITION :: EDIT");
+                        //this.competitionType="DESIGN";
+                        softwareCompetition.type=this.competitionType;
+                        trace("----------------------------------> in edit for s/w contest, competition type: " + this.competitionType);
+                        review.cstTypeStep1=this.competitionType;
+                        
+                        startLaunchProcess();
+                        next();
+                    }
+                } 
             }
             
             
@@ -300,6 +316,7 @@
             }
 
             public function openOverViewPage():void {
+                this.overView.initData();
                 this.currentState="OverViewState";
                 save.visible=true;
                 this.height=OVERVIEW_HEIGHT; // BUGR-1134
@@ -433,8 +450,13 @@
 
                         break;
                     case 2:
-
-                        var ret:int=contestSelect.goToOverView();
+                        
+                        var ret:int=0;
+                        
+                        if (this.currentState=="ContestSelectionState") {
+                            ret=contestSelect.goToOverView();
+                        }
+                        
                         if (ret == 0) {
                             this.currentState="OverViewState";
                             save.visible=false;
@@ -460,6 +482,7 @@
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
+						details.initData();
 			            break;
 			        case 4:
 			            
@@ -538,24 +561,17 @@
 		   //Currently only implement Studio constest type
                    /*if (contestSelect.contestType.selectedValue != "STUDIO"){
                        return;
-                   }*/
-                   this.currentState = "OverViewState";
-                   save.visible = false;
-                   this.height = OVERVIEW_HEIGHT;  // BUGR-1134
-                   back.visible = true;
-		   // BUGR-1659
-		   if(this.competitionType != "STUDIO"){
-                       overView.ExamplesBox.visible=false;
-                       overView.ExamplesLabel.visible=false;
-                       overView.ExamplesBox.height=0;
-                    }                   
-                   setPreviousStep(step1box); // BUGR-1141
-                   setCurStep(step2box);// BUGR-1141
-                   
-                   result.type = contestSelect.contestType.selectedValue;
-                   //bottemline.height=mainPanel.height-710;
-                }
-                else if(this.currentState == "OverViewState"){
+                     }*/
+                    this.currentState="OverViewState";
+                    save.visible=false;
+                    this.height=OVERVIEW_HEIGHT; // BUGR-1134
+                    back.visible=true;
+                    setPreviousStep(step1box); // BUGR-1141
+                    setCurStep(step2box); // BUGR-1141
+                    
+                    result.type=contestSelect.contestType.selectedValue;
+                        //bottemline.height=mainPanel.height-710;
+                } else if (this.currentState == "OverViewState") {
                     //validate input
 					if (overView.validateFields() == false){
 						return;
@@ -587,6 +603,9 @@
                        details.tech1.includeInLayout = true;
                        details.tech2.includeInLayout = true;
 					}
+                    
+                    this.details.initData();
+                    
                     
                 } else if (this.currentState == "DetailsState") {
                     //validate input
@@ -637,11 +656,11 @@
                     if (sched.validateFields() == false) {
                         return;
                     }
-                   save.label = getExtraContestFee() == 0 && this.competitionType == "STUDIO" ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
-                   if(getExtraContestFee() == 0 && this.competitionType == "STUDIO" ) { // BUGR-1363
-                    	goNext.visible = false;
-                   }
-
+                    save.label=getExtraContestFee() == 0 && this.competitionType == "STUDIO" ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
+                    if (getExtraContestFee() == 0 && this.competitionType == "STUDIO") { // BUGR-1363
+                        goNext.visible=false;
+                    }
+                    
                     this.currentState="ReviewState";
                     save.visible=true;
                     //BUGR-1792
@@ -923,6 +942,7 @@
             }
 
             public function startLaunchProcess():void {
+                trace("IN START LAUNCH PROCESS");
                 launchWdt.percentWidth=100;
                 launchWdt.percentHeight=100;
                 mainPanel.percentWidth=100;
@@ -960,7 +980,7 @@
 
             private function doCancel(event:CloseEvent):void {
                 if (event.detail == Alert.YES) {
-                    resetWidget();
+                    resetWidget(true);
                 }
             }
             
@@ -978,22 +998,22 @@
                 next();
             }
             
-        // BUGR-1737 changed name    
-        private function processAdminRole(e:ResultEvent): void
-	    {
-			if(e!=null && e.result!=null){
-				_isAdmin=e.result as Boolean;
-			}
-	    }
-	    
-	   	// BUGR-1737
-	    private function processSoftwareAdminRole(e:ResultEvent): void
-	    {
-			if(e!=null && e.result!=null){
-				_isSoftwareAdmin=e.result as Boolean;
-				this.contestSelect.contestType.enabled=isSoftwareAdmin;
-			}
-	    }
+            // BUGR-1737 changed name    
+            private function processAdminRole(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    _isAdmin=e.result as Boolean;
+                }
+            }
+            
+            // BUGR-1737
+            private function processSoftwareAdminRole(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    _isSoftwareAdmin=e.result as Boolean;
+                        // Commented for Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        // This need to be commented for testing purpose, otherwise non-admin use case we can not test.
+                        //this.contestSelect.contestType.enabled=isSoftwareAdmin;
+                }
+            }
         ]]>
     </mx:Script>
 
@@ -1100,7 +1120,16 @@
                       resultFormat="object"
                       fault="showWebserviceError('updateSoftwareContest', event);">              
         </mx:operation>
-        
+
+        <!--
+             since: Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             webservice operation to fetch software contest data
+        -->
+        <mx:operation name="getSoftwareContestByProjectId"
+                      resultFormat="object"
+                      fault="showWebserviceError('getSoftwareContestByProjectId', event);">
+        </mx:operation>
+
     </mx:WebService>
 
     <mx:RemoteObject id="dataservice"
@@ -1434,7 +1463,8 @@
                    styleName="arrowLeftBtnStyle"
                    labelPlacement="{ButtonLabelPlacement.RIGHT}"
                    click="cancelBtn()"/>
-		<mx:Spacer width="90%" /> <!-- BUGR-1643 -->        
+        <mx:Spacer width="90%"/>
+        <!-- BUGR-1643 -->
         <mx:Button id="save"
                    buttonMode="true"
                    styleName="arrowRightBtnStyle"

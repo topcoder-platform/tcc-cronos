@@ -148,7 +148,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         * Current user id.
         */
         private var _userid:Number=Application.application.parameters.userid;
-            
+        
+        public var initWidgetCallbackFn:Function=null;
+        
         /**
         * @since BUGR-1737
         */     
@@ -265,38 +267,54 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function set competitionType(s:String):void {
             this._competitionType=s;
         }
-
-        public function resetWidget():void {
-            reload();
+        
+        public function resetWidget(isEmptyStart:Boolean):void {
+            reloadInternal(isEmptyStart,null);
         }
 
         /**
          * This action will reload this widget.
          */
         public function reload():void {
-            if(!container.contents.isMaximized())
-            {
-            		container.startMaximize();
-            }
-            var f:IWidgetFramework=widgetFramework;
-        	container.contents=new  LaunchWidget();
-        	
-        	// Now with changes in WidgetContainer, widget.parent != container.
-        	// so this need to be set.
-        	(container.contents as LaunchWidget).container=container;
-    		if (!_emptyStart)
-    		{
-            	(container.contents as LaunchWidget).openOverViewPage();
-    			_emptyStart = true;
-    		}
-    		
-        	container.contents.widgetFramework=f;
-        	container.contents.name=name;
-        	container.startRestore();
+            reloadInternal(true,null);
         }
         
-
-
+        private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
+            trace("IN RELOAD OF LAUNCH WIDGET:: START");
+            if (!container.contents.isMaximized()) {
+                container.startMaximize();
+            }
+            var f:IWidgetFramework=widgetFramework;
+            container.contents=new LaunchWidget();
+            // Now with changes in WidgetContainer, widget.parent != container.
+            // so this need to be set.
+            (container.contents as LaunchWidget).container=container;
+            container.contents.widgetFramework=f;
+            container.contents.name=name;
+            
+            (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
+                if (map) {
+                    (container.contents as LaunchWidget).contestid=map["contestid"];
+                    (container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
+                    (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
+                    (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
+                    (container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
+                    
+                    (container.contents as LaunchWidget).contestSelect.initData();
+                }
+                
+                trace("IN RELOAD OF LAUNCH WIDGET:: competitionType: " + (container.contents as LaunchWidget).competitionType);
+                
+                if (!isEmptyStart) {
+                    trace("IN RELOAD OF LAUNCH WIDGET:: OPEN OVERVIEW PAGE");
+                    (container.contents as LaunchWidget).openOverViewPage();
+                    //_emptyStart=true;
+                }
+                
+                container.startRestore();
+            }
+        }
+        
         /**
          * This action will show the user the configuration xml for this widget.
          */
@@ -443,42 +461,68 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
          * Set the attributes for this widget based on the given Map.
          *
+         * Updated for Cockpit Release Assembly 1 v1.0
+         *    - gets the contest type attribute.
+         *    - based on contest type it determines which version to load - software or studio.
+         *
          * @param map the attributes for this widget. Cannot be null.
          *
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
-        	if(map["contestid"])
-        	{
-        		contestid=map["contestid"];
-        		
-        		trace("@@@@ To get contest for: " + contestid); 
-        		_emptyStart = false;
-			    resetWidget();
-			
-			    (container.contents as LaunchWidget).contestid=map["contestid"];
-			    (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
-			    (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
-        		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
-			getContestOp.addEventListener("result", getContestHandler);
-			getContestOp.send(parseInt(contestid));
-			
-			showLoadingProgress();
-        	}
+            if (map["contestid"]) {
+                contestid=map["contestid"];
+                var contestType:String=map["contestType"];
+                trace("@@@@ To get contest for: " + contestid + ", type: " + contestType);
+                
+                //_emptyStart=false;
+                reloadInternal(false,map);
+                
+                if (contestType.toLocaleLowerCase() == "studio") {
+                    var getStudioContestOp:AbstractOperation=_csws.getOperation("getContest");
+                    getStudioContestOp.addEventListener("result", getStudioContestHandler);
+                    getStudioContestOp.send(parseInt(contestid));
+                } else {
+                    var getSWContestOp:AbstractOperation=_csws.getOperation("getSoftwareContestByProjectId");
+                    getSWContestOp.addEventListener("result", getSoftwareContestHandler);
+                    getSWContestOp.send(parseInt(contestid));
+                }
+                
+                showLoadingProgress();
+            }
         }
         
-        private function getContestHandler(e:ResultEvent):void
-        {
+        /**
+         * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+         * Name changed from getContestHandler to getStudioContestHandler, as the purpose.
+         */
+        private function getStudioContestHandler(e:ResultEvent):void {
             hideLoadingProgress();
-            trace("getContestHandler: " + e + ", " + e.result);
+            trace("getStudioContestHandler: " + e + ", " + e.result);
             if (e && e.result) {
                 var c:StudioCompetition=ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
-                trace("getContestHandler:: c: " + c);
+                trace("getStudioContestHandler:: c: " + c);
+                (container.contents as LaunchWidget).softwareCompetition=null;
                 (container.contents as LaunchWidget).competition=c;
                 (container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
-
-                    //_framework.openWidget("Launch Contests","Launch Contest");
+            }
+        }
+        
+        /**
+         * Handler for s/w competition retrieval.
+         * @since Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+         */
+        private function getSoftwareContestHandler(e:ResultEvent):void {
+            hideLoadingProgress();
+            trace("getSoftwareContestHandler: " + e + ", " + e.result);
+            if (e && e.result) {
+                var c:SoftwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
+                trace("getSoftwareContestHandler:: c: " + c);
+                (container.contents as LaunchWidget).competition=null;
+                (container.contents as LaunchWidget).softwareCompetition=c;
+                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                (container.contents as LaunchWidget).onCreateComplete(2);
             }
         }
 
@@ -519,43 +563,52 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 creditCardPaymentData.sessionId="";
                 creditCardPaymentData.csc=Model.instance.csc; // BUGR-1398
                 
-                var processContestPaymentOp:AbstractOperation;
-                if(studioContestType) { // BUGR-1682
-                	processContestPaymentOp = _csws.getOperation("processContestCreditCardPayment");
-                	processContestPaymentOp.addEventListener("result", eventHandler);
-	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-	                processContestPaymentOp.send(competition, creditCardPaymentData);
+                if (studioContestType) { // BUGR-1682
+                    processContestPaymentOp=_csws.getOperation("processContestCreditCardPayment");
+                    processContestPaymentOp.addEventListener("result", eventHandler);
+                    processContestPaymentOp.addEventListener("fault", faultEventHandler);
+                    processContestPaymentOp.send(competition, creditCardPaymentData);
                 } else {
-
-			 prepareSoftwareContest();
-            
-
-                	processContestPaymentOp = _csws.getOperation("processContestCreditCardSale");
-                	processContestPaymentOp.addEventListener("result", eventHandler);
-	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-	                processContestPaymentOp.send(softwareCompetition, creditCardPaymentData);
+                    
+                    prepareSoftwareContest();
+                    
+                    //
+                    // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                    // for credit card based order, set comments to user id.
+                    //
+                    softwareCompetition.assetDTO.compComments=userid.toString();
+                    
+                    processContestPaymentOp=_csws.getOperation("processContestCreditCardSale");
+                    processContestPaymentOp.addEventListener("result", eventHandler);
+                    processContestPaymentOp.addEventListener("fault", faultEventHandler);
+                    processContestPaymentOp.send(softwareCompetition, creditCardPaymentData);
                 }
-            }
-            else {
-			var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
-
-			purchaseOrderPaymentData.type=new PaymentType();
-			purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
-			purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
-
-		if(studioContestType) { // BUGR-1682
-                	processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
-                	processContestPaymentOp.addEventListener("result", eventHandler);
-	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-	                processContestPaymentOp.send(competition, purchaseOrderPaymentData);
-		} else {
-			prepareSoftwareContest();
-			
-			processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
-                	processContestPaymentOp.addEventListener("result", eventHandler);
-	                processContestPaymentOp.addEventListener("fault", faultEventHandler);
-	                processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData);
-		}
+            } else {
+                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
+                
+                purchaseOrderPaymentData.type=new PaymentType();
+                purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
+                purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
+                
+                if (studioContestType) { // BUGR-1682
+                    processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
+                    processContestPaymentOp.addEventListener("result", eventHandler);
+                    processContestPaymentOp.addEventListener("fault", faultEventHandler);
+                    processContestPaymentOp.send(competition, purchaseOrderPaymentData);
+                } else {
+                    prepareSoftwareContest();
+                    
+                    //
+                    // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                    // for purchase order, set comments to po number.
+                    //
+                    softwareCompetition.assetDTO.compComments=purchaseOrderPaymentData.poNumber;
+                    
+                    processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
+                    processContestPaymentOp.addEventListener("result", eventHandler);
+                    processContestPaymentOp.addEventListener("fault", faultEventHandler);
+                    processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData);
+                }
             }
             
             showLoadingProgress();
@@ -814,27 +867,22 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         public function previewContest():void {
             var url:String;
-            if(this.competitionType=="STUDIO"){
-
-            	if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
-                	Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
-            	} else {
-                	//url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
-			url="http://" + Application.application.parameters.studioAddress + "/direct/cockpit/impersonation/cockpitStudio.do?module=ViewContestDetails&ct=" + competition.contestData.contestId;
-
-                	navigateToURL(new URLRequest(url), "_blank");
-            	}
-            }
-            else 
-            {
-            	if(isNaN(this.softwareCompetition.projectHeader.id) ||this.softwareCompetition.projectHeader.id <= 0)
-                {
-                	Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+            if (this.competitionType == "STUDIO") {
+                
+                if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
+                    Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+                } else {
+                    //url="http://" + Application.application.parameters.studioAddress + "/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+                    url="http://" + Application.application.parameters.studioAddress + "/direct/cockpit/impersonation/cockpitStudio.do?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+                    
+                    navigateToURL(new URLRequest(url), "_blank");
                 }
-                else
-                {
-                	url = "http://"+Application.application.parameters.hostAddress+"/tc?module=ProjectDetail&pj=" + softwareCompetition.projectHeader.id;
-                	navigateToURL(new URLRequest(url), "_blank");
+            } else {
+                if (isNaN(this.softwareCompetition.projectHeader.id) || this.softwareCompetition.projectHeader.id <= 0) {
+                    Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+                } else {
+                    url="http://" + Application.application.parameters.hostAddress + "/tc?module=ProjectDetail&pj=" + softwareCompetition.projectHeader.id;
+                    navigateToURL(new URLRequest(url), "_blank");
                 }
            
             }
@@ -861,21 +909,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 	// BUGR-1363
         public function getPaidContestFee():Number {
-		if (this.competitionType == "STUDIO")
-		{
-        		if(!competition.contestData.payments) {
-        			return 0;
-        		}
-        		var paidFee:Number = 0;
-        		for(var i:int = 0; i < competition.contestData.payments.length; i++) {
-        			paidFee += (competition.contestData.payments[i] as ContestPaymentData).price;
-        		}
-        		return new Number(paidFee.toFixed(2));
-		}
-		else
-		{
-			return 0;
-		}
+            if (this.competitionType == "STUDIO") {
+                if (!competition.contestData.payments) {
+                    return 0;
+                }
+                var paidFee:Number=0;
+                for (var i:int=0; i < competition.contestData.payments.length; i++) {
+                    paidFee+=(competition.contestData.payments[i] as ContestPaymentData).price;
+                }
+                return new Number(paidFee.toFixed(2));
+            } else {
+                return 0;
+            }
         }
         
         // BUGR-1363

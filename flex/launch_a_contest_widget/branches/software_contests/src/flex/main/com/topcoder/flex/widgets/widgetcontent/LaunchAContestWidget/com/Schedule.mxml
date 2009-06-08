@@ -43,10 +43,18 @@
 
                 var startDate:Date=null;
                 var endDate:Date=null;
-
-                if (mainWidget.competition != null) {
-                    var startTime:Object=mainWidget.competition.startTime;
-                    var endTime:Object=mainWidget.competition.endTime;
+                var startTime:Object=null;
+                var endTime:Object=null;
+                
+                if (mainWidget.studioContestType) {
+                    if (mainWidget.competition != null) {
+                        startTime=mainWidget.competition.startTime;
+                        endTime=mainWidget.competition.endTime;
+                    }    
+                } else {
+                    if (mainWidget.softwareCompetition != null) {
+                        startTime=mainWidget.softwareCompetition.assetDTO.productionDate;
+                    }
                 }
 
                 //
@@ -58,7 +66,7 @@
                 var timeStr:String=null;
 
                 if (startTime != null) {
-                    var startDateStr:String=(mainWidget.studioContestType ? mainWidget.competition.startTime : mainWidget.softwareCompetition.assetDTO.productionDate) as String;
+                    var startDateStr:String=startTime as String;
 
                     if (startDateStr != null) {
                         startDate=DateUtil.parseFromString(startDateStr);
@@ -93,7 +101,7 @@
                 //
                 if (mainWidget.studioContestType) {
                     if (endTime != null) {
-                        var endDateStr:String=mainWidget.competition.endTime as String;
+                        var endDateStr:String=endTime as String;
 
                         if (endDateStr != null) {
                             endDate=DateUtil.parseFromString(endDateStr);

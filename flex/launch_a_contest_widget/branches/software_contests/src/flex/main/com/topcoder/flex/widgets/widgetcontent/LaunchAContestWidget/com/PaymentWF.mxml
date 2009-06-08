@@ -343,7 +343,7 @@
                     <mx:Spacer width="100%" height="100%" />
                     <mx:HBox width="100%" horizontalAlign="center">
                         <mx:Button label="SAVE AS DRAFT" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-                        <mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                        <mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget(true)" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
                     </mx:HBox>
                 </mx:VBox>
                 <mx:HBox verticalAlign="middle" width="100%" paddingRight="8">

@@ -295,6 +295,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         private static var PROJECT_INFO_TYPE_DR_POINTS_KEY:String="DR points";
 
         public static var PROJECT_INFO_TYPE_ADMIN_FEE_KEY:String="Admin Fee";
+        
+        public static var PROJECT_INFO_TYPE_REVIEW_COST_KEY:String="Review Cost";
 
         // CONSTANTS ENDS HERE
 
@@ -423,9 +425,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @param totalPrize total prize of the competition.
          */
         private function addDrPointsProp(softwareCompetition:SoftwareCompetition, totalPrize:Number):void {
-            var entry:MapEntry=new MapEntry();
-
             var drPoints:Number=0.20 * totalPrize;
+            
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_DR_POINTS_KEY) {
+                    e.value=drPoints.toFixed(0);
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
 
             entry.key=PROJECT_INFO_TYPE_DR_POINTS_KEY;
             entry.value=drPoints.toFixed(0);
@@ -455,6 +464,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @param totalPrize total prize of the competition.
          */
         private function addPaymentProp(softwareCompetition:SoftwareCompetition, totalPrize:Number):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_PAYMENT_KEY) {
+                    e.value=totalPrize.toFixed(0);
+                    return;
+                }
+            }
+            
             var entry:MapEntry=new MapEntry();
 
             entry.key=PROJECT_INFO_TYPE_PAYMENT_KEY;
@@ -479,6 +495,62 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             addPaymentProp(softwareCompetition, prizes[0]);
             //addAdminFeeProp(softwareCompetition, totalPrize);
             addDrPointsProp(softwareCompetition, totalPrize);
+        }
+        
+        /**
+         * Gets the first place prize property from project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return the first place prize
+         */
+        public function getFirstPrize(softwareCompetition:SoftwareCompetition):Number {
+            for each (var entry:MapEntry in softwareCompetition.projectHeader.properties) {
+                trace("GET FIRST PRIZE: entry: " + entry.key + "," + entry.value);
+                if (entry.key == PROJECT_INFO_TYPE_PAYMENT_KEY) {
+                    return new Number(entry.value);
+                }
+            }
+            
+            return 0;
+        }
+        
+        /**
+         * Gets the review cost property from project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return the review cost
+         */
+        public function getReviewCost(softwareCompetition:SoftwareCompetition):Number {
+            for each (var entry:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (entry.key == PROJECT_INFO_TYPE_REVIEW_COST_KEY) {
+                    return new Number(entry.value);
+                }
+            }
+            
+            // for existing projects assume review cost as 20% of first prize.
+            return getFirstPrize(softwareCompetition) * 0.20;
+        }
+        
+        /**
+         * Adds the review cost property to project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @param totalPrize total prize of the competition.
+         */
+        public function addReviewCostProp(softwareCompetition:SoftwareCompetition, reviewCost:Number):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_REVIEW_COST_KEY) {
+                    e.value=reviewCost.toFixed(0);
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
+
+            entry.key=PROJECT_INFO_TYPE_REVIEW_COST_KEY;
+            entry.value=reviewCost.toFixed(0);
+
+            softwareCompetition.projectHeader.properties.push(entry);
         }
 
     }

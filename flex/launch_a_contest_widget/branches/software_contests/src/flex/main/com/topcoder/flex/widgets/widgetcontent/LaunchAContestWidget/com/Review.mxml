@@ -45,7 +45,9 @@
             public var ns_detailedDescStr:String;
             public var ns_funcDescStr:String;
             public var ns_techListData:ArrayCollection;
-            public var ns_commentsStr:String;
+            // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+            // we don't need comments input anymore.
+            //public var ns_commentsStr:String;
 
             //
             // Introduced value holders for additional fields.
@@ -121,7 +123,9 @@
                     ns_shortDesc.text=ns_shortDescStr;
                     ns_funcDesc.text=ns_funcDescStr;
                     ns_detailedDesc.text=ns_detailedDescStr;
-                    ns_comments.text=ns_commentsStr;
+                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                    // we don't need comments input anymore.
+                    //ns_comments.text=ns_commentsStr;
 
                     // fix repeat of technologies.
                     ns_techList.htmlText="";
@@ -531,12 +535,18 @@
             <mx:Text id="ns_techList"
                      width="500"/>
 
+            <!-- 
+                commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                we don't need comments input anymore. 
+            -->
+            <!--
             <mx:Spacer height="5"/>
             <mx:Label text="Comments:"
                       fontWeight="bold"/>
             <mx:Text id="ns_comments"
                      width="500"
                      height="50"/>
+            -->
 
             <mx:Spacer height="5"/>
             <mx:Label text="Catalog Name:"

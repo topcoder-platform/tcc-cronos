@@ -73,6 +73,10 @@
                 //
                 if (mainWidget.studioContestType) {
                     docUploads=new Array();
+                    
+                    if (!this.mainWidget.competition) {
+                        return;
+                    }
 
                     for each (var doc:UploadedDocument in this.mainWidget.competition.contestData.documentationUploads) {
                         addDoc(doc);
@@ -80,6 +84,10 @@
 
                     this.mainWidget.competition.contestData.documentationUploads=docUploads;
                 } else { // BUGR-1600
+                    if (!this.mainWidget.softwareCompetition) {
+                        return;
+                    }
+                    
                 	for each(var x:CompDocumentation in this.mainWidget.softwareCompetition.assetDTO.documentation) {
                 		addCatalogDoc(x);
                 	}

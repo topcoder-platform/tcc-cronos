@@ -45,6 +45,10 @@
                 sizeInput.text="";
                 addReInput.text="";
                 fileFormatInput.text="";
+                
+                if (!this.mainWidget.competition) {
+                    return;
+                }
 
                 formatStr=this.mainWidget.competition.contestData.finalFileFormat;
                 if (formatStr == null) {

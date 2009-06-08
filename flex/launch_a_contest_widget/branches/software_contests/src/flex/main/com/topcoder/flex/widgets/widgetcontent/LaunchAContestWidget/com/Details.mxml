@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
            width="100%"
            height="100%"
            xmlns:tc="com.topcoder.flex.util.editor.*"
@@ -102,9 +102,25 @@
 
             // BUGR-1641
             private var currentResizingRTEditor:TCRichTextEditor = null;
+            
+            /**
+             * Stores the reference to application catalog.
+             * This is the default catalog for non design & non development contest.
+             * 
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+             */ 
+            private var applicationCatalog:SoftwareCategory = null;
+            
+            /**
+             * Stores the reference to 'Business Layer' category.
+             * This is the default category for non design & non development contest.
+             * 
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+             */
+            private var businessLayerApplicationCategory:SoftwareCategory = null;
 
-	    private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
-	    private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
+	        private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
+	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
 
             public function initData():void {
                 //
@@ -115,6 +131,10 @@
                     ctInput.htmlText="";
                     introInput.htmlText="";
                     glsInput.htmlText="";
+                    
+                    if (!this.mainWidget.competition) {
+                        return;
+                    }
 
                     ctInput.htmlText=this.mainWidget.competition.contestData.name; // BUGR-1379
                     introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
@@ -123,12 +143,20 @@
                     ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
                     ns_detailedDesc.htmlText="";
-                    ns_comments.htmlText="";
+                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                    // we don't need comments input anymore.
+                    //ns_comments.htmlText="";
+                    
+                    if (!this.mainWidget.softwareCompetition) {
+                        return;
+                    }
 
                     ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
                     ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
-                    ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
+                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                    // we don't need comments input anymore.
+                    //ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
 
                     //
                     // load the master technologies if they have not already been loaded.
@@ -149,6 +177,18 @@
 
                         // assign technologies.
                         setTechnologies();
+                    }
+
+                    //
+                    // Shows the catalog controls only if the contest is design or development.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                    //    
+                    if (isDesOrDevContestType()) {
+                        catalogContainer.visible=true;
+                        catalogContainer.includeInLayout=true;
+                    } else {
+                        catalogContainer.visible=false;
+                        catalogContainer.includeInLayout=false;
                     }
 
                     //
@@ -207,15 +247,20 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setRootCategory():void {
-                if (!_catalogs) {
+                trace("IN SET ROOT CATEGORY: " + _catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
+                if (!_catalogs || !this.ns_catalogNameInput || !this.catalogContainer.visible) {
                     return;
                 }
 
                 if (this.mainWidget.softwareCompetition.assetDTO.rootCategory) {
                     for (var j:int=0; j < _catalogs.length; j++) {
                         var catalogObj:Object=_catalogs.getItemAt(j);
+                        
+                        trace("------> " + (catalogObj && catalogObj.data ? catalogObj.data.id : "") + "," + (this.mainWidget.softwareCompetition.assetDTO.rootCategory ? this.mainWidget.softwareCompetition.assetDTO.rootCategory.id : ""));
                         if (catalogObj && catalogObj.data && catalogObj.data.id == this.mainWidget.softwareCompetition.assetDTO.rootCategory.id) {
+                            trace("-----> Selecting: " + catalogObj);
                             this.ns_catalogNameInput.selectedItem=catalogObj;
+                            this.ns_catalogNameInput.selectedIndex=j;
                         }
                     }
                 } else {
@@ -229,7 +274,8 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setCategories():void {
-                if (!_boundMasterCategories || !_boundCurrentCategories) {
+                trace("IN SET CATEGORIES: " + _boundMasterCategories + "," + _boundCurrentCategories + "," + this.catalogContainer);
+                if (!_boundMasterCategories || !_boundCurrentCategories || !this.catalogContainer.visible) {
                     return;
                 }
 
@@ -343,6 +389,11 @@
             private function handleCategoriesLoad(e:ResultEvent):void {
                 trace("handleCategoriesLoad: " + e + ", " + e.result);
                 const APPLICATION_DESCR:String = "Application"; // BUGR-1678
+                
+                //
+                // Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                const BUSINESS_LAYER_DESCR:String = "Business Layer";
                 _catalogToCategoriesMap = new Dictionary();  // BUGR-1678 
                 if (e && e.result) {
                     _categories=ObjectTranslatorUtils.translateCollection(e.result, SoftwareCategory) as ArrayCollection;
@@ -355,21 +406,30 @@
 
                     for (var i:int=0; i < _categories.length; i++) {
                         var t:SoftwareCategory=_categories.getItemAt(i) as SoftwareCategory;
+                        
+                        //
+                        // For non admin user just consider the custom catalogs.
+                        // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        //
+                        if (!mainWidget.isAdmin && t.viewable) {
+                            continue;
+                        }
 
                         if (t.catalogName) {
                             // it is the root category.
                             // add this catalog name to list of catalog names.
-                            
-                            if(t.catalogName == APPLICATION_DESCR && isDesOrDevContestType()) { // BUGR-1678
-                            	continue;
-                            }
-                            if(t.catalogName != APPLICATION_DESCR && !isDesOrDevContestType()) { // BUGR-1678
-                            	continue;
-                            }
                             var o:Object=new Object();
                             o.label=t.name;
                             o.data=t;
                             _catalogs.addItem(o);
+                            
+                            //
+                            // Stores the reference of application catalog to the variable 'applicationCatalog'
+                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                            //
+                            if (o.label == APPLICATION_DESCR) {
+                                applicationCatalog = o.data;
+                            }
                         } else if (t.parentCategory) {
                             var categoryObj:Object=new Object();
                             categoryObj.label=t.name;
@@ -396,8 +456,14 @@
                                 categoriesList.addItem(categoryObj);
                                 categoriesList.refresh();
                             }
-
-
+                            
+                            //
+                            // Stores the reference of business layer category to the variable 'businessLayerApplicationCategory'
+                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                            //
+                            if (categoryObj.label == BUSINESS_LAYER_DESCR && categoryObj.data.parentCategory.name == APPLICATION_DESCR) {
+                                businessLayerApplicationCategory = categoryObj.data;
+                            }
                         }
                     }
 
@@ -464,39 +530,59 @@
                     }
                 }
 
-                if (!ns_catalogNameInput.selectedItem || !ns_catalogNameInput.selectedItem.data) {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please select valid catalog name" + (showPageName ? " at Details Page" : ""));
-                        return false;
+                //
+                // If contest type is design or development then only validate input controls.
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    if (!ns_catalogNameInput.selectedItem || !ns_catalogNameInput.selectedItem.data) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Please select valid catalog name" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
                     }
-                }
-
-                if (_boundMasterCategories && _boundMasterCategories.length > 0 && _boundCurrentCategories.length == 0) {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please select valid categories" + (showPageName ? " at Details Page" : ""));
-                        return false;
+    
+                    if (_boundMasterCategories && _boundMasterCategories.length > 0 && _boundCurrentCategories.length == 0) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Please select valid categories" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
                     }
                 }
 
                 this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
                 this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
                 this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
-                this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
+                // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                // we don't need comments input anymore.
+                //this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
 
-                // assign root category.
-                this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
-
-                // assign list of categories.
-                if (this._boundCurrentCategories) {
-                    this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                    for (var k:int=0; k < this._boundCurrentCategories.length; k++) {
-                        var item:Object=this._boundCurrentCategories[k];
-                        if (!item || !item.data) {
-                            continue;
+                //
+                // If contest type is design or development then only read catalog names from catalog input controls.
+                // otherwise assume that to be of type "Application"
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    // assign root category.
+                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
+                
+                    // assign list of categories.
+                    if (this._boundCurrentCategories) {
+                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                        for (var k:int=0; k < this._boundCurrentCategories.length; k++) {
+                            var item:Object=this._boundCurrentCategories[k];
+                            if (!item || !item.data) {
+                                continue;
+                            }
+    
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(item.data);
                         }
-
-                        this.mainWidget.softwareCompetition.assetDTO.categories.push(item.data);
                     }
+                } else {
+                    // assign root category.
+                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=applicationCatalog;
+                    this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                    this.mainWidget.softwareCompetition.assetDTO.categories.push(businessLayerApplicationCategory);
                 }
 
                 // assign technologies.
@@ -512,17 +598,34 @@
                 this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
                 this.mainWidget.review.ns_shortDescStr=ns_shortDesc.text;
                 this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
-                this.mainWidget.review.ns_commentsStr=ns_comments.text;
+                // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+                // we don't need comments input anymore.
+                //this.mainWidget.review.ns_commentsStr=ns_comments.text;
                 this.mainWidget.review.ns_techListData=new ArrayCollection();
                 for (var m:int=0; m < this._boundCurrentTechnologies.length; m++) {
                     this.mainWidget.review.ns_techListData.addItem(this._boundCurrentTechnologies.getItemAt(m).label);
                 }
 
-                this.mainWidget.review.ns_catalogNameStr=ns_catalogNameInput.selectedItem.label;
-
-                this.mainWidget.review.ns_categoriesData=new ArrayCollection();
-                for (var n:int=0; n < this._boundCurrentCategories.length; n++) {
-                    this.mainWidget.review.ns_categoriesData.addItem(this._boundCurrentCategories[n].label);
+                //
+                // If contest type is design or development then only read catalog names from catalog input controls.
+                // otherwise assume that to be of type "Application"
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    this.mainWidget.review.ns_catalogNameStr=ns_catalogNameInput.selectedItem.label;
+    
+                    this.mainWidget.review.ns_categoriesData=new ArrayCollection();
+                    for (var n:int=0; n < this._boundCurrentCategories.length; n++) {
+                        this.mainWidget.review.ns_categoriesData.addItem(this._boundCurrentCategories[n].label);
+                    }
+                } else {
+                    if (applicationCatalog) {
+                        this.mainWidget.review.ns_catalogNameStr=applicationCatalog.name;
+                    }
+                    this.mainWidget.review.ns_categoriesData=new ArrayCollection();
+                    if (businessLayerApplicationCategory) {
+                        this.mainWidget.review.ns_categoriesData.addItem(businessLayerApplicationCategory.name);
+                    }
                 }
 
                 return true;
@@ -1030,6 +1133,12 @@
 			 allowMultipleSelection="true"/>
             </mx:HBox>
 
+            <!--
+                Remove client / comment
+                we don't need comments input anymore.
+                since: Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+            -->
+            <!--
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
@@ -1040,98 +1149,87 @@
                 </mx:HBox>
 
             </mx:VBox>
-
-            <mx:Spacer height="5"/>
-
-            <!--
-                 since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-                 Added catalog name control.
             -->
-            <mx:VBox width="100%"
-                     verticalGap="0">
-                <mx:HBox>
-                    <mx:Label text="Catalog Name:"
-                              fontWeight="bold"/>
-                    <mx:ComboBox id="ns_catalogNameInput"
-                                 width="292"
-                                 dataProvider="{_catalogs}"
-                                 change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
-                    <mx:LinkButton label="[+ show hint]"/>
-                </mx:HBox>
-                <mx:Text id="ns_catalogNameHints"
-                         color="0x888888"
-                         width="500"
-                         height="0"
-                         visible="false">
-                </mx:Text>
-            </mx:VBox>
-
-            <mx:Spacer height="5"/>
-
+    
             <!--
-                 since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-                 Added catalog categories control.
+                Enclose catalog name and categories in catalogContainer, so that we can hide / unhide.
+                since: Cockpit Release Assembly 1 v1.0 [BUGR-1850]
             -->
-            <mx:VBox verticalGap="0">
-                <mx:HBox>
-                    <mx:Label text="Master Categories:"
-                              fontWeight="bold"/>
-                    <mx:Spacer width="100"/>
-                    <mx:Label text="Current Project Categories:"
-                              fontWeight="bold"/>
-                    <mx:LinkButton label="[+ show hint]"/>
-                </mx:HBox>
-                <mx:Text id="categoriesHint_ns"
-                         height="0"
-                         color="0x888888"
-                         width="500"
-                         visible="false"
-                         verticalCenter="top"/>
-            </mx:VBox>
-
-            <mx:HBox verticalAlign="top">
-                <mx:List id="ns_masterCategories"
-                         width="225"
-                         dataProvider="{_boundMasterCategories}"
-                         doubleClickEnabled="true"
-                         doubleClick="addToCurrentCategoryList(null)"
-                         allowMultipleSelection="true" />
-                <mx:VBox height="150" verticalAlign="middle">
-                    <mx:Button id="toCurrentCategoryList"
-                               label=">"
-                               click="addToCurrentCategoryList(null)"/>
-                    <mx:Spacer height="5"/>
-                    <mx:Button id="toMasterCategoryList"
-                               label="&lt;"
-                               click="addToMasterCategoryList()"/>
+            <mx:VBox width="100%" verticalGap="0" id="catalogContainer">
+            
+                <mx:Spacer height="5"/>
+    
+                <!--
+                     since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                     Added catalog name control.
+                -->
+                <mx:VBox width="100%"
+                         verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Catalog Name:"
+                                  fontWeight="bold"/>
+                        <mx:ComboBox id="ns_catalogNameInput"
+                                     width="292"
+                                     dataProvider="{_catalogs}"
+                                     change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
+                        <mx:LinkButton label="[+ show hint]"/>
+                    </mx:HBox>
+                    <mx:Text id="ns_catalogNameHints"
+                             color="0x888888"
+                             width="500"
+                             height="0"
+                             visible="false">
+                    </mx:Text>
                 </mx:VBox>
-                <mx:List id="ns_curCategoryList"
-                         width="225"
-                         dataProvider="{_boundCurrentCategories}"
-                         doubleClickEnabled="true"
-                         doubleClick="addToMasterCategoryList()"
-                         allowMultipleSelection="true" />
-            </mx:HBox>
-
-            <!--<mx:VBox width="100%"
-                 verticalGap="0">
-                 <mx:HBox>
-                 <mx:Label text="Categories:"
-                 fontWeight="bold"/>
-                 <mx:List id="ns_categoriesListInput"
-                 width="292"
-                 allowMultipleSelection="true"
-                 dataProvider="{_currCatalogCategories}"/>
-                 <mx:LinkButton label="[+ show hint]"/>
-                 </mx:HBox>
-                 <mx:Text id="ns_categoriesListHints"
-                 color="0x888888"
-                 width="500"
-                 height="0"
-                 visible="false">
-                 </mx:Text>
-                 </mx:VBox>-->
-
+    
+                <mx:Spacer height="5"/>
+    
+                <!--
+                     since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                     Added catalog categories control.
+                -->
+                <mx:VBox verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Master Categories:"
+                                  fontWeight="bold"/>
+                        <mx:Spacer width="100"/>
+                        <mx:Label text="Current Project Categories:"
+                                  fontWeight="bold"/>
+                        <mx:LinkButton label="[+ show hint]"/>
+                    </mx:HBox>
+                    <mx:Text id="categoriesHint_ns"
+                             height="0"
+                             color="0x888888"
+                             width="500"
+                             visible="false"
+                             verticalCenter="top"/>
+                </mx:VBox>
+    
+                <mx:HBox verticalAlign="top">
+                    <mx:List id="ns_masterCategories"
+                             width="225"
+                             dataProvider="{_boundMasterCategories}"
+                             doubleClickEnabled="true"
+                             doubleClick="addToCurrentCategoryList(null)"
+                             allowMultipleSelection="true" />
+                    <mx:VBox height="150" verticalAlign="middle">
+                        <mx:Button id="toCurrentCategoryList"
+                                   label=">"
+                                   click="addToCurrentCategoryList(null)"/>
+                        <mx:Spacer height="5"/>
+                        <mx:Button id="toMasterCategoryList"
+                                   label="&lt;"
+                                   click="addToMasterCategoryList()"/>
+                    </mx:VBox>
+                    <mx:List id="ns_curCategoryList"
+                             width="225"
+                             dataProvider="{_boundCurrentCategories}"
+                             doubleClickEnabled="true"
+                             doubleClick="addToMasterCategoryList()"
+                             allowMultipleSelection="true" />
+                </mx:HBox>
+            
+            </mx:VBox>
         </mx:VBox>
     </mx:VBox>
-</mx:Canvas>
+</mx:VBox>

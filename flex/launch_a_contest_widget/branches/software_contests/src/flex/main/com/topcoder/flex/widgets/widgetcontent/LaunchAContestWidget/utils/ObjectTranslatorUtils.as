@@ -54,7 +54,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
         * @return array of translated objects of specified class type.
         */
         public static function translateCollection(fromObj:Object, toClass:Class):ArrayCollection {
-            trace("fromObj is ArrayCollection: " + fromObj);
+            //trace("fromObj is ArrayCollection: " + fromObj);
 
             //
             // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
@@ -66,9 +66,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                 var coll:ArrayCollection=fromObj as ArrayCollection;
                 retColl=new ArrayCollection();
                 for (var i:int=0; i < coll.length; i++) {
-                    trace("@@@@ before translate: " + coll[i]);
+                    //trace("@@@@ before translate: " + coll[i]);
                     var obj:*=translate(coll[i], toClass);
-                    trace("@@@@ after translate: " + obj);
+                    //trace("@@@@ after translate: " + obj);
                     retColl.addItem(obj);
                 }
                 
@@ -106,7 +106,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
             var classNameFrom:String=getObjectType(fromObj);
             var classNameTo:String=getObjectType(toClass);
             
-            trace("converting from " + classNameFrom + " to " + toClass);
+            //trace("converting from " + classNameFrom + " to " + toClass);
 
             // if class is an object, traverse its properties to instantiate proper types for each
             if ((classNameFrom == "Object") && classNameTo != "Object")
@@ -122,7 +122,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                     // determine property type based on typeInfo XML "type" attribute matching that property name
                     var propertyClassName:String=typeInfo.factory.variable.(@name == key).@type.toString().replace(/::/, ".");
                     
-                    trace("Property key: " + key + ", propertyClassName: " + propertyClassName + ", of-Class: " + classNameTo);
+                    //trace("Property key: " + key + ", propertyClassName: " + propertyClassName + ", of-Class: " + classNameTo);
 
                     // only continue if target class contains this property and type lookup is successful
                     if (propertyClassName != null && propertyClassName != "")
@@ -130,7 +130,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                         if (fromObj[key] is ArrayCollection || fromObj[key] is Array) {
                             // find appropriate arrayElementClass.
                             var arrayElementClassName:String=typeInfo.factory.variable.(@name == key).metadata.(@name=="ArrayElementType")..child("arg").attribute("value")[0];
-                            trace("Array Element class: " + arrayElementClassName + ", toClass: " + classNameTo);
+                            //trace("Array Element class: " + arrayElementClassName + ", toClass: " + classNameTo);
                             if (!arrayElementClassName) {
                                 fromObj[key]=null;
                             }
@@ -151,7 +151,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                             fromObj[key]=translate(fromObj[key], propertyClass)as propertyClass;
                         }
                         
-                        trace("Result OBJ: " + fromObj[key]);
+                        //trace("Result OBJ: " + fromObj[key]);
                     }
                 }
             }
