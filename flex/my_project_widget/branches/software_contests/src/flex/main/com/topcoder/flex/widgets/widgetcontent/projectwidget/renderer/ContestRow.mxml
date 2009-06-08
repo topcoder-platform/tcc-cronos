@@ -267,17 +267,25 @@
 
             /**
              * Row mouse over handler.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Show edit button for non studio contests also which are of type active or inactive.
              */
             private function mouseOverHandle():void {
-                if (contest.status.toLocaleLowerCase() == "draft" || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
-		              || contest.status.toLocaleLowerCase() == "scheduled") {
+                if ((contest.type.toLocaleLowerCase() == "studio" 
+                        && (contest.status.toLocaleLowerCase() == "draft" 
+                                || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
+		                        || contest.status.toLocaleLowerCase() == "scheduled")) 
+		            || (contest.type.toLocaleLowerCase() != "studio" 
+		                && (contest.status.toLocaleLowerCase() == "active" 
+		                        || contest.status.toLocaleLowerCase() == "inactive"))) {
 
-		    if(contest.permission=="contest_full" || contest.permission=="contest_write"
-		              || (contest.permission==null && 
-			               (model.currentProj.permission=="project_full" 
-				            || model.currentProj.permission=="project_write"))){
-			editBtn.visible=true;
-		    }
+        		    if(contest.permission=="contest_full" || contest.permission=="contest_write"
+        		              || (contest.permission==null && 
+        			               (model.currentProj.permission=="project_full" 
+        				            || model.currentProj.permission=="project_write"))){
+        			    editBtn.visible=true;
+        		    }
                 }
             }
 
@@ -290,16 +298,20 @@
 
             /**
              * Handler for click on edit contest button.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Additionally pass contest type so that launch widget can distinguish between software and studio contests.
              */
             private function editContest():void {
 
-			var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
-			var props:Dictionary=new Dictionary();
-			props["contestid"]=contest.id;
-			props["projectid"]=contest.projId;
-			props["projectName"]=contest.projName;
-			widget.setAttributes(props);
-			model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+    			var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+    			var props:Dictionary=new Dictionary();
+    			props["contestType"]=contest.type;
+    			props["contestid"]=contest.id;
+    			props["projectid"]=contest.projId;
+    			props["projectName"]=contest.projName;
+    			widget.setAttributes(props);
+    			model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
 
             /**
