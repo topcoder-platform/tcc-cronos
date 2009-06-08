@@ -1145,6 +1145,8 @@ public class ProjectServicesImpl implements ProjectServices {
         // check operator
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
+		
+
         try {
             // get the project calling projectManager.getProject(projectHeader.getId())
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#createProject method.");
@@ -1157,6 +1159,21 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.ERROR, pde.getMessage());
                 throw pde;
             }
+
+			// recalcuate phase dates in case project start date changes
+			// recalcuate phase dates in case project start date changes
+			for (Phase p : projectPhases.getAllPhases()) {
+					p.setScheduledStartDate(null);
+					p.setScheduledEndDate(null);
+					p.setFixedStartDate(null);
+
+		    }	
+			for (Phase p : projectPhases.getAllPhases()) {
+					p.setScheduledStartDate(p.calcStartDate());
+					p.setScheduledEndDate(p.calcEndDate());
+					p.setFixedStartDate(p.calcStartDate());
+
+		    }	
 
 
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
