@@ -97,12 +97,12 @@
         <one-to-one name="forum" cascade="all" property-ref="compVersion"/>
         <one-to-one name="link" cascade="all" property-ref="compVersion"/>
 
-        <map name="versionDates" table="comp_version_dates" cascade="all-delete-orphan">
+        <map name="versionDates" table="comp_version_dates" cascade="all-delete-orphan" lazy="false">
             <key column="comp_vers_id" not-null="true"/>
             <map-key type="java.lang.Long" column="phase_id"/>
             <one-to-many class="CompVersionDates"/>
         </map>
-        <idbag name="technologies" table="comp_technology" cascade="all">
+        <idbag name="technologies" table="comp_technology" cascade="all" lazy="false">
             <collection-id column="comp_tech_id" type="long">
                 <generator class="com.topcoder.catalog.entity.IdGenerator">
                     <param name="sequence_name">COMPTECH_SEQ</param>
@@ -112,7 +112,7 @@
             <many-to-many column="technology_type_id" class="Technology"/>
         </idbag>
         <!-- new dependencies add in bug fix -->
-        <idbag name="dependencies" table="comp_dependencies" cascade="all">
+        <idbag name="dependencies" table="comp_dependencies" cascade="all" lazy="false">
             <collection-id column="comp_dependency_id" type="long">
                 <generator class="com.topcoder.catalog.entity.IdGenerator">
                     <param name="sequence_name">DEPENDENCIES_SEQ</param>

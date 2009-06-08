@@ -667,7 +667,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         assetDTO.setRootCategory(component.getRootCategory());
         assetDTO.setShortDescription(component.getShortDesc());
 
-/*        //force hibernate to retrieve lazy collection
+        //force hibernate to retrieve lazy collection
         List<Technology> technologies = new ArrayList<Technology>();
         if (compVersion.getTechnologies() != null) {
             // actually, getTechnologies will not be null
@@ -676,7 +676,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                 technologies.add(tech);
             }
         }
-        assetDTO.setTechnologies(technologies);*/
+        assetDTO.setTechnologies(technologies);
 
         // here is the new lines add in bug fix.
         // start here
@@ -702,7 +702,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // set version properties
         assetDTO.setCompVersionId(compVersion.getId());
         assetDTO.setVersionText(compVersion.getVersionText());
-        assetDTO.setVersionNumber(compVersion.getVersion());
+        assetDTO.setVersionNumber(compVersion.getId());
         // force lazy collection
         List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
         if (compVersion.getDocumentation() != null) {
