@@ -191,6 +191,26 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "ON category.project_type_id=type.project_type_id "
             + "WHERE project.project_id IN ";
 
+	 private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
+
+			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
+            + "                  project_category_lu.project_category_id, project_category_lu.name, project_type_lu.project_type_id, project_type_lu.name, "
+            + "                  project.create_user, project.create_date, project.modify_user, project.modify_date, project_category_lu.description, "
+			+ "                  pi1.value as project_name, pi2.value as project_version "
+            + "              FROM project, "
+            + "                   project_category_lu, "
+            + "                   project_status_lu, "
+            + "                   project_type_lu, "
+			+ "                   project_info pi1, "
+            + "                   project_info pi2 "
+            + "             WHERE project.project_category_id = project_category_lu.project_category_id "
+            + "               AND project.project_status_id = project_status_lu.project_status_id "
+            + "               AND project_category_lu.project_type_id = project_type_lu.project_type_id "
+			+ "               AND pi1.project_id = project.project_id AND pi1.project_info_type_id = 6 "
+            + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
+            + "               AND (project.project_status_id = 1 or project.project_status_id = 7)"
+			+ "			      AND date(project.create_date) > date(current) - ";
+
     /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query projects.
@@ -200,6 +220,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE};
+
+	/**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query projects.
+     */
+    private static final DataType[] QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, 
+		Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to query project properties.
@@ -620,6 +651,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return projects.length == 0 ? null : projects[0];
     }
 
+
+
     /**
      * <p>
      * Retrieves an array of project instance from the persistence given their
@@ -672,6 +705,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+
+
+	 /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    public Project[] getProjectsByCreateDate(int days)
+        throws PersistenceException {
+       
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get projects by create date: " + days);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Project[] projects = getProjectsByCreateDate(days, conn);
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving by create date: " + days, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+	}
 
     /**
      * Gets an array of all project types in the persistence. The project types
@@ -1121,6 +1190,62 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // set the property to project
             project.setProperty((String) row[1], row[2]);
         }
+        return projects;
+    }
+
+
+	 /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Project[] getProjectsByCreateDate(int days, Connection conn)
+        throws PersistenceException {
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days,
+                new Object[] {}, QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
+
+        // create the Project array.
+        Project[] projects = new Project[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1])
+                    .longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
+                    (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3])
+                    .longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+            // create a new instance of ProjectType class
+            projects[i] = new Project(((Long) row[0]).longValue(), category,
+                    status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+
+			// here we only get project name and project version
+			projects[i].setProperty("Project Name", (String) row[12]);
+			projects[i].setProperty("Project Version", (String) row[13]);
+        }
+
+       
         return projects;
     }
 
