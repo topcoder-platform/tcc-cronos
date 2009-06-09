@@ -109,7 +109,7 @@
              * 
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
              */ 
-            private var applicationCatalog:SoftwareCategory = null;
+            private static var applicationCatalog:SoftwareCategory = null;
             
             /**
              * Stores the reference to 'Business Layer' category.
@@ -117,7 +117,7 @@
              * 
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
              */
-            private var businessLayerApplicationCategory:SoftwareCategory = null;
+            private static var businessLayerApplicationCategory:SoftwareCategory = null;
 
 	        private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
 	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
@@ -545,6 +545,13 @@
                     if (_boundMasterCategories && _boundMasterCategories.length > 0 && _boundCurrentCategories.length == 0) {
                         if (showMsg) {
                             Helper.showAlertMessage("Please select valid categories" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
+                    }
+                } else {
+                    if (!applicationCatalog || !businessLayerApplicationCategory) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Root category must be selected" + (showPageName ? " at Details Page" : ""));
                             return false;
                         }
                     }

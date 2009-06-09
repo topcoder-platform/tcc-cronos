@@ -151,6 +151,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         public var initWidgetCallbackFn:Function=null;
         
+        public var isEditMode:Boolean=false;
+        
         /**
         * @since BUGR-1737
         */     
@@ -294,6 +296,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
                 if (map) {
+                    (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
                     (container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
@@ -690,6 +693,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (e && e.result) {
                 this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
+                
+                // BUGR-1470 - mark refresh of my project.
+            	notifyMyProjectWidget();
 
                 Helper.showAlertMessage("Contest created successfully!");
             }
@@ -721,6 +727,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             
             updateContestOp.addEventListener("result", updateSoftwareContestHandler);
             updateContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
+
+	    showLoadingProgress();
         }
 
         /**
@@ -732,8 +740,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         private function updateSoftwareContestHandler(e:ResultEvent):void {
             trace("updateSoftwareContestHandler: " + e + ", " + e.result);
-            showLoadingProgress();
+            hideLoadingProgress();
             if (e && e.result) {
+                // BUGR-1470 - mark refresh of my project.
+            	notifyMyProjectWidget();
+            	
                 Helper.showAlertMessage("Contest updated successfully!");
             }
         }

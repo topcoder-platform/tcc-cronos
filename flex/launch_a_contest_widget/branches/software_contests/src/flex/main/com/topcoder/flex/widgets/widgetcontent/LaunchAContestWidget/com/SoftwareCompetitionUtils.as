@@ -449,6 +449,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @param totalPrize total prize of the competition.
          */
         public function addAdminFeeProp(softwareCompetition:SoftwareCompetition, fee:Number):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_ADMIN_FEE_KEY) {
+                    e.value=fee.toFixed(0);
+                    return;
+                }
+            }
+            
             var entry:MapEntry=new MapEntry();
 
             entry.key=PROJECT_INFO_TYPE_ADMIN_FEE_KEY;
@@ -551,6 +558,22 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             entry.value=reviewCost.toFixed(0);
 
             softwareCompetition.projectHeader.properties.push(entry);
+        }
+        
+        /**
+         * Gdds the admin fee proeprty to project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return admin fee of the competition.
+         */
+        public function getAdminFeeProp(softwareCompetition:SoftwareCompetition):Number {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_ADMIN_FEE_KEY) {
+                    return new Number(e.value);
+                }
+            }
+            
+            return 0;
         }
 
     }

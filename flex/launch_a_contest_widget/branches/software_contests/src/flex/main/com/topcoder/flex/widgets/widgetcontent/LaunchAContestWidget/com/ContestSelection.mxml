@@ -297,6 +297,8 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function createContestAndContinue(id:Number):void {
+                mainWidget.isEditMode=false;
+                
                 if (mainWidget.studioContestType) {
                     initializeStudioContest(id);
                 } else {
