@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Cockpit Permission
+component.distfilename=cockpit_permission
+component.package=com.topcoder.service.permission
+component.packagedir=com/topcoder/service/permission
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

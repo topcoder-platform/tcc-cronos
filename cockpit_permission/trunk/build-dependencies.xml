@@ -1,0 +1,72 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+    
+    <!-- property file defining the component's dependencies -->
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    
+    <!-- define 3rd party dependencies -->
+    <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
+    <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
+    <property name="jboss.libdir" value="${jboss_home}/server/${jboss.config.name}/lib"/>
+    <property name="commons-collections.jar" value="${jboss.libdir}/commons-collections.jar"/>
+    <property name="commons-logging.jar" value="${jboss.libdir}/commons-logging.jar"/>
+    <property name="hibernate-entitymanager.jar" value="${jboss.libdir}/hibernate-entitymanager.jar"/>
+    <property name="hibernate-annotations.jar" value="${jboss.libdir}/hibernate-annotations.jar"/>
+    <property name="hibernate3.jar" value="${jboss.libdir}/hibernate3.jar"/>
+    <property name="jboss-j2ee.jar" value="${jboss.libdir}/jboss-j2ee.jar"/>
+    <property name="jboss-ejb3x.jar" value="${jboss.libdir}/jboss-ejb3x.jar"/>
+    <property name="jboss-jaxrpc.jar" value="${jboss.libdir}/jboss-jaxrpc.jar"/>
+    <property name="jboss-hibernate.jar" value="${jboss.libdir}/jboss-hibernate.jar"/>
+    <property name="jboss-transaction.jar" value="${jboss.libdir}/jboss-transaction.jar"/>
+    <property name="jbosssx.jar" value="${jboss.libdir}/jboss-jbosssx.jar"/>
+    <property name="antlr.jar" value="${jboss.libdir}/antlr.jar"/>
+    <property name="cglib.jar" value="${jboss.libdir}/cglib.jar"/>    
+    <property name="dom4j.jar" value="${jboss.libdir}/dom4j.jar"/>
+    <property name="javassist.jar" value="${jboss.libdir}/javassist.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss.libdir}/ejb3-persistence.jar"/>
+    <property name="javassist.jar" value="${jboss_lib}/javassist.jar"/>
+    <property name="jboss-common.jar" value="${jboss_lib}/jboss-common.jar"/>
+    
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+        
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${hibernate3.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${javassist.jar}"/>
+        <pathelement location="${cglib.jar}"/>
+        <pathelement location="${jboss-common.jar}"/>
+        <pathelement location="${hibernate-annotations.jar}"/>
+        <pathelement location="${hibernate-entitymanager.jar}"/>
+        <pathelement location="${ifxjdbc.jar}"/>        
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${jboss-j2ee.jar}"/>
+        <pathelement location="${jboss-jaxrpc.jar}"/>
+        <pathelement location="${jboss-hibernate.jar}"/>
+        <pathelement location="${jboss-transaction.jar}"/>
+        <pathelement location="${jbosssx.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${ifxjdbc.jar}"/>
+        
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+</project>

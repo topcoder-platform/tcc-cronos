@@ -1,0 +1,2 @@
+This is a component for managing cockpit permissions. 
+As of now it just provides PermissionService and corresponding entities that provides methods to CRUD (add/update/delete/get) on permissions for tc project and contests.
