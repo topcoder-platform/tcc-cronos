@@ -318,7 +318,9 @@
                     //		rating selector -- active for any active or action required only.
                     //
                     // I can do both save as draft or continue to checkout here.
-                    if (this.subViewer.selectedContestStatusId == this.subViewer.actionRequiredContestTypeId) {
+		    // 'in danger' has same logic as 'action required'
+                    if (this.subViewer.selectedContestStatusId == this.subViewer.actionRequiredContestTypeId
+		          || this.subViewer.selectedContestStatusId == this.subViewer.inDangerContestTypeId) {
                         updateUIForActionRequiredContest();
                     } else if (this.subViewer.activeContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForActiveContest();
