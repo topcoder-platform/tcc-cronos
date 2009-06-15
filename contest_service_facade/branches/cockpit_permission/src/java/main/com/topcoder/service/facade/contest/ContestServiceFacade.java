@@ -29,17 +29,18 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
-import com.topcoder.service.studio.permission.Permission;
-import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
+import com.topcoder.service.permission.Permission;
+import com.topcoder.service.permission.PermissionServiceException;
+import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.SimpleProjectPermissionData;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.studio.contest.User;
-import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 
 import javax.activation.DataHandler;
 import javax.jws.WebService;
@@ -631,11 +632,11 @@ public interface ContestServiceFacade {
      * @return all the permissions that the user owned for any projects.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when getting permissions.
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissionsByUser(long userid) throws PersistenceException;
+    public List<Permission> getPermissionsByUser(long userid) throws PermissionServiceException;
     
     /**
      * <p>
@@ -647,11 +648,12 @@ public interface ContestServiceFacade {
      *
      * @return all the permissions that various users own for a given project.
      *
-     * @throws ContestManagementException if any error occurs when getting permissions.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Cockpit Share Submission Integration
      */
-    public List<Permission> getPermissionsByProject(long projectid) throws PersistenceException;
+    public List<Permission> getPermissionsByProject(long projectid) throws PermissionServiceException;
 
     /**
      * <p>
@@ -665,11 +667,11 @@ public interface ContestServiceFacade {
      * @return all the permissions that the user own for a given project.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when getting permissions.
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissions(long userid, long projectid) throws PersistenceException;
+    public List<Permission> getPermissions(long userid, long projectid) throws PermissionServiceException;
 
     /**
      * <p>
@@ -678,11 +680,12 @@ public interface ContestServiceFacade {
      *
      * @return all the permission types.
      *
-     * @throws PersistenceException if any error occurs when getting permission types.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permission types.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<PermissionType> getAllPermissionType() throws PersistenceException;
+    public List<PermissionType> getAllPermissionType() throws PermissionServiceException;
 
     /**
      * <p>
@@ -694,11 +697,11 @@ public interface ContestServiceFacade {
      * @return the added permission type entity
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when adding the permission type.
+     * @throws PermissionServiceException if any error occurs when adding the permission type.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public PermissionType addPermissionType(PermissionType type) throws PersistenceException;
+    public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException;
 
     /**
      * <p>
@@ -710,11 +713,11 @@ public interface ContestServiceFacade {
      * @return the added permission entity
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when adding the permission.
+     * @throws PermissionServiceException if any error occurs when adding the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public Permission addPermission(Permission permission) throws PersistenceException;
+    public Permission addPermission(Permission permission) throws PermissionServiceException;
 
     /**
      * <p>
@@ -724,11 +727,11 @@ public interface ContestServiceFacade {
      * @param type the permission type to update.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when updating the permission type.
+     * @throws PermissionServiceException if any error occurs when updating the permission type.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermissionType(PermissionType type) throws PersistenceException;
+    public void updatePermissionType(PermissionType type) throws PermissionServiceException;
 
     /**
      * <p>
@@ -738,11 +741,11 @@ public interface ContestServiceFacade {
      * @param permission the permission to update.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when updating the permission.
+     * @throws PermissionServiceException if any error occurs when updating the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermission(Permission permission) throws PersistenceException;
+    public void updatePermission(Permission permission) throws PermissionServiceException;
 
     /**
      * <p>
@@ -755,11 +758,11 @@ public interface ContestServiceFacade {
      * @return true if the permission type data exists and removed successfully.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when deleting the permission.
+     * @throws PermissionServiceException if any error occurs when deleting the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public boolean deletePermissionType(long typeid) throws PersistenceException;
+    public boolean deletePermissionType(long typeid) throws PermissionServiceException;
 
     /**
      * <p>
@@ -772,11 +775,11 @@ public interface ContestServiceFacade {
      * @return true if the permission data exists and removed successfully.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when deleting the permission.
+     * @throws PermissionServiceException if any error occurs when deleting the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public boolean deletePermission(long permissionid) throws PersistenceException;
+    public boolean deletePermission(long permissionid) throws PermissionServiceException;
     
     /**
      * <p>
@@ -1213,9 +1216,46 @@ public interface ContestServiceFacade {
     public boolean updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
 
 
+    /**
+     * <p>
+     * Gets the list of project and their permissions (including permissions for the parent tc project)
+     * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *     - software projects also included.
+     * </p>
+     *
+     * @param createdUser user for which to get the permissions
+     * @return list of project and their permissions.
+     * 
+     * @since TCCC-1329
+     */
 	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
 			long createdUser) throws PersistenceException;
 
 
+	/**
+     * <p>
+     * Searches the user with the given key.
+     * </p>
+     * 
+     * @return list of matching users, empty list if none matches.
+     * @since TCCC-1329
+     */
     public List<User> searchUser(String key) throws PersistenceException;
+    
+    /**
+     * <p>
+     * This method updates array of permissions to the persistence.
+     * </p>
+     * 
+     * @param permissions the permissions to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when updating the permission.
+     *
+     * @since Cockpit Project Admin Release Assembly.
+     */
+    public void updatePermissions(Permission[] permissions) throws PermissionServiceException;
 }

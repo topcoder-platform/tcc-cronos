@@ -32,6 +32,12 @@ import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
+import com.topcoder.service.permission.Permission;
+import com.topcoder.service.permission.PermissionService;
+import com.topcoder.service.permission.PermissionServiceException;
+import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.SimpleProjectPermissionData;
+import com.topcoder.service.permission.ejb.PermissionServiceBean;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.CompetitionPrize;
 import com.topcoder.service.project.StudioCompetition;
@@ -67,8 +73,6 @@ import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.facade.contest.SoftwareContestPaymentResult;
-import com.topcoder.service.studio.permission.Permission;
-import com.topcoder.service.studio.permission.PermissionType;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
@@ -77,7 +81,6 @@ import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.service.studio.contest.User;
-import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -104,13 +107,13 @@ import org.jboss.wsf.spi.annotation.WebContext;
 
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.Set;
-import java.util.Arrays;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -167,6 +170,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/ProjectServicesBean")
     private ProjectServices projectServices = null;
+    
+    /**
+     * <p>A <code>PermissionService</code> providing access to available <code>Permission Service EJB</code>. This bean is
+     * delegated to process the calls for CRUD on permissions.</p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/PermissionService")
+    private PermissionService permissionService = null;
 
 	/**
 	 * <p>
@@ -490,7 +502,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		} catch (ConfigurationException e) {
 			throw new IllegalStateException("Failed to create the DefaultUploadExternalServices instance.", e);
 		}
-
     }
 
     /**
@@ -1168,12 +1179,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return all the permissions that the user owned for any projects.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when getting permissions.
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissionsByUser(long userid) throws PersistenceException {
-		return this.studioService.getPermissionsByUser(userid);
+    public List<Permission> getPermissionsByUser(long userid) throws PermissionServiceException {
+		return this.permissionService.getPermissionsByUser(userid);
     }
     
     /**
@@ -1186,12 +1197,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @return all the permissions that various users own for a given project.
      *
-     * @throws ContestManagementException if any error occurs when getting permissions.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Cockpit Share Submission Integration
      */
-    public List<Permission> getPermissionsByProject(long projectid) throws PersistenceException {
-        return this.studioService.getPermissionsByProject(projectid);
+    public List<Permission> getPermissionsByProject(long projectid) throws PermissionServiceException {
+        return this.permissionService.getPermissionsByProject(projectid);
     }
 
     /**
@@ -1206,12 +1218,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return all the permissions that the user own for a given project.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when getting permissions.
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissions(long userid, long projectid) throws PersistenceException {
-		return this.studioService.getPermissions(userid, projectid);
+    public List<Permission> getPermissions(long userid, long projectid) throws PermissionServiceException {
+		return this.permissionService.getPermissions(userid, projectid);
     }
 
     /**
@@ -1221,12 +1233,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @return all the permission types.
      *
-     * @throws PersistenceException if any error occurs when getting permission types.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permission types.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<PermissionType> getAllPermissionType() throws PersistenceException {
-		return this.studioService.getAllPermissionType();
+    public List<PermissionType> getAllPermissionType() throws PermissionServiceException {
+		return this.permissionService.getAllPermissionType();
     }
 
     /**
@@ -1239,12 +1252,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return the added permission type entity
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when adding the permission type.
+     * @throws PermissionServiceException if any error occurs when adding the permission type.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public PermissionType addPermissionType(PermissionType type) throws PersistenceException {
-		return this.studioService.addPermissionType(type);
+    public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException {
+		return this.permissionService.addPermissionType(type);
     }
 
     /**
@@ -1257,12 +1270,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return the added permission entity
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when adding the permission.
+     * @throws PermissionServiceException if any error occurs when adding the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public Permission addPermission(Permission permission) throws PersistenceException {
-		return this.studioService.addPermission(permission);
+    public Permission addPermission(Permission permission) throws PermissionServiceException {
+		return this.permissionService.addPermission(permission);
     }
 
     /**
@@ -1273,12 +1286,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param type the permission type to update.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when updating the permission type.
+     * @throws PermissionServiceException if any error occurs when updating the permission type.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermissionType(PermissionType type) throws PersistenceException {
-    	this.studioService.updatePermissionType(type);
+    public void updatePermissionType(PermissionType type) throws PermissionServiceException {
+    	this.permissionService.updatePermissionType(type);
     }
 
     /**
@@ -1289,12 +1302,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param permission the permission to update.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when updating the permission.
+     * @throws PermissionServiceException if any error occurs when updating the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermission(Permission permission) throws PersistenceException {
-    	this.studioService.updatePermission(permission);
+    public void updatePermission(Permission permission) throws PermissionServiceException {
+    	this.permissionService.updatePermission(permission);
     }
 
     /**
@@ -1308,12 +1321,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return true if the permission type data exists and removed successfully.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when deleting the permission.
+     * @throws PermissionServiceException if any error occurs when deleting the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public boolean deletePermissionType(long typeid) throws PersistenceException {
-    	return this.studioService.deletePermissionType(typeid);
+    public boolean deletePermissionType(long typeid) throws PermissionServiceException {
+    	return this.permissionService.deletePermissionType(typeid);
     }
 
     /**
@@ -1327,12 +1340,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return true if the permission data exists and removed successfully.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PersistenceException if any error occurs when deleting the permission.
+     * @throws PermissionServiceException if any error occurs when deleting the permission.
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public boolean deletePermission(long permissionid) throws PersistenceException {
-    	return this.studioService.deletePermission(permissionid);
+    public boolean deletePermission(long permissionid) throws PermissionServiceException {
+    	return this.permissionService.deletePermission(permissionid);
     }
 
     /**
@@ -2971,27 +2984,63 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		}    	
     }
 
-
-	
 	/**
-	 * TCCC-1329
+	 * <p>
+	 * Gets the list of project and their permissions (including permissions for the parent tc project)
+	 * </p>
+	 * 
+	 * <p>
+	 * Updated for Cockpit Project Admin Release Assembly v1.0
+	 *     - software projects also included.
+	 * </p>
+	 *
+	 * @param createdUser user for which to get the permissions
+	 * @return list of project and their permissions.
+	 * 
+	 * @since TCCC-1329
 	 */
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
 			long createdUser) throws PersistenceException
 	{
-		return studioService.getSimpleProjectPermissionDataForUser(createdUser);
+	    List<SimpleProjectPermissionData> studioPermissions = studioService.getSimpleProjectPermissionDataForUser(createdUser);
+	    List<SimpleProjectPermissionData> softwarePermissions = projectServices.getSimpleProjectPermissionDataForUser(createdUser);
+	    
+	    List<SimpleProjectPermissionData> ret = new LinkedList<SimpleProjectPermissionData>();
+	    ret.addAll(studioPermissions);
+	    ret.addAll(softwarePermissions);
+	    
+		return ret;
 	}
 
 
 	/**
-	 * TCCC-1329
+	 * <p>
+	 * Searches the user with the given key.
+	 * </p>
+	 * 
+	 * @return list of matching users, empty list if none matches.
+	 * @since TCCC-1329
 	 */
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<User> searchUser(String key) throws PersistenceException
     {
 		return studioService.searchUser(key);
 	}
-
-
+	
+	/**
+     * <p>
+     * This method updates array of permissions to the persistence.
+     * </p>
+     * 
+     * @param permissions the permissions to update.
+     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when updating the permission.
+     *
+     * @since Cockpit Project Admin Release Assembly.
+     */
+    public void updatePermissions(Permission[] permissions) throws PermissionServiceException {
+        this.permissionService.updatePermissions(permissions);
+    }
 }
