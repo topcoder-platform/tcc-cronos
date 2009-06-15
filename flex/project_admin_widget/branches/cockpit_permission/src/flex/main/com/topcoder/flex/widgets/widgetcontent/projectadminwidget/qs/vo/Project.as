@@ -64,6 +64,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          * User for this project.
          */
         public var user:User;
+
+
+	/**
+         * is studio
+         */
+        public var studio:Boolean;
         
         /**
          * Updates the current permission to backend.

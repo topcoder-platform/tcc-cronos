@@ -27,7 +27,12 @@
             import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Project;
             import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.ProjectRenderer;
             import mx.events.ListEvent;
-
+            
+            import mx.collections.ArrayCollection;
+            import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.SOAPHeader;
+            
             /**
              * Reference to the parent project admin widget.
              */
@@ -169,58 +174,71 @@
                 }
             }
             
-            public function handleCancelAction(e:CloseEvent){
-            	if (e.detail == Alert.CANCEL) {
-                            return;
-                        }
-
-                        config.visible=false;
-                        for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
-                            var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
-                            project.access=project.persistedAccess;
-                            for (var j:int=0; j < project.contests.length; j++) {
-                                var contest:Contest=project.contests.getItemAt(j) as Contest;
-                                contest.access=contest.persistedAccess;
-                            }
-                        }
-
-                        parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
+            public function handleCancelAction(e:CloseEvent) {
+                if (e.detail == Alert.CANCEL) {
+                    return;
+                }
+                
+                config.visible=false;
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    project.access=project.persistedAccess;
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        contest.access=contest.persistedAccess;
+                    }
+                }
+                
+                parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
             }
             
-            public function handleSaveAction(e:CloseEvent){
-            	if (e.detail == Alert.CANCEL) {
-                            return;
-                        }
-
-                        config.visible=false;
+            /**
+             * Handles the save of permissions.
+             *
+             * Updated for Cockpit Project Admin Release Assembly v1.0
+             *    - now all changed permissions are saved in one go.
+             * 
+             * @param e the close event for the control that fired this event.
+             */
+            public function handleSaveAction(e:CloseEvent):void {
+                if (e.detail == Alert.CANCEL) {
+                    return;
+                }
+                
+                config.visible=false;
+                
+                parentWidget.showLoadingProgress();
+                
+                var permissionsToUpdate:ArrayCollection=new ArrayCollection();
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access == project.persistedAccess) {
+                        // do nothing.
+                    } else {
+                        var o1:Object=getPermissionDTO(project.user.id, project.id, -1, project.access, "project", project.studio);
+                        permissionsToUpdate.addItem(o1);
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
                         
-                        parentWidget.deletedPermissionNumber=0;
-                        parentWidget.getPermissionNumber=0;
-                        for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
-                            var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
-
-                            if (project.access == project.persistedAccess) {
-                                // do nothing.
-                            } else {
-                            	parentWidget.getPermissionNumber++;
-                                project.updatePermission(parentWidget);
-                            }
-
-                            for (var j:int=0; j < project.contests.length; j++) {
-                                var contest:Contest=project.contests.getItemAt(j) as Contest;
-
-                                if (contest.access == contest.persistedAccess) {
-                                    // do nothing.
-                                } else {
-                                	parentWidget.getPermissionNumber++;
-                                    contest.updatePermission(parentWidget);
-                                }
-                            }
+                        if (contest.access == contest.persistedAccess) {
+                            // do nothing.
+                        } else {
+                            var o2:Object=getPermissionDTO(contest.project.user.id, contest.id, -1, contest.access, "contest", project.studio);
+                            permissionsToUpdate.addItem(o2);
                         }
-                         if(parentWidget.getPermissionNumber==0)
-                    	{
-                    	addPermissions();
-                   		 }
+                    }
+                }
+                
+                var header:SOAPHeader=parentWidget.getHeader(parentWidget.username, parentWidget.password);
+                parentWidget.contestServiceFacadeWS.clearHeaders();
+                parentWidget.contestServiceFacadeWS.addHeader(header);
+                var updatePermissions:AbstractOperation=parentWidget.contestServiceFacadeWS.getOperation("updatePermissions");
+                if (updatePermissions) {
+                    updatePermissions.send(permissionsToUpdate);
+                }
             }
             
             
@@ -228,41 +246,36 @@
              * Handles cancel of permission for given user.
              */
             public function cancelAction():void {
-                showAlertMessage("Do you want to cancel permission changes ?", "Confirm Cancel", this, 
-                         handleCancelAction);
+                showAlertMessage("Do you want to cancel permission changes ?", "Confirm Cancel", this, handleCancelAction);
             }
-
+            
             /**
              * Handles save of permission for given user.
              */
             public function saveAction():void {
-
-                showAlertMessage("Do you want to save permission changes ?", "Confirm Save", this, 
-                        handleSaveAction);
-                   
+                
+                showAlertMessage("Do you want to save permission changes ?", "Confirm Save", this, handleSaveAction);
+            
             }
             
-            public function addPermissions():void
-            {
-            	 for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
-                            var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
-
-                            if (project.access != project.persistedAccess
-                                 && project.access !="") {
-                                
-                                project.addPermission(parentWidget);
-                            }
-
-                            for (var j:int=0; j < project.contests.length; j++) {
-                                var contest:Contest=project.contests.getItemAt(j) as Contest;
-
-                                if (contest.access != contest.persistedAccess
-                                   && contest.access!="") {
-                                  contest.addPermission(parentWidget);
-                                   }
-                            }
+            public function addPermissions():void {
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access != project.persistedAccess && project.access != "") {
+                        
+                        project.addPermission(parentWidget);
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        
+                        if (contest.access != contest.persistedAccess && contest.access != "") {
+                            contest.addPermission(parentWidget);
                         }
-                        parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
+                    }
+                }
+                parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
             }
 
             /**
@@ -281,24 +294,67 @@
                 var a:Alert=Alert.show(message, title, Alert.OK | Alert.CANCEL, parentSprite, closeHandler);
                 a.height=height;
                 PopUpManager.centerPopUp(a);
-                /*
-                if (!Application.application || !Application.application.getWindowCenterX || !Application.application.getWindowCenterY) {
-                    return;
+            /*
+               if (!Application.application || !Application.application.getWindowCenterX || !Application.application.getWindowCenterY) {
+               return;
+               }
+            
+               var alertX:Number=Application.application.getWindowCenterX();
+               var alertY:Number=Application.application.getWindowCenterY();
+               if (alertX - 53 > 2 * a.x)
+               alertX=2 * a.x;
+               else
+               alertX=alertX - 53;
+            
+               if (alertY - 168 > 2 * a.y)
+               alertY=2 * a.y;
+               else
+               alertY=alertY - 168;
+               a.move(alertX, alertY);
+             */
+            }
+            
+            /**
+             * Gets the permission dto object.
+             *
+             * @return permission dto object for persistance.
+             */
+            private function getPermissionDTO(userId:int, projectId:int, permissionId:int, access:String, accessType:String, studio:Boolean):Object {
+                var perm:Object=new Object();
+                
+                if (permissionId && permissionId > 0) {
+                    perm.permissionId=permissionId;
                 }
-
-                var alertX:Number=Application.application.getWindowCenterX();
-                var alertY:Number=Application.application.getWindowCenterY();
-                if (alertX - 53 > 2 * a.x)
-                    alertX=2 * a.x;
-                else
-                    alertX=alertX - 53;
-
-                if (alertY - 168 > 2 * a.y)
-                    alertY=2 * a.y;
-                else
-                    alertY=alertY - 168;
-                a.move(alertX, alertY);
-                */
+                perm.userId=userId;
+                perm.resourceId=projectId;
+                perm.permissionType=new Object();
+                perm.permissionType.name="";
+                perm.studio=studio;
+                if (accessType == "contest") {
+                    if (access == "Full") {
+                        perm.permissionType.name="contest_full";
+                        perm.permissionType.permissionTypeId=6;
+                    } else if (access == "Write") {
+                        perm.permissionType.name="contest_write";
+                        perm.permissionType.permissionTypeId=5;
+                    } else if (access == "Read") {
+                        perm.permissionType.name="contest_read";
+                        perm.permissionType.permissionTypeId=4;
+                    }
+                } else if (accessType == "project") {
+                    if (access == "Full") {
+                        perm.permissionType.name="project_full";
+                        perm.permissionType.permissionTypeId=3;
+                    } else if (access == "Write") {
+                        perm.permissionType.name="project_write";
+                        perm.permissionType.permissionTypeId=2;
+                    } else if (access == "Read") {
+                        perm.permissionType.name="project_read";
+                        perm.permissionType.permissionTypeId=1;
+                    }
+                }
+                
+                return perm;
             }
         ]]>
     </mx:Script>
