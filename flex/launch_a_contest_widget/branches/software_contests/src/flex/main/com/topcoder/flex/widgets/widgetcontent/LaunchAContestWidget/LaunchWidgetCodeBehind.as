@@ -19,6 +19,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSaleData;
     
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
@@ -930,23 +931,33 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 }
                 return new Number(paidFee.toFixed(2));
             } else {
-                return 0;
+                if (!softwareCompetition || !softwareCompetition.projectData || !softwareCompetition.projectData.contestSales) {
+                    return 0;
+                }
+                
+                var paidAmount:Number=0;
+                for (var j:int=0; j < softwareCompetition.projectData.contestSales.length; j++) {
+                    paidAmount+=(softwareCompetition.projectData.contestSales[i] as SoftwareProjectSaleData).price;
+                }
+                
+                return new Number(paidAmount.toFixed(2));
             }
         }
         
         // BUGR-1363
         public function getExtraContestFee():Number {
-		if (this.competitionType == "STUDIO")
-		{
-        		var me:LaunchWidget = container.contents as LaunchWidget; 
-        		var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
+    		if (this.competitionType == "STUDIO")
+    		{
+            		var me:LaunchWidget = container.contents as LaunchWidget; 
+            		var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
+            		return new Number(result.toFixed(2));
+    		}
+    		else
+    		{
+    		    var me:LaunchWidget = container.contents as LaunchWidget; 
+        		var result:Number = new Number(me.overView.ns_contestf.text) - getPaidContestFee(); 
         		return new Number(result.toFixed(2));
-		}
-		else
-		{
-			return 0;
-		}	
-
+    		}	
         }
         
          /**

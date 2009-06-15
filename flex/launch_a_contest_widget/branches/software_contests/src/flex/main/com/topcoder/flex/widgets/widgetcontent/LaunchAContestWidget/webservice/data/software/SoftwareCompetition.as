@@ -5,6 +5,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Competition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.phases.SoftwareProjectPhases;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectHeader;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResource;
 
@@ -29,6 +30,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         * A <code>SoftwareAssetDTO</code> dto.
         */
         public var assetDTO:SoftwareAssetDTO;
+        
+        public var projectData:SoftwareProjectData;
 
         /**
         * A <code>SoftwareProjectHeader</code> dto.

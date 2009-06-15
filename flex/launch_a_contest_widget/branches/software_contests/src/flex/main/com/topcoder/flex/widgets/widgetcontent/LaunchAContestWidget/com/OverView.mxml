@@ -95,6 +95,7 @@
                 // For now contest types need to be loaded only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
+
                 if (mainWidget.studioContestType) {
                     // For studio contest it is loaded inside handler for requestContestTypes.
                     requestContestTypes.send();

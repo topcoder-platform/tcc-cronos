@@ -656,8 +656,8 @@
                     if (sched.validateFields() == false) {
                         return;
                     }
-                    save.label=getExtraContestFee() == 0 && this.competitionType == "STUDIO" ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
-                    if (getExtraContestFee() == 0 && this.competitionType == "STUDIO") { // BUGR-1363
+                    save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
+                    if (getExtraContestFee() <= 0) { // BUGR-1363
                         goNext.visible=false;
                     }
                     
