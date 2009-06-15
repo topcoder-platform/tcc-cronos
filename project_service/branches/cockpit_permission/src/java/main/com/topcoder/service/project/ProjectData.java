@@ -5,6 +5,12 @@ package com.topcoder.service.project;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityResult;
+import javax.persistence.FieldResult;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
+
 /**
  * <p>
  * This data object serves to communicate between project data between the bean and its client. It also serves as a base
@@ -21,6 +27,15 @@ import java.io.Serializable;
  * @author humblefool, FireIce
  * @version 1.0
  */
+@SqlResultSetMapping(
+		name="GetProjectsResult",
+		entities={@EntityResult(entityClass=ProjectData.class,
+				fields={@FieldResult(name="projectId",      column="project_id"),
+			            @FieldResult(name="name", column="name"),
+			            @FieldResult(name="description",           column="description")
+			            }
+		)})
+@Entity
 public class ProjectData implements Serializable {
     /**
      * <p>
@@ -39,6 +54,7 @@ public class ProjectData implements Serializable {
      * and set by the {@link #setProjectId(Long)} method. It is initialized to null, and may be set to ANY value.
      * </p>
      */
+	@Id
     private Long projectId;
 
     /**

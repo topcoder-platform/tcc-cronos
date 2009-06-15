@@ -234,16 +234,22 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY = "SELECT p FROM Project p";
+    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description FROM tc_direct_project p";
 
     /**
      * <p>
      * The "where" clause used to retrieve <code>Project</code> entities by user id.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - also need to fetch users who has read, write, full permissions on the project other than the creator.
+     * </p>
      *
      * @since 1.1
      */
-    private static final String WHERE_CLAUSE = " WHERE p.userId=:userId";
+    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description FROM tc_direct_project p, user_permission_grant per "
+	                                + " where p.project_id = per.resource_id and per.user_id = ";
 
     /**
      * <p>
@@ -354,8 +360,18 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    @PersistenceContext
-    private EntityManager entityManager;
+    //@PersistenceContext
+   // private EntityManager entityManager;
+
+   /**
+     * <p>
+     * This field represents the persistence unit name to lookup the <code>EntityManager</code> from the
+     * <code>SessionContext</code>. It is initialized in the <code>initialize</code> method, and never changed
+     * afterwards. It must be non-null, non-empty string.
+     * </p>
+     */
+    @Resource(name = "unitName")
+    private String unitName;
 
     /**
      * <p>
@@ -603,7 +619,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * </p>
      *
      * <p>
-     * Notes, only administrator can do this.
+     * Updated for Cockpit Project Admin Release Assembly v1.0 - now all users can do this.
      * </p>
      *
      * <p>
@@ -635,7 +651,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.0
      */
-    @RolesAllowed({"Cockpit Administrator" })
+    //@RolesAllowed({"Cockpit Administrator" })
     public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault {
 
         logEnter("getProjectsForUser(long)");
@@ -686,20 +702,21 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
         try {
             if (userId != null) {
-                query = entityManager.createQuery(QUERY + WHERE_CLAUSE);
-                query.setParameter("userId", userId);
+                query = getEntityManager().createNativeQuery(QUERY_PROJECTS_BY_USER + userId, "GetProjectsResult");
+
             } else {
-                query = entityManager.createQuery(QUERY);
+                query = getEntityManager().createNativeQuery(QUERY_ALL_PROJECTS, "GetProjectsResult");
             }
 
-            // Invoke an unchecked conversion
-            List < Project > resultList = query.getResultList();
+            List list = query.getResultList();
 
             // Copy each Project
             List < ProjectData > projectDatas = new ArrayList();
 
-            for (Project project : resultList) {
-                projectDatas.add(copyProjectData(project));
+            for (int i = 0; i < list.size(); i++) {
+				ProjectData data = (ProjectData) list.get(i);
+
+                projectDatas.add(data);
             }
 
             return projectDatas;
@@ -735,6 +752,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @return The project data for all projects viewable from the calling principal. The returned collection will not
      *         be null or contain nulls. Possibly empty.
+     *         
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - Removed check for admin.
+     * </p>         
      *
      * @throws PersistenceFault
      *             If a generic persistence error occurs.
@@ -750,17 +772,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         logEnter("getAllProjects()");
 
         try {
-            List < ProjectData > projectDatas = null;
-            if (!sessionContext.isCallerInRole(getAdministratorRole())) {
-                // Not administrator, retrieve the projects associated with him
-                // Obtain the user id of caller
-                long callerUserId = getCallerUserId();
-                projectDatas = doGetProjects(callerUserId);
-            } else {
-                // Administrator, retrieve all the projects
-                projectDatas = doGetProjects(null);
-            }
-
+            List < ProjectData > projectDatas = doGetProjects(null);
             logReturn(projectDatas.size() + " projects found");
             return projectDatas;
         } finally {
@@ -922,6 +934,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
     private void manageEntity(Project project, Action action) throws PersistenceFault {
 
         try {
+			EntityManager entityManager = getEntityManager();
             if (action == Action.CREATE) {
                 // Persist entity
                 entityManager.persist(project);
@@ -1052,7 +1065,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
     private Project getProjectById(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault {
         try {
-            Project project = entityManager.find(Project.class, projectId);
+            Project project = getEntityManager().find(Project.class, projectId);
 
             if (project == null) {
                 throw logException(new ProjectNotFoundFault(
@@ -1421,5 +1434,31 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
          * </p>
          */
         DELETE
+    }
+
+
+		/**
+     * <p>
+     * Returns the <code>EntityManager</code> looked up from the session context.
+     * </p>
+     * 
+     * @return the EntityManager looked up from the session context
+     * @throws ContestManagementException
+     *             if fail to get the EntityManager from the sessionContext.
+     */
+    private EntityManager getEntityManager() throws PersistenceFault {
+        try {
+            Object obj = sessionContext.lookup(unitName);
+
+            if (obj == null) {
+                throw new PersistenceFault("The object for jndi name '" + unitName + "' doesn't exist.");
+            }
+
+            return (EntityManager) obj;
+        } catch (ClassCastException e) {
+            throw new PersistenceFault( "The jndi name for '" + unitName
+                    + "' should be EntityManager instance." + e.getMessage());
+        }
+		//return entityManager;
     }
 }

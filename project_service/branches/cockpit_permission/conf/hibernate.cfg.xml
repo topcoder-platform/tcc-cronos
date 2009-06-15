@@ -8,5 +8,6 @@
         <property name="show_sql">true</property>
         <property name="dialect">org.hibernate.dialect.InformixDialect</property>
         <mapping resource="META-INF/mapping.xml"/>
+
     </session-factory>
 </hibernate-configuration>

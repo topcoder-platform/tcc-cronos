@@ -24,10 +24,46 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>Cockpit Administrator</env-entry-value>
             </env-entry>
-            <!-- Tells the container for which persistence unit to inject an EntityManager -->
+            <!-- Tells the container for which persistence unit to inject an EntityManager 
             <persistence-context-ref>
                 <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
                 <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>
+            </persistence-context-ref>-->
+
+			 <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
+            </env-entry>
+			
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
+            </persistence-context-ref>
+        </session>
+
+
+		 <session>
+            <ejb-name>PermissionServiceBean</ejb-name>
+            <remote>com.topcoder.service.permission.PermissionServiceRemote</remote>
+			 <local>com.topcoder.service.permission.PermissionServiceLocal</local>
+            <ejb-class>com.topcoder.service.permission.ejb.PermissionServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>permissionService</env-entry-value>
+            </env-entry>
+			 <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
+            </env-entry>
+			
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
             </persistence-context-ref>
         </session>
     </enterprise-beans>
