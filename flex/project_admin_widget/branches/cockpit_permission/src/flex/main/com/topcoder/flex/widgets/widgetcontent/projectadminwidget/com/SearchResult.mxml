@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for rendering search results.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:com="com.*"
+         creationComplete="init()"
+         paddingTop="0"
+         paddingBottom="0"
+         verticalGap="0">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+            import mx.events.CollectionEventKind;
+            import mx.events.CollectionEvent;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.SearchUserRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.User;
+            import mx.collections.ArrayCollection;
+
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+            
+            private var containers:VBox=null;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Handler for initializing this component.
+             */
+            private function init():void {
+            	this.addChild(tab);
+            }
+
+            /**
+             * Sets the data provider for this search result.
+             *
+             * @param nouse param not in use.
+             */
+            public function set dataProvider(nouse:Boolean):void {
+                if ( parentWidget.model.userList) {
+                	if(containers==null){
+                	   containers=new VBox();
+                	   containers.percentWidth=100;
+                	   containers.percentHeight=100;
+                	   this.addChild(containers);
+                	}
+                   containers.removeAllChildren();
+                   for(var i:int=0;i<parentWidget.model.userList.length;i++){
+                   	   var item:User= parentWidget.model.userList.getItemAt(i) as User;
+                   // for each (var item:User in parentWidget.model.userList) {
+                        var render:SearchUserRenderer=new SearchUserRenderer();
+                        render.parentWidget=this.parentWidget;
+                        render.data=item;
+                        containers.addChild(render);
+                    }
+                }
+            }
+
+            /**
+             * Over-rides measure method from super class.
+             *
+             * It calculates the container height.
+             */
+            override protected function measure():void {
+                super.measure();
+                if (initialized) {
+                    containers.height=this.height - tab.height;
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="parentWidget.model.refresh"
+                destination="dataProvider"/>
+    <mx:HBox width="100%"
+             id="tab">
+        <mx:Label text="Result ({parentWidget.model.userList.length} matching records)"
+                  styleName="normalText"/>
+        <mx:Spacer width="100%"/>
+        <mx:LinkButton label="Highlight Search Term"
+                       styleName="linkBtn"
+                       click="parentWidget.model.highLight = !parentWidget.model.highLight"/>
+    </mx:HBox>
+    <!--
+    <mx:VBox id="containers"
+             width="100%"
+             height="100%"
+             paddingRight="5"
+             verticalGap="3"/>
+             -->
+</mx:VBox>
