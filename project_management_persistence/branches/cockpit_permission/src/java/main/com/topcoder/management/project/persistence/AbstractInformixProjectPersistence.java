@@ -36,6 +36,7 @@ import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
+import com.topcoder.service.permission.SimpleProjectPermissionData;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
@@ -83,9 +84,13 @@ import com.topcoder.util.log.Log;
  * </p>
  *
  * <p>
+ * Updated for Cockpit Project Admin Release Assembly v1.0: new methods added to support retrieval of project and their permissions.
+ * </p>
+ *
+ * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
- * @author tuenm, urtks, bendlund, fuyun
+ * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
  * @version 1.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
@@ -508,6 +513,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String DELETE_PROJECT_PROPERTIES_SQL = "DELETE FROM project_info "
             + "WHERE project_id=? AND project_info_type_id IN ";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query all project categories.
+     */
+    private static final DataType[] QUERY_SIMPLE_PROJECT_PERMISSION_DATA_COLUMN_TYPES = new DataType[] {
+            Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
     /**
      * <p>
@@ -2461,5 +2475,124 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 		}
 
 	}
+	
+	/**
+     * <p>
+     * Gets the list of project their read/write/full permissions.
+     * </p>
+     * 
+     * @param createdUser
+     *            the specified user for which to get the permission
+     * @return the list of project their read/write/full permissions.
+     * 
+     * @throws PersistenceException exception if error during retrieval from database.
+     * 
+     * @since Cockpit Project Admin Release Assembly v1.0
+     */
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
+            throws PersistenceException {
 
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            String qstr = "select project_id as contest_id, " +
+            		" (select pinfo.value from project_info as pinfo where pinfo.project_id = c.project_id and pinfo.project_info_type_id = 6) as name, "
+                    + " tc_direct_project_id, "
+                    + " ( select name from tc_direct_project p where c.tc_direct_project_id = p.project_id) as pname, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.tc_direct_project_id  and user_id= "
+                    + createdUser
+                    + " and permission_type_id=1 ) as pread, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.tc_direct_project_id  and user_id=  "
+                    + createdUser
+                    + " and permission_type_id=2 ) as pwrite, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.tc_direct_project_id  and user_id=  "
+                    + createdUser
+                    + " and permission_type_id=3 ) as pfull, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + createdUser
+                    + " and permission_type_id=4 ) as cread, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + createdUser
+                    + " and permission_type_id=5 ) as cwrite, "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + createdUser
+                    + " and permission_type_id=6 ) as cfull "
+                    + " from project c  "
+                    + " where not c.tc_direct_project_id is null ";
+
+            Object[][] rows = Helper.doQuery(conn, qstr, new Object[] {},
+                    this.QUERY_SIMPLE_PROJECT_PERMISSION_DATA_COLUMN_TYPES);
+
+            List<SimpleProjectPermissionData> result = new ArrayList<SimpleProjectPermissionData>();
+
+            for (int i = 0; i < rows.length; i++) {
+
+                SimpleProjectPermissionData c = new SimpleProjectPermissionData();
+                c.setStudio(false);
+                Object[] os = rows[i];
+                
+                // skip records that doesn't have tc project names.
+                if (os[3] == null || os[3].equals("")) {
+                    continue;
+                }
+
+                if (os[0] != null)
+                    c.setContestId((Long) os[0]);
+                if (os[1] != null)
+                    c.setCname(os[1].toString());
+                if (os[2] != null)
+                    c.setProjectId((Long) os[2]);
+                if (os[3] != null)
+                    c.setPname(os[3].toString());
+
+                if (createdUser < 0) {
+                    // admin
+                    c.setPfull(1);
+                    c.setCfull(1);
+                    result.add(c);
+                    continue;
+                }
+
+                int pp = 0;
+                if (os[4] != null) {
+                    c.setPread(((Long) os[4]).intValue());
+                    pp++;
+                }
+                if (os[5] != null) {
+                    c.setPwrite(((Long) os[5]).intValue());
+                    pp++;
+                }
+                if (os[6] != null) {
+                    c.setPfull(((Long) os[6]).intValue());
+                    pp++;
+                }
+                int cp = 0;
+                if (os[7] != null) {
+                    c.setCread(((Long) os[7]).intValue());
+                    cp++;
+                }
+                if (os[8] != null) {
+                    c.setCwrite(((Long) os[8]).intValue());
+                    cp++;
+                }
+                if (os[9] != null) {
+                    c.setCfull(((Long) os[9]).intValue());
+                    cp++;
+                }
+                if (pp > 0 || cp > 0) {
+                    result.add(c);
+                }
+            }
+            return result;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to retrieving all tc direct projects ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        } 
+    }
 }
