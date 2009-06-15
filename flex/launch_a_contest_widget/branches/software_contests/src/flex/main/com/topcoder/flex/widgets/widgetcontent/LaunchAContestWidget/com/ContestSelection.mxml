@@ -87,6 +87,17 @@
 		        mainWidget.showLoadingProgress();
 
                 selectContests.dataProvider = contestsData;
+
+		 // default to studio
+		if (mainWidget) {
+                     mainWidget.competitionType= "STUDIO";
+
+                    mainWidget.studioContestType=true;
+
+                        if (mainWidget.competition) {
+                            mainWidget.competition.type="STUDIO";
+                        }
+                    } 
             }
             
             // TCCC-1023
