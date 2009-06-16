@@ -36,7 +36,7 @@ import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
-import com.topcoder.service.permission.SimpleProjectPermissionData;
+import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
