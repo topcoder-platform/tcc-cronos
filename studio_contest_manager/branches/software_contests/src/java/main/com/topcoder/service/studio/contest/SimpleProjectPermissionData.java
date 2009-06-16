@@ -132,7 +132,7 @@ public class SimpleProjectPermissionData {
         this.studio = studio;
     }
     
-    public boolean isStudio(boolean studio) {
+    public boolean isStudio() {
         return this.studio;
     }
 
