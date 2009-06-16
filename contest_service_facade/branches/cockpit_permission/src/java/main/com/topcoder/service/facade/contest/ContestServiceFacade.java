@@ -37,7 +37,6 @@ import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
-import com.topcoder.service.permission.SimpleProjectPermissionData;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.studio.contest.User;
@@ -1190,7 +1189,7 @@ public interface ContestServiceFacade {
      * 
      * @since TCCC-1329
      */
-	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+	public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
 			long createdUser) throws PersistenceException;
 
 

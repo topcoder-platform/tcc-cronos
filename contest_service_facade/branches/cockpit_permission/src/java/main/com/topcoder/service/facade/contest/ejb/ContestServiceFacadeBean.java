@@ -36,7 +36,6 @@ import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
-import com.topcoder.service.permission.SimpleProjectPermissionData;
 import com.topcoder.service.permission.ejb.PermissionServiceBean;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.CompetitionPrize;
@@ -81,6 +80,7 @@ import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -2954,16 +2954,50 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 * @since TCCC-1329
 	 */
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
+	public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
 			long createdUser) throws PersistenceException
 	{
-	    List<SimpleProjectPermissionData> studioPermissions = studioService.getSimpleProjectPermissionDataForUser(createdUser);
-	    List<SimpleProjectPermissionData> softwarePermissions = projectServices.getSimpleProjectPermissionDataForUser(createdUser);
+	    List<com.topcoder.service.studio.contest.SimpleProjectPermissionData> studioPermissions = studioService.getSimpleProjectPermissionDataForUser(createdUser);
+	    List<com.topcoder.management.project.SimpleProjectPermissionData> softwarePermissions = projectServices.getSimpleProjectPermissionDataForUser(createdUser);
 	    
-	    List<SimpleProjectPermissionData> ret = new LinkedList<SimpleProjectPermissionData>();
-	    ret.addAll(studioPermissions);
-	    ret.addAll(softwarePermissions);
-	    
+	    List<CommonProjectPermissionData> ret = new ArrayList<CommonProjectPermissionData>();
+
+		for (com.topcoder.service.studio.contest.SimpleProjectPermissionData data:studioPermissions)
+		{
+			CommonProjectPermissionData newdata = new CommonProjectPermissionData();
+			newdata.setContestId(data.getContestId());
+			newdata.setProjectId(data.getProjectId());
+			newdata.setCfull(data.getCfull());
+			newdata.setCname(data.getCname());
+		    newdata.setCread(data.getCread());
+			newdata.setCwrite(data.getCwrite());
+			newdata.setPfull(data.getPfull());
+			newdata.setPname(data.getPname());
+			newdata.setPread(data.getPread());
+			newdata.setPwrite(data.getPwrite());
+			newdata.setStudio(data.isStudio());
+			ret.add(newdata);
+
+		}
+
+		for (com.topcoder.management.project.SimpleProjectPermissionData data:softwarePermissions)
+		{
+			CommonProjectPermissionData newdata = new CommonProjectPermissionData();
+			newdata.setContestId(data.getContestId());
+			newdata.setProjectId(data.getProjectId());
+			newdata.setCfull(data.getCfull());
+			newdata.setCname(data.getCname());
+		    newdata.setCread(data.getCread());
+			newdata.setCwrite(data.getCwrite());
+			newdata.setPfull(data.getPfull());
+			newdata.setPname(data.getPname());
+			newdata.setPread(data.getPread());
+			newdata.setPwrite(data.getPwrite());
+			newdata.setStudio(data.isStudio());
+			ret.add(newdata);
+
+		}
+
 		return ret;
 	}
 
