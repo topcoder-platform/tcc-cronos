@@ -184,6 +184,11 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      *
      * <p>Notes, for user, it will retrieve only the projects associated with him; for administrators, it will retrieve all
      * the existing projects.</p>
+     * 
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - Added check for admin user, if admin user then all projects are loaded else only for the user.
+     * </p>
      *
      * @return The project data for all projects viewable from the calling principal. The returned collection will not be
      *         null or contain nulls. Possibly empty.
@@ -191,8 +196,13 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @see ProjectService#getAllProjects()
      */
     @WebMethod
-    public @WebResult List<ProjectData> getAllProjects() throws PersistenceFault {
-        return this.projectService.getAllProjects();
+    public @WebResult List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault {
+        if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            return this.projectService.getAllProjects();
+        } else {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            return this.projectService.getProjectsForUser(p.getUserId());
+        }
     }
 
     /**

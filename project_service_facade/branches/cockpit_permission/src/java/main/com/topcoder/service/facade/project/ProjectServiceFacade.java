@@ -86,13 +86,21 @@ public interface ProjectServiceFacade {
      *
      * <p>Notes, for user, it will retrieve only the projects associated with him; for administrators, it will retrieve
      * all the existing projects.</p>
+     * 
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - Added check for admin user, if admin user then all projects are loaded else only for the user.
+     * </p>
      *
      * @return The project data for all projects viewable from the calling principal. The returned collection will not
      *         be null or contain nulls. Possibly empty.
      * @throws PersistenceFault if a generic persistence error occurs.
+     * @throws AuthorizationFailedFault if errors occurs during authorization of the caller user.
+     * @throws UserNotFoundFault if errors occurs during authorization of the caller user.
+     * 
      * @see ProjectService#getAllProjects()
      */
-    List < ProjectData > getAllProjects() throws PersistenceFault;
+    List < ProjectData > getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault;
 
     /**
      * <p>Updates the project data for the given project.</p>
