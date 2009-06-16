@@ -7,7 +7,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cronos.onlinereview.external.ExternalProject;
 import com.cronos.onlinereview.external.ProjectRetrieval;
+import com.cronos.onlinereview.external.RetrievalException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ContestSale;
@@ -39,7 +41,6 @@ import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.Util;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
@@ -148,15 +149,11 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
- * Updated for Cockpit Project Admin Release Assembly v1.0: new methods added to support retrieval of project and their permissions.
- * </p>
- *
- * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
- * @author argolite, moonli, TCSASSEMBLER
+ * @author argolite, moonli
  * @author fabrizyo, znyyddf
  * @version 1.1
  * @since 1.0
@@ -1148,6 +1145,8 @@ public class ProjectServicesImpl implements ProjectServices {
         // check operator
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
+		
+
         try {
             // get the project calling projectManager.getProject(projectHeader.getId())
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#createProject method.");
@@ -1826,43 +1825,4 @@ public class ProjectServicesImpl implements ProjectServices {
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
 		return ret;
 	}
-	
-	/**
-     * <p>
-     * Gets the list of project their read/write/full permissions.
-     * </p>
-     * 
-     * @param createdUser
-     *            the specified user for which to get the permission
-     * @return the list of project their read/write/full permissions.
-     * 
-     * @throws ProjectServicesException
-     *             exception if error during retrieval from persistence.
-     * 
-     * @since Cockpit Project Admin Release Assembly v1.0
-     */
-    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
-            throws ProjectServicesException {
-        String method = "ProjectServicesBean#getSimpleProjectPermissionDataForUser(getSimpleProjectPermissionDataForUser) method.";
-
-        log(Level.INFO, "Enters ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
-
-        // represents the active projects
-        List<SimpleProjectPermissionData> ret = null;
-        try {
-            logDebug("Starts calling ProjectManager#getSimpleProjectPermissionDataForUser method.");
-
-            ret = projectManager.getSimpleProjectPermissionDataForUser(createdUser);
-
-            logDebug("Finished calling ProjectManager#getSimpleProjectPermissionDataForUser method.");
-
-        } catch (PersistenceException ex) {
-            log(Level.ERROR,
-                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
-            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager.", ex);
-        } 
-
-        log(Level.INFO, "Exits ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
-        return ret;
-    }
 }

@@ -183,7 +183,6 @@
 	<property name="project_phase_template.jar.name" value="project_phase_template.jar"/>
 	<property name="project_phase_template.path" value="project_phase_template/${project_phase_template.version}"/>
 	<property name="project_phase_template.jar" value="${tcs_libdir}/${project_phase_template.path}/${project_phase_template.jar.name}"/>
- 
 
 
     <!-- 3rd Party Dependencies  -->
@@ -199,7 +198,6 @@
 
     <path id="buildlibs">
         <pathelement location="${junit.jar}" />
-       
         
         <pathelement location="${phase_management.jar}" />
         <pathelement location="${object_formatter.jar}" />
