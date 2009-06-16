@@ -1260,23 +1260,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		return this.permissionService.addPermissionType(type);
     }
 
-    /**
-     * <p>
-     * This method will add permission data, and return the added permission data.
-     * </p>
-     *
-     * @param permission the permission to add.
-     *
-     * @return the added permission entity
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when adding the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public Permission addPermission(Permission permission) throws PermissionServiceException {
-		return this.permissionService.addPermission(permission);
-    }
+
+   
 
     /**
      * <p>
@@ -1294,21 +1279,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     	this.permissionService.updatePermissionType(type);
     }
 
-    /**
-     * <p>
-     * This method will update permission data.
-     * </p>
-     *
-     * @param permission the permission to update.
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when updating the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public void updatePermission(Permission permission) throws PermissionServiceException {
-    	this.permissionService.updatePermission(permission);
-    }
+
 
     /**
      * <p>
@@ -1329,24 +1300,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     	return this.permissionService.deletePermissionType(typeid);
     }
 
-    /**
-     * <p>
-     * This method will remove permission data, return true if the permission data exists and removed successfully,
-     * return false if it doesn't exist.
-     * </p>
-     *
-     * @param permissionid the permission to delete.
-     *
-     * @return true if the permission data exists and removed successfully.
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when deleting the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public boolean deletePermission(long permissionid) throws PermissionServiceException {
-    	return this.permissionService.deletePermission(permissionid);
-    }
+
 
     /**
      * <p>Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be

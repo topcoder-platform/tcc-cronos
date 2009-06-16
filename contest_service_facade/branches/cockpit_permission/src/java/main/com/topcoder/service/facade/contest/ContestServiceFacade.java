@@ -703,21 +703,7 @@ public interface ContestServiceFacade {
      */
     public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException;
 
-    /**
-     * <p>
-     * This method will add permission data, and return the added permission data.
-     * </p>
-     *
-     * @param permission the permission to add.
-     *
-     * @return the added permission entity
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when adding the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public Permission addPermission(Permission permission) throws PermissionServiceException;
+   
 
     /**
      * <p>
@@ -733,19 +719,7 @@ public interface ContestServiceFacade {
      */
     public void updatePermissionType(PermissionType type) throws PermissionServiceException;
 
-    /**
-     * <p>
-     * This method will update permission data.
-     * </p>
-     *
-     * @param permission the permission to update.
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when updating the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public void updatePermission(Permission permission) throws PermissionServiceException;
+    
 
     /**
      * <p>
@@ -764,22 +738,7 @@ public interface ContestServiceFacade {
      */
     public boolean deletePermissionType(long typeid) throws PermissionServiceException;
 
-    /**
-     * <p>
-     * This method will remove permission data, return true if the permission data exists and removed successfully,
-     * return false if it doesn't exist.
-     * </p>
-     *
-     * @param permissionid the permission to delete.
-     *
-     * @return true if the permission data exists and removed successfully.
-     *
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when deleting the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public boolean deletePermission(long permissionid) throws PermissionServiceException;
+   
     
     /**
      * <p>
