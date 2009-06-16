@@ -45,8 +45,6 @@ public class SimpleProjectPermissionData {
     
     private Integer cfull;
 
-	private boolean studio;
-
 	public Integer getCfull() {
 		return cfull;
 	}
@@ -126,14 +124,5 @@ public class SimpleProjectPermissionData {
 	public void setPwrite(Integer pwrite) {
 		this.pwrite = pwrite;
 	}
-
-
-	public void setStudio(boolean studio) {
-        this.studio = studio;
-    }
-    
-    public boolean isStudio() {
-        return this.studio;
-    }
 
 }
