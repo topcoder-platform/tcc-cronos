@@ -11,6 +11,7 @@ import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.management.project.SimpleProjectPermissionData;
 
 /**
  * <p>
@@ -43,11 +44,15 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * <p>
+ * Updated for Cockpit Project Admin Release Assembly v1.0: new methods added to support retrieval of project and their permissions.
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
- * @author argolite, moonli
+ * @author argolite, moonli, TCSASSEMBLER
  * @author fabrizyo, znyyddf
  * @version 1.1
  * @since 1.0
@@ -413,4 +418,19 @@ public interface ProjectServices {
 
 	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
 			String user) throws ProjectServicesException;
+	
+	/**
+     * <p>
+     * Gets the list of project their read/write/full permissions.
+     * </p>
+     * 
+     * @param createdUser
+     *            the specified user for which to get the permission
+     * @return the list of project their read/write/full permissions.
+     * 
+     * @throws ProjectServicesException exception if error during retrieval from persistence.
+     * 
+     * @since Cockpit Project Admin Release Assembly v1.0
+     */
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser) throws ProjectServicesException;
 }

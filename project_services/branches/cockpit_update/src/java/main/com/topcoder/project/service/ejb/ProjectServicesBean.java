@@ -3,14 +3,13 @@
  */
 package com.topcoder.project.service.ejb;
 
-import java.text.ParseException;
 import java.util.List;
 
-import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.project.service.ConfigurationException;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
@@ -97,11 +96,15 @@ import javax.ejb.TransactionAttributeType;
  * </p>
  *
  * <p>
+ * Updated for Cockpit Project Admin Release Assembly v1.0: new methods added to support retrieval of project and their permissions.
+ * </p>
+ *
+ * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
  * required to be thread safe.
  * </p>
  *
- * @author fabrizyo, znyyddf
+ * @author fabrizyo, znyyddf, TCSASSEMBLER
  * @version 1.1
  * @since 1.1
  */
@@ -883,4 +886,34 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 			Util.log(logger, Level.INFO, "Exits " + method);
 		}
 	}
+	
+	/**
+     * <p>
+     * Gets the list of project their read/write/full permissions.
+     * </p>
+     * 
+     * @param createdUser
+     *            the specified user for which to get the permission
+     * @return the list of project their read/write/full permissions.
+     * 
+     * @throws ProjectServicesException
+     *             exception if error during retrieval from persistence.
+     * 
+     * @since Cockpit Project Admin Release Assembly v1.0
+     */
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#getSimpleProjectPermissionDataForUser(getSimpleProjectPermissionDataForUser) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getSimpleProjectPermissionDataForUser(createdUser);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
 }
