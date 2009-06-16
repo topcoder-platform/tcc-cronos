@@ -111,12 +111,12 @@
                 this.contestServiceFacadeWS.clearHeaders();
                 this.contestServiceFacadeWS.addHeader(header);
                 
-                var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
+                var getCommonProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getCommonProjectPermissionDataForUser");
                 
-                if (getSimpleProjectPermissionDataForUser) {
+                if (getCommonProjectPermissionDataForUser) {
                     trace("Sending userid: " + this.userid + ", " + this.contestServiceFacadeWS.wsdl);
                     showLoadingProgress();
-                    getSimpleProjectPermissionDataForUser.send(-1);//this.userid);
+                    getCommonProjectPermissionDataForUser.send(-1);//this.userid);
                 }
             }
 
@@ -293,11 +293,11 @@
             public function loadDataforUser(idx:int):void
             {
             	_modelUserIdx=idx;
-            	var getSimpleProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getSimpleProjectPermissionDataForUser");
+            	var getCommonProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getCommonProjectPermissionDataForUser");
                 
-                 if (getSimpleProjectPermissionDataForUser) {
+                 if (getCommonProjectPermissionDataForUser) {
             		showLoadingProgress();
-                	getSimpleProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
+                	getCommonProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
                  }
             }
             
@@ -553,10 +553,10 @@
                       fault="hideLoadingProgress(); Helper.showAlertMessage('deletePermission: ' + event.fault.faultString);">
         </mx:operation>
         
-        <mx:operation name="getSimpleProjectPermissionDataForUser"
+        <mx:operation name="getCommonProjectPermissionDataForUser"
                       resultFormat="object"
-                      result="handleSimpleProjectPermissionDataForUser(event)"
-                      fault="hideLoadingProgress(); Helper.showAlertMessage('getSimpleProjectPermissionDataForUser: ' + event.fault.faultString);">
+                      result="handleCommonProjectPermissionDataForUser(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getCommonProjectPermissionDataForUser: ' + event.fault.faultString);">
         </mx:operation>
         
         <mx:operation name="searchUser"
