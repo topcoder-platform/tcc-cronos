@@ -617,8 +617,13 @@ public abstract class AbstractInformixPhasePersistence extends
             return;
         }
 
-        // get the connection
+		  // get the connection
         Connection conn = getConnection();
+
+		long projectId = phases[0].getProject().getId();
+		Map phasesMap = new HashMap();
+
+		
 
         // create the context
         Map context = createContextMap(conn);
@@ -631,6 +636,25 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // start the transaction
             startTransaction(context);
+
+
+			// recalcuate phase dates in case project start date changes
+			for (Phase p : phases) {
+						phasesMap.put(new Long(p.getId()), p);
+						p.setScheduledStartDate(null);
+						p.setScheduledEndDate(null);
+						p.setFixedStartDate(null);
+
+			 }	
+
+			fillDependencies(conn, phasesMap, new long[]{projectId});
+
+			for (Phase p : phases) {
+						p.setScheduledStartDate(p.calcStartDate());
+						p.setScheduledEndDate(p.calcEndDate());
+						p.setFixedStartDate(p.calcStartDate());
+
+				}	
 
             // get the phases criteria lookups
             Map lookUps = getCriteriaTypes(conn);
@@ -666,10 +690,11 @@ public abstract class AbstractInformixPhasePersistence extends
                     if (pstmt.executeUpdate() == 0) {
                         toCreate.add(phases[i]);
                     } else {
-                        // if phase exists - update the criteria and
-                        // dependencies
-                        updatePhaseCriteria(conn, phases[i], operator, lookUps);
-                        updateDependencies(conn, phases[i], operator);
+						// TODO, for cockpit we dont update criteria and dependencies, so not need to update
+			            // problem is we remove dependencies for cycle issue for web services, and criteria 
+						// dont seem returned in get phase, so update here will delete all data
+                        //updatePhaseCriteria(conn, phases[i], operator, lookUps);
+                        //updateDependencies(conn, phases[i], operator);
                     }
                 }
             }
