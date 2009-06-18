@@ -301,7 +301,7 @@
                  }
             }
             
-            private function handleSimpleProjectPermissionDataForUser(event:ResultEvent):void
+            private function handleCommonProjectPermissionDataForUser(event:ResultEvent):void
             {
             	hideLoadingProgress();
             	if(event && event.result && event.result is ArrayCollection)
