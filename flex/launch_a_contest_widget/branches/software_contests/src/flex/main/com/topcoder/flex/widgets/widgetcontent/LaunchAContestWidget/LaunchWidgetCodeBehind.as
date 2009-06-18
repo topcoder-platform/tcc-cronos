@@ -695,6 +695,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
                 
+		// set prize and admin fee from properties
+		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
+		this.softwareCompetition.prizes[0] = new PrizeData();
+		this.softwareCompetition.prizes[1] = new PrizeData();
+		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+		PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
 
@@ -743,6 +750,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             trace("updateSoftwareContestHandler: " + e + ", " + e.result);
             hideLoadingProgress();
             if (e && e.result) {
+
+
+		this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
+                trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
+                
+		// set prize and admin fee from properties
+		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
+		this.softwareCompetition.prizes[0] = new PrizeData();
+		this.softwareCompetition.prizes[1] = new PrizeData();
+		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+		PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
             	
