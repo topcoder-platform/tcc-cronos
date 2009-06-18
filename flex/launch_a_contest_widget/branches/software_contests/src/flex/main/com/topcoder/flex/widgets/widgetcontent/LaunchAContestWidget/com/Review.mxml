@@ -42,12 +42,18 @@
             // BUGR-1067
             public var ns_componentNameStr:String;
             public var ns_shortDescStr:String;
-            public var ns_detailedDescStr:String;
+            // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            //public var ns_detailedDescStr:String;
             public var ns_funcDescStr:String;
             public var ns_techListData:ArrayCollection;
-            // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-            // we don't need comments input anymore.
+            // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
             //public var ns_commentsStr:String;
+            
+            // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+            public var ns_detailedRequirementsStr:String;
+            public var ns_submissionDeliverablesStr:String;
+            public var ns_environmentSetupInstructionsStr:String;
+            public var ns_finalSubmissionGuidelinesStr:String;
 
             //
             // Introduced value holders for additional fields.
@@ -122,10 +128,15 @@
                     ns_componentName.text=ns_componentNameStr;
                     ns_shortDesc.text=ns_shortDescStr;
                     ns_funcDesc.text=ns_funcDescStr;
-                    ns_detailedDesc.text=ns_detailedDescStr;
-                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                    // we don't need comments input anymore.
+                    // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                    //ns_detailedDesc.text=ns_detailedDescStr;
                     //ns_comments.text=ns_commentsStr;
+                    
+                    // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                    ns_detailedRequirements.text=ns_detailedRequirementsStr;
+                    ns_submissionDeliverables.text=ns_submissionDeliverablesStr;
+                    ns_environmentSetupInstructions.text=ns_environmentSetupInstructionsStr;
+                    ns_finalSubmissionGuidelines.text=ns_finalSubmissionGuidelinesStr;            
 
                     // fix repeat of technologies.
                     ns_techList.htmlText="";
@@ -522,12 +533,40 @@
                      width="500"
                      height="50"/>
 
-            <mx:Spacer height="5"/>
+            <!--<mx:Spacer height="5"/>
             <mx:Label text="Detailed Description:"
                       fontWeight="bold"/>
             <mx:Text id="ns_detailedDesc"
                      width="500"
+                     height="50"/>-->
+                     
+            <mx:Spacer height="5"/>
+            <mx:Label text="Detailed Requirements:"
+                      fontWeight="bold"/>
+            <mx:Text id="ns_detailedRequirements"
+                     width="500"
                      height="50"/>
+                     
+            <mx:Spacer height="5"/>
+            <mx:Label text="Submission Deliverables:"
+                      fontWeight="bold"/>
+            <mx:Text id="ns_submissionDeliverables"
+                     width="500"
+                     height="50"/>
+                     
+            <mx:Spacer height="5"/>
+            <mx:Label text="Environment Setup Instructions:"
+                      fontWeight="bold"/>
+            <mx:Text id="ns_environmentSetupInstructions"
+                     width="500"
+                     height="50"/>
+                     
+            <mx:Spacer height="5"/>
+            <mx:Label text="Final Submission Guidelines:"
+                      fontWeight="bold"/>
+            <mx:Text id="ns_finalSubmissionGuidelines"
+                     width="500"
+                     height="50"/>                                                    
 
             <mx:Spacer height="5"/>
             <mx:Label text="Current Project Technologies:"
@@ -535,18 +574,12 @@
             <mx:Text id="ns_techList"
                      width="500"/>
 
-            <!-- 
-                commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                we don't need comments input anymore. 
-            -->
-            <!--
-            <mx:Spacer height="5"/>
+            <!--<mx:Spacer height="5"/>
             <mx:Label text="Comments:"
                       fontWeight="bold"/>
             <mx:Text id="ns_comments"
                      width="500"
-                     height="50"/>
-            -->
+                     height="50"/>-->
 
             <mx:Spacer height="5"/>
             <mx:Label text="Catalog Name:"

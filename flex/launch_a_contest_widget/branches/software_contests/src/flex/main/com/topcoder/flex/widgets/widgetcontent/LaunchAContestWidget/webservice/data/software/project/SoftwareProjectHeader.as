@@ -35,6 +35,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * allowed.
          */
         public var projectStatus:SoftwareProjectStatus=null;
+        
+        /**
+         * Represents the project spec of this instance. Null values are not allowed.
+         * 
+         * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+         */ 
+        public var projectSpec:SoftwareProjectSpec=null;
 
         /**
          * It will be not zero if this project is associated with direct project.

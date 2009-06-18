@@ -6,6 +6,7 @@
            verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectType;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResourceRole;
@@ -54,8 +55,8 @@
                 //var type:CompetionType = new CompetionType();
                 if (event.item) {
                     var competionType:String=event.item.toString();
-                    
-                    if (mainWidget) {
+
+                    if (mainWidget && mainWidget.competitionType) {
                         mainWidget.competitionType=competionType;
                     }
 
@@ -272,8 +273,16 @@
                 mainWidget.softwareCompetition.assetDTO.documentation=new Array();
                 mainWidget.softwareCompetition.assetDTO.dependencies=new Array();
                 
+                // For Cockpit Launch Contest - Update for Spec Creation v1.0 - save some dummy text for now.
+                // later it need to be removed from catalog service.
+                mainWidget.softwareCompetition.assetDTO.detailedDescription="SOME DUMMY TEXT";
+                
                 // initialize project header.
                 mainWidget.softwareCompetition.projectHeader=new SoftwareProjectHeader();
+
+                // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                
                 mainWidget.softwareCompetition.projectHeader.tcDirectProjectId=tcDirectProjectId;
                 
                 mainWidget.softwareCompetition.projectHeader.properties=SoftwareCompetitionUtils.instance().getProjectDefaultProperties();

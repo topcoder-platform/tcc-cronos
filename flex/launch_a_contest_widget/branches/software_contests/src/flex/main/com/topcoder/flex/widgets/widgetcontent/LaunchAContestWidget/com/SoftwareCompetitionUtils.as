@@ -425,7 +425,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @param totalPrize total prize of the competition.
          */
         private function addDrPointsProp(softwareCompetition:SoftwareCompetition, totalPrize:Number):void {
-            var drPoints:Number=0.20 * totalPrize;
+            var drPoints:Number=0.24 * totalPrize;
             
             for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
                 if (e.key == PROJECT_INFO_TYPE_DR_POINTS_KEY) {

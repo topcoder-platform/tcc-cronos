@@ -43,8 +43,15 @@
             public var brandGuidelinesHint:String;
             public var likeAndDislikesHint:String;
             public var criteriaHint:String;
-
-
+            
+            /**
+             * The config value for this page.
+             * 
+             * @since Cockpit Launch Contest - Update for Spec Creation
+             */ 
+            [Bindable]
+            private var config:XML;
+            
             //
             // Stores master technology list as retrieved from web-service.
             // This is loaded only one time.
@@ -123,6 +130,9 @@
 	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
 
             public function initData():void {
+                
+                requestConfigData.send();
+                
                 //
                 // depending on the competition type set/reset the data.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -142,21 +152,21 @@
                 } else {
                     ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
-                    ns_detailedDesc.htmlText="";
-                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                    // we don't need comments input anymore.
+                    //ns_detailedDesc.htmlText="";
                     //ns_comments.htmlText="";
-                    
-                    if (!this.mainWidget.softwareCompetition) {
-                        return;
-                    }
+                    ns_detailedRequirements.htmlText="";
+                    ns_submissionDeliverables.htmlText="";
+                    ns_environmentSetupInstructions.htmlText="";
+                    ns_finalSubmissionGuidelines.htmlText="";
 
                     ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
-                    ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
-                    // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                    // we don't need comments input anymore.
+                    //ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
                     //ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
+                    ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+                    ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
+                    ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
+                    ns_finalSubmissionGuidelines.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines;
 
                     //
                     // load the master technologies if they have not already been loaded.
@@ -210,8 +220,25 @@
                 }
 	  }
 
-
-
+            /**
+             * Handler for loading config data from xml file.
+             * 
+             * @param e the result event. 
+             * @since Cockpit Launch Widget - Update Spec Reviews
+             */
+            private function loadConfigData(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    config=e.result as XML;
+                    if (!mainWidget.isEditMode) {
+                        if (!mainWidget.studioContestType) {
+                            ns_detailedRequirements.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
+                            ns_submissionDeliverables.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
+                            ns_environmentSetupInstructions.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                            ns_finalSubmissionGuidelines.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines'); 
+                        }    
+                    }
+                }
+            }
 
             //
             // set current and master technologies to the controls.
@@ -510,11 +537,43 @@
                         return false;
                     }
                 }
-
-
-                if (ns_detailedDesc.text == "") {
+                
+                // Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                /*if (ns_detailedDesc.text == "") {
                     if (showMsg) {
                         Helper.showAlertMessage("Please enter detailed description" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }*/
+
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_detailedRequirements.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter detailed requirements" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_submissionDeliverables.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter submission deliverables" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_environmentSetupInstructions.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter environment setup instructions" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_finalSubmissionGuidelines.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter final submission guidelines" + (showPageName ? " at Details Page" : ""));
                         return false;
                     }
                 }
@@ -559,10 +618,17 @@
 
                 this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
                 this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
-                this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
-                // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                // we don't need comments input anymore.
+                
+                // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                //this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
                 //this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
+
+				   // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements=ns_detailedRequirements.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables=ns_submissionDeliverables.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines.htmlText;
+
 
                 //
                 // If contest type is design or development then only read catalog names from catalog input controls.
@@ -604,10 +670,15 @@
 
                 this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
                 this.mainWidget.review.ns_shortDescStr=ns_shortDesc.text;
-                this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
-                // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-                // we don't need comments input anymore.
+                // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                //this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
                 //this.mainWidget.review.ns_commentsStr=ns_comments.text;
+
+				  // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                this.mainWidget.review.ns_detailedRequirementsStr=ns_detailedRequirements.text;
+                this.mainWidget.review.ns_submissionDeliverablesStr=ns_submissionDeliverables.text;
+                this.mainWidget.review.ns_environmentSetupInstructionsStr=ns_environmentSetupInstructions.text;
+                this.mainWidget.review.ns_finalSubmissionGuidelinesStr=ns_finalSubmissionGuidelines.text;
                 this.mainWidget.review.ns_techListData=new ArrayCollection();
                 for (var m:int=0; m < this._boundCurrentTechnologies.length; m++) {
                     this.mainWidget.review.ns_techListData.addItem(this._boundCurrentTechnologies.getItemAt(m).label);
@@ -762,7 +833,7 @@
 	        	// BUGR-1641
 				// The rich text editors in this view
 				var rtEditors:Array = [
-	        		introInput, glsInput, ns_shortDesc, ns_detailedDesc
+	        		introInput, glsInput, ns_shortDesc, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
 	        	];
 
 				for each (var rtEditor:TCRichTextEditor in rtEditors) {
@@ -931,6 +1002,17 @@
             }
         ]]>
     </mx:Script>
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestConfigData"
+                    url="/i/cockpit/data/launch_a_contest/details.xml"
+                    resultFormat="e4x"
+                    result="loadConfigData(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+    
     <mx:VBox width="100%"
              styleName="boxStyle"
              id="detailsContainer">
@@ -1077,6 +1159,98 @@
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
+                    <mx:Label text="Detailed Requirements:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_detailedRequirementsHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_detailedRequirements"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Submission Deliverables:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_submissionDeliverablesHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_submissionDeliverables"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Environment Setup Instructions:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_environmentSetupInstructionsHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_environmentSetupInstructions"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Final Submission Guidelines:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_finalSubmissionGuidelinesHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_finalSubmissionGuidelines"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <!--
+            Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            In place of Detailed Description we would have 4 new fields.
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
                     <mx:Label text="Detailed Description:"
                               fontWeight="bold"/>
                     <mx:Spacer width="280"/>
@@ -1094,6 +1268,7 @@
                                      height="360"
                                      minHeight="200" />
             </mx:VBox>
+            -->
 
             <!--
                  since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -1141,11 +1316,8 @@
             </mx:HBox>
 
             <!--
-                Remove client / comment
-                we don't need comments input anymore.
-                since: Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-            -->
-            <!--
+            Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            
             <mx:VBox width="100%"
                      verticalGap="0">
                 <mx:HBox>
