@@ -1575,7 +1575,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         List<Submission> submissions = getResultList(entityManager,
                 "SELECT s FROM Submission s left outer join s.review as r WHERE s.contest.contestId=:contestId"
                         + " AND s.status.description != :description " 
-                        + " AND (r.reviewerId is NULL or r.status.reviewStatusId <> 2)", parameters, methodName);
+                        + " AND (r.reviewerId is NULL or (r.status.reviewStatusId <> 2 and r.status.reviewStatusId <> 3))", parameters, methodName);
         return submissions;
     }
 
