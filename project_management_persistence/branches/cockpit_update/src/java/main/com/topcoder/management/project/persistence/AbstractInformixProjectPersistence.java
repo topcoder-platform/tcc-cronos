@@ -29,6 +29,7 @@ import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPersistence;
 import com.topcoder.management.project.ProjectPropertyType;
+import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
@@ -81,17 +82,22 @@ import com.topcoder.util.log.Log;
  * Module Contest Service Software Contest Sales Assembly change: new methods added to support creating/updating/query contest
  * sale for software contest.
  * </p>
+ * 
+ * <p>
+ * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+ *      - added persist for project_spec.
+ * </p>
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
- * @author tuenm, urtks, bendlund, fuyun
+ * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
  * @version 1.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
 			.getLog(AbstractInformixProjectPersistence.class.getName());
-
+	
 	/**
      * <p>
      * Represents the default value for Project Id sequence name. It is used to
@@ -121,6 +127,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     public static final String PROJECT_AUDIT_ID_SEQUENCE_NAME = "project_audit_id_seq";
+    
+    /**
+     * <p>
+     * Represents the default value for project spec id sequence name. It is
+     * used to create id generator for project spec. This value will be
+     * overridden by 'ProjectSpecIdSequenceName' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    public static final String PROJECT_SPEC_ID_SEQUENCE_NAME = "PROJECT_SPEC_ID_SEQ";
 
     /**
      * Represents the name of connection name parameter in configuration.
@@ -152,6 +170,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * configuration.
      */
     private static final String PROJECT_AUDIT_ID_SEQUENCE_NAME_PARAMETER = "ProjectAuditIdSequenceName";
+    
+    /**
+     * Represents the name of project audit id sequence name parameter in
+     * configuration.
+     */
+    private static final String PROJECT_SPEC_ID_SEQUENCE_NAME_PARAMETER = "ProjectSpecIdSequenceName";
 
     /**
      * Represents the sql statement to query all project types.
@@ -508,6 +532,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String DELETE_PROJECT_PROPERTIES_SQL = "DELETE FROM project_info "
             + "WHERE project_id=? AND project_info_type_id IN ";
+    
+    /**
+     * Represents the sql statement to query project_spec for specified project_id.
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    private static final String QUERY_PROJECT_SPEC_SQL = "SELECT " 
+        + " ps1.project_spec_id, " 
+        + " ps1.version, "
+        + " ps1.detailed_requirements, " 
+        + " ps1.submission_deliverables, " 
+        + " ps1.environment_setup_instruction,  "
+        + " ps1.final_submission_guidelines, "
+        + " ps1.create_user, " 
+        + " ps1.create_date, "
+        + " ps1.modify_user, "
+        + " ps1.modify_date "
+        + " FROM project_spec as ps1 " 
+        + " WHERE ps1.project_id = ? "
+        + " AND ps1.version = (SELECT max(ps2.version) FROM project_spec as ps2 WHERE ps2.project_id = ?)";
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query project_spec for specified project_id.
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    private static final DataType[] QUERY_PROJECT_SPEC_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, 
+        Helper.STRING_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE};
+    
+    /**
+     * Represents the sql statement to create project spec.
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    private static final String CREATE_PROJECT_SPEC_SQL = "INSERT INTO project_spec "
+            + "(project_spec_id, project_id, version, " 
+            + "detailed_requirements, submission_deliverables, environment_setup_instruction, final_submission_guidelines, "
+            + "create_user, create_date, modify_user, modify_date) "
+            + "VALUES (?, ?, 1, " 
+            + "?, ?, ?, ?, "
+            + "?, CURRENT, ?, CURRENT)";
+    
+    /**
+     * Represents the sql statement to update project spec.
+     * 
+     * Since the project_spec table maintains all the versions of the records, we just need to insert the entry with the next version.
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    private static final String UPDATE_PROJECT_SPEC_SQL = "INSERT INTO project_spec "
+            + "(project_spec_id, project_id, version, " 
+            + "detailed_requirements, submission_deliverables, environment_setup_instruction, final_submission_guidelines, "
+            + "create_user, create_date, modify_user, modify_date) "
+            + "VALUES (?, ?, (select max(ps.version) + 1 from project_spec as ps where ps.project_id = ?), " 
+            + "?, ?, ?, ?, "
+            + "?, CURRENT, ?, CURRENT)";
 
     /**
      * <p>
@@ -559,6 +644,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     private final IDGenerator projectAuditIdGenerator;
+    
+    /**
+     * <p>
+     * Represents the IDGenerator for project spec table. This variable is
+     * initialized in the constructor and never change after that.
+     * </p>
+     * 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+    private final IDGenerator projectSpecIdGenerator;
 
     /**
      * <p>
@@ -660,6 +755,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         if (projectAuditIdSequenceName == null) {
             projectAuditIdSequenceName = PROJECT_AUDIT_ID_SEQUENCE_NAME;
         }
+        
+        //
+        // try to get project spec id sequence name
+        // since Cockpit Launch Contest - Update for Spec Creation v1.0
+        //
+        String projectSpecIdSequenceName = Helper
+                .getConfigurationParameterValue(cm, namespace,
+                        PROJECT_SPEC_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
+        // use default name if project spec id sequence name is not provided
+        if (projectSpecIdSequenceName == null) {
+            projectSpecIdSequenceName = PROJECT_SPEC_ID_SEQUENCE_NAME;
+        }
 
         // try to get the IDGenerators
         try {
@@ -685,6 +792,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         	getLogger().log(Level.ERROR, "The projectAuditIdSequence [" + projectAuditIdSequenceName +"] is invalid.");
             throw new PersistenceException("Unable to create IDGenerator for '"
                     + projectAuditIdSequenceName + "'.", e);
+        }
+        
+        //
+        // create the instance of project spec id generator.
+        // since Cockpit Launch Contest - Update for Spec Creation v1.0
+        //
+        try {
+            projectSpecIdGenerator = IDGeneratorFactory
+                    .getIDGenerator(projectSpecIdSequenceName);
+        } catch (IDGenerationException e) {
+            getLogger().log(Level.ERROR, "The projectSpecIdSequence [" + projectSpecIdSequenceName +"] is invalid.");
+            throw new PersistenceException("Unable to create IDGenerator for '"
+                    + projectSpecIdSequenceName + "'.", e);
         }
     }
 
@@ -719,6 +839,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // createDate will contain the create_date value retrieved from
         // database.
         Date createDate;
+        
+        Date specCreateDate;
 
         getLogger().log(Level.INFO, new LogMessage(null, operator, 
         		"creating new project: " + project.getAllProperties()));
@@ -754,7 +876,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             createDate = (Date) Helper.doSingleValueQuery(conn,
                     "SELECT create_date FROM project WHERE project_id=?",
                     new Object[] {newId}, Helper.DATE_TYPE);
-            
+                        
             closeConnection(conn);
         } catch (PersistenceException e) {
         	getLogger().log(Level.ERROR,
@@ -858,14 +980,21 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Retrieves the project instance from the persistence given its id. The
      * project instance is retrieved with its related items, such as properties
      * and scorecards.
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- added ParseException as thrown by getProjectSpecs method call.
+     * </p>
+     * 
      * @return The project instance.
      * @param id The id of the project to be retrieved.
      * @throws IllegalArgumentException if the input id is less than or equal to
      *             zero.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
+     * @throws ParseException if error occured while parsing the database results.
      */
-    public Project getProject(long id) throws PersistenceException {
+    public Project getProject(long id) throws PersistenceException, ParseException {
         Helper.assertLongPositive(id, "id");
 
         Project[] projects = getProjects(new long[] {id});
@@ -877,6 +1006,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Retrieves an array of project instance from the persistence given their
      * ids. The project instances are retrieved with their properties.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- added ParseException as thrown by getProjectSpecs method call.
+     * </p>
+     * 
      * @param ids ids The ids of the projects to be retrieved.
      * @return An array of project instances.
      * @throws PersistenceException
@@ -884,8 +1019,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *             zero.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
+     * @throws ParseException if error occured while parsing the database results.
      */
-    public Project[] getProjects(long[] ids) throws PersistenceException {
+    public Project[] getProjects(long[] ids) throws PersistenceException, ParseException {
         Helper.assertObjectNotNull(ids, "ids");
 
         // check if ids is empty
@@ -917,6 +1053,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             return projects;
         } catch (PersistenceException e) {
         	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving projects with ids: " + idstring.substring(0, idstring.length() - 1), e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        } catch (ParseException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
                   "Fails to retrieving projects with ids: " + idstring.substring(0, idstring.length() - 1), e));
             if (conn != null) {
                 closeConnectionOnError(conn);
@@ -1187,6 +1330,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Creates the project in the database using the given project instance.
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      - added creation of project spec.
+     * </p>
+     * 
      * @param projectId The new generated project id
      * @param project The project instance to be created in the database.
      * @param operator The creation user of this project.
@@ -1213,6 +1361,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             new Long(project.getProjectCategory().getId()), operator,
             operator, tcDirectProjectId};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SQL, queryArgs);
+        
+        //
+        // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+        //
+        createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
 
         // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
@@ -1221,9 +1374,65 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // create the project properties
         createProjectProperties(projectId, idValueMap, operator, conn);
     }
+    
+    private void createProjectSpec(Long projectId, ProjectSpec projectSpec, String operator, Connection conn) throws PersistenceException {
+        // check whether the project id is already in the database
+        if (projectSpec.getProjectSpecId() > 0) {
+            if (Helper.checkEntityExists("project_spec", "project_spec_id", projectSpec
+                    .getProjectSpecId(), conn)) {
+                throw new PersistenceException(
+                        "The projectSpec with the same id [" + projectSpec.getProjectSpecId()
+                                + "] already exists.");
+            }
+        }
+        
+        Long newId = 0L;
+        
+        try {
+            // generate id for the project
+            newId = new Long(projectSpecIdGenerator.getNextID());
+            getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new project spec"));
+        } catch (IDGenerationException e) {
+            throw new PersistenceException(
+                    "Unable to generate id for the project spec.", e);
+        }
+        
+        getLogger().log(Level.INFO, "insert record into project_spec with id:" + newId);
+        
+        // insert the project into database
+        Object[] queryArgs = new Object[] {newId,
+            projectId, 
+            projectSpec.getDetailedRequirements(),
+            projectSpec.getSubmissionDeliverables(),
+            projectSpec.getEnvironmentSetupInstructions(),
+            projectSpec.getFinalSubmissionGuidelines(), 
+            operator,
+            operator};
+        Helper.doDMLQuery(conn, CREATE_PROJECT_SPEC_SQL, queryArgs);
+        
+        // get the creation date.
+        Date specCreateDate = (Date) Helper.doSingleValueQuery(conn,
+                "SELECT create_date FROM project_spec WHERE project_spec_id=?",
+                new Object[] {newId}, Helper.DATE_TYPE);
+        
+        // set the newId when no exception occurred
+        projectSpec.setProjectSpecId(newId.longValue());
+
+        // set the creation/modification user and date when no exception occurred
+        projectSpec.setCreationUser(operator);
+        projectSpec.setCreationTimestamp(specCreateDate);
+        projectSpec.setModificationUser(operator);
+        projectSpec.setModificationTimestamp(specCreateDate);
+    }
 
     /**
      * Update the given project instance into the database.
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- added update for project spec.
+     * </p>
+     * 
      * @param project The project instance to be updated into the database.
      * @param reason The update reason. It will be stored in the persistence for
      *            future references.
@@ -1251,6 +1460,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             new Long(project.getProjectCategory().getId()), operator, tcDirectProjectId, 
             projectId };
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
+        
+        //
+        // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+        //
+        updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
 
         // get the property id - property value map from the new project object.
         Map idValueMap = makePropertyIdPropertyValueMap(project
@@ -1261,6 +1475,48 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         // create project audit record into project_audit table
         createProjectAudit(projectId, reason, operator, conn);
+    }
+    
+    private void updateProjectSpec(Long projectId, ProjectSpec projectSpec, String operator, Connection conn) throws PersistenceException {
+        // check whether the project id is already in the database
+        Long newId = 0L;
+        
+        try {
+            // generate id for the project
+            newId = new Long(projectSpecIdGenerator.getNextID());
+            getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new project spec"));
+        } catch (IDGenerationException e) {
+            throw new PersistenceException(
+                    "Unable to generate id for the project spec.", e);
+        }
+        
+        getLogger().log(Level.INFO, "insert record into project_spec with id:" + newId);
+        
+        // insert the project into database
+        Object[] queryArgs = new Object[] {newId,
+            projectId, 
+            projectId,
+            projectSpec.getDetailedRequirements(),
+            projectSpec.getSubmissionDeliverables(),
+            projectSpec.getEnvironmentSetupInstructions(),
+            projectSpec.getFinalSubmissionGuidelines(), 
+            operator,
+            operator};
+        Helper.doDMLQuery(conn, UPDATE_PROJECT_SPEC_SQL, queryArgs);
+        
+        // get the creation date.
+        Date specCreateDate = (Date) Helper.doSingleValueQuery(conn,
+                "SELECT create_date FROM project_spec WHERE project_spec_id=?",
+                new Object[] {newId}, Helper.DATE_TYPE);
+        
+        // set the newId when no exception occurred
+        projectSpec.setProjectSpecId(newId.longValue());
+
+        // set the creation/modification user and date when no exception occurred
+        projectSpec.setCreationUser(operator);
+        projectSpec.setCreationTimestamp(specCreateDate);
+        projectSpec.setModificationUser(operator);
+        projectSpec.setModificationTimestamp(specCreateDate);
     }
 
     /**
@@ -1328,7 +1584,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return propertyTypes;
     }
     
-    public Project[] getProjects(CustomResultSet result) throws PersistenceException {
+    /**
+     * Build {@link Project} directly from the {@link CustomResultSet}
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- now project spec are also fetched.
+     * </p>
+     * 
+     * @param resultSet a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
+     * @return an array of {@link Project}
+     * @throws PersistenceException if error occurred while accessing the database.
+     * @throws ParseException if error occured while parsing the database results.
+     */
+    public Project[] getProjects(CustomResultSet result) throws PersistenceException, ParseException {
     	Connection conn = null;
         try {
         	conn = openConnection();
@@ -1356,6 +1625,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			    projects[i].setModificationUser(result.getString(10));
 			    projects[i].setModificationTimestamp(result.getDate(11));
 			    projects[i].setTcDirectProjectId(result.getLong(12));
+			    
+			    //
+	            // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+	            //
+	            ProjectSpec[] specs = getProjectSpecs(projects[i].getId(), conn);
+	            if (specs != null && specs.length > 0) {
+	                projects[i].setProjectSpec(specs[0]);
+	            }
 			    
 			    ps.setLong(1, projects[i].getId());
 			    ResultSet rs = ps.executeQuery();
@@ -1385,9 +1662,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
+     * @throws ParseException if error occurred while parsing the result
      */
     private Project[] getProjects(long ids[], Connection conn)
-        throws PersistenceException {
+        throws PersistenceException, ParseException {
 
         // build the id list string
         StringBuffer idListBuffer = new StringBuffer();
@@ -1741,11 +2019,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Retrieves an array of project instance from the persistence where tc direct 
      * project id is not null. The project instances are retrieved with their properties.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- added ParseException as thrown by getProjectSpecs method call.
+     * </p>
+     * 
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
+     * @throws ParseException if error occured while parsing the database results.
      */
-	public Project[] getAllTcDirectProject() throws PersistenceException {		
+	public Project[] getAllTcDirectProject() throws PersistenceException, ParseException {		
 
         Connection conn = null;
         try {
@@ -1768,7 +2053,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
-        }
+        } catch (ParseException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                    "Fails to retrieving all tc direct projects " , e));
+              if (conn != null) {
+                  closeConnectionOnError(conn);
+              }
+              throw e;
+          }
 		
 	}
 	
@@ -1777,12 +2069,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Retrieves an array of project instance from the persistence given user.
      * The project instances are retrieved with their properties.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+     *      -- added ParseException as thrown by getProjectSpecs method call.
+     * </p>
+     * 
      * @param operator The id of create user.     
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
+     * @throws ParseException if error occured while parsing the database results.
      */
-	public Project[] getAllTcDirectProject(String operator) throws PersistenceException {
+	public Project[] getAllTcDirectProject(String operator) throws PersistenceException, ParseException {
 //		 check if ids is empty
         if (operator == null  ||  operator.length() == 0) {
             throw new IllegalArgumentException("Create user should not be null.");
@@ -1807,6 +2106,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
+        } catch (ParseException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                    "Fails to retrieving all tc direct projects " , e));
+              if (conn != null) {
+                  closeConnectionOnError(conn);
+              }
+              throw e;
         }
 		
 	}
@@ -2165,13 +2471,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	/**
 	 * Retrieves an array of project
 	 * The project instances are retrieved with their properties.
+	 * 
+	 * <p>
+	 * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
+	 *     - project specs are also fetched now.
+	 * </p>
+	 * 
 	 * @param rows
 	 * @param conn the database connection
 	 * @return An array of project instances.
 	 * @throws PersistenceException
+	 * @throws ParseException 
 	 */
 	
-	private Project[] getProjects(Object [][]rows, Connection conn) throws PersistenceException {
+	private Project[] getProjects(Object [][]rows, Connection conn) throws PersistenceException, ParseException {
 		
 		// 	create the Project array.
         Project[] projects = new Project[rows.length];
@@ -2206,8 +2519,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             projects[i].setModificationUser((String) row[9]);
             projects[i].setModificationTimestamp((Date) row[10]);
             projects[i].setTcDirectProjectId(((Long)row[12]).longValue());
+            
+            //
+            // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+            //
+            ProjectSpec[] specs = getProjectSpecs(projects[i].getId(), conn);
+            if (specs != null && specs.length > 0) {
+                projects[i].setProjectSpec(specs[0]);
+            }
         }
-
+        
         // get the Id-Project map
         Map projectMap = makeIdProjectMap(projects);
         String ids = projectMap.keySet().toString();
@@ -2230,6 +2551,39 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }         
         return projects;
         
+	}
+	
+	private ProjectSpec[] getProjectSpecs(Long projectId, Connection conn) throws PersistenceException, ParseException {
+	     // get the project objects
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn,
+                QUERY_PROJECT_SPEC_SQL, new Object[] {projectId, projectId},
+                QUERY_PROJECT_SPEC_COLUMN_TYPES);
+        
+        if (rows == null || rows.length == 0) {
+            return null;
+        }
+        
+        ProjectSpec[] specs = new ProjectSpec[rows.length];
+        for (int i = 0; i < rows.length; i++) {
+            ProjectSpec spec = new ProjectSpec();
+         
+            spec.setProjectSpecId((Long) rows[i][0]);
+            spec.setProjectId(projectId);
+            spec.setVersion((Long) rows[i][1]);
+            spec.setDetailedRequirements((String) rows[i][2]);
+            spec.setSubmissionDeliverables((String) rows[i][3]);
+            spec.setEnvironmentSetupInstructions((String) rows[i][4]);
+            spec.setFinalSubmissionGuidelines((String) rows[i][5]);
+            spec.setCreationUser((String) rows[i][6]);
+            spec.setCreationTimestamp((Date) rows[i][7]);
+            spec.setModificationUser((String) rows[i][8]);
+            spec.setModificationTimestamp((Date) rows[i][9]);
+            
+            specs[i] = spec;
+        }
+        
+        return specs;
 	}
 	
 	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException,ParseException {
