@@ -732,7 +732,6 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
 
             if (p.getPermissionId() == null || p.getPermissionId() <= 0) {
                 // do add.
-
 				
                 List<Permission> ps = this.getPermissions(p.getUserId(), p.getResourceId(), em);
                 if (ps == null || ps.size() == 0) {
@@ -741,7 +740,9 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
                     // let's assume there would be only one permission record for given resource id and userId.
                     p.setPermissionId(ps.get(0).getPermissionId());
                     
-                    if (p.getPermissionType() == null) {
+                     if (p.getPermissionType() == null || p.getPermissionType().getName() == null 
+						                  || p.getPermissionType().getName().equals(""))
+					 {
                         // do delete
                         this.deletePermission(p.getPermissionId(), em);
                     } else {
