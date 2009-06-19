@@ -148,6 +148,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
         * Current user id.
         */
+	[Bindable]
         private var _userid:Number=Application.application.parameters.userid;
         
         public var initWidgetCallbackFn:Function=null;
