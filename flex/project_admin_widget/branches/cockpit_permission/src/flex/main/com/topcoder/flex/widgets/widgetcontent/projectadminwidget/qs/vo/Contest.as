@@ -53,6 +53,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo {
          * Reference to the parent project.
          */
         public var project:Project;
+        
+        /**
+         * is studio
+         */
+        public var studio:Boolean;
 
         /**
          * A default empty constructor.

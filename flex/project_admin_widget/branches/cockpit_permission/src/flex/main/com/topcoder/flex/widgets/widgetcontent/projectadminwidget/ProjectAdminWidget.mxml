@@ -253,9 +253,9 @@
             private var _modelUserIdx:int=0;
             
             
-            public var deletedPermissionNumber=0;
+            //public var deletedPermissionNumber=0;
             
-             public var getPermissionNumber=0;
+             //public var getPermissionNumber=0;
 
 
 
@@ -416,6 +416,8 @@
                 	p.id=item.projectId;
                 	p.name=item.pname;
                 	
+                	var studio:Boolean=item.studio;
+                	
                 	if (item.pfull>0) {
                            p.access="Full";
                            p.persistedAccess="Full";
@@ -430,10 +432,11 @@
                            p.persistedAccess="";
                      }
                      var contests:ArrayCollection=new ArrayCollection();
-                     for(var j=i;j<result.length && result.getItemAt(j).projectId==p.id;j++)
+                     for(var j:int=i;j<result.length && result.getItemAt(j).projectId==p.id;j++)
                      {
                      	var c:Contest=new Contest();
-                     	var it=result.getItemAt(j);
+                     	c.studio=studio;
+                     	var it:Object=result.getItemAt(j);
                      	c.id=it.contestId;
                      	c.name=it.cname;
                      	if (it.cfull>0) {
@@ -471,7 +474,7 @@
                 return ret;
             }
             
-            private function handleGetPermissions(e:ResultEvent):void
+            /*private function handleGetPermissions(e:ResultEvent):void
             {
             	hideLoadingProgress();
             	this.getPermissionNumber--;
@@ -513,7 +516,7 @@
             	{
             		userViewer.addPermissions();
             	}
-            }
+            }*/
 
             
         ]]>
@@ -530,7 +533,7 @@
             </mx:ChannelSet>
         </mx:channelSet>
 
-		<mx:operation name="getPermissions"
+		<!--<mx:operation name="getPermissions"
                       resultFormat="object"
                       result="handleGetPermissions(event)"
                       fault="hideLoadingProgress(); Helper.showAlertMessage('addPermission: ' + event.fault.faultString);">
@@ -551,7 +554,7 @@
                       resultFormat="object"
                       result="handleDeletePermissions(event)"
                       fault="hideLoadingProgress(); Helper.showAlertMessage('deletePermission: ' + event.fault.faultString);">
-        </mx:operation>
+        </mx:operation>-->
         
         <mx:operation name="getCommonProjectPermissionDataForUser"
                       resultFormat="object"
@@ -564,6 +567,12 @@
                       result="handleSearchUser(event)"
                       fault="hideLoadingProgress(); Helper.showAlertMessage('searchUser: ' + event.fault.faultString);">
         </mx:operation>
+        
+        <mx:operation name="updatePermissions"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('updatePermissions: ' + event.fault.faultString);">        
+	</mx:operation>
+        
     </mx:WebService>
 
     <mx:RemoteObject id="dataservice"

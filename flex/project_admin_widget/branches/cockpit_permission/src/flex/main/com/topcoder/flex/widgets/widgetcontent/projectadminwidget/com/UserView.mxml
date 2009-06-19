@@ -174,7 +174,7 @@
                 }
             }
             
-            public function handleCancelAction(e:CloseEvent) {
+            public function handleCancelAction(e:CloseEvent):void {
                 if (e.detail == Alert.CANCEL) {
                     return;
                 }
@@ -216,7 +216,7 @@
                     if (project.access == project.persistedAccess) {
                         // do nothing.
                     } else {
-                        var o1:Object=getPermissionDTO(project.user.id, project.id, -1, project.access, "project", project.studio);
+                        var o1:Object=getPermissionDTO(project.user.id, project.id, -1, project.access, "project", false);
                         permissionsToUpdate.addItem(o1);
                     }
                     
@@ -226,7 +226,7 @@
                         if (contest.access == contest.persistedAccess) {
                             // do nothing.
                         } else {
-                            var o2:Object=getPermissionDTO(contest.project.user.id, contest.id, -1, contest.access, "contest", project.studio);
+                            var o2:Object=getPermissionDTO(contest.project.user.id, contest.id, -1, contest.access, "contest", contest.studio);
                             permissionsToUpdate.addItem(o2);
                         }
                     }
@@ -258,7 +258,7 @@
             
             }
             
-            public function addPermissions():void {
+            /*public function addPermissions():void {
                 for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
                     var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
                     
@@ -276,7 +276,7 @@
                     }
                 }
                 parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
-            }
+            }*/
 
             /**
              * Show alert message dialog according to given info
@@ -329,6 +329,7 @@
                 perm.resourceId=projectId;
                 perm.permissionType=new Object();
                 perm.permissionType.name="";
+                
                 perm.studio=studio;
                 if (accessType == "contest") {
                     if (access == "Full") {
@@ -352,6 +353,10 @@
                         perm.permissionType.name="project_read";
                         perm.permissionType.permissionTypeId=1;
                     }
+                }
+                
+                if (perm.permissionType.name == "") {
+                    perm.permissionType=null;
                 }
                 
                 return perm;
