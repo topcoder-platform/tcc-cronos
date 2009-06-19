@@ -515,19 +515,19 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     private boolean deletePermission(long permissionid,  EntityManager em) throws PermissionServiceException {
-        try {
-            logEnter("removePermission(permissionid)");
-            logOneParameter(permissionid);
-
-            Permission permission = em.find(Permission.class, new Long(permissionid));
-
-            if (permission == null) {
-                return false;
-            }
-
-            em.remove(permission);
-
-            return true;
+		 try {
+			logEnter("removePermission(permissionid)");
+			logOneParameter(permissionid);
+ 
+			Query query = em.createNativeQuery("delete from user_permission_grant where user_permission_grant_id=:permissionId");
+			query.setParameter("permissionId", permissionid);
+ 
+			int result = query.executeUpdate();
+			if (result > 0) {
+					return true;
+			} else {
+				 return false;
+			}
         } catch (IllegalStateException e) {
             throw wrapPermissionServiceException(e, "The EntityManager is closed.");
         } catch (TransactionRequiredException e) {
