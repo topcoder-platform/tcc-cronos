@@ -1,5 +1,9 @@
 package com.topcoder.service.facade.contest;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * <p>
  * Bean class to hold permissions for project and their contests.
@@ -10,6 +14,9 @@ package com.topcoder.service.facade.contest;
  * @since TCCC-1329
  * @version 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "commonProjectPermissionData", propOrder = { "contestId",
+		"projectId", "studio", "pname", "cname", "pfull", "cfull", "pwrite", "cwrite", "pread", "cread" })
 public class CommonProjectPermissionData {
 
     /**
