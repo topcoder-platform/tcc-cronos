@@ -1727,14 +1727,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
@@ -1763,14 +1756,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
@@ -1799,14 +1785,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
