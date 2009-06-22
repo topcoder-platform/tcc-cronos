@@ -387,6 +387,7 @@
             			perm.resourceId=mainWidget.tcDirectProjectId;
            				perm.permissionType=new Object();
            				perm.permissionType.name="project_full";
+				perm.studio = false;
                 		perm.permissionType.permissionTypeId=3;
                 		var permissions:ArrayCollection=new ArrayCollection();
                 		permissions.addItem(perm);
