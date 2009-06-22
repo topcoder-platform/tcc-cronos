@@ -4,6 +4,7 @@
 package com.topcoder.project.service.ejb;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimpleProjectContestData;
@@ -908,7 +909,29 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
 
         try {
-            return getProjectServices().getSimpleProjectPermissionDataForUser(createdUser);
+			List<SimpleProjectPermissionData> contests;
+
+			if (createdUser < 0) {
+                // retrieve data for current user
+                if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                    Util.log(logger, Level.DEBUG, "User is admin.");
+                    contests = getProjectServices().getSimpleProjectPermissionDataForUser(-1);
+
+                } else {
+                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    Util.log(logger, Level.DEBUG, "User " + p.getUserId() + " is non-admin.");
+                    contests = getProjectServices().getSimpleProjectPermissionDataForUser(p.getUserId());
+                }
+
+            } else {
+                contests = getProjectServices().getSimpleProjectPermissionDataForUser(createdUser);
+			}
+
+			if (contests == null)
+                contests = new ArrayList<SimpleProjectPermissionData>();
+
+            return contests;
+
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
