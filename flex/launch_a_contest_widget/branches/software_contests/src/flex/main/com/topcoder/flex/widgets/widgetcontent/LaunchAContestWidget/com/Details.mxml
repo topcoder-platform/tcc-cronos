@@ -27,6 +27,8 @@
 
             import mx.collections.SortField;
             import mx.collections.Sort;
+            
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
 
 		    private static const ADDEDHEIGHT:Number = 80;
 		    private static const ADDEDHEIGHT_GOALS:Number = 380;
@@ -163,11 +165,13 @@
                     ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
                     //ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
                     //ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
-                    ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
-                    ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
-                    ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
-                    ns_finalSubmissionGuidelines.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines;
-
+                    if (this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
+                        ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+                        ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
+                        ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
+                        ns_finalSubmissionGuidelines.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines;
+                    }
+                        
                     //
                     // load the master technologies if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -624,6 +628,9 @@
                 //this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
 
 				   // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (!this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
+                    this.mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                }
                 this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements=ns_detailedRequirements.htmlText;
                 this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables=ns_submissionDeliverables.htmlText;
                 this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions.htmlText;
