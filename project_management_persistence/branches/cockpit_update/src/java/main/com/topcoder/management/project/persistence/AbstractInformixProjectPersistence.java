@@ -981,20 +981,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * project instance is retrieved with its related items, such as properties
      * and scorecards.
      * 
-     * <p>
-     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-     *      -- added ParseException as thrown by getProjectSpecs method call.
-     * </p>
-     * 
      * @return The project instance.
      * @param id The id of the project to be retrieved.
      * @throws IllegalArgumentException if the input id is less than or equal to
      *             zero.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
-     * @throws ParseException if error occured while parsing the database results.
      */
-    public Project getProject(long id) throws PersistenceException, ParseException {
+    public Project getProject(long id) throws PersistenceException {
         Helper.assertLongPositive(id, "id");
 
         Project[] projects = getProjects(new long[] {id});
@@ -1007,11 +1001,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * ids. The project instances are retrieved with their properties.
      * </p>
      * 
-     * <p>
-     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-     *      -- added ParseException as thrown by getProjectSpecs method call.
-     * </p>
-     * 
      * @param ids ids The ids of the projects to be retrieved.
      * @return An array of project instances.
      * @throws PersistenceException
@@ -1019,9 +1008,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *             zero.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
-     * @throws ParseException if error occured while parsing the database results.
      */
-    public Project[] getProjects(long[] ids) throws PersistenceException, ParseException {
+    public Project[] getProjects(long[] ids) throws PersistenceException {
         Helper.assertObjectNotNull(ids, "ids");
 
         // check if ids is empty
@@ -1064,7 +1052,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
-            throw e;
+            
+            throw new PersistenceException("Fails to retrieve projects", e);
         }
     }
 
@@ -1374,9 +1363,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // create the project properties
         createProjectProperties(projectId, idValueMap, operator, conn);
     }
-    
+
+    /**
+     * <p>
+     * Persists the specified ProjectSpec instance for the specified projectId.
+     * It basically creates a new row in table corresponding to ProjectSpec - version number for the row is choosen as 1.
+     * </p>
+     * 
+     * @param projectId the project id for which project spec need to be persisted.
+     * @param projectSpec the project spec
+     * @param operator the operator/user who is creating this project spec.
+     * @param conn the db connection to be used to create this project spec
+     * @throws PersistenceException exception is thrown when there is some error in persisting 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
     private void createProjectSpec(Long projectId, ProjectSpec projectSpec, String operator, Connection conn) throws PersistenceException {
-        // check whether the project id is already in the database
+        // check whether the project spec id is already in the database
         if (projectSpec.getProjectSpecId() > 0) {
             if (Helper.checkEntityExists("project_spec", "project_spec_id", projectSpec
                     .getProjectSpecId(), conn)) {
@@ -1389,7 +1391,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Long newId = 0L;
         
         try {
-            // generate id for the project
+            // generate id for the project spec
             newId = new Long(projectSpecIdGenerator.getNextID());
             getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new project spec"));
         } catch (IDGenerationException e) {
@@ -1399,7 +1401,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         
         getLogger().log(Level.INFO, "insert record into project_spec with id:" + newId);
         
-        // insert the project into database
+        // insert the project spec into database
         Object[] queryArgs = new Object[] {newId,
             projectId, 
             projectSpec.getDetailedRequirements(),
@@ -1477,12 +1479,24 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         createProjectAudit(projectId, reason, operator, conn);
     }
     
+    /**
+     * <p>
+     * Persists the specified ProjectSpec instance for the specified projectId.
+     * It basically creates a new row in table corresponding to ProjectSpec - version number for the row is earlier version number + 1.
+     * </p>
+     * 
+     * @param projectId the project id for which project spec need to be persisted.
+     * @param projectSpec the project spec
+     * @param operator the operator/user who is creating this project spec.
+     * @param conn the db connection to be used to create this project spec
+     * @throws PersistenceException exception is thrown when there is some error in persisting 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
     private void updateProjectSpec(Long projectId, ProjectSpec projectSpec, String operator, Connection conn) throws PersistenceException {
-        // check whether the project id is already in the database
         Long newId = 0L;
         
         try {
-            // generate id for the project
+            // generate id for the project spec
             newId = new Long(projectSpecIdGenerator.getNextID());
             getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new project spec"));
         } catch (IDGenerationException e) {
@@ -1492,7 +1506,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         
         getLogger().log(Level.INFO, "insert record into project_spec with id:" + newId);
         
-        // insert the project into database
+        // insert the project spec into database
         Object[] queryArgs = new Object[] {newId,
             projectId, 
             projectId,
@@ -1587,17 +1601,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * Build {@link Project} directly from the {@link CustomResultSet}
      * 
-     * <p>
-     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-     *      -- now project spec are also fetched.
-     * </p>
-     * 
      * @param resultSet a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
      * @return an array of {@link Project}
      * @throws PersistenceException if error occurred while accessing the database.
-     * @throws ParseException if error occured while parsing the database results.
      */
-    public Project[] getProjects(CustomResultSet result) throws PersistenceException, ParseException {
+    public Project[] getProjects(CustomResultSet result) throws PersistenceException {
     	Connection conn = null;
         try {
         	conn = openConnection();
@@ -2020,17 +2028,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * project id is not null. The project instances are retrieved with their properties.
      * </p>
      * 
-     * <p>
-     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-     *      -- added ParseException as thrown by getProjectSpecs method call.
-     * </p>
-     * 
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
-     * @throws ParseException if error occured while parsing the database results.
      */
-	public Project[] getAllTcDirectProject() throws PersistenceException, ParseException {		
+	public Project[] getAllTcDirectProject() throws PersistenceException {		
 
         Connection conn = null;
         try {
@@ -2053,15 +2055,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
-        } catch (ParseException e) {
-            getLogger().log(Level.ERROR, new LogMessage(null, null,
-                    "Fails to retrieving all tc direct projects " , e));
-              if (conn != null) {
-                  closeConnectionOnError(conn);
-              }
-              throw e;
-          }
-		
+        } 
 	}
 	
 	/**
@@ -2070,18 +2064,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * The project instances are retrieved with their properties.
      * </p>
      * 
-     * <p>
-     * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-     *      -- added ParseException as thrown by getProjectSpecs method call.
-     * </p>
-     * 
      * @param operator The id of create user.     
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
-     * @throws ParseException if error occured while parsing the database results.
      */
-	public Project[] getAllTcDirectProject(String operator) throws PersistenceException, ParseException {
+	public Project[] getAllTcDirectProject(String operator) throws PersistenceException {
 //		 check if ids is empty
         if (operator == null  ||  operator.length() == 0) {
             throw new IllegalArgumentException("Create user should not be null.");
@@ -2106,15 +2094,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
-        } catch (ParseException e) {
-            getLogger().log(Level.ERROR, new LogMessage(null, null,
-                    "Fails to retrieving all tc direct projects " , e));
-              if (conn != null) {
-                  closeConnectionOnError(conn);
-              }
-              throw e;
-        }
-		
+        } 
 	}
 
     /**
@@ -2472,19 +2452,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * Retrieves an array of project
 	 * The project instances are retrieved with their properties.
 	 * 
-	 * <p>
-	 * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
-	 *     - project specs are also fetched now.
-	 * </p>
-	 * 
 	 * @param rows
 	 * @param conn the database connection
 	 * @return An array of project instances.
 	 * @throws PersistenceException
-	 * @throws ParseException 
 	 */
-	
-	private Project[] getProjects(Object [][]rows, Connection conn) throws PersistenceException, ParseException {
+	private Project[] getProjects(Object [][]rows, Connection conn) throws PersistenceException {
 		
 		// 	create the Project array.
         Project[] projects = new Project[rows.length];
@@ -2553,7 +2526,21 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         
 	}
 	
-	private ProjectSpec[] getProjectSpecs(Long projectId, Connection conn) throws PersistenceException, ParseException {
+	/**
+     * <p>
+     * Gets the list of ProjectSpec for the specified projectId.
+     * Though the method signature is to return list, but it essentially returns the ProjectSpec corresponding to the latest version id
+     * for the specified projectId's spec.
+     * </p>
+     * 
+     * @param projectId the project id for which project spec need to be persisted.
+     * @param conn the db connection to be used to create this project spec
+     * 
+     * @return the list of ProjectSpec for the specified projectId.
+     * @throws PersistenceException exception is thrown when there is some error in persisting 
+     * @since Cockpit Launch Contest - Update for Spec Creation v1.0
+     */
+	private ProjectSpec[] getProjectSpecs(Long projectId, Connection conn) throws PersistenceException {
 	     // get the project objects
         // find projects in the table.
         Object[][] rows = Helper.doQuery(conn,
@@ -2586,7 +2573,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return specs;
 	}
 	
-	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException,ParseException {
+	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
 
 		Connection conn = null;
 		try {
@@ -2658,11 +2645,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			if (conn != null) {
 				closeConnectionOnError(conn);
 			}
-			throw e;
+			throw new PersistenceException("Fails to retrieve all tc direct projects", e);
 		}
 
 	}
-	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException,ParseException {
+
+	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException {
 
 		Connection conn = null;
 		try {
@@ -2734,12 +2722,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			if (conn != null) {
 				closeConnectionOnError(conn);
 			}
-			throw e;
+			throw new PersistenceException("Fails to retrieve all tc direct projects", e);
 		}
 
 	}
 	
-	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException,ParseException {
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
 
 		Connection conn = null;
 		try {
@@ -2811,9 +2799,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			if (conn != null) {
 				closeConnectionOnError(conn);
 			}
-			throw e;
+			throw new PersistenceException("Fails to retrieve all tc direct projects", e);
 		}
-
 	}
-
 }
