@@ -590,7 +590,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "(project_spec_id, project_id, version, " 
             + "detailed_requirements, submission_deliverables, environment_setup_instruction, final_submission_guidelines, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (?, ?, (select max(ps.version) + 1 from project_spec as ps where ps.project_id = ?), " 
+            + "VALUES (?, ?, (select NVL(max(ps.version), 0)  + 1 from project_spec as ps where ps.project_id = ?), " 
             + "?, ?, ?, ?, "
             + "?, CURRENT, ?, CURRENT)";
 
