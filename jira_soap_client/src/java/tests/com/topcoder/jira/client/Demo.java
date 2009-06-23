@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.jira.client;
 
 import junit.framework.TestCase;
 
-import com.topcoder.jira.client.impl.JiraAddUserServiceImpl;
+import com.atlassian.jira.rpc.soap.beans.RemoteUser;
+import com.topcoder.jira.client.impl.JiraUserServiceImpl;
 
 /**
  * Demonstration class.
@@ -21,12 +22,20 @@ public class Demo extends TestCase {
      */
     public void testMain() throws Exception {
 
+        // String endPoint = "http://ec2-75-101-172-17.compute-1.amazonaws.com:8080/jira/rpc/soap/jirasoapservice-v2";
         String endPoint = "http://localhost:8080/jira/rpc/soap/jirasoapservice-v2";
-        JiraAddUserService service = new JiraAddUserServiceImpl();
+        JiraUserService service = new JiraUserServiceImpl();
 
-        service.createUser(endPoint, "romanoTC", "password", "tll1380", "jobi", "The Old Big", "oldbig@gmail.com",
-            new String[] {"jira-users", "jira-administrators"});
+        String adminUserName = "romanoTC";
+        String adminPassword = "password";
 
-        System.out.println("finished...");
+        String handle = "Psyho";
+
+        RemoteUser user = service.getUser(endPoint, adminUserName, adminPassword, handle);
+        if (user != null) {
+            System.out.println("Jira user [" + user.getName() + " / " + user.getFullname() + "]");
+        } else {
+            System.out.println(handle + ": is null");
+        }
     }
 }
