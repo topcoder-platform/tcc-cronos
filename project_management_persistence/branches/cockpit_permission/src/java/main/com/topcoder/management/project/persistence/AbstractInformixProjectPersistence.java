@@ -92,6 +92,12 @@ import com.topcoder.util.log.Log;
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
+ * 
+ * [BUGR-2038]: the new logic for returned contest 'status' will be
+ * if status is 'active' in db, and there is a row in contest_sale, then returned/shown status will be 'Scheduled',
+ * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
+ * otherwise, show 'status' from db.  
+ *
  * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
  * @version 1.1
  */
@@ -242,50 +248,58 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 		private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST = " select p.project_id as contest_id, "
 			+ " (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph "
-			+ " where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+			+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 			+ " (select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-			+ " (select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
-			+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+			+ " (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+			+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " 0 as num_reg, "
 			+ " 0 as num_sub, "
 			+ " 0 as num_for, "
-			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id,"
-			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
+			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
+			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
+			+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
-			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id ";
+			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+			+ "		and p.project_status_id != 3 ";
 	
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_USER = " select p.project_id as contest_id, "
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
-	+ "where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+	+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-	+ "(select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
-	+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+	+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+	+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " 0 as num_reg, "
 	+ " 0 as num_sub, "
 	+ " 0 as num_for , "
 	+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
-	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
+	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
+	+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-	+" and tcd.user_id = ";
+	+" and p.project_status_id != 3 and tcd.user_id = ";
 	
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
-	+		" (select ptl.name from phase_type_lu ptl where phase_type_id =    (select min(phase_type_id) from project_phase ph " 
-	+ "where ph.scheduled_start_time < current and ph.scheduled_end_time > current and ph.project_id=p.project_id)) as current_phase, "
+	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
+	+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-	+ "(select min(scheduled_start_time) from project_phase ph where ph.project_id=p.project_id) as start_date, "
-	+ " (select max(scheduled_end_time) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+	+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+	+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " 0 as num_reg, "
 	+ " 0 as num_sub, "
 	+ " 0 as num_for, "
 	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
-	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id "
+	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
+	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
+	+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-	+" and p.tc_direct_project_id= ";
+	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
+
     private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
@@ -297,9 +311,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] {
 			Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
 			Helper.DATE_TYPE,Helper.DATE_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE
-			, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  Helper.STRING_TYPE, Helper.LONG_TYPE};
+			Helper.STRING_TYPE, Helper.STRING_TYPE,
+			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
+			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -598,6 +613,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "VALUES (?, ?, (select NVL(max(ps.version), 0)  + 1 from project_spec as ps where ps.project_id = ?), " 
             + "?, ?, ?, ?, "
             + "?, CURRENT, ?, CURRENT)";
+
+	/**
+	 * 'Active' status name
+	 */
+	private static final String PROJECT_STATUS_ACTIVE = "Active";
 
     /**
      * <p>
@@ -2598,10 +2618,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				ret[i]=new SimpleProjectContestData();
 				ret[i].setContestId((Long)rows[i][0]);
 				// if have phase, use phase as stutus, otherwise use project status
+				/* [BUGR-2038]: See comments at the class level. Status is either 'Scheduled'
+				  or 'Draft' or from the DB as done previously.*/
+
+				// try to use phase if not null
 				if (rows[i][1] != null)
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
+				// else for active, use 'newstatus'
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+					ret[i].setSname((String)rows[i][15]);
+				}
+				// use status
 				else
 				{
 					ret[i].setSname((String)rows[i][6]);
@@ -2674,11 +2704,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			{
 				ret[i]=new SimpleProjectContestData();
 				ret[i].setContestId((Long)rows[i][0]);
-				// if have phase, use phase as stutus, otherwise use project status
+				/* [BUGR-2038]: See comments at the class level. Status is either 'Scheduled'
+				  or 'Draft' or from the DB as done previously.*/
+
+				// try to use phase if not null
 				if (rows[i][1] != null)
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
+				// else for active, use 'newstatus'
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+					ret[i].setSname((String)rows[i][15]);
+				}
+				// use status
 				else
 				{
 					ret[i].setSname((String)rows[i][6]);
@@ -2751,11 +2790,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			{
 				ret[i]=new SimpleProjectContestData();
 				ret[i].setContestId((Long)rows[i][0]);
-				// if have phase, use phase as stutus, otherwise use project status
+				/* [BUGR-2038]: See comments at the class level. Status is either 'Scheduled'
+				  or 'Draft' or from the DB as done previously.*/
+
+				// try to use phase if not null
 				if (rows[i][1] != null)
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
+				// else for active, use 'newstatus'
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+					ret[i].setSname((String)rows[i][15]);
+				}
+				// use status
 				else
 				{
 					ret[i].setSname((String)rows[i][6]);
