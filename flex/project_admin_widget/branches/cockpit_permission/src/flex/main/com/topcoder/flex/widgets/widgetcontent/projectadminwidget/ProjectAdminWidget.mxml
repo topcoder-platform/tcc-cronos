@@ -435,9 +435,10 @@
                      for(var j:int=i;j<result.length && result.getItemAt(j).projectId==p.id;j++)
                      {
                      	var c:Contest=new Contest();
-                     	c.studio=studio;
+                     	
                      	var it:Object=result.getItemAt(j);
                      	c.id=it.contestId;
+			c.studio=it.studio;
                      	c.name=it.cname;
                      	if (it.cfull>0) {
                            c.access="Full";
