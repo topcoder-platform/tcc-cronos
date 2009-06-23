@@ -2630,7 +2630,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 + "		and rank <= (select NVL(property_value, 10000) " 
                 + "					 	from contest_config "
                 + "						where contest_id = c.contest_id and property_id = 8) "
-                + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub "
+                + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub "
                 + " from contest c "
                 + " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
@@ -2707,7 +2707,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and rank <= (select NVL(property_value, 10000) " 
                     + "					 	from contest_config "
                     + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub "
                     + " from contest c "
                     + " where c.tc_direct_project_id ="+pid+" and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
@@ -2779,7 +2779,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 + "		and rank <= (select NVL(property_value, 10000) " 
                 + "					 	from contest_config "
                 + "						where contest_id = c.contest_id and property_id = 8) "
-                + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub "
+                + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub "
                 + " from contest c "
                 + " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3 and c.create_user_id = "+createdUser;
 
@@ -2870,7 +2870,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and rank <= (select NVL(property_value, 10000) " 
                     + "					 	from contest_config "
                     + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
@@ -2956,7 +2956,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and rank <= (select NVL(property_value, 10000) " 
                     + "					 	from contest_config "
                     + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
@@ -3046,7 +3046,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "		and rank <= (select NVL(property_value, 10000) " 
                     + "					 	from contest_config "
                     + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or sr.review_status_id <> 2)) as num_sub, "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
