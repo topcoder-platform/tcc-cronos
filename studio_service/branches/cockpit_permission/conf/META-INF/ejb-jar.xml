@@ -215,21 +215,16 @@
                 <env-entry-name>defaultContestNotesOnSubmissionFiles</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>                              
-Your entire contest submission will include three elements:
+1. Look for instructions in this contest regarding what files to provide. Questions? Ask in the forum for this contest.
+2. Place your submission files into a "Submission.zip" file.
+3. Place all of your source files into a "Source.zip" file.
+4. Create a JPG preview file.
+5. Click "Submit" and upload your files.
 
-1. &lt;b&gt;Your display submission file(s)&lt;/b&gt;: You must place all of your design into one JPG file and then zip it. The file you include in this Zip file will be displayed on the Studio site. This is the file the client will see. They will base their winner choices on what they see here.&lt;br/&gt;  
- 2. &lt;b&gt;Your final source file(s)&lt;/b&gt;: The file(s) you include in this Zip file will never be displayed on the Studio site. This Zip file is only transferred to the client if your submission receives a prize placement.&lt;br/&gt;   
-3. &lt;b&gt;Your preview image&lt;/b&gt;: The file you choose here represents your entire submission and is turned into a thumbnail and displayed on the Studio site.&lt;br/&gt;
+Trouble formatting your submission or want to learn more? &lt;A href="http://studio.topcoder.com/?module=Static&amp;d1=support&amp;d2=newMemberFaqs#QA_5-1"&gt;Read this FAQs&lt;/a&gt;
 
-Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a&gt; which will help you to format your submission.
-
-&lt;hr&gt;&lt;b&gt;For This Contest:&lt;/b&gt;
-
-&lt;b&gt;Submission Zip File:&lt;/b&gt;&lt;br/&gt;For this contest, your submission must consist of one (1) single JPG screen. If this contest requires more than one design, you must include all designs on a single screen.
-
-&lt;b&gt;Source Zip File:&lt;/b&gt;&lt;br/&gt;You must submit all original source files of the submitted design. Acceptable file formats chosen by the client are listed in the next section. You must include the formats listed below, and you should also include the following files which will allow the client to make any edits to the design at a later date: Files created in Adobe Photoshop, Gimp, Adobe Illustrator or Inkscape and saved as layered PSD files, AI or EPS files. Logo contests MUST include an IA file of the design created in vector format.
-
-&lt;b&gt;Fonts:&lt;/b&gt; All fonts used (with the exception of Windows standard fonts) in your design must also be submitted in this zip. If you do not have permission to release the fonts, you must provide a text file including the name of the font and a link to where the font can be purchased.                </env-entry-value>
+&lt;b&gt;Note:&lt;/b&gt; All fonts used (with the exception of Windows standard fonts) in your design must also be submitted in this zip. If you do not have permission to release the fonts, you must provide a text file including the name of the font and a link to where the font can be purchased.
+                </env-entry-value>
             </env-entry>
             
            <env-entry>
