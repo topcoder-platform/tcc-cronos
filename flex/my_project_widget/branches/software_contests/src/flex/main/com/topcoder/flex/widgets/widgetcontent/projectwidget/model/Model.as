@@ -20,6 +20,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
      * <p>
      * This is the data model class for this my project widget.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 2 [BUGR-1830]
+     *    - Removed the singleton nature of this class.
+     * </p>
+     * 
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
@@ -29,23 +35,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
      */
     [Bindable]
     public class Model {
-        /**
-         * Singleton instance of this model class.
-         */
-        private static var _instance:Model;
-
-        /**
-         * Gets the singleton instance of this model class.
-         *
-         * @return the singleton instance of this model class.
-         */
-        public static function get instance():Model {
-            if (!_instance) {
-                _instance=new Model();
-            }
-            return _instance;
-        }
-
         /**
          * If widget is in max mode.
          */
@@ -125,11 +114,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
          * End date of the date chooser.
          */
         private static var e:Date;
-
-        /**
-         * Reference to the project widget.
-         */
-        public var projectWidget:ProjectWidget;
 
         /**
          * A simple constructor that initializes date format etc.

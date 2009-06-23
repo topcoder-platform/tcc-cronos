@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render contest row.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -20,6 +23,7 @@
          mouseOut="mouseOutHandle()">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
             import mx.controls.ButtonLabelPlacement;
             import com.topcoder.flex.widgets.model.IWidget;
             import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
@@ -41,10 +45,12 @@
             private var contest:Contest;
 
             /**
-             * Reference to singleton instance of the underlying model class.
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
              */
             [Bindable]
-            private var model:Model=Model.instance;
+            public var parentWidget:ProjectWidget=null;
 
             /**
              * The base url for the link of contents;
@@ -155,12 +161,12 @@
             private function showStats():void {
                 if (contest.type == STUDIO_TYPE) {
                     // restore widget to normal width if it's not already.
-                    if (model.projectWidget.isMaximized()) {
-                        model.projectWidget.restoreScreen();
+                    if (parentWidget.isMaximized()) {
+                        parentWidget.restoreScreen();
                     }
                     
                     // call method on widget to load the selected contest.
-                    var tabName:String=model.projectWidget.widgetFramework.getActiveTabName();
+                    var tabName:String=parentWidget.widgetFramework.getActiveTabName();
                     var widgetName:String="Contest Monitor";
                     openWidget(tabName, widgetName);
                 } else {
@@ -177,19 +183,19 @@
                     if (contest.submissions > 0) {
                         
                         // restore widget to normal width if it's not already.
-                        if (model.projectWidget.isMaximized()) {
-                            model.projectWidget.restoreScreen();
+                        if (parentWidget.isMaximized()) {
+                            parentWidget.restoreScreen();
                         }
                         
                         var tabName:String=null;
                         var widgetName:String=null;
                         // open submission viewer widget and load the current contest.
-                        tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
                         widgetName="Submission Viewer";
                         openWidget(tabName, widgetName);
                         
                         // open contest monitor widget and load the current contest.
-                        tabName=model.projectWidget.widgetFramework.getActiveTabName();
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
                         widgetName="Contest Monitor";
                         openWidget(tabName, widgetName);
                     }
@@ -205,10 +211,10 @@
              * @param widgetName name of the widget to be opened.
              */
             private function openWidget(tabName:String, widgetName:String):void {
-                var widget:IWidget=model.projectWidget.widgetFramework.openWidget(tabName, widgetName);
+                var widget:IWidget=parentWidget.widgetFramework.openWidget(tabName, widgetName);
 
                 var props:Dictionary=new Dictionary();
-                props["pid"]=model.currentProj.id;
+                props["pid"]=parentWidget.model.currentProj.id;
                 props["toBeLoadedContestId"]=contest.id;
                 if (widget == null) {
                     // properties (or attributes) of widget that need to be created new.
@@ -231,7 +237,7 @@
                     }
 
                     propertiesObj["widgetConfig"]=props;
-                    model.projectWidget.widgetFramework.addWidgetWithProperties(propertiesObj);
+                    parentWidget.widgetFramework.addWidgetWithProperties(propertiesObj);
                 } else {
                     props["reload"]=true;
                     widget.setAttributes(props);
@@ -270,6 +276,9 @@
              * 
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
              * Show edit button for non studio contests also which are of type active or inactive.
+             *
+             * Fix for [BUGR-2038]: if type is not studio, show edit button if
+             * status is 'draft' or 'scheduled' instead of status 'active'.
              */
             private function mouseOverHandle():void {
                 if ((contest.type.toLocaleLowerCase() == "studio" 
@@ -277,13 +286,14 @@
                                 || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
 		                        || contest.status.toLocaleLowerCase() == "scheduled")) 
 		            || (contest.type.toLocaleLowerCase() != "studio" 
-		                && (contest.status.toLocaleLowerCase() == "active" 
+		                && (contest.status.toLocaleLowerCase() == "draft" 
+		                		|| contest.status.toLocaleLowerCase() == "scheduled"
 		                        || contest.status.toLocaleLowerCase() == "inactive"))) {
 
         		    if(contest.permission=="contest_full" || contest.permission=="contest_write"
         		              || (contest.permission==null && 
-        			               (model.currentProj.permission=="project_full" 
-        				            || model.currentProj.permission=="project_write"))){
+        			               (parentWidget.model.currentProj.permission=="project_full" 
+        				            || parentWidget.model.currentProj.permission=="project_write"))){
         			    editBtn.visible=true;
         		    }
                 }
@@ -304,14 +314,14 @@
              */
             private function editContest():void {
 
-    			var widget:IWidget=model.projectWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+    			var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
     			var props:Dictionary=new Dictionary();
     			props["contestType"]=contest.type;
     			props["contestid"]=contest.id;
     			props["projectid"]=contest.projId;
     			props["projectName"]=contest.projName;
     			widget.setAttributes(props);
-    			model.projectWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+    			parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
 
             /**

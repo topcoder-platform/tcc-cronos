@@ -6,6 +6,11 @@
 <!--
 
      This mxml component is the main entry point for the my project widget.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Added a button for "Open in New Tab"
+        - Added handler for the same.
+        - Made Model class non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -53,14 +58,6 @@
              */
             [Bindable]
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
-
-       
-
-            /**
-             * Reference to the instance of data model class for this widget.
-             */
-            [Bindable]
-            public var model:Model=Model.instance;
 
             /**
              * Index of the currently selected button (Details or Contests).
@@ -164,8 +161,8 @@
              * This function initiates data load from webservice and acts as main entry point.
              */
             private function init():void {
-                model.projectWidget=this;
-                this.maximizeScreen();
+                this.contest.parentWidget=this;
+                this.details.parentWidget=this;
                 getDataService();
             }
 
@@ -492,6 +489,37 @@
                     this.container.startRestore();
                 }
             }
+            
+            /**
+             * Opens current project in new tab of the cockpit app.
+             *
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            private function openProjectInNewTab():void {
+                var props:Dictionary=new Dictionary();
+
+                props["pid"]=model.currentProj.id;
+                
+                var dict:Dictionary=new Dictionary();
+                dict["name"]=model.currentProj.name;
+                dict["allowclose"]="true";
+                dict["columnNum"]=2;
+                this.widgetFramework.addTabCtlWithProperties(dict);
+                
+                dict["tabName"]=model.currentProj.name;
+                dict["name"]="My Projects";
+                dict["title"]="My Projects";
+                dict["widgetConfig"]=props;
+                this.widgetFramework.addWidgetWithProperties(dict);
+                
+                dict["name"]="Submission Viewer";
+                dict["title"]="Submission Viewer";
+                this.widgetFramework.addWidgetWithProperties(dict);
+                
+                dict["name"]="Contest Monitor";
+                dict["title"]="Contest Monitor";
+                this.widgetFramework.addWidgetWithProperties(dict);
+            }
         ]]>
     </mx:Script>
 
@@ -638,6 +666,13 @@
                        styleName="button"
                        buttonMode="true"
                        click="doRotate(event)"/>
+            <mx:Spacer width="5"/>
+            <mx:Button id="openPrjInNewTabBtn"
+                       label="Open in New Tab"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       styleName="button"
+                       buttonMode="true"
+                       click="openProjectInNewTab()"/>
         </mx:HBox>
         <mx:HBox width="100%"
                  horizontalAlign="center">

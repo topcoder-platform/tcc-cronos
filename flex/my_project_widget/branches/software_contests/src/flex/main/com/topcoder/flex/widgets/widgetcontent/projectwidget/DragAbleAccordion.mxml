@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render draggable accordion on contests page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -14,7 +17,6 @@
            height="100%">
     <mx:Script>
         <![CDATA[
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
             import com.topcoder.flex.widgets.widgetcontent.projectwidget.renderer.ContestRenderer;
             import mx.events.CollectionEventKind;
             import mx.events.CollectionEvent;
@@ -23,10 +25,12 @@
             import mx.events.DragEvent;
 
             /**
-             * Reference to the instance of data model class for this widget.
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
              */
             [Bindable]
-            private var model:Model=Model.instance;
+            public var parentWidget:ProjectWidget=null;
 
             /**
              * Data provider for this.
@@ -53,6 +57,7 @@
                 container.removeAllChildren();
                 for each (var item:Object in _dataProvider) {
                     var render:ContestRenderer=new ContestRenderer();
+                    render.parentWidget=parentWidget;
                     render.data=item;
                     container.addChild(render);
                 }
@@ -80,11 +85,11 @@
                     var source:ContestRenderer=event.dragInitiator as ContestRenderer;
                     if (source && source.data) {
                         //trace("Over Spacer: put it at last");
-                        model.canShowArrow=!model.canShowArrow;
-                        model.adjustList(source.data);
+                        parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
+                        parentWidget.model.adjustList(source.data);
                     }
                 }
-                model.doDrag=false;
+                parentWidget.model.doDrag=false;
             }
 
             /**
@@ -93,8 +98,8 @@
              * @param event drag event.
              */
             private function handleComplete(event:DragEvent):void {
-                model.doDrag=false;
-                model.stopDrag=!model.stopDrag;
+                parentWidget.model.doDrag=false;
+                parentWidget.model.stopDrag=!parentWidget.model.stopDrag;
             }
 
             /**
@@ -123,9 +128,9 @@
             }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.contest"
+    <mx:Binding source="parentWidget.model.contest"
                 destination="dataProvider"/>
-    <mx:Binding source="model.canShowArrow"
+    <mx:Binding source="parentWidget.model.canShowArrow"
                 destination="setArrow"/>
     <mx:VBox width="100%"
              height="100%"

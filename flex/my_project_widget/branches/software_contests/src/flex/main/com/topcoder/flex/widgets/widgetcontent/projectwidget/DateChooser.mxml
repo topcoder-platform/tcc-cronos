@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render start & end date selector.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -20,16 +23,17 @@
                 close="closeMe()">
     <mx:Script>
         <![CDATA[
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
             import mx.controls.Alert;
             import mx.managers.PopUpManager;
             import mx.controls.ButtonLabelPlacement;
 
             /**
-             * Reference to the instance of data model class for this widget.
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
              */
             [Bindable]
-            private var model:Model=Model.instance;
+            public var parentWidget:ProjectWidget=null;
 
             /**
              * From date string from the date chooser.
@@ -47,7 +51,7 @@
              * Handler for close of date choser.
              */
             private function closeMe():void {
-                model.showDateChooser=false;
+                parentWidget.model.showDateChooser=false;
             }
 
             /**
@@ -69,7 +73,7 @@
              */
             public function setDate(notSet:Boolean=false):void {
                 if (notSet) {
-                    model.setDateFilter(null, null);
+                    parentWidget.model.setDateFilter(null, null);
                     fromDateStr="";
                     toDateStr="";
                     closeMe();
@@ -79,7 +83,7 @@
                     Alert.show("Error: Start Date should be ahead of End Date.", "ERROR");
                     return;
                 }
-                model.setDateFilter(start.selectedDate, end.selectedDate);
+                parentWidget.model.setDateFilter(start.selectedDate, end.selectedDate);
                 fromDateStr=start.selectedDate.getFullYear().toString() + '-' + (start.selectedDate.getMonth() + 1).toString() + '-' + start.selectedDate.getDate();
                 toDateStr=end.selectedDate.getFullYear().toString() + '-' + (end.selectedDate.getMonth() + 1).toString() + '-' + end.selectedDate.getDate();
                 closeMe();
@@ -87,7 +91,7 @@
             }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.showDateChooser"
+    <mx:Binding source="parentWidget.model.showDateChooser"
                 destination="init"/>
     <mx:VBox borderStyle="none"
              width="100%"

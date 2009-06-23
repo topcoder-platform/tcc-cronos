@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render one group of contest data grid.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -33,6 +36,53 @@
             private var _currentCacheIndex:int=0;
             
             /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var _parentWidget:ProjectWidget=null;
+            
+            /**
+             * Gets the reference to the instance of the parent Project Widget class.
+             * 
+             * @return  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public function get parentWidget():ProjectWidget {
+                return this._parentWidget;
+            }
+            
+            /**
+             * Sets the reference to the instance of the parent Project Widget class.
+             * 
+             * It additionally sets the parentWidget instance to the child elements.
+             * 
+             * @param p  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            public function set parentWidget(p:ProjectWidget):void {
+                this._parentWidget=p;
+                
+                if (this.container) {
+                    for each (var c:ContestRow in this.container.getChildren()) {
+                        if (c) {
+                            c.parentWidget=this._parentWidget;
+                        }
+                    }
+                }
+                
+                if (_contestRowCache) {
+                    for each (var cr:ContestRow in this._contestRowCache) {
+                        if (cr) {
+                            cr.parentWidget=this._parentWidget;
+                        }
+                    }
+                }
+            }
+            
+            /**
              * Data provider for this contest shower.
              */
             private var _dataProvider:ArrayCollection;
@@ -54,9 +104,11 @@
                     var prjRow:ContestRow=null;
                     if (_contestRowCache.length > _currentCacheIndex) {
                         prjRow=_contestRowCache.getItemAt(_currentCacheIndex) as ContestRow;
+                        prjRow.parentWidget=parentWidget;
                         _currentCacheIndex++;
                     } else {
                         prjRow=new ContestRow();
+                        prjRow.parentWidget=parentWidget;
                         
                         if (_currentCacheIndex < _maxCacheSize) {
                             _contestRowCache.addItem(prjRow);
@@ -84,6 +136,7 @@
                     for (var i:int; i < _dataProvider.length; i++) {
                         var cnt:Contest=_dataProvider.getItemAt(i) as Contest;
                         var prjRow:ContestRow=new ContestRow();
+                        prjRow.parentWidget=parentWidget;
                         container.addChildAt(prjRow, 0);
                         prjRow.data=cnt;
                         prjRow.rowNum=i;

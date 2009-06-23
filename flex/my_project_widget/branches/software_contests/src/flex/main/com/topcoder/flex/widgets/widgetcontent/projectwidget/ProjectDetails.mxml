@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render project details page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -20,13 +23,13 @@
          paddingRight="20">
     <mx:Script>
         <![CDATA[
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
-
             /**
-             * Reference to the instance of data model class for this widget.
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
              */
             [Bindable]
-            private var model:Model=Model.instance;
+            public var parentWidget:ProjectWidget=null;
         ]]>
     </mx:Script>
     <mx:GridRow width="100%">
@@ -39,7 +42,7 @@
                      verticalAlign="middle">
             <mx:Text id="prjName"
                      textAlign="left"
-                     text="{model.currentProj.name}"
+                     text="{parentWidget.model.currentProj.name}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
@@ -52,7 +55,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{model.currentProj.description}"
+                     text="{parentWidget.model.currentProj.description}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
@@ -65,7 +68,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{model.currentProj.start.toDateString()}"
+                     text="{parentWidget.model.currentProj.start.toDateString()}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
@@ -78,7 +81,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{model.currentProj.end.toDateString()}"
+                     text="{parentWidget.model.currentProj.end.toDateString()}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
@@ -91,7 +94,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{model.currentProj.owner}"
+                     text="{parentWidget.model.currentProj.owner}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
@@ -104,7 +107,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{model.currentProj.users}"
+                     text="{parentWidget.model.currentProj.users}"
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>

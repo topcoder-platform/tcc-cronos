@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is to render contest page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -30,17 +33,53 @@
                 import mx.collections.Sort;
                 import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
                 import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
-                import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
                 import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
                 import mx.managers.PopUpManager;
                 import mx.collections.ArrayCollection;
                 import mx.controls.ButtonLabelPlacement;
                 
                 /**
-                 * Reference to singleton instance of Project Widget Model class.
+                 * Reference to the instance of Project Widget class.
+                 * 
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
                  */
                 [Bindable]
-                private var model:Model=Model.instance;
+                public var _parentWidget:ProjectWidget=null;
+                
+                /**
+                 * Gets the reference to the instance of the parent Project Widget class.
+                 * 
+                 * @return  the reference to the instance of the parent Project Widget class.
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
+                 */
+                [Bindable]
+                public function get parentWidget():ProjectWidget {
+                    return this._parentWidget;
+                }
+                
+                /**
+                 * Sets the reference to the instance of the parent Project Widget class.
+                 * 
+                 * It additionally sets the parentWidget instance to the child elements.
+                 * 
+                 * @param p  the reference to the instance of the parent Project Widget class.
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
+                 */
+                public function set parentWidget(p:ProjectWidget):void {
+                    this._parentWidget=p;
+                    
+                    if (this.shower) {
+                        this.shower.parentWidget=this._parentWidget;
+                    }
+                    
+                    if (this.group) {
+                        this.group.parentWidget=this._parentWidget;
+                    }
+                    
+                    if (this.popUp) {
+                        this.popUp.parentWidget=this._parentWidget;
+                    }
+                }
                 
                 /**
                  * Project for this contest page.
@@ -69,6 +108,9 @@
                  * It gets called on this component initialization
                  */
                 private function init():void {
+                    this.shower.parentWidget=this.parentWidget;
+                    this.group.parentWidget=this.parentWidget;
+                    this.popUp.parentWidget=this.parentWidget;
                     //trace(">>>>>>>> init start: " + new Date());
                     if (this.proj) {
                         this.shower.dataProvider=proj.contests;
@@ -84,7 +126,7 @@
                  */
                 public function set update(nouse:Boolean):void {
                     //trace(">>>>>>>> update start: " + new Date());
-                    setContest=model.currentProj;
+                    setContest=parentWidget.model.currentProj;
                     //trace(">>>>>>>> update end: " + new Date());
                 }
                 
@@ -120,25 +162,25 @@
                         shower.dataProvider=proj.contests;
                     } else {
                         stack.selectedChild=group;
-                        model.contest=new ArrayCollection();
+                        parentWidget.model.contest=new ArrayCollection();
                         if (groupCB.selectedIndex == 1) {
                             
                             for (var i:int=0; i < Status.STATUS_SORT_ORDER.length; i++) {
                                 var status:String=Status.STATUS_SORT_ORDER[i];
                                 var a1:Cate=statusGroup[status] as Cate;
                                 if (a1) {
-                                    model.contest.addItem(a1);
+                                    parentWidget.model.contest.addItem(a1);
                                 }
                             }
                         } else {
                             for (var type:String in typeGroup) {
                                 var a2:Cate=typeGroup[type] as Cate;
                                 if (a2) {
-                                    model.contest.addItem(a2);
+                                    parentWidget.model.contest.addItem(a2);
                                 }
                             }
                         }
-                        group.dataProvider=model.contest;
+                        group.dataProvider=parentWidget.model.contest;
                     }
                     
                     invalidateDisplayList();
@@ -150,7 +192,7 @@
                  * Shows the date picker.
                  */
                 private function showDatePicker():void {
-                    model.showDateChooser=!model.showDateChooser;
+                    parentWidget.model.showDateChooser=!parentWidget.model.showDateChooser;
                 }
                 
                 /**
@@ -191,7 +233,7 @@
                     var tabDict:Dictionary=new Dictionary();
                     tabDict["columnNum"]=1;
                     
-                    model.projectWidget.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
+                    parentWidget.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
                     
                     //trace(">>>>>>>> addContest end: " + new Date());
                 }
@@ -245,7 +287,7 @@
                                  width="85"
                                  styleName="normalStyle"
                                  change="changeGroup()"
-                                 enabled="{!model.showDateChooser}">
+                                 enabled="{!parentWidget.model.showDateChooser}">
                         <mx:dataProvider>
                             <mx:String>No Group</mx:String>
                             <mx:String>Status Type</mx:String>
@@ -260,11 +302,11 @@
                                height="14"
                                click="showDatePicker()"/>
                     <mx:TextInput id="fromDate"
-                                  text="{model.currentProj.startDateFilter}"
+                                  text="{parentWidget.model.currentProj.startDateFilter}"
                                   editable="false"
                                   width="75"/>
                     <mx:TextInput id="toDate"
-                                  text="{model.currentProj.endDateFilter}"
+                                  text="{parentWidget.model.currentProj.endDateFilter}"
                                   editable="false"
                                   width="75"/>
                 </mx:HBox>
@@ -274,10 +316,10 @@
                 <flex:ContestShower id="shower"
                                     height="100%"
                                     width="100%"
-                                    horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
+                                    horizontalScrollPolicy="{parentWidget.model.isMax ? 'off' : 'auto'}"
                                     isTabMode="false"/>
                 <flex:DragAbleAccordion width="100%"
-                                        horizontalScrollPolicy="{model.isMax ? 'off' : 'auto'}"
+                                        horizontalScrollPolicy="{parentWidget.model.isMax ? 'off' : 'auto'}"
                                         id="group"/>
             </mx:ViewStack>
             <mx:Spacer height="100%"/>
@@ -295,16 +337,16 @@
             </mx:HBox>
             <mx:Spacer width="100%"
                        height="20"
-                       visible="{!model.isMax}"
-                       includeInLayout="{!model.isMax}"/>
+                       visible="{!parentWidget.model.isMax}"
+                       includeInLayout="{!parentWidget.model.isMax}"/>
         </mx:VBox>
         <flex:DateChooser right="5"
                           top="30"
                           id="popUp"
-                          visible="{model.showDateChooser}"/>
+                          visible="{parentWidget.model.showDateChooser}"/>
     </mx:Canvas>
-    <mx:Binding source="model.currentProj"
+    <mx:Binding source="parentWidget.model.currentProj"
                 destination="setContest"/>
-    <mx:Binding source="model.changeProj"
+    <mx:Binding source="parentWidget.model.changeProj"
                 destination="update"/>
 </mx:VBox>

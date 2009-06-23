@@ -6,6 +6,9 @@
 <!--
 
      This mxml component is the item renderer for contest group.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
@@ -24,7 +27,7 @@
            xmlns:flex="com.topcoder.flex.widgets.widgetcontent.projectwidget.*">
     <mx:Script>
         <![CDATA[
-            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
             import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
             import mx.containers.VBox;
             import mx.effects.Tween;
@@ -35,10 +38,39 @@
             import mx.events.DragEvent;
 
             /**
-             * Reference to the instance of data model class for this widget.
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
              */
             [Bindable]
-            private var model:Model=Model.instance;
+            public var _parentWidget:ProjectWidget=null;
+            
+            /**
+             * Gets the reference to the instance of the parent Project Widget class.
+             * 
+             * @return  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public function get parentWidget():ProjectWidget {
+                return this._parentWidget;
+            }
+            
+            /**
+             * Sets the reference to the instance of the parent Project Widget class.
+             * 
+             * It additionally sets the parentWidget instance to the child elements.
+             * 
+             * @param p  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            public function set parentWidget(p:ProjectWidget):void {
+                this._parentWidget=p;
+                
+                if (this.shower) {
+                    this.shower.parentWidget=this._parentWidget;
+                }
+            }
 
             /**
              * Contest group for this renderer.
@@ -90,6 +122,7 @@
              * Handler that gets called on initialization of this contest group.
              */
             private function init():void {
+                shower.parentWidget=parentWidget;
                 this.orgHeight=shower.height;
             }
 
@@ -123,16 +156,16 @@
                 var par:ContestRenderer=event.currentTarget.parent as ContestRenderer;
 
                 if (event.buttonDown && par && onDrag) {
-                    var idx:int=model.getListIndex(data);
+                    var idx:int=parentWidget.model.getListIndex(data);
                     if (idx != -1) {
-                        if (!model.doDrag) {
-                            model.dragSourceIdx=idx;
-                            model.doDrag=true;
-                            model.closeAll=!model.closeAll;
+                        if (!parentWidget.model.doDrag) {
+                            parentWidget.model.dragSourceIdx=idx;
+                            parentWidget.model.doDrag=true;
+                            parentWidget.model.closeAll=!parentWidget.model.closeAll;
                         } else {
                             return;
                         }
-                        //						trace("drag source is:" + model.dragSourceIdx);
+                        //						trace("drag source is:" + parentWidget.model.dragSourceIdx);
                         var ds:DragSource=new DragSource();
 
                         var bm:BitmapData=new BitmapData(this.width, this.height);
@@ -166,19 +199,19 @@
             private function handleDrop(event:DragEvent):void {
                 if (event.dragSource && event.dragSource.hasFormat('contest')) {
                     var source:ContestRenderer=event.dragInitiator as ContestRenderer;
-                    model.canShowArrow=!model.canShowArrow;
+                    parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
                     if (source && source.data != data) {
-                        var i:int=model.getListIndex(data);
-                        if (i >= 0 && i < model.dragSourceIdx) {
-                            model.adjustList(source.data, data, true);
-                        } else if (i > model.dragSourceIdx) {
-                            model.adjustList(source.data, data, false);
+                        var i:int=parentWidget.model.getListIndex(data);
+                        if (i >= 0 && i < parentWidget.model.dragSourceIdx) {
+                            parentWidget.model.adjustList(source.data, data, true);
+                        } else if (i > parentWidget.model.dragSourceIdx) {
+                            parentWidget.model.adjustList(source.data, data, false);
                         }
 
                     }
                 }
 
-                model.doDrag=false;
+                parentWidget.model.doDrag=false;
             }
 
             /**
@@ -187,8 +220,8 @@
              * @param event drag event.
              */
             private function dragComplete(event:DragEvent):void {
-                model.doDrag=false;
-                model.stopDrag=!model.stopDrag;
+                parentWidget.model.doDrag=false;
+                parentWidget.model.stopDrag=!parentWidget.model.stopDrag;
             }
 
             /**
@@ -200,11 +233,11 @@
                 if (event.dragSource && event.dragSource.hasFormat('contest') && event.currentTarget != event.dragInitiator) {
                     DragManager.acceptDragDrop(this);
                     DragManager.showFeedback("move");
-                    model.canShowArrow=!model.canShowArrow;
-                    var i:int=model.getListIndex(data);
-                    if (i >= 0 && i < model.dragSourceIdx) {
+                    parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
+                    var i:int=parentWidget.model.getListIndex(data);
+                    if (i >= 0 && i < parentWidget.model.dragSourceIdx) {
                         arrow.y=-6;
-                    } else if (i > model.dragSourceIdx) {
+                    } else if (i > parentWidget.model.dragSourceIdx) {
                         arrow.y=height - 6;
                     }
 
@@ -225,7 +258,7 @@
              * Event handler for contest group bar click.
              */
             public function handleClick():void {
-                if (model.doDrag) {
+                if (parentWidget.model.doDrag) {
                     return;
                 }
                 open=!open;
@@ -234,6 +267,7 @@
                 if (open) {
                     shower.includeInLayout=true;
                     shower.visible=true;
+                    shower.parentWidget=parentWidget;
                     openEffect.heightTo=orgHeight;
                     openEffect.play();
                 } else {
@@ -284,15 +318,15 @@
              * @param event mouse event.
              */
             public function handleMouseUp(event:MouseEvent):void {
-                model.doDrag=false;
+                parentWidget.model.doDrag=false;
             }
         ]]>
     </mx:Script>
-    <mx:Binding source="model.canShowArrow"
+    <mx:Binding source="parentWidget.model.canShowArrow"
                 destination="setArrow"/>
-    <mx:Binding source="model.closeAll"
+    <mx:Binding source="parentWidget.model.closeAll"
                 destination="setCloseAll"/>
-    <mx:Binding source="model.stopDrag"
+    <mx:Binding source="parentWidget.model.stopDrag"
                 destination="stop"/>
     <mx:Resize target="{shower}"
                heightFrom="1"

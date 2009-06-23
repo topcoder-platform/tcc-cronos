@@ -7,9 +7,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.layout.Util;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
-
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+    
     import flash.utils.Dictionary;
-
+    
     import mx.collections.ArrayCollection;
     import mx.containers.HBox;
     import mx.core.Application;
@@ -21,6 +22,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
      * This is the code behind script part for the project widget. It implements the IWidget interface.
      * It extends from the HBox.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 2 [BUGR-1830]
+     *    - Now Model instance is created in this class and other classes retrieves from it.
+     * </p>
+     * 
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      * 
@@ -38,10 +45,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         private var _name:String = "My Projects";
         
         
-	/**
-	 * The framework of the widget.
-	 */
-	private var _framework:IWidgetFramework = null;
+    	/**
+    	 * The framework of the widget.
+    	 */
+    	private var _framework:IWidgetFramework = null;
 
         /**
          * The container for this widget.
@@ -91,9 +98,20 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         private var _allowclose:Boolean=true;
         
         /**
+         * The instance of data model
+         * 
+         * @since Cockpit Release Assembly 2 [BUGR-1830]
+         */
+        private var _model:Model=null;
+        
+        /**
          * ProjectWidgetCodeBehind constructor.
+         * 
+         * Updated for Cockpit Release Assembly 2 [BUGR-1830]
+         *    - _model instance is instantiated.
          */
         public function ProjectWidgetCodeBehind() {
+            this._model = new Model();
         }
         /**
          * goBack is intended to act as a "Back Button" only for the context of
@@ -156,6 +174,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
                 ContestServiceFacadeBean.addHeader(getHeader(username, password));
                 ContestServiceFacadeBean.getCommonProjectContestDataByPID.send();
             } else {
+                if (this.container) {
+                    this.container.startMaximize();
+                }
                 ContestServiceFacadeBean.clearHeaders();
                 ContestServiceFacadeBean.addHeader(getHeader(username, password));
                 ContestServiceFacadeBean.getCommonProjectContestData();
@@ -196,6 +217,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * This action will maximize this widget.
          */
         public function maximize():void {
+            this.percentWidth=100;
             isMax=true;
         }
 
@@ -400,6 +422,28 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
                  </wsse:Security>;
             var header:SOAPHeader=new SOAPHeader(WSSE_SECURITY, headerXML);
             return header;
+        }
+        
+        /**
+         * Gets the instance of data model class for this widget.
+         * 
+         * @return the instance of data model class for this widget.
+         * 
+         * @since Cockpit Release Assembly 2 [BUGR-1830] 
+         */
+        public function get model():Model {
+            return this._model;
+        }
+        
+        /**
+         * Sets the instance of data model class for this widget.
+         * 
+         * @param m the instance of data model class for this widget.
+         * 
+         * @since Cockpit Release Assembly 2 [BUGR-1830] 
+         */
+        public function set model(m:Model):void {
+            this._model=m;
         }
     }
 }
