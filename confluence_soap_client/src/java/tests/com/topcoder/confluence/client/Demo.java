@@ -5,7 +5,7 @@ package com.topcoder.confluence.client;
 
 import junit.framework.TestCase;
 
-import com.topcoder.confluence.client.impl.ConfluenceAddUserServiceImpl;
+import com.topcoder.confluence.client.impl.ConfluenceUserServiceImpl;
 
 /**
  * Demonstration class.
@@ -22,10 +22,9 @@ public class Demo extends TestCase {
     public void testMain() throws Exception {
 
         String endPoint = "http://localhost:8080/confluence/rpc/soap-axis/confluenceservice-v1";
-        ConfluenceAddUserService service = new ConfluenceAddUserServiceImpl();
+        ConfluenceUserService service = new ConfluenceUserServiceImpl();
 
-        service.createUser(endPoint, "admin", "tegangi", "tll1380", "jobi", "The Old Big", "oldbig@gmail.com",
-            new String[] {"confluence-users", "confluence-administrators"});
+        service.createUser(endPoint, "admin", "tegangi", "tll1380", "The Old Big", "oldbig@gmail.com");
 
         System.out.println("foi");
     }
