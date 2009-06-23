@@ -1161,20 +1161,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 throw pde;
             }
 
-			// recalcuate phase dates in case project start date changes
-			// recalcuate phase dates in case project start date changes
-			for (Phase p : projectPhases.getAllPhases()) {
-					p.setScheduledStartDate(null);
-					p.setScheduledEndDate(null);
-					p.setFixedStartDate(null);
-
-		    }	
-			for (Phase p : projectPhases.getAllPhases()) {
-					p.setScheduledStartDate(p.calcStartDate());
-					p.setScheduledEndDate(p.calcEndDate());
-					p.setFixedStartDate(p.calcStartDate());
-
-		    }	
+			
 
 
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
@@ -1741,14 +1728,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
@@ -1777,14 +1757,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
@@ -1813,14 +1786,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			throw new ProjectServicesException(
 					"PersistenceException occurred when operating ProjectManager.",
 					ex);
-		} catch (ParseException e) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
-			throw new ProjectServicesException(
-					"ParseException occurred when operating ProjectManager.", e);
-
-		}
+		} 
 
 		log(Level.INFO,
 				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
