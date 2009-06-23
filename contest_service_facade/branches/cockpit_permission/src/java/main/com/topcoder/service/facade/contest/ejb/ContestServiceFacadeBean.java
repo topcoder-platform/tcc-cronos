@@ -2480,7 +2480,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 						contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 						FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
-								contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+								contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
 
 						contest.setProjectHeader(projectData.getProjectHeader());
 						contest.setProjectPhases(projectData);
