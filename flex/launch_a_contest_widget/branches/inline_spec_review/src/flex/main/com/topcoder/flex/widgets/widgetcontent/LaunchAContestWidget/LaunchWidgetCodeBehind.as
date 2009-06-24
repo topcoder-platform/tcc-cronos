@@ -283,6 +283,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             reloadInternal(true,null);
         }
         
+        /**
+         * Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+         *    To support opening of Review screen on click on ReviewStatus link from My Project widget.
+         */ 
         private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
             trace("IN RELOAD OF LAUNCH WIDGET:: START");
             if (!container.contents.isMaximized()) {
@@ -297,6 +301,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             container.contents.name=name;
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
+                var isReviewScreen:Boolean=false;
                 if (map) {
                     (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
@@ -304,6 +309,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
                     (container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
+                    isReviewScreen=(map["screen"]=="Review");
                     
                     (container.contents as LaunchWidget).contestSelect.initData();
                 }
@@ -311,9 +317,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("IN RELOAD OF LAUNCH WIDGET:: competitionType: " + (container.contents as LaunchWidget).competitionType);
                 
                 if (!isEmptyStart) {
-                    trace("IN RELOAD OF LAUNCH WIDGET:: OPEN OVERVIEW PAGE");
-                    (container.contents as LaunchWidget).openOverViewPage();
-                    //_emptyStart=true;
+                    if (isReviewScreen) {
+                        (container.contents as LaunchWidget).openReviewPage();
+                    } else {
+                        trace("IN RELOAD OF LAUNCH WIDGET:: OPEN OVERVIEW PAGE");
+                        (container.contents as LaunchWidget).openOverViewPage();
+                    }
                 }
                 
                 container.startRestore();

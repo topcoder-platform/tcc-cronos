@@ -222,7 +222,7 @@
 	font-family: Arial;
 	color: #666666;
 	font-weight: bold;
-	font-size: 13;
+	font-size: 16;
 }
 
 .projectTitle {
@@ -230,4 +230,124 @@
 	color: #BB0000;
 	font-weight: bold;
 	font-size: 16;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.tabBtnClose {
+	skin: Embed("../assets/tab-close.png");
+	up-skin: Embed("../assets/tab-close.png");
+	over-skin: Embed("../assets/tab-close-hover.png");
+	down-skin: Embed("../assets/tab-close.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.tabBtnOpen {
+	skin: Embed("../assets/tab-open.png");
+	up-skin: Embed("../assets/tab-open.png");
+	over-skin: Embed("../assets/tab-open-hover.png");
+	down-skin: Embed("../assets/tab-open.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewPassedIcon {
+	skin: Embed("../assets/icon-review-passed.png");
+	up-skin: Embed("../assets/icon-review-passed.png");
+	over-skin: Embed("../assets/icon-review-passed.png");
+	down-skin: Embed("../assets/icon-review-passed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewFailedIcon {
+	skin: Embed("../assets/icon-review-failed.png");
+	up-skin: Embed("../assets/icon-review-failed.png");
+	over-skin: Embed("../assets/icon-review-failed.png");
+	down-skin: Embed("../assets/icon-review-failed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewNeededIcon {
+	skin: Embed("../assets/icon-review-needed.png");
+	up-skin: Embed("../assets/icon-review-needed.png");
+	over-skin: Embed("../assets/icon-review-needed.png");
+	down-skin: Embed("../assets/icon-review-needed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewCommentIcon {
+	skin: Embed("../assets/icon-review-comment.png");
+	up-skin: Embed("../assets/icon-review-comment.png");
+	over-skin: Embed("../assets/icon-review-comment.png");
+	down-skin: Embed("../assets/icon-review-comment.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.newReviewCommentIcon {
+	skin: Embed("../assets/icon-review-comment-new.png");
+	up-skin: Embed("../assets/icon-review-comment-new.png");
+	over-skin: Embed("../assets/icon-review-comment-new.png");
+	down-skin: Embed("../assets/icon-review-comment-new.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewModalWindow {
+    border-skin: Embed("../assets/review-modal-window.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.creatorConversationHeader {
+	font-family: Arial;
+	font-size: 10;
+	font-style: italic;
+	color: #000000;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.creatorConversationMsg {
+	font-family: Arial;
+	font-size: 10;
+	font-style: normal;
+	color: #000000;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewerConversationHeader {
+	font-family: Arial;
+	font-size: 10;
+	font-style: italic;
+	color: #003399;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewerConversationMsg {
+	font-family: Arial;
+	font-size: 10;
+	font-style: normal;
+	color: #003399;
 }

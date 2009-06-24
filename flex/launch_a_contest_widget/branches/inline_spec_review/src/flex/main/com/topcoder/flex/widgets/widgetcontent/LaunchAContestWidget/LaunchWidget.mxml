@@ -102,7 +102,7 @@
                 REVIEW_HEIGHT=(val ? 1165 : 1850); // BUGR-1067
         		OVERVIEW_HEIGHT=(val ? 770 : 630);
         		if(!val) {
-        			if(contestSelect.contestType.selection.value == "CONCEPTUALIZATION" || contestSelect.contestType.selection.value == "SPECIFICATION") {
+                    if (competitionType == "CONCEPTUALIZATION" || competitionType == "SPECIFICATION") {
         				DETAILS_HEIGHT = 1850;
         				//details.widgetHeight = 670;
         			}
@@ -268,7 +268,10 @@
                         review.cstTypeStep1=this.competitionType;
                         
                         startLaunchProcess();
-                        next();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        if (this.currentState=="ContestSelectionState") {
+                            next();
+                        }
                     } else if (softwareCompetition) {
                         trace("IN ON CREATE COMPLETE OF SOFTWARE COMPETITION :: EDIT");
                         //this.competitionType="DESIGN";
@@ -277,7 +280,10 @@
                         review.cstTypeStep1=this.competitionType;
                         
                         startLaunchProcess();
-                        next();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        if (this.currentState=="ContestSelectionState") {
+                            next();
+                        }
                     }
                 } 
             }
@@ -325,6 +331,21 @@
 
                 setPreviousStep(step1box); // BUGR-1141
                 setCurStep(step2box); // BUGR-1141
+            }
+            
+            /**
+             * Sets the current state to review screen. 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            public function openReviewPage():void {
+                this.review.setAllValues();
+                this.currentState="ReviewState";
+                save.visible=true;
+                this.height=REVIEW_HEIGHT;
+                back.visible=true;
+
+                setPreviousStep(step6box);
+                setCurStep(step7box);
             }
 
             // BUGR-1445
@@ -526,6 +547,8 @@
 			            
 			           this.currentState = "ReviewState";
                        save.visible = true;
+                       // on skip too - set the values. 
+                       review.setAllValues();
     
                        this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
