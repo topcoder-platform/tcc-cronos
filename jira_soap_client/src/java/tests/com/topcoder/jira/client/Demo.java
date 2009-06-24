@@ -22,14 +22,14 @@ public class Demo extends TestCase {
      */
     public void testMain() throws Exception {
 
-        // String endPoint = "http://ec2-75-101-172-17.compute-1.amazonaws.com:8080/jira/rpc/soap/jirasoapservice-v2";
-        String endPoint = "http://localhost:8080/jira/rpc/soap/jirasoapservice-v2";
+        String endPoint = "http://ec2-174-129-95-75.compute-1.amazonaws.com:8080/jira/rpc/soap/jirasoapservice-v2";
+        // String endPoint = "http://localhost:8080/jira/rpc/soap/jirasoapservice-v2";
         JiraUserService service = new JiraUserServiceImpl();
 
         String adminUserName = "romanoTC";
         String adminPassword = "password";
 
-        String handle = "Psyho";
+        String handle = "veredox";
 
         RemoteUser user = service.getUser(endPoint, adminUserName, adminPassword, handle);
         if (user != null) {
