@@ -199,6 +199,10 @@
                   text="FORUM"/>
         <mx:Label width="100%"
                   textAlign="center"
+                  id="lblReviewStatus"
+                  text="SPEC STATUS"/>          
+        <mx:Label width="100%"
+                  textAlign="center"
                   id="lStatus"
                   text="STATUS"/>
     </mx:HBox>
