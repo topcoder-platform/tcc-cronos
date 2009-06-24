@@ -5,6 +5,7 @@ package com.topcoder.confluence.client;
 
 import junit.framework.TestCase;
 
+import com.atlassian.confluence.rpc.soap.beans.RemoteUser;
 import com.topcoder.confluence.client.impl.ConfluenceUserServiceImpl;
 
 /**
@@ -21,11 +22,28 @@ public class Demo extends TestCase {
      */
     public void testMain() throws Exception {
 
-        String endPoint = "http://localhost:8080/confluence/rpc/soap-axis/confluenceservice-v1";
+        String endPoint = "http://ec2-174-129-155-4.compute-1.amazonaws.com:8080/wiki/rpc/soap-axis/confluenceservice-v1";
+        // String endPoint = "http://localhost:8080/confluence/rpc/soap-axis/confluenceservice-v1";
+
+        String[] defaultGroups = new String[] {"confluence-users", "topcoder-staff"};
+
+        String adminUserName = "admin";
+        String adminPassword = "password";
+
         ConfluenceUserService service = new ConfluenceUserServiceImpl();
 
-        service.createUser(endPoint, "admin", "tegangi", "tll1380", "The Old Big", "oldbig@gmail.com");
+        String handle = "rem";
+        String email = "email@email.com";
 
-        System.out.println("foi");
+        if (!service.hasUser(endPoint, adminUserName, adminPassword, handle)) {
+            service.createUser(endPoint, adminUserName, adminPassword, handle, email, defaultGroups);
+        }
+
+        RemoteUser user = service.getUser(endPoint, adminUserName, adminPassword, handle);
+        if (user != null) {
+            System.out.println("Confluence user [" + user.getName() + " / " + user.getFullname() + "]");
+        } else {
+            System.out.println(handle + ": is null");
+        }
     }
 }
