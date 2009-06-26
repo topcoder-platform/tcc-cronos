@@ -462,6 +462,9 @@
                      	    contests.addItem(c);
                      	}
                      }
+
+		     sortByName(contests);
+
                      p.contests=contests;
                      i=j;
                      if(first && p.access=="Full"){
@@ -472,6 +475,8 @@
                      	    ret.addItem(p);
                      }
                 }
+
+		sortByName(ret);
                 return ret;
             }
             
