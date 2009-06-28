@@ -269,9 +269,9 @@
                         
                         startLaunchProcess();
                         // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
-                        if (this.currentState=="ContestSelectionState") {
-                            next();
-                        }
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
                     } else if (softwareCompetition) {
                         trace("IN ON CREATE COMPLETE OF SOFTWARE COMPETITION :: EDIT");
                         //this.competitionType="DESIGN";
@@ -281,9 +281,9 @@
                         
                         startLaunchProcess();
                         // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
-                        if (this.currentState=="ContestSelectionState") {
-                            next();
-                        }
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
                     }
                 } 
             }
@@ -338,8 +338,8 @@
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
              */ 
             public function openReviewPage():void {
-                this.review.setAllValues();
                 this.currentState="ReviewState";
+                this.review.setAllValues();
                 save.visible=true;
                 this.height=REVIEW_HEIGHT;
                 back.visible=true;
@@ -997,6 +997,7 @@
                 attch.initData();
 
                 sched.initData();
+                review.setAllValues();
                 activate.initData();
                 save.visible=false;
             }

@@ -148,7 +148,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
         * Current user id.
         */
-	[Bindable]
+	    [Bindable]
         private var _userid:Number=Application.application.parameters.userid;
         
         public var initWidgetCallbackFn:Function=null;
@@ -518,7 +518,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getStudioContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).softwareCompetition=null;
                 (container.contents as LaunchWidget).competition=c;
-                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }
         }
@@ -535,7 +535,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getSoftwareContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).competition=null;
                 (container.contents as LaunchWidget).softwareCompetition=c;
-                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }
         }
