@@ -275,7 +275,7 @@
                 
                 // For Cockpit Launch Contest - Update for Spec Creation v1.0 - save some dummy text for now.
                 // later it need to be removed from catalog service.
-                mainWidget.softwareCompetition.assetDTO.detailedDescription="SOME DUMMY TEXT";
+                mainWidget.softwareCompetition.assetDTO.detailedDescription="";
                 
                 // initialize project header.
                 mainWidget.softwareCompetition.projectHeader=new SoftwareProjectHeader();
