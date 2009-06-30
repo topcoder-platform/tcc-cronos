@@ -454,7 +454,8 @@
                            c.persistedAccess="";
                      	}
                      	c.project=p;
-                     	if(first && c.access=="Full"){
+			// if Full on contest, or contest permission is null, then check project
+                     	if(first && (c.access=="Full" || (p.access=="Full" && c.access==""))){
                      	    contests.addItem(c);
                      	    _pcIds[c.id]="c"
                      	}
