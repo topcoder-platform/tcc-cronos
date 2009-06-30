@@ -3220,7 +3220,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 + "and p.place = 5),0) as prize_5, "
                 + "(select contest_type_desc from contest_type_lu as ctlu where ctlu.contest_type_id = c.contest_type_id)  as contest_type_desc, "
 				+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  where (resource_id=c.contest_id or project_id = c.tc_direct_project_id)  "
+                    + " from user_permission_grant as upg  where (resource_id=c.contest_id or resource_id = c.tc_direct_project_id)  "
                     + " and user_id= "+createdUser
                     + " ),0)) as permission "
                 + "from contest c   "
