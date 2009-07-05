@@ -177,7 +177,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 _installerScreen=null;
             }
 
-            var url:String="http://" + Application.application.parameters.hostAddress +":"+ Application.application.parameters.portNumber+"/i/cockpit/subviewer/SubmissionViewer.air";
+            var url:String="http://" + Application.application.parameters.serverAddress +":"+ Application.application.parameters.portNumber+"/i/cockpit/subviewer/SubmissionViewer.air";
             var runtimeVersion:String = "1.1"; ;
             var arguments:Array=["launchFromBrowser"];
             this._airSWF.installApplication(url, runtimeVersion, arguments);

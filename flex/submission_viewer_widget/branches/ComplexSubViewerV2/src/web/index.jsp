@@ -101,7 +101,9 @@ $(document).ready(function(){
 	String hostAddress=getServletConfig().getServletContext().getInitParameter("hostAddress");
 	String studioAddress=getServletConfig().getServletContext().getInitParameter("studioAddress");
 	long t = new java.util.Date().getTime();
-    String portNumber=Integer.toString(request.getServerPort());
+    String serverAddress = request.getLocalAddr();
+    String portNumber = Integer.toString(request.getServerPort());
+   
 %>
 
 <body scroll="auto" onload="init()">
@@ -220,6 +222,7 @@ $(document).ready(function(){
 		so.addVariable("contestServiceFacadeWsdl", "<%=contestwsdl%>");
 		so.addVariable("hostAddress", "<%=hostAddress%>");
 		so.addVariable("studioAddress", "<%=studioAddress%>");
+        so.addVariable("serverAddress", "<%=serverName%>");
         so.addVariable("portNumber", "<%=portNumber%>");
 		so.addParam("wmode","transparent");
 		so.write("flashcontent");
