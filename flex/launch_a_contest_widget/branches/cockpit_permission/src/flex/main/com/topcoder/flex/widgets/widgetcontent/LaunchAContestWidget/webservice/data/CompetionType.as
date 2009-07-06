@@ -21,7 +21,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
         * Competition type value.
         */
-        [Inspectable(category="Generated values", enumeration="STUDIO,CONCEPTUALIZATION,SPECIFICATION,ARCHITECTURE,DESIGN,DEVELOPMENT,RIACOMPONENT,RIABUILD,UIPROTOTYPE,ASSEMBLY,TESTING,SOFTWARE", type="String")]
+        [Inspectable(category="Generated values", enumeration="STUDIO,CONCEPTUALIZATION,SPECIFICATION,ARCHITECTURE,DESIGN,DEVELOPMENT,RIACOMPONENT,RIABUILD,UIPROTOTYPE,ASSEMBLY,TESTSUITES, TESTSCENARIOS ,SOFTWARE", type="String")]
         public var competionType:String;
 
         /**

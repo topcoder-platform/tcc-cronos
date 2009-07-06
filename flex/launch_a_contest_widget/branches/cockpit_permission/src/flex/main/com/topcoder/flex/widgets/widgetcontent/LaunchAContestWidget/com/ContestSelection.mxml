@@ -437,7 +437,7 @@
                                  text="Graphic and web design contests."
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -450,7 +450,7 @@
                                  text="Conceptualization contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -463,7 +463,7 @@
                                  text="Specification contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -476,7 +476,7 @@
                                  text="Architecture contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -489,7 +489,7 @@
                                  text="Component design contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -502,7 +502,7 @@
                                  text="Software Development contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -515,7 +515,7 @@
                                  text="RIA Component contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -528,7 +528,7 @@
                                  text="RIA Build contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -541,7 +541,7 @@
                                  text="UI Prototype contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
@@ -554,17 +554,30 @@
                                  text="Assembly contest"
                                  paddingTop="-10"/>
                     </mx:VBox>
-                    <mx:Spacer height="3"/>
+                    <mx:Spacer height="1"/>
                     <mx:VBox width="100%">
                         <mx:RadioButton fontWeight="bold"
                                         fontSize="10"
                                         groupName="contestType"
-                                        id="test"
-                                        label="Application Testing"
-                                        value="TESTING"
+                                        id="testsuites"
+                                        label="Test Suites"
+                                        value="TESTSUITES"
                                         enabled="true"/>
                         <mx:Text width="100%"
-                                 text="Application Testing contest"
+                                 text="Test Suites"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+		     <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="testscenarios"
+                                        label="Test Scenarios"
+                                        value="TESTSCENARIOS"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Test Scenarios"
                                  paddingTop="-10"/>
                     </mx:VBox>
                 </mx:VBox>
