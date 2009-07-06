@@ -128,6 +128,11 @@ import com.topcoder.util.log.LogManager;
  * All the methods that does CRUD on permission have been commented for Cockpit Project Admin Release Assembly v1.0.
  * </p>
  * 
+ * <p>
+ * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+ *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+ * </p>
+ * 
  *                                                             <p>
  *                                                             It should be
  *                                                             configured before
@@ -2841,6 +2846,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *      - Changed the column name in user_permission_grant from project_id to resource_id
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * </p>
+     * 
      * @param the given project id
      * @return the list of all available contents (or empty if none found)
      * 
@@ -2926,6 +2936,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *      - Changed the column name in user_permission_grant from project_id to resource_id
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * </p>
+     * 
      * @param the given project id
      * @return the list of all available contents (or empty if none found)
      * 
@@ -2961,12 +2976,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id  "
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 "
 					+ " ),0)) as cperm, "
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
 					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
 					+ " ),0)) as pperm "
+					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3017,6 +3033,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *      - Changed the column name in user_permission_grant from project_id to resource_id
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * </p>
+     * 
      * @param the given project id
      * @return the list of all available contents (or empty if none found)
      * 
@@ -3051,7 +3072,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id  and user_id = " + createdUser
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id = " + createdUser
 					+ " ),0)) as cperm, "
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
@@ -3174,6 +3195,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * and setting the same in SimpleContestData.
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * </p>
+     * 
      * @param createdUser
      *            create_user_id for which to get list of <code>SimpleContestData</code>. If this value is -1, then all
      *            users are considered.
@@ -3220,7 +3246,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 + "and p.place = 5),0) as prize_5, "
                 + "(select contest_type_desc from contest_type_lu as ctlu where ctlu.contest_type_id = c.contest_type_id)  as contest_type_desc, "
 				+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  where (resource_id=c.contest_id or resource_id = c.tc_direct_project_id)  "
+                    + " from user_permission_grant as upg  where ((resource_id=c.contest_id and is_studio=1) or resource_id = c.tc_direct_project_id)  "
                     + " and user_id= "+createdUser
                     + " ),0)) as permission "
                 + "from contest c   "
@@ -4763,8 +4789,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets the list of project, contest and their read/write/full permissions.
      * </p>
      * 
+     * <p>
      * Updated for Cockpit Project Admin Release Assembly v1.0
      *      - Renamed project_id to resource_id.
+     * </p>
+     *      
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
+     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * </p>
      * 
      * @param createdUser the specified user for which to get the permission
      * @return the list of project, contest and their read/write/full permissions. 
@@ -4790,13 +4823,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select count( *)  from user_permission_grant as upg  where resource_id=c.tc_direct_project_id  and user_id=  "
                     + createdUser
                     + " and permission_type_id=3 ) as pfull, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id=  "
                     + createdUser
                     + " and permission_type_id=4 ) as cread, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id=  "
                     + createdUser
                     + " and permission_type_id=5 ) as cwrite, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id=  "
                     + createdUser
                     + " and permission_type_id=6 ) as cfull "
                     + " from contest c  "
