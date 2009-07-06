@@ -242,8 +242,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "ON category.project_type_id = type.project_type_id";
 
     /**
-     * Represents the column types for the result set which is returned by
-     * executing the sql statement to query all project categories.
+     * Represents the sql statement to query all project contest data.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.1 & 1.1.3]
+     *      - fetch tc project and s/w project permission.
+     *      - whenever join with s/w project and user_permission_grant, add is_studio=0 constraint.
+     * </p>
      */
 
 		private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST = " select p.project_id as contest_id, "
@@ -259,29 +264,29 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
-			+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
+			+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus, "
+			+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+            + " from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 "
+            + " ),0)) as cperm, "
+
+            + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+            + " from user_permission_grant as upg  where resource_id=tcd.project_id  "
+            + " ),0)) as pperm "
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
 	
-	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_USER = " select p.project_id as contest_id, "
-	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
-	+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
-	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-	+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
-	+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
-	+ "  pcl.name as contest_type, psl.name as status, "
-	+ " 0 as num_reg, "
-	+ " 0 as num_sub, "
-	+ " 0 as num_for , "
-	+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
-	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
-	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
-	+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
-	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
-	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-	+" and p.project_status_id != 3 and tcd.user_id = ";
+   
 	
+    /**
+     * Represents the sql statement to query all project contest data for a tc project id.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.1 & 1.1.3]
+     *      - fetch tc project and s/w project permission.
+     *      - whenever join with s/w project and user_permission_grant, add is_studio=0 constraint.
+     * </p>
+     */
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
 	+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
@@ -295,26 +300,46 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
-	+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus "
+	+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus, "
+	
+	
+    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+    + " from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0"
+    + " ),0)) as cperm, "
+
+    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+    + " from user_permission_grant as upg  where resource_id=tcd.project_id"
+    + " ),0)) as pperm "
+			
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
 
-    private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {
+    /**
+     * Represents the column types for the result set which is returned by executing the sql statement to query all
+     * project categories.
+     */
+    private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
 
-		/**
-	 * Represents the column types for the result set which is returned by
-	 * executing the sql statement to query all project categories.
-	 */
-	private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] {
-			Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+	/**
+     * Represents the column types for the result set which is returned by executing the sql statement to query all
+     * project categories.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
+     *      - Added column type mapping for 2 new columns: tc project permission and contest permission.
+     * </p>
+     */
+    private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+			Helper.STRING_TYPE, Helper.STRING_TYPE,
 			Helper.DATE_TYPE,Helper.DATE_TYPE,
 			Helper.STRING_TYPE, Helper.STRING_TYPE,
 			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-		   Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
-			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
+		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
+			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+			Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -2597,6 +2622,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return specs;
 	}
 	
+	/**
+     * <p>
+     * Gets the full list of contests.
+     * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
+     *     - project and contest permissions are also fetched now.
+     * </p>
+     * 
+     * @return the full list of contests.
+     * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
+     * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
+     */
 	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
 
 		Connection conn = null;
@@ -2612,6 +2651,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
 			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+			 List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
 
 			for(int i=0;i<rows.length;i++)
 			{
@@ -2660,6 +2701,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
+				if (rows[i][16] != null) {
+				    ret[i].setCperm((String) rows[i][16]);
+				}
+				
+				if (rows[i][17] != null) {
+                    ret[i].setPperm((String) rows[i][17]);
+                }
+
+				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
+				{
+					result.add(ret[i]);
+				}
+				
 			}
 			return Arrays.asList(ret);
 		} catch (PersistenceException e) {
@@ -2684,6 +2738,21 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 	}
 
+	/**
+     * <p>
+     * Gets the list of contest for specified tc project id.
+     * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
+     *     - project and contest permissions are also fetched now.
+     * </p>
+     * 
+     * @param pid the specified tc project id for which to get the list of contest.
+     * @return the list of contest for specified tc project id.
+     * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
+     * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
+     */
 	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException {
 
 		Connection conn = null;
@@ -2700,91 +2769,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
 			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-			for(int i=0;i<rows.length;i++)
-			{
-				ret[i]=new SimpleProjectContestData();
-				ret[i].setContestId((Long)rows[i][0]);
-				/* [BUGR-2038]: See comments at the class level. Status is either 'Scheduled'
-				  or 'Draft' or from the DB as done previously.*/
+			List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
 
-				// try to use phase if not null
-				if (rows[i][1] != null)
-				{
-					ret[i].setSname((String)rows[i][1]);
-				}
-				// else for active, use 'newstatus'
-				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
-				{
-					ret[i].setSname((String)rows[i][15]);
-				}
-				// use status
-				else
-				{
-					ret[i].setSname((String)rows[i][6]);
-				}
-				
-				ret[i].setCname((String)rows[i][2]);
-				if (rows[i][3] != null)
-				{
-					ret[i].setStartDate(myFmt.parse(rows[i][3].toString()));
-				}
-				if (rows[i][4] != null)
-				{
-					ret[i].setEndDate(myFmt.parse(rows[i][4].toString()));
-				}
-				
-				ret[i].setType((String)rows[i][5]);
-				ret[i].setNum_reg(new Integer(((Long)rows[i][7]).intValue()));
-				ret[i].setNum_sub(new Integer(((Long)rows[i][8]).intValue()));
-				ret[i].setNum_for(new Integer(((Long)rows[i][9]).intValue()));
-				ret[i].setProjectId((Long)rows[i][10]);
-				ret[i].setPname((String)rows[i][11]);
-				ret[i].setDescription((String)rows[i][12]);
-				ret[i].setCreateUser((String)rows[i][13]);
-				if (rows[i][14] != null)
-				{
-					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
-				}
-				
-			}
-			return Arrays.asList(ret);
-		} catch (PersistenceException e) {
-			getLogger().log(
-					Level.ERROR,
-					new LogMessage(null, null,
-							"Fails to retrieving all tc direct projects ", e));
-			if (conn != null) {
-				closeConnectionOnError(conn);
-			}
-			throw e;
-		} catch (ParseException e) {
-			getLogger().log(
-					Level.ERROR,
-					new LogMessage(null, null,
-							"Fails to retrieving all tc direct projects ", e));
-			if (conn != null) {
-				closeConnectionOnError(conn);
-			}
-			throw new PersistenceException("Fails to retrieve all tc direct projects", e);
-		}
-
-	}
-	
-	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
-
-		Connection conn = null;
-		try {
-			// create the connection
-			conn = openConnection();
-
-			// get the project objects
-			// find projects in the table.
-			Object[][] rows = Helper.doQuery(conn,
-					QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_USER+createdUser, new Object[] {},
-					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
-
-			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
-			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
 			for(int i=0;i<rows.length;i++)
 			{
@@ -2830,6 +2816,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				if (rows[i][14] != null)
 				{
 					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
+				}
+				
+				if (rows[i][16] != null) {
+				    ret[i].setCperm((String) rows[i][16]);
+				}
+				
+				if (rows[i][17] != null) {
+                    ret[i].setPperm((String) rows[i][17]);
+                }
+
+				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
+				{
+					result.add(ret[i]);
 				}
 				
 			}
@@ -2857,8 +2856,161 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	}
 	
 	/**
+	 * <p>
+	 * Gets the list of contest for specified user.
+	 * </p>
+	 * 
+	 * <p>
+	 * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
+	 *     - project and contest permissions are also fetched now.
+	 * </p>
+	 * 
+	 * @param createdUser the specified user for which to get the list of contest.
+	 * @return the list of contest for specified user.
+	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
+	 * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
+	 */
+	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
+
+		Connection conn = null;
+		try {
+			// create the connection
+			conn = openConnection();
+
+
+			String qstr = 
+			" select p.project_id as contest_id, "
+			+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
+			+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
+			+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
+			+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+			+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
+			+ "  pcl.name as contest_type, psl.name as status, "
+			+ " 0 as num_reg, "
+			+ " 0 as num_sub, "
+			+ " 0 as num_for , "
+			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
+			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
+			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
+			+ "   from contest_sale c where p.project_id = c.contest_id and upper(psl.name)='ACTIVE' ) as newstatus, "
+
+
+			+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+			+ " from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 and user_id = " + createdUser
+			+ " ),0)) as cperm, "
+
+			+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+			+ " from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = " + createdUser
+			+ " ),0)) as pperm "
+					
+			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+			+" and p.project_status_id != 3";
+
+			// get the project objects
+			// find projects in the table.
+			Object[][] rows = Helper.doQuery(conn,
+					qstr, new Object[] {},
+					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+
+			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
+			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+			 List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+
+			for(int i=0;i<rows.length;i++)
+			{
+				ret[i]=new SimpleProjectContestData();
+				ret[i].setContestId((Long)rows[i][0]);
+				/* [BUGR-2038]: See comments at the class level. Status is either 'Scheduled'
+				  or 'Draft' or from the DB as done previously.*/
+
+				// try to use phase if not null
+				if (rows[i][1] != null)
+				{
+					ret[i].setSname((String)rows[i][1]);
+				}
+				// else for active, use 'newstatus'
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+					ret[i].setSname((String)rows[i][15]);
+				}
+				// use status
+				else
+				{
+					ret[i].setSname((String)rows[i][6]);
+				}
+				
+				ret[i].setCname((String)rows[i][2]);
+				if (rows[i][3] != null)
+				{
+					ret[i].setStartDate(myFmt.parse(rows[i][3].toString()));
+				}
+				if (rows[i][4] != null)
+				{
+					ret[i].setEndDate(myFmt.parse(rows[i][4].toString()));
+				}
+				
+				ret[i].setType((String)rows[i][5]);
+				ret[i].setNum_reg(new Integer(((Long)rows[i][7]).intValue()));
+				ret[i].setNum_sub(new Integer(((Long)rows[i][8]).intValue()));
+				ret[i].setNum_for(new Integer(((Long)rows[i][9]).intValue()));
+				ret[i].setProjectId((Long)rows[i][10]);
+				ret[i].setPname((String)rows[i][11]);
+				ret[i].setDescription((String)rows[i][12]);
+				ret[i].setCreateUser((String)rows[i][13]);
+				if (rows[i][14] != null)
+				{
+					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
+				}
+				
+				if (rows[i][16] != null) {
+				    ret[i].setCperm((String) rows[i][16]);
+				}
+				
+				if (rows[i][17] != null) {
+                    ret[i].setPperm((String) rows[i][17]);
+                }
+
+				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
+				{
+					result.add(ret[i]);
+				}
+
+				
+				
+			}
+			return result;
+		} catch (PersistenceException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw e;
+		} catch (ParseException e) {
+			getLogger().log(
+					Level.ERROR,
+					new LogMessage(null, null,
+							"Fails to retrieving all tc direct projects ", e));
+			if (conn != null) {
+				closeConnectionOnError(conn);
+			}
+			throw new PersistenceException("Fails to retrieve all tc direct projects", e);
+		}
+
+	}
+	
+	/**
      * <p>
      * Gets the list of project their read/write/full permissions.
+     * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.3]
+     *      - Added check for is_studio=0 whenever user_permission_grant is joined with project table.
      * </p>
      * 
      * @param createdUser
@@ -2891,13 +3043,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     + " (select count( *)  from user_permission_grant as upg  where resource_id=c.tc_direct_project_id  and user_id=  "
                     + createdUser
                     + " and permission_type_id=3 ) as pfull, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id and is_studio=0 and user_id=  "
                     + createdUser
                     + " and permission_type_id=4 ) as cread, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id and is_studio=0 and user_id=  "
                     + createdUser
                     + " and permission_type_id=5 ) as cwrite, "
-                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id  and user_id=  "
+                    + " (select count( *)  from user_permission_grant as upg  where resource_id=c.project_id and is_studio=0 and user_id=  "
                     + createdUser
                     + " and permission_type_id=6 ) as cfull "
                     + " from project c  "
