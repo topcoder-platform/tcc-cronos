@@ -10,8 +10,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
     
     import flash.utils.Dictionary;
     
+    import mx.collections.ArrayCollection;
     import mx.containers.VBox;
     import mx.core.Application;
+    import mx.rpc.AbstractOperation;
     import mx.rpc.soap.SOAPHeader;
     import mx.rpc.soap.mxml.WebService;
 
@@ -20,10 +22,16 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
      * This is the code behind mxml widget component for the project admin widget.
      * It implements the IWidget interface. It extends from the VBox.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+     *    - reload should refresh the permissions for the current user.
+     * </p>
+     * 
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
-     * @author snow01
+     * @author snow01, TCSASSEMBLER
      * @version 1.0
      * @since Cockpit Share Submission Integration
      */
@@ -78,6 +86,20 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
          * Instance of the data model class for this widget.
          */
         private var _model:Model=Model.instance;
+        
+        /**
+         * All available project ids and contestIds, for fast lookup.
+         * 
+         * @since Cockpit Release Assembly 3
+         */
+        private var _pcIds:Dictionary=null;
+        
+        /**
+         * List of current projects as loaded in this widget.
+         * 
+         * @since Cockpit Release Assembly 3 
+         */ 
+        private var _currentProjList:ArrayCollection=null;
 
         public function ProjectAdminWidgetCodeBehind() {
         }
@@ -93,7 +115,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
          * like a browser's "Back" button but it is specific to each widget.</p>
          */
         public function goBack():void {
-
         }
 
         /**
@@ -304,8 +325,30 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
 
         /**
          * This action will reload this widget.
+         * 
+         * <p>
+         * Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+         *    - permissions are reloaded on refresh button click.
+         * </p>
          */
         public function reload():void {
+            var getCommonProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getCommonProjectPermissionDataForUser");
+            
+            model.keyWords="";
+            model.clearSearch();
+            model.userList=null;
+            this.pcIds=null;
+            this.currentProjList=null;
+            model.currentUser=null;
+            model.refresh=!model.refresh;
+             
+            model.selectedIndex=0;
+                
+            if (getCommonProjectPermissionDataForUser) {
+        	    showLoadingProgress();
+        	    trace("Reloading for userid: " + this.userid);
+                getCommonProjectPermissionDataForUser.send(-1); /*this.userid - refer ProjectAdminWidget initComponent() method, it does same.*/
+            }
         }
 
         /**
@@ -422,6 +465,50 @@ package com.topcoder.flex.widgets.widgetcontent.projectadminwidget {
          */
         public function set model(m:Model):void {
             this._model=m;
+        }
+        
+        /**
+         * Gets the project & contest id lookup map.
+         * 
+         * @return the project & contest id lookup map.
+         * 
+         * @since Cockpit Release Assembly 3.
+         */
+        public function get pcIds():Dictionary {
+            return this._pcIds;
+        }
+        
+        /**
+         * Sets the project & contest id lookup map.
+         * 
+         * @param p the project & contest id lookup map.
+         * 
+         * @since Cockpit Release Assembly 3.
+         */
+        public function set pcIds(p:Dictionary):void {
+            this._pcIds=p;
+        }
+        
+        /**
+         * Gets the current project list as loaded in this widget.
+         * 
+         * @return the current project list as loaded in this widget.
+         * 
+         * @since Cockpit Release Assembly 3
+         */
+        public function get currentProjList():ArrayCollection {
+            return this._currentProjList;
+        }
+        
+        /**
+         * Sets the current project list as loaded in this widget.
+         * 
+         * @param pList the current project list as loaded in this widget.
+         * 
+         * @since Cockpit Release Assembly 3
+         */
+        public function set currentProjList(pList:ArrayCollection):void {
+            this._currentProjList=pList;
         }
     }
 }

@@ -6,8 +6,14 @@
 <!--
 
      This mxml component is the main entry point for the project admin widget.
+     
+     <p>
+     Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+        - added a pop up message to show the result of updating permissions.
+        - moved the pcIds and _currentProjList properties to ProjectAdminWidgetCodeBehind.as
+     </p>
 
-     @author snow01
+     @author snow01, TCSASSEMBLER
      @since Cockpit Share Submission Integration
 -->
 <tc:ProjectAdminWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -241,13 +247,7 @@
              */
             private var _userIds:Dictionary=new Dictionary();
             
-            /**
-             * All available project ids and contestIds.
-             */
-            private var _pcIds:Dictionary=null;
             
-            
-            private var _currentProjList:ArrayCollection=null;
             
            
             private var _modelUserIdx:int=0;
@@ -306,9 +306,15 @@
             	hideLoadingProgress();
             	if(event && event.result && event.result is ArrayCollection)
             	{
-            		if(_pcIds==null){
-            			
-            			_currentProjList=getProjectList(event.result as ArrayCollection);
+            		if(pcIds==null){
+            		    //
+            		    // Updated for Cockpit Release Assembly 3.
+            		    //    nullify the key that is shown in the search bar box.
+            		    //
+            		    if (searchBar && searchBar.searchKey) {
+            		        searchBar.searchKey.text="";
+            		    }
+            			currentProjList=getProjectList(event.result as ArrayCollection);
             		}
             		else
             		{
@@ -358,7 +364,7 @@
                         var user:User=new User();
                         user.id=u.userId;
                         user.name=u.handle;
-                        user.projLen=this._currentProjList.length;
+                        user.projLen=this.currentProjList.length;
                         /*
                         var permissions:ArrayCollection=new ArrayCollection();
                         for(var j:int=i;j<_userIds.length;j++){
@@ -402,10 +408,9 @@
                 result.refresh();
                 
                 var first:Boolean=false;
-                if(_pcIds==null)
-                {
+                if(pcIds==null) {
                 	first=true;	
-                	_pcIds=new  Dictionary();
+                	pcIds=new  Dictionary();
                 }
                 var ret:ArrayCollection=new ArrayCollection();
                 for(var i:int=0;i<result.length;)
@@ -457,9 +462,9 @@
 			// if Full on contest, or contest permission is null, then check project
                      	if(first && (c.access=="Full" || (p.access=="Full" && c.access==""))){
                      	    contests.addItem(c);
-                     	    _pcIds[c.id]="c"
+                     	    pcIds[c.id]="c"
                      	}
-                     	else if(!first && _pcIds[c.id]=="c"){
+                     	else if(!first && pcIds[c.id]=="c"){
                      	    contests.addItem(c);
                      	}
                      }
@@ -469,14 +474,13 @@
                      p.contests=contests;
                      i=j;
                      if(first && p.access=="Full"){
-                     	    ret.addItem(p);
-                     	    _pcIds[p.id]="p";
+                        ret.addItem(p);
+                     	pcIds[p.id]="p";
                      }
-                     else if(!first && _pcIds[p.id]=="p"){
-                     	    ret.addItem(p);
+                     else if(!first && pcIds[p.id]=="p"){
+                        ret.addItem(p);
                      }
                 }
-
 		sortByName(ret);
                 return ret;
             }
@@ -524,6 +528,40 @@
             		userViewer.addPermissions();
             	}
             }*/
+            
+            /**
+             * <p>
+             * Handles the success event for updatePermissions webservice call.
+             * </p> 
+             *
+             * @since Cockpit Release Assembly 3 [RS: 1.1.4]
+             */ 
+            private function handleUpdatePermissions(e:ResultEvent):void {
+                hideLoadingProgress();
+                
+                var permissionsToUpdate:ArrayCollection=new ArrayCollection();
+                for (var i:int=0; i < model.currentUser.projects.length; i++) {
+                    var project:Project=model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access == project.persistedAccess) {
+                        // do nothing.
+                    } else {
+                        project.persistedAccess=project.access;
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        
+                        if (contest.access == contest.persistedAccess) {
+                            // do nothing.
+                        } else {
+                            contest.persistedAccess=contest.access;
+                        }
+                    }
+                }
+                
+                Helper.showAlertMessage("Permissions Saved Successfully");
+            }
 
             
         ]]>
@@ -577,6 +615,7 @@
         
         <mx:operation name="updatePermissions"
                       resultFormat="object"
+                      result="handleUpdatePermissions(event);"
                       fault="hideLoadingProgress(); Helper.showAlertMessage('updatePermissions: ' + event.fault.faultString);">        
 	</mx:operation>
         

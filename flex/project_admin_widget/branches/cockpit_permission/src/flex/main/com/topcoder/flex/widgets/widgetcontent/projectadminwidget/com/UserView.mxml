@@ -198,6 +198,9 @@
              * Updated for Cockpit Project Admin Release Assembly v1.0
              *    - now all changed permissions are saved in one go.
              * 
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+             *    - Now the persistedAccess is set on success event of the webservice call.
+             * 
              * @param e the close event for the control that fired this event.
              */
             public function handleSaveAction(e:CloseEvent):void {
@@ -218,7 +221,6 @@
                     } else {
                         var o1:Object=getPermissionDTO(project.user.id, project.id, -1, project.access, "project", false);
                         permissionsToUpdate.addItem(o1);
-                        project.persistedAccess=project.access;
                     }
                     
                     for (var j:int=0; j < project.contests.length; j++) {
@@ -229,7 +231,6 @@
                         } else {
                             var o2:Object=getPermissionDTO(contest.project.user.id, contest.id, -1, contest.access, "contest", contest.studio);
                             permissionsToUpdate.addItem(o2);
-                            contest.persistedAccess=contest.access;
                         }
                     }
                 }
