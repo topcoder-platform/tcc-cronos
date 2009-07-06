@@ -16,8 +16,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
 
     /**
      * A constant and utility class that contains various constants and utility required for software competition based operations.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly 3
+     *    - Added get / set for billing project property.
+     * </p>
      *
-     * @author TCSDEVELOPER
+     * @author TCSDEVELOPER, TCSASSEMBLER
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
@@ -302,6 +307,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         public static var PROJECT_INFO_TYPE_ADMIN_FEE_KEY:String="Admin Fee";
         
         public static var PROJECT_INFO_TYPE_REVIEW_COST_KEY:String="Review Cost";
+        
+        /**
+         * Represents the billing project for the project.
+         * 
+         * @since Cockpit Release Assembly 3
+         */ 
+        public static var PROJECT_INFO_TYPE_BILLING_PROJECT_KEY:String="Billing Project";
 
         // CONSTANTS ENDS HERE
 
@@ -579,6 +591,48 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             }
             
             return 0;
+        }
+        
+        /**
+         * Adds the billing project property to project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @param project the billing project property.
+         * 
+         * @since Cockpit Release Assembly 3.
+         */
+        public function addBillingProjectProp(softwareCompetition:SoftwareCompetition, project:String):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_BILLING_PROJECT_KEY) {
+                    e.value=project;
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
+
+            entry.key=PROJECT_INFO_TYPE_BILLING_PROJECT_KEY;
+            entry.value=project;
+
+            softwareCompetition.projectHeader.properties.push(entry);
+        }
+        
+        /**
+         * Gets the billing project property from project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return the billing project proeprty.
+         * 
+         * @since Cockpit Release Assembly 3.
+         */
+        public function getBillingProjectProp(softwareCompetition:SoftwareCompetition):String {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_BILLING_PROJECT_KEY) {
+                    return e.value;
+                }
+            }
+            
+            return "";
         }
 
     }

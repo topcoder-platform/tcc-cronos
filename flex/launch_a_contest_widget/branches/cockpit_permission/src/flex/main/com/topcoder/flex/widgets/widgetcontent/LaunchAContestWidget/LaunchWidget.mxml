@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Updated for Cockpit Release Assembly 3
+        - save as draft button is not shown in ReadOnlyMode.
+        - next button is not shown on review screen in ReadOnlyMode.
+        - changes for above on previous, next, skipTo methods.
+-->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                            xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
                            styleName="NewWidgetPanel"
@@ -320,7 +327,7 @@
             public function openOverViewPage():void {
                 this.overView.initData();
                 this.currentState="OverViewState";
-                save.visible=true;
+                save.visible=!isReadOnlyMode;
                 this.height=OVERVIEW_HEIGHT; // BUGR-1134
                 back.visible=true;
 
@@ -350,6 +357,10 @@
             // Updated to remove step number calculation.
             // and moved assignment to review page in individual widgets.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            // Updated for Cockpit Release Assembly 3
+            // - save as draft button is not shown in ReadOnlyMode.
+            // - next button is not shown on review screen in ReadOnlyMode.
             //
             private function skipTo(step:int):void {
 
@@ -446,6 +457,14 @@
                         this.currentState="ContestSelectionState";
                         this.height=CONTEST_SELECTION_HEIGHT;
                         back.visible=false;
+                        
+                        save.includeInLayout=save.visible=false;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                    
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
 
                         setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
                         setCurStep(newStepBox);
@@ -461,7 +480,14 @@
                         
                         if (ret == 0) {
                             this.currentState="OverViewState";
-                            save.visible=false;
+                            save.includeInLayout=save.visible=false;
+                            if (save.visible) {
+                                save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            }
+                    
+                            goNext.includeInLayout=goNext.visible=true;
+                            goNext.label = "NEXT";
+                    
                             this.height=OVERVIEW_HEIGHT;
                             back.visible=true;
 
@@ -475,7 +501,14 @@
 			        case 3:
 			            
 			            this.currentState = "DetailsState";
-                       save.visible = true;
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                    
                        details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
 						details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
 						details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
@@ -494,7 +527,14 @@
 			           
 			           specf.requestFileTypes.send();
                        this.currentState = "SpecificationsState";
-                       save.visible = true;
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                        
                        this.height = SPECIFICATIONS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -503,7 +543,14 @@
 			        case 5:
 			            
 			            this.currentState = "AttachFilesState";
-                       save.visible = true;
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                        
                        
                        this.height = ATTACH_FILES_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -517,7 +564,13 @@
                        sched.requestSchedule.send();
     
                        this.currentState = "ScheduleState";
-                       save.visible = true;
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
                        
                        this.height = SCHEDULE_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -526,7 +579,17 @@
 			        case 7:
 			            
 			           this.currentState = "ReviewState";
-                       save.visible = true;
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                            goNext.includeInLayout=goNext.visible=false;
+                        } else {
+                            goNext.includeInLayout=goNext.visible=true;
+                            goNext.label = "NEXT";
+                        }
     
                        this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -556,6 +619,10 @@
             // and moved assignment to review page in individual widgets.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
+            // Updated for Cockpit Release Assembly 3
+            // - save as draft button is not shown in ReadOnlyMode.
+            // - next button is not shown on review screen in ReadOnlyMode.
+            //
             public function next(event:EffectEvent=null):void {
                 if (this.currentState == "ContestSelectionState") {
                     if (contestSelect.contestType.selectedValue == null) {
@@ -568,7 +635,11 @@
                        return;
                      }*/
                     this.currentState="OverViewState";
-                    save.visible=false;
+                    save.includeInLayout=save.visible=false;
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=OVERVIEW_HEIGHT; // BUGR-1134
                     back.visible=true;
                     setPreviousStep(step1box); // BUGR-1141
@@ -583,8 +654,16 @@
 					}
 
                     this.currentState="DetailsState";
-                   save.visible = true; // BUGR-1445
-				   details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+				    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
 					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
 					details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
 					details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
@@ -634,7 +713,15 @@
 
                     specf.requestFileTypes.send();
                     this.currentState="SpecificationsState";
-                    save.visible=true; // BUGR-1445
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setPreviousStep(step3box);
                     setCurStep(step4box);
@@ -645,7 +732,14 @@
                     }
 
                     this.currentState="AttachFilesState";
-                    save.visible=true; // BUGR-1445
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
                     
                     this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                     setPreviousStep(step4box);
@@ -656,7 +750,15 @@
                     sched.requestSchedule.send();
 
                     this.currentState="ScheduleState";
-                    save.visible=true; // BUGR-1445
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=SCHEDULE_HEIGHT; // BUGR-1134
                     setPreviousStep(step5box);
                     setCurStep(step6box);
@@ -664,13 +766,20 @@
                     if (sched.validateFields() == false) {
                         return;
                     }
-                    save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
-                    if (getExtraContestFee() <= 0) { // BUGR-1363
-                        goNext.visible=false;
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                        goNext.includeInLayout=goNext.visible=false;
+                    } else {
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
                     }
                     
                     this.currentState="ReviewState";
-                    save.visible=true;
                     //BUGR-1792
                     /*if (!this.studioContestType)
                         goNext.visible = false;
@@ -722,17 +831,17 @@
                 switch (index) {
                     case 1:
                         goNext.label = "CONFIRM ORDER";
-                        goNext.visible = true;
+                        goNext.includeInLayout = goNext.visible = true;
                         back.visible = true;
                         break;
                     case 2:
                         goNext.label = "SUBMIT FOR PROCESSING";
-                        goNext.visible = true;
+                        goNext.includeInLayout = goNext.visible = true;
                         back.visible = true;
                         break;
                     case 3:
                         goNext.label = "SUBMIT PURCHASE";
-                        goNext.visible = true;
+                        goNext.includeInLayout = goNext.visible = true;
                         back.visible = true;
                         break;
                     case 4:
@@ -741,7 +850,7 @@
                         break;
                     default:
                         goNext.label = "NEXT"; //TCCC-1218
-                        goNext.visible = true;
+                        goNext.includeInLayout = goNext.visible = true;
                         back.visible = true;
                 }       
             }
@@ -751,13 +860,29 @@
             // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
+            // Updated for Cockpit Release Assembly 3
+            // - save as draft button is not shown in ReadOnlyMode.
+            // - next button is not shown on review screen in ReadOnlyMode.
+            //
             private function previous():void {
                 if (this.currentState == "ActivateState") {
                     var index:int = activate.gotoPrev();
                     setButton(index);
                     if (index <= 0) {
                         this.currentState = "ReviewState";
-                        save.visible = true;
+                        
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                    
+                        if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                            goNext.includeInLayout=goNext.visible=false;
+                        } else {
+                            goNext.includeInLayout=goNext.visible=true;
+                            goNext.label = "NEXT";
+                        }
+                        
                         this.height = REVIEW_HEIGHT; // BUGR-1134
 
                        setCurStep(step7box);
@@ -766,13 +891,28 @@
                 } else if (this.currentState == "ReviewState") {
                     this.currentState="ScheduleState";
                     this.height=SCHEDULE_HEIGHT; // BUGR-1134
-                    //BUGR-1792
-                    if (!this.studioContestType && !goNext.visible)
-                        goNext.visible = true;
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     setCurStep(step6box);
                     setNextStep(step7box); // BUGR-1141
                 } else if (this.currentState == "ScheduleState") {
                     this.currentState="AttachFilesState";
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                     setCurStep(step5box);
                     setNextStep(step6box); // BUGR-1141
@@ -785,6 +925,14 @@
 					    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
 					    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                         this.currentState="DetailsState";
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                    
                         this.height=DETAILS_HEIGHT; // BUGR-1134
                         setCurStep(step4box);
                         setNextStep(step5box);
@@ -792,7 +940,15 @@
                         setNextStep(step4box);
                         return;
                     }
-					goNext.visible = true; // BUGR-1363
+                    
+					save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.currentState="SpecificationsState";
                     this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setCurStep(step4box);
@@ -801,17 +957,42 @@
 					details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
 					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                     this.currentState="DetailsState";
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=DETAILS_HEIGHT; // BUGR-1134
                     setCurStep(step3box);
                     setNextStep(step4box); // BUGR-1141
                 } else if (this.currentState == "DetailsState") {
-                    save.visible=true; // BUGR-1445
                     this.currentState="OverViewState";
+                    
+                    save.includeInLayout=save.visible=false;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=OVERVIEW_HEIGHT; // BUGR-1134
                     setCurStep(step2box);
                     setNextStep(step3box); // BUGR-1141
                 } else if (this.currentState == "OverViewState") {
                     this.currentState="ContestSelectionState";
+                    
+                    save.includeInLayout=save.visible=false;
+                    if (save.visible) {
+                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
                     this.height=CONTEST_SELECTION_HEIGHT; // BUGR-1134
                     back.visible=false;
 

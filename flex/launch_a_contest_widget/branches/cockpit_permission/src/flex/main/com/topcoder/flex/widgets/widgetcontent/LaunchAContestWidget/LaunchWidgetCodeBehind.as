@@ -156,6 +156,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var isEditMode:Boolean=false;
         
         /**
+         * Indicates if this launch widget is to be operated in read only mode or normal editable mode.
+         * In read only mode following things happen
+         *    - user can only view the contest information.
+         *    - user can not update any thing.
+         *    - next button that goes to payment screen would also not be shown.
+         * 
+         * @since Cockpit Release Assembly 3 [RS: 1.1.2]
+         */  
+        [Bindable]
+        public var isReadOnlyMode:Boolean=false;
+        
+        /**
         * @since BUGR-1737
         */     
         public function get isSoftwareAdmin():Boolean {
@@ -283,6 +295,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             reloadInternal(true,null);
         }
         
+        /**
+         * Reloads the widget data.
+         * 
+         * <p>
+         * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+         *    - updated to consider read only mode indicator from my project widget.
+         *    - in read only mode, we disable mouse/tab actions on the main panel.
+         * </p>
+         * 
+         * @param isEmptyStart true if it is new contest start else if edit contest start then false.
+         * @param map the various key-value parameters that usually gets passed during edit from another widget (My Project Widget)
+         */ 
         private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
             trace("IN RELOAD OF LAUNCH WIDGET:: START");
             if (!container.contents.isMaximized()) {
@@ -304,6 +328,28 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
                     (container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
+                    
+                    var editMode:String=map["mode"];
+                    
+                    trace("Edit mode: " + editMode);
+                    
+                    if (editMode && editMode == "READ") {
+                        (container.contents as LaunchWidget).isReadOnlyMode=true;
+                    } else {
+                        (container.contents as LaunchWidget).isReadOnlyMode=false;
+                    }
+                    
+                    if ((container.contents as LaunchWidget).isReadOnlyMode) {
+                        (container.contents as LaunchWidget).mainPanel.mouseEnabled=false;
+                        (container.contents as LaunchWidget).mainPanel.mouseChildren=false;
+                        (container.contents as LaunchWidget).mainPanel.tabEnabled=false;
+                        (container.contents as LaunchWidget).mainPanel.tabChildren=false;
+                    } else {
+                        (container.contents as LaunchWidget).mainPanel.mouseEnabled=true;
+                        (container.contents as LaunchWidget).mainPanel.mouseChildren=true;
+                        (container.contents as LaunchWidget).mainPanel.tabEnabled=true;
+                        (container.contents as LaunchWidget).mainPanel.tabChildren=true;
+                    }
                     
                     (container.contents as LaunchWidget).contestSelect.initData();
                 }
@@ -531,6 +577,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             }
         }
 
+        /**
+         * Updated for Cockpit Release Assembly 3
+         *    - Added the billing project property.
+         */ 
         public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
         	var studioContestType:Boolean = (this.container.contents as LaunchWidget).studioContestType; // BUGR-1682
         	
@@ -583,6 +633,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     //
                     softwareCompetition.assetDTO.compComments=userid.toString();
                     
+                    //
+                    // Updated for Cockpit Release Assembly 3
+                    //     Add the billing project property.
+                    //
+                    SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, softwareCompetition.assetDTO.compComments);
+                    
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
@@ -608,6 +664,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     // for purchase order, set comments to po number.
                     //
                     softwareCompetition.assetDTO.compComments=purchaseOrderPaymentData.poNumber;
+                    
+                    //
+                    // Updated for Cockpit Release Assembly 3
+                    //     Add the billing project property.
+                    //
+                    SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, softwareCompetition.assetDTO.compComments);
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
@@ -663,23 +725,28 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
         }
 
-	private function prepareSoftwareContest():void {
-		// set dynamic properties before save.
+        /**
+         * Updated for Cockpit Release Assembly 3
+         *    - Add the billing project property.
+         */ 
+	    private function prepareSoftwareContest():void {
+		    // set dynamic properties before save.
             var prizes:Array=new Array();
             for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
                 var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
                 prizes.push(p);
             }
 
-	    // we need a reason for update
-	    this.softwareCompetition.projectHeaderReason = "user update";
+    	    // we need a reason for update
+    	    this.softwareCompetition.projectHeaderReason = "user update";
 
-	    SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
+	        SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
-
-	}
+            
+            SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
+	    }
 
         /**
          * Handler for software contest create.

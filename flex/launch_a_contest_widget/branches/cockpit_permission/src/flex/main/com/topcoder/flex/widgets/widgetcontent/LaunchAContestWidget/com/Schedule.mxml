@@ -38,6 +38,10 @@
             public static const ETtoUTC:int=1000 * 60 * 60 * 5;
             private static const OneHour:Number=1000 * 60 * 60;
 
+            /**
+             * Updated for Cockpit Release Assembly 3
+             *    - In Edit mode the terms & conditions checkbox is pre-selected.
+             */ 
             public function initData():void {
                 termCheckBox.selected=false;
 
@@ -115,6 +119,10 @@
                     dfEnd.selectedDate=endDate;
                     setTimeControl(CmbHourEnd, CmbMinuteEnd, endDate);
                 }
+                
+                if (mainWidget.isEditMode) {
+                    termCheckBox.selected=true;
+                }
             }
             
             public function validateFields():Boolean {
@@ -122,61 +130,66 @@
                 return validateFieldsEx2(true, false);
             }
             
-            // BUGR-1475
+            /**
+             * Updated for Cockpit Release Assembly 3
+             *    - in read only mode dates are not validated.
+             */ 
             public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
-                if (dfStart.selectedDate == null) {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Start date not selected" + (showPageName ? " at Schedule Page" : ""));
-                    }
-                    return false;
-                }
-
-                //
-                // End Date need to be only for studio contest types and not for software.
-                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-                //
-                if (mainWidget.studioContestType) {
-                    if (dfEnd.selectedDate == null) {
+                if (!mainWidget.isReadOnlyMode) {
+                    if (dfStart.selectedDate == null) {
                         if (showMsg) {
-                            Helper.showAlertMessage("End date not selected" + (showPageName ? " at Schedule Page" : ""));
+                            Helper.showAlertMessage("Start date not selected" + (showPageName ? " at Schedule Page" : ""));
                         }
                         return false;
                     }
-                }
-
-                var current:Date=new Date();
-                var tzOffHours:Number=current.timezoneOffset / 60;
-                var startDate:Date=getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart);
-                //change the start time to local time
-                startDate.setTime(startDate.getTime() + (5 - tzOffHours) * OneHour);
-                if (startDate.time <= current.time) {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Start date must be in future" + (showPageName ? " at Schedule Page" : ""));
+    
+                    //
+                    // End Date need to be only for studio contest types and not for software.
+                    // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                    //
+                    if (mainWidget.studioContestType) {
+                        if (dfEnd.selectedDate == null) {
+                            if (showMsg) {
+                                Helper.showAlertMessage("End date not selected" + (showPageName ? " at Schedule Page" : ""));
+                            }
+                            return false;
+                        }
                     }
-                    return false;
-                }
-
-                //
-                // End Date need to be only for studio contest types and not for software.
-                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-                //
-                if (mainWidget.studioContestType) {
-                    var endDate:Date=getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd);
-                    //change the end time to local time
-                    endDate.setTime(endDate.getTime() + (5 - tzOffHours) * OneHour);
-                    if (endDate.time <= startDate.time) {
+    
+                    var current:Date=new Date();
+                    var tzOffHours:Number=current.timezoneOffset / 60;
+                    var startDate:Date=getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart);
+                    //change the start time to local time
+                    startDate.setTime(startDate.getTime() + (5 - tzOffHours) * OneHour);
+                    if (startDate.time <= current.time) {
                         if (showMsg) {
-                            Helper.showAlertMessage("End date must be after start date" + (showPageName ? " at Schedule Page" : ""));
+                            Helper.showAlertMessage("Start date must be in future" + (showPageName ? " at Schedule Page" : ""));
                         }
                         return false;
                     }
-                }
-
-                if (termCheckBox.selected == false) {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please agree to TopCoder Direct Terms" + (showPageName ? " at Schedule Page" : ""));
+    
+                    //
+                    // End Date need to be only for studio contest types and not for software.
+                    // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                    //
+                    if (mainWidget.studioContestType) {
+                        var endDate:Date=getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd);
+                        //change the end time to local time
+                        endDate.setTime(endDate.getTime() + (5 - tzOffHours) * OneHour);
+                        if (endDate.time <= startDate.time) {
+                            if (showMsg) {
+                                Helper.showAlertMessage("End date must be after start date" + (showPageName ? " at Schedule Page" : ""));
+                            }
+                            return false;
+                        }
                     }
-                    return false;
+    
+                    if (termCheckBox.selected == false) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Please agree to TopCoder Direct Terms" + (showPageName ? " at Schedule Page" : ""));
+                        }
+                        return false;
+                    }
                 }
 
                 updateData();
