@@ -2779,9 +2779,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
 			newData.setType(data.getType());
 			newData.setCreateUser(data.getCreateUser());
-			//TODO
-			newData.setPperm("project_full");
-			newData.setCperm("contest_full");
+			newData.setPperm(data.getPperm());
+			newData.setCperm(data.getCperm());
         	ret.add(newData);
         }
 
@@ -2852,9 +2851,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         	newData.setStartDate(getXMLGregorianCalendar(data.getStartDate()));
 			newData.setType(data.getType());
 			newData.setCreateUser(data.getCreateUser());
-			//TODO
-			newData.setPperm("project_full");
-			newData.setCperm("contest_full");
+			newData.setPperm(data.getPperm());
+			newData.setCperm(data.getCperm());
         	ret.add(newData);
         }
 
