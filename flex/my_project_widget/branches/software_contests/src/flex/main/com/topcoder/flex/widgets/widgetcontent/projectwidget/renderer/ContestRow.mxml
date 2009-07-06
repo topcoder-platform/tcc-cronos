@@ -7,10 +7,14 @@
 
      This mxml component is to render contest row.
      
+     Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+        - For read only, when a user selects the contest, it will go to launch a contest just like now, 
+        - but the user can only view the contest information and can not update any thing. 
+     
      Updated for Cockpit Release Assembly 2 [BUGR-1830]
         - Made Model class and its uses non singleton. 
 
-     @author TCSDEVELOPER
+     @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -32,6 +36,7 @@
             import mx.collections.ArrayCollection;
             import flash.utils.Dictionary;
             import com.topcoder.flex.Helper;
+	    
 
             /**
              * Row number of this contest row.
@@ -276,6 +281,11 @@
              * 
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
              * Show edit button for non studio contests also which are of type active or inactive.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
              *
              * Fix for [BUGR-2038]: if type is not studio, show edit button if
              * status is 'draft' or 'scheduled' instead of status 'active'.
@@ -290,12 +300,7 @@
 		                		|| contest.status.toLocaleLowerCase() == "scheduled"
 		                        || contest.status.toLocaleLowerCase() == "inactive"))) {
 
-        		    if(contest.permission=="contest_full" || contest.permission=="contest_write"
-        		              || (contest.permission==null && 
-        			               (parentWidget.model.currentProj.permission=="project_full" 
-        				            || parentWidget.model.currentProj.permission=="project_write"))){
         			    editBtn.visible=true;
-        		    }
                 }
             }
 
@@ -311,17 +316,36 @@
              * 
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
              * Additionally pass contest type so that launch widget can distinguish between software and studio contests.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - launch widget should distinguish between read only and write allowed contests.
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
              */
             private function editContest():void {
 
-    			var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
-    			var props:Dictionary=new Dictionary();
-    			props["contestType"]=contest.type;
-    			props["contestid"]=contest.id;
-    			props["projectid"]=contest.projId;
-    			props["projectName"]=contest.projName;
-    			widget.setAttributes(props);
-    			parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+    	    	var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+    		var props:Dictionary=new Dictionary();
+    		props["contestType"]=contest.type;
+    		props["contestid"]=contest.id;
+    		props["projectid"]=contest.projId;
+    		props["projectName"]=contest.projName;
+    			
+    		var mode:String="READ";
+    			
+    		if(contest.permission=="contest_full" 
+    			    || contest.permission=="contest_write"
+        		    || (contest.permission==null && 
+        			        (parentWidget.model.currentProj.permission=="project_full" 
+        				        || parentWidget.model.currentProj.permission=="project_write"))) {
+                    mode="WRITE";				                
+                }
+                
+                props["mode"]=mode;
+   			
+    		widget.setAttributes(props);
+    		parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
 
             /**
