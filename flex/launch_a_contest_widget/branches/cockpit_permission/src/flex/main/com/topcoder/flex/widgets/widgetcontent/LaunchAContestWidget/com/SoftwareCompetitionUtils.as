@@ -632,7 +632,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
                 }
             }
             
-            return "";
+            return "0";
         }
 
     }

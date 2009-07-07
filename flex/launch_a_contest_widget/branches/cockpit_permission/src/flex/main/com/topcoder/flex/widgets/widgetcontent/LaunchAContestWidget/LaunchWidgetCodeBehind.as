@@ -101,6 +101,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         [Bindable]
         public var clientProjectNames:ArrayCollection = new ArrayCollection();
+
+	/**
+	 * store project name to project id map
+	 */
+	[Bindable]
+        public var clientProjectIds:Dictionary = new Dictionary();
         
         /**
          * Variable that holds 'software competition' related data.
@@ -633,12 +639,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     //
                     softwareCompetition.assetDTO.compComments=userid.toString();
                     
-                    //
-                    // Updated for Cockpit Release Assembly 3
-                    //     Add the billing project property.
-                    //
-                    SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, softwareCompetition.assetDTO.compComments);
-                    
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
@@ -669,7 +669,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     // Updated for Cockpit Release Assembly 3
                     //     Add the billing project property.
                     //
-                    SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, softwareCompetition.assetDTO.compComments);
+
+			var pid:String = clientProjectIds[Model.instance.clientProjectName] as String;
+			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, pid);
+			Helper.showAlertMessage("idddddd is "+pid);
+			
+		    
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);

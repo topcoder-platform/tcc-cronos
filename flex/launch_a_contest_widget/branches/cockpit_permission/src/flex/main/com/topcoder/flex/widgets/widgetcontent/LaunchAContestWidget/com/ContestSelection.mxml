@@ -154,6 +154,7 @@
             	            var project:ClientProject = projects[i] as ClientProject;
             	            var name:String = project.name;
                             var poNumber:String = project.pOBoxNumber;
+			    var pid:String = project.id.toString();
             	            
             	            trace("Adding client project name: " + name);
             	            // add client project name
@@ -161,6 +162,7 @@
     			            item.label= name;
     			            item.data = poNumber;
                 	        mainWidget.clientProjectNames.addItem(item);
+				mainWidget.clientProjectIds[name] = pid;
             	        }
             	    }
             	    

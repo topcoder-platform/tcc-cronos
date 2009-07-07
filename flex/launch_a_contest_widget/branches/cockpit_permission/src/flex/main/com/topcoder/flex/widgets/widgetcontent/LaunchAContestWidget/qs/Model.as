@@ -49,6 +49,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs
 		
 		[Bindable]
 		public var purchaseOrder:String;
+
+		[Bindable]
+		public var clientProjectName:String;
 		
 		// BUGR-1398
 		[Bindable]

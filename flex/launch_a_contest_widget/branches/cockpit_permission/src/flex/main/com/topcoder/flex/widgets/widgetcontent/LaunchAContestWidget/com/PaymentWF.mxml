@@ -36,6 +36,7 @@
 					} 
 					//if (doValidate(order)) {
 						model.purchaseOrder = order.selectedItem.data as String;
+						model.clientProjectName = order.selectedItem.label as String;
 						return 3;
 					//} else {
 					//	showErrorMsg();
