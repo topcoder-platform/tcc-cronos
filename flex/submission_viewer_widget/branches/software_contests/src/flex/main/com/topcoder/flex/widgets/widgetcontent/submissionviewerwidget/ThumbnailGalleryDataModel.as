@@ -575,27 +575,42 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 item.price=item.savedPrice;
             } else {
                 if (prizes) {
-                    // give more priority to marked for purchase.
-                    // as there can be cases where item is ranked
-                    // but doesn't have the corresponding prize.
-                    if (item.markedForPurchase) {
-                        //trace("Item is marked for purchase: " + item.id);
-                        // if markedForPurchase is there,
-                        // then price must be equal to 2nd place prize.
-                        if (prizes.length > 1 && prizes[1] > 0) {
-                            trace("Prize: " + prizes[1]);
-                            item.price=prizes[1];
-                        }
+			if (item.rank && item.rank > 0) {
+			    // retrieve the price from contest info's prizeList.
+			    if (prizes.length < item.rank) {
+				 if (item.markedForPurchase) {
+				     // if prizes are not there, then use the 2nd place prize
+			 
+				     if (prizes.length > 1 && prizes[1] > 0) {
+					 item.price=prizes[1];
+				     }
+				} else {
+			 
+				     // do nothing here.
+				}
+			    } else if (prizes[item.rank - 1] > 0) {
+				 // here I override the earlier set markedForPurchase field.
+				 // since prize list is there for the current submission
+				 // i do not need markedForPurchase field here.
+				 item.markedForPurchase=false;
+			 
+				 item.price=prizes[item.rank - 1];
+			    } else  if (item.markedForPurchase) {
+					     // if prizes are not there, then use the 2nd place prize
+				 
+					     if (prizes.length > 1 && prizes[1] > 0) {
+						 item.price=prizes[1];
+					     }
+					}
+			 } else if (item.markedForPurchase) {
+			    // if submission is not ranked and markedForPurchase is there,
+			 
+			    // then price must be equal to 2nd place prize.
+			    if (prizes.length > 1 && prizes[1] > 0) {
+				item.price=prizes[1];
+			    }
+			 }
 
-                    } else if (item.rank && item.rank > 0) {
-                        // retrieve the price from contest info's prizeList.
-                        if (prizes.length < item.rank) {
-                            // do nothing.
-                        } else if (prizes[item.rank - 1] > 0) {
-                            //trace("Item price picked from: " + (item.rank - 1) + " = " + prizes[item.rank - 1]);
-                            item.price=prizes[item.rank - 1];
-                        } 
-                    } 
                 } 
             }
 

@@ -1355,25 +1355,41 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         sub.price=sub.savedPrice;
                     } else {
                         if (prizes) {
-                            if (sub.markedForPurchase) {
-                                // if markedForPurchase is there,
-                                // then price must be equal to 2nd place prize.
-                                if (prizes.length > 1 && prizes[1] > 0) {
-                                    sub.price=prizes[1];
-                                }
-
-                            } else if (sub.rank && sub.rank > 0) {
-                                // retrieve the price from contest info's prizeList.
-                                if (prizes.length < sub.rank) {
-                                    // do nothing here.
-                                } else if (prizes[sub.rank - 1] > 0) {
-                                    sub.price=prizes[sub.rank - 1];
-                                }
-                            } else {
-                                sub.price=0;
-                            }
-                        } else {
-                            sub.price=0;
+                            if (sub.rank && sub.rank > 0) {
+				    // retrieve the price from contest info's prizeList.
+				    if (prizes.length < sub.rank) {
+					 if (sub.markedForPurchase) {
+					     // if prizes are not there, then use the 2nd place prize
+				 
+					     if (prizes.length > 1 && prizes[1] > 0) {
+						 sub.price=prizes[1];
+					     }
+					} else {
+				 
+					     // do nothing here.
+					}
+				    } else if (prizes[sub.rank - 1] > 0) {
+					 // here I override the earlier set markedForPurchase field.
+					 // since prize list is there for the current submission
+					 // i do not need markedForPurchase field here.
+					 sub.markedForPurchase=false;
+				 
+					 sub.price=prizes[sub.rank - 1];
+				     } else  if (sub.markedForPurchase) {
+					     // if prizes are not there, then use the 2nd place prize
+				 
+					     if (prizes.length > 1 && prizes[1] > 0) {
+						 sub.price=prizes[1];
+					     }
+					}
+				 } else if (sub.markedForPurchase) {
+				    // if submission is not ranked and markedForPurchase is there,
+				 
+				    // then price must be equal to 2nd place prize.
+				    if (prizes.length > 1 && prizes[1] > 0) {
+					sub.price=prizes[1];
+				    }
+				 }
                         }
                     }
 
