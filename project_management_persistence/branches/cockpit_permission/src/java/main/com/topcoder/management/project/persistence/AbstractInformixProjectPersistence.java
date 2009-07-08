@@ -1452,10 +1452,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // insert the project spec into database
         Object[] queryArgs = new Object[] {newId,
             projectId, 
-            projectSpec.getDetailedRequirements(),
-            projectSpec.getSubmissionDeliverables(),
-            projectSpec.getEnvironmentSetupInstructions(),
-            projectSpec.getFinalSubmissionGuidelines(), 
+			// TODO replace &lt; to <, should not need manually do this
+            projectSpec.getDetailedRequirements().replace("&lt;", "<"),
+            projectSpec.getSubmissionDeliverables().replace("&lt;", "<"),
+            projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<"),
+            projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<"), 
             operator,
             operator};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SPEC_SQL, queryArgs);
@@ -1558,10 +1559,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Object[] queryArgs = new Object[] {newId,
             projectId, 
             projectId,
-            projectSpec.getDetailedRequirements(),
-            projectSpec.getSubmissionDeliverables(),
-            projectSpec.getEnvironmentSetupInstructions(),
-            projectSpec.getFinalSubmissionGuidelines(), 
+			// TODO replace &lt; to <, should not need manually do this
+            projectSpec.getDetailedRequirements().replace("&lt;", "<"),
+            projectSpec.getSubmissionDeliverables().replace("&lt;", "<"),
+            projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<"),
+            projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<"), 
             operator,
             operator};
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SPEC_SQL, queryArgs);
@@ -2964,11 +2966,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
-				if (rows[i][16] != null) {
-				    ret[i].setCperm((String) rows[i][16]);
-				}
-				
-				if (rows[i][17] != null) {
+				if (rows[1][16] != null) {
+                    ret[i].setCperm((String) rows[i][16]);
+                }
+                
+                if (rows[1][17] != null) {
                     ret[i].setPperm((String) rows[i][17]);
                 }
 
