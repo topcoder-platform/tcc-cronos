@@ -672,9 +672,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 			var pid:String = clientProjectIds[Model.instance.clientProjectName] as String;
 			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, pid);
-			Helper.showAlertMessage("idddddd is "+pid);
-			
-		    
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
