@@ -2966,11 +2966,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setForumId(new Integer(((Long)rows[i][14]).intValue()));
 				}
 				
-				if (rows[1][16] != null) {
-                    ret[i].setCperm((String) rows[i][16]);
-                }
-                
-                if (rows[1][17] != null) {
+				if (rows[i][16] != null) {
+				    ret[i].setCperm((String) rows[i][16]);
+				}
+				
+				if (rows[i][17] != null) {
                     ret[i].setPperm((String) rows[i][17]);
                 }
 
