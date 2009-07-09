@@ -2640,6 +2640,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
 	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
 
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getSimpleProjectContestData method."));
+
 		Connection conn = null;
 		try {
 			// create the connection
@@ -2650,6 +2652,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Object[][] rows = Helper.doQuery(conn,
 					QUERY_ALL_SIMPLE_PROJECT_CONTEST, new Object[] {},
 					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Found "+rows.length + " records"));
 
 			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
 			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -2715,8 +2718,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				{
 					result.add(ret[i]);
 				}
-				
+
 			}
+			closeConnection(conn);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getSimpleProjectContestData method."));
+
 			return Arrays.asList(ret);
 		} catch (PersistenceException e) {
 			getLogger().log(
@@ -2757,6 +2763,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
 	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException {
 
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getSimpleProjectContestData(pid) method."));
+
 		Connection conn = null;
 		try {
 			// create the connection
@@ -2767,6 +2775,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Object[][] rows = Helper.doQuery(conn,
 					QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID+pid, new Object[] {},
 					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Found "+rows.length + " records"));
 
 			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
 			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -2834,7 +2843,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 			}
+
+			closeConnection(conn);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getSimpleProjectContestData(pid) method."));
 			return Arrays.asList(ret);
+
 		} catch (PersistenceException e) {
 			getLogger().log(
 					Level.ERROR,
@@ -2873,6 +2886,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
 	 */
 	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getSimpleProjectContestDataByUser method."));
 
 		Connection conn = null;
 		try {
@@ -2914,6 +2929,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Object[][] rows = Helper.doQuery(conn,
 					qstr, new Object[] {},
 					this.QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Found "+rows.length + " records"));
 
 			SimpleProjectContestData[] ret = new SimpleProjectContestData[rows.length];
 			 SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -2978,10 +2994,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				{
 					result.add(ret[i]);
 				}
-
-				
 				
 			}
+
+			closeConnection(conn);
+	        getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getSimpleProjectContestDataByUser method."));
+
 			return result;
 		} catch (PersistenceException e) {
 			getLogger().log(
