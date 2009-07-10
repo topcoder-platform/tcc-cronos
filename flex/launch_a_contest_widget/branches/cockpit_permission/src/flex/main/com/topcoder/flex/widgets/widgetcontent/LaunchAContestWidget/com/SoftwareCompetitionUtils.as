@@ -16,13 +16,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
 
     /**
      * A constant and utility class that contains various constants and utility required for software competition based operations.
-     * 
-     * <p>
-     * Updated for Cockpit Release Assembly 3
-     *    - Added get / set for billing project property.
-     * </p>
      *
-     * @author TCSDEVELOPER, TCSASSEMBLER
+     * @author TCSDEVELOPER
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
@@ -633,6 +628,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             }
             
             return "0";
+        }
+
+		public function addTCDirectProjectNameProp(softwareCompetition:SoftwareCompetition, tcDirectProjectName:String):void {
+            var entry:MapEntry=new MapEntry();
+            entry.key='TC Direct Project Name';
+            entry.value=tcDirectProjectName;
+
+            softwareCompetition.projectHeader.properties.push(entry);
         }
 
     }

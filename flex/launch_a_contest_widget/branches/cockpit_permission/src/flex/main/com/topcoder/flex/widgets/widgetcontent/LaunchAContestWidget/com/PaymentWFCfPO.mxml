@@ -13,7 +13,7 @@
 			private var model:Model = Model.instance;
 			public function showApproval(referenceNumber:String):void {
 				approval.visible = true;
-				btPanel.visible = true;
+				//btPanel.visible = true;
 				paymentReferenceNumber.text=referenceNumber;
 			}			
 		]]>
@@ -38,13 +38,13 @@
 								<mx:Label text="Invoice Terms:" styleName="contentBlack" />
 							</mx:VBox>
 							<mx:VBox width="100%">
-								<mx:Label text="{model.purchaseOrder}" styleName="content" />
-								<mx:Label text="Net 30" styleName="content" />
+								<mx:Label width="100%" text="{model.purchaseOrder.poNumber}" styleName="content" />
+								<mx:Label width="100%" text="Net 30" styleName="content" />
 							</mx:VBox>
 						</mx:HBox>
 						<mx:VBox width="100%" id="approval" visible="false">
 							<mx:Label text="Approval Information" width="100%" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-							<mx:HBox>
+							<mx:HBox width="100%">
 								<mx:Label text="Reference Number:" width="100%" styleName="contentBlack" />
 								<mx:Label id="paymentReferenceNumber" width="100%" styleName="content" />
 							</mx:HBox>
@@ -76,10 +76,5 @@
 			</mx:GridRow>
 		</mx:Grid>
 		<!--<mx:Image source="../assets/verisign.png" />-->
-		
-	</mx:HBox>
-	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="CREATE NEW CONTEST" click="this.mainWidget.resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
-		<mx:Button label="VIEW MY CONTESTS" click="this.mainWidget.closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	</mx:HBox>
 </mx:VBox>

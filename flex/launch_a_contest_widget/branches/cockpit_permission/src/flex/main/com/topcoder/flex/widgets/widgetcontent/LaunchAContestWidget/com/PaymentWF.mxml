@@ -30,13 +30,12 @@
 				var inputs:Array = [cardname, csc, address, city, state, code, country, phone, email]; // BUGR-1398
 				var model:Model = Model.instance;
 				//Helper.showAlertMessage("MAIN-Widget: " + mainWidget);
-				if (order.selectedItem && order.selectedItem.data != null && order.selectedItem.data != "") {
+				if (order.selectedItem && order.selectedItem.data != null) {
 					 for each (var target:TextInput in inputs) {
 						removeValidate(target);
 					} 
 					//if (doValidate(order)) {
-						model.purchaseOrder = order.selectedItem.data as String;
-						model.clientProjectName = order.selectedItem.label as String;
+						model.purchaseOrder = order.selectedItem.data;
 						return 3;
 					//} else {
 					//	showErrorMsg();
@@ -172,11 +171,11 @@
 			</mx:VBox>
 			<mx:VBox width="100%">
 				<mx:HBox verticalScrollPolicy="off" horizontalScrollPolicy="off">	 <!-- BUGR-1398 -->	
-					<mx:TextInput id="cardNum" width="125" enabled="{order.selectedItem.data == ''}"/>
-					<mx:TextInput id="csc" width="45" enabled="{order.selectedItem.data == ''}"/>
-					<mx:LinkButton label="What's this?" click="gotoCSC();" enabled="{order.selectedItem.data == ''}"/>
+					<mx:TextInput id="cardNum" width="125" enabled="{!order.selectedItem.data}"/>
+					<mx:TextInput id="csc" width="45" enabled="{!order.selectedItem.data}"/>
+					<mx:LinkButton label="What's this?" click="gotoCSC();" enabled="{!order.selectedItem.data}"/>
 				</mx:HBox>
-				<mx:ComboBox width="100%" height="20" id="cardTypeCombo" enabled="{order.selectedItem.data == ''}">
+				<mx:ComboBox width="100%" height="20" id="cardTypeCombo" enabled="{!order.selectedItem.data}">
 					<mx:dataProvider>
 						<mx:Object label="Visa" data="Visa"/>
 						<mx:Object label="MasterCard" data="MasterCard"/>
@@ -184,7 +183,7 @@
 					</mx:dataProvider>
 				</mx:ComboBox>
         <mx:HBox width="100%">
-          <mx:ComboBox width="50" height="20" id="month" enabled="{order.selectedItem.data == ''}">
+          <mx:ComboBox width="50" height="20" id="month" enabled="{!order.selectedItem.data}">
             <mx:dataProvider>
               <mx:Object label="1" data="1"/>
               <mx:Object label="2" data="2"/>
@@ -201,7 +200,7 @@
             </mx:dataProvider>
           </mx:ComboBox>
           <mx:Text text="/" />
-          <mx:ComboBox width="70" height="20" id="year" enabled="{order.selectedItem.data == ''}">
+          <mx:ComboBox width="70" height="20" id="year" enabled="{!order.selectedItem.data}">
             <mx:dataProvider>
               <mx:Object label="2009" data="2009"/>
               <mx:Object label="2010" data="2010"/>
@@ -293,44 +292,44 @@
                 height="100%" 
                 styleName="contentBlack" 
                 verticalGap="13">
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Name on Card:" width="100" />
-                    <mx:TextInput id="cardname" width="100%" enabled="{order.selectedItem.data == ''}" />
+                    <mx:TextInput id="cardname" width="100%" enabled="{!order.selectedItem.data}" />
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Address:" width="100" />
-                    <mx:TextInput id="address" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="address" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="City:" width="100" />
-                    <mx:TextInput id="city" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="city" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="State:" width="100" />
-                    <mx:TextInput id="state" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="state" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Zip Code:" width="100" />
-                    <mx:TextInput id="code" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="code" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Country:" width="100" />
-                    <mx:TextInput id="country" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="country" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Phone:" width="100" />
-                    <mx:TextInput id="phone" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:TextInput id="phone" width="100%" enabled="{!order.selectedItem.data}"/>
                     <mx:Label text="*" />
                 </mx:HBox>
-                <mx:HBox>
+                <mx:HBox width="100%">
                     <mx:Label text="Email:" width="100" />
-                    <mx:TextInput id="email" width="100%" enabled="{order.selectedItem.data == ''}" />
+                    <mx:TextInput id="email" width="100%" enabled="{!order.selectedItem.data}" />
                     <mx:Label text="*" height="20" />
                 </mx:HBox>
             </mx:VBox>

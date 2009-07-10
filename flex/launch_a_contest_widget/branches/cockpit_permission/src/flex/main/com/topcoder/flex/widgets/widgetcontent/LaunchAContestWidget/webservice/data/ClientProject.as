@@ -17,7 +17,5 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject")]
         public var childProjects:Array;
         public var parentProjectId:Number;
-
-
     }
 }

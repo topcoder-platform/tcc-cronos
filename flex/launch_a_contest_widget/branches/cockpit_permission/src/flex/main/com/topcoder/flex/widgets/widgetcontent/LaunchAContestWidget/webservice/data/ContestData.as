@@ -25,6 +25,7 @@ public function ContestData() {}
                    public var name:String;
                    public var projectId:Number;
                    public var tcDirectProjectId:Number;
+                   public var tcDirectProjectName:String;
                    [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData")]
                    public var prizes:Array;
                    public var launchDateAndTime:String; // TODO: check if we want Date here.

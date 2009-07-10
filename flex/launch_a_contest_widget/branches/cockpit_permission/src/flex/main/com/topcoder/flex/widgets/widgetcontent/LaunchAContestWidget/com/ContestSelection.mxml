@@ -127,7 +127,7 @@
 			    
 			    item = new Object();
 			    item.label="";
-			    item.data="";
+			    item.data=null;
 			    mainWidget.clientProjectNames.addItem(item);
 			    
 			    // get client projects by user.
@@ -152,17 +152,24 @@
             	    if (projects && projects.length > 0) {
             	        for (var i:int = 0; i < projects.length; i++) {
             	            var project:ClientProject = projects[i] as ClientProject;
+            	            var id:Number = project.id;
             	            var name:String = project.name;
                             var poNumber:String = project.pOBoxNumber;
-			    var pid:String = project.id.toString();
+                            var clientId:Number = project.client.id;
+                            var clientName:String = project.client.name;
             	            
             	            trace("Adding client project name: " + name);
             	            // add client project name
                 	        var item:Object = new Object();
     			            item.label= name;
-    			            item.data = poNumber;
+    			            item.data = new Object();
+    			            item.data.poNumber = poNumber;
+    			            item.data.projectName = name;
+    			            item.data.projectId = id;
+    			            item.data.clientId = clientId;
+    			            item.data.clientName = clientName;  
+    			            
                 	        mainWidget.clientProjectNames.addItem(item);
-				mainWidget.clientProjectIds[name] = pid;
             	        }
             	    }
             	    
@@ -240,6 +247,7 @@
                 // dont set project id
                 //mainWidget.competition.contestData.projectId = id;
                 mainWidget.competition.contestData.tcDirectProjectId=tcDirectProjectId;
+                mainWidget.competition.contestData.tcDirectProjectName=mainWidget.tcDirectProjectName;
                 mainWidget.competition.contestData.contestId=-1;
                 mainWidget.competition.contestData.creatorUserId=3;
                 mainWidget.competition.contestData.statusId=5;
@@ -350,7 +358,7 @@
                     if(selectContests.selectedItem != null && selectContests.selectedItem.data != -1)
                     {
                         mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
-			mainWidget.tcDirectProjectName = selectContests.selectedItem.label;
+                        mainWidget.tcDirectProjectName = selectContests.selectedItem.label;
                         createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
                     }
                     else
@@ -360,7 +368,7 @@
                         createProjectOp.addEventListener("result", createProjectHandler);
                         
                         var projectData:ProjectData = new ProjectData();
-			mainWidget.tcDirectProjectName = prjInput.text;
+                        mainWidget.tcDirectProjectName = prjInput.text;
                         projectData.name=prjInput.text;
                         projectData.description=introInput.text;
                         

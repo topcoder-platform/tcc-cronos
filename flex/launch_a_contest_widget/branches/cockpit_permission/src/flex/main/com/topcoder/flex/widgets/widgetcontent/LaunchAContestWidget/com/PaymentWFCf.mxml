@@ -15,7 +15,7 @@
 			
 			public function showApproval(referenceNumber:String):void {
 				approval.visible = true;
-				btPanel.visible = true;
+				//btPanel.visible = true;
 				paymentReferenceNumber.text=referenceNumber;
 			}
 		]]>
@@ -83,9 +83,5 @@
 			</mx:GridRow>
 		</mx:Grid>
 		<!--<mx:Image source="../assets/verisign.png" />-->
-	</mx:HBox>
-	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="CREATE NEW CONTEST" click="this.mainWidget.resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
-		<mx:Button label="VIEW MY CONTESTS" click="this.mainWidget.closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	</mx:HBox>
 </mx:VBox>

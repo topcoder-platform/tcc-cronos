@@ -5,9 +5,10 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -23,5 +24,9 @@ public function TcPurhcaseOrderPaymentData()
 }
                 
                    public var poNumber:String;
+                   public var projectId:Number;
+                   public var projectName:String;
+                   public var clientId:Number;
+                   public var clientName:String;
            	}
       	 }

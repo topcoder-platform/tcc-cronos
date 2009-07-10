@@ -101,12 +101,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         [Bindable]
         public var clientProjectNames:ArrayCollection = new ArrayCollection();
-
-	/**
-	 * store project name to project id map
-	 */
-	[Bindable]
-        public var clientProjectIds:Dictionary = new Dictionary();
         
         /**
          * Variable that holds 'software competition' related data.
@@ -649,7 +643,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 
                 purchaseOrderPaymentData.type=new PaymentType();
                 purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
-                purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
+                purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder.poNumber;
+                purchaseOrderPaymentData.projectId=Model.instance.purchaseOrder.projectId;
+                purchaseOrderPaymentData.projectName=Model.instance.purchaseOrder.projectName;
+                purchaseOrderPaymentData.clientId=Model.instance.purchaseOrder.clientId;
+                purchaseOrderPaymentData.clientName=Model.instance.purchaseOrder.clientName;
                 
                 if (studioContestType) { // BUGR-1682
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
@@ -670,8 +668,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     //     Add the billing project property.
                     //
 
-			var pid:String = clientProjectIds[Model.instance.clientProjectName] as String;
-			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, pid);
+					var pid:String = Model.instance.purchaseOrder.projectId;
+					SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, pid);
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
@@ -742,12 +740,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	    // we need a reason for update
     	    this.softwareCompetition.projectHeaderReason = "user update";
 
+			SoftwareCompetitionUtils.instance().addTCDirectProjectNameProp(this.softwareCompetition, tcDirectProjectName);    
 	        SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
             
-            SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
+            
+
+
+			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
 	    }
 
         /**
