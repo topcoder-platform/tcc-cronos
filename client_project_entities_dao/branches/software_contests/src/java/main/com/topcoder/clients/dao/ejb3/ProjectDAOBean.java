@@ -23,6 +23,7 @@ import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
 import com.topcoder.clients.dao.ProjectDAO;
+import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
 
 /**
@@ -44,6 +45,12 @@ import com.topcoder.clients.model.Project;
  * It uses the EntityManager configured in the base class to perform the needed
  * operations, retrieve the EntityManager using it's corresponding getter.
  * </p>
+ * 
+ * <p>
+ * Updated for Cockpit Release Assembly for Receipts
+ *      - now fetching Client value too for getProjectsByUser()
+ * </p>
+ * 
  * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext}) are set
@@ -52,7 +59,7 @@ import com.topcoder.clients.model.Project;
  * safety in this case.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
+ * @author Mafy, snow01, TCSDEVELOPER
  * @version 1.0
  */
 @Local(ProjectDAOLocal.class)
@@ -75,10 +82,16 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
 	/**
 	 * The query string used to select projects.
+	 * 
+	 * Updated for Cockpit Release Assembly for Receipts
+	 *     - now fetching client name too.
 	 */
-	private static final String SELECT_PROJECT = "select project_id, name, po_box_number, description, "
-			+ "active, sales_tax, payment_terms_id, modification_user, modification_date, "
-			+ "creation_date, creation_user, is_deleted from project where start_date <= current and current <= end_date";
+	private static final String SELECT_PROJECT = "select p.project_id, p.name, p.po_box_number, p.description, "
+			+ "p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
+			+ "p.creation_date, p.creation_user, p.is_deleted, " 
+			+ "p.client_id, c.name as client_name " 
+			+ "from project as p left join client as c on p.client_id = c.client_id and c.is_deleted = 0 " 
+			+ "where p.start_date <= current and current <= p.end_date ";
 
 
     /**
@@ -230,10 +243,21 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 		}
 	}
 
+	/**
+	 * Converts the given query results into list of project.
+	 * 
+	 * <p>
+	 * Updated for Cockpit Release Assembly for Receipts
+	 *     - now setting client name too.
+	 * </p>
+	 * 
+	 * @param query the specified query.
+	 * @return list of project.
+	 */
 	@SuppressWarnings("unchecked")
 	private List<Project> convertQueryToListProjects(Query query) {
 		List list = query.getResultList();
-System.out.println("----client project size=="+list.size());
+
 
 		List<Project> result = new ArrayList<Project>();
 
@@ -276,6 +300,17 @@ System.out.println("----client project size=="+list.size());
 
 			if (os[11] != null)
 				c.setDeleted(((Short) os[11]).intValue() == 1 ? true : false);
+			
+			Client client = new Client();
+			c.setClient(client);
+			
+			if (os[12] != null) {
+			    client.setId(Integer.parseInt(os[12].toString()));
+			}
+			
+			if (os[13] != null) {
+                client.setName(os[13].toString());
+			}
 
 			result.add(c);
 
