@@ -30,7 +30,7 @@
 								<mx:Label text="Invoice Terms:" styleName="contentBlack" />
 							</mx:VBox>
 							<mx:VBox width="100%">
-								<mx:Label text="{model.purchaseOrder}" styleName="content" />
+								<mx:Label text="{model.purchaseOrder.poNumber}" styleName="content" />
 								<mx:Label text="2% 10 net 30" styleName="content" />
 							</mx:VBox>
 						</mx:HBox>

@@ -36,7 +36,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 		public var email:String;
 		
 		[Bindable]
-		public var purchaseOrder:String;
+		public var purchaseOrder:Object;
 
 		// BUGR-1398
 		[Bindable]

@@ -1555,7 +1555,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             item=new Object();
             item.label="";
-            item.data="";
+            item.data=null;
             this.clientProjectNames.addItem(item);
 
             // get client projects by user.
@@ -1584,20 +1584,36 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         var result1:*=results[i];
                         // add client project name 
                         var item1:Object=new Object();
-                        var name1:String=result1.name;
-                        var poNumber1:String=result1.pOBoxNumber;
+                        var id1:Number = result1.id;
+        	            var name1:String = result1.name;
+                        var poNumber1:String = result1.pOBoxNumber;
+                        var clientId1:Number = result1.client.id;
+                        var clientName1:String = result1.client.name;
                         item1.label=name1;
-                        item1.data=poNumber1;
+                        item1.data = new Object();
+    			item1.data.poNumber = poNumber1;
+    			item1.data.projectName = name1;
+    			item1.data.projectId = id1;
+    			item1.data.clientId = clientId1;
+    			item1.data.clientName = clientName1;
                         this.clientProjectNames.addItem(item1);
                     }
                 } else {
                     var result2:*=e.result;
                     // add client project name 
                     var item2:Object=new Object();
-                    var name2:String=result2.name;
-                    var poNumber2:String=result2.pOBoxNumber;
+                    var id2:Number = result2.id;
+    	            var name2:String = result2.name;
+                    var poNumber2:String = result2.pOBoxNumber;
+                    var clientId2:Number = result2.client.id;
+                    var clientName2:String = result2.client.name;
                     item2.label=name2;
-                    item2.data=poNumber2;
+                    item2.data = new Object();
+		    item2.data.poNumber = poNumber2;
+		    item2.data.projectName = name2;
+		    item2.data.projectId = id2;
+		    item2.data.clientId = clientId2;
+		    item2.data.clientName = clientName2;
                     this.clientProjectNames.addItem(item2);
                 }
             }
@@ -1717,7 +1733,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             } else if (checkoutPage.pay.selectedIndex == 2) {
                 var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
                 purchaseOrderPaymentData.type="TCPurchaseOrder";
-                purchaseOrderPaymentData.poNumber=checkoutPage.wf1.order.selectedItem.data as String;
+                purchaseOrderPaymentData.poNumber=checkoutPage.wf1.order.selectedItem.data.poNumber;
+                purchaseOrderPaymentData.projectId=checkoutPage.wf1.order.selectedItem.data.projectId;
+                purchaseOrderPaymentData.projectName=checkoutPage.wf1.order.selectedItem.data.projectName;
+                purchaseOrderPaymentData.clientId=checkoutPage.wf1.order.selectedItem.data.clientId;
+                purchaseOrderPaymentData.clientName=checkoutPage.wf1.order.selectedItem.data.clientName;
+                
                 this.contestServiceFacadeWS.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
             }
 

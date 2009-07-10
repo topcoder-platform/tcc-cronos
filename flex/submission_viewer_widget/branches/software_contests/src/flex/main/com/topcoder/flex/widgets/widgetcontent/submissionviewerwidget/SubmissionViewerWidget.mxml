@@ -198,6 +198,8 @@
 
             /**
              * Handle successful credit card purchase.
+             * 
+             * Updated for Cockpit Release Assembly for Receipts.
              */
             private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void {
                 // BUGR-1393
@@ -212,6 +214,7 @@
                     submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
                     submissionCheckoutScreen.sub1.label="Download Submissions";
                     submissionCheckoutScreen.wf2.paymentReferenceNumber.text=this.paymentReferenceNumber;
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
                 }
             }
 
@@ -229,6 +232,7 @@
                     submissionCheckoutScreen.header.text="Your Transaction was Approved!";
                     submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
                     submissionCheckoutScreen.sub2.label="Download Submissions";
+		    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
                 }
             }
 
@@ -317,6 +321,7 @@
              */
             public function gotoPurchase():void {
                 if (submissionCheckoutScreen.pay.selectedIndex == 0) {
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=false;
                     var index:int=submissionCheckoutScreen.wf1.saveData();
                     if (index > 0 && index <= submissionCheckoutScreen.pay.numChildren) {
                         submissionCheckoutScreen.pay.selectedIndex=index - 1;
@@ -404,7 +409,7 @@
     </mx:WebService>
 
      <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
-                    destination="contest-facade">
+         destination="contest-facade">
 		<mx:channelSet>
 			<mx:ChannelSet id="contestfacadeChannelSet">
 			    <mx:channels>

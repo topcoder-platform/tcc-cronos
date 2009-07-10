@@ -23,5 +23,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservic
         }
                 
        public var poNumber:String;
+       public var projectId:Number;
+       public var projectName:String;
+       public var clientId:Number;
+       public var clientName:String;
    }
 }

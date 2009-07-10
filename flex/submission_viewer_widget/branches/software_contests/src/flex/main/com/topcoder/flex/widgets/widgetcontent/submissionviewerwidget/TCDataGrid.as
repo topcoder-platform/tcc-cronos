@@ -4,13 +4,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.geom.Matrix;
-
+    
     import mx.controls.DataGrid;
     import mx.controls.dataGridClasses.DataGridHeader;
     import mx.controls.dataGridClasses.DataGridItemRenderer;
     import mx.controls.listClasses.IListItemRenderer;
     import mx.core.FlexSprite;
     import mx.core.UIComponent;
+    import mx.printing.PrintDataGrid;
 
     [Style(name="sortedHeaderColors",type="Array",format="Color",inherit="no")]
     [Style(name="rowSelectionColors",type="Array",format="Color",inherit="no")]
