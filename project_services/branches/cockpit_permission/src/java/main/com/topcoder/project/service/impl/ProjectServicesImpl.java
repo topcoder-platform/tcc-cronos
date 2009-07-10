@@ -1701,7 +1701,14 @@ public class ProjectServicesImpl implements ProjectServices {
                     e);
             logError(e, pse.getMessage());
             throw pse;
-        } finally {
+        }
+		catch (Exception e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        }finally {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
