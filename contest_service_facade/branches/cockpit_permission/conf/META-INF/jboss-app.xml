@@ -20,6 +20,10 @@
                 <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
                 <jndi-name>PermissionServiceBean/remote</jndi-name>
             </ejb-ref>
+			 <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
             <method-attributes>
               <method>
                 <method-name>createSoftwareContest</method-name>

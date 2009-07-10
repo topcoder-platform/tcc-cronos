@@ -3,26 +3,74 @@
  */
 package com.topcoder.service.facade.contest.ejb;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.activation.DataHandler;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.jws.WebService;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.jboss.logging.Logger;
+import org.jboss.ws.annotation.EndpointConfig;
+
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
 import com.topcoder.catalog.entity.Category;
-import com.topcoder.catalog.entity.Phase;
-import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
+import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Status;
+import com.topcoder.catalog.entity.Technology;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
-import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.service.EntityNotFoundException;
+import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
+import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
+import com.topcoder.clientcockpit.phases.EmailSendingException;
+import com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator;
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.message.email.EmailEngine;
+import com.topcoder.message.email.TCSEmailMessage;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.facade.contest.CommonProjectContestData;
+import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
+import com.topcoder.service.facade.contest.ContestServiceException;
+import com.topcoder.service.facade.contest.ContestServiceFilter;
+import com.topcoder.service.facade.contest.SoftwareContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -30,44 +78,47 @@ import com.topcoder.service.payment.PaymentProcessor;
 import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
-import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
+import com.topcoder.service.project.CompetionType;
+import com.topcoder.service.project.Competition;
+
+
+
 import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.permission.ejb.PermissionServiceBean;
 import com.topcoder.service.project.SoftwareCompetition;
-import com.topcoder.service.project.CompetitionPrize;
 import com.topcoder.service.project.StudioCompetition;
-import com.topcoder.service.project.CompetionType;
-import com.topcoder.service.project.Competition;
+import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
-import com.topcoder.service.studio.StudioService;
-import com.topcoder.service.studio.PersistenceException;
-import com.topcoder.service.studio.SubmissionFeedback;
-import com.topcoder.service.studio.SubmissionPaymentData;
-import com.topcoder.service.studio.UserNotAuthorizedException;
-import com.topcoder.service.studio.IllegalArgumentWSException;
+import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
+import com.topcoder.service.studio.ContestPaymentData;
+import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.ContestTypeData;
+import com.topcoder.service.studio.DocumentNotFoundException;
+import com.topcoder.service.studio.IllegalArgumentWSException;
+import com.topcoder.service.studio.MediumData;
+import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.ProjectNotFoundException;
 import com.topcoder.service.studio.StatusNotAllowedException;
 import com.topcoder.service.studio.StatusNotFoundException;
-import com.topcoder.service.studio.UploadedDocument;
-import com.topcoder.service.studio.DocumentNotFoundException;
+import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.SubmissionData;
-import com.topcoder.service.studio.ContestStatusData;
-import com.topcoder.service.studio.ContestTypeData;
-import com.topcoder.service.studio.ContestPaymentData;
-import com.topcoder.service.studio.MediumData;
-import com.topcoder.service.studio.ChangeHistoryData;
-import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.SubmissionFeedback;
+import com.topcoder.service.studio.SubmissionPaymentData;
+import com.topcoder.service.studio.UploadedDocument;
+import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
@@ -76,50 +127,15 @@ import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.PrizeData;
+import com.topcoder.service.user.UserService;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.errorhandling.BaseException;
+import com.topcoder.util.errorhandling.ExceptionUtils;
+import com.topcoder.util.file.DocumentGenerator;
+import com.topcoder.util.file.DocumentGeneratorFactory;
+import com.topcoder.util.file.Template;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-import com.topcoder.management.resource.ResourceRole;
-import com.topcoder.service.studio.contest.User;
-import com.topcoder.service.facade.contest.CommonProjectPermissionData;
-
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.EJB;
-import javax.jws.WebService;
-import javax.activation.DataHandler;
-import javax.persistence.EntityManager;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.DatatypeConfigurationException;
-
-import org.jboss.logging.Logger;
-import org.jboss.ws.annotation.EndpointConfig;
-import org.jboss.wsf.spi.annotation.WebContext;
-
-import java.rmi.RemoteException;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Date;
-import java.util.Set;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.util.Properties;
-import java.util.Comparator;
-import java.util.Collections;
 
 /**
  * <p>This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
@@ -134,7 +150,7 @@ import java.util.Collections;
  * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author snow01
  * @version 1.0
  */
 @Stateless
@@ -179,6 +195,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/PermissionService")
     private PermissionService permissionService = null;
+
+
+	 /**
+     * <p>A <code>UserService</code> providing access to available <code>User Service EJB</code>.</p>
+     *
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @EJB(name = "ejb/UserService")
+    private UserService userService = null;
 
 	/**
 	 * <p>
@@ -352,6 +377,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String PROJECT_TYPE_INFO_NOTES_KEY = "Notes";
+    
+    /**
+     * Private constant specifying project type info's project name key.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private static final String PROJECT_TYPE_INFO_PROJECT_NAME_KEY = "Project Name";
 
 
 	/**
@@ -460,6 +492,99 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private String payFlowPassword;
 
     /**
+     * Document manager config file location.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "documentManagerConfigFile")
+    private String documentManagerConfigFile;
+    
+    /**
+     * Email template file path for Activate Contest Receipt.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "activateContestReceiptEmailTemplatePath")
+    private String activateContestReceiptEmailTemplatePath;
+    
+    /**
+     * BCC Address for Activate Contest Receipt Email 
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "activateContestReceiptEmailBCCAddr")
+    private String activateContestReceiptEmailBCCAddr;
+    
+    /**
+     * From Address for Activate Contest Receipt Email
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "activateContestReceiptEmailFromAddr")
+    private String activateContestReceiptEmailFromAddr;
+    
+    /**
+     * Subject line for Activate Contest Receipt Email
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "activateContestReceiptEmailSubject")
+    private String activateContestReceiptEmailSubject;
+    
+    /**
+     * Email template file path for Purchase Submission Receipt Email.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "purchaseSubmissionReceiptEmailTemplatePath")
+    private String purchaseSubmissionReceiptEmailTemplatePath;
+    
+    /**
+     * BCC Address for Purchase Submission Receipt Email 
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "purchaseSubmissionReceiptEmailBCCAddr")
+    private String purchaseSubmissionReceiptEmailBCCAddr;
+    
+    /**
+     * From Address for Purchase Submission Receipt Email
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "purchaseSubmissionReceiptEmailFromAddr")
+    private String purchaseSubmissionReceiptEmailFromAddr;
+    
+    /**
+     * Subject line for Purchase Submission Receipt Email
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @Resource(name = "purchaseSubmissionReceiptEmailSubject")
+    private String purchaseSubmissionReceiptEmailSubject;
+    
+    /**
+     * Document generator that stores email templates.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private DocumentGenerator documentGenerator;
+    
+    /**
+     * Email generator that generates email message from given template.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private EmailMessageGenerator emailMessageGenerator;
+    
+    private String currentUserEmailAddress;
+    
+    /**
+     * Email file template source key that is used by email generator.
+     */
+    private static final String EMAIL_FILE_TEMPLATE_SOURCE_KEY = "fileTemplateSource";
+
+    /**
      * <p>
      * Constructs new <code>ContestServiceFacadeBean</code> instance. This implementation instantiates new instance of
      * payment processor. Current implementation just support processing through PayPalCreditCard. When multiple
@@ -485,6 +610,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * TopCoder Service Layer Integration 3 Assembly change: new instance of the DefaultUploadServices for exposing its methods.
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - documentGenerator and emailMessageGenerator instance created.
+     * </p>     
+     * 
      * @throws IllegalStateException
      *             it throws this exception on any issues during caller services initialization. Issues can be: wrong
      *             authentication information, invalid information etc.
@@ -502,6 +632,43 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		} catch (ConfigurationException e) {
 			throw new IllegalStateException("Failed to create the DefaultUploadExternalServices instance.", e);
 		}
+		
+		try {
+			documentGenerator = getDocumentGenerator();
+		} catch (PersistenceException e) {
+			throw new IllegalStateException("Failed to create the documentGenerator instance.", e);
+		}
+		
+		// the default email message generator.
+    	emailMessageGenerator = new DefaultEmailMessageGenerator();
+    	
+    	try {
+    	    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+    	    currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+            Logger.getLogger(this.getClass()).debug("Current User Email Address: " + currentUserEmailAddress);
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass()).debug(e);
+        }
+    }
+    
+    /**
+     * Creates new instance of DocumentGenerator
+     * 
+     * @return the new instance of DocumentGenerator
+     * @throws PersistenceException if any error during instance creation.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private DocumentGenerator getDocumentGenerator() throws PersistenceException {
+    	try {
+	    	ConfigurationFileManager cfManager = new ConfigurationFileManager(documentManagerConfigFile);
+	    	
+	    	String docGenNamespace = DocumentGenerator.class.getPackage().getName();
+	        ConfigurationObject confObj = cfManager.getConfiguration(docGenNamespace).getChild(docGenNamespace);
+	        return DocumentGeneratorFactory.getDocumentGenerator(confObj);
+    	} catch (Exception e) {
+    		throw new PersistenceException(e.getMessage(), e, "Error in creating document generator instance");
+    	} 
     }
 
     /**
@@ -1507,6 +1674,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * </ul>
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - Added email notification for payment receipts.
+     * </p>
+     * 
      * @param <code>ContestData</code> data that recognizes a contest.
      * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
@@ -1523,6 +1695,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
         Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
+        
+        ContestPaymentResult contestPaymentResult = null;
 
 		try
 		{
@@ -1625,9 +1799,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			updateContest(tobeUpdatedCompetition);
 
 			// BUGR-1494
-			ContestPaymentResult contestPaymentResult = new ContestPaymentResult();
+			contestPaymentResult = new ContestPaymentResult();
 			contestPaymentResult.setPaymentResult(result);
 			contestPaymentResult.setContestData(getContest(tobeUpdatedCompetition.getContestData().getContestId()).getContestData());
+			
+			//
+            // Added for Cockpit Release Assembly for Receipts
+            //
+            String competitionType=tobeUpdatedCompetition.getType().toString();
+            String projectName=tobeUpdatedCompetition.getContestData().getTcDirectProjectName();
+            if (projectName == null) {
+                projectName=Long.toString(tobeUpdatedCompetition.getContestData().getTcDirectProjectId());
+            }
+            
+            String toAddr="";
+            String purchasedByUser=p.getName();
+            
+            if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                toAddr=currentUserEmailAddress; 
+            } else if (paymentData instanceof CreditCardPaymentData){
+                CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
+                toAddr = cc.getEmail();
+            }
+            
+            sendActivateContestReceiptEmail(toAddr, purchasedByUser, paymentData, competitionType, tobeUpdatedCompetition.getContestData()
+                    .getName(), projectName, competition.getStartTime().toGregorianCalendar().getTime(), paymentAmount,
+                    paymentAmount, result.getReferenceNumber());
+			
 			return contestPaymentResult;
 		}
 		catch (PersistenceException e)
@@ -1645,12 +1843,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			sessionContext.setRollbackOnly();
 			throw e;
 		}
+		catch (EmailMessageGenerationException e) {
+            Logger.getLogger(this.getClass()).error("Error duing email message generation", e);
+        }
+        catch (EmailSendingException e) {
+            Logger.getLogger(this.getClass()).error("Error duing email sending", e);
+        }
 		catch (Exception e)
 		{
 			sessionContext.setRollbackOnly();
 			throw new PaymentException(e.getMessage(), e);
 		}
-       
+		
+		return contestPaymentResult;
     }
 
     /**
@@ -1697,6 +1902,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>
      * Processes the contest sale.
      * </p>
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - Added code snippet to send email receipts on successful purchase.
+     * </p>
      *
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
@@ -1712,7 +1922,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         throws ContestServiceException {
         Logger.getLogger(this.getClass()).info("SoftwareCompetition: " + competition);
         Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
-
+        
+        SoftwareContestPaymentResult softwareContestPaymentResult = null;
+        
         try {
         	long contestId = competition.getProjectHeader().getId();
 
@@ -1789,20 +2001,48 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //return result;
             // BUGR-1682
-			SoftwareContestPaymentResult softwareContestPaymentResult = new SoftwareContestPaymentResult();
+			softwareContestPaymentResult = new SoftwareContestPaymentResult();
 			softwareContestPaymentResult.setPaymentResult(result);
 /*			for(com.topcoder.project.phases.Phase p : tobeUpdatedCompetition.getProjectPhases().getAllPhases()) {
 				p.setProject(null);
 			}*/
 			softwareContestPaymentResult.setSoftwareCompetition(tobeUpdatedCompetition);
+			
+			//
+            // Added for Cockpit Release Assembly for Receipts
+            //
+            String competitionType=tobeUpdatedCompetition.getType().toString();
+            String projectName=tobeUpdatedCompetition.getProjectHeader().getProperty("TC Direct Project Name");
+            
+            String toAddr="";
+            
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String purchasedByUser=p.getName();
+            
+            if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                toAddr=currentUserEmailAddress;
+            } else if (paymentData instanceof CreditCardPaymentData){
+                CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
+                toAddr = cc.getEmail();
+            }
+            
+            sendActivateContestReceiptEmail(toAddr, purchasedByUser, paymentData, competitionType,
+                    tobeUpdatedCompetition.getProjectHeader().getProperty(PROJECT_TYPE_INFO_PROJECT_NAME_KEY), projectName, competition.getAssetDTO().getProductionDate().toGregorianCalendar().getTime(), fee, fee, result.getReferenceNumber());
+			
 			return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
             throw e;
+        } catch (EmailMessageGenerationException e) {
+            Logger.getLogger(this.getClass()).error("Error duing email message generation", e);
+        } catch (EmailSendingException e) {
+            Logger.getLogger(this.getClass()).error("Error duing email sending", e);
         } catch (Exception e) {
             sessionContext.setRollbackOnly();
             throw new ContestServiceException(e.getMessage(), e);
         }
+        
+        return softwareContestPaymentResult;
     }
     
     /**
@@ -1880,6 +2120,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * </ul>
      * </p>
      * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - Added code snippet to send email notification on successful purchase.
+     * </p>
+     * 
      * @param completedContestData
      *            data of completed contest.
      * @param paymentData
@@ -1893,6 +2138,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private PaymentResult processSubmissionPaymentInternal(CompletedContestData completedContestData,
             PaymentData paymentData) throws PaymentException, PersistenceException {
 
+        PaymentResult result = null;
         try {
             Logger.getLogger(this.getClass()).info("CompletedContestData: " + completedContestData);
             Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData + "," + paymentData.getType());
@@ -1921,7 +2167,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             
             Logger.getLogger(this.getClass()).info("-------contest id ---" + completedContestData.getContestId());
 
-            PaymentResult result = null;
+            
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
@@ -1973,6 +2219,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			// update contest status to complete.
             this.updateContestStatus(completedContestData.getContestId(), CONTEST_COMPLETED_STATUS);
+            
+            //
+            // Added for Cockpit Release Assembly for Receipts
+            //
+            long contestId = completedContestData.getContestId();
+            ContestData contestData = studioService.getContest(contestId);
+            
+            String competitionType=CompetionType.STUDIO.toString();
+            String projectName=contestData.getTcDirectProjectName();
+            
+            String toAddr="";
+            String purchasedByUser=p.getName();
+            
+            if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                toAddr=currentUserEmailAddress;
+            } else if (paymentData instanceof CreditCardPaymentData){
+                CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
+                toAddr = cc.getEmail();
+            }
+            
+			sendPurchaseSubmissionReceiptEmail(toAddr, purchasedByUser, paymentData, competitionType,
+			        contestData.getName(), projectName, completedContestData.getSubmissions(), result.getReferenceNumber());
 
 			return result;
 		}
@@ -1986,12 +2254,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			sessionContext.setRollbackOnly();
 			throw e;
 		}
+		catch (EmailMessageGenerationException e) {
+		    Logger.getLogger(this.getClass()).error("Error duing email message generation", e);
+		}
+		catch (EmailSendingException e) {
+		    Logger.getLogger(this.getClass()).error("Error duing email sending", e);
+		}
 		catch (Exception e)
 		{
 			sessionContext.setRollbackOnly();
 			throw new PaymentException(e.getMessage(), e);
 		}
-
+		
+		return result;
     }
     
     /**
@@ -2255,7 +2530,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    @SuppressWarnings({ "unchecked" })
     public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
             throws ContestServiceException
 
@@ -3028,5 +3302,258 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void updatePermissions(Permission[] permissions) throws PermissionServiceException {
         this.permissionService.updatePermissions(permissions);
+    }
+
+	/**
+     * <p>
+     * Sends the email for specified template to specified to, cc, bcc address from specified from address.
+     * </p>
+     * 
+     * @param templateSource the template source
+     * @param templateName the template name or the file path of the template.
+     * @param subject the email subject line
+     * @param toAddr the to-address of the email
+     * @param ccAddr the from-address of the email
+     * @param bccAddr the bcc-address of the email
+     * @param fromAddr the from-address of the email
+     * @param phase the phase data
+     * @throws EmailMessageGenerationException thrown if error during email generation
+     * @throws EmailSendingException thrown if error during email sending.
+     * 
+     * @since Cockpit Release Assembly for Receipts. 
+     */
+    private void sendEmail(String templateSource, String templateName, String subject, String toAddr, String ccAddr, String bccAddr, String fromAddr, com.topcoder.project.phases.Phase phase)
+        throws EmailMessageGenerationException, EmailSendingException {
+
+        boolean messageGenerated = false;
+
+        try {
+            //Generate the message body first
+            Template template = templateSource == null
+                ? documentGenerator.getTemplate(templateName)
+                : documentGenerator.getTemplate(templateSource, templateName);
+            String messageBody = this.emailMessageGenerator.generateMessage(documentGenerator, template, phase);
+
+        	Logger.getLogger(this.getClass()).debug("Generated following email message of subject [" + subject + "] to be sent to ["
+                         + fromAddr + "] \n" + messageBody);
+
+            //Create a TCSEmailMessage to be sent
+            TCSEmailMessage email = new TCSEmailMessage();
+
+            //Set subject, from address and message body.
+            email.setSubject(subject);
+            email.setFromAddress(fromAddr);
+            email.setBody(messageBody);
+
+            ExceptionUtils.checkNull(toAddr, null, null, "To address must be non-null.");
+            email.addToAddress(toAddr, TCSEmailMessage.TO);
+            if (ccAddr != null) {
+            	email.addToAddress(ccAddr, TCSEmailMessage.CC);
+            }
+            
+            if (bccAddr != null) {
+            	email.addToAddress(bccAddr, TCSEmailMessage.BCC);
+            }
+
+            //Now the email message is generated successfully
+            messageGenerated = true;
+
+            //Send email
+            EmailEngine.send(email);
+            Logger.getLogger(this.getClass()).debug("Sent email message of subject [" + subject + "] to [" + fromAddr + "]");
+        } catch (BaseException e) {
+            rethrowEmailError(e, messageGenerated);
+        } catch (ConfigManagerException e) {
+            rethrowEmailError(e, messageGenerated);
+        } catch (IllegalArgumentException e) {
+            rethrowEmailError(e, messageGenerated);
+        }
+    }
+    
+    /**
+     * <p>
+     * Wrap the given error while sending email and re throw it.
+     * </p>
+     *
+     * <p>
+     * If given <code>messageGenerated</code> is false, then this error occurs while generating email
+     * message and thus an <code>EmailMessageGenerationException</code> will be thrown. Otherwise it
+     * means the error occurs while sending email and thus an <code>EmailSendingException</code> will
+     * be thrown.
+     * </p>
+     *
+     * @param e The root error cause to be wrapped and re thrown.
+     * @param messageGenerated Indicates whether the email message has been generated successfully.
+     *
+     * @param phase
+     * @throws EmailMessageGenerationException If <code>messageGenerated</code> is false.
+     * @throws EmailSendingException If <code>messageGenerated</code> is true.
+     * 
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    private void rethrowEmailError(Throwable e, boolean messageGenerated)
+        throws EmailMessageGenerationException, EmailSendingException {
+        try {
+            if (messageGenerated) {
+                throw e instanceof EmailSendingException ? (EmailSendingException) e
+                    : new EmailSendingException("Error while sending email.", e);
+            } else {
+                throw e instanceof EmailMessageGenerationException ? (EmailMessageGenerationException) e
+                    : new EmailMessageGenerationException("Error while generating email to be sent.", e);
+            }
+        } catch (Exception e1) {
+            Logger.getLogger(this.getClass()).error("*** Could not generate or send an email to creator of contest", e1);
+        }
+    }
+    
+    /**
+     * Creates and sends email for the activate contest receipt email.
+     * 
+     * @param toAddr the to address for email send.
+     * @param purchasedBy the name of the person who purchased.
+     * @param paymentData the payment data. it is one of TCPurhcaseOrderPaymentData or CreditCardPaymentData
+     * @param competitionType the competition type, person activated.
+     * @param competitionTitle the competition title, person activated.
+     * @param projectName the project name, person activated.
+     * @param launchTime the launch of the competition.
+     * @param price the price the person paid
+     * @param totalCost the total price the person paid
+     * @param orderNumber the order number of the purchase.
+     * 
+     * @throws EmailMessageGenerationException throws if error during email message generation
+     * @throws EmailSendingException throws if error during email sending.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private void sendActivateContestReceiptEmail(String toAddr, String purchasedBy, PaymentData paymentData,
+            String competitionType, String competitionTitle, String projectName, Date launchTime, Double price,
+            Double totalCost, String orderNumber) throws EmailMessageGenerationException, EmailSendingException {
+        com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
+
+        setReceiptEmailCommonProperties(phase, purchasedBy, paymentData, competitionType, competitionTitle, projectName);
+
+        phase.setAttribute("LAUNCH_TIME", launchTime);
+        phase.setAttribute("CONTEST_COST", price);
+        phase.setAttribute("TOTAL_COST", totalCost);
+
+        phase.setAttribute("FROM_ADDRESS", activateContestReceiptEmailFromAddr);
+
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                activateContestReceiptEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
+                orderNumber), toAddr, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
+                phase);
+    }
+    
+    /**
+     * Creates and sends email for the purchase submission receipt email.
+     * 
+     * @param toAddr the to address for email send.
+     * @param purchasedBy the name of the person who purchased.
+     * @param paymentData the payment data. it is one of TCPurhcaseOrderPaymentData or CreditCardPaymentData
+     * @param competitionType the competition type
+     * @param competitionTitle the competition title
+     * @param projectName the project name
+     * @param subPaymentDatas the submission payment datas.
+     * @param orderNumber the order number of the purchase.
+     * 
+     * @throws EmailMessageGenerationException throws if error during email message generation
+     * @throws EmailSendingException throws if error during email sending.
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private void sendPurchaseSubmissionReceiptEmail(String toAddr, String purchasedBy, PaymentData paymentData,
+            String competitionType, String competitionTitle, String projectName,
+            SubmissionPaymentData[] subPaymentDatas, String orderNumber) throws EmailMessageGenerationException,
+            EmailSendingException {
+        com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
+
+        setReceiptEmailCommonProperties(phase, purchasedBy, paymentData, competitionType, competitionTitle, projectName);
+                
+        // TODO: let the commented code be here, once document generator is fixed to allow if/else and loop construct we should use that.
+        //LinkedList<Map<String, Serializable>> subPrices = new LinkedList<Map<String, Serializable>>(); 
+        double totalCost = 0;
+        int j=0;
+        StringBuffer sb = new StringBuffer();
+        for (SubmissionPaymentData submissionPaymentData : subPaymentDatas) {
+            long submissionId = submissionPaymentData.getId();
+
+            if (submissionPaymentData.isPurchased()) {
+                j++;
+                //Map<String, Serializable> subPrice = new HashMap<String, Serializable>();
+                //subPrice.put("SUB_ID", Long.toString(submissionId));
+                //phase.setAttribute("SUB_ID-" + j, Long.toString(submissionId));
+                //subPrice.put("PRICE", submissionPaymentData.getAmount());
+                //phase.setAttribute("PRICE-" + j, submissionPaymentData.getAmount());
+                //phase.setAttribute("SUB_PRICES", subPrices);
+                totalCost += submissionPaymentData.getAmount();
+                
+                if (j > 0) {
+                    sb.append("\n");
+                }
+                sb.append(Long.toString(submissionId)).append(" - ").append(submissionPaymentData.getAmount());
+                
+                //subPrices.add(subPrice);
+            }
+        }
+        
+        //phase.setAttribute("SUB_PRICES", subPrices);
+        phase.setAttribute("SUB_PURCHASE_LIST", sb.toString());
+        phase.setAttribute("TOTAL_COST", totalCost);
+        phase.setAttribute("FROM_ADDRESS", purchaseSubmissionReceiptEmailFromAddr);
+
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                purchaseSubmissionReceiptEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, purchaseSubmissionReceiptEmailSubject.replaceAll(
+                "%ORDER_NUMBER%", orderNumber), toAddr, null, purchaseSubmissionReceiptEmailBCCAddr,
+                purchaseSubmissionReceiptEmailFromAddr, phase);
+    }
+    
+    /**
+     * Sets the common properties for the receipt email
+     * @param phase the phase object in which properties need to be set.
+     * @param purchasedBy the name of the person who purchased.
+     * @param paymentData the payment data. it is one of TCPurhcaseOrderPaymentData or CreditCardPaymentData
+     * @param competitionType the competition type
+     * @param competitionTitle the competition title
+     * @param projectName the project name
+     * 
+     * @since Cockpit Release Assembly for Receipts
+     */
+    private void setReceiptEmailCommonProperties(com.topcoder.project.phases.Phase phase, String purchasedBy, PaymentData paymentData,
+            String competitionType, String competitionTitle, String projectName) {
+       
+        // TODO: keep the commented portion, once if/else start working in document generator we should switch to it.
+        StringBuffer sb = new StringBuffer();
+        if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+            TCPurhcaseOrderPaymentData po = (TCPurhcaseOrderPaymentData) paymentData;
+            
+            sb.append("Client Name:").append(po.getClientName());
+            sb.append("\n    ");
+            sb.append("Project Name:").append(po.getProjectName());
+            sb.append("\n    ");
+            sb.append("PO #:").append(po.getPoNumber());
+            
+
+        } else if (paymentData instanceof CreditCardPaymentData) {
+            CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
+            
+            sb.append(cc.getFirstName());
+            sb.append("\n    ");
+            sb.append(cc.getAddress());
+            sb.append("\n    ");
+            sb.append(cc.getCity()).append(", ").append(cc.getState()).append(cc.getZipCode());
+            sb.append("\n    ");
+            sb.append(cc.getCountry());
+        }
+        
+        phase.setAttribute("PURCHASER_DETAILS", sb.toString()   );
+
+        phase.setAttribute("PURCHASED_BY", purchasedBy);
+        phase.setAttribute("COMPETITION_TYPE", competitionType);
+        phase.setAttribute("COMPETITION_TITLE", competitionTitle);
+        phase.setAttribute("PROJECT_NAME", projectName);
     }
 }

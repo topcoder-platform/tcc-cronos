@@ -144,7 +144,11 @@
     <property name="user_project_data_store.jar" value="${tcs_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1/database_abstraction.jar"/>
-	<property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
+    <property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
+	
+    <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.1.0/email_engine.jar"/>
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.0.0/document_generator.jar"/>
+    <property name="cockpit_phase_handlers.jar" value="${tcs_libdir}/cockpit_phase_handlers/1.1.0/cockpit_phase_handlers.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
@@ -227,6 +231,10 @@
         <pathelement location="${db_connection_factory.jar}"/>
         <pathelement location="${database_abstraction.jar}"/>
 		<pathelement location="${forums.jar}"/>
+		
+		<pathelement location="${email_engine.jar}"/>
+		<pathelement location="${document_generator.jar}"/>
+		<pathelement location="${cockpit_phase_handlers.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
