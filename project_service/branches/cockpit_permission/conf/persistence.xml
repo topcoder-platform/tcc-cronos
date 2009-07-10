@@ -22,6 +22,12 @@
 
       <!-- JBoss transction manager 
       <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" />-->
+      
+      <property name="hibernate.transaction.factory_class"
+                      value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory"/>
+
+      <property name="hibernate.transaction.manager_lookup_class"
+                  value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
 
 	  <property name="jboss.entity.manager.jndi.name" value="java:/HibernateProjectPersistence"/>
       <property name="jboss.entity.manager.factory.jndi.name" value="java:/HibernateProjectFactory"/>           

@@ -66,5 +66,29 @@
                 <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
             </persistence-context-ref>
         </session>
+
+		<session>
+            <ejb-name>UserServiceBean</ejb-name>
+            <remote>com.topcoder.service.user.UserServiceRemote</remote>
+			 <local>com.topcoder.service.user.UserServiceLocal</local>
+            <ejb-class>com.topcoder.service.user.ejb.UserServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>userService</env-entry-value>
+            </env-entry>
+			 <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
+            </env-entry>
+			
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
+            </persistence-context-ref>
+        </session>
     </enterprise-beans>
 </ejb-jar>
