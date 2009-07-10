@@ -2250,6 +2250,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             saleStatus.setSaleStatusId(((Long) rows[0][0]));
             saleStatus.setDescription((String) rows[0][1]);
 
+			closeConnection(conn);
+
             return saleStatus;
         } catch (PersistenceException e) {
         	getLogger().log(Level.ERROR, new LogMessage(null, null,
@@ -2293,6 +2295,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             SaleType saleType = new SaleType();
             saleType.setSaleTypeId(((Long) rows[0][0]));
             saleType.setDescription((String) rows[0][1]);
+
+			closeConnection(conn);
 
             return saleType;
         } catch (PersistenceException e) {
@@ -2345,6 +2349,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             contestSale.setSaleReferenceId((String) rows[0][6]);
             contestSale.setSaleType(this.getSaleType((Long) rows[0][7]));
 
+			closeConnection(conn);
+
             return contestSale;
         } catch (PersistenceException e) {
         	getLogger().log(Level.ERROR, new LogMessage(null, null,
@@ -2396,6 +2402,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
                 ret.add(contestSale);
             }
+
+			closeConnection(conn);
 
             return ret;
         } catch (PersistenceException e) {
@@ -3138,6 +3146,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     result.add(c);
                 }
             }
+
+			closeConnection(conn);
             return result;
         } catch (PersistenceException e) {
             getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to retrieving all tc direct projects ", e));
