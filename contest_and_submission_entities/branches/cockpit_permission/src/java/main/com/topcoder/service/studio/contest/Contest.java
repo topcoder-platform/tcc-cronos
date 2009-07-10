@@ -17,12 +17,16 @@ import com.topcoder.service.studio.submission.Submission;
  * <p>
  * Represents the entity class for db table <i>contest</i>.
  * </p>
+ * 
+ * <p>
+ * Added the TC Direct Project Name property for Cockpit Release Assembly for Receipts.
+ * </p>
  *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
+ * @author tushak, cyberjag, TCSASSEMBLER
  * @version 1.0
  */
 public class Contest implements Serializable {
@@ -55,6 +59,15 @@ public class Contest implements Serializable {
      * Represents the TC Direct project id.
      */
     private Long tcDirectProjectId;
+    
+    /**
+     * Represents the TC Direct project name.
+     * 
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    private String tcDirectProjectName;
+
+    
 
     /**
      * Represents the contest status.
@@ -641,5 +654,29 @@ public class Contest implements Serializable {
      */
     public Set<Prize> getPrizes() {
         return prizes;
+    }
+    
+    /**
+     * <p>
+     * Gets the TC Direct project name.
+     * </p>
+     * 
+     * @return the TC Direct project name.
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    public String getTcDirectProjectName() {
+        return tcDirectProjectName;
+    }
+
+    /**
+     * <p>
+     * Sets the TC Direct project name.
+     * </p>
+     * 
+     * @param tcDirectProjectName the TC Direct project name.
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    public void setTcDirectProjectName(String tcDirectProjectName) {
+        this.tcDirectProjectName = tcDirectProjectName;
     }
 }
