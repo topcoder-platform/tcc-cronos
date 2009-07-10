@@ -20,10 +20,15 @@ import java.util.List;
  * </p>
  * 
  * <p>
+ * Updated for Cockpit Release Assembly for Receipts
+ *      - Added TC Direct Project Name property.
+ * </p>
+ * 
+ * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
  * 
- * @author fabrizyo, TCSDEVELOPER
+ * @author fabrizyo, TCSDEVELOPER, TCSASSEMBLER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -33,7 +38,7 @@ import java.util.List;
         "sizeRequirements", "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat", "otherFileFormats",
         "statusId","detailedStatusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
         "prizeDescription", "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
-		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants", "payments"}) // BUGR-1363})
+		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants", "payments", "tcDirectProjectName"}) // BUGR-1363})
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -76,6 +81,15 @@ public class ContestData implements Serializable {
      * </p>
      */
     private long tcDirectProjectId = -1;
+    
+    /**
+     * <p>
+     * Represents the TC Direct Project Name
+     * </p>
+     * 
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    private String tcDirectProjectName = null;
 
     /**
      * <p>
@@ -1099,5 +1113,29 @@ public class ContestData implements Serializable {
     public void setPayments(List<ContestPaymentData> payments) {
         this.payments.clear();
         this.payments.addAll(payments);
+    }
+
+    /**
+     * <p>
+     * Gets the tc direct project name.
+     * </p>
+     *  
+     * @return the tc direct project name.
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    public String getTcDirectProjectName() {
+        return tcDirectProjectName;
+    }
+
+    /**
+     * <p>
+     * Sets the tc direct project name.
+     * </p>
+     * 
+     * @param tcDirectProjectName the tc direct project name.
+     * @since Cockpit Release Assembly for Receipts.
+     */
+    public void setTcDirectProjectName(String tcDirectProjectName) {
+        this.tcDirectProjectName = tcDirectProjectName;
     }
 }

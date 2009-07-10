@@ -84,6 +84,7 @@ import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
+import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
@@ -1425,6 +1426,11 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method used to convert ContestData object into Contest object.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - Added TC Direct Project Name
+     * </p>
      *
      * @param data
      *            ContestData object to convert
@@ -1526,6 +1532,9 @@ public class StudioServiceBean implements StudioService {
         result.setStatusId(data.getStatusId());
         
         result.setTcDirectProjectId(data.getTcDirectProjectId());
+        
+        // // Cockpit Release Assembly for Receipts.
+        result.setTcDirectProjectName(data.getTcDirectProjectName());
         result.setContestType(getContestType(data.getContestTypeId()));
         result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
         result.setCreatedUser(data.getCreatorUserId());
@@ -1600,6 +1609,11 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
+     * 
+     * <p>
+     * Updated for Cockpit Release Assembly for Receipts
+     *      - Added TC Direct Project Name
+     * </p>
      *
      * @param contest
      *            Contest instance to convert
@@ -1628,6 +1642,10 @@ public class StudioServiceBean implements StudioService {
         if(contest.getTcDirectProjectId()!=null){
             contestData.setTcDirectProjectId(contest.getTcDirectProjectId());
         }
+        
+        // Cockpit Release Assembly for Receipts.
+        contestData.setTcDirectProjectName(contest.getTcDirectProjectName());
+        
         // [27074484-20]
         ContestType contestType = contest.getContestType();
         contestData.setContestTypeId(contestType == null ? -1 : unbox(contestType.getContestType()));
