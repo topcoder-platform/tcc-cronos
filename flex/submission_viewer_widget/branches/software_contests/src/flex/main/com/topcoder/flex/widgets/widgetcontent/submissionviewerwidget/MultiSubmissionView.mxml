@@ -6,9 +6,12 @@
 
 <!--
 
-     This mxml component is for multi submission view of the submission viewer. 
+     This mxml component is for multi submission view of the submission viewer.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1378]
+	    - Show horizontal scroll bar for multi image submission.
 
-     @author shailendra_80
+     @author snow01
      @since Submission Viewer Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -24,7 +27,8 @@
          paddingBottom="0"
          horizontalAlign="left"
          creationPolicy="all"
-         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         creationComplete="init()">
     <mx:Script>
         <![CDATA[
             import mx.core.ScrollPolicy;
@@ -37,7 +41,50 @@
              */
             [Bindable]
             public var model:ThumbnailGalleryDataModel;
-
+            
+	    /**
+	     * Load the data on control initialization complete
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            private function init():void {
+                if (model && model.activeSubmissionId > 0) {
+                    this.data=model.activeSubmissionId;
+                }
+            }
+            
+	    /**
+	     * Current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            [Bindable]
+            private var _currentThumbPage:int=0;
+            
+	    /**
+	     * Get the current page index for the page navigation of thumbnail images.
+	     *
+	     * @return the current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            [Bindable]
+            public function get currentThumbPage():int {
+                return this._currentThumbPage;
+            }
+            
+	    /**
+	     * Set the current page index for the page navigation of thumbnail images.
+	     *
+	     * @param i the current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            public function set currentThumbPage(i:int):void {
+                this._currentThumbPage=i;
+                drawMain();
+            }
+            
             /**
              * Handler for thumb up/down.
              */
@@ -55,10 +102,10 @@
                     downData.selected=true;
                 }
             }
-
+            
             /**
-            * Handler for showing/hiding the footer.
-            */
+             * Handler for showing/hiding the footer.
+             */
             private function showHideFooter():void {
                 model.showFooter=!model.showFooter;
                 if (model.showFooter) {
@@ -67,7 +114,33 @@
                     btn.styleName="showHideBtnClose2";
                 }
             }
-
+            
+	    /**
+	     * Draws the main view of the thumbnail images.
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            private function drawMain():void {
+                if (data && main && data.hasOwnProperty("multi") && data.multi == true && data.hasOwnProperty("fullsizepreviewList")) {
+                    var items:ArrayCollection=new ArrayCollection(data.fullsizepreviewList.toArray().slice(this._currentThumbPage * 6, this._currentThumbPage * 6 + 6));
+                    if (items) {
+                        main.removeAllChildren();
+                        for each (var item:String in items) {
+                            var box:Box=new Box();
+                            box.setStyle("borderStyle", "solid");
+                            box.data=item;
+                            box.verticalScrollPolicy=ScrollPolicy.OFF;
+                            box.horizontalScrollPolicy=ScrollPolicy.OFF;
+                            var img:Image=new Image();
+                            img.source=item;
+                            img.addEventListener(Event.COMPLETE, handleComplete);
+                            box.addEventListener(MouseEvent.CLICK, handleClick);
+                            box.addChild(img);
+                            main.addChild(box);
+                        }
+                    }
+                }
+            }
+            
             /**
              * Overrides the data method, so that caller can the properties on it.
              *
@@ -80,33 +153,16 @@
              */
             override public function set data(value:Object):void {
                 trace("--------------- MultiSubmissionView:: value: " + value);
-
+                
                 if ((value as int) != -1) {
+                    currentThumbPage=0;
                     super.data=null;
                     trace("--------------- MultiSubmissionView:: active submission id: " + model.activeSubmissionId);
                     super.data=model.getSubmission((value as int));
-
+                    
                     trace("--------------- MultiSubmissionView:: Setting data to:" + super.data);
-
-                    if (main && data.hasOwnProperty("multi") && data.multi == true && data.hasOwnProperty("fullsizepreviewList")) {
-                        var items:ArrayCollection=data.fullsizepreviewList as ArrayCollection;
-                        if (items) {
-                            main.removeAllChildren();
-                            for each (var item:String in items) {
-                                var box:Box=new Box();
-                                box.setStyle("borderStyle", "solid");
-                                box.data=item;
-                                box.verticalScrollPolicy=ScrollPolicy.OFF;
-                                box.horizontalScrollPolicy=ScrollPolicy.OFF;
-                                var img:Image=new Image();
-                                img.source=item;
-                                img.addEventListener(Event.COMPLETE, handleComplete);
-                                box.addEventListener(MouseEvent.CLICK, handleClick);
-                                box.addChild(img);
-                                main.addChild(box);
-                            }
-                        }
-                    }
+                    drawMain();
+                    
                 } else {
                     trace("--------------- MultiSubmissionView:: Setting data to null.");
                 }
@@ -130,9 +186,9 @@
             private function handleClick(event:Event):void {
                 var item:String=(event.currentTarget as Box).data as String;
                 if (item) {
-                    model.selectedIndex=3;
                     model.selectedImage=item;
                     model.imageList=data.fullsizepreviewList as ArrayCollection;
+                    model.selectedIndex=3;
                 }
             }
         ]]>
@@ -145,11 +201,23 @@
     <mx:Binding source="model.activeSubmissionId"
                 destination="data"/>
     <mx:Spacer height="50%"/>
-    <tc:CustomBox width="100%"
-                  verticalAlign="middle"
-                  id="main"
-                  creationComplete="data = model.activeSubmissionId">
-    </tc:CustomBox>
+    <mx:HBox width="100%"
+             horizontalAlign="center"
+             verticalAlign="middle">
+        <mx:Button id="prev"
+                   styleName="goPrev"
+                   visible="{currentThumbPage > 0}"
+                   includeInLayout="{prev.visible}"
+                   click="{currentThumbPage--}"/>
+        <tc:CustomBox width="100%"
+                      verticalAlign="middle"
+                      id="main"/>
+        <mx:Button id="next"
+                   styleName="goNext"
+                   visible="{data &amp;&amp; data.fullsizepreviewList.length - currentThumbPage * 6 - 6 > 0}"
+                   includeInLayout="{next.visible}"
+                   click="{currentThumbPage++}"/>
+    </mx:HBox>
     <mx:HBox width="100%"
              horizontalAlign="center">
         <mx:Label text="{data.id}"

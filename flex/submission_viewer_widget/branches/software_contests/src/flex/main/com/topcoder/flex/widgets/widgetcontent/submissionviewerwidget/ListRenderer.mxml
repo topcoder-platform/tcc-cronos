@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Updated for Cockpit Release Assembly 2 [BUGR-1666]
+     	- Use TCImage to support immediate loading of image.
+	- Additionally show the broken image icon for broken images.
+
+@author snow01	
+-->
 <mx:Canvas  xmlns:mx="http://www.adobe.com/2006/mxml" width="83" height="97"
             xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
         <tc:TCImage id="thumbnail" top="12" left="11" bottom="20" right="10" source="{data.thumbnail}" ioError="onIoError(event)"/>
@@ -15,11 +22,11 @@
             import mx.controls.Image;
 
             private function onIoError(event:IOErrorEvent):void {
-                if (event.target is Image) {
+                /*if (event.target is Image) {
                     var image:Image;
                     image = event.target as Image;
                     image.source = "";
-                }
+                }*/
             }
 
         ]]>

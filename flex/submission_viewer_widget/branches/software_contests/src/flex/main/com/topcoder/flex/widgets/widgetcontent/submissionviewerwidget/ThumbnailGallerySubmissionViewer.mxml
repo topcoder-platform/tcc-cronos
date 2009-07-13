@@ -23,8 +23,10 @@
      - for action required contest, 'Checkout' button is visible. On click, the flow leads to Checkout Confirmation page.
      - for past contests, only thumbnail browsing of submissions can be done. All other functionalities are disabled.
      - for past but completed contest, 'Download' button is visible. On click, the flow leads to Download page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1940, BUGR-1666]
 
-     @author shailendra_80
+     @author snow01
      @since Submission Viewer Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -284,6 +286,9 @@
              * Depending on the contest type, it updates the ui.
              * If contest is different from last, then it loads the submission data through webservice.
              * Else it simply updates the ui for currently loaded submissions.
+	     *
+	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	     *		-- handle abandoned contest correctly.
              *
              * @param event not used parameter.
              */
@@ -302,6 +307,8 @@
                     if (this.subViewer.selectedContestId && this.subViewer.selectedContestId == contestCombo.selectedItem.id) {
                         isContestChanged=false;
                     }
+                    
+                    model.showDownloadFullPreview=true;
 
                     this.subViewer.selectedContestId=contestCombo.selectedItem.id;
                     this.status=contestCombo.selectedItem.statusId;
@@ -327,7 +334,7 @@
 
                     } else if (this.subViewer.selectedContestStatusId == this.subViewer.completedContestTypeId) {
                         updateUIForCompletedContest();
-                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId) {
+                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
                         updateUIForAbandonedContest();
                     } else if (this.subViewer.pastContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForPastContest();
@@ -538,10 +545,13 @@
             }
 
             /**
-            * Update ui for abandoned contests.
-            */
+             * Update ui for abandoned contests.
+	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	     *		-- handle abandoned contest correctly.
+             */
             private function updateUIForAbandonedContest():void {
                 model.isRankMode=false;
+                model.showDownloadFullPreview=false;
                 
                 if (rankContainer) {
                     rankContainer.visible=false;
@@ -1057,6 +1067,10 @@
 
             /**
             * Go to previous page / submission in animated form.
+	    *
+	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+	    *	-- Better animation on sub viewer
+	    *	-- Start image load earlier.
             */
             public function goPrev():void {
                 if (!model.canGoPrev()) {
@@ -1099,14 +1113,18 @@
                     listSub.removeChildAt(2);
                     listSub.addChildAt(hbox, 2);
                 }
-                timer.start();
                 isPrev=true;
                 model.goPrev();
                 setTitle();
+                timer.start();
             }
 
             /**
             * Go to next page / submission in animated form.
+	    *
+	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+	    *	-- Better animation on sub viewer
+	    *	-- Start image load earlier.
             */
             public function goNext():void {
                 if (!model.canGoNext()) {
@@ -1150,10 +1168,10 @@
                     listSub.addChildAt(hbox, 2);
                 }
 
-                timer.start();
                 isPrev=false;
                 model.goNext();
                 setTitle();
+                timer.start();
             }
 
             /**
@@ -1263,6 +1281,10 @@
 
             /**
             * Go to previous submission in animated form.
+	    *
+	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+	    *	-- Better animation on sub viewer
+	    *	-- Start image load earlier.
             */
             public function prevSub():void {
                 if (model.activeSubmissionIndex <= 0) {
@@ -1305,13 +1327,17 @@
                 }
 
                 last=true;
-                subTimer.start();
                 model.prev();
                 setTitle();
+                subTimer.start();
             }
 
             /**
             * Go to next submission in animated form.
+	    *
+	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+	    *	-- Better animation on sub viewer
+	    *	-- Start image load earlier.
             */
             public function nextSub():void {
                 if (model.activeSubmissionIndex >= this.subViewer.submissionList.length - 1) {
@@ -1355,9 +1381,9 @@
                 }
 
                 last=false;
-                subTimer.start();
                 model.next();
                 setTitle();
+                subTimer.start();
             }
 
             /**

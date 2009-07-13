@@ -7,7 +7,7 @@
 
      This is item renderer for rank bar.
 
-     @author shailendra_80
+     @author snow01
      @since Submission Viewer Overhaul
 -->
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -71,11 +71,11 @@
              * Handler for the case when image load errors out.
              */
             private function onIoError(event:IOErrorEvent):void {
-                if (event.target is Image) {
+                /*if (event.target is Image) {
                     var image:Image;
                     image=event.target as Image;
                     image.source="";
-                }
+                }*/
             }
         ]]>
     </mx:Script>

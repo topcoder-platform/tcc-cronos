@@ -195,7 +195,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         private var _completedContestTypeId:int;
 
         /**
-         * If of the no winner chosen contest status.
+         * Id of the no winner chosen contest status.
          */
         private var _noWinnerChosenContestTypeId:int;
 
@@ -218,6 +218,13 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Id of the scheduled contest status.
          */
         private var _scheduledContestTypeId:int;
+
+        /**
+         * Id of the abandoned contest status.
+         * 
+         * @since Cockpit Release Assembly 2
+         */
+        private var _abandonedContestTypeId:int;
 
         /**
          * Total purchase amount in number.
@@ -286,6 +293,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * Initializes this class.
+	 * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	 *	- to correctly handle abandoned contest.
          */
         private function init():void {
             // add list of active contest types here.
@@ -307,10 +316,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             //		Completed = 8, 
             //		Insufficient Submissions - Rerun Possible = 11, 
             //		or Insufficient Submissions = 13
+            //      Abandoned = 14
             _pastContestTypeIds[7]=true;
             _pastContestTypeIds[8]=true;
             _pastContestTypeIds[11]=true;
             _pastContestTypeIds[13]=true;
+            _pastContestTypeIds[14]=true;
 
             // add list of action required contest types here.
             _actionRequiredContestTypeId=6;
@@ -320,6 +331,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             _terminatedContestTypeId=17;
             _draftContestTypeId=15;
             _scheduledContestTypeId=9;
+            _abandonedContestTypeId=14;
 
             this._moneyFormatter=new NumberFormatter();
             this._moneyFormatter.precision=2;
@@ -844,6 +856,16 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public function get noWinnerChosenContestTypeId():int {
             return this._noWinnerChosenContestTypeId;
+        }
+
+        /**
+         * Simple getter for the status id of the no winner chosen contest type.
+         *
+         * @return the status id of the no winner chosen contest type.
+         * @since Cockpit Release Assembly 2 [BUGR-1940]
+         */
+        public function get abandonedContestTypeId():int {
+            return this._abandonedContestTypeId;
         }
 
         /**
@@ -1800,6 +1822,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 status.name="Completed"
                 status.statusId=8;
                 statuses.addItem(status);
+                
+                status=new Object();
+                status.name="Abandoned"
+                status.statusId=14;
+                statuses.addItem(status);
 
                 handleStatusList(new ResultEvent("STATUS_TYPES", false, true, statuses));
 
@@ -1832,7 +1859,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 contest=new Object();
                 contest.name="Abandoned Contest 1";
                 contest.contestId=12347;
-                contest.statusId=7;
+                contest.statusId=14;
                 contest.prizes=new ArrayCollection();
                 contest.prizes.addItem(1000);
                 contest.prizes.addItem(500);
@@ -1898,7 +1925,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     sub.placement=2;
                     sub.feedbackText="It's feedback text for 24053. Thumb is up.";
                     sub.feedbackThumb=1;
-                    sub.artifactCount=4;
+                    sub.artifactCount=10;
                     submissionArray.addItem(sub);
 
                     sub=new Object();

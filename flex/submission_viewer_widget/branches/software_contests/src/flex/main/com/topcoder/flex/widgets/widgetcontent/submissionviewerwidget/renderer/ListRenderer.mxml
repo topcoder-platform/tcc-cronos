@@ -8,7 +8,7 @@
 
      This is item renderer for submission list on the gallery view.
 
-     @author shailendra_80
+     @author snow01
      @since Submission Viewer Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -19,7 +19,8 @@
          paddingLeft="14"
          paddingRight="15"
          verticalScrollPolicy="off"
-         horizontalScrollPolicy="off">
+         horizontalScrollPolicy="off"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
     <mx:Script>
         <![CDATA[
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ThumbnailGalleryDataModel;
@@ -94,11 +95,15 @@
     <mx:Canvas width="151"
                height="151"
                borderStyle="solid">
-        <mx:Canvas id="thumbnail"
+        <tc:TCImage id="thumbnail"
+               width="100%"
+               height="100%"
+               source="{data.thumbnail}"/>
+        <!--<mx:Canvas id="thumbnail"
                    width="100%"
                    height="100%"
                    backgroundImage="{data.thumbnail}"
-                   backgroundSize="100%"/>
+                   backgroundSize="100%"/>-->
         <mx:Canvas width="18"
                    height="19"
                    backgroundSize="100%"

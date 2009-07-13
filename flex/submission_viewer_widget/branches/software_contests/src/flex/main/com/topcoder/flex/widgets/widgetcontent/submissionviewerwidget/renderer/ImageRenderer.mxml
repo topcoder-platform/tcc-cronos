@@ -7,8 +7,12 @@
 <!--
 
      This is item renderer for image thumbnail.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1666]
+     	- Use TCImage to support immediate loading of image.
+	- Additionally show the broken image icon for broken images.
 
-     @author shailendra_80
+     @author snow01
      @since Submission Viewer Overhaul
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -17,16 +21,22 @@
          paddingLeft="0"
          paddingRight="0"
          verticalScrollPolicy="off"
-         horizontalScrollPolicy="off">
+         horizontalScrollPolicy="off"
+         borderStyle="solid"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
     <mx:Script>
         <![CDATA[
             
         ]]>
     </mx:Script>
-    <mx:Canvas id="thumbnail"
+    <tc:TCImage id="thumbnail"
+               width="75"
+               height="75"
+               source="{data}"/>
+    <!--<mx:Canvas id="thumbnail"
                width="75"
                height="75"
                borderStyle="solid"
-               backgroundImage="{data}"
-               backgroundSize="100%"/>
+               backgroundImage="{data ? data : ''}"
+               backgroundSize="100%"/>-->
 </mx:VBox>

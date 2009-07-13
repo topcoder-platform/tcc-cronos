@@ -7,6 +7,9 @@
 <!--
 
      This mxml component is for the simple image view of the submission viewer.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	    - Do now show full preview link for abandoned contest
 
      @author shailendra_80
      @since Submission Viewer Overhaul
@@ -169,7 +172,8 @@
                        selected="{data.upDown == 'down'}"
                        toolTip="Not Interested"/>
         </mx:HBox>
-        <mx:HBox width="100%" horizontalAlign="center">  <!-- BUGR-1664 -->
+        <mx:HBox width="100%" horizontalAlign="center" visible="{model.showDownloadFullPreview}"
+                     includeInLayout="{model.showDownloadFullPreview}">  <!-- BUGR-1664 -->
     		<mx:LinkButton label="Download Full Preview" click="{downloadLinkHandler()}" />
     	</mx:HBox>	  
     </mx:VBox>

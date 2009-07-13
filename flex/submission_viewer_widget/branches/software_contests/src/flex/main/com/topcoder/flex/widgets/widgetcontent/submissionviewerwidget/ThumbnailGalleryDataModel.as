@@ -114,6 +114,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             }
             return _instance;
         }*/
+        
+        /**
+	 * Whether to show the download full preview link or not
+         * @since Cockpit Release Assembly 2  [BUGR-1940]
+         */ 
+        public var showDownloadFullPreview:Boolean;
 
         /**
          * Initializes this model.

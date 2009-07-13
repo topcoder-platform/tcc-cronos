@@ -208,7 +208,7 @@
                 Helper.showAlertMessage("Process submission payment successfully!!");
                 this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
-                    this.paymentReferenceNumber=event.result as String;
+                    this.paymentReferenceNumber=event.result.referenceNumber as String;
 
                     submissionCheckoutScreen.header.text="Your Transaction was Approved!";
                     submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
@@ -227,12 +227,12 @@
                 Helper.showAlertMessage("Process submission payment successfully!!");
                 this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
                 if (event && event.result) {
-                    this.paymentReferenceNumber=event.result as String;
+                    this.paymentReferenceNumber=event.result.referenceNumber as String;
 
                     submissionCheckoutScreen.header.text="Your Transaction was Approved!";
                     submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
                     submissionCheckoutScreen.sub2.label="Download Submissions";
-		    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
+		            submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
                 }
             }
 
