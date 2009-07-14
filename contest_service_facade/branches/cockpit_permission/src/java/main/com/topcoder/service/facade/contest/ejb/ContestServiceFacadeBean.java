@@ -2011,8 +2011,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			//
             // Added for Cockpit Release Assembly for Receipts
             //
-            String competitionType=tobeUpdatedCompetition.getType().toString();
-            String projectName=tobeUpdatedCompetition.getProjectHeader().getProperty("TC Direct Project Name");
+            String competitionType=tobeUpdatedCompetition.getProjectHeader().getProjectCategory().getName();
+            String projectName=competition.getProjectHeader().getTcDirectProjectName();
             
             String toAddr="";
             
