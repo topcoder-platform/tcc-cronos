@@ -709,7 +709,12 @@ public abstract class AbstractInformixPhasePersistence extends
             rollbackTransaction(context);
             throw new PhasePersistenceException(
                     "Error occurs while updating phases.", ex);
-        } finally {
+        }
+		catch (Exception ex) {
+            rollbackTransaction(context);
+            throw new PhasePersistenceException(
+                    "Error occurs while updating phases.", ex);
+        }finally {
             close(pstmt);
             disposeConnection(conn);
         }
