@@ -1624,7 +1624,7 @@
                                      backgroundAlpha="0.0"
                                      selectionColor="#f0f0f0"
                                      rollOverColor="#f0f0f0"
-                                     columnWidth="180"
+                                     columnWidth="190"
                                      rowHeight="206"
                                      paddingTop="0"
                                      dataProvider="{model.rankedSubmissionList}"

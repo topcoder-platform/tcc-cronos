@@ -4,10 +4,21 @@
         <![CDATA[
             import mx.containers.Box;
             import mx.controls.Image;
+            
+            public var overriddenSize:Number=0;
 
             override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
             {
                 var childWidth:Number=(unscaledWidth - getStyle("paddingLeft") - getStyle("paddingRight") + getStyle("horizontalGap")) / numChildren - getStyle("horizontalGap");
+                
+                if (overriddenSize > 0) {
+                    // if exist use overrridenSize
+                    childWidth = overriddenSize;
+                } else {
+                    // if does not exist store for further use.
+                    overriddenSize = childWidth;
+                }
+                
                 for each (var child:Box in getChildren())
                 {
                     if (child.numChildren == 1)

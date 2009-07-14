@@ -218,7 +218,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Id of the scheduled contest status.
          */
         private var _scheduledContestTypeId:int;
-
+        
         /**
          * Id of the abandoned contest status.
          * 
@@ -857,7 +857,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function get noWinnerChosenContestTypeId():int {
             return this._noWinnerChosenContestTypeId;
         }
-
+        
         /**
          * Simple getter for the status id of the no winner chosen contest type.
          *

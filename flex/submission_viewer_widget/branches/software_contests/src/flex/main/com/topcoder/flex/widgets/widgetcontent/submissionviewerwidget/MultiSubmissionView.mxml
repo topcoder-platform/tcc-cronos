@@ -161,6 +161,12 @@
                     super.data=model.getSubmission((value as int));
                     
                     trace("--------------- MultiSubmissionView:: Setting data to:" + super.data);
+                    
+                    // this is first time we draw so reset the size.
+                    if (main) {
+                        main.overriddenSize=0;
+                    }
+                    
                     drawMain();
                     
                 } else {
@@ -210,7 +216,10 @@
                    includeInLayout="{prev.visible}"
                    click="{currentThumbPage--}"/>
         <tc:CustomBox width="100%"
+                    paddingLeft="10"
+                    paddingRight="10"
                       verticalAlign="middle"
+                      horizontalAlign="center"
                       id="main"/>
         <mx:Button id="next"
                    styleName="goNext"
