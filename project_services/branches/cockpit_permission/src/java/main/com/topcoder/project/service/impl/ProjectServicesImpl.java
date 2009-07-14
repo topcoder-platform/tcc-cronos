@@ -1052,6 +1052,13 @@ public class ProjectServicesImpl implements ProjectServices {
                             + e.getMessage(), e);
             logError(e, pse.getMessage());
             throw pse;
+        } 
+		 catch (Exception e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "Exception occurred in ProjectServicesImpl#createProject method : "
+                            + e.getMessage(), e);
+            logError(e, pse.getMessage());
+            throw pse;
         } finally {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProject method.");
         }
@@ -1221,7 +1228,15 @@ public class ProjectServicesImpl implements ProjectServices {
                             + e.getMessage(), e);
             logError(e, pse.getMessage());
             throw pse;
-        } finally {
+        }
+		catch (Exception e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "Exception occurred in ProjectServicesImpl#updateProject method : "
+                            + e.getMessage(), e);
+            logError(e, pse.getMessage());
+            throw pse;
+        }
+		finally {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#updateProject method.");
         }
     }
