@@ -5,6 +5,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 
     /**
      * Software Project Header DTO class.
+     * 
+     * Updated for Cockpit Release Assembly for Receipts
+     *    - Added new property tcDirectProjectName
      *
      * @author TCSDEVELOPER
      *
@@ -47,6 +50,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * It will be not zero if this project is associated with direct project.
          */
         public var tcDirectProjectId:Number=0;
+        
+        /**
+         * The TC Direct Project Name.
+         * 
+         * @since Cockpit Release Assembly for Receipts
+         */ 
+        public var tcDirectProjectName:String="";
         
         /**
         * Map of properties.

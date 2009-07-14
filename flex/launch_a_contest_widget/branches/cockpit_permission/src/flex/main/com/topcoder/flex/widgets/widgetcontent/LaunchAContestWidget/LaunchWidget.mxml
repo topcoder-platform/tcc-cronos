@@ -1655,6 +1655,12 @@
                    styleName="arrowLeftBtnStyle"
                    labelPlacement="{ButtonLabelPlacement.RIGHT}"
                    click="cancelBtn()"/>
+        <mx:HBox horizontalAlign="center" width="100%" id="activateBtnPanel" visible="false" includeInLayout="false">
+		    <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+		    <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+		    <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
+	    </mx:HBox>    
+               
         <mx:Spacer width="90%"/>
         <!-- BUGR-1643 -->
         <mx:Button id="save"

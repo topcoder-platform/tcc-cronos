@@ -122,7 +122,7 @@
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    btPanel.visible=true;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
                     wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
                 
                 	// update contest data   
@@ -149,7 +149,7 @@
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    btPanel.visible=true;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
                     wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
                     
                     // update contest data   
@@ -176,7 +176,7 @@
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    btPanel.visible=true;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
                     wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
                 
                 	// update software competition    
@@ -203,7 +203,7 @@
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    btPanel.visible=true;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
                     wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
                     
                     // update software competition     
@@ -214,7 +214,7 @@
 				mainWidget.notifyMyProjectWidget();
             }
             
-            private function doPrint():void {
+            public function doPrint():void {
                 // Create an instance of the FlexPrintJob class.
                 var printJob:FlexPrintJob=new FlexPrintJob();
                 printJob.printAsBitmap=false;
@@ -321,9 +321,4 @@
     		<com:PaymentWFCfPO id="wf3" paddingTop="20" paddingRight="6" />
     	</mx:ViewStack>
 	</mx:VBox>
-	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="CREATE NEW CONTEST" click="this.mainWidget.resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
-		<mx:Button label="VIEW MY CONTESTS" click="this.mainWidget.closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-		<mx:Button label="PRINT RECEIPT" click="doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
-	</mx:HBox>
 </mx:VBox>

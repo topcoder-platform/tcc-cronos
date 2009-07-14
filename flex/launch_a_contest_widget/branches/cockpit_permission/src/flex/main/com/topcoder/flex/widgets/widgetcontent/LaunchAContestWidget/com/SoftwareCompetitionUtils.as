@@ -629,14 +629,5 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             
             return "0";
         }
-
-		public function addTCDirectProjectNameProp(softwareCompetition:SoftwareCompetition, tcDirectProjectName:String):void {
-            var entry:MapEntry=new MapEntry();
-            entry.key='TC Direct Project Name';
-            entry.value=tcDirectProjectName;
-
-            softwareCompetition.projectHeader.properties.push(entry);
-        }
-
     }
 }

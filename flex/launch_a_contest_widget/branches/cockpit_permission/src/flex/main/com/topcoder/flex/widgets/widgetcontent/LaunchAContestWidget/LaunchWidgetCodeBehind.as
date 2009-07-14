@@ -739,15 +739,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
     	    // we need a reason for update
     	    this.softwareCompetition.projectHeaderReason = "user update";
+            this.softwareCompetition.projectHeader.tcDirectProjectName=tcDirectProjectName;
 
-			SoftwareCompetitionUtils.instance().addTCDirectProjectNameProp(this.softwareCompetition, tcDirectProjectName);    
 	        SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
-            
-            
-
 
 			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
 	    }
