@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:PipelineWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:tc="com.topcoder.flex.widgets.widgetcontent.pipeline.*"
+  initialize="init()"
+  horizontalAlign="left"
+  headerHeight="5" width="100%"
+  creationComplete="jsonRequest.send()"
+  resizeEffect="{resize}">
+
+  <mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/tc?" resultFormat="text" result="handleJsonResult(event)" >
+      <mx:request>
+      <module>BasicData</module>
+      <c>dd_pipeline</c>
+      <dsid>29</dsid>
+      <drt>json</drt>
+    </mx:request>
+    </mx:HTTPService>
+
+<mx:Style source="DataGridStyle.css" />
+<mx:Script>
+    <![CDATA[
+        import com.adobe.serialization.json.JSON;
+
+        import mx.collections.ArrayCollection;
+        import mx.controls.dataGridClasses.DataGridColumn;
+        import mx.formatters.CurrencyFormatter;
+        import mx.formatters.DateFormatter;
+        import mx.rpc.events.ResultEvent;
+
+        // Skins
+        [Bindable]
+        [Embed(source="assets/headerseparator.png")]
+        private var headerSeparatorSkin:Class;
+
+        [Bindable]
+        [Embed(source="assets/sortarrow.png")]
+        private var sortArrowSkin:Class;
+
+    //Use this var only when testing locally.
+    private var jsonString:String =
+      '{"feedname":"dd_pipeline","data":[{"id":"2649","contest_name":"Affinities Form Presentation Template",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2650","contest_name":"Affinities Form Validation Template",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2663","contest_name":"AOL Gallery Front End Request Manager",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2665","contest_name":"AOL Gallery Front End Request Manager (SPLIT)",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2712","contest_name":"AOL IDP Crypto Library","contest_category_id":"59",' +
+      '"posting_date":"2008-11-24","contest_type_name":"Component Development","contest_type_id":"5",' +
+      '"contest_category_name":"PHP Custom"},{"id":"2647","contest_name":"Asset Bundle","contest_category_id":"4",' +
+      '"posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Generic"},{"id":"2646","contest_name":"Asset Bundle Builder",' +
+      '"contest_category_id":"4","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Generic"},{"id":"2648",' +
+      '"contest_name":"Asset File Repository","contest_category_id":"4","posting_date":"2008-11-24",' +
+      '"contest_type_name":"Component Design","contest_type_id":"1","contest_category_name":"Java Generic"},' +
+      '{"id":"2709","contest_name":"Confluence Services","contest_category_id":"32",' +
+      '"posting_date":"2008-11-24","contest_type_name":"Component Development","contest_type_id":"5",' +
+      '"contest_category_name":"Java Custom"},{"id":"2585","contest_name":"Diana EHR 3 Phase 1 ",' +
+      '"contest_category_id":"9","posting_date":"2008-11-24","contest_type_name":"Assembly",' +
+      '"contest_type_id":"3","contest_category_name":"Application"},{"id":"2645","contest_name":"Folder Diff",' +
+      '"contest_category_id":"4","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Generic"},{"id":"2350","contest_name":"Galleries UI",' +
+      '"contest_category_id":"10","posting_date":"2008-11-24","contest_type_name":"Assembly","contest_type_id":"3",' +
+      '"contest_category_name":"Prototype Conversion"},{"id":"2337","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2342","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2339","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2343","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2344","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2694","contest_name":"Token Claim Notification Manager",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2693","contest_name":"Token Consumer Site",' +
+      '"contest_category_id":"29","posting_date":"2008-11-24","contest_type_name":"Architecture","contest_type_id":"4",' +
+      '"contest_category_name":"Architecture"},{"id":"2695","contest_name":"Token Entities and DAO",' +
+      '"contest_category_id":"32","posting_date":"2008-11-24","contest_type_name":"Component Development",' +
+      '"contest_type_id":"5","contest_category_name":"Java Custom"},{"id":"2696","contest_name":"Token Entities Management",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2697","contest_name":"Token Entities Services",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2698","contest_name":"Token Order Management",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2699","contest_name":"Token Redemption Management",' +
+      '"contest_category_id":"3","posting_date":"2008-11-24","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2711","contest_name":"TopCoder Competition Language Type Icons Round 3",' +
+      '"contest_category_id":"16","posting_date":"2008-11-24","contest_type_name":"Studio","contest_type_id":"2","contest_category_name":"Icons"},' +
+      '{"id":"2653","contest_name":"Diana EHR 3.1 User Admin Requirements Contest","contest_category_id":"51",' +
+      '"posting_date":"2008-11-25","contest_type_name":"Specification","contest_type_id":"7","contest_category_name":"Specification"},' +
+      '{"id":"2661","contest_name":"FrontEnd View Manager","contest_category_id":"4","posting_date":"2008-11-25",' +
+      '"contest_type_name":"Component Design","contest_type_id":"1","contest_category_name":"Java Generic"},' +
+      '{"id":"2564","contest_name":"Xanthus Community Architecture","contest_category_id":"29","posting_date":"2008-11-25",' +
+      '"contest_type_name":"Architecture","contest_type_id":"4","contest_category_name":"Architecture"},' +
+      '{"id":"2583","contest_name":"Diana Mira 2.0 Prototype Contest","contest_category_id":"13","posting_date":"2008-11-26",' +
+      '"contest_type_name":"Studio","contest_type_id":"2","contest_category_name":"HTML Prototype"},' +
+      '{"id":"2714","contest_name":"Flex Framework Component Assembly","contest_category_id":"21","posting_date":"2008-11-26",' +
+      '"contest_type_name":"Assembly","contest_type_id":"3","contest_category_name":"Module"},' +
+      '{"id":"2713","contest_name":"jQuery Address Book Prototype","contest_category_id":"42","posting_date":"2008-11-26",' +
+      '"contest_type_name":"Studio","contest_type_id":"2","contest_category_name":"Javascript"},{"id":"2334","contest_name":"Placeholder",' +
+      '"contest_category_id":"3","posting_date":"2008-11-26","contest_type_name":"Component Design","contest_type_id":"1",' +
+      '"contest_category_name":"Java Custom"},{"id":"2335","contest_name":"Placeholder","contest_category_id":"3","posting_date":"2008-11-26",' +
+      '"contest_type_name":"Component Design","contest_type_id":"1","contest_category_name":"Java Custom"},' +
+      '{"id":"2336","contest_name":"Placeholder","contest_category_id":"3","posting_date":"2008-11-26","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2333","contest_name":"Placeholder","contest_category_id":"3",' +
+      '"posting_date":"2008-11-26","contest_type_name":"Component Design","contest_type_id":"1","contest_category_name":"Java Custom"},' +
+      '{"id":"2494","contest_name":"Placeholder","contest_category_id":"3","posting_date":"2008-11-26","contest_type_name":"Component Design",' +
+      '"contest_type_id":"1","contest_category_name":"Java Custom"},{"id":"2532","contest_name":"Status Portal Prototype",' +
+      '"contest_category_id":"13","posting_date":"2008-11-26","contest_type_name":"Studio","contest_type_id":"2",' +
+      '"contest_category_name":"HTML Prototype"},{"id":"2370","contest_name":"TCO09 Prototype","contest_category_id":"13",' +
+      '"posting_date":"2008-11-26","contest_type_name":"Studio","contest_type_id":"2","contest_category_name":"HTML Prototype"}' +
+      ']}';
+        // Date formatter for the date/time columns
+        private var dateFormatter:DateFormatter = new DateFormatter();
+
+        // Initialization: Simply sets the format string for the DateFormatter
+        private function init():void {
+            dateFormatter.formatString = "MM.DD.YYYY";
+        }
+
+        // Formatter for the posting_date column
+        private function formatPostingDate(item:Object, col:DataGridColumn):String {
+            return dateFormatter.format(item.posting_date);
+        }
+
+        // Handles the result from the HTTPService
+        private function handleJsonResult(event:ResultEvent):void {
+
+            var json:String = event.result as String;
+
+            var jsonData:Object = JSON.decode(json);
+
+            // Get the data for the DataGrid
+            var arrayData:Array = jsonData.data as Array;
+            this.activeContents = new ArrayCollection(arrayData);
+        }
+
+        // Handles the result if using the local jsonString
+        private function handleJsonStringResult():void {
+
+      //Use this when testing locally. Comment out when testing on web server.
+            var json:String = jsonString;
+
+            var jsonData:Object = JSON.decode(json);
+
+            // Get the data for the DataGrid
+            var arrayData:Array = jsonData.data as Array;
+            this.activeContents = new ArrayCollection(arrayData);
+        }
+
+    ]]>
+</mx:Script>
+        <tc:TCDataGrid id="dataGrid" width="100%" height="100%" dataProvider="{this.activeContents}"
+            verticalScrollPolicy="auto" horizontalScrollPolicy="off"
+            styleName="TCDataGrid" headerStyleName="DataGridHeader"
+            headerSeparatorSkin="{headerSeparatorSkin}" sortArrowSkin="{sortArrowSkin}"
+            headerHeight="29" rowHeight="26">
+            <tc:columns>
+                <mx:DataGridColumn dataField="contest_name"
+                    itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.ContestLinkButton"
+                    textAlign="left" headerText="Name" />
+                <mx:DataGridColumn dataField="posting_date"
+                    textAlign="center" headerText="Posting Date" labelFunction="formatPostingDate" />
+                <mx:DataGridColumn dataField="contest_type_name" headerText="Contest Type" />
+                <mx:DataGridColumn dataField="contest_category_name" headerText="Contest Category" />
+                <mx:DataGridColumn dataField="status" headerText="Status" />
+            </tc:columns>
+        </tc:TCDataGrid>
+  <mx:Resize id="resize" /> 
+</tc:PipelineWidgetCodeBehind>
