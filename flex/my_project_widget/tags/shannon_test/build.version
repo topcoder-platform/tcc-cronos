@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=My project widget
+component.distfilename=my_project_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.projectwidget
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/projectwidget
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
