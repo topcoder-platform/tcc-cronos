@@ -2589,7 +2589,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				
 				if (createForum)
 				{
-					forumId = createForum(assetDTO, p.getUserId());
+					forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
 				}
 
 				// if forum created
@@ -2941,7 +2941,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
 
-	public long createForum(AssetDTO asset, long userId) {
+	public long createForum(AssetDTO asset, long userId, long projectCategoryId) {
 		long forumId = -1;
 		try {
 			Properties p = new Properties();
@@ -2966,7 +2966,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			forumId = forums.createSoftwareComponentForums(asset.getName(), asset.getId(), asset.getCompVersionId(), 
 				                                                phaseId, Status.REQUESTED.getStatusId(), asset.getRootCategory().getId(), 
 				                                                asset.getShortDescription(),
-				                                                asset.getVersionText(), false);
+				                                                asset.getVersionText(), false, projectCategoryId);
 			if (forumId < 0) throw new Exception("createStudioForum returned -1");
 
 			Logger.getLogger(this.getClass()).error("Created forum " + forumId + " for " + asset.getName());
