@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           height="100%"
+           horizontalScrollPolicy="off"
+           verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResourceRole;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResource;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectHeader;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareAssetDTO;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import mx.events.ItemClickEvent;
+
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import mx.collections.IList;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.WebService;
+            import mx.collections.ArrayCollection;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import mx.utils.ObjectUtil;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.AbstractOperation;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501			
+	        
+	        [Bindable]
+            public var mainWidget:LaunchWidget;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection=new ArrayCollection([{label: "Please select an existing project", data: -1, desc: ""}]);
+
+            /**
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             * Update...
+             */
+            private function handleSelect(event:ItemClickEvent):void {
+                if (!event) {
+                    return;
+                }
+                
+                trace("CONTEST-SELECTION:: event: " + event);
+                trace("CONTEST-SELECTION:: event.item: " + event.item);
+                trace("CONTEST-SELECTION:: event.item.toString(): " + event.item.toString());
+                //var type:CompetionType = new CompetionType();
+                if (event.item) {
+                    var competionType:String=event.item.toString();
+
+                    if (mainWidget && mainWidget.competitionType) {
+                        mainWidget.competitionType=competionType;
+                    }
+
+                    // BUGR-1067
+                    mainWidget.studioContestType=(competionType == "STUDIO");
+
+                    if (mainWidget.studioContestType) {
+                        if (mainWidget.competition) {
+                            mainWidget.competition.type=competionType;
+                        }
+                    } else {
+                        if (mainWidget.softwareCompetition) {
+                            mainWidget.softwareCompetition.type=competionType;
+                            mainWidget.details.loadCategories(); // BUGR-1678
+                        }
+                    }
+                }
+            }
+            
+            // TCCC-1023
+            public function init():void{
+                var getAllProjectsOp:AbstractOperation = mainWidget._pws.getOperation("getAllProjects");
+                //getAllProjectsOp.decoder.typeRegistry = mainWidget._launchContestSchemaTypeRegistry;
+                getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+                getAllProjectsOp.send();
+                
+		getClientProjectsByUser();
+		
+		        mainWidget.showLoadingProgress();
+
+                selectContests.dataProvider = contestsData;
+
+		 // default to studio
+		if (mainWidget) {
+                     mainWidget.competitionType= "STUDIO";
+
+                    mainWidget.studioContestType=true;
+
+                        if (mainWidget.competition) {
+                            mainWidget.competition.type="STUDIO";
+                        }
+                    } 
+            }
+            
+            // TCCC-1023
+            private function getAllProjectsHandler(e:ResultEvent):void{
+                mainWidget.hideLoadingProgress();
+                
+                if(e && e.result){
+                    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
+                    if(!projects.sort) {
+                        var sort:Sort = new Sort();   
+                        sort.compareFunction = compareName;
+                        projects.sort = sort;
+                    }
+                    
+                    projects.refresh();
+                    
+                    for each (var prj:ProjectData in projects){
+                        contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+                    }
+                }
+            }
+
+	    private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="";
+			    item.data=null;
+			    mainWidget.clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+				getClientProjectsByUserOp.send();
+				
+				mainWidget.showLoadingProgress();
+			    }
+	    }
+			
+	    private function getClientProjectsHandler(e:ResultEvent):void {
+			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+			    mainWidget.hideLoadingProgress();
+			    
+            	if(e && e.result)
+            	{
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+            	    trace("getClientProjectsHandler:: projects: " + projects);
+            	    
+            	    if (projects && projects.length > 0) {
+            	        for (var i:int = 0; i < projects.length; i++) {
+            	            var project:ClientProject = projects[i] as ClientProject;
+            	            var id:Number = project.id;
+            	            var name:String = project.name;
+                            var poNumber:String = project.pOBoxNumber;
+                            var clientId:Number = project.client.id;
+                            var clientName:String = project.client.name;
+            	            
+            	            trace("Adding client project name: " + name);
+            	            // add client project name
+                	        var item:Object = new Object();
+    			            item.label= name;
+    			            item.data = new Object();
+    			            item.data.poNumber = poNumber;
+    			            item.data.projectName = name;
+    			            item.data.projectId = id;
+    			            item.data.clientId = clientId;
+    			            item.data.clientName = clientName;  
+    			            
+                	        mainWidget.clientProjectNames.addItem(item);
+            	        }
+            	    }
+            	    
+            	    // assign client project names here.
+            	    mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
+            	}
+	   }
+            
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
+            }
+
+            
+            //
+            // Updated so that it refers to mainWidget.competitionType variable rather than mainWidget.competition.type.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            public function initData():void {
+                trace("IN INIT DATA FOR CONTEST SELECTION");
+                if (mainWidget && mainWidget.competitionType != null && contestType != null) {
+                    for (var i:int=0; i < contestType.numRadioButtons; i++) {
+                        var bt:RadioButton=contestType.getRadioButtonAt(i);
+                        if (bt.enabled && bt.value == mainWidget.competitionType) {
+                            bt.selected=true;
+                            break;
+                        }
+                    }
+                    
+                    if (selectContests.dataProvider) {
+                        // set the project id.
+                        for each (var p:Object in selectContests.dataProvider) {
+                            trace("------------ p.data: " + p.data + ", selected-proj-id: " + mainWidget.tcDirectProjectId);
+                            if (p.data == mainWidget.tcDirectProjectId) {
+                                // select the project.
+                                selectContests.selectedItem=p;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            //
+            // It finds the competition type by iterating over radio box and finding which one is selected.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function getCompetitionType():String {
+                for (var i:int=0; i < contestType.numRadioButtons; i++) {
+                    var bt:RadioButton=contestType.getRadioButtonAt(i);
+                    if (bt.enabled && bt.selected) {
+                        return bt.value.toString();
+                    }
+                }
+
+                return null;
+            }
+
+            //
+            // Name changed for integration with software contests.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function initializeStudioContest(tcDirectProjectId:Number):void {
+                mainWidget.competition=new StudioCompetition();
+                mainWidget.competition.competitionId=-1;
+                mainWidget.competition.id=-1;
+                mainWidget.competition.adminFee=20;
+                mainWidget.competition.eligibility="some text";
+
+                mainWidget.competition.contestData=new ContestData();
+                mainWidget.competition.contestData.contestAdministrationFee=20;
+                mainWidget.competition.creatorUserId=3;
+                mainWidget.competition.drPoints=100;
+                mainWidget.competition.contestData.drPoints=100;
+
+                // dont set project id
+                //mainWidget.competition.contestData.projectId = id;
+                mainWidget.competition.contestData.tcDirectProjectId=tcDirectProjectId;
+                mainWidget.competition.contestData.tcDirectProjectName=mainWidget.tcDirectProjectName;
+                mainWidget.competition.contestData.contestId=-1;
+                mainWidget.competition.contestData.creatorUserId=3;
+                mainWidget.competition.contestData.statusId=5;
+                mainWidget.competition.contestData.forumId=-1;
+                mainWidget.competition.contestData.forumPostCount=0;
+                mainWidget.competition.contestData.requiresPreviewImage=true;
+                mainWidget.competition.contestData.requiresPreviewFile=false;
+                mainWidget.competition.contestData.maximumSubmissions=3;
+                mainWidget.competition.contestData.submissionCount=0;
+                mainWidget.competition.contestData.contestChannelId=2;
+                mainWidget.competition.contestData.eligibility="some text";
+                mainWidget.competition.contestData.media=new Array();
+
+                mainWidget.competition.contestData.numberOfRegistrants=0;
+                var competionType:String=getCompetitionType();
+                mainWidget.competition.type=competionType;
+            }
+
+            //
+            // Method to initialize software competition dto.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function initializeSoftwareContest(tcDirectProjectId:Number):void {
+                mainWidget.softwareCompetition=new SoftwareCompetition();
+                
+                var competionType:String=getCompetitionType();
+                mainWidget.softwareCompetition.type=competionType;
+                
+                // initialize asset dto.
+                mainWidget.softwareCompetition.assetDTO=new SoftwareAssetDTO();
+                mainWidget.softwareCompetition.assetDTO.versionNumber=SoftwareCompetitionUtils.instance().getAssetVersionNumber();
+                mainWidget.softwareCompetition.assetDTO.versionText=SoftwareCompetitionUtils.instance().getAssetVersionText();
+                mainWidget.softwareCompetition.assetDTO.documentation=new Array();
+                mainWidget.softwareCompetition.assetDTO.dependencies=new Array();
+                
+                // For Cockpit Launch Contest - Update for Spec Creation v1.0 - save some dummy text for now.
+                // later it need to be removed from catalog service.
+                mainWidget.softwareCompetition.assetDTO.detailedDescription="";
+                
+                // initialize project header.
+                mainWidget.softwareCompetition.projectHeader=new SoftwareProjectHeader();
+
+                // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                
+                mainWidget.softwareCompetition.projectHeader.tcDirectProjectId=tcDirectProjectId;
+                
+                mainWidget.softwareCompetition.projectHeader.properties=SoftwareCompetitionUtils.instance().getProjectDefaultProperties();
+                
+                mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
+                mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
+                mainWidget.softwareCompetition.projectHeader.projectStatus=SoftwareCompetitionUtils.instance().getDefaultProjectStatus();
+                
+                // initialize project resources.
+                var resource:SoftwareResource = new SoftwareResource();
+                var resourceRole:SoftwareResourceRole = new SoftwareResourceRole();
+                resourceRole.id=SoftwareCompetitionUtils.instance().getResourceRoleId();
+                resource.id=SoftwareCompetitionUtils.instance().getUnsetId();
+                resource.resourceRole=resourceRole;
+                resource.properties=new Array();
+                resource.properties.push(SoftwareCompetitionUtils.instance().getResourceRoleProperty(this.mainWidget.username));
+                
+                resource.submissions=new Array();
+                mainWidget.softwareCompetition.projectResources=new Array();
+                mainWidget.softwareCompetition.projectResources.push(resource);
+                
+                // initialize project phases.
+                mainWidget.softwareCompetition.projectPhases=SoftwareCompetitionUtils.instance().getDefaultPhases();        
+            }
+
+            //
+            // Updated to consider software contests.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function createContestAndContinue(id:Number):void {
+                mainWidget.isEditMode=false;
+                
+                if (mainWidget.studioContestType) {
+                    initializeStudioContest(id);
+                } else {
+                    initializeSoftwareContest(id);
+                }
+
+                mainWidget.startLaunchProcess();
+            }
+
+            private function selectchange():void {
+                if (selectContests.selectedItem != null) {
+                    introInput.text=selectContests.selectedItem.desc;
+                }
+            }
+
+            //
+            // Updated to set review's contest type field.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            public function goToOverView():int {
+                mainWidget.review.cstTypeStep1=contestType.selection.label; // BUGR-1067
+                
+                if ((selectContests.selectedItem == null || selectContests.selectedItem.data == -1) && prjInput.text == "") {
+                    Helper.showAlertMessage("New Project or Existing Project must have a value.");
+                    return -1;
+                } else {
+                    if(selectContests.selectedItem != null && selectContests.selectedItem.data != -1)
+                    {
+                        mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+                        mainWidget.tcDirectProjectName = selectContests.selectedItem.label;
+                        createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
+                    }
+                    else
+                    {
+                        // TCCC-1023
+                        var createProjectOp:AbstractOperation = mainWidget._pws.getOperation("createProject");
+                        createProjectOp.addEventListener("result", createProjectHandler);
+                        
+                        var projectData:ProjectData = new ProjectData();
+                        mainWidget.tcDirectProjectName = prjInput.text;
+                        projectData.name=prjInput.text;
+                        projectData.description=introInput.text;
+                        
+                        createProjectOp.send(projectData);
+                        
+                        mainWidget.showLoadingProgress();
+                    }
+                    return 0;
+                }
+            }
+            
+            // TCCC-1023
+            private function createProjectHandler(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                
+                if(e && e.result) {
+                    var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
+                    mainWidget.tcDirectProjectId=projectData.projectId.toString();
+					mainWidget.tcDirectProjectName = projectData.name;
+                    createContestAndContinue(projectData.projectId);
+                    
+                    var updatePermissions:AbstractOperation=mainWidget._csws.getOperation("updatePermissions");
+            		if (updatePermissions) {
+            			var perm:Object=new Object();
+            			perm.userId=mainWidget.userid;
+            			perm.resourceId=mainWidget.tcDirectProjectId;
+           				perm.permissionType=new Object();
+           				perm.permissionType.name="project_full";
+				perm.studio = false;
+                		perm.permissionType.permissionTypeId=3;
+                		var permissions:ArrayCollection=new ArrayCollection();
+                		permissions.addItem(perm);
+            			updatePermissions.send(permissions);
+            		}
+                }
+            }
+	      ]]>
+    </mx:Script>
+    <mx:VBox width="100%"
+             styleName="boxStyle">
+        <mx:HBox horizontalAlign="right"
+                 width="100%">
+            <!--<mx:Label text="Contest Selection" fontFamily="Arial" fontWeight="bold" fontSize="11" width="80%"/>
+                 <mx:Spacer width="100" />-->
+            <mx:Button styleName="arrowRightBtnStyle" 
+	               labelPlacement="{ButtonLabelPlacement.LEFT}" 
+		       label="PREVIEW CONTEST" 
+		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+        </mx:HBox>
+        <mx:HBox width="100%"
+                 height="100%"
+                 paddingLeft="5">
+            <mx:VBox width="35%"
+                     height="100%"
+                     paddingRight="10">
+                <mx:Label text="Contest Selection"
+                          fontWeight="bold"/>
+                <mx:Label text="What Type of Contest do you want to run?"/>
+                <mx:RadioButtonGroup id="contestType"
+                                     itemClick="handleSelect(event);"/>
+                <mx:VBox width="100%"
+                         height="100%">
+                    <!--
+                         Updated the contest type values so that they can match CompetitionType enum DTO at facade.
+                         @since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                    -->
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        groupName="contestType"
+                                        id="studio"
+                                        label="Studio"
+                                        value="STUDIO"
+                                        selected="true"
+                                        paddingBottom="0"/>
+                        <mx:Text width="100%"
+                                 text="Graphic and web design contests."
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="conceptualization"
+                                        label="Software Conceptualization"
+                                        value="CONCEPTUALIZATION"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Conceptualization contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="specification"
+                                        label="Software Specification"
+                                        value="SPECIFICATION"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Specification contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="softwareDesign"
+                                        label="Architecture"
+                                        value="ARCHITECTURE"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Architecture contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="componentDesign"
+                                        label="Component Design"
+                                        value="DESIGN"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Component design contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="componentDev"
+                                        label="Component Development"
+                                        value="DEVELOPMENT"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Software Development contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="RIAComponent"
+                                        label="RIA Component"
+                                        value="RIACOMPONENT"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="RIA Component contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="RIABuild"
+                                        label="RIA Build"
+                                        value="RIABUILD"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="RIA Build contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="UIPrototype"
+                                        label="UI Prototype"
+                                        value="UIPROTOTYPE"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="UI Prototype contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="assembly"
+                                        label="Software Assembly"
+                                        value="ASSEMBLY"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Assembly contest"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                    <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="testsuites"
+                                        label="Test Suites"
+                                        value="TESTSUITES"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Test Suites"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+		     <mx:Spacer height="1"/>
+                    <mx:VBox width="100%">
+                        <mx:RadioButton fontWeight="bold"
+                                        fontSize="10"
+                                        groupName="contestType"
+                                        id="testscenarios"
+                                        label="Test Scenarios"
+                                        value="TESTSCENARIOS"
+                                        enabled="true"/>
+                        <mx:Text width="100%"
+                                 text="Test Scenarios"
+                                 paddingTop="-10"/>
+                    </mx:VBox>
+                </mx:VBox>
+            </mx:VBox>
+            <mx:VRule height="100%"/>
+            <mx:VBox width="65%"
+                     height="100%"
+                     paddingLeft="10">
+                <mx:Label text="Projects"
+                          styleName="header"/>
+                <mx:Text width="100%"
+                         styleName="content">
+                    <mx:text>
+                A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
+                    </mx:text>
+                </mx:Text>
+                <mx:HBox width="100%" horizontalGap="0">
+                    <mx:Label text="Select or Create a Project" fontWeight="bold" />
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Spacer width="42"/>
+                    <mx:Label text="Add a New Project:"  width="109"/>
+                    <mx:TextInput id="prjInput" width="100%"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%" >
+                    <mx:Spacer width="162"/>
+                    <mx:Label text="----------- or ------------"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Label text="Choose an Existing Project:" />
+                    <mx:ComboBox id="selectContests" width="100%" />
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Label text="Project Description" fontWeight="bold" />
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Spacer width="32"/>
+                    <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
+                    <mx:TextArea id="introInput" width="100%" height="120"/>
+                </mx:HBox>
+                <!--
+                <mx:HBox width="100%" >
+                    <mx:Spacer width="162"/>
+                    <mx:Button label="save and continue" styleName="RedButton" click="goToOverView()" buttonMode="true"/>
+                </mx:HBox> -->
+    	    </mx:VBox>
+	    </mx:HBox>
+    </mx:VBox>
+</mx:Canvas>
