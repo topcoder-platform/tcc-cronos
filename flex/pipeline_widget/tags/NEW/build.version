@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Pipeline widget
+component.distfilename=pipeline_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.pipeline
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/pipeline
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
