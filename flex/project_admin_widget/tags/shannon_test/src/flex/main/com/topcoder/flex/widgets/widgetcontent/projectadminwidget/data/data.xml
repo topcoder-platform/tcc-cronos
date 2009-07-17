@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+	<user id="1" name="aspnetFlex">
+		<project>
+			<id>1</id>
+			<owner>MimiDonaldson</owner>
+			<type>HTML Prototype</type>
+			<name>$1500 Studio Submission Viewer HTML Prototype</name>
+			<access>Read</access>
+		</project>
+		<project>
+			<id>2</id>
+			<type>Wireframe</type>
+			<name>Studio Submission Viewer Wireframe</name>
+			<access>Read | Write</access>
+		</project>
+		<project>
+			<id>3</id>
+			<owner>aspnetFlex</owner>
+			<type>Flex</type>
+			<name>$1250 My Projects Widget Flex Animation and Implementation Contest</name>
+			<access>Write</access>
+		</project>
+		<project>
+			<id>4</id>
+			<owner>MimiDonaldson</owner>
+			<type>Logo Design</type>
+			<name>TopCoder Component Icon Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="2" name="MichelleDonaldson">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="3" name="donald_goodboy">
+		<project>
+			<id>6</id>
+			<owner>MimiDonaldson</owner>
+			<type>Storyboard</type>
+			<name>$1500 Lorem Ipsum Storyboard Contest</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="4" name="testUser">
+		<project>
+			<id>7</id>
+			<owner>MimiDonaldson</owner>
+			<type>HTML Protytype</type>
+			<name>$2000 iRealtor Prototype Contest</name>
+			<access>Read | Write</access>
+		</project>
+		<project>
+			<id>8</id>
+			<type>Icon Design</type>
+			<name>New GUI/Icons for the configuration wizard</name>
+			<access>Read | Write</access>
+		</project>
+	</user>
+	<user id="5" name="MimiDonaldson">
+		<project>
+			<id>9</id>
+			<owner>MimiDonaldson</owner>
+			<type>WireFrame</type>
+			<name>Test Project1</name>
+			<access>Read | Write</access>
+		</project>
+		<project>
+			<id>10</id>
+			<type>Icon Design</type>
+			<name>Test Project2</name>
+			<access>Read | Write</access>
+		</project>
+		<project>
+			<id>11</id>
+			<type>WireFrame</type>
+			<name>Test Project3</name>
+			<access>Read | Write</access>
+		</project>
+		<project>
+			<id>12</id>
+			<type>Icon Design</type>
+			<name>Test Project4</name>
+			<access>Read | Write</access>
+		</project>
+	</user>
+	<user id="6" name="U6">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="7" name="U7">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="8" name="U8">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="9" name="U9">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="10" name="U10">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="11" name="U11">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+	<user id="12" name="U12">
+		<project>
+			<id>5</id>
+			<owner>donald_goodboy</owner>
+			<type>Logo Design</type>
+			<name>$200 Barco Business Logo Design</name>
+			<access>Read</access>
+		</project>
+	</user>
+			
+</users>
