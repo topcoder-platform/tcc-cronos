@@ -20,6 +20,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSaleData;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReview;
     
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
@@ -166,6 +167,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */  
         [Bindable]
         public var isReadOnlyMode:Boolean=false;
+
+		 /**
+         * Represents the spec reviews for the current contest.
+         *  
+         * since Cockpit Launch Contest - Inline Spec Reviews Part 2
+         */ 
+        public var specReviews:ArrayCollection=null;
+        
+        public var contestCreateUser:String=null;
         
         /**
         * @since BUGR-1737
@@ -296,16 +306,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         /**
-         * Reloads the widget data.
-         * 
-         * <p>
-         * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
-         *    - updated to consider read only mode indicator from my project widget.
-         *    - in read only mode, we disable mouse/tab actions on the main panel.
-         * </p>
-         * 
-         * @param isEmptyStart true if it is new contest start else if edit contest start then false.
-         * @param map the various key-value parameters that usually gets passed during edit from another widget (My Project Widget)
+         * Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+         *    To support opening of Review screen on click on ReviewStatus link from My Project widget.
          */ 
         private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
             trace("IN RELOAD OF LAUNCH WIDGET:: START");
@@ -321,6 +323,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             container.contents.name=name;
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
+                var isReviewScreen:Boolean=false;
                 if (map) {
                     (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
@@ -350,6 +353,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                         (container.contents as LaunchWidget).mainPanel.tabEnabled=true;
                         (container.contents as LaunchWidget).mainPanel.tabChildren=true;
                     }
+
+					(container.contents as LaunchWidget).contestCreateUser=map["creator"];
+                    isReviewScreen=(map["screen"]=="Review");
                     
                     (container.contents as LaunchWidget).contestSelect.initData();
                 }
@@ -357,9 +363,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("IN RELOAD OF LAUNCH WIDGET:: competitionType: " + (container.contents as LaunchWidget).competitionType);
                 
                 if (!isEmptyStart) {
-                    trace("IN RELOAD OF LAUNCH WIDGET:: OPEN OVERVIEW PAGE");
-                    (container.contents as LaunchWidget).openOverViewPage();
-                    //_emptyStart=true;
+                    if (isReviewScreen) {
+                        (container.contents as LaunchWidget).openReviewPage();
+                    } else {
+                        trace("IN RELOAD OF LAUNCH WIDGET:: OPEN OVERVIEW PAGE");
+                        (container.contents as LaunchWidget).openOverViewPage();
+                    }
                 }
                 
                 container.startRestore();
@@ -515,6 +524,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * Updated for Cockpit Release Assembly 1 v1.0
          *    - gets the contest type attribute.
          *    - based on contest type it determines which version to load - software or studio.
+         * 
+         * Updated for Cockpit Launch Contest - Inline Spec Reviews Part 2
+         *    - we fetch the spec reviews during project edit.
          *
          * @param map the attributes for this widget. Cannot be null.
          *
@@ -539,7 +551,31 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     getSWContestOp.send(parseInt(contestid));
                 }
                 
+                //
+                // we also fetch the review specs.
+                //
+                // since Cockpit Launch Contest - Inline Spec Reviews Part 2
+                //
+                var getSpecReviewsOp:AbstractOperation=_csws.getOperation("getSpecReviews");
+                getSpecReviewsOp.addEventListener("result", getSpecReviewsHandler);
+                getSpecReviewsOp.send(parseInt(contestid), contestType.toLocaleLowerCase() == "studio");
+                
                 showLoadingProgress();
+            }
+        }
+        
+        /**
+         * Handles the webservice fetch of list of spec reviews. 
+         * 
+         * @since Cockpit Launch Contest - Inline Spec Reviews Part 2
+         */
+        private function getSpecReviewsHandler(e:ResultEvent):void {
+            hideLoadingProgress();
+            trace("getSpecReviewsHandler: " + e + ", " + e.result);
+            if (e && e.result) {
+                var srs:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SpecReview);
+                trace("getSpecReviewsHandler:: srs: " + srs);
+                (container.contents as LaunchWidget).specReviews=srs;
             }
         }
         
@@ -555,7 +591,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getStudioContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).softwareCompetition=null;
                 (container.contents as LaunchWidget).competition=c;
-                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }
         }
@@ -572,7 +608,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getSoftwareContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).competition=null;
                 (container.contents as LaunchWidget).softwareCompetition=c;
-                (container.contents as LaunchWidget).currentState="ContestSelectionState";
+                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }
         }

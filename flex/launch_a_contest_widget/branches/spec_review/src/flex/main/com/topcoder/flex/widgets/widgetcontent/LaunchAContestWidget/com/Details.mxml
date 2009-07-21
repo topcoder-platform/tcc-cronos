@@ -636,8 +636,8 @@
                 this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions.htmlText;
                 this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines.htmlText;
 
-		// for now, also set detailed Reuqirements on function description
-		this.mainWidget.softwareCompetition.assetDTO.detailedDescription=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+				// for now, also set detailed Reuqirements on function description
+				this.mainWidget.softwareCompetition.assetDTO.detailedDescription=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
 
 
                 //

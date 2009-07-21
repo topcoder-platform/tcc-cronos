@@ -214,7 +214,7 @@
                 sched.height=800;
                 //overView.height=700; // BUGR-1134
                 review.height=1080; // BUGR-1134
-		contestSelect.height=720;
+				contestSelect.height=720;
                 contestSelect.mainWidget=this;
                 overView.mainWidget=this;
                 details.mainWidget=this;
@@ -276,7 +276,10 @@
                         review.cstTypeStep1=this.competitionType;
                         
                         startLaunchProcess();
-                        next();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
                     } else if (softwareCompetition) {
                         trace("IN ON CREATE COMPLETE OF SOFTWARE COMPETITION :: EDIT");
                         //this.competitionType="DESIGN";
@@ -285,7 +288,10 @@
                         review.cstTypeStep1=this.competitionType;
                         
                         startLaunchProcess();
-                        next();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
                     }
                 } 
             }
@@ -333,6 +339,21 @@
 
                 setPreviousStep(step1box); // BUGR-1141
                 setCurStep(step2box); // BUGR-1141
+            }
+            
+            /**
+             * Sets the current state to review screen. 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            public function openReviewPage():void {
+                this.currentState="ReviewState";
+                this.review.setAllValues();
+                save.visible=true;
+                this.height=REVIEW_HEIGHT;
+                back.visible=true;
+
+                setPreviousStep(step6box);
+                setCurStep(step7box);
             }
 
             // BUGR-1445
@@ -590,6 +611,10 @@
                             goNext.includeInLayout=goNext.visible=true;
                             goNext.label = "NEXT";
                         }
+
+						 // on skip too - set the values. 
+                       review.setAllValues();
+
     
                        this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
@@ -1156,6 +1181,7 @@
                 attch.initData();
 
                 sched.initData();
+                review.setAllValues();
                 activate.initData();
                 save.visible=false;
             }
@@ -1320,6 +1346,35 @@
         <mx:operation name="getSoftwareContestByProjectId"
                       resultFormat="object"
                       fault="showWebserviceError('getSoftwareContestByProjectId', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to fetch review specs.
+        -->
+        <mx:operation name="getSpecReviews"
+                      resultFormat="object"
+                      fault="showWebserviceError('getSpecReviews', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to save review comment.
+        -->
+        <mx:operation name="saveReviewComment"
+                      resultFormat="object"
+                      result="Helper.showAlertMessage('Saved successfully')"
+                      fault="showWebserviceError('saveReviewComment', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to save review status.
+        -->
+        <mx:operation name="saveReviewStatus"
+                      resultFormat="object"
+                      result="Helper.showAlertMessage('Saved successfully')"
+                      fault="showWebserviceError('saveReviewStatus', event);">
         </mx:operation>
 
     </mx:WebService>

@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-           width="100%"
-           height="100%"
-           horizontalScrollPolicy="off"
-           verticalScrollPolicy="off">
+<!--
+Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+    - Inline Review Feature has been introduced.
+    - As per the requirement the layout of the page has been updated.
+    - Now sections are in accordion like panels.
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         horizontalScrollPolicy="off"
+         verticalScrollPolicy="off"
+         styleName="boxStyle"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
+         creationComplete="init()">
     <mx:Script>
         <![CDATA[
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
+            import mx.rpc.AbstractOperation;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReviewComment;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReview;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.ConversationData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.ReviewStatus;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.ReviewData;
+            import mx.effects.effectClasses.ParallelInstance;
+            import mx.effects.effectClasses.ResizeInstance;
+            import mx.effects.IEffectInstance;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
             import com.topcoder.flex.util.editor.*;
             import mx.controls.HRule;
@@ -15,7 +33,9 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import mx.collections.ArrayCollection;
             import mx.controls.ButtonLabelPlacement; // BUGR-1501
-
+            import flash.events.MouseEvent;
+            import flash.geom.Point;
+            
             //step1 data
             public var cstTypeStep1:String;
             //step2 data
@@ -46,7 +66,9 @@
             //public var ns_detailedDescStr:String;
             public var ns_funcDescStr:String;
             public var ns_techListData:ArrayCollection;
-            // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            
+            // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+            // we don't need comments input anymore.
             //public var ns_commentsStr:String;
             
             // added for Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -77,8 +99,64 @@
 
             [Bindable] // BUGR-1067
             public var mainWidget:LaunchWidget;
-
+            
+            /**
+             * Dictionary of review section name to ReviewData 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private var reviews:Dictionary=new Dictionary();
+            
+            /**
+             * Name of the current review section for which modal popup is opened up. 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private var currentReviewSection:String=null;
+            
+            /**
+             * The ReviewData of the current review section for which modal popup is opened up.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private var currentReviewData:ReviewData=null;
+            
+            /**
+             * The section id to section name mapping.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            private var sectionIdToNameMapping:Dictionary=new Dictionary();
+            
+            /**
+             * The section name to section id mapping.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 2
+             */
+            private var sectionNameToIdMapping:Dictionary=new Dictionary();
+            
+            /**
+             * Initializes the review data structure.
+             * 
+             * Also builds the demo data for the assembly review purpose.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private function init():void {
+                sectionIdToNameMapping["contestSelection"]="Contest Selection";
+                sectionIdToNameMapping["contestOverview"]="Contest Overview";
+                sectionIdToNameMapping["contestDetails"]="Contest Details";
+                sectionIdToNameMapping["contestSpecs"]="Contest Specs";
+                sectionIdToNameMapping["attachedFiles"]="Attached Files";
+                sectionIdToNameMapping["contestSchedule"]="Contest Schedule";
+                
+                sectionNameToIdMapping["Contest Selection"]="contestSelection";
+                sectionNameToIdMapping["Contest Overview"]="contestOverview";
+                sectionNameToIdMapping["Contest Details"]="contestDetails";
+                sectionNameToIdMapping["Contest Specs"]="contestSpecs";
+                sectionNameToIdMapping["Attached Files"]="attachedFiles";
+                sectionNameToIdMapping["Contest Schedule"]="contestSchedule";
+            }
+            
             // Set all section values from previous steps
+            // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+            //        - review data structure is updated.
+            // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 2
+            //        - review data is read from persistent now.
             public function setAllValues():void {
 			projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
                 contestType_step1.text=cstTypeStep1;
@@ -191,14 +269,56 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget.studioContestType) { // BUGR-1600
-                    setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
+                    if (mainWidget.competition && mainWidget.competition.contestData) {
+                        setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
+                    }
                 } else {
-                	attachedFilesVBox.removeAllChildren();
-                	setAttachedFiles(mainWidget.softwareCompetition.assetDTO.documentation);
-                	setAttachedFiles(mainWidget.softwareCompetition.assetDTO.compUploadedFiles);
+                    attachedFilesVBox.removeAllChildren();
+                    
+                    if (mainWidget.softwareCompetition && mainWidget.softwareCompetition.assetDTO) {
+                        setAttachedFiles(mainWidget.softwareCompetition.assetDTO.documentation);
+                        setAttachedFiles(mainWidget.softwareCompetition.assetDTO.compUploadedFiles);
+                    }
+                }
+                
+                // set the review data.
+                if (mainWidget.specReviews) {
+                    for each (var sr:SpecReview in mainWidget.specReviews) {
+                        var rd:ReviewData=new ReviewData();
+                        rd.sectionId=sectionNameToIdMapping[sr.sectionType.name];
+                        rd.sectionName=sr.sectionType.name;
+                        rd.reviewStatus=sr.reviewStatus.name;
+                        reviews[rd.sectionId]=rd;
+                        
+                        if (sr.comments) {
+                            for each (var comm:SpecReviewComment in sr.comments) {
+                                var cd:ConversationData=new ConversationData();
+                                cd.commentId=comm.commentId;
+                                cd.message=comm.comment;
+                                cd.user=comm.createUser;
+                                cd.time=comm.createTime;
+                                cd.reviewer=comm.roleType.name=="REVIEWER";
+                                
+                                rd.conversations.addItem(cd);
+                            }                    
+                        }
+                    }
+                }
+                
+                // initialize review controls.
+                initializeReviewControls();
+            }
+            
+            /**
+             * Initializes the review data structure.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            private function initializeReviewControls():void {
+                for each (var rd:ReviewData in reviews) {
+                    updateReviewButtons(rd);
                 }
             }
-
+            
             private function setAttachedFiles(documentationUploads:Array):void {
 				if(this.mainWidget.studioContestType) { // BUGR-1600
 					attachedFilesVBox.removeAllChildren();
@@ -286,7 +406,252 @@
                 var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
                 targetParent.goToStep6();
             }
-	     ]]>
+            
+            /**
+             * Show / hide the review section tab for the given section id.
+             * 
+             * @param sectionId the specified section id. 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            private function showHideTab(sectionId:String):void {
+                var content:Object=this[sectionId + "_content"];
+                var show:Boolean=content.height == 0;
+                
+                var height:Number=content.measuredHeight;
+                if (height <= 0) {
+                    height=50;
+                }
+                
+                if (show) {
+                    var showEffect:ResizeInstance=tabShowEffect.createInstance(content) as ResizeInstance;
+                    showEffect.heightFrom=0;
+                    showEffect.heightTo=height;
+                    showEffect.widthFrom=content.width;
+                    showEffect.widthTo=content.width;
+                    showEffect.play();
+                } else {
+                    var hideEffect:ResizeInstance=tabHideEffect.createInstance(content) as ResizeInstance;
+                    hideEffect.heightFrom=height;
+                    hideEffect.heightTo=0;
+                    hideEffect.widthFrom=content.width;
+                    hideEffect.widthTo=content.width;
+                    hideEffect.play();
+                }
+                
+                this[sectionId + "_tabBtn"].styleName=(show) ? "tabBtnOpen" : "tabBtnClose";
+            }
+            
+            /**
+             * End effect handler for review popup hide.
+             */
+            private function handleHideReviewPopupEffect():void {
+                reviewPopup.visible=false;
+            }
+            
+            /**
+             * Opens the review popup modal window for the given section id
+             * 
+             * @param event the mouse click event.
+             * @param sectionId the specified section id. 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            private function openReviewPopup(event:MouseEvent, sectionId:String):void {
+                if (reviewPopup.visible) {
+                    return;
+                }
+                
+                currentReviewSection=sectionId;
+                currentReviewData=reviews[currentReviewSection];
+                if (!currentReviewData) {
+                    var rd:ReviewData=new ReviewData();
+                    rd.sectionId=currentReviewSection;
+                    rd.sectionName=sectionIdToNameMapping[rd.sectionId];
+                    reviews[currentReviewSection]=rd;
+                    currentReviewData=rd;
+                }
+                
+                //
+                // build the review popup data.
+                //
+                if (!mainWidget.contestCreateUser || mainWidget.username==mainWidget.contestCreateUser) {
+                    passFailRadioContainer.visible=false;
+                    passFailRadioContainer.includeInLayout=false;    
+                } else {
+                    passFailRadioContainer.visible=true;
+                    passFailRadioContainer.includeInLayout=true;
+                    passRadio.selected=false;
+                    failRadio.selected=false;
+                }
+                commentInputArea.text="";
+                
+                oldConversationBox.removeAllChildren();
+                
+                // set pass/fail button correctly.
+                if (currentReviewData.reviewStatus == ReviewStatus.PASSED) {
+                    passRadio.selected=true;
+                } else if (currentReviewData.reviewStatus == ReviewStatus.FAILED) {
+                    failRadio.selected=true;
+                }
+                
+                // save the conversation.
+                for each (var cd:ConversationData in currentReviewData.conversations) {
+                    var stylePrefix:String="";
+                    if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                        stylePrefix="creator";
+                    } else {
+                        stylePrefix="reviewer";
+                    }
+                    
+                    var cbox:HBox=new HBox();
+                    var chdr:Label=new Label();
+                    chdr.width=140;
+                    chdr.percentHeight=100;
+                    var formattedDate:String=cd.time.month + " " + cd.time.date + ", " + cd.time.fullYear + " " + cd.time.hours + ":" + cd.time.minutes;
+                    chdr.text="[" + cd.user + "] " + formattedDate + " - ";
+                    chdr.styleName=stylePrefix + "ConversationHeader";
+                    cbox.addChild(chdr);
+                    
+                    var cmsg:Label=new Label();
+                    cmsg.percentWidth=100;
+                    cmsg.percentHeight=100;
+                    
+                    cmsg.text=cd.message;
+                    cmsg.styleName=stylePrefix + "ConversationMsg";
+                    cbox.addChild(cmsg);
+                    
+                    oldConversationBox.addChild(cbox);
+                }
+                
+                var reviewStatusBtn:Button=this[sectionId + "_reviewStatusBtn"] as Button;
+                var x:Number=reviewStatusBtn.x;
+                var y:Number=reviewStatusBtn.y;
+                
+                var globalPt:Point=reviewStatusBtn.contentToGlobal(new Point(0, 0));
+                
+                globalPt.x=globalPt.x - 337;
+                globalPt.y=globalPt.y - 127;
+                
+                var newPoint:Point=reviewPopupContainer.globalToContent(globalPt);
+                
+                reviewPopup.x=newPoint.x;
+                reviewPopup.y=newPoint.y;
+                
+                mainContainer.tabChildren=false;
+                mainContainer.tabEnabled=false;
+                mainContainer.mouseChildren=false;
+                mainContainer.mouseEnabled=false;
+                reviewPopup.visible=true;
+                fadeIn.play();
+            }
+            
+            /**
+             * Closes the review popup modal window.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            private function closeReviewPopup():void {
+                currentReviewSection=null;
+                currentReviewData=null;
+                mainContainer.tabChildren=true;
+                mainContainer.tabEnabled=true;
+                mainContainer.mouseChildren=true;
+                mainContainer.mouseEnabled=true;
+                fadeOut.play();
+            }
+            
+            /**
+             * Saves the review data to DTO objects.
+             * 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private function saveReview():void {
+                // update the review  data.
+                if (passRadio.selected) {
+                    currentReviewData.reviewStatus=ReviewStatus.PASSED;
+                } else if (failRadio.selected) {
+                    currentReviewData.reviewStatus=ReviewStatus.FAILED;
+                } else {
+                    currentReviewData.reviewStatus=ReviewStatus.PENDING;
+                }
+                
+                // save the conversation.
+                if (commentInputArea.text && commentInputArea.text != "") {
+                    var cd:ConversationData=new ConversationData();
+                    cd.message=commentInputArea.text;
+                    cd.time=new Date();
+                    cd.user=mainWidget.username;
+                    if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                        cd.reviewer=false;
+                    } else {
+                        cd.reviewer=true;
+                    }
+                    
+                    currentReviewData.conversations.addItem(cd);
+                }
+                
+                updateReviewButtons(currentReviewData);
+                
+                //
+                // we save to persistence...
+                //
+                // since Cockpit Launch Contest - Inline Spec Reviews Part 2
+                //
+                if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                    var saveReviewComment:AbstractOperation=mainWidget._csws.getOperation("saveReviewComment");
+                    saveReviewComment.send(mainWidget.contestid, 
+                        mainWidget.competitionType.toLocaleLowerCase() == "studio",
+                        currentReviewData.sectionName,
+                        commentInputArea.text,
+                        "CREATOR");
+                } else {
+                    var saveReviewStatus:AbstractOperation=mainWidget._csws.getOperation("saveReviewStatus");
+                    saveReviewStatus.send(mainWidget.contestid, 
+                        mainWidget.competitionType.toLocaleLowerCase() == "studio",
+                        currentReviewData.sectionName,
+                        commentInputArea.text,
+                        passRadio.selected,
+                        "REVIEWER");
+                }
+                
+                
+                mainWidget.showLoadingProgress();
+                
+                closeReviewPopup();
+            }
+            
+            /**
+             * Updates the review buttons for the specified ReviewData
+             * 
+             * @param rd the specified ReviewData
+             * 
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */ 
+            private function updateReviewButtons(rd:ReviewData):void {
+                if (!rd) {
+                    return;
+                }
+                
+                var reviewStatusBtn:Button=this[rd.sectionId + "_reviewStatusBtn"] as Button;
+                var reviewCommentBtn:Button=this[rd.sectionId + "_reviewCommentBtn"] as Button;
+                
+                // set the review status icon.
+                if (rd.reviewStatus == ReviewStatus.PENDING) {
+                    reviewStatusBtn.styleName="reviewNeededIcon";
+                } else if (rd.reviewStatus == ReviewStatus.PASSED) {
+                    reviewStatusBtn.styleName="reviewPassedIcon";
+                } else if (rd.reviewStatus == ReviewStatus.FAILED) {
+                    reviewStatusBtn.styleName="reviewFailedIcon";
+                } else {
+                    reviewStatusBtn.styleName="";
+                }
+                
+                // set the review comment icon style.
+                if (rd.newConversation) {
+                    reviewCommentBtn.styleName="newReviewCommentIcon";
+                } else {
+                    reviewCommentBtn.styleName="reviewCommentIcon";
+                }
+            }
+        ]]>
     </mx:Script>
 
     <!--
@@ -295,48 +660,194 @@
     -->
     <mx:VBox width="100%"
              height="100%"
-             styleName="boxStyle">
+             id="mainContainer">
         <mx:HBox horizontalAlign="right"
                  width="100%">
             <mx:Label text="Review"
                       styleName="sectionTitle"
                       width="80%"/>
             <mx:Spacer width="100"/>
-            <mx:Button styleName="arrowRightBtnStyle" 
-                       labelPlacement="{ButtonLabelPlacement.LEFT}" 
-                       label="PREVIEW CONTEST" 
-                       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+            <mx:Button styleName="arrowRightBtnStyle"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       label="PREVIEW CONTEST"
+                       click="this.mainWidget.previewContest()"/>
+            <!-- BUGR-1501 -->
         </mx:HBox>
-		<mx:Label id="projectName" text="Project:" styleName="projectTitle"/>
+        <mx:Label id="projectName"
+                  text="Project:"
+                  styleName="projectTitle"/>
+        <mx:Text id="projectDescription"
+                 text=""/>
 
-        <mx:HRule width="100%"
-                  strokeColor="0x000000"/>
+        <mx:Spacer height="5"/>
 
         <mx:VBox width="100%"
-                 verticalGap="0">
-            <mx:Label text="Contest Selection"
-                      styleName="subsectionTitle"/>
-            <mx:Spacer height="15"/>
-	        <mx:HBox width="100%">
-	            <mx:Label text="Contest Type:" fontWeight="bold" />
-	            <mx:Text id="contestType_step1" text="Studio" />
-	            <mx:Spacer width="375"/>
-		    <!--
-	            <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
-		    -->
-	        </mx:HBox>
+                 id="contestSelection"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="contestSelection_header">
+                <mx:Button id="contestSelection_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('contestSelection')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Contest Selection"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="contestSelection_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSelection')"/>
+                <mx:Button id="contestSelection_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSelection')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox width="100%"
+                     id="contestSelection_content"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
+                <mx:Label text="Contest Type:"
+                          fontWeight="bold"/>
+                <mx:Text id="contestType_step1"
+                         text="Studio"/>
+            </mx:HBox>
         </mx:VBox>
-        
-        <mx:HRule width="100%" strokeColor="0x000000"/>
-        
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Overview" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-            <mx:Spacer height="15"/>
 
-            <mx:VBox visible="{!mainWidget.studioContestType}"
-                     includeInLayout="{!mainWidget.studioContestType}">
-                <mx:HBox verticalAlign="top"
-                         width="100%">
+        <mx:Spacer height="5"/>
+
+        <mx:VBox width="100%"
+                 id="contestOverview"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="contestOverview_header">
+                <mx:Button id="contestOverview_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('contestOverview')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Contest Overview"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="contestOverview_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestOverview')"/>
+                <mx:Button id="contestOverview_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestOverview')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox id="contestOverview_content"
+                     width="100%"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
+                <mx:VBox width="100%"
+                         visible="{mainWidget.studioContestType}"
+                         includeInLayout="{mainWidget.studioContestType}"
+                         id="s_contestOverview_content">
+                    <mx:HBox width="100%">
+                        <mx:Label text="Type:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="contestType_step2"
+                                 text="Application Front End Design"/>
+                    </mx:HBox>
+                    <mx:HBox verticalAlign="top"
+                             width="100%">
+                        <mx:VBox>
+                            <mx:HBox>
+                                <mx:Label text="1st Place: "
+                                          fontWeight="bold"/>
+                                <mx:Text id="p1"
+                                         width="120"/>
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:Label text="2nd Place:"
+                                          fontWeight="bold"/>
+                                <mx:Text id="p2"
+                                         width="120"/>
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:Label text="3rd Place: "
+                                          fontWeight="bold"/>
+                                <mx:Text id="p3"
+                                         width="120"/>
+                            </mx:HBox>
+                        </mx:VBox>
+                        <mx:VBox>
+                            <mx:HBox>
+                                <mx:Label text="4th Place:"
+                                          fontWeight="bold"/>
+                                <mx:Text id="p4"
+                                         width="120"/>
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:Label text="5th Place:"
+                                          fontWeight="bold"/>
+                                <mx:Text id="p5"
+                                         width="120"/>
+                            </mx:HBox>
+                        </mx:VBox>
+                        <mx:VBox>
+                            <mx:HBox>
+                                <mx:Label text="Contest Fee:"
+                                          fontWeight="bold"/>
+                                <mx:Text id="adFee"
+                                         text="$***"
+                                         width="154"/>
+                                <!-- TCCC-1218 -->
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:Label text="Contest Total:"
+                                          fontWeight="bold"/>
+                                <mx:Spacer width="7"/>
+                                <mx:Text id="total"
+                                         text="$***"
+                                         width="55"/>
+                            </mx:HBox>
+                        </mx:VBox>
+                    </mx:HBox>
+                </mx:VBox>
+                <mx:HBox width="100%"
+                         visible="{!mainWidget.studioContestType}"
+                         includeInLayout="{!mainWidget.studioContestType}"
+                         id="ns_contestOverview_content">
                     <mx:VBox>
                         <mx:HBox>
                             <mx:Label text="1st Place: "
@@ -381,157 +892,108 @@
                                      text="$***"
                                      width="55"/>
                         </mx:HBox>
-                        <mx:HBox>
-                            <mx:Spacer width="112"/>
-                            <mx:Button styleName="EditButton"
-                                       buttonMode="true"
-                                       click="goToStep3()"/><!-- BUGR-1893 -->
-                        </mx:HBox>
                     </mx:VBox>
                 </mx:HBox>
-            </mx:VBox>
-            <mx:VBox visible="{mainWidget.studioContestType}"
-                     includeInLayout="{mainWidget.studioContestType}">
-                <mx:HBox width="100%">
-                    <mx:Label text="Type:"
+            </mx:HBox>
+        </mx:VBox>
+
+        <mx:Spacer height="5"/>
+
+        <mx:VBox width="100%"
+                 id="contestDetails"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="contestDetails_header">
+                <mx:Button id="contestDetails_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('contestDetails')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Contest Details"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="contestDetails_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestDetails')"/>
+                <mx:Button id="contestDetails_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestDetails')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox id="contestDetails_content"
+                     width="100%"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
+                <mx:VBox width="100%"
+                         visible="{mainWidget.studioContestType}"
+                         includeInLayout="{mainWidget.studioContestType}"
+                         id="s_contestDetails_content">
+                    <mx:HBox>
+                        <mx:Label text="Content Title:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="ctInput"
+                                 width="308"
+                                 text="test"/>
+                    </mx:HBox>
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Introduction:"
                               fontWeight="bold"/>
-                    <mx:Text id="contestType_step2"
-                             text="Application Front End Design"/>
-                </mx:HBox>
-                <mx:HBox verticalAlign="top"
-                         width="100%">
-                    <mx:VBox>
-                        <mx:HBox>
-                            <mx:Label text="1st Place: "
-                                      fontWeight="bold"/>
-                            <mx:Text id="p1"
-                                     width="120"/>
-                        </mx:HBox>
-                        <mx:HBox>
-                            <mx:Label text="2nd Place:"
-                                      fontWeight="bold"/>
-                            <mx:Text id="p2"
-                                     width="120"/>
-                        </mx:HBox>
-                        <mx:HBox>
-                            <mx:Label text="3rd Place: "
-                                      fontWeight="bold"/>
-                            <mx:Text id="p3"
-                                     width="120"/>
-                        </mx:HBox>
+                    <mx:VBox verticalScrollPolicy="auto"
+                             width="308">
+                        <mx:Text id="introInput"
+                                 width="100%"
+                                 height="100%"/>
                     </mx:VBox>
-                    <mx:VBox>
-                        <mx:HBox>
-                            <mx:Label text="4th Place:"
-                                      fontWeight="bold"/>
-                            <mx:Text id="p4"
-                                     width="120"/>
-                        </mx:HBox>
-                        <mx:HBox>
-                            <mx:Label text="5th Place:"
-                                      fontWeight="bold"/>
-                            <mx:Text id="p5"
-                                     width="120"/>
-                        </mx:HBox>
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Detailed Description:"
+                              fontWeight="bold"/>
+                    <mx:VBox verticalScrollPolicy="auto"
+                             width="308">
+                        <mx:Text id="glsInput"
+                                 width="100%"
+                                 height="100%"/>
                     </mx:VBox>
-                    <mx:VBox>
-                        <mx:HBox>
-                            <mx:Label text="Contest Fee:"
-                                      fontWeight="bold"/>
-                            <mx:Text id="adFee"
-                                     text="$***"
-                                     width="154"/> <!-- TCCC-1218 -->
-                        </mx:HBox>
-                        <mx:HBox>
-                            <mx:Label text="Contest Total:"
-                                      fontWeight="bold"/>
-                            <mx:Spacer width="7"/>
-                            <mx:Text id="total"
-                                     text="$***"
-                                     width="55"/>
-                        </mx:HBox>
-                        <mx:HBox>
-                            <mx:Spacer width="112"/>
-                            <mx:Button styleName="EditButton"
-                                       buttonMode="true"
-                                       click="goToStep2()"/>
-                        </mx:HBox>
-                    </mx:VBox>
-                </mx:HBox>
-            </mx:VBox>
-        </mx:VBox>
+                </mx:VBox>
+                <mx:VBox width="100%"
+                         visible="{!mainWidget.studioContestType}"
+                         includeInLayout="{!mainWidget.studioContestType}"
+                         id="ns_contestDetails_content">
+                    <mx:HBox>
+                        <mx:Label text="Component Name:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="ns_componentName"
+                                 width="308"/>
+                    </mx:HBox>
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Short Description:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_shortDesc"
+                             width="500"/>
 
-        <mx:HRule width="100%"
-                  strokeColor="0x000000"/>
-
-        <mx:VBox width="100%"
-                 verticalGap="0"
-                 visible="{mainWidget.studioContestType}"
-                 includeInLayout="{mainWidget.studioContestType}">
-            <mx:Label text="Contest Details"
-                      styleName="subsectionTitle"/>
-            <mx:Spacer height="10"/>
-            <mx:HBox>
-                <mx:Label text="Content Title:"
-                          fontWeight="bold"/>
-                <mx:Text id="ctInput"
-                         width="308"
-                         text="test"/>
-            </mx:HBox>
-            <mx:Spacer height="5"/>
-            <mx:Label text="Introduction:"
-                      fontWeight="bold"/>
-            <mx:VBox verticalScrollPolicy="auto"
-                     width="308"
-                     height="50">
-                <mx:Text id="introInput"
-                         width="100%"
-                         height="100%"/>
-            </mx:VBox>
-            <mx:Spacer height="5"/>
-            <mx:Label text="Detailed Description:"
-                      fontWeight="bold"/>
-            <mx:VBox verticalScrollPolicy="auto"
-                     width="308"
-                     height="50">
-                <mx:Text id="glsInput"
-                         width="100%"
-                         height="100%"/>
-            </mx:VBox>
-            <mx:HBox width="100%">
-                <mx:Spacer width="515"/>
-                <mx:Button styleName="EditButton"
-                           buttonMode="true"
-                           click="goToStep3()"/>
-            </mx:HBox>
-        </mx:VBox>
-
-        <mx:VBox width="100%"
-                 verticalGap="0"
-                 visible="{!mainWidget.studioContestType}"
-                 includeInLayout="{!mainWidget.studioContestType}">
-            <mx:Label text="Contest Details"
-                      styleName="subsectionTitle"/>
-            <mx:Spacer height="15"/>
-            <mx:HBox>
-                <mx:Label text="Component Name:"
-                          fontWeight="bold"/>
-                <mx:Text id="ns_componentName"
-                         width="308"/>
-            </mx:HBox>
-            <mx:Spacer height="5"/>
-            <mx:Label text="Short Description:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_shortDesc"
-                     width="500"
-                     height="50"/>
-
-            <mx:Spacer height="5"/>
-            <mx:Label text="Functional Description:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_funcDesc"
-                     width="500"
-                     height="50"/>
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Functional Description:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_funcDesc"
+                             width="500"/>
 
             <!--<mx:Spacer height="5"/>
             <mx:Label text="Detailed Description:"
@@ -568,158 +1030,330 @@
                      width="500"
                      height="50"/>                                                    
 
-            <mx:Spacer height="5"/>
-            <mx:Label text="Current Project Technologies:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_techList"
-                     width="500"/>
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Current Project Technologies:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_techList"
+                             width="500"/>
 
-            <!--<mx:Spacer height="5"/>
-            <mx:Label text="Comments:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_comments"
-                     width="500"
-                     height="50"/>-->
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Catalog Name:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_catalogName"
+                             width="500"/>
 
-            <mx:Spacer height="5"/>
-            <mx:Label text="Catalog Name:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_catalogName"
-                     width="500"
-                     height="50"/>
-
-            <mx:Spacer height="5"/>
-            <mx:Label text="Categories:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_categories"
-                     width="500"
-                     height="50"/>
-
-            <mx:HBox width="100%">
-                <mx:Spacer width="515"/>
-                <mx:Button styleName="EditButton"
-                           buttonMode="true"
-                           click="goToStep4()"/><!-- BUGR-1893 -->
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Categories:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_categories"
+                             width="500"/>
+                </mx:VBox>
             </mx:HBox>
         </mx:VBox>
 
-        <!-- BUGR-1067 -->
-        <mx:VBox visible="{mainWidget.studioContestType}"
-                 includeInLayout="{mainWidget.studioContestType}">
-            <mx:HRule width="100%"
-                      strokeColor="0x000000"/>
+        <mx:Spacer height="5"/>
 
+        <mx:VBox visible="{mainWidget.studioContestType}"
+                 includeInLayout="{mainWidget.studioContestType}"
+                 width="100%"
+                 id="contestSpecs"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="contestSpecs_header">
+                <mx:Button id="contestSpecs_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('contestSpecs')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Contest Specifications"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="contestSpecs_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSpecs')"/>
+                <mx:Button id="contestSpecs_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSpecs')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
             <mx:VBox width="100%"
-                     verticalGap="0">
-                <mx:Label text="Contest Specifications"
-                          styleName="subsectionTitle"/>
-                <mx:Spacer height="15"/>
+                     id="contestSpecs_content"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
                 <mx:Label text="Colors:"
                           fontWeight="bold"/>
                 <mx:Text id="colorInput"
                          width="500"
-                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Fonts:"
                           fontWeight="bold"/>
                 <mx:Text id="fontInput"
                          width="500"
-                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Size:"
                           fontWeight="bold"/>
                 <mx:Text id="sizeInput"
                          width="500"
-                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Additional Requirements or Restrictions:"
                           fontWeight="bold"/>
                 <mx:Text id="addReInput"
                          width="500"
-                         height="30"
                          text="test"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Final File Formats:"
                           fontWeight="bold"/>
                 <mx:Text id="fileFormatInput"
                          width="500"
-                         height="30"
                          text="test"/>
+            </mx:VBox>
+        </mx:VBox>
 
-                <mx:HBox width="100%">
-                    <mx:Spacer width="515"/>
-                    <mx:Button styleName="EditButton"
-                               buttonMode="true"
-                               click="goToStep4()"/>
+        <mx:Spacer height="5"
+                   visible="{mainWidget.studioContestType}"
+                   includeInLayout="{mainWidget.studioContestType}"/>
+
+        <mx:VBox width="100%"
+                 id="attachedFiles"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="attachedFiles_header">
+                <mx:Button id="attachedFiles_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('attachedFiles')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Attached Files"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="attachedFiles_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'attachedFiles')"/>
+                <mx:Button id="attachedFiles_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'attachedFiles')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox width="100%"
+                     id="attachedFiles_content"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
+                <mx:VBox width="100%"
+                         id="attachedFilesVBox">
+                </mx:VBox>
+            </mx:HBox>
+        </mx:VBox>
+
+        <mx:Spacer height="5"/>
+
+        <mx:VBox width="100%"
+                 id="contestSchedule"
+                 backgroundColor="#f0f0f0"
+                 verticalScrollPolicy="off"
+                 horizontalScrollPolicy="off"
+                 verticalGap="0"
+                 borderStyle="solid"
+                 borderColor="#d5d5d5"
+                 borderThickness="1"
+                 borderSides="top bottom">
+            <mx:HBox width="100%"
+                     id="contestSchedule_header">
+                <mx:Button id="contestSchedule_tabBtn"
+                           styleName="tabBtnClose"
+                           width="35"
+                           height="23"
+                           click="showHideTab('contestSchedule')"/>
+                <mx:HBox height="35"
+                         verticalAlign="middle">
+                    <mx:Label text="Contest Schedule"
+                              styleName="subsectionTitle"/>
+                </mx:HBox>
+                <mx:Spacer width="100%"/>
+                <mx:Button id="contestSchedule_reviewStatusBtn"
+                           styleName="reviewNeededIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSchedule')"/>
+                <mx:Button id="contestSchedule_reviewCommentBtn"
+                           styleName="reviewCommentIcon"
+                           width="35"
+                           height="35"
+                           click="openReviewPopup(event, 'contestSchedule')"/>
+                <mx:Spacer width="10"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%"
+                     id="contestSchedule_content"
+                     height="0"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     paddingLeft="10"
+                     paddingRight="10"
+                     paddingBottom="10">
+                <mx:HBox>
+                    <mx:Label text="Start Date:"
+                              fontWeight="bold"/>
+                    <mx:Text id="startDate"
+                             text="Start Date"/>
+                    <mx:Label text="Start Time:"
+                              fontWeight="bold"/>
+                    <mx:Text id="startTime"
+                             text="Start Time"/>
+                </mx:HBox>
+
+                <mx:HBox visible="{mainWidget.studioContestType}"
+                         includeInLayout="{mainWidget.studioContestType}">
+                    <mx:Label text="End Date:"
+                              fontWeight="bold"/>
+                    <mx:Text id="endDate"
+                             text="End Date"/>
+                    <mx:Label text="End Time:"
+                              fontWeight="bold"/>
+                    <mx:Text id="endTime"
+                             text="End Time"/>
+                </mx:HBox>
+
+            </mx:VBox>
+        </mx:VBox>
+    </mx:VBox>
+    <mx:Canvas id="reviewPopupContainer">
+        <mx:TitleWindow includeInLayout="false"
+                        visible="false"
+                        id="reviewPopup"
+                        width="332"
+                        height="289"
+                        horizontalAlign="left"
+                        styleName="reviewModalWindow"
+                        showCloseButton="false"
+                        borderStyle="none"
+                        borderThickness="3"
+                        headerHeight="0"
+                        horizontalScrollPolicy="off"
+                        verticalScrollPolicy="off"
+                        xmlns:filters="flash.filters.*">
+            <mx:filters>
+                <mx:DropShadowFilter distance="10"
+                                     angle="45"
+                                     alpha="0.3"/>
+            </mx:filters>
+            <mx:VBox width="274"
+                     height="260"
+                     horizontalScrollPolicy="off"
+                     verticalScrollPolicy="off">
+                <mx:HBox horizontalAlign="center"
+                         verticalAlign="middle"
+                         id="passFailRadioContainer">
+                    <mx:RadioButtonGroup id="passFailRadioGroup"/>
+                    <mx:RadioButton id="passRadio"
+                                    label="Pass Review"
+                                    value="PASS"
+                                    groupName="passFailRadioGroup"/>
+                    <mx:RadioButton id="failRadio"
+                                    label="Fail Review"
+                                    value="FAIL"
+                                    groupName="passFailRadioGroup"/>
+                </mx:HBox>
+                <mx:Label text="Comments:"
+                          fontWeight="bold"/>
+                <mx:VBox height="100%"
+                         width="274"
+                         borderStyle="solid"
+                         paddingLeft="2"
+                         paddingRight="2"
+                         paddingBottom="2"
+                         paddingTop="2"
+                         borderThickness="1"
+                         backgroundColor="#ffffff"
+                         horizontalScrollPolicy="off"
+                         verticalScrollPolicy="off"
+                         id="commentsBox">
+
+                    <mx:VBox id="oldConversationBox"
+                             height="100%"
+                             width="270"
+                             verticalScrollPolicy="auto"
+                             horizontalScrollPolicy="off">
+
+                    </mx:VBox>
+                    <mx:TextArea id="commentInputArea"
+                                 height="35"
+                                 width="268"
+                                 verticalScrollPolicy="auto"
+                                 horizontalScrollPolicy="off">
+
+                    </mx:TextArea>
+                </mx:VBox>
+                <mx:HBox id="reviewModalButtonBar"
+                         width="100%"
+                         horizontalAlign="right">
+                    <mx:Button styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Save"
+                               click="saveReview()"/>
+                    <mx:Button styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Cancel"
+                               click="closeReviewPopup()"/>
                 </mx:HBox>
             </mx:VBox>
-        </mx:VBox>
 
-        <mx:HRule width="100%"
-                  strokeColor="0x000000"/>
+        </mx:TitleWindow>
+    </mx:Canvas>
 
-        <mx:VBox width="100%"
-                 verticalGap="0">
-            <mx:Label text="Attach Files"
-                     styleName="subsectionTitle"/>
-
-            <mx:Spacer height="10"/>
-            <mx:HRule width="100%"/>
-            <mx:VBox width="100%"
-                     id="attachedFilesVBox">
-
-
-            </mx:VBox>
-            
-            <mx:HBox width="100%">
-                <mx:Spacer width="515"/>
-                <mx:Button styleName="EditButton"
-                           buttonMode="true"
-                           click="goToStep5()"/>
-            </mx:HBox>
-        </mx:VBox>
-
-        <mx:HRule width="100%"
-                  strokeColor="0x000000"/>
-
-        <mx:VBox width="100%"
-                 verticalGap="0">
-            <mx:Label text="Set the Contest Schedule"
-                      styleName="subsectionTitle"/>
-            <mx:Spacer height="10"/>
-            <mx:HBox>
-                <mx:Label text="Start Date:"
-                          fontWeight="bold"/>
-                <mx:Text id="startDate"
-                         text="Start Date"/>
-                <mx:Label text="Start Time:"
-                          fontWeight="bold"/>
-                <mx:Text id="startTime"
-                         text="Start Time"/>
-            </mx:HBox>
-
-            <mx:HBox visible="{mainWidget.studioContestType}"
-                     includeInLayout="{mainWidget.studioContestType}">
-                <mx:Label text="End Date:"
-                          fontWeight="bold"/>
-                <mx:Text id="endDate"
-                         text="End Date"/>
-                <mx:Label text="End Time:"
-                          fontWeight="bold"/>
-                <mx:Text id="endTime"
-                         text="End Time"/>
-            </mx:HBox>
-            
-            <mx:HBox width="100%">
-                <mx:Spacer width="515"/>
-                <mx:Button styleName="EditButton"
-                           buttonMode="true"
-                           click="goToStep6()"/>
-            </mx:HBox>
-        </mx:VBox>
-
-    </mx:VBox>
-</mx:Canvas>
+    <mx:Resize id="tabShowEffect"
+               duration="500"/>
+    <mx:Resize id="tabHideEffect"
+               duration="500"/>
+    <mx:Fade id="fadeIn"
+             alphaFrom="0.0"
+             alphaTo="1.0"
+             duration="500"
+             target="{reviewPopup}"/>
+    <mx:Fade id="fadeOut"
+             alphaFrom="1.0"
+             alphaTo="0.0"
+             duration="500"
+             target="{reviewPopup}"
+             effectEnd="handleHideReviewPopupEffect()"/>
+</mx:VBox>
