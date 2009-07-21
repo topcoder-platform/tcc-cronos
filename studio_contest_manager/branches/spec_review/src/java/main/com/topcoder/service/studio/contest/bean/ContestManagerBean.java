@@ -2894,8 +2894,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					
 					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio) where a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -2990,8 +2990,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					
 					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio) where a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -3091,8 +3091,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					
 					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio) where a.is_studio = 1 and b.contest_id = c.contest_id) as spec_review_status"
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
