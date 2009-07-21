@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for default view of project admin.
+     In default view, user sees list of users and number of projects for them.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+            import mx.controls.dataGridClasses.DataGridColumn;
+            import mx.events.DataGridEvent;
+            import mx.collections.ArrayCollection;
+            import mx.events.ListEvent;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.User;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.model.Model;
+
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Click handler for row in the list.
+             * It opens the user view.
+             *
+             * @param event list event.
+             */
+            private function handleClick(event:ListEvent):void {
+
+                var user:User=parentWidget.model.userList.getItemAt(event.rowIndex) as User;
+                parentWidget.loadDataforUser(event.rowIndex);
+                /*
+                parentWidget.model.currentUser=user;
+                parentWidget.model.refresh=!parentWidget.model.refresh;
+                parentWidget.model.selectedIndex=2;
+                */
+
+            }
+
+            /**
+             * Click handler for data grid header. It sets the sorting in the data grid.
+             *
+             * @param event data grid event.
+             */
+            public function handleRelease(event:DataGridEvent):void {
+                trace("i");
+                var index:int=event.columnIndex;
+                parentWidget.model.sortIndex=index;
+                for (var i:int=0; i < userList.columnCount; i++) {
+                    var column:DataGridColumn=userList.columns[i] as DataGridColumn;
+                    if (i == index) {
+                        column.setStyle("headerStyleName", "selectedDataGridHeader");
+                    } else {
+                        column.setStyle("headerStyleName", "dataGridHeader");
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:DataGrid id="userList"
+                 width="100%"
+                 height="100%"
+                 headerRelease="handleRelease(event)"
+                 dataProvider="{parentWidget.model.userList}"
+                 itemClick="handleClick(event)"
+                 styleName="grid">
+        <mx:columns>
+            <mx:DataGridColumn headerText="Handle"
+                               dataField="name"
+                               fontFamily="Arial"
+                               fontSize="11"
+                               fontWeight="normal"/>
+            <mx:DataGridColumn headerText="Project"
+                               dataField="projLen"
+                               width="100"
+                               fontFamily="Arial"
+                               fontSize="11"
+                               fontWeight="normal"/>
+        </mx:columns>
+    </mx:DataGrid>
+</mx:Canvas>

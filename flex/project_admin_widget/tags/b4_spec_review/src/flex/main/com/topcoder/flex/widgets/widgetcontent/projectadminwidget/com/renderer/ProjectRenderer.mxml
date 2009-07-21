@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for project nodes as tree item.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<tree:TreeItemRenderer xmlns:mx="http://www.adobe.com/2006/mxml"
+                       xmlns:tree="mx.controls.treeClasses.*">
+    <mx:Script>
+        <![CDATA[
+            import mx.core.UITextField;
+            import mx.controls.treeClasses.TreeListData;
+            [Embed(source='../../../assets/leaf.png')]
+            [Bindable]
+            public var leaf:Class;
+
+            /**
+             * Over-rides update display function
+             *
+             * @param unscaledWidth unscaled width
+             * @param unscaledHeight unscaled height.
+             */
+            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+                if (super.data) {
+                    if (TreeListData(super.listData).hasChildren) {
+                        var tmp:XMLList=new XMLList(TreeListData(super.listData).item);
+
+                        super.label.htmlText="<b>" + TreeListData(super.listData).label + "</b>";
+                        var label:String=TreeListData(super.listData).label;
+                        setStyle("textDecoration", "underline");
+                        //this.buttonMode=true;
+                        this.useHandCursor=true;
+                        //this.mouseChildren=true;
+                    } else {
+                        if (data is XML) {
+                            var xml:XML=data as XML;
+                            setStyle("textDecoration", "underline");
+                            //this.buttonMode=true;
+                            this.useHandCursor=true;
+                                //this.mouseChildren=false;
+                        }
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+
+
+</tree:TreeItemRenderer>
