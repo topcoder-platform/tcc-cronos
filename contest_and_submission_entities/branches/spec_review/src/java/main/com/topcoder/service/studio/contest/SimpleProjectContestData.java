@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.studio.contest;
 
 import java.util.Date;
@@ -19,51 +22,41 @@ import javax.xml.datatype.DatatypeConfigurationException;
  * </p>
  * 
  * <p>
- * Changes for My Projects Overhaul Assembly:
- *      Added new field contestType which maps to sql column contest_type_desc.
- *      Added new field createUser which maps to sql column create_user.
+ * Changes for My Projects Overhaul Assembly: Added new field contestType which maps to sql column contest_type_desc.
+ * Added new field createUser which maps to sql column create_user.
  * </p>
- *
+ * 
+ * <p>
+ * Updated for Cockpit Launch Contest - Inline Spec Reviews part 2
+ *      - Added specReviewStatus field.
+ * </p>
+ * 
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
- *
+ * 
  * @author will.xie, TCSDEVELOPER
  * @version 1.0
  */
-@SqlResultSetMapping(
-		name="ContestForMyProjectResults",
-		entities={@EntityResult(entityClass=SimpleProjectContestData.class,
-				fields={@FieldResult(name="contestId",      column="contest_id"),
-			            @FieldResult(name="projectId", column="project_id"),
-			            @FieldResult(name="pname",           column="pname"),
-			            @FieldResult(name="cname",           column="cname"),
-			            @FieldResult(name="sname",           column="sname"),
-			            @FieldResult(name="startDate",           column="start_time"),
-			            @FieldResult(name="endDate",           column="end_time"),
-			            @FieldResult(name="num_reg",           column="num_reg"),
-			            @FieldResult(name="num_sub",           column="num_sub"),
-			            @FieldResult(name="num_for",           column="num_for"),
-			            @FieldResult(name="forumId",           column="forum_id"),
-			            @FieldResult(name="description",           column="description"),
-			            @FieldResult(name="contestType",         column="contest_type_desc"),
-			            @FieldResult(name="createUser",         column="create_user"),
-			            @FieldResult(name="cperm",           column="cperm"),
-			            @FieldResult(name="pperm",           column="pperm")
-			            }
-		)})
+@SqlResultSetMapping(name = "ContestForMyProjectResults", entities = { @EntityResult(entityClass = SimpleProjectContestData.class, fields = {
+        @FieldResult(name = "contestId", column = "contest_id"),
+        @FieldResult(name = "projectId", column = "project_id"), @FieldResult(name = "pname", column = "pname"),
+        @FieldResult(name = "cname", column = "cname"), @FieldResult(name = "sname", column = "sname"),
+        @FieldResult(name = "startDate", column = "start_time"), @FieldResult(name = "endDate", column = "end_time"),
+        @FieldResult(name = "num_reg", column = "num_reg"), @FieldResult(name = "num_sub", column = "num_sub"),
+        @FieldResult(name = "num_for", column = "num_for"), @FieldResult(name = "forumId", column = "forum_id"),
+        @FieldResult(name = "description", column = "description"),
+        @FieldResult(name = "contestType", column = "contest_type_desc"),
+        @FieldResult(name = "createUser", column = "create_user"), @FieldResult(name = "cperm", column = "cperm"),
+        @FieldResult(name = "pperm", column = "pperm"),
+        @FieldResult(name = "specReviewStatus", column = "spec_review_status")}) })
 @Entity
 public class SimpleProjectContestData {
 
-	/**
-     * Generated serial version id.
-     */
+    /** Generated serial version id. */
     private static final long serialVersionUID = -6991488651979864256L;
 
-
-    /**
-     * Represents the contest id.
-     */
+    /** Represents the contest id. */
     @Id
     private Long contestId;
 
@@ -137,17 +130,18 @@ public class SimpleProjectContestData {
      */
     private String createUser;
 
-
-	 /**
-     * Represents the permission for contest.
-     */
+    /** Represents the permission for contest. */
     private String cperm;
-    
-    /**
-     * Represents the permissionfor project.
-     */
+
+    /** Represents the permissionfor project. */
     private String pperm;
 
+    /** 
+     * Represents the status for spec reviews. 
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    private String specReviewStatus;
 
     /**
      * Returns the contest name.
@@ -457,16 +451,64 @@ public class SimpleProjectContestData {
         this.createUser = createUser;
     }
 
-	public String getCperm() {
-		return cperm;
-	}
-	public void setCperm(String cperm) {
-		this.cperm = cperm;
-	}
-	public String getPperm() {
-		return pperm;
-	}
-	public void setPperm(String pperm) {
-		this.pperm = pperm;
-	}
+    /**
+     * Gets the cperm.
+     * 
+     * @return the cperm
+     */
+    public String getCperm() {
+        return cperm;
+    }
+
+    /**
+     * Sets the cperm.
+     * 
+     * @param cperm
+     *            the new cperm
+     */
+    public void setCperm(String cperm) {
+        this.cperm = cperm;
+    }
+
+    /**
+     * Gets the pperm.
+     * 
+     * @return the pperm
+     */
+    public String getPperm() {
+        return pperm;
+    }
+
+    /**
+     * Sets the pperm.
+     * 
+     * @param pperm
+     *            the new pperm
+     */
+    public void setPperm(String pperm) {
+        this.pperm = pperm;
+    }
+
+    /**
+     * Gets the spec review status.
+     * 
+     * @return the spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public String getSpecReviewStatus() {
+        return specReviewStatus;
+    }
+
+    /**
+     * Sets the spec review status.
+     * 
+     * @param specReviewStatus
+     *            the new spec review status
+     *            
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2           
+     */
+    public void setSpecReviewStatus(String specReviewStatus) {
+        this.specReviewStatus = specReviewStatus;
+    }
 }
