@@ -1,0 +1,642 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fnil\fprq2\fcharset2 Wingdings;}{\f3\fnil Courier New;}{\f4\fnil\fcharset0 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue255;\red232\green242\blue254;\red63\green127\blue95;\red127\green0\blue85;\red255\green225\blue225;\red42\green0\blue255;\red255\green255\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.15.1515;}\viewkind4\uc1\pard\keepn\nowidctlpar\s1\sb120\sa120\sl240\slmult0\qj\ul\b\f0\fs28\par
+\f1 Client Project Entities DAO 1.0 Component Specification\par
+\pard\li720\sa120\qj\ulnone\b0\f0\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa120\sl240\slmult0\qj\tx360\b\f1 1.\tab Design\par
+\pard\li720\sa120\qj\cf1\b0\f0 This component provides all necessary entities and DAO interfaces and implementations for the Client and Project Entities architecture. This component defines a number of entity classes, along with the necessary annotations for those entities to be used with Hibernate JPA extensions. In addition, DAO interfaces are provided and basic EJB3 implementations are be part of the design. The basic architecture of the DAO pieces is modeled on the CaveatEmptor example provided here: \par
+\pard\cf0 http://www.hibernate.org/400\cf2 .\par
+\cf0 This component will be used to represent the clients and projects for TopCoder customers.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\qj\tx0\b\f1 1.1\tab Design Patterns \par
+\pard\li720\sa120\qj DAO Pattern\b0  \endash  this component provided a series of DAO interfaces and implementations, which follows this pattern.\par
+\b Strategy pattern\b0  \endash  the bean classes created in this design use the EntityManager injected in a strategic manner.\f0\par
+\b\f1 DTO pattern \b0\endash  all the entities from this design are Data Transfer Objects.\f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\qj\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\fi-360\li1440\sa120\qj\tx1440\b0\f2\'a7\tab\f0 EJB 3.0\par
+\f2\'a7\tab\f0 JPA 1.0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\qj\tx0\b\f1 1.3\tab Required Algorithms\par
+\pard\li720\sa120\qj\b0 There are no complicated algorithms in this design. \par
+The sections below are just design considerations used in this design.\f0\par
+\pard\keepn\nowidctlpar\s3\sb120\sa120\sl240\slmult0\qj\tx0\b\i\f1 1.3.1\tab\f0 Entities and Hibernate\par
+\pard\li720\sa120\qj\i0\f1 All entities \b0\f0 are just basic data holders that represent the entities used by the framework. They all implement the Serializable interface. Also, each entity is serializable to XML, for use with the Client and Project Services component. This should is done through the use of class annotations, like:\par
+\pard\li720\sa120\b\fs18 @XmlAccessorType(XmlAccessType.FIELD), @XmlType(name = "..." propOrder = \{ "..." \})\par
+\pard\li720\sa120\qj\b0\fs20 In addition to the XML serialization annotations mentioned above, each entity also contain the necessary annotations to be used with the Hibernate EntityManager, outlined here:\par
+\pard http://www.hibernate.org/397.html\cf2  \par
+\cf0 The provided database schema is used to generate the necessary table and column information.\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 1.3.2\tab\f0 DAO interfaces and implementations\par
+\pard\li720\sa120\qj\b0\i0 The DAO interfaces provided the required business operations.\par
+All DAO interfaces are extended by Local and Remote interfaces.\par
+Implementations of DAO interfaces, of local and remote interfaces are stateless session beans.\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 1.3.3\tab\f0 DAO searching\par
+\pard\li720\sa120\qj\b0\i0\f1 TopCoder Search Builder 1.4 component is used to perform search of the Entities using a given Filter.\par
+\f0 Search Builder 1.4 supports generating HQL using a provided Filter instance, so this component is be used to perform searching against the Hibernate data store.\par
+Below is the \b\i\fs18 public List<T> search(Filter filter) \b0\i0\fs20 method:\par
+\pard\li720\qj\fs18 TopCoder component Search Builder 1.4 should be properly configured before usage:\par
+Please see TopCoder component Search Builder 1.4 how to create the configuration needed to use that component (it's Demo and CS are quite straight forward).\par
+--------------Conventions over the Search Builder configuration---------- \par
+SearchBundles should be configured with HibernateSearchStrategyies.\par
+        For each Entity a separate HibernateSearchStrategy should be used (configured with aliases and searchable fields with values exactly like the properties of the entities), and property name for HibernateSearchStateges in the configuration should be: HibernateSearchBundle_ENTITY_NAME \par
+(sample: HibernateSearchBundle_Project).\par
+-------------------------------------------------------------------------\par
+\pard\li1080\qj EqualToFilter equalToFilter = new EqualToFilter("deleted", new Boolean(false));\par
+AndFilter resultedFilter = new AndFilter(filter, equalToFilter);\par
+List<T> entities = searchFilterUtility.search(resultedFilter);\par
+return entities;\par
+\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1\fs20 1.3.4\tab\f0 Entity Deletion\par
+\pard\li720\sa120\qj\cf1\b0\i0 As part of the Client and Project Entities application requirements, entities are not permanently deleted from the database. Because of this, each entity has an "isDeleted" flag that is set to "true" when the entity is deleted by calling DAO.delete(entity). When retrieving information, all rows where is_deleted is true are ignored. When deleting, the entity are updated with that flag set to true, and then saved to the database.\par
+\cf0 Below is the \b\i\fs18 public void delete(T entity) \b0\i0\fs20 method:\par
+\pard\li1080\qj\fs18 Id id = entity.getId();\par
+T persitedEntity = retrieveById(id);\par
+persitedEntity.setDeleted(true);\par
+entityManager.merge(persitedEntity);\par
+\par
+\pard\li720\sa120\qj\fs20 Below is the \b\i\fs18 public List<T> searchByName(String name) \b0\i0\fs20 method to show the requirement regarding retrieval of entities that are marked as deleted:\par
+\pard\li1080\fs18 String queryString = "select e from " + entityBeanType.getCanonicalName() +" e"\par
++ "where e.name = :name"\par
++ " and e.deleted = false";\par
+Query query = entityManager.createQuery(queryString);\par
+query.setParameter("name", name);\par
+\par
+// Involves an unchecked conversion:\par
+List<T> entities = query.getResultList();\par
+\par
+return entities;\par
+\pard\li1080\qj\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1\fs20 1.3.5\tab\f0 Dependent Updates\par
+\pard\li720\sa120\qj\b0\i0 When updating Projects, the contained children do not have to be part of the update, only the Project instance provided. It is expected the user will make separate calls to update the children. This same practice applies to all entities with complex dependent fields.\par
+This requirement of updates is handled by annotations on entities:\par
+\pard\li1077\qj\b\fs18 @JoinColumn(\'85 updatable = false,\par
+\pard\fi720\li1077\qj insertable = false)\par
+\pard\li720\sa120\qj\b0\fs20 Below is the \b\i\fs18 public T save(T entity) \b0\i0\fs20 method:\par
+\pard\li1080\qj\fs18 return entityManager.merge(entity);\par
+\pard\li720\qj\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1\fs20 1.3.6\tab\f0 Transactions\par
+\pard\li720\b0\i0 All access to the database that updates creates, or retrieves from multiple tables happen in a transaction. If an error occurs, the transaction is rolled back gracefully.\par
+Exceptions are configured to handle this:\par
+\b\f1 @ApplicationException(rollback=true)\b0  - to notify the EJB container to roll back the transaction.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.4\tab Component Class Overview\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\i 1.4.1\tab com.topcoder.clients.model\f0\par
+\pard\li720\qj\i0\f1 AuditableEntity <<abstract, class, @MappedSuperclass>>\f0\par
+\b0 Usage:\par
+This class represents the AuditableEntity java bean. An AuditableEntity can contain a id, createUsername, createDate, modifyUsername, modifyDate, name, deleted.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+This entity corresponds to a mapped super class. \par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (implements Serializable interface).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "auditableEntity", \par
+propOrder = \{"id", "createUsername", "createDate", "modifyUsername","modifyDate", "name", "deleted"\})\par
+@MappedSuperclass\par
+\pard\li720\qj\tx1260 Implementation notes:\par
+\pard\li720\qj implements Serializable;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe. \par
+\par
+\b\f1 Project <<class, @Entity>>\par
+\b0\f0 Usage:\par
+This class represents the Project java bean. A Project can contain a company, active, salesTax, pOBoxNumber, paymentTermsId, description, projectStatus, client, childProjects, parentProjectId. \par
+See base class for other available properties.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (base class is Serializable).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "project",\par
+propOrder = \{"company", "active", "salesTax", "pOBoxNumber", "paymentTermsId", "description","projectStatus", "client", "childProjects", "parentProjectId"\})  \par
+@Entity - this annotation should be used to mark this java bean as an entity and to ease its use with JPA.  \par
+@Table(name = "project")\par
+Implementation notes:\par
+extends AuditableEntity;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe.\par
+\par
+\b\f1 Company <<class, @Entity>>\par
+\b0\f0 Usage:\par
+This class represents the Company java bean. A Company can contain a passcode.\par
+See base class for other available properties.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (base class is Serializable).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "company", \par
+propOrder = \{"passcode"\})   \par
+@Entity - this annotation should be used to mark this java bean as an entity and to ease its use with JPA.  \par
+@Table(name = "company")\par
+Implementation notes:\par
+extends AuditableEntity;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe.\par
+\par
+\b\f1 ClientStatus <<class, @Entity>>\par
+\b0\f0 Usage:\par
+This class represents the ClientStatus java bean. A ClientStatus can contain a description.\par
+See base class for other available properties.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (base class is Serializable).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "clientStatus", \par
+propOrder = \{"description"\})   \par
+@Entity - this annotation should be used to mark this java bean as an entity and to ease its use with JPA.\par
+@Table(name = "client_status")\par
+Implementation notes:\par
+extends AuditableEntity;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe.\par
+\par
+\b\f1 Client <<class, @Entity>>\par
+\b0\f0 Usage:\par
+This class represents the Client java bean. A Client can contain a company, paymentTermsId, clientStatus, salesTax, startDate, endDate, codeName.\par
+See base class for other available properties.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (base class is Serializable).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "client",\par
+propOrder = \{"company", "paymentTermsId", "clientStatus", "salesTax","startDate", "endDate", "codeName"\})  \par
+@Entity - this annotation should be used to mark this java bean as an entity and to ease its use with JPA.  \par
+@Table(name = "client")\par
+Implementation notes:\par
+extends AuditableEntity;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe.\par
+\par
+\b\f1 ProjectStatus <<class, @Entity>>\par
+\b0\f0 Usage:\par
+This class represents the ProjectStatus java bean. A ProjectStatus can contain a description.\par
+See base class for other available properties.\par
+This is a simple java bean (with a default no-arg constructor and for each property, a corresponding getter/setter method).\par
+Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.\par
+This class is Serializable (base class is Serializable).\par
+Annotations:\par
+@XmlAccessorType(XmlAccessType.FIELD)\par
+@XmlType(name = "projectStatus", \par
+propOrder = \{"description"\})   \par
+@Entity - this annotation should be used to mark this java bean as an entity and to ease its use with JPA.  \par
+@Table(name = "project_status")\par
+Implementation notes:\par
+extends AuditableEntity;\par
+Thread safety:\par
+This class contains only mutable fields so therefore it is not thread safe.\par
+\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 1.4.2\tab com.topcoder.clients.dao\f0\par
+\pard\li720\qj\i0\f1 GenericDAO<T extends AuditableEntity, Id extends Serializable> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the base GenericDAO business interface.\par
+This interface defines the generic methods available for all the DAOs: retrieve entity by id, retrieve all entities, search entities by name, search entities using the given filter, save an given entity, delete an given entity.\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\b\f1 ProjectDAO<Project, Long> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the ProjectDAO business interface.\par
+This interface defines the specific methods available for the ProjectDAO business interface: retrieve project by id and retrieve all projects.\par
+See base class for other available operations.\par
+Implementation notes:\par
+extends GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\b\f1 CompanyDAO<Company, Long> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the CompanyDAO business interface.\par
+This interface defines the specific methods available for the CompanyDAO business interface: retrieve clients for company and retrieve projects for company.\par
+See base class for other available operations.\par
+Implementation notes:\par
+extends GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\b\f1 ClientStatusDAO<ClientStatus, Long> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the ClientStatusDAO business interface.\par
+This interface defines the specific methods available for the ClientStatusDAO business interface: get the clients with the corresponding status.\par
+See base class for other available operations.\par
+Implementation notes:\par
+extends GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\b\f1 ProjectStatusDAO<ProjectStatus, Long> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the ProjectStatusDAO business interface.\par
+This interface defines the specific methods available for the ProjectStatusDAO business interface: get the projects with the corresponding status.\par
+See base class for other available operations.\par
+Implementation notes:\par
+extends GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\b\f1 ClientDAO<Client, Long> <<interface>>\par
+\b0\f0 Usage:\par
+This interface represents the ClientDAO business interface.\par
+This interface defines the specific methods available for the ClientDAO business interface: get the projects for the corresponding client.\par
+See base class for other available operations.\par
+Implementation notes:\par
+extends GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\par
+\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 1.4.3\tab com.topcoder.clients.dao.ejb3\f0\par
+\pard\li720\qj\i0\f1 ClientDAOLocal<<interface, @Local>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ClientDAOLocal local interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the local interface.\par
+Annotations:\par
+@Local\par
+Implementation notes:\par
+extends ClientDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ProjectStatusDAOLocal<<interface, @Local>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ProjectStatusDAOLocal local interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the local interface.\par
+Annotations:\par
+@Local\par
+Implementation notes:\par
+extends ProjectStatusDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ClientStatusDAOLocal<<interface, @Local>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ClientStatusDAOLocal local interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the local interface.\par
+Annotations:\par
+@Local\par
+Implementation notes:\par
+extends ClientStatusDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 CompanyDAOLocal<<interface, @Local>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the CompanyDAOLocal local interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the local interface.\par
+Annotations:\par
+@Local\par
+Implementation notes:\par
+extends CompanyDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ProjectDAOLocal<<interface, @Local>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ProjectDAOLocal local interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the local interface.\par
+Annotations:\par
+@Local\par
+Implementation notes:\par
+extends ProjectDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ClientDAORemote<<interface, @Remote>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ClientDAORemote remote interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the remote interface.\par
+Annotations:\par
+@Remote\par
+Implementation notes:\par
+extends ClientDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ProjectStatusDAORemote<<interface, @Remote>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ProjectStatusDAORemote remote interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the remote interface.\par
+Annotations:\par
+@Remote\par
+Implementation notes:\par
+extends ProjectStatusDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ClientStatusDAORemote<<interface, @Remote>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ClientStatusDAORemote remote interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the remote interface.\par
+Annotations:\par
+@Remote\par
+Implementation notes:\par
+extends ClientStatusDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 CompanyDAORemote<<interface, @Remote>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the CompanyDAORemote remote interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the remote interface.\par
+Annotations:\par
+@Remote\par
+Implementation notes:\par
+extends CompanyDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ProjectDAORemote<<interface, @Remote>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the ProjectDAORemote remote interface of the session bean. \par
+See base class for available operations.\par
+Defines a static String variable containing the JNDI name of the remote interface.\par
+Annotations:\par
+@Remote\par
+Implementation notes:\par
+extends ProjectDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 ProjectDAOBean<<class, @Stateless>>\f0\par
+\b0\f1 Usage:\par
+This class is a Stateless Session Bean realization of the ProjectDAO business interface. \par
+This class has a default no-arg constructor. \par
+This class implements the method available for the ProjectDAO business interface: retrieve project by id and retrieve all projects.\par
+See base class for other available operations.\par
+It uses the EntityManager configured in the base class to perform the needed operations, retrieve the EntityManager using its corresponding getter.\par
+Annotations:\par
+@Stateless(name=ProjectDAO.BEAN_NAME)\par
+@Local(ProjectDAOLocal.class)\par
+@Remote(ProjectDAORemote.class)\par
+@TransactionManagement(TransactionManagementType.CONTAINER)\par
+@TransactionAttribute(TransactionAttributeType.REQUIRED)\par
+Implementation notes:\par
+extends GenericDAOEJB3DAO\f0\par
+\f1 implements ProjectDAO,ProjectDAOLocal,ProjectDAORemote\par
+Thread safety:\par
+This class is technically mutable since the inherited configuration properties (with @PersistenceContext) are set after construction, but the container will not initialize the properties more than once for the session beans and the EJB3 container ensure the thread safety in this case.\f0\par
+\par
+\b\f1 CompanyDAOBean<<class, @Stateless>>\f0\par
+\b0\f1 Usage:\par
+This class is a Stateless Session Bean realization of the CompanyDAO business interface. \par
+This class has a default no-arg constructor. \par
+This class implements the method available for the CompanyDAO business interface: retrieve clients for company and retrieve projects for company.\par
+See base class for other available operations.\par
+It uses the EntityManager configured in the base class to perform the needed operations, retrieve the EntityManager using its corresponding getter.\par
+Annotations:\par
+@Stateless(name=CompanyDAO.BEAN_NAME)\par
+@Local(CompanyDAOLocal.class)\par
+@Remote(CompanyDAORemote.class)\par
+@TransactionManagement(TransactionManagementType.CONTAINER)\par
+@TransactionAttribute(TransactionAttributeType.REQUIRED)\par
+Implementation notes:\par
+extends GenericDAOEJB3DAO \f0\par
+\f1 implements CompanyDAO,CompanyDAOLocal,CompanyDAORemote;\par
+Thread safety:\par
+This class is technically mutable since the inherited configuration properties (with @PersistenceContext) are set after construction, but the container will not initialize the properties more than once for the session beans and the EJB3 container ensure the thread safety in this case.\f0\par
+\par
+\b\f1 ClientStatusDAOBean<<class, @Stateless>>\f0\par
+\b0\f1 Usage:\par
+This class is a Stateless Session Bean realization of the ClientStatusDAO business interface. \par
+This class has a default no-arg constructor. \par
+This class implements the method available for the ClientStatusDAO business interface: get the clients with the corresponding status.\par
+See base class for other available operations.\par
+It uses the EntityManager configured in the base class to perform the needed operations, retrieve the EntityManager using its corresponding getter.\par
+Annotations:\par
+@Stateless(name=ClientStatusDAO.BEAN_NAME)\par
+@Local(ClientStatusDAOLocal.class)\par
+@Remote(ClientStatusDAORemote.class)\par
+@TransactionManagement(TransactionManagementType.CONTAINER)\par
+@TransactionAttribute(TransactionAttributeType.REQUIRED)\par
+Implementation notes:\par
+extends GenericDAOEJB3DAO \f0\par
+\f1 implements ClientStatusDAO,ClientStatusDAOLocal,ClientStatusDAORemote;\par
+Thread safety:\par
+This class is technically mutable since the inherited configuration properties (with @PersistenceContext) are set after construction, but the container will not initialize the properties more than once for the session beans and the EJB3 container ensure the thread safety in this case.\f0\par
+\par
+\b\f1 ProjectStatusDAOBean<<class, @Stateless>>\f0\par
+\b0\f1 Usage:\par
+This class is a Stateless Session Bean realization of the ProjectStatusDAO business interface. \par
+This class has a default no-arg constructor. \par
+This class implements the method available for the ProjectStatusDAO business interface: get the projects with the corresponding status.\par
+See base class for other available operations.\par
+It uses the EntityManager configured in the base class to perform the needed operations, retrieve the EntityManager using its corresponding getter.\par
+Annotations:\par
+@Stateless(name=ProjectStatusDAO.BEAN_NAME)\par
+@Local(ProjectStatusDAOLocal.class)\par
+@Remote(ProjectStatusDAORemote.class)\par
+@TransactionManagement(TransactionManagementType.CONTAINER)\par
+@TransactionAttribute(TransactionAttributeType.REQUIRED)\par
+Implementation notes:\par
+extends GenericDAOEJB3DAO \f0\par
+\f1 implements ProjectStatusDAO,ProjectStatusDAOLocal,ProjectStatusDAORemote;\par
+Thread safety:\par
+This class is technically mutable since the inherited configuration properties (with @PersistenceContext) are set after construction, but the container will not initialize the properties more than once for the session beans and the EJB3 container ensure the thread safety in this case.\f0\par
+\par
+\b\f1 ClientDAOBean<<class, @Stateless>>\f0\par
+\b0\f1 Usage:\par
+This class is a Stateless Session Bean realization of the ClientDAO business interface. \par
+This class has a default no-arg constructor. \par
+This class implements the method available for the ClientDAO business interface: get the projects for the corresponding client.\par
+See base class for other available operations.\par
+It uses the EntityManager configured in the base class to perform the needed operations, retrieve the EntityManager using its corresponding getter.\par
+Annotations:\par
+@Stateless(name=ClientDAO.BEAN_NAME)\par
+@Local(ClientDAOLocal.class)\par
+@Remote(ClientDAORemote.class)\par
+@TransactionManagement(TransactionManagementType.CONTAINER)\par
+@TransactionAttribute(TransactionAttributeType.REQUIRED)\par
+Implementation notes:\par
+extends GenericDAOEJB3DAO \f0\par
+\f1 implements ClientDAO,ClientDAOLocal,ClientDAORemote;\par
+Thread safety:\par
+This class is technically mutable since the inherited configuration properties (with @PersistenceContext) are set after construction, but the container will not initialize the properties more than once for the session beans and the EJB3 container ensure the thread safety in this case.\f0\par
+\par
+\b\f1 GenericEJB3DAO<T extends AuditableEntity, Id extends Serializable>\par
+<<abstract, class>>\f0\par
+\b0\f1 Usage:\par
+This abstract class represents the base GenericEJB3DAO class. \par
+This base class implements the generic methods available for all the concrete DAOs: retrieve entity by id, retrieve all entities, search entities by name, search entities using the given filter, save a given entity, and delete a given entity.  \par
+It is configured with an EntityManager (initialized by the EJB container through dependency injection) needed to perform operations on the persistence and also uses TopCoder Search Builder 1.4 component to perform the search using the given Filter.   \par
+NOTE: it is not an Stateless session bean.\par
+Implementation notes:\par
+implements GenericDAO;\par
+Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 SearchByFilterUtility<T extends AuditableEntity, Id extends Serializable>\par
+<<interface>>\f0\par
+\b0\f1 Usage:\par
+This interface represents the SearchByFilterUtility interface.\par
+This interface defines the method needed to search entities using a given filter as criteria. Thread safety:\par
+Implementations of this interface should be thread safe.\f0\par
+\par
+\b\f1 SearchByFilterUtilityImpl<T extends AuditableEntity, Id extends Serializable>\par
+<<class>>\f0\par
+\b0\f1 Usage:\par
+This class is a realization of the SearchByFilterUtility interface. \par
+This class implements the method available for the SearchByFilterUtility interface: search entities using the given filter.\par
+Search Builder TopCoder component is used to perform the search operation.\f0\par
+\f1 Implementation notes:\par
+implements SearchByFilterUtility;\par
+Thread safety:\par
+This class is stateless, its field is immutable. Search Builder used is used only local and not shared between multiple threads so this component is thread safe.\par
+\f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 1.5\tab Component Exception Definitions\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\i 1.5.1\tab com.topcoder.clients.dao\f0\par
+\pard\li720\qj\i0\f1 DAOException<<exception, @ApplicationException>>\f0\par
+\b0 USAGE:\par
+This exception is the base exception for all exceptions raised from operations performed on entities (in this design, entities inherited from AuditableEntity) from this design (excerpt loading of the configurations). \par
+This exception wraps exceptions raised from persistence, from usage of the J2EE utilities or used TopCoder components.\par
+ANNOTATIONS:\par
+@ApplicationException(rollback=true) - to notify the EJB container to roll back the transaction.\par
+IMPLEMENTATION NOTES:\par
+extends BaseCriticalException;\par
+THREAD SAFETY:\par
+This exception is not thread safe because parent exception is not thread safe.\par
+The application should handle this exception in a thread-safe manner.\par
+\par
+\b\f1 EntityNotFoundException<<exception, @ApplicationException>>\f0\par
+\b0 USAGE:\par
+This exception signals an issue if the needed entity (in this design, entities inherited from AuditableEntity) can not be found.\par
+Has an entity id argument in each constructor and a getter for this property.\par
+ANNOTATIONS:\par
+@ApplicationException(rollback=true) - to notify the EJB container to roll back the transaction.\par
+IMPLEMENTATION NOTES:\par
+extends DAOException;\par
+THREAD SAFETY:\par
+This exception is not thread safe because parent exception is not thread safe.\par
+The application should handle this exception in a thread-safe manner.\par
+\par
+\b\f1 DAOConfigurationException<<exception, @ApplicationException>>\f0\par
+\b0 USAGE:\par
+This runtime exception signals an issue if the configured value is invalid (in this design, when EntityManager is not configured or if it is invalid - null). \par
+Wraps the underlying exceptions when using the configured values.\par
+ANNOTATIONS:\par
+@ApplicationException(rollback=true) - to notify the EJB container to roll back the transaction.\par
+IMPLEMENTATION NOTES:\par
+extends BaseRuntimeException;\par
+THREAD SAFETY:\par
+This exception is not thread safe because parent exception is not thread safe.\par
+The application should handle this exception in a thread-safe manner.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\qj\tx0\b\i\f1 1.5.2\tab\f0 java.lang.\par
+\pard\li720\qj\i0\f1 IllegalArgumentException <<exception>>\par
+\pard\li720\sa120\qj\b0 This system exception is thrown if an argument is invalid (null or long ids <= 0), empty string etc. \f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\li720\sa120\qj This component is thread-safe \b0 due to the following reasons:\b  \f0\par
+\b0\f1 The EJB DAO implementations are technically mutable since the EntityManager configuration property (with \f0 @PersistenceContext or with setter\f1 ) is set after construction, but the container will not initialize the property more than once for the session beans and the container ensure the thread safety in this case. \par
+All modifying methods are transactional managed by the container so EJB DAO implementations can be safely accessed from multiple threads in EJB container\f0\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\fi-360\li1440\tx1440\b0\f2\'a7\tab\f0 Sun Java 5.0 SE runtime version 1.5.0 \f1 is required for development and compilation\par
+\pard\fi-360\li1440\f2\'a7\tab\f0 RedHat Linux 7\par
+\f2\'a7\tab\f0 Solaris 7\par
+\f2\'a7\tab\f0 Informix 10\par
+\f2\'a7\tab\f0 EJB3\par
+\f2\'a7\tab\f0 J2EE\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 2.2\tab TopCoder Software Components\par
+\pard\fi-357\li1434\sa120\qj\tx1440\b0\f2\'a7\tab\b\f1 Base Exception 2.0\b0  \endash  it is used as base exception for custom exceptions created in this design.\f0\par
+\pard\fi-357\li1434\sa120\qj\f2\'a7\tab\b\f0 Search Builder 1.4 \b0\f1 - is used to perform HQL search of the entities corresponding to the given Filter.\f0\par
+\pard\fi-357\li1434\sa120\tx1440\f2\'a7\tab\b\f1 Configuration API 1.0:\b0  This is used as the main abstraction for configuration.\par
+\pard\fi-357\li1434\sa120\f2\'a7\tab\b\f1 Configuration Persistence 1.0.1: \b0 This will be used as the actual specific configuration reader for this component.\par
+\f2\'a7\tab\b\f1 Object Factory 2.1:\b0  This is used to instantiate configured objects as needed by this component.\par
+\f2\'a7\tab\cf1\highlight3\f3 object_factory_config_manager_plugin\f4  1.0\cf0\highlight0\b\f1 :\b0  This is used by object facotry 2.1.\par
+\f2\'a7\tab\cf1\highlight3\f3 object_factory_configuration_api_plugin\f4  1.0\cf0\highlight0\b\f1 :\b0  This is used by object facotry 2.1.\par
+\f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 2.3\tab Third Party Components\par
+\pard\fi-360\li1440\qj\tx1440\b0\f2\'a7\tab\f0 None\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\keepn\nowidctlpar\s3\fi-360\li1440\sa120\qj\tx1440\b0\f2\'a7\tab\b\f0 com.topcoder.clients.model\b0\f1\endash  this package contains all the entities required for this design and their base class.\f0\par
+\pard\fi-360\li1440\qj\tx1440\f2\'a7\tab\b\f0 com.topcoder.clients\f1 .dao\b0  \endash  contains all the DAO interfaces required for this design. Also the needed custom exceptions are placed here.\f0\par
+\pard\fi-360\li1440\qj\f2\'a7\tab\b\f0 com.topcoder.clients\f1 .dao.ejb3\b0  \endash  contains all the DAO stateless a session beans implementations and their base class. Also for each non generic DAO interface, a remote and a local interface are defined and search by filter utility.\f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 3.2\tab Configuration Parameters\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\i 3.2.1\tab Persistence Context\f0\par
+\pard\li720\b0\i0\f1 Configuration of EntityManager needed in\b  \b0 beans\b  \b0 is realized using \f0\par
+\f1 @PersistenceContext (unitName="persistenceUnit", type=PersistenceContextType.TRANSACTION): \f0\par
+\pard\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\b\f1 Parameter\cell\b0 Description\b\f0\cell\b0\f1 Values\b\f0\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\i\f5\fs18 unitName\cell\b0\i0\f1\fs20 Represents persistence context name to obtain the \f5\fs18 EntityManager\f1\fs20  instance from the container. \b\i\f5\fs18 Required\b0\i0 .\cell\b String\b0 . Can not be null or empty.\cell\row\pard\f0\fs20\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 3.2.2\tab Resources\f0\par
+\pard\li720\b0\i0\f1 Configuration of resources needed in\b  \b0 beans\b  \b0 is realized using \par
+@Resource(name = resourceName): \f0\par
+\pard\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\b\f1 Parameter\cell\b0 Description\b\f0\cell\b0\f1 Values\b\f0\cell\row\trowd\trgaph108\trleft720\trrh165\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\i\f5\fs18 search_bundle_\par
+manager_namespace\cell\b0\i0\f1\fs20 Represents the search bundle manager namespace. \b\i\f5\fs18 Required\b0\i0 .\cell\b String\b0 . Can not be null or empty.\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\b\i config_file_name\cell\b0\i0\f1\fs20 Represents the configuration file name.\b\i\f5\fs18  Required\b0\i0 .\f0\fs20\cell\b\f5\fs18 String\b0 . Can not be null or empty.\b\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\i config_namespace\par
+\cell\b0\i0\f1\fs20 Represents the configuration namespace.\b\i\f5\fs18  Required\b0\i0 .\f0\fs20\cell\b\f5\fs18 String\b0 . Can not be null or empty.\b\cell\row\pard\b0\f0\fs20\par
+\pard\keepn\nowidctlpar\s3\sa120\qj\tx0\b\i\f1 3.2.3\tab Configuration properties inside the ConfigurationObject\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clcfpat1\clcbpat8\clshdng10000\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\i0 Parameter\cell\b0 Description\b\f0\cell\b0\f1 Values\b\f0\cell\row\trowd\trgaph108\trleft720\trrh165\trbrdrl\brdrs\brdrw15\brdrcf1 \trbrdrt\brdrs\brdrw15\brdrcf1 \trbrdrr\brdrs\brdrw15\brdrcf1 \trbrdrb\brdrs\brdrw15\brdrcf1 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx2989\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx7340\clbrdrl\brdrw15\brdrs\brdrcf1\clbrdrt\brdrw15\brdrs\brdrcf1\clbrdrr\brdrw15\brdrs\brdrcf1\clbrdrb\brdrw15\brdrs\brdrcf1 \cellx8748\pard\intbl\i\f5\fs18 search_by_filter_\par
+utility_token\cell\b0\i0\f1\fs20 Represents the token used to get the SearchByFilterUtility instance via object factory.\b\i\f5\fs18  Required\b0\i0 .\f0\fs20\cell\b\f5\fs18 String\b0 . Can not be null or empty.\cell\row\pard\f0\fs20\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 3.3\tab Dependencies Configuration\par
+\pard\fi-357\li1434\sa120\qj\tx1440\b0\f2\'a7\tab\f1 EJB 3.0 and Search Builder 1.4 should be properly configured.\f0\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\fi-360\li1440\qj\tx1440\b0\f2\'a7\tab\f1 Extract the component distribution.\f0\par
+\pard\fi-360\li1440\qj\f2\'a7\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\f0\par
+\pard\li1080\qj\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 4.2\tab Required steps to use the component\par
+\pard\fi-360\li1440\qj\tx1440\b0\f2\'a7\tab\f1 The entities, interfaces and beans should be deployed in an EJB 3.0\b  \b0 container.\f0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f1 4.3\tab Demo\par
+\pard\li720\qj\b0 The following demo shows the usage of the operations available over the Project.\par
+Operations available over the other entities from this design are quite similar.\f0\par
+\pard\par
+\pard\li720\f5\fs18\par
+\cf1\f3\fs20         \cf4 // retrieve bean\cf0\par
+\cf1         InitialContext ctx = \cf5\b new\cf1\b0  InitialContext();\cf0\par
+\cf1         ProjectDAORemote bean = (ProjectDAORemote)\highlight6  ctx\cf0\highlight0\par
+\cf1                 .lookup(\cf7 "client_project_entities_dao/ProjectDAOBean/remote"\cf1 );\cf0\par
+\par
+\cf1         Filter filter = \cf5\b new\cf1\b0  EqualToFilter(\cf7 "projectStatus"\cf1 , project\cf0\par
+\cf1                 .getProjectStatus().getId());\cf0\par
+\par
+\cf1         getEntityManager().close();\cf0\par
+\par
+\cf1         List\highlight6 <Project> projects;\cf0\highlight0\par
+\par
+\cf1         \cf4 // get project for corresponding id\cf0\par
+\cf1         Project tempProject = bean.retrieveById(100L);\cf0\par
+\par
+\cf1         \cf4 // get all projects\cf0\par
+\cf1         projects = bean.retrieveAll();\cf0\par
+\par
+\cf1         \cf4 // get all projects with the name "name"\cf0\par
+\cf1         projects = bean.searchByName(\cf7 "name"\cf1 );\cf0\par
+\par
+\cf1         \cf4 // get all that match the given filter\cf0\par
+\cf1         projects = bean.search(filter);\cf0\par
+\par
+\cf1         \cf4 // save or update a project\cf0\par
+\cf1         bean.save(project);\cf0\par
+\par
+\cf1         \cf4 // delete the project\cf0\par
+\cf1         bean.delete(project);\cf0\par
+\par
+\cf1         \cf4 // get project for corresponding id without projectChildren\cf0\par
+\cf1         tempProject = bean.retrieveById(100L, \cf5\b false\cf1\b0 );\cf0\par
+\par
+\cf1         \cf4 // get project for corresponding id with projectChildren\cf0\par
+\cf1         tempProject = bean.retrieveById(100L, \cf5\b true\cf1\b0 );\cf0\par
+\par
+\cf1         \cf4 // get all projects without projectChildrens\cf0\par
+\cf1         projects = bean.retrieveAll(\cf5\b false\cf1\b0 );\cf0\par
+\par
+\cf1         \cf4 // get all projects with projectChildrens\cf0\par
+\cf1         projects = bean.retrieveAll(\cf5\b true\cf1\b0 );\cf0\f5\fs18\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\fi-360\li1440\sa120\tx1440\b0\f2\'a7\tab\f0 Further DAO implementations will be added\f1 . \f0\par
+}
+ 
