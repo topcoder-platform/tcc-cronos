@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Contests break down widget
+component.distfilename=contests_breakdown_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.contestsbreakdown
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/contestsbreakdown
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
