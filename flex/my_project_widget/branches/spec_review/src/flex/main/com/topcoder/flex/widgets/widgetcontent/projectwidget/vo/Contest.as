@@ -109,6 +109,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1.
          */ 
         public var reviewStatus:String=ReviewStatus.PENDING;
+        
+        public var createUser:String;
 
         /**
          * A simple constructor which assigns parameters to member variables.
@@ -124,7 +126,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * @param _sts status type of the contest.
          * @param _type type of the contest.
          */
-        public function Contest(_pName:String, _pid:String,_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String) {
+        public function Contest(_pName:String, _pid:String,_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String, _reviewStatus:String, _createUser:String) {
             this.projName=_pName;
             this.projId=_pid;
             this.id=_id;
@@ -144,6 +146,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
 
             this.type=_type;
             this.typeGroup="Studio";
+            
+            this.reviewStatus=_reviewStatus;
+            this.createUser=_createUser;
         }
     }
 }

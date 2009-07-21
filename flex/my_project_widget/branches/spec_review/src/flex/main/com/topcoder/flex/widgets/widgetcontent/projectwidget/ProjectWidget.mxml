@@ -414,7 +414,7 @@
                                 break;
                             }
                             if (prjArray[i].contestId != null && prjArray[i].contestId != 0) {
-                                var c:Contest=new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate, prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for, prjArray[i].forumId, prjArray[i].sname, prjArray[i].type);
+                                var c:Contest=new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate, prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for, prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner);
                                 c.permission=prjArray[i].cperm;
                                 if (prjArray[i].endDate != null) {
                                     c.date=DateUtil.parseFromString(prjArray[i].endDate);

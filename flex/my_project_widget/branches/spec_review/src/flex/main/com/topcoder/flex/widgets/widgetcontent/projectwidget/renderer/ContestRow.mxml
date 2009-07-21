@@ -412,6 +412,7 @@
                 props["projectid"]=contest.projId;
                 props["projectName"]=contest.projName;
                 props["screen"]="Review";
+                props["creator"]=contest.createUser;
                 widget.setAttributes(props);
                 parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
