@@ -100,6 +100,15 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
         public var projId:String;
         
         public var permission:String;
+        
+        /**
+         * Review status
+         * 
+         * For the contest hard-code it to Pending for now.
+         * 
+         * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1.
+         */ 
+        public var reviewStatus:String=ReviewStatus.PENDING;
 
         /**
          * A simple constructor which assigns parameters to member variables.

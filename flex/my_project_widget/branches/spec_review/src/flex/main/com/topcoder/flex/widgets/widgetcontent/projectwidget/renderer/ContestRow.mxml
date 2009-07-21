@@ -161,6 +161,25 @@
             }
 
             /**
+             * Handles the set of review status link properties.
+             *
+             * @param input the review status value.
+             * @param linkButton the reference to link button.
+             * @param clickHandler the reference to click handler that need to be called on link button click.
+             * 
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+            private function setReviewStatusBtnProps(status:String, linkButton:Button, clickHandler:Function):String {
+                linkButton.styleName="rowContentBtn";
+                linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                linkButton.buttonMode=true;
+                linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                linkButton.setStyle("textAlign", "right");
+                
+                return "" + status;
+            }
+            
+            /**
              * Shows the contest monitor widget for this contest row.
              */
             private function showStats():void {
@@ -379,6 +398,23 @@
                     lblEndDatePart2.text=timeStrArray[0] + " GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2);
                 }
             }
+            
+            /**
+             * Handler for click on review status button.
+             *
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+            private function openReviewScreen(event:MouseEvent):void {
+                var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+                var props:Dictionary=new Dictionary();
+                props["contestType"]=contest.type;
+                props["contestid"]=contest.id;
+                props["projectid"]=contest.projId;
+                props["projectName"]=contest.projName;
+                props["screen"]="Review";
+                widget.setAttributes(props);
+                parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
         ]]>
     </mx:Script>
     <mx:HBox width="100%">
@@ -456,6 +492,16 @@
                        styleName="rowContentLink"
                        id="lblForumPosts"
                        label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Button buttonMode="false"
+                       width="60"
+                       styleName="rowContentLink"
+                       id="lblReviewStatus"
+                       label="{setReviewStatusBtnProps(contest.reviewStatus, lblReviewStatus, openReviewScreen)}"/>
         </mx:VBox>
         <mx:VBox width="100%"
                  styleName="bottomAlign">
