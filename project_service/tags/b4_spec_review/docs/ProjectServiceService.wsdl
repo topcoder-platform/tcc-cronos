@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name='ProjectServiceService' targetNamespace='http://project.service.topcoder.com/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://project.service.topcoder.com/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://project.service.topcoder.com/' version='1.0' xmlns:tns='http://project.service.topcoder.com/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='AuthorizationFailedFault' type='tns:AuthorizationFailedFault'/>
+   <xs:element name='IllegalArgumentFault' type='tns:IllegalArgumentFault'/>
+   <xs:element name='PersistenceFault' type='tns:PersistenceFault'/>
+   <xs:element name='ProjectHasCompetitionsFault' type='tns:ProjectHasCompetitionsFault'/>
+   <xs:element name='ProjectNotFoundFault' type='tns:ProjectNotFoundFault'/>
+   <xs:element name='UserNotFoundFault' type='tns:UserNotFoundFault'/>
+   <xs:element name='createProject' type='tns:createProject'/>
+   <xs:element name='createProjectResponse' type='tns:createProjectResponse'/>
+   <xs:element name='deleteProject' type='tns:deleteProject'/>
+   <xs:element name='deleteProjectResponse' type='tns:deleteProjectResponse'/>
+   <xs:element name='getAllProjects' type='tns:getAllProjects'/>
+   <xs:element name='getAllProjectsResponse' type='tns:getAllProjectsResponse'/>
+   <xs:element name='getProject' type='tns:getProject'/>
+   <xs:element name='getProjectResponse' type='tns:getProjectResponse'/>
+   <xs:element name='getProjectsForUser' type='tns:getProjectsForUser'/>
+   <xs:element name='getProjectsForUserResponse' type='tns:getProjectsForUserResponse'/>
+   <xs:element name='updateProject' type='tns:updateProject'/>
+   <xs:element name='updateProjectResponse' type='tns:updateProjectResponse'/>
+   <xs:complexType name='createProject'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='arg0' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='projectData'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='description' type='xs:string'/>
+     <xs:element minOccurs='0' name='name' type='xs:string'/>
+     <xs:element minOccurs='0' name='projectId' type='xs:long'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='createProjectResponse'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='return' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='PersistenceFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='IllegalArgumentFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='getProject'>
+    <xs:sequence>
+     <xs:element name='arg0' type='xs:long'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='getProjectResponse'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='return' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='ProjectNotFoundFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='AuthorizationFailedFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='getProjectsForUser'>
+    <xs:sequence>
+     <xs:element name='arg0' type='xs:long'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='getProjectsForUserResponse'>
+    <xs:sequence>
+     <xs:element maxOccurs='unbounded' minOccurs='0' name='return' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='UserNotFoundFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='getAllProjects'>
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name='getAllProjectsResponse'>
+    <xs:sequence>
+     <xs:element maxOccurs='unbounded' minOccurs='0' name='return' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='updateProject'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='arg0' type='tns:projectData'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='updateProjectResponse'>
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name='deleteProject'>
+    <xs:sequence>
+     <xs:element name='arg0' type='xs:long'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='deleteProjectResponse'>
+    <xs:sequence>
+     <xs:element name='return' type='xs:boolean'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='ProjectHasCompetitionsFault'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:schema>
+ </types>
+ <message name='ProjectService_createProject'>
+  <part element='tns:createProject' name='createProject'/>
+ </message>
+ <message name='ProjectService_createProjectResponse'>
+  <part element='tns:createProjectResponse' name='createProjectResponse'/>
+ </message>
+ <message name='PersistenceFault'>
+  <part element='tns:PersistenceFault' name='PersistenceFault'/>
+ </message>
+ <message name='IllegalArgumentFault'>
+  <part element='tns:IllegalArgumentFault' name='IllegalArgumentFault'/>
+ </message>
+ <message name='ProjectService_deleteProject'>
+  <part element='tns:deleteProject' name='deleteProject'/>
+ </message>
+ <message name='ProjectService_deleteProjectResponse'>
+  <part element='tns:deleteProjectResponse' name='deleteProjectResponse'/>
+ </message>
+ <message name='AuthorizationFailedFault'>
+  <part element='tns:AuthorizationFailedFault' name='AuthorizationFailedFault'/>
+ </message>
+ <message name='ProjectHasCompetitionsFault'>
+  <part element='tns:ProjectHasCompetitionsFault' name='ProjectHasCompetitionsFault'/>
+ </message>
+ <message name='ProjectService_getAllProjects'>
+  <part element='tns:getAllProjects' name='getAllProjects'/>
+ </message>
+ <message name='ProjectService_getAllProjectsResponse'>
+  <part element='tns:getAllProjectsResponse' name='getAllProjectsResponse'/>
+ </message>
+ <message name='ProjectService_getProject'>
+  <part element='tns:getProject' name='getProject'/>
+ </message>
+ <message name='ProjectService_getProjectResponse'>
+  <part element='tns:getProjectResponse' name='getProjectResponse'/>
+ </message>
+ <message name='ProjectNotFoundFault'>
+  <part element='tns:ProjectNotFoundFault' name='ProjectNotFoundFault'/>
+ </message>
+ <message name='ProjectService_getProjectsForUser'>
+  <part element='tns:getProjectsForUser' name='getProjectsForUser'/>
+ </message>
+ <message name='ProjectService_getProjectsForUserResponse'>
+  <part element='tns:getProjectsForUserResponse' name='getProjectsForUserResponse'/>
+ </message>
+ <message name='UserNotFoundFault'>
+  <part element='tns:UserNotFoundFault' name='UserNotFoundFault'/>
+ </message>
+ <message name='ProjectService_updateProject'>
+  <part element='tns:updateProject' name='updateProject'/>
+ </message>
+ <message name='ProjectService_updateProjectResponse'>
+  <part element='tns:updateProjectResponse' name='updateProjectResponse'/>
+ </message>
+ <portType name='ProjectService'>
+  <operation name='createProject' parameterOrder='createProject'>
+   <input message='tns:ProjectService_createProject'/>
+   <output message='tns:ProjectService_createProjectResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+   <fault message='tns:IllegalArgumentFault' name='IllegalArgumentFault'/>
+  </operation>
+  <operation name='deleteProject' parameterOrder='deleteProject'>
+   <input message='tns:ProjectService_deleteProject'/>
+   <output message='tns:ProjectService_deleteProjectResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+   <fault message='tns:AuthorizationFailedFault' name='AuthorizationFailedFault'/>
+   <fault message='tns:ProjectHasCompetitionsFault' name='ProjectHasCompetitionsFault'/>
+  </operation>
+  <operation name='getAllProjects' parameterOrder='getAllProjects'>
+   <input message='tns:ProjectService_getAllProjects'/>
+   <output message='tns:ProjectService_getAllProjectsResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+  </operation>
+  <operation name='getProject' parameterOrder='getProject'>
+   <input message='tns:ProjectService_getProject'/>
+   <output message='tns:ProjectService_getProjectResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+   <fault message='tns:ProjectNotFoundFault' name='ProjectNotFoundFault'/>
+   <fault message='tns:AuthorizationFailedFault' name='AuthorizationFailedFault'/>
+  </operation>
+  <operation name='getProjectsForUser' parameterOrder='getProjectsForUser'>
+   <input message='tns:ProjectService_getProjectsForUser'/>
+   <output message='tns:ProjectService_getProjectsForUserResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+   <fault message='tns:AuthorizationFailedFault' name='AuthorizationFailedFault'/>
+   <fault message='tns:UserNotFoundFault' name='UserNotFoundFault'/>
+  </operation>
+  <operation name='updateProject' parameterOrder='updateProject'>
+   <input message='tns:ProjectService_updateProject'/>
+   <output message='tns:ProjectService_updateProjectResponse'/>
+   <fault message='tns:PersistenceFault' name='PersistenceFault'/>
+   <fault message='tns:ProjectNotFoundFault' name='ProjectNotFoundFault'/>
+   <fault message='tns:AuthorizationFailedFault' name='AuthorizationFailedFault'/>
+   <fault message='tns:IllegalArgumentFault' name='IllegalArgumentFault'/>
+  </operation>
+ </portType>
+ <binding name='ProjectServiceBinding' type='tns:ProjectService'>
+  <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='createProject'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+   <fault name='IllegalArgumentFault'>
+    <soap:fault name='IllegalArgumentFault' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='deleteProject'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+   <fault name='AuthorizationFailedFault'>
+    <soap:fault name='AuthorizationFailedFault' use='literal'/>
+   </fault>
+   <fault name='ProjectHasCompetitionsFault'>
+    <soap:fault name='ProjectHasCompetitionsFault' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='getAllProjects'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='getProject'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+   <fault name='ProjectNotFoundFault'>
+    <soap:fault name='ProjectNotFoundFault' use='literal'/>
+   </fault>
+   <fault name='AuthorizationFailedFault'>
+    <soap:fault name='AuthorizationFailedFault' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='getProjectsForUser'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+   <fault name='AuthorizationFailedFault'>
+    <soap:fault name='AuthorizationFailedFault' use='literal'/>
+   </fault>
+   <fault name='UserNotFoundFault'>
+    <soap:fault name='UserNotFoundFault' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='updateProject'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='PersistenceFault'>
+    <soap:fault name='PersistenceFault' use='literal'/>
+   </fault>
+   <fault name='ProjectNotFoundFault'>
+    <soap:fault name='ProjectNotFoundFault' use='literal'/>
+   </fault>
+   <fault name='AuthorizationFailedFault'>
+    <soap:fault name='AuthorizationFailedFault' use='literal'/>
+   </fault>
+   <fault name='IllegalArgumentFault'>
+    <soap:fault name='IllegalArgumentFault' use='literal'/>
+   </fault>
+  </operation>
+ </binding>
+ <service name='ProjectServiceService'>
+  <port binding='tns:ProjectServiceBinding' name='ProjectServicePort'>
+   <soap:address location='REPLACE_WITH_ACTUAL_URL'/>
+  </port>
+ </service>
+</definitions>
