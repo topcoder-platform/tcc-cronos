@@ -129,8 +129,8 @@ import com.topcoder.util.log.LogManager;
  * </p>
  * 
  * <p>
- * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
- *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+ * Updated for Cockpit Launch Contest - Inline Spec Reviews part 2
+ *      - to include spec review status value in getSimpleProjectContestDataXX method results.
  * </p>
  * 
  *                                                             <p>
@@ -2847,8 +2847,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      * 
      * <p>
-     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
-     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * Updated for Cockpit Launch Contest - Inline Spec Reviews part 2
+     *      - to include spec review status value
      * </p>
      * 
      * @param the given project id
@@ -2885,13 +2885,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
             		+ " p.user_id as create_user, "
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id  "
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id  and is_studio=1 "
 					+ " ),0)) as cperm, "
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
 					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
-					+ " ),0)) as pperm "
-
+					+ " ),0)) as pperm, "
+					
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
+					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
@@ -2937,8 +2942,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      * 
      * <p>
-     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
-     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * Updated for Cockpit Launch Contest - Inline Spec Reviews part 2
+     *      - to include spec review status value
      * </p>
      * 
      * @param the given project id
@@ -2981,7 +2986,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
 					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
-					+ " ),0)) as pperm "
+					+ " ),0)) as pperm, "
+					
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -3034,8 +3044,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      * 
      * <p>
-     * Updated for Cockpit Release Assembly 3 [RS:1.1.3]
-     *      - Added check for is_studio=1 whenever user_permission_grant is joined with contest table.
+     * Updated for Cockpit Launch Contest - Inline Spec Reviews part 2
+     *      - to include spec review status value
      * </p>
      * 
      * @param the given project id
@@ -3077,7 +3087,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					
 					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
 					+ " from user_permission_grant as upg  where resource_id=p.project_id and user_id = " + createdUser 
-					+ " ),0)) as pperm "
+					+ " ),0)) as pperm, "
+					
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
+					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
