@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" verticalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			[Bindable]
+			private var model:Model = Model.instance;
+			
+			[Embed(source="../assets/verisign.png")]
+			[Bindable]private var sign:Class;
+		
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%">
+	
+		<mx:Grid width="100%">
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					<mx:Label text="Billing Information" styleName="header" />
+				</mx:GridItem>
+				<mx:GridItem width="100%">
+					<mx:Label text="Contact Information" styleName="header" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%" verticalAlign="top">
+					<mx:VBox width="100%">
+						<mx:HBox width="100%">
+							<mx:VBox width="110">
+								<mx:Label text="Purchase Order #" styleName="contentBlack" />
+								<mx:Label text="Invoice Terms:" styleName="contentBlack" />
+							</mx:VBox>
+							<mx:VBox width="100%">
+								<mx:Label text="{model.purchaseOrder.poNumber}" styleName="content" />
+								<mx:Label text="2% 10 net 30" styleName="content" />
+							</mx:VBox>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox width="100" height="100%" styleName="contentBlack" verticalGap="13" >
+						<mx:Label text="Company Name:" height="20" />
+						<mx:Label text="Address:" height="20" />
+						<mx:Label text="City:" height="20" />
+						<mx:Label text="State:" height="20" />
+						<mx:Label text="Zip Code:" height="20" />
+						<mx:Label text="Country:" height="20" />
+						<mx:Label text="Phone:" height="20" />
+						<mx:Label text="Email:" height="20" />
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" verticalGap="13" styleName="content" >
+						<mx:Label text="{model.cardname}" width="100%" height="20" />
+						<mx:Label text="{model.address}" width="100%" height="20" />
+						<mx:Label text="{model.city}" width="100%" height="20" />
+						<mx:Label text="{model.state}" width="100%" height="20" />
+						<mx:Label text="{model.code}" width="100%" height="20" />
+						<mx:Label text="{model.country}" width="100%" height="20" />
+						<mx:Label text="{model.phone}" width="100%" height="20" />
+						<mx:Label text="{model.email}" width="100%" height="20" />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		<!--<mx:Image source="{sign}" />-->
+		
+		
+		
+	</mx:HBox>
+</mx:VBox>

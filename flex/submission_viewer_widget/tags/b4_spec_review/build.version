@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Submission viewer widget
+component.distfilename=submission_viewer_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/submissionviewerwidget
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

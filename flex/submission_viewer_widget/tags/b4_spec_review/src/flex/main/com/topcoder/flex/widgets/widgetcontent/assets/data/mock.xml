@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contests>
+	<contest status="active">
+		<name>Active Contest 1</name>
+		<id>12345</id>
+	</contest>
+	<contest status="active">
+		<name>Active Contest 2</name>
+		<id>12346</id>
+	</contest>
+	<contest status="active">
+		<name>Active Contest 3</name>
+		<id>12347</id>
+	</contest>
+	<contest status="active">
+		<name>Active Contest 4</name>
+		<id>12348</id>
+	</contest>
+	<contest status="past">
+		<name>Past Contest 1</name>
+		<id>54321</id>
+	</contest>
+	<contest status="past">
+		<name>Past Contest 2</name>
+		<id>54322</id>
+	</contest>
+	<contest status="past">
+		<name>Past Contest 3</name>
+		<id>54323</id>
+	</contest>
+</contests> 
