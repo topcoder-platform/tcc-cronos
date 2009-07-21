@@ -28,6 +28,11 @@
                 <jndi-name>UserServiceBean/remote</jndi-name>
             </ejb-ref>
 
+			<ejb-ref>
+                <ejb-ref-name>ejb/SpecReviewService</ejb-ref-name>
+                <jndi-name>SpecReviewServiceBean/remote</jndi-name>
+            </ejb-ref>
+
 			<port-component>
 				<port-component-name>ContestServiceFacadeBean</port-component-name>
 				<port-component-uri>/ContestServiceFacadeBean</port-component-uri>

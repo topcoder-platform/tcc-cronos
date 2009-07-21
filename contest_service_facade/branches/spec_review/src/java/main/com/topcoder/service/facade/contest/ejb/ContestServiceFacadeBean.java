@@ -91,6 +91,9 @@ import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.permission.ejb.PermissionServiceBean;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.specreview.SpecReview;
+import com.topcoder.service.specreview.SpecReviewService;
+import com.topcoder.service.specreview.SpecReviewServiceException;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestData;
@@ -149,8 +152,14 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  * <p>
  * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
+ * 
+ * <p>
+ * Updated for Cockpit Launch Contest - Inline Spec Review Part 2
+ *      - Added methods for retrieve/save of Spec Reviews and their status.
+ *      - Added specReviewStatus set for CommonProjectContestData based methods.
+ * </p>
  *
- * @author snow01
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 @Stateless
@@ -204,6 +213,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/UserService")
     private UserService userService = null;
+
+	/**
+     * <p>A <code>SpecReviewService</code> providing access to available <code>Spec Review Service</code>. This bean is
+     * delegated to process the calls for CRUD spec reviews.</p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/SpecReviewService")
+    private SpecReviewService specReviewService = null;
 
 	/**
 	 * <p>
@@ -3033,6 +3051,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				newData.setCreateUser(data.getCreateUser());
 				newData.setPperm(data.getPperm());
 				newData.setCperm(data.getCperm());
+				newData.setSpecReviewStatus(data.getSpecReviewStatus());
 				ret.add(newData);
 			}
         }
@@ -3055,6 +3074,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			newData.setCreateUser(data.getCreateUser());
 			newData.setPperm(data.getPperm());
 			newData.setCperm(data.getCperm());
+			newData.setSpecReviewStatus(data.getSpecReviewStatus());	
         	ret.add(newData);
         }
 
@@ -3104,6 +3124,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				newData.setCreateUser(data.getCreateUser());
 				newData.setPperm(data.getPperm());
 				newData.setCperm(data.getCperm());
+				newData.setSpecReviewStatus(data.getSpecReviewStatus());
 				ret.add(newData);
 			}
         	
@@ -3127,6 +3148,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			newData.setCreateUser(data.getCreateUser());
 			newData.setPperm(data.getPperm());
 			newData.setCperm(data.getCperm());
+			newData.setSpecReviewStatus(data.getSpecReviewStatus());
         	ret.add(newData);
         }
 
@@ -3555,5 +3577,85 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         phase.setAttribute("COMPETITION_TYPE", competitionType);
         phase.setAttribute("COMPETITION_TITLE", competitionTitle);
         phase.setAttribute("PROJECT_NAME", projectName);
+    }
+
+	/**
+     * Gets the spec reviews for specified contest id.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * 
+     * @return the list of spec reviews that matches the specified contest id.
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public List<SpecReview> getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
+        return this.specReviewService.getSpecReviews(contestId, studio);
+    }
+
+    /**
+     * Save specified review comment and review status for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param isPass
+     *            the is pass
+     * @param role
+     *            the user role type           
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
+            throws SpecReviewServiceException {
+        this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+    }
+
+    /**
+     * Save specified review comment for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param role
+     *            the user role type           
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
+            throws SpecReviewServiceException {
+        this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+    }
+
+    /**
+     * Mark review comment with specified comment id as seen.
+     * 
+     * @param commentId
+     *            the comment id
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void markReviewCommentSeen(long commentId) throws SpecReviewServiceException {
+        this.specReviewService.markReviewCommentSeen(commentId);
     }
 }

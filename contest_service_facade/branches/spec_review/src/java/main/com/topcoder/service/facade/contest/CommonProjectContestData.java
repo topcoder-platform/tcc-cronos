@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.facade.contest;
 
 import java.util.Date;
@@ -108,6 +111,13 @@ public class CommonProjectContestData {
      * Represents the permissionfor project.
      */
     private String pperm;
+
+	 /** 
+     * Represents the status for spec reviews. 
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    private String specReviewStatus;
     
     /**
      * Returns the contestId.
@@ -127,82 +137,192 @@ public class CommonProjectContestData {
 		this.contestId = contestId;
 	}
 
+	/**
+     * Gets the cname.
+     * 
+     * @return the cname
+     */
 	public String getCname() {
 		return cname;
 	}
 
+	/**
+     * Sets the cname.
+     * 
+     * @param cname
+     *            the new cname
+     */
 	public void setCname(String cname) {
 		this.cname = cname;
 	}
 
+	/**
+     * Gets the end date.
+     * 
+     * @return the end date
+     */
 	public XMLGregorianCalendar getEndDate() {
 		return endDate;
 	}
 
+	/**
+     * Sets the end date.
+     * 
+     * @param endDate
+     *            the new end date
+     */
 	public void setEndDate(XMLGregorianCalendar endDate) {
 		this.endDate = endDate;
 	}
 
+	/**
+     * Gets the num_for.
+     * 
+     * @return the num_for
+     */
 	public Integer getNum_for() {
 		return num_for;
 	}
 
+	/**
+     * Sets the num_for.
+     * 
+     * @param num_for
+     *            the new num_for
+     */
 	public void setNum_for(Integer num_for) {
 		this.num_for = num_for;
 	}
 
+	/**
+     * Gets the num_reg.
+     * 
+     * @return the num_reg
+     */
 	public Integer getNum_reg() {
 		return num_reg;
 	}
 
+	/**
+     * Sets the num_reg.
+     * 
+     * @param num_reg
+     *            the new num_reg
+     */
 	public void setNum_reg(Integer num_reg) {
 		this.num_reg = num_reg;
 	}
 
+	/**
+     * Gets the num_sub.
+     * 
+     * @return the num_sub
+     */
 	public Integer getNum_sub() {
 		return num_sub;
 	}
 
+	/**
+     * Sets the num_sub.
+     * 
+     * @param num_sub
+     *            the new num_sub
+     */
 	public void setNum_sub(Integer num_sub) {
 		this.num_sub = num_sub;
 	}
 
+	/**
+     * Gets the pname.
+     * 
+     * @return the pname
+     */
 	public String getPname() {
 		return pname;
 	}
 
+	/**
+     * Sets the pname.
+     * 
+     * @param pname
+     *            the new pname
+     */
 	public void setPname(String pname) {
 		this.pname = pname;
 	}
 
+	/**
+     * Gets the project id.
+     * 
+     * @return the project id
+     */
 	public Long getProjectId() {
 		return projectId;
 	}
 
+	/**
+     * Sets the project id.
+     * 
+     * @param projectId
+     *            the new project id
+     */
 	public void setProjectId(Long projectId) {
 		this.projectId = projectId;
 	}
 
+	/**
+     * Gets the sname.
+     * 
+     * @return the sname
+     */
 	public String getSname() {
 		return sname;
 	}
 
+	/**
+     * Sets the sname.
+     * 
+     * @param sname
+     *            the new sname
+     */
 	public void setSname(String sname) {
 		this.sname = sname;
 	}
 
+	/**
+     * Gets the start date.
+     * 
+     * @return the start date
+     */
 	public XMLGregorianCalendar getStartDate() {
 		return startDate;
 	}
 
+	/**
+     * Sets the start date.
+     * 
+     * @param startDate
+     *            the new start date
+     */
 	public void setStartDate(XMLGregorianCalendar startDate) {
 		this.startDate = startDate;
 	}
 
+	/**
+     * Gets the type.
+     * 
+     * @return the type
+     */
 	public String getType() {
 		return type;
 	}
 
+	/**
+     * Sets the type.
+     * 
+     * @param type
+     *            the new type
+     */
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -267,16 +387,64 @@ public class CommonProjectContestData {
         this.createUser = createUser;
     }
 
+	/**
+     * Gets the cperm.
+     * 
+     * @return the cperm
+     */
 	public String getCperm() {
 		return cperm;
 	}
+	
+	/**
+     * Sets the cperm.
+     * 
+     * @param cperm
+     *            the new cperm
+     */
 	public void setCperm(String cperm) {
 		this.cperm = cperm;
 	}
+	
+	/**
+     * Gets the pperm.
+     * 
+     * @return the pperm
+     */
 	public String getPperm() {
 		return pperm;
 	}
+	
+	/**
+     * Sets the pperm.
+     * 
+     * @param pperm
+     *            the new pperm
+     */
 	public void setPperm(String pperm) {
 		this.pperm = pperm;
 	}
+	
+	/**
+     * Gets the spec review status.
+     * 
+     * @return the spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public String getSpecReviewStatus() {
+        return specReviewStatus;
+    }
+
+    /**
+     * Sets the spec review status.
+     * 
+     * @param specReviewStatus
+     *            the new spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public void setSpecReviewStatus(String specReviewStatus) {
+        this.specReviewStatus = specReviewStatus;
+    }
 }
