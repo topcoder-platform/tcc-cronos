@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is fir the filtered results view of the widget.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         verticalGap="0"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.topcodercatalog.*"
+         horizontalScrollPolicy="off"
+         verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
+            import mx.collections.ArrayCollection;
+
+            /**
+             * Instance of the data model class for this widget.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+
+            /**
+             * Calculates the filtered results view title.
+             *
+             * @param list list of filtered results.
+             */
+            private function calculateTitle(list:ArrayCollection):String {
+                return "<b><font color='#e53c29' size='13'>Filter Results</font></b>" + "<font color='#595959' size='12'> | " + list.length.toString() + " components found for Category Filter: <b>\"" + model.currentCategory + "\"</b>" + (model.keyWords && model.keyWords != "" ? " and Search Keywords: \"<b>" + model.keyWords + "\"</b>" : "") + "</font>";
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%"
+             backgroundColor="#f0f0f0"
+             height="30"
+             horizontalAlign="left"
+             borderStyle="solid"
+             borderColor="#dadada"
+             borderSides="bottom"
+             paddingLeft="9"
+             paddingTop="7">
+        <mx:Label color="#e53c29"
+                  fontFamily="Arial"
+                  htmlText="{calculateTitle(model.filteredComponentList)}"/>
+    </mx:HBox>
+    <tc:SearchResult page="true"
+                     width="{width}"
+                     height="{height - 30}"
+                     dataProvider="{model.filteredComponentList}"/>
+</mx:VBox>
