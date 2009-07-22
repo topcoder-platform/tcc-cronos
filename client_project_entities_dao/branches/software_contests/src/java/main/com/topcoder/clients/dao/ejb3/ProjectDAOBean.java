@@ -86,12 +86,13 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 	 * Updated for Cockpit Release Assembly for Receipts
 	 *     - now fetching client name too.
 	 */
-	private static final String SELECT_PROJECT = "select p.project_id, p.name, p.po_box_number, p.description, "
-			+ "p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
-			+ "p.creation_date, p.creation_user, p.is_deleted, " 
-			+ "p.client_id, c.name as client_name " 
-			+ "from project as p left join client as c on p.client_id = c.client_id and c.is_deleted = 0 " 
-			+ "where p.start_date <= current and current <= p.end_date ";
+	private static final String SELECT_PROJECT 	= "select p.project_id, p.name, p.po_box_number, p.description, "
+			  + " p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
+			  + " p.creation_date, p.creation_user, p.is_deleted, "
+			  + " cp.client_id, c.name as client_name "
+			  + " from project as p left join client_project as cp on p.project_id = cp.project_id left join client c "
+              + "            on c.client_id = cp.client_id and (c.is_deleted = 0 or c.is_deleted is null) "
+			  + " where p.start_date <= current and current <= p.end_date ";
 
 
     /**
