@@ -3,6 +3,8 @@
  */
 package com.topcoder.service.user;
 
+import javax.xml.ws.WebFault;
+
 import com.topcoder.util.errorhandling.BaseCriticalException;
 import com.topcoder.util.errorhandling.ExceptionData;
 
@@ -11,10 +13,18 @@ import com.topcoder.util.errorhandling.ExceptionData;
  * A common exception class for the user services.
  * </p>
  * 
- * @author snow01
+ * <p>
+ * Updated for Jira and Confluence User Sync Widget 1.0
+ *  - Specified the @WebFault mapping
+ *  - Initialize fault message too.
+ *  - For proper exception serialization to webservice faultInfo is also initialized now
+ * </p>
+ * 
+ * @author snow01, TCSASSEMBLER
  * @since Cockpit Release Assembly for Receipts
  * @version 1.0
  */
+@WebFault(name = "user_service_fault", faultBean = "com.topcoder.service.user.UserServiceFault")
 public class UserServiceException extends BaseCriticalException {
 
     /**
@@ -41,16 +51,26 @@ public class UserServiceException extends BaseCriticalException {
      * Constructor with error message.
      * </p>
      * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - fault message is also initialized now.
+     * </p>
+     * 
      * @param message
      *            the error message
      */
     public UserServiceException(String message) {
-        super(message);
+        this(message, message);
     }
 
     /**
      * <p>
      * Constructor with error message and inner cause.
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - fault message is also initialized now.
      * </p>
      * 
      * @param message
@@ -59,12 +79,17 @@ public class UserServiceException extends BaseCriticalException {
      *            the cause of this exception
      */
     public UserServiceException(String message, Throwable cause) {
-        super(message, cause);
+        this(message, cause, message);
     }
 
     /**
      * <p>
      * Constructor with error message and exception data
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - fault message is also initialized now.
      * </p>
      * 
      * @param message
@@ -73,12 +98,17 @@ public class UserServiceException extends BaseCriticalException {
      *            the exception data
      */
     public UserServiceException(String message, ExceptionData data) {
-        super(message, data);
+        this(message, data, message);
     }
 
     /**
      * <p>
      * Constructor with error message and inner cause and exception data
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - fault message is also initialized now.
      * </p>
      * 
      * @param message
@@ -89,7 +119,7 @@ public class UserServiceException extends BaseCriticalException {
      *            the exception data
      */
     public UserServiceException(String message, Throwable cause, ExceptionData data) {
-        super(message, cause, data);
+        this(message, cause, data, message);
     }
 
     /**
@@ -133,6 +163,11 @@ public class UserServiceException extends BaseCriticalException {
      * Constructor with error message.
      * </p>
      * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - for proper exception serialization to webservice fault info is also initialized now.
+     * </p>
+     * 
      * @param message
      *            the error message
      * @param faultMessage
@@ -141,12 +176,18 @@ public class UserServiceException extends BaseCriticalException {
     public UserServiceException(String message, String faultMessage) {
         super(message);
         this.faultMessage = faultMessage;
-        this.faultInfo = null;
+        this.faultInfo = new UserServiceFault();
+        this.faultInfo.setFaultMessage(this.faultMessage);
     }
 
     /**
      * <p>
      * Constructor with error message and inner cause.
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - for proper exception serialization to webservice fault info is also initialized now.
      * </p>
      * 
      * @param message
@@ -159,12 +200,18 @@ public class UserServiceException extends BaseCriticalException {
     public UserServiceException(String message, Throwable cause, String faultMessage) {
         super(message, cause);
         this.faultMessage = faultMessage;
-        this.faultInfo = null;
+        this.faultInfo = new UserServiceFault();
+        this.faultInfo.setFaultMessage(this.faultMessage);
     }
 
     /**
      * <p>
      * Constructor with error message and exception data
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - for proper exception serialization to webservice fault info is also initialized now.
      * </p>
      * 
      * @param message
@@ -177,12 +224,18 @@ public class UserServiceException extends BaseCriticalException {
     public UserServiceException(String message, ExceptionData data, String faultMessage) {
         super(message, data);
         this.faultMessage = faultMessage;
-        this.faultInfo = null;
+        this.faultInfo = new UserServiceFault();
+        this.faultInfo.setFaultMessage(this.faultMessage);
     }
 
     /**
      * <p>
      * Constructor with error message and inner cause and exception data
+     * </p>
+     * 
+     * <p>
+     * Updated for Jira and Confluence User Sync Widget 1.0
+     *  - for proper exception serialization to webservice fault info is also initialized now.
      * </p>
      * 
      * @param message
@@ -197,7 +250,8 @@ public class UserServiceException extends BaseCriticalException {
     public UserServiceException(String message, Throwable cause, ExceptionData data, String faultMessage) {
         super(message, cause, data);
         this.faultMessage = faultMessage;
-        this.faultInfo = null;
+        this.faultInfo = new UserServiceFault();
+        this.faultInfo.setFaultMessage(this.faultMessage);
     }
 
     /**

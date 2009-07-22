@@ -10,7 +10,12 @@ import javax.ejb.Remote;
  * It provides various getters on user object.
  * </p>
  * 
- * @author snow01
+ * <p>
+ * Updated for Jira and Confluence User Sync Widget 1.0
+ *  - Moved the methods that existed in user_sync_service component's UserService.
+ * </p>
+ * 
+ * @author snow01, TCSASSEMBLER
  * @since Cockpit Release Assembly for Receipts
  * @version 1.0
  */
@@ -35,4 +40,38 @@ public interface UserService {
      * @since Cockpit Release Assembly for Receipts
      */
     public String getEmailAddress(long userid) throws UserServiceException;
+    
+    /**
+     * <p>
+     * This method retrieve the email address for given user handle.
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return the email address
+     * 
+     * @throws IllegalArgumentWSException
+     *             if the argument is invalid
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     * @since Jira & Confluence User Sync Service
+     */
+    public String getEmailAddress(String userHandle) throws UserServiceException;
+    
+    /**
+     * <p>
+     * This method returns true if given user handle is admin otherwise it returns false. 
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return returns true if given user handle is admin otherwise it returns false. 
+     * 
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     * @since Jira & Confluence User Sync Service
+     */
+    public boolean isAdmin(String userHandle) throws UserServiceException;
 }

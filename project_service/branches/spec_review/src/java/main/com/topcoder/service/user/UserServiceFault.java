@@ -18,6 +18,11 @@ import javax.xml.bind.annotation.XmlType;
  * </p>
  * 
  * <p>
+ * Updated for Jira and Confluence User Sync Widget 1.0
+ *  - Correct few of JavaDoc comments.
+ * </p>
+ * 
+ * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
  * 
@@ -40,7 +45,7 @@ public class UserServiceFault implements Serializable {
      * Represents the persistence message
      * </p>
      */
-    @XmlElement(name = "fault_message", required = true)
+    @XmlElement(name = "faultString", required = true)
     private String faultMessage;
 
     /**
@@ -53,10 +58,10 @@ public class UserServiceFault implements Serializable {
 
     /**
      * <p>
-     * Gets the value of the persistenceMessage property.
+     * Gets the value of the faultMessage property.
      * </p>
      * 
-     * @return the value of the persistenceMessage property.
+     * @return the value of the faultMessage property.
      */
     public String getFaultMessage() {
         return faultMessage;
@@ -67,8 +72,8 @@ public class UserServiceFault implements Serializable {
      * Sets the value of the persistenceMessage property.
      * </p>
      * 
-     * @param persistenceMessage
-     *            the value of the persistenceMessage property to set, can be null, can be empty
+     * @param faultMessage
+     *            the value of the faultMessage property to set, can be null, can be empty
      */
     public void setFaultMessage(String faultMessage) {
         this.faultMessage = faultMessage;

@@ -3,6 +3,10 @@
  */
 package com.topcoder.service.user.ejb;
 
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -17,6 +21,8 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
+import com.topcoder.service.user.Helper;
 import com.topcoder.service.user.UserServiceRemote;
 import com.topcoder.service.user.UserServiceLocal;
 import com.topcoder.service.user.UserServiceException;
@@ -29,12 +35,25 @@ import com.topcoder.util.log.LogManager;
  * It provides CRUD on user object.
  * </p>
  * 
- * @author snow01
+ * <p>
+ * Updated for Jira and Confluence User Sync Widget 1.0
+ *  The mock implementation of getEmailAddress and isAdmin has been moved from user_sync_service UserServiceBean class.
+ * </p>
+ * 
+ * <p>
+ * The mock implementation for getEmailAddress(..) returns <userHandle>@topcoder.com email address for any user handle
+ * that starts with alphabets and just has allowed character sets [A-Z], [a-z], [0-9], _ (a underscore). Other wise it
+ * returns null.
+ * 
+ * The mock implementation for isAdmin(..) returns true for 'user' handle or all those handles that has only Upper case
+ * alphabets.
+ * </p>
+ * 
+ * @author snow01, TCSASSEMBLER
  * @since Cockpit Release Assembly for Receipts
  * @version 1.0
  */
-@RunAs("Cockpit Administrator")
-@RolesAllowed("Cockpit User")
+@RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -72,6 +91,11 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      * </p>
      */
     private Log logger;
+
+    /**
+     * Static instance of Pattern that validates user handle for the mock implementation.
+     */
+    private static final Pattern validUserHandlePattern = Pattern.compile("[A-Za-z][_A-Za-z0-9]*");
 
     /**
      * A default empty constructor.
@@ -140,6 +164,78 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
     /**
      * <p>
+     * This method retrieve the email address for given user handle.
+     * 
+     * This mock implementation returns <userHandle>@topcoder.com email address for any user handle that starts with
+     * alphabets and just has allowed character sets [A-Z], [a-z], [0-9], _ (a underscore). Other wise it returns null.
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return the email address
+     * 
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     * @since Jira & Confluence User Sync Service             
+     */
+    public String getEmailAddress(String userHandle) throws UserServiceException {
+        String ret = null;
+        try {
+            logEnter("getEmailAddress(userHandle)", userHandle);
+            Helper.checkNull(userHandle, "userHandle");
+            Helper.checkEmpty(userHandle, "userHandle");
+
+            Matcher matcher = validUserHandlePattern.matcher(userHandle);
+            if (matcher.matches()) {
+                ret = userHandle + "@topcoder.com";
+            } else {
+                ret = null;
+            }
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "IllegalStateException.");
+        } finally {
+            logExit("getEmailAddress(userHandle)", ret);
+        }
+
+        return ret;
+    }
+
+    /**
+     * <p>
+     * This method returns true if given user handle is admin otherwise it returns false.
+     * 
+     * This mock implementation returns true for 'user' handle or all those handles that has only Upper case alphabets.
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return returns true if given user handle is admin otherwise it returns false.
+     * 
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     * @since Jira & Confluence User Sync Service
+     */
+    public boolean isAdmin(String userHandle) throws UserServiceException {
+        boolean ret = false;
+        try {
+            logEnter("isAdmin(userHandle)", userHandle);
+            Helper.checkNull(userHandle, "userHandle");
+            Helper.checkEmpty(userHandle, "userHandle");
+
+            ret = userHandle.equals("user") || (userHandle.toUpperCase().equals(userHandle));
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "IllegalStateException.");
+        } finally {
+            logExit("isAdmin(userHandle)", ret);
+        }
+
+        return ret;
+    }
+
+    /**
+     * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
      * 
@@ -158,6 +254,39 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             return (EntityManager) obj;
         } catch (ClassCastException e) {
             throw wrapUserServiceException(e, "The jndi name for '" + unitName + "' should be EntityManager instance.");
+        }
+    }
+
+    /**
+     * <p>
+     * This method used to log enter in method. It will persist both method name and it's parameters if any.
+     * </p>
+     * 
+     * @param method
+     *            name of the entered method
+     * @param params
+     *            array containing parameters used to invoke method
+     */
+    private void logEnter(String method, Object... params) {
+        if (logger != null) {
+            logger.log(Level.DEBUG, "Enter method UserServiceBean.{0} with parameters {1}.", method, Arrays
+                    .deepToString(params));
+        }
+    }
+
+    /**
+     * <p>
+     * This method used to log leave of method. It will persist method name.
+     * </p>
+     * 
+     * @param method
+     *            name of the leaved method
+     * @param returnValue
+     *            value returned from the method
+     */
+    private void logExit(String method, Object returnValue) {
+        if (logger != null) {
+            logger.log(Level.DEBUG, "Leave method {0} with return value {1}.", method, returnValue);
         }
     }
 
