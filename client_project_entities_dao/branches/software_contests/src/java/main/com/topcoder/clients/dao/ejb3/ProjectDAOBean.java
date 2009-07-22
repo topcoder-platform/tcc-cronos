@@ -202,7 +202,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
 		try {
 
-			String queryString = SELECT_PROJECT + " and active = 1 and project_id in " + "("
+			String queryString = SELECT_PROJECT + " and active = 1 and p.project_id in " + "("
 					+ SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
 					+ SELECT_WORKER_PROJECT + "'" + username + "')";
 			queryString += " order by upper(name) ";
