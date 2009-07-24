@@ -239,14 +239,14 @@
 		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(0));
 
                 // assign values to review screen.
-                mainWidget.review.cstTypeStep2=studioType.selection.label;
+                /*mainWidget.review.cstTypeStep2=studioType.selection.label;
                 mainWidget.review.firstPrize=firstPlace.text;
                 mainWidget.review.secondPrize=secondPlace.text;
                 mainWidget.review.thirdPrize=thirdPlace.text;
                 mainWidget.review.fourthPrize=fourthPlace.text;
                 mainWidget.review.fifthPrize=fifthPlace.text;
                 mainWidget.review.adminFee=adminf.text;
-                mainWidget.review.contestTotal=cntstTtl.text;
+                mainWidget.review.contestTotal=cntstTtl.text;*/
 
                 return true;
             }
@@ -286,12 +286,12 @@
                 SoftwareCompetitionUtils.instance().addPrizeProps(mainWidget.softwareCompetition, pns);
                 SoftwareCompetitionUtils.instance().addReviewCostProp(mainWidget.softwareCompetition, new Number(ns_reviewCost.text));
                 
-                mainWidget.review.ns_firstPrizeS=ns_firstPlace.text;
+                /*mainWidget.review.ns_firstPrizeS=ns_firstPlace.text;
                 mainWidget.review.ns_secondPrizeS=ns_secondPlace.text;
                 mainWidget.review.ns_reviewCostS=ns_reviewCost.text;
                 mainWidget.review.ns_digitalRunS=ns_dr.text;
                 mainWidget.review.ns_contestFeeS=ns_contestf.text;
-                mainWidget.review.ns_contestTotalS=ns_cntstTtl.text;
+                mainWidget.review.ns_contestTotalS=ns_cntstTtl.text;*/
 
                 return true;
             }

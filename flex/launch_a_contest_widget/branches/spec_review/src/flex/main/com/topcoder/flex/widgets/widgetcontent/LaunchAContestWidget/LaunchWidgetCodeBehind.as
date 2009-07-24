@@ -354,7 +354,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                         (container.contents as LaunchWidget).mainPanel.tabChildren=true;
                     }
 
-					(container.contents as LaunchWidget).contestCreateUser=map["creator"];
                     isReviewScreen=(map["screen"]=="Review");
                     
                     (container.contents as LaunchWidget).contestSelect.initData();
@@ -591,6 +590,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getStudioContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).softwareCompetition=null;
                 (container.contents as LaunchWidget).competition=c;
+                (container.contents as LaunchWidget).contestCreateUser=c.creatorUserId.toString();
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }
@@ -608,6 +608,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getSoftwareContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).competition=null;
                 (container.contents as LaunchWidget).softwareCompetition=c;
+                (container.contents as LaunchWidget).contestCreateUser=c.projectHeader.creationUser;
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
             }

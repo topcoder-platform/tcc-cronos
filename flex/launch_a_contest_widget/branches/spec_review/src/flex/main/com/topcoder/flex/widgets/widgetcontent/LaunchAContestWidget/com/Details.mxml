@@ -86,28 +86,28 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             [Bindable]
-            private var _boundMasterTechnologies:ArrayCollection=new ArrayCollection();
+            public var _boundMasterTechnologies:ArrayCollection=new ArrayCollection();
 
             //
             // Item list for currently choosen technologies.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             [Bindable]
-            private var _boundCurrentTechnologies:ArrayCollection=new ArrayCollection();
+            public var _boundCurrentTechnologies:ArrayCollection=new ArrayCollection();
 
             //
             // Item list for currently available master categories.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             [Bindable]
-            private var _boundMasterCategories:ArrayCollection=new ArrayCollection();
+            public var _boundMasterCategories:ArrayCollection=new ArrayCollection();
 
             //
             // Item list for currently choosen categories.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             [Bindable]
-            private var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
+            public var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
 
             // BUGR-1641
             private var currentResizingRTEditor:TCRichTextEditor = null;
@@ -118,7 +118,7 @@
              * 
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
              */ 
-            private static var applicationCatalog:SoftwareCategory = null;
+            public static var applicationCatalog:SoftwareCategory = null;
             
             /**
              * Stores the reference to 'Business Layer' category.
@@ -126,7 +126,7 @@
              * 
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
              */
-            private static var businessLayerApplicationCategory:SoftwareCategory = null;
+            public static var businessLayerApplicationCategory:SoftwareCategory = null;
 
 	        private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
 	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
@@ -404,7 +404,7 @@
             }
 
 			// BUGR-1678
-			private function isDesOrDevContestType():Boolean {
+			public function isDesOrDevContestType():Boolean {
 				return mainWidget.softwareCompetition && 
 					(mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
 					mainWidget.softwareCompetition.type == "DESIGN");
@@ -678,7 +678,7 @@
                 }
 
 
-                this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
+                /*this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
                 this.mainWidget.review.ns_shortDescStr=ns_shortDesc.text;
                 // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
                 //this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
@@ -714,7 +714,7 @@
                     if (businessLayerApplicationCategory) {
                         this.mainWidget.review.ns_categoriesData.addItem(businessLayerApplicationCategory.name);
                     }
-                }
+                }*/
 
                 return true;
             }
@@ -758,9 +758,9 @@
                 this.mainWidget.competition.contestData.name=ctInput.text; // BUGR-1379
                 this.mainWidget.competition.contestData.shortSummary=introInput.htmlText; // BUGR-1379
                 this.mainWidget.competition.contestData.contestDescriptionAndRequirements=glsInput.htmlText; // BUGR-1379
-                this.mainWidget.review.contentTitleStr=ctInput.text;
+                /*this.mainWidget.review.contentTitleStr=ctInput.text;
                 this.mainWidget.review.IntroductionStr=introInput.text;
-                this.mainWidget.review.glsInputStr=glsInput.text;
+                this.mainWidget.review.glsInputStr=glsInput.text;*/
 
                 return true;
             }

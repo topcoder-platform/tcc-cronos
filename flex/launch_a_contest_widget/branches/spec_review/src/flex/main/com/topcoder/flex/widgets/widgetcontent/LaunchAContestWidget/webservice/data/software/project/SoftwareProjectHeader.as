@@ -13,7 +13,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
-    public class SoftwareProjectHeader {
+    public class SoftwareProjectHeader extends AuditableObject {
 
         /**
          * A default empty constructor.

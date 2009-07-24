@@ -64,7 +64,6 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             public var ns_shortDescStr:String;
             // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
             //public var ns_detailedDescStr:String;
-            public var ns_funcDescStr:String;
             public var ns_techListData:ArrayCollection;
             
             // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
@@ -158,7 +157,106 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 2
             //        - review data is read from persistent now.
             public function setAllValues():void {
-			projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
+                if (mainWidget && mainWidget.contestSelect) {
+                    // set values from contest selection screen.
+                    cstTypeStep1=mainWidget.contestSelect.contestType.selection.label;
+                }
+                
+                if (mainWidget && mainWidget.studioContestType) {
+                    if (mainWidget.overView) {
+                        // assign values from overview screen.
+                        if (mainWidget.overView.studioType.selection) {
+                            cstTypeStep2=mainWidget.overView.studioType.selection.label;
+                        }
+                        firstPrize=mainWidget.overView.firstPlace.text;
+                        secondPrize=mainWidget.overView.secondPlace.text;
+                        thirdPrize=mainWidget.overView.thirdPlace.text;
+                        fourthPrize=mainWidget.overView.fourthPlace.text;
+                        fifthPrize=mainWidget.overView.fifthPlace.text;
+                        adminFee=mainWidget.overView.adminf.text;
+                        contestTotal=mainWidget.overView.cntstTtl.text;
+                    }
+                    
+                    if (mainWidget && mainWidget.details) {
+                        // assign values from details screen.
+                        contentTitleStr=mainWidget.details.ctInput.text;
+                        IntroductionStr=mainWidget.details.introInput.text;
+                        glsInputStr=mainWidget.details.glsInput.text;
+                    }
+                    
+                    if (mainWidget && mainWidget.specf) {
+                        // assign values from specifications screen.
+                        colorInputStr=mainWidget.specf.colorInput.text;
+                        fontInputStr=mainWidget.specf.fontInput.text;
+                        sizeInputStr=mainWidget.specf.sizeInput.text;
+                        addReInputStr=mainWidget.specf.addReInput.text;
+                        if (mainWidget.competition) {
+                            fileFormatInputStr=mainWidget.competition.contestData.finalFileFormat;
+                        }
+                    }
+                    
+                    if (mainWidget && mainWidget.sched) {
+                        // assign values from schedule screen.
+                        fromDate=mainWidget.sched.dfStart.selectedDate;
+                        fromTime=mainWidget.sched.CmbHourStart.selectedItem.label + ":" + mainWidget.sched.CmbMinuteStart.selectedItem.label + " " + mainWidget.sched.timezoneStart.text;
+                        toDate=mainWidget.sched.dfEnd.selectedDate;
+                        toTime=mainWidget.sched.CmbHourEnd.selectedItem.label + ":" + mainWidget.sched.CmbMinuteEnd.selectedItem.label + " " + mainWidget.sched.timezoneEnd.text;
+                    }
+                    
+                } else {
+                    if (mainWidget && mainWidget.overView) {
+                        // assign values from overview screen.
+                        ns_firstPrizeS=mainWidget.overView.ns_firstPlace.text;
+                        ns_secondPrizeS=mainWidget.overView.ns_secondPlace.text;
+                        ns_reviewCostS=mainWidget.overView.ns_reviewCost.text;
+                        ns_digitalRunS=mainWidget.overView.ns_dr.text;
+                        ns_contestFeeS=mainWidget.overView.ns_contestf.text;
+                        ns_contestTotalS=mainWidget.overView.ns_cntstTtl.text;
+                    }
+                    
+                    if (mainWidget && mainWidget.details) {
+                        // assign values from details screen.
+                        ns_componentNameStr=mainWidget.details.ns_ctInput.text;
+                        ns_shortDescStr=mainWidget.details.ns_shortDesc.text;
+                        ns_detailedRequirementsStr=mainWidget.details.ns_detailedRequirements.text;
+                        ns_submissionDeliverablesStr=mainWidget.details.ns_submissionDeliverables.text;
+                        ns_environmentSetupInstructionsStr=mainWidget.details.ns_environmentSetupInstructions.text;
+                        ns_finalSubmissionGuidelinesStr=mainWidget.details.ns_finalSubmissionGuidelines.text;
+                        ns_techListData=new ArrayCollection();
+                        
+                        for (var m:int=0; mainWidget.details._boundCurrentTechnologies && m < mainWidget.details._boundCurrentTechnologies.length; m++) {
+                            ns_techListData.addItem(mainWidget.details._boundCurrentTechnologies.getItemAt(m).label);
+                        }
+        
+                        if (mainWidget.details.isDesOrDevContestType()) {
+                            ns_catalogNameStr=mainWidget.details.ns_catalogNameInput.selectedItem.label;
+            
+                            ns_categoriesData=new ArrayCollection();
+                            for (var n:int=0; mainWidget.details._boundCurrentCategories && n < mainWidget.details._boundCurrentCategories.length; n++) {
+                                ns_categoriesData.addItem(mainWidget.details._boundCurrentCategories[n].label);
+                            }
+                        } else {
+                            if (Details.applicationCatalog) {
+                                ns_catalogNameStr=Details.applicationCatalog.name;
+                            }
+                            ns_categoriesData=new ArrayCollection();
+                            if (Details.businessLayerApplicationCategory) {
+                                ns_categoriesData.addItem(Details.businessLayerApplicationCategory.name);
+                            }
+                        }
+                    }
+                    
+                    if (mainWidget && mainWidget.sched) {
+                        // assign values from schedule screen.
+                        fromDate=mainWidget.sched.dfStart.selectedDate;
+                        fromTime=mainWidget.sched.CmbHourStart.selectedItem.label + ":" + mainWidget.sched.CmbMinuteStart.selectedItem.label + " " + mainWidget.sched.timezoneStart.text;
+                    }
+                }
+                
+                if (this.mainWidget) {
+			        projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
+                }
+                
                 contestType_step1.text=cstTypeStep1;
 
                 // step 2
@@ -167,7 +265,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // Depending on contest type populate the fields differently.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) {
+                if (mainWidget && mainWidget.studioContestType) {
                     contestType_step2.text=cstTypeStep2;
                     p1.text=firstPrize;
                     p2.text=secondPrize;
@@ -198,14 +296,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // Depending on contest type populate the fields differently.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) {
+                if (mainWidget && mainWidget.studioContestType) {
                     ctInput.htmlText=contentTitleStr; // BUGR-1279
                     introInput.htmlText=IntroductionStr; // BUGR-1279
                     glsInput.htmlText=glsInputStr; // BUGR-1279
                 } else {
                     ns_componentName.text=ns_componentNameStr;
                     ns_shortDesc.text=ns_shortDescStr;
-                    ns_funcDesc.text=ns_funcDescStr;
                     // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
                     //ns_detailedDesc.text=ns_detailedDescStr;
                     //ns_comments.text=ns_commentsStr;
@@ -236,7 +333,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // Specification fields are only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) {
+                if (mainWidget && mainWidget.studioContestType) {
                     colorInput.text=colorInputStr;
                     fontInput.text=fontInputStr;
                     sizeInput.text=sizeInputStr;
@@ -255,7 +352,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // End date is only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) {
+                if (mainWidget && mainWidget.studioContestType) {
                     // BUGR-1475
                     if (toDate) {
                         endDate.text=(toDate.getMonth() + 1).toString() + '-' + toDate.getDate() + '-' + toDate.getFullYear().toString();
@@ -268,21 +365,21 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // For now attach file need to be done only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
-                if (mainWidget.studioContestType) { // BUGR-1600
+                if (mainWidget && mainWidget.studioContestType) { // BUGR-1600
                     if (mainWidget.competition && mainWidget.competition.contestData) {
                         setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
                     }
                 } else {
                     attachedFilesVBox.removeAllChildren();
                     
-                    if (mainWidget.softwareCompetition && mainWidget.softwareCompetition.assetDTO) {
+                    if (mainWidget && mainWidget.softwareCompetition && mainWidget.softwareCompetition.assetDTO) {
                         setAttachedFiles(mainWidget.softwareCompetition.assetDTO.documentation);
                         setAttachedFiles(mainWidget.softwareCompetition.assetDTO.compUploadedFiles);
                     }
                 }
                 
                 // set the review data.
-                if (mainWidget.specReviews) {
+                if (mainWidget && mainWidget.specReviews) {
                     for each (var sr:SpecReview in mainWidget.specReviews) {
                         var rd:ReviewData=new ReviewData();
                         rd.sectionId=sectionNameToIdMapping[sr.sectionType.name];
@@ -473,7 +570,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 //
                 // build the review popup data.
                 //
-                if (!mainWidget.contestCreateUser || mainWidget.username==mainWidget.contestCreateUser) {
+                if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
                     passFailRadioContainer.visible=false;
                     passFailRadioContainer.includeInLayout=false;    
                 } else {
@@ -496,7 +593,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // save the conversation.
                 for each (var cd:ConversationData in currentReviewData.conversations) {
                     var stylePrefix:String="";
-                    if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                    if (!mainWidget.contestCreateUser || mainWidget.userid.toString()== mainWidget.contestCreateUser) {
                         stylePrefix="creator";
                     } else {
                         stylePrefix="reviewer";
@@ -579,7 +676,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                     cd.message=commentInputArea.text;
                     cd.time=new Date();
                     cd.user=mainWidget.username;
-                    if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                    if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
                         cd.reviewer=false;
                     } else {
                         cd.reviewer=true;
@@ -595,7 +692,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 //
                 // since Cockpit Launch Contest - Inline Spec Reviews Part 2
                 //
-                if (!mainWidget.contestCreateUser || mainWidget.username == mainWidget.contestCreateUser) {
+                if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
                     var saveReviewComment:AbstractOperation=mainWidget._csws.getOperation("saveReviewComment");
                     saveReviewComment.send(mainWidget.contestid, 
                         mainWidget.competitionType.toLocaleLowerCase() == "studio",
@@ -662,7 +759,8 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
              height="100%"
              id="mainContainer">
         <mx:HBox horizontalAlign="right"
-                 width="100%">
+                 width="100%"
+                 height="100%">
             <mx:Label text="Review"
                       styleName="sectionTitle"
                       width="80%"/>
@@ -677,11 +775,14 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                   text="Project:"
                   styleName="projectTitle"/>
         <mx:Text id="projectDescription"
+            height="100%"
+            width="500"
                  text=""/>
 
         <mx:Spacer height="5"/>
 
         <mx:VBox width="100%"
+                height="100%"
                  id="contestSelection"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -718,8 +819,8 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:HBox width="100%"
+                height="0"
                      id="contestSelection_content"
-                     height="0"
                      verticalScrollPolicy="off"
                      horizontalScrollPolicy="off"
                      paddingLeft="10"
@@ -735,6 +836,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
         <mx:Spacer height="5"/>
 
         <mx:VBox width="100%"
+                height="100%"
                  id="contestOverview"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -779,17 +881,20 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                      paddingRight="10"
                      paddingBottom="10">
                 <mx:VBox width="100%"
+                    height="100%"
                          visible="{mainWidget.studioContestType}"
                          includeInLayout="{mainWidget.studioContestType}"
-                         id="s_contestOverview_content">
+                         id="s_contestOverview_content"
+                         verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
                     <mx:HBox width="100%">
                         <mx:Label text="Type:"
                                   fontWeight="bold"/>
-                        <mx:Text id="contestType_step2"
-                                 text="Application Front End Design"/>
+                        <mx:Text id="contestType_step2"/>
                     </mx:HBox>
                     <mx:HBox verticalAlign="top"
-                             width="100%">
+                             width="100%"
+                             height="100%">
                         <mx:VBox>
                             <mx:HBox>
                                 <mx:Label text="1st Place: "
@@ -829,7 +934,6 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                                 <mx:Label text="Contest Fee:"
                                           fontWeight="bold"/>
                                 <mx:Text id="adFee"
-                                         text="$***"
                                          width="154"/>
                                 <!-- TCCC-1218 -->
                             </mx:HBox>
@@ -838,13 +942,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                                           fontWeight="bold"/>
                                 <mx:Spacer width="7"/>
                                 <mx:Text id="total"
-                                         text="$***"
                                          width="55"/>
                             </mx:HBox>
                         </mx:VBox>
                     </mx:HBox>
                 </mx:VBox>
                 <mx:HBox width="100%"
+                    height="100%"
                          visible="{!mainWidget.studioContestType}"
                          includeInLayout="{!mainWidget.studioContestType}"
                          id="ns_contestOverview_content">
@@ -881,7 +985,6 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                             <mx:Label text="Contest Fee:"
                                       fontWeight="bold"/>
                             <mx:Text id="ns_contestFee"
-                                     text="$***"
                                      width="54"/>
                         </mx:HBox>
                         <mx:HBox>
@@ -889,7 +992,6 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                                       fontWeight="bold"/>
                             <mx:Spacer width="7"/>
                             <mx:Text id="ns_Total"
-                                     text="$***"
                                      width="55"/>
                         </mx:HBox>
                     </mx:VBox>
@@ -900,6 +1002,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
         <mx:Spacer height="5"/>
 
         <mx:VBox width="100%"
+            height="100%"
                  id="contestDetails"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -944,109 +1047,106 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                      paddingRight="10"
                      paddingBottom="10">
                 <mx:VBox width="100%"
+                        height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
                          visible="{mainWidget.studioContestType}"
                          includeInLayout="{mainWidget.studioContestType}"
                          id="s_contestDetails_content">
-                    <mx:HBox>
+                    <mx:HBox width="100%"
+                        height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
                         <mx:Label text="Content Title:"
                                   fontWeight="bold"/>
                         <mx:Text id="ctInput"
-                                 width="308"
-                                 text="test"/>
+                                 width="500"
+                                 height="100%"/>
                     </mx:HBox>
                     <mx:Spacer height="5"/>
                     <mx:Label text="Introduction:"
                               fontWeight="bold"/>
-                    <mx:VBox verticalScrollPolicy="auto"
-                             width="308">
-                        <mx:Text id="introInput"
-                                 width="100%"
-                                 height="100%"/>
-                    </mx:VBox>
+                    <mx:Text id="introInput"
+                             width="500"
+                             height="100%"/>
                     <mx:Spacer height="5"/>
                     <mx:Label text="Detailed Description:"
                               fontWeight="bold"/>
-                    <mx:VBox verticalScrollPolicy="auto"
-                             width="308">
-                        <mx:Text id="glsInput"
-                                 width="100%"
-                                 height="100%"/>
-                    </mx:VBox>
+                    <mx:Text id="glsInput"
+                             width="500"
+                             height="100%"/>
                 </mx:VBox>
                 <mx:VBox width="100%"
+                         height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
                          visible="{!mainWidget.studioContestType}"
                          includeInLayout="{!mainWidget.studioContestType}"
                          id="ns_contestDetails_content">
-                    <mx:HBox>
+                    <mx:HBox width="100%"
+                        height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
                         <mx:Label text="Component Name:"
                                   fontWeight="bold"/>
                         <mx:Text id="ns_componentName"
-                                 width="308"/>
+                                 width="500"
+                                 height="100%"/>
                     </mx:HBox>
                     <mx:Spacer height="5"/>
                     <mx:Label text="Short Description:"
                               fontWeight="bold"/>
                     <mx:Text id="ns_shortDesc"
-                             width="500"/>
-
+                             width="500"
+                             height="100%"/>
                     <mx:Spacer height="5"/>
-                    <mx:Label text="Functional Description:"
+                    <mx:Label text="Detailed Requirements:"
                               fontWeight="bold"/>
-                    <mx:Text id="ns_funcDesc"
-                             width="500"/>
-
-            <!--<mx:Spacer height="5"/>
-            <mx:Label text="Detailed Description:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_detailedDesc"
-                     width="500"
-                     height="50"/>-->
-                     
-            <mx:Spacer height="5"/>
-            <mx:Label text="Detailed Requirements:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_detailedRequirements"
-                     width="500"
-                     height="50"/>
-                     
-            <mx:Spacer height="5"/>
-            <mx:Label text="Submission Deliverables:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_submissionDeliverables"
-                     width="500"
-                     height="50"/>
-                     
-            <mx:Spacer height="5"/>
-            <mx:Label text="Environment Setup Instructions:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_environmentSetupInstructions"
-                     width="500"
-                     height="50"/>
-                     
-            <mx:Spacer height="5"/>
-            <mx:Label text="Final Submission Guidelines:"
-                      fontWeight="bold"/>
-            <mx:Text id="ns_finalSubmissionGuidelines"
-                     width="500"
-                     height="50"/>                                                    
+                    <mx:Text id="ns_detailedRequirements"
+                             width="500"
+                             height="100%"/>
+                             
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Submission Deliverables:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_submissionDeliverables"
+                             width="500"
+                             height="100%"/>
+                             
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Environment Setup Instructions:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_environmentSetupInstructions"
+                             width="500"
+                             height="100%"/>
+                             
+                    <mx:Spacer height="5"/>
+                    <mx:Label text="Final Submission Guidelines:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ns_finalSubmissionGuidelines"
+                             width="500"
+                             height="100%"/>                                                    
 
                     <mx:Spacer height="5"/>
                     <mx:Label text="Current Project Technologies:"
                               fontWeight="bold"/>
                     <mx:Text id="ns_techList"
-                             width="500"/>
+                             width="500"
+                             height="100%"/>
 
                     <mx:Spacer height="5"/>
                     <mx:Label text="Catalog Name:"
                               fontWeight="bold"/>
                     <mx:Text id="ns_catalogName"
-                             width="500"/>
+                             width="500"
+                             height="100%"/>
 
                     <mx:Spacer height="5"/>
                     <mx:Label text="Categories:"
                               fontWeight="bold"/>
                     <mx:Text id="ns_categories"
-                             width="500"/>
+                             width="500"
+                             height="100%"/>
                 </mx:VBox>
             </mx:HBox>
         </mx:VBox>
@@ -1056,6 +1156,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
         <mx:VBox visible="{mainWidget.studioContestType}"
                  includeInLayout="{mainWidget.studioContestType}"
                  width="100%"
+                 height="100%"
                  id="contestSpecs"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -1103,31 +1204,31 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                           fontWeight="bold"/>
                 <mx:Text id="colorInput"
                          width="500"
-                         text="test"/>
+                         height="100%"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Fonts:"
                           fontWeight="bold"/>
                 <mx:Text id="fontInput"
                          width="500"
-                         text="test"/>
+                         height="100%"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Size:"
                           fontWeight="bold"/>
                 <mx:Text id="sizeInput"
                          width="500"
-                         text="test"/>
+                         height="100%"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Additional Requirements or Restrictions:"
                           fontWeight="bold"/>
                 <mx:Text id="addReInput"
                          width="500"
-                         text="test"/>
+                         height="100%"/>
                 <mx:Spacer height="5"/>
                 <mx:Label text="Final File Formats:"
                           fontWeight="bold"/>
                 <mx:Text id="fileFormatInput"
                          width="500"
-                         text="test"/>
+                         height="100%"/>
             </mx:VBox>
         </mx:VBox>
 
@@ -1136,6 +1237,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                    includeInLayout="{mainWidget.studioContestType}"/>
 
         <mx:VBox width="100%"
+                height="100%"
                  id="attachedFiles"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -1173,13 +1275,14 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             <mx:Spacer height="5"/>
             <mx:HBox width="100%"
                      id="attachedFiles_content"
-                     height="0"
+                     height="100%"
                      verticalScrollPolicy="off"
                      horizontalScrollPolicy="off"
                      paddingLeft="10"
                      paddingRight="10"
                      paddingBottom="10">
                 <mx:VBox width="100%"
+                    height="100%"
                          id="attachedFilesVBox">
                 </mx:VBox>
             </mx:HBox>
@@ -1188,6 +1291,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
         <mx:Spacer height="5"/>
 
         <mx:VBox width="100%"
+            height="100%"
                  id="contestSchedule"
                  backgroundColor="#f0f0f0"
                  verticalScrollPolicy="off"
@@ -1231,7 +1335,9 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                      paddingLeft="10"
                      paddingRight="10"
                      paddingBottom="10">
-                <mx:HBox>
+                <mx:HBox height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
                     <mx:Label text="Start Date:"
                               fontWeight="bold"/>
                     <mx:Text id="startDate"
@@ -1243,7 +1349,10 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 </mx:HBox>
 
                 <mx:HBox visible="{mainWidget.studioContestType}"
-                         includeInLayout="{mainWidget.studioContestType}">
+                         includeInLayout="{mainWidget.studioContestType}"
+                         height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
                     <mx:Label text="End Date:"
                               fontWeight="bold"/>
                     <mx:Text id="endDate"
