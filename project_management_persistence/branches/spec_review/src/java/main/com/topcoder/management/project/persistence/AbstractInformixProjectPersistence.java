@@ -275,7 +275,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 			+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end " 
             + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-            + " and a.is_studio = b.is_studio) where a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
+            + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0 ) as spec_review_status"
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
@@ -317,7 +317,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 	+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
     + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-    + " and a.is_studio = b.is_studio) where a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
+    + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0) as spec_review_status"
 			
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -2948,7 +2948,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
 			+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end " 
             + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-            + " and a.is_studio = b.is_studio) where a.is_studio = 0 and b.contest_id = p.project_id) as spec_review_status"
+            + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0) as spec_review_status"
 					
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
