@@ -28,6 +28,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Reference to the main submission viewer widget.
          */
         public var subViewer:SubmissionViewerWidget;
+        
+        /**
+         * Reference to the thumbnail view of the widget.
+         */ 
+        public var thumbnailView:ThumbnailGallerySubmissionViewer;
 
         /**
          * True if submission rank is allowed, otherwise false.

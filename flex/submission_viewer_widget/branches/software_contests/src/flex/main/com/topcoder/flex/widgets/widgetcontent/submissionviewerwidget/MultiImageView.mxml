@@ -45,6 +45,7 @@
 	     * @since Cockpit Release Assembly 2
 	     */
             private function init():void {
+                trace("IN INIT FOR MULTI IMAGE VIEW");
                 if (model && model.activeSubmissionId > 0) {
                     this.data=model.activeSubmissionId;
                 }
@@ -120,12 +121,10 @@
                 }
                 
                 data.upDown=(up) ? "up" : "down";
-                if (up)
-                {
+                if (up) {
                     downData.selected=false;
                     upData.selected=true;
-                } else
-                {
+                } else {
                     upData.selected=false;
                     downData.selected=true;
                 }
@@ -136,11 +135,9 @@
              */
             private function showHideFooter():void {
                 model.showFooter=!model.showFooter;
-                if (model.showFooter)
-                {
+                if (model.showFooter) {
                     btn.styleName="showHideBtnOpen2";
-                } else
-                {
+                } else {
                     btn.styleName="showHideBtnClose2";
                 }
             }
@@ -152,23 +149,32 @@
              * Changed for Cockpit Submission Viewer Widget Enhancement Part 1:
              *    Data is set for the given submission-id rather than submission-index.
              * </p>
-	     *
-	     * <p>
-	     * Updated for Cockpit Release Assembly 2
-	     *		- have the page size as 6 only.
-	     * </p>
+             *
+             * <p>
+             * Updated for Cockpit Release Assembly 2
+             *		- have the page size as 6 only.
+             * </p>
              *
              * @param value value from the caller.
+             * @deprecated
              */
             override public function set data(value:Object):void {
+                trace("MultiImageView:: Value -----------> " + value);
                 if ((value as int) != -1) {
-                    super.data=null;
                     super.data=model.getSubmission((value as int));
                     thumbnailImageList=new ArrayCollection(model.imageList.toArray().slice(0, 6));
                     trace("--------------- MultiImageView:: Setting data to:" + super.data.id + ", -----> " + thumbnailImageList.length);
                 } else {
                     trace("--------------- MultiImageView:: Setting data to null.");
                 }
+            }
+            
+            /**
+             * Refreshes the images.
+             */ 
+            public function refreshImages():void {
+                trace("MultiImageView:: refreshImages -----------> " + model.imageList);
+                thumbnailImageList=new ArrayCollection(model.imageList.toArray().slice(0, 6));
             }
 
             /**
@@ -231,8 +237,8 @@
          Binding should happen with activeSubmissionId
          since: Cockpit Submission Viewer Widget Enhancement Part 1
     -->
-    <mx:Binding source="model.activeSubmissionId"
-                destination="data"/>
+    <!--<mx:Binding source="model.activeSubmissionId"
+                destination="data"/>-->
     <mx:DefaultTileListEffect id="myDTLE"
                               fadeInDuration="10"
                               fadeOutDuration="10"

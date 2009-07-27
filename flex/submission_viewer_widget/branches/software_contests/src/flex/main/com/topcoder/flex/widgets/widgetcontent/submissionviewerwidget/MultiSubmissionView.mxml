@@ -195,6 +195,7 @@
                     model.selectedImage=item;
                     model.imageList=data.fullsizepreviewList as ArrayCollection;
                     model.selectedIndex=3;
+                    model.thumbnailView.multiImageViewer.refreshImages();
                 }
             }
         ]]>

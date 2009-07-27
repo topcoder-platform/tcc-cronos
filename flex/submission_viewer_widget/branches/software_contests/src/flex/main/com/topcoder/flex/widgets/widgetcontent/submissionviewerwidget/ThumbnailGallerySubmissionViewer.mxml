@@ -156,6 +156,7 @@
             public function set subViewer(viewer:SubmissionViewerWidget):void {
                 this._subViewer=viewer;
                 this.model=viewer.model;
+                this.model.thumbnailView=this;
                 if (_isInitialized) {
                     this.simpleSubViewer.model=this.model;
                     this.multiSubViewer.model=this.model;
