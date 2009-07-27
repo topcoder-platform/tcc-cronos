@@ -192,7 +192,7 @@
                 
                 if (e && e.result) {
                     jiraUserControl.styleName=SuccessLabelStyle;
-                    jiraUserControl.text=e.result as String;
+                    jiraUserControl.text="Created";//e.result as String;
                     
                     // on successful synchronization of jira, synchronize confluence user. 
                     syncConfluenceUser();
@@ -247,7 +247,7 @@
                 
                 if (e && e.result) {
                     confluenceUserControl.styleName=SuccessLabelStyle;
-                    confluenceUserControl.text=e.result as String;
+                    confluenceUserControl.text="Created";//e.result as String;
                 }
             }
             
@@ -333,7 +333,7 @@
                 </mx:GridItem>
                 <mx:GridItem>
                     <mx:Button id="searchBtn"
-                               label="Search"
+                               label="Sync User"
                                labelPlacement="{ButtonLabelPlacement.LEFT}"
                                styleName="button"
                                buttonMode="true"
@@ -357,7 +357,7 @@
         <mx:Grid>
             <mx:GridRow>
                 <mx:GridItem horizontalAlign="right">
-                    <mx:Label text="Jira's email:"
+                    <mx:Label text="Jira User:"
                               styleName="normalContentLabel"/>
                 </mx:GridItem>
                 <mx:GridItem horizontalAlign="left">
@@ -368,7 +368,7 @@
             </mx:GridRow>
             <mx:GridRow>
                 <mx:GridItem horizontalAlign="right">
-                    <mx:Label text="Confluence's email:"
+                    <mx:Label text="Confluence User:"
                               styleName="normalContentLabel"/>
                 </mx:GridItem>
                 <mx:GridItem horizontalAlign="left">
