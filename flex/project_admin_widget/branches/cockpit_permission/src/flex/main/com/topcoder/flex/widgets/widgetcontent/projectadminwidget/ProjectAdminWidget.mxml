@@ -25,6 +25,9 @@
                                  xmlns:com="com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.*"
                                  creationComplete="init()">
     <mx:Style source="./Style.css"/>
+    
+   
+    
     <mx:Script>
         <![CDATA[
         	import mx.events.CollectionEvent;
@@ -39,6 +42,7 @@
             import com.topcoder.flex.Helper;
             import mx.rpc.soap.SOAPHeader;
             import mx.rpc.events.ResultEvent;
+            import mx.rpc.events.FaultEvent;
             import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.DGHeaderSkin;
             import mx.core.UIComponent;
             import mx.core.Application;
@@ -91,8 +95,18 @@
                 if (_isLocalTesting) {
                     initComponent();
                 } else {
-                    dataservice.getPassword();
+                    //dataservice.getPassword();
+                    dummyService.send();
                 }
+            }
+            
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+                    dataservice.getPassword();
+
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                    dataservice.getPassword();
             }
 
             /**
@@ -566,6 +580,14 @@
             
         ]]>
     </mx:Script>
+
+	 <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
 
      <mx:WebService id="ContestServiceFacadeBean"
                    useProxy="true"
