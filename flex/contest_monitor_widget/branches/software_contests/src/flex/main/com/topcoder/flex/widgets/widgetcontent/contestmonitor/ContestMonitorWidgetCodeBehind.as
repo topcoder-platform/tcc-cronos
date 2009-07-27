@@ -55,9 +55,9 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         
         
         [Bindable]
-		public var contestList:ArrayCollection;
+	public var contestList:ArrayCollection;
 		
-		public var contestCombo:ComboBox;        
+	public var contestCombo:ComboBox;        
         /**
          * The default contest id.
          */
@@ -67,9 +67,10 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         // 1.1.7
         // Contest Monitor widget should only have the current contest in the drop down.
         // to be loaded contest id.
-		[Bindable]public var toBeLoadedContestId:Number;
+	[Bindable]
+	public var toBeLoadedContestId:Number;
 		
-		// Module Cockpit My Projects Release Assembly 1
+	// Module Cockpit My Projects Release Assembly 1
         // 1.1.7
         // Contest Monitor widget should only have the current contest in the drop down.
         // reference to ContestServiceFacade
@@ -78,10 +79,11 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         private var _pid:String=null;
         
         protected var username:String=Application.application.parameters.username;
-		protected var password:String = "";
+	protected var password:String = "";
 		
-		private var _ContestServiceFacadeBean:WebService;
-        [Bindable]public function get pid():String {
+	private var _ContestServiceFacadeBean:WebService;
+
+        public function get pid():String {
             return this._pid;
         }
         

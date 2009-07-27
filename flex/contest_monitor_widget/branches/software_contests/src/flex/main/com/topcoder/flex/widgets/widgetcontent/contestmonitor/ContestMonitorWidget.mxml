@@ -18,6 +18,7 @@
         import mx.events.SliderEvent;        
         import mx.collections.ArrayCollection;        
     	import mx.rpc.events.ResultEvent;
+    	import mx.rpc.events.FaultEvent;
     	import mx.core.Application;
         import mx.rpc.soap.SOAPHeader;
         import com.topcoder.flex.widgets.widgetcontent.contestmonitor.skins.*;
@@ -98,10 +99,18 @@
         	}
         }
 
-	private function init():void {
-		getDataService();
-            }
+	    private function init():void {
+		    //getDataService();
+		    dummyService.send();
+        }
 
+        private function dummyServiceResultHandler(event:ResultEvent):void {
+                getDataService();
+        }
+        
+        private function dummyServiceFaultHandler(event:FaultEvent):void {
+	    getDataService();
+        }
 
 	    private function getDataService():void
 		{
@@ -324,6 +333,13 @@
         }
     ]]>
 </mx:Script>
+<mx:HTTPService
+    id="dummyService"
+    url="http://www.topcoder.com/"
+    resultFormat="e4x"
+    result="dummyServiceResultHandler(event);"
+    fault="dummyServiceFaultHandler(event);"
+/>
  <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
                     destination="contest-facade">
 		<mx:channelSet>
