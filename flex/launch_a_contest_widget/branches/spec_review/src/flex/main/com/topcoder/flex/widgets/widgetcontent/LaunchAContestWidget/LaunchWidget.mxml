@@ -17,6 +17,7 @@
                            resizeEffect="{resize}"
                            creationComplete="onCreateComplete(1)">
     <mx:Style source="Style.css"/>
+    
 
     <mx:Script>
         <![CDATA[
@@ -48,6 +49,7 @@
             import mx.controls.ButtonLabelPlacement;
 
             import mx.collections.ArrayCollection;
+            import mx.utils.ObjectUtil;
 
             // BUGR-1141
             [Bindable]
@@ -178,12 +180,20 @@
 
 
             private function initWidget():void {
-                this.currentState="ContestSelectionState";
-                initStepNums(true);
-                
-                //trace("LAUNCH WIDGET::Setting studio contest type");
-                //this.studioContestType=true;
-                getDataService();
+                dummyService.send();
+            }
+            
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+               
+                    this.currentState="ContestSelectionState";
+                    initStepNums(true);
+                    getDataService();
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+					this.currentState="ContestSelectionState";
+                    initStepNums(true);
+                    getDataService();                
             }
 
 	    private function getDataService():void
@@ -1272,6 +1282,14 @@
             }
         ]]>
     </mx:Script>
+
+     <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
 
     <mx:WebService id="ProjectServiceFacadeBean"
                    wsdl="{projectServiceFacadeWsdl}">
