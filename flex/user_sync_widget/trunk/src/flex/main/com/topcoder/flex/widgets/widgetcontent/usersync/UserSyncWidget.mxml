@@ -93,7 +93,17 @@
              * Handler that gets called on creation complete of this component.
              */
             private function init():void {
-                getDataService();
+                //getDataService();
+                dummyService.send();
+            }
+
+
+	     private function dummyServiceResultHandler(event:ResultEvent):void {
+                    getDataService();
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                	getDataService();
             }
             
             /**
@@ -291,6 +301,14 @@
             }
         ]]>
     </mx:Script>
+
+	 <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
 
     <mx:WebService id="UserServiceFacadeBean"
                    wsdl="{_userServiceFacadeWsdl}">
