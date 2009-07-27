@@ -140,6 +140,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      * 
      * @since Cockpit Release Assembly for Receipts
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getEmailAddress(long userid) throws UserServiceException {
         try {
             logEnter("getEmailAddress(userid)");
@@ -179,6 +180,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      *             if any error occurs when getting user details.
      * @since Jira & Confluence User Sync Service             
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getEmailAddress(String userHandle) throws UserServiceException {
         String ret = null;
         try {
@@ -217,6 +219,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      *             if any error occurs when getting user details.
      * @since Jira & Confluence User Sync Service
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public boolean isAdmin(String userHandle) throws UserServiceException {
         boolean ret = false;
         try {
