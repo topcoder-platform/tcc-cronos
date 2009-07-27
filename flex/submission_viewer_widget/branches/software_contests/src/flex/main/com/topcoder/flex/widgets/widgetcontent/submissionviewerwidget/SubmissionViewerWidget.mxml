@@ -24,6 +24,8 @@
 
     <mx:Style source="Style.css"/>
 
+   
+
     <mx:Script>
         <![CDATA[
         	import mx.events.ResizeEvent;
@@ -163,10 +165,19 @@
 
                 // initializes components and download data from webservices.
                 if (!this._isLocalTesting) {
-                    getDataService();
+                    //getDataService();
+                    dummyService.send();
                 } else {
                     initComponent();
                 }
+            }
+            
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+                    getDataService();
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                	getDataService();
             }
 
             /**
@@ -397,6 +408,13 @@
             }
         ]]>
     </mx:Script>
+	 <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
 
     <mx:WebService id="ProjectServiceFacadeBean"
                    wsdl="{_projectServiceFacadeWsdl}">
