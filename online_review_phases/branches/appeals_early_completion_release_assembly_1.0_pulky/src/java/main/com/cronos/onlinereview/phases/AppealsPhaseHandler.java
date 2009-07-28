@@ -3,9 +3,12 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.topcoder.management.phase.PhaseHandlingException;
+import java.sql.Connection;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
+import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.util.log.Level;
 
 
 /**
@@ -22,8 +25,15 @@ import com.topcoder.project.phases.Phase;
  *  <p>There is no additional logic for executing this phase.</p>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ * Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added support for Early Appeals Completion.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, TCSDEVELOPER
+ * @version 1.1
  */
 public class AppealsPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -31,6 +41,14 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * configuration settings.
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.AppealsPhaseHandler";
+
+	/**
+     * This constant stores the logger
+     *
+     * @since 1.1
+     */
+    private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+		.getLog(AppealsPhaseHandler.class.getName());
 
     /** constant for appeals phase type. */
     private static final String PHASE_TYPE_APPEALS = "Appeals";
@@ -68,7 +86,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * following conditions:</p>
      *  <ul>
      *      <li>The dependencies are met</li>
-     *      <li>The period has passed.</li>
+     *      <li>The period has passed or appeals can be closed early (according to submitters input).</li>
      *  </ul>
      *  <p>If the input phase status is Closed, then PhaseHandlingException will be thrown.</p>
      *
@@ -91,8 +109,23 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
+            Connection conn = null;
+            boolean canCloseAppealsEarly = false;
+            try {
+                conn = createConnection();
+                canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(), 
+                	conn, phase.getProject().getId());
+            } catch (PhaseHandlingException phe) {
+            	log.log(Level.ERROR,
+            		new LogMessage(new Long(phase.getId()), null, "Fail to check if appeals can be closed early.", phe));
+                throw phe;
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
+            
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && PhasesHelper.reachedPhaseEndTime(phase));
+                    && (PhasesHelper.reachedPhaseEndTime(phase) ||
+                    	canCloseAppealsEarly));
         }
     }
 

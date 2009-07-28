@@ -434,7 +434,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 String emailContent = docGenerator.applyTemplate(root);
 
                 TCSEmailMessage message = new TCSEmailMessage();
-                message.setSubject(bStart ? startEmailSubject : endEmailSubject);
+                message.setSubject((bStart ? startEmailSubject : endEmailSubject) + ": " + 
+                	(String) project.getProperty(PROJECT_NAME));
                 message.setBody(emailContent);
                 message.setFromAddress(bStart ? startEmailFromAddress : endEmailFromAddress);
                 message.setToAddress(user.getEmail(), TCSEmailMessage.TO);
@@ -499,6 +500,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                     }
                 } else if ("PHASE_TYPE".equals(field.getName())) {
                     field.setValue(phase.getPhaseType().getName());
+                } else if ("OR_LINK".equals(field.getName())) {
+                    field.setValue("<![CDATA[" + 
+                    	"http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=" + 
+                    	project.getId() + "]]>");
                 }
             }
         }

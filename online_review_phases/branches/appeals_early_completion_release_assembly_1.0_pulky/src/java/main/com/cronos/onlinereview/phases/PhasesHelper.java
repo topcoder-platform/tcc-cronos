@@ -58,16 +58,52 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
-
 /**
  * <p>A class having helper methods to perform argument validation and other phase related methods used by the
  * PhaseHandler implementations.</p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ * Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added support for Early Appeals Completion.</li>
+ *     <li>Removed aggregator/final reviewer payment duplication.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, TCSDEVELOPER
+ * @version 1.1
  */
 final class PhasesHelper {
-    /** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
+
+	/**
+     * This constant stores Appeals Completed Early flag property key
+     *
+     * @since 1.1
+     */
+	private static final String APPEALS_COMPLETED_EARLY_PROPERTY_KEY = "Appeals Completed Early";
+
+	/**
+     * This constant stores Payment property key
+     *
+     * @since 1.1
+     */
+	private static final String PAYMENT_PROPERTY_KEY = "Payment";
+
+	/**
+     * This constant stores Submitter role name
+     *
+     * @since 1.1
+     */
+	private static final String SUBMITTER_ROLE_NAME = "Submitter";
+
+	/**
+     * This constant stores "Yes" value for Appeals Completed Early flag property 
+     *
+     * @since 1.1
+     */
+    private static final String YES_VALUE = "Yes";
+
+	/** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
     static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
         "Failure Reviewer", "Stress Reviewer"};
 
@@ -1136,9 +1172,14 @@ final class PhasesHelper {
             Set entries = properties.entrySet();
             for (Iterator itr = entries.iterator(); itr.hasNext();) {
                 Map.Entry entry = (Map.Entry) itr.next();
-                newResource.setProperty((String) entry.getKey(), entry.getValue());
+
+                // don't duplicate payments
+            	newResource.setProperty((String) entry.getKey(), entry.getValue());
             }
         }
+
+        // don't duplicate payments
+        newResource.setProperty(PAYMENT_PROPERTY_KEY, 0);
 
         //set phase id
         newResource.setPhase(new Long(newPhaseId));
@@ -1353,5 +1394,53 @@ final class PhasesHelper {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns whether all submitters agreed to early appeals phase completion
+     *
+     * @param resourceManager ResourceManager instance.
+     * @param conn connection to connect to db with.
+     * @param projectId project id.
+     *
+     * @return true if all submitters agreed to early appeals phase completion
+     *
+     * @throws PhaseHandlingException if an error occurs when searching for resource.
+     * @since 1.1
+     */
+	static boolean canCloseAppealsEarly(ResourceManager resourceManager, Connection conn, long projectId)
+    	throws PhaseHandlingException {
+        try {
+    		long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, SUBMITTER_ROLE_NAME);
+                
+            AndFilter allSubmittersFilter = new AndFilter(Arrays.asList(new Filter[] {
+            		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
+            		ResourceFilterBuilder.createProjectIdFilter(projectId)
+            	}));
+
+            AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
+            		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
+            		ResourceFilterBuilder.createProjectIdFilter(projectId),
+            		ResourceFilterBuilder.createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
+            		ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)
+            	}));
+                		
+            Resource[] submitters = resourceManager.searchResources(allSubmittersFilter);
+            Resource[] earlyAppealCompletions = resourceManager.searchResources(fullFilter);
+            if (submitters.length == earlyAppealCompletions.length) {
+            	// all submitters agreed
+            	return true;
+            }
+    		return false;
+    		
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("Problem when retrieving resource", e);
+		} catch (SQLException e) {
+			throw new PhaseHandlingException("Problem when looking up id", e);
+		} catch (SearchBuilderConfigurationException e) {
+			throw new PhaseHandlingException("Problem with search builder configuration", e);
+		} catch (SearchBuilderException e) {
+			throw new PhaseHandlingException("Problem with search builder", e);
+		}
     }
 }

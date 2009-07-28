@@ -3,20 +3,21 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.ReviewManager;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
-
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
 import com.topcoder.util.log.Level;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 
 /**
@@ -116,8 +117,22 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
+        	boolean aggregationReviewDone = aggregationReviewDone(phase);
+
+        	if (PhasesHelper.reachedPhaseEndTime(phase) && !aggregationReviewDone) {
+        		// Approve pending aggregation reviews and continue
+        		aggregationReviewDone = true;
+    			try {
+					approvePendingAggregationReview(phase);
+				} catch (Exception e) {
+		        	System.out.println("Exception: " + e.getMessage());
+	        		aggregationReviewDone = false;
+				}
+        	}
+
         	boolean ret = (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && aggregationReviewDone(phase));
+                    && aggregationReviewDone);
+        	
         	log.log(Level.DEBUG, "ret: " + ret);
         	return ret;
         }
@@ -155,6 +170,57 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         }
 
         sendEmail(phase);
+    }
+
+    /**
+     * This method checks if the aggregation review has been performed by two reviewers other than the
+     * aggregator, and the winning submitter.
+     *
+     * @param phase the phase instance.
+     *
+     * @return true if aggregation review is done.
+     *
+     * @throws PhaseHandlingException if an error occurs when retrieving data.
+     * @since 1.1
+     */
+    private void approvePendingAggregationReview(Phase phase) throws PhaseHandlingException {
+
+    	log.log(Level.INFO, "Approving pending aggregation reviews");
+
+    	Review aggregationWorksheet = getAggregationWorksheet(phase);
+
+        // Obtain an instance of review manager
+        ReviewManager revMgr = getManagerHelper().getReviewManager();
+        try {
+			for (Comment c : aggregationWorksheet.getAllComments()) {
+				System.out.println("Id: " + c.getId() + " extra: " + c.getExtraInfo());
+			}
+
+			for (int i = 0; i < aggregationWorksheet.getNumberOfComments(); i++) {
+				Comment comment = aggregationWorksheet.getComment(i);
+				System.out.println("comment.getCommentType().getName(): " + comment.getCommentType().getName());
+				
+				if (comment.getExtraInfo() != null) {
+					System.out.println("Not null!");
+					System.out.println("comment.getExtraInfo(): " + comment.getExtraInfo());
+				}
+				
+				if ((comment.getCommentType().getName().equals("Submitter Comment") ||
+					comment.getCommentType().getName().equals("Aggregation Review Comment")) &&
+					!"Approved".equals(comment.getExtraInfo()) && !"Rejected".equals(comment.getExtraInfo())) {
+					comment.setExtraInfo("Approved");
+					System.out.println("Update: Approving!!!!");
+				}
+			}
+			
+			for (Comment c : aggregationWorksheet.getAllComments()) {
+				System.out.println("Id: " + c.getId() + " extra: " + c.getExtraInfo());
+			}
+
+			revMgr.updateReview(aggregationWorksheet, "System");
+		} catch (ReviewManagementException rme) {
+			throw new PhaseHandlingException("There were problems while approving pending aggregation reviews", rme);
+		}
     }
 
     /**
