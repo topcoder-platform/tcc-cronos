@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -75,35 +75,35 @@ import com.topcoder.util.config.UnknownNamespaceException;
  */
 final class PhasesHelper {
 
-	/**
+    /**
      * This constant stores Appeals Completed Early flag property key
      *
      * @since 1.1
      */
-	private static final String APPEALS_COMPLETED_EARLY_PROPERTY_KEY = "Appeals Completed Early";
+    private static final String APPEALS_COMPLETED_EARLY_PROPERTY_KEY = "Appeals Completed Early";
 
-	/**
+    /**
      * This constant stores Payment property key
      *
      * @since 1.1
      */
-	private static final String PAYMENT_PROPERTY_KEY = "Payment";
+    private static final String PAYMENT_PROPERTY_KEY = "Payment";
 
-	/**
+    /**
      * This constant stores Submitter role name
      *
      * @since 1.1
      */
-	private static final String SUBMITTER_ROLE_NAME = "Submitter";
+    private static final String SUBMITTER_ROLE_NAME = "Submitter";
 
-	/**
-     * This constant stores "Yes" value for Appeals Completed Early flag property 
+    /**
+     * This constant stores "Yes" value for Appeals Completed Early flag property
      *
      * @since 1.1
      */
     private static final String YES_VALUE = "Yes";
 
-	/** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
+    /** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
     static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
         "Failure Reviewer", "Stress Reviewer"};
 
@@ -716,7 +716,7 @@ final class PhasesHelper {
     static ScreeningTask[] getScreeningTasks(ManagerHelper managerHelper, Phase phase)
         throws PhaseHandlingException {
         try {
-            
+
             //get the submissions for the project
             Submission[] submissions = searchSubmissionsForProject(managerHelper.getUploadManager(),
                 phase.getProject().getId());
@@ -961,7 +961,7 @@ final class PhasesHelper {
         }
         throw new PhaseHandlingException("Could not find comment type with name: " + typeName);
     }
-    
+
     /**
      * utility method to create a UploadStatus instance with given name.
      *
@@ -1002,40 +1002,40 @@ final class PhasesHelper {
      * @throws PhaseHandlingException if an error occurs when searching for resource.
      */
     static Resource getWinningSubmitter(ResourceManager resourceManager, ProjectManager projectManager, Connection conn, long projectId)
-        	throws PhaseHandlingException {
+            throws PhaseHandlingException {
         try {
-        	com.topcoder.management.project.Project project = projectManager.getProject(projectId);
-        	String winnerId = (String) project.getProperty("Winner External Reference ID");
-        	if (winnerId != null) {
-        		long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, "Submitter");
+            com.topcoder.management.project.Project project = projectManager.getProject(projectId);
+            String winnerId = (String) project.getProperty("Winner External Reference ID");
+            if (winnerId != null) {
+                long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, "Submitter");
                 ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID");
-                
+
                 AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
-                		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
-                		ResourceFilterBuilder.createProjectIdFilter(projectId),
-                		ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID"),
-                		ResourceFilterBuilder.createExtensionPropertyValueFilter(winnerId)
-                	}));
-                		
+                        ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
+                        ResourceFilterBuilder.createProjectIdFilter(projectId),
+                        ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID"),
+                        ResourceFilterBuilder.createExtensionPropertyValueFilter(winnerId)
+                    }));
+
 
                 Resource[] submitters = resourceManager.searchResources(fullFilter);
                 if (submitters.length > 0) {
-                	return submitters[0];
+                    return submitters[0];
                 }
-        		return null;
-        	}
+                return null;
+            }
             return null;
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
         } catch (com.topcoder.management.project.PersistenceException e) {
-        	throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
-		} catch (SQLException e) {
-			throw new PhaseHandlingException("Problem when looking up id", e);
-		} catch (SearchBuilderConfigurationException e) {
-			throw new PhaseHandlingException("Problem with search builder configuration", e);
-		} catch (SearchBuilderException e) {
-			throw new PhaseHandlingException("Problem with search builder", e);
-		}
+            throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when looking up id", e);
+        } catch (SearchBuilderConfigurationException e) {
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem with search builder", e);
+        }
     }
 
     /**
@@ -1173,8 +1173,7 @@ final class PhasesHelper {
             for (Iterator itr = entries.iterator(); itr.hasNext();) {
                 Map.Entry entry = (Map.Entry) itr.next();
 
-                // don't duplicate payments
-            	newResource.setProperty((String) entry.getKey(), entry.getValue());
+                newResource.setProperty((String) entry.getKey(), entry.getValue());
             }
         }
 
@@ -1408,39 +1407,39 @@ final class PhasesHelper {
      * @throws PhaseHandlingException if an error occurs when searching for resource.
      * @since 1.1
      */
-	static boolean canCloseAppealsEarly(ResourceManager resourceManager, Connection conn, long projectId)
-    	throws PhaseHandlingException {
+    static boolean canCloseAppealsEarly(ResourceManager resourceManager, Connection conn, long projectId)
+        throws PhaseHandlingException {
         try {
-    		long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, SUBMITTER_ROLE_NAME);
-                
+            long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, SUBMITTER_ROLE_NAME);
+
             AndFilter allSubmittersFilter = new AndFilter(Arrays.asList(new Filter[] {
-            		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
-            		ResourceFilterBuilder.createProjectIdFilter(projectId)
-            	}));
+                    ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
+                    ResourceFilterBuilder.createProjectIdFilter(projectId)
+                }));
 
             AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
-            		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
-            		ResourceFilterBuilder.createProjectIdFilter(projectId),
-            		ResourceFilterBuilder.createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
-            		ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)
-            	}));
-                		
+                    ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
+                    ResourceFilterBuilder.createProjectIdFilter(projectId),
+                    ResourceFilterBuilder.createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
+                    ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)
+                }));
+
             Resource[] submitters = resourceManager.searchResources(allSubmittersFilter);
             Resource[] earlyAppealCompletions = resourceManager.searchResources(fullFilter);
             if (submitters.length == earlyAppealCompletions.length) {
-            	// all submitters agreed
-            	return true;
+                // all submitters agreed
+                return true;
             }
-    		return false;
-    		
+            return false;
+
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
-		} catch (SQLException e) {
-			throw new PhaseHandlingException("Problem when looking up id", e);
-		} catch (SearchBuilderConfigurationException e) {
-			throw new PhaseHandlingException("Problem with search builder configuration", e);
-		} catch (SearchBuilderException e) {
-			throw new PhaseHandlingException("Problem with search builder", e);
-		}
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when looking up id", e);
+        } catch (SearchBuilderConfigurationException e) {
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem with search builder", e);
+        }
     }
 }

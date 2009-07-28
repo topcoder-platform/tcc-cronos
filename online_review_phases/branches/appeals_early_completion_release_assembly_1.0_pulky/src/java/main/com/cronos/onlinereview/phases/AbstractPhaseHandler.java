@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -91,8 +91,16 @@ import com.topcoder.util.file.templatesource.TemplateSourceException;
  * </pre></p>
  * <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ *   Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Changed timeline notification emails subject.</li>
+ *     <li>Added new fields to timeline notification emails.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, TCSDEVELOPER
+ * @version 1.1
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** constant for "Project Name" project info. */
@@ -145,6 +153,14 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
+
+	/**
+     * This constant stores Online Review's project details page url
+     *
+     * @since 1.1
+     */
+    private static final String PROJECT_DETAILS_URL = 
+        "http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=";
 
     /**
      * The factory instance used to create connection to the database. It is initialized in the constructor
@@ -434,8 +450,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 String emailContent = docGenerator.applyTemplate(root);
 
                 TCSEmailMessage message = new TCSEmailMessage();
-                message.setSubject((bStart ? startEmailSubject : endEmailSubject) + ": " + 
-                	(String) project.getProperty(PROJECT_NAME));
+                message.setSubject((bStart ? startEmailSubject : endEmailSubject) + ": " +
+                    (String) project.getProperty(PROJECT_NAME));
                 message.setBody(emailContent);
                 message.setFromAddress(bStart ? startEmailFromAddress : endEmailFromAddress);
                 message.setToAddress(user.getEmail(), TCSEmailMessage.TO);
@@ -501,9 +517,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 } else if ("PHASE_TYPE".equals(field.getName())) {
                     field.setValue(phase.getPhaseType().getName());
                 } else if ("OR_LINK".equals(field.getName())) {
-                    field.setValue("<![CDATA[" + 
-                    	"http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=" + 
-                    	project.getId() + "]]>");
+                    field.setValue("<![CDATA[" + PROJECT_DETAILS_URL + project.getId() + "]]>");
                 }
             }
         }

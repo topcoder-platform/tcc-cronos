@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -42,13 +42,13 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.AppealsPhaseHandler";
 
-	/**
+    /**
      * This constant stores the logger
      *
      * @since 1.1
      */
     private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
-		.getLog(AppealsPhaseHandler.class.getName());
+        .getLog(AppealsPhaseHandler.class.getName());
 
     /** constant for appeals phase type. */
     private static final String PHASE_TYPE_APPEALS = "Appeals";
@@ -112,20 +112,20 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             boolean canCloseAppealsEarly = false;
             try {
+            	// check if all submitters agreed to close appeals phase early
                 conn = createConnection();
-                canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(), 
-                	conn, phase.getProject().getId());
+                canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(),
+                    conn, phase.getProject().getId());
             } catch (PhaseHandlingException phe) {
-            	log.log(Level.ERROR,
-            		new LogMessage(new Long(phase.getId()), null, "Fail to check if appeals can be closed early.", phe));
+                log.log(Level.ERROR,
+                    new LogMessage(new Long(phase.getId()), null, "Fail to check if appeals can be closed early.", phe));
                 throw phe;
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
-            
+
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && (PhasesHelper.reachedPhaseEndTime(phase) ||
-                    	canCloseAppealsEarly));
+                    && (PhasesHelper.reachedPhaseEndTime(phase) || canCloseAppealsEarly));
         }
     }
 

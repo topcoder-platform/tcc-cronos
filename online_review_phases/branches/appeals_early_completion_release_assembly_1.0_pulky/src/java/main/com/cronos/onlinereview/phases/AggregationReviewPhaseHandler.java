@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -39,12 +39,19 @@ import com.topcoder.util.log.Level;
  *  </ul>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ *   Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added support for automated aggregation review completion when phase ends.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, TCSDEVELOPER
+ * @version 1.1
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
-			.getLog(AggregationReviewPhaseHandler.class.getName());
+    private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+            .getLog(AggregationReviewPhaseHandler.class.getName());
     /**
      * Represents the default namespace of this class. It is used in the default constructor to load
      * configuration settings.
@@ -92,7 +99,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      *  <ul>
      *      <li>The dependencies are met</li>
      *      <li>The aggregation review is performed by two reviewers other than the aggregator, and the
-     *      winning submitter.</li>
+     *      winning submitter or the phase reaches its end.</li>
      *  </ul>
      *  </p>
      *  <p>If the input phase status is Closed, then PhaseHandlingException will be thrown.</p>
@@ -106,7 +113,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException if the input is null.
      */
     public boolean canPerform(Phase phase) throws PhaseHandlingException {
-    	log.log(Level.DEBUG, "entering canPerform: phaseId" + phase.getId());
+        log.log(Level.DEBUG, "entering canPerform: phaseId" + phase.getId());
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION_REVIEW);
 
@@ -117,24 +124,25 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-        	boolean aggregationReviewDone = aggregationReviewDone(phase);
+            boolean aggregationReviewDone = aggregationReviewDone(phase);
 
-        	if (PhasesHelper.reachedPhaseEndTime(phase) && !aggregationReviewDone) {
-        		// Approve pending aggregation reviews and continue
-        		aggregationReviewDone = true;
-    			try {
-					approvePendingAggregationReview(phase);
-				} catch (Exception e) {
-		        	System.out.println("Exception: " + e.getMessage());
-	        		aggregationReviewDone = false;
-				}
-        	}
+            if (PhasesHelper.reachedPhaseEndTime(phase) && !aggregationReviewDone) {
+                // Approve pending aggregation reviews and continue
+                aggregationReviewDone = true;
+                try {
+		            log.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
+                    approvePendingAggregationReview(phase);
+                } catch (Exception e) {
+		            log.log(Level.WARN, "Was not able to automatically approve pending aggregation reviews: " + 
+		                e.getMessage());
+                    aggregationReviewDone = false;
+                }
+            }
 
-        	boolean ret = (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && aggregationReviewDone);
-        	
-        	log.log(Level.DEBUG, "ret: " + ret);
-        	return ret;
+            boolean ret = (PhasesHelper.arePhaseDependenciesMet(phase, false) && aggregationReviewDone);
+
+            log.log(Level.DEBUG, "ret: " + ret);
+            return ret;
         }
     }
 
@@ -173,54 +181,35 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * This method checks if the aggregation review has been performed by two reviewers other than the
-     * aggregator, and the winning submitter.
+     * This method approves all pending aggregation reviews.
      *
      * @param phase the phase instance.
      *
-     * @return true if aggregation review is done.
-     *
-     * @throws PhaseHandlingException if an error occurs when retrieving data.
+     * @throws PhaseHandlingException if an error occurs when retrieving or storing the data.
      * @since 1.1
      */
     private void approvePendingAggregationReview(Phase phase) throws PhaseHandlingException {
+        log.log(Level.INFO, "Approving pending aggregation reviews");
 
-    	log.log(Level.INFO, "Approving pending aggregation reviews");
-
-    	Review aggregationWorksheet = getAggregationWorksheet(phase);
+        Review aggregationWorksheet = getAggregationWorksheet(phase);
 
         // Obtain an instance of review manager
         ReviewManager revMgr = getManagerHelper().getReviewManager();
         try {
-			for (Comment c : aggregationWorksheet.getAllComments()) {
-				System.out.println("Id: " + c.getId() + " extra: " + c.getExtraInfo());
-			}
+            for (int i = 0; i < aggregationWorksheet.getNumberOfComments(); i++) {
+                Comment comment = aggregationWorksheet.getComment(i);
 
-			for (int i = 0; i < aggregationWorksheet.getNumberOfComments(); i++) {
-				Comment comment = aggregationWorksheet.getComment(i);
-				System.out.println("comment.getCommentType().getName(): " + comment.getCommentType().getName());
-				
-				if (comment.getExtraInfo() != null) {
-					System.out.println("Not null!");
-					System.out.println("comment.getExtraInfo(): " + comment.getExtraInfo());
-				}
-				
-				if ((comment.getCommentType().getName().equals("Submitter Comment") ||
-					comment.getCommentType().getName().equals("Aggregation Review Comment")) &&
-					!"Approved".equals(comment.getExtraInfo()) && !"Rejected".equals(comment.getExtraInfo())) {
-					comment.setExtraInfo("Approved");
-					System.out.println("Update: Approving!!!!");
-				}
-			}
-			
-			for (Comment c : aggregationWorksheet.getAllComments()) {
-				System.out.println("Id: " + c.getId() + " extra: " + c.getExtraInfo());
-			}
+                if ((comment.getCommentType().getName().equals("Submitter Comment") ||
+                    comment.getCommentType().getName().equals("Aggregation Review Comment")) &&
+                    !"Approved".equals(comment.getExtraInfo()) && !"Rejected".equals(comment.getExtraInfo())) {
+                    comment.setExtraInfo("Approved");
+                }
+            }
 
-			revMgr.updateReview(aggregationWorksheet, "System");
-		} catch (ReviewManagementException rme) {
-			throw new PhaseHandlingException("There were problems while approving pending aggregation reviews", rme);
-		}
+            revMgr.updateReview(aggregationWorksheet, "System");
+        } catch (ReviewManagementException rme) {
+            throw new PhaseHandlingException("There were problems while approving pending aggregation reviews", rme);
+        }
     }
 
     /**
@@ -326,7 +315,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, false);
         Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
         if (reviewPhase == null || aggregationPhase == null) {
-        	log.log(Level.INFO, "Can't start phase: reviewPhase == null || aggregationPhase == null");
+            log.log(Level.INFO, "Can't start phase: reviewPhase == null || aggregationPhase == null");
             return false;
         }
         Connection conn = null;
@@ -340,14 +329,14 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] { "Aggregator" }, aggregationPhase.getId());
             if (aggregators.length == 0) {
-            	log.log(Level.DEBUG, "No Aggregator resource found for phase: " + aggregationPhase.getId());
+                log.log(Level.DEBUG, "No Aggregator resource found for phase: " + aggregationPhase.getId());
                 throw new PhaseHandlingException("No Aggregator resource found for phase: " + aggregationPhase.getId());
             }
             String aggregatorUserId = (String) aggregators[0].getProperty("External Reference ID");
 
             //winning submitter.
-            Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(),  
-            		conn, phase.getProject().getId());
+            Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(),
+                    conn, phase.getProject().getId());
 
             //The reviewers that are not aggregator should have a review comment of type
             //"Aggregation Review Comment" with extra info of either "Approved" or "Rejected".
@@ -357,13 +346,13 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                     continue;
                 }
                 if (!doesCommentExist(comments, reviewers[i].getId(), "Aggregation Review Comment")) {
-                	log.log(Level.INFO, "cant't start phase: not exists comment type 'Aggregation Review Comment' for reviewer: " + reviewers[i].getId());
+                    log.log(Level.INFO, "cant't start phase: not exists comment type 'Aggregation Review Comment' for reviewer: " + reviewers[i].getId());
                     return false;
                 }
             }
             if (doesCommentExist(comments, winningSubmitter.getId(), "Submitter Comment")) {
-            	return true;
-            } 
+                return true;
+            }
             log.log(Level.INFO, "cant't start phase: not exists comment type 'Submitter Comment' for reviewer: " + winningSubmitter.getId());
             return false;
         } finally {
