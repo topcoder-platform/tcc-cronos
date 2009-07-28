@@ -30,5 +30,7 @@
         <mapping class="com.topcoder.clients.model.Client"/>
         <mapping class="com.topcoder.clients.model.ClientStatus"/>
         <mapping class="com.topcoder.clients.model.Company"/>
+        <!-- @since Configurable Contest Fees v1.0 Assembly -->
+        <mapping class="com.topcoder.clients.model.ProjectContestFee"/>
 	</session-factory>
 </hibernate-configuration>

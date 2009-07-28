@@ -13,13 +13,15 @@
     <jta-data-source>java:TimeDS</jta-data-source>
 
     <!-- The xml mapping file -->
-    <mapping-file>META-INF/mapping.xml</mapping-file>
+    <!-- <mapping-file>META-INF/mapping.xml</mapping-file> -->
     
     <class>com.topcoder.clients.model.Client</class>
     <class>com.topcoder.clients.model.ClientStatus</class>
     <class>com.topcoder.clients.model.Project</class>
     <class>com.topcoder.clients.model.Company</class>
     <class>com.topcoder.clients.model.ProjectStatus</class>
+    <!-- @since Configurable Contest Fees v1.0 Assembly -->
+    <class>com.topcoder.clients.model.ProjectContestFee</class>
 
 	
     <properties>
