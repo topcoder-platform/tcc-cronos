@@ -154,7 +154,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
 
-	/**
+    /**
      * This constant stores Online Review's project details page url
      *
      * @since 1.1
