@@ -112,7 +112,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             boolean canCloseAppealsEarly = false;
             try {
-            	// check if all submitters agreed to close appeals phase early
+                // check if all submitters agreed to close appeals phase early
                 conn = createConnection();
                 canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(),
                     conn, phase.getProject().getId());

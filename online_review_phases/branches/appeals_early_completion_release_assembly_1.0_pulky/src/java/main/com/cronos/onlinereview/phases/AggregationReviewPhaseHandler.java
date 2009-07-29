@@ -130,11 +130,11 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 // Approve pending aggregation reviews and continue
                 aggregationReviewDone = true;
                 try {
-		            log.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
+                    log.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
                     approvePendingAggregationReview(phase);
                 } catch (Exception e) {
-		            log.log(Level.WARN, "Was not able to automatically approve pending aggregation reviews: " + 
-		                e.getMessage());
+                    log.log(Level.WARN, "Was not able to automatically approve pending aggregation reviews: " + 
+                        e.getMessage());
                     aggregationReviewDone = false;
                 }
             }
