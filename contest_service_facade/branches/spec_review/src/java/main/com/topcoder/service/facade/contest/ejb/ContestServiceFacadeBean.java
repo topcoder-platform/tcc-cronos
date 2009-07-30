@@ -595,8 +595,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private EmailMessageGenerator emailMessageGenerator;
     
-    private String currentUserEmailAddress;
-    
     /**
      * Email file template source key that is used by email generator.
      */
@@ -660,13 +658,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		// the default email message generator.
     	emailMessageGenerator = new DefaultEmailMessageGenerator();
     	
-    	try {
-    	    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-    	    currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
-            Logger.getLogger(this.getClass()).debug("Current User Email Address: " + currentUserEmailAddress);
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass()).debug(e);
-        }
     }
     
     /**
@@ -1834,6 +1825,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String purchasedByUser=p.getName();
             
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+				Logger.getLogger(this.getClass()).debug("Current User Email Address: " + currentUserEmailAddress);
+
                 toAddr=currentUserEmailAddress; 
             } else if (paymentData instanceof CreditCardPaymentData){
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -2038,6 +2033,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String purchasedByUser=p.getName();
             
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+				Logger.getLogger(this.getClass()).debug("Current User Email Address: " + currentUserEmailAddress);
                 toAddr=currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData){
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -2251,6 +2248,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String purchasedByUser=p.getName();
             
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+				Logger.getLogger(this.getClass()).debug("Current User Email Address: " + currentUserEmailAddress);
                 toAddr=currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData){
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
