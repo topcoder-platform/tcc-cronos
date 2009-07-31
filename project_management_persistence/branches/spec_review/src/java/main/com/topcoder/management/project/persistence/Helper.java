@@ -693,6 +693,50 @@ class Helper {
         
         return value;
     }
+	
+
+	/**
+     * <p>Gets the parameter value from configuration.</p>
+     * @param cm the ConfigManager instance
+     * @param namespace configuration namespace
+     * @param name the parameter name
+     * @param required true, if the parameter is require; false, if the
+     *            parameter is optional
+     * @return A String that represents the parameter value
+     * @throws IllegalArgumentException if any parameter is null, or namespace
+     *             or name is empty (trimmed)
+     * @throws ConfigurationException if the namespace does not exist, or the
+     *             value is not specified when required is true, or the value is
+     *             empty (trimmed) when not null.
+     */
+    static String getConfigurationParameterValue(ConfigManager cm,
+            String namespace, String name, Log logger, String defaultValue)
+        throws ConfigurationException {
+        Helper.assertObjectNotNull(cm, "cm");
+        Helper.assertStringNotNullNorEmpty(namespace, "namespace");
+        Helper.assertStringNotNullNorEmpty(name, "name");
+		Helper.assertStringNotNullNorEmpty(defaultValue, "defaultValue");
+
+        String value;
+
+        try {
+            value = cm.getString(namespace, name);
+        } catch (UnknownNamespaceException e) {
+        	logger.log(Level.FATAL, "Configuration namespace [" + namespace + "] does not exist.");
+            throw new ConfigurationException("Configuration namespace ["
+                    + namespace + "] does not exist.", e);
+        }
+
+        if (value == null) {
+            value = defaultValue;
+        } else if (value.trim().length() == 0) {
+        	value = defaultValue;
+        }
+
+        logger.log(Level.INFO, "Read propery[" + name + "]  with value[" + value + "] from namespace [" + namespace +"].");
+        
+        return value;
+    }
 
     /**
      * <p>

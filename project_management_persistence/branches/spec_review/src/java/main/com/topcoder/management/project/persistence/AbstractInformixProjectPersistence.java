@@ -147,6 +147,115 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     public static final String PROJECT_SPEC_ID_SEQUENCE_NAME = "PROJECT_SPEC_ID_SEQ";
 
+
+	/**
+     * <p>
+     * Represents the default value for submitter_terms_id.  This value will be
+     * overridden by 'submitter_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int SUBMITTERE_TERMS_ID = 20703;
+	
+	/**
+     * <p>
+     * Represents the default value for  reviewer_terms_id.  This value will be
+     * overridden by 'reviewer_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int REVIEWER_TERMS_ID = 20704;
+
+
+	/**
+     * <p>
+     * Represents the default value for  submitter_role_id.  This value will be
+     * overridden by 'submitter_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int SUBMITTER_ROLE_ID = 1;
+
+	/**
+     * <p>
+     * Represents the default value for  accuracy_reviewer_role_id.  This value will be
+     * overridden by 'accuracy_reviewer_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int ACCURACY_REVIEWER_ROLE_ID = 5;
+
+	/**
+     * <p>
+     * Represents the default value for  failure_reviewer_role_id.  This value will be
+     * overridden by 'failure_reviewer_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int FAILURE_REVIEWER_ROLE_ID = 6;
+
+	/**
+     * <p>
+     * Represents the default value for  stress_reviewer_role_id.  This value will be
+     * overridden by 'stress_reviewer_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int STRESS_REVIEWER_ROLE_ID = 7;;
+
+	/**
+     * <p>
+     * Represents the default value for  reviewer_role_id.  This value will be
+     * overridden by 'reviewer_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int REVIEWER_ROLE_ID = 4;
+
+	/**
+     * <p>
+     * Represents the default value for  primary_screener_role_id.  This value will be
+     * overridden by 'primary_screener_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int PRIMARY_SCREENER_ROLE_ID = 2;
+
+	/**
+     * <p>
+     * Represents the default value for  aggregator_role_id.  This value will be
+     * overridden by 'aggregator_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int AGGREGATOR_ROLE_ID = 8;
+
+	/**
+     * <p>
+     * Represents the default value for  final_reviewer_role_id.  This value will be
+     * overridden by 'final_reviewer_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    public static final int FINAL_REVIEWER_ROLE_ID = 9;
+
+	/**
+	 * <p>
+	 * DEV ID
+	 * </p>
+	 */
+	public static final long PROJECT_CATEGORY_DEVELOPMENT = 2;
+
     /**
      * Represents the name of connection name parameter in configuration.
      */
@@ -183,6 +292,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * configuration.
      */
     private static final String PROJECT_SPEC_ID_SEQUENCE_NAME_PARAMETER = "ProjectSpecIdSequenceName";
+
+	/**
+     * Represents the name of submitter_terms_id parameter in
+     * configuration.
+     */
+    private static final String SUBMITTERE_TERMS_ID_PARAMETER = "submitter_terms_id";
+
+	/**
+     * Represents the name of reviewer_terms_id parameter in
+     * configuration.
+     */
+    private static final String REVIEWER_TERMS_ID_PARAMETER = "reviewer_terms_id";
+
+	/**
+     * Represents the name of submitter_role_id parameter in
+     * configuration.
+     */
+    private static final String SUBMITTER_ROLE_ID_PARAMETER = "submitter_role_id";
+
+	/**
+     * Represents the name of accuracy_reviewer_role_id parameter in
+     * configuration.
+     */
+    private static final String ACCURACY_REVIEWER_ROLE_ID_PARAMETER = "accuracy_reviewer_role_id";
+
+	/**
+     * Represents the name of failure_reviewer_role_id parameter in
+     * configuration.
+     */
+    private static final String FAILURE_REVIEWER_ROLE_ID_PARAMETER = "failure_reviewer_role_id";
+
+	/**
+     * Represents the name of stress_reviewer_role_id parameter in
+     * configuration.
+     */
+    private static final String STRESS_REVIEWER_ROLE_ID_PARAMETER = "stress_reviewer_role_id";
+
+	/**
+     * Represents the name of reviewer_role_id parameter in
+     * configuration.
+     */
+    private static final String REVIEWER_ROLE_ID_PARAMETER = "reviewer_role_id";
+
+	/**
+     * Represents the name of primary_screener_role_id  parameter in
+     * configuration.
+     */
+    private static final String PRIMARY_SCREENER_ROLE_ID_PARAMETER = "primary_screener_role_id";
+
+	/**
+     * Represents the name of aggregator_role_id  parameter in
+     * configuration.
+     */
+    private static final String AGGREGATOR_ROLE_ID_PARAMETER = "aggregator_role_id";
+
+	/**
+     * Represents the name of final_reviewer_role_id  parameter in
+     * configuration.
+     */
+    private static final String FINAL_REVIEWER_ROLE_ID_PARAMETER = "final_reviewer_role_id";
+
 
     /**
      * Represents the sql statement to query all project types.
@@ -674,6 +844,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private final String connectionName;
 
+
+	private final String namespace;
+
     /**
      * <p>
      * Represents the IDGenerator for project table. This variable is
@@ -767,6 +940,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     protected AbstractInformixProjectPersistence(String namespace)
         throws ConfigurationException, PersistenceException {
         Helper.assertStringNotNullNorEmpty(namespace, "namespace");
+
+		this.namespace = namespace;
+
 
         // get the instance of ConfigManager
         ConfigManager cm = ConfigManager.getInstance();
@@ -1411,6 +1587,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
         createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
+
+		// generate new project role terms of use associations for the recently created project.
+        generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), conn);
 
         // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
@@ -3183,5 +3362,115 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             throw e;
         } 
+    }
+
+
+	/**
+     * Private helper method to generate default Project Role Terms of Use associations for a given project.
+     *
+     * @param projectId the project id for the associations
+     * @param projectCategoryId the project category id of the provided project id
+     * @throws ConfigManagerException if Configuration Manager fails to retrieve the configurations
+     * @throws PersistenceException if any errors occur during EJB lookup
+     */
+    private void generateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId, Connection conn)
+            throws PersistenceException  {
+
+
+		try
+		{
+			
+		
+			// get the instance of ConfigManager
+			ConfigManager cm = ConfigManager.getInstance();
+
+
+			long submitterTermsId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, SUBMITTERE_TERMS_ID_PARAMETER, getLogger(),  Integer.toString(SUBMITTERE_TERMS_ID)));
+			int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+			long reviewerTermsId = Long.parseLong(Helper.getConfigurationParameterValue(
+													cm, namespace, REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long.toString(REVIEWER_TERMS_ID)));
+
+			createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+
+			if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
+				int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
+				int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
+				int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
+
+				// if it's a development project there are several reviewer roles
+				createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
+				createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
+				createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+			} else {
+				int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
+
+				// if it's not development there is a single reviewer role
+				createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
+			}
+
+			// also add terms for the rest of the reviewer roles
+			int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
+			int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
+			int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
+
+			createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
+			createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
+			createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+
+		}
+		catch (ConfigurationException e)
+		{
+			throw new PersistenceException(e.getMessage());
+		}
+    }
+
+
+	/**
+     * This method will create a project role terms of use association.
+     *
+     * @param projectId the project id to associate
+     * @param resourceRoleId the role id to associate
+     * @param termsOfUseId the terms of use id to associate
+     * @param dataSource the datasource.
+     * @throws PersistenceException if any error occurs
+     */
+    public void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
+            throws PersistenceException {
+
+		try
+		{
+			PreparedStatement ps = null;
+
+			StringBuffer query = new StringBuffer(1024);
+			query.append("INSERT ");
+			query.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
+			query.append("VALUES (?, ?, ?)");
+
+			ps = conn.prepareStatement(query.toString());
+			ps.setLong(1, projectId);
+			ps.setInt(2, resourceRoleId);
+			ps.setLong(3, termsOfUseId);
+
+			int rc = ps.executeUpdate();
+			if (rc != 1) {
+				throw(new PersistenceException("Wrong number of rows inserted into " +
+						"'project_role_terms_of_use_xref'. Inserted " + rc + ", " +
+						"should have inserted 1."));
+			}
+		}
+		catch (SQLException e)
+		{
+			throw(new PersistenceException(e.getMessage()));
+		}
+        
     }
 }
