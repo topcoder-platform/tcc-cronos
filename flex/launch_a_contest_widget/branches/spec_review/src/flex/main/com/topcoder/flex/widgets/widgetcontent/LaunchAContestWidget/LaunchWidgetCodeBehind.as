@@ -173,6 +173,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          *  
          * since Cockpit Launch Contest - Inline Spec Reviews Part 2
          */ 
+        [Bindable]
         public var specReviews:ArrayCollection=null;
         
         public var contestCreateUser:String=null;

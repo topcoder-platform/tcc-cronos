@@ -160,6 +160,8 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 if (mainWidget && mainWidget.contestSelect) {
                     // set values from contest selection screen.
                     cstTypeStep1=mainWidget.contestSelect.contestType.selection.label;
+                } else if (mainWidget && mainWidget.competitionType) {
+                    cstTypeStep1=mainWidget.competitionType;
                 }
                 
                 if (mainWidget && mainWidget.studioContestType) {
@@ -173,7 +175,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                         thirdPrize=mainWidget.overView.thirdPlace.text;
                         fourthPrize=mainWidget.overView.fourthPlace.text;
                         fifthPrize=mainWidget.overView.fifthPlace.text;
-                        adminFee=mainWidget.overView.adminf.text;
+                        adminFee=new Number(mainWidget.overView.adminf.text).toFixed(0);
                         contestTotal=mainWidget.overView.cntstTtl.text;
                     }
                     
@@ -378,9 +380,18 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                     }
                 }
                 
-                // set the review data.
                 if (mainWidget && mainWidget.specReviews) {
-                    for each (var sr:SpecReview in mainWidget.specReviews) {
+                    updateReviews=mainWidget.specReviews;
+                }
+            }
+            
+            /**
+             * Updates reviews
+             */ 
+            private function set updateReviews(specReviews:ArrayCollection):void {
+                // set the review data.
+                if (specReviews) {
+                    for each (var sr:SpecReview in specReviews) {
                         var rd:ReviewData=new ReviewData();
                         rd.sectionId=sectionNameToIdMapping[sr.sectionType.name];
                         rd.sectionName=sr.sectionType.name;
@@ -750,6 +761,8 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             }
         ]]>
     </mx:Script>
+    
+    <mx:Binding source="mainWidget.specReviews" destination="updateReviews"/>
 
     <!--
          since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0

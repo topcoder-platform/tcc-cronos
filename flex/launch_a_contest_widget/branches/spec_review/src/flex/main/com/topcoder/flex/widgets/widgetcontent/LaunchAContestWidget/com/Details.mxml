@@ -148,7 +148,7 @@
                         return;
                     }
 
-                    ctInput.htmlText=this.mainWidget.competition.contestData.name; // BUGR-1379
+                    ctInput.text=this.mainWidget.competition.contestData.name; // BUGR-1379
                     introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
                     glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
                 } else {
