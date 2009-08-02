@@ -99,7 +99,7 @@ import com.topcoder.util.file.templatesource.TemplateSourceException;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, TCSDEVELOPER
+ * @author tuenm, bose_java, pulky
  * @version 1.1
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {

@@ -47,7 +47,7 @@ import com.topcoder.util.log.Level;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, TCSDEVELOPER
+ * @author tuenm, bose_java, pulky
  * @version 1.1
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
