@@ -56,7 +56,6 @@ import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.NotFilter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -1427,31 +1426,16 @@ final class PhasesHelper {
             Set<Long> earlyAppealResourceIds = new HashSet<Long>(earlyAppealCompletionsSubmitters.length);
             for (Resource r : earlyAppealCompletionsSubmitters) {
             	earlyAppealResourceIds.add(r.getId());
-            	System.out.println("--> adding " + r.getId() + " to hashset.");
             }
             
-            // check all submitters that didn't fail screening 
-            long failedScreeningStatusId = SubmissionStatusLookupUtility.lookUpId(conn, 
-                ScreeningPhaseHandler.SUBMISSION_STATUS_FAILED_SCREENING);
-            Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-            Filter submissionFailedScreeningStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(
-                failedScreeningStatusId);
-            AndFilter activeSubmissionsFilter = new AndFilter(Arrays.asList(new Filter[] {
-                projectIdFilter, new NotFilter(submissionFailedScreeningStatusFilter)}));
-            
-            Submission[] activeSubmissions = uploadManager.searchSubmissions(activeSubmissionsFilter);
+            // check all submitters with active submission statuses (this will leave out failed screening and deleted)
+            Submission[] activeSubmissions = searchActiveSubmissions(uploadManager, conn, projectId);
             for (Submission s : activeSubmissions) {
-            	System.out.println("--> checking " + s.getUpload().getOwner() + " in hashset.");
-            	
             	if (!earlyAppealResourceIds.contains(new Long(s.getUpload().getOwner()))) {
-            		System.out.println("return false");
             		return false;
             	}
             }
-    		System.out.println("return true");
             return true;
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
         } catch (SQLException e) {
