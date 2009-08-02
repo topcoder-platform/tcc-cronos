@@ -56,6 +56,7 @@ import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.NotFilter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -1429,12 +1430,14 @@ final class PhasesHelper {
             	System.out.println("--> adding " + r.getId() + " to hashset.");
             }
             
-            // check all submitters with active submission statuses (this will leave out failed screening and deleted)
-            long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+            // check all submitters that didn't fail screening 
+            long failedScreeningStatusId = SubmissionStatusLookupUtility.lookUpId(conn, 
+                ScreeningPhaseHandler.SUBMISSION_STATUS_FAILED_SCREENING);
             Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-            Filter submissionActiveStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
+            Filter submissionFailedScreeningStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(
+                failedScreeningStatusId);
             AndFilter activeSubmissionsFilter = new AndFilter(Arrays.asList(new Filter[] {
-                projectIdFilter, submissionActiveStatusFilter}));
+                projectIdFilter, new NotFilter(submissionFailedScreeningStatusFilter)}));
             
             Submission[] activeSubmissions = uploadManager.searchSubmissions(activeSubmissionsFilter);
             for (Submission s : activeSubmissions) {

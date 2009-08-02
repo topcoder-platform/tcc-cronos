@@ -3,23 +3,20 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
-import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
-
 import com.topcoder.project.phases.Phase;
-
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * <p>
@@ -50,8 +47,14 @@ import java.sql.SQLException;
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  * 
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ *   Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Changed visibility of SUBMISSION_STATUS_FAILED_SCREENING constant.</li>
+ *   </ol>
+ * </p>
+ * @author tuenm, bose_java, pulky
+ * @version 1.1
  */
 public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -70,7 +73,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     private static final String ROLE_PRIMARY_SCREENER = "Primary Screener";
 
     /** constant for "Failed Screening" submission status. */
-    private static final String SUBMISSION_STATUS_FAILED_SCREENING = "Failed Screening";
+    protected static final String SUBMISSION_STATUS_FAILED_SCREENING = "Failed Screening";
 
     /** constant for "Screening Score" property. */
     private static final String PROP_SCREENING_SCORE = "Screening Score";
