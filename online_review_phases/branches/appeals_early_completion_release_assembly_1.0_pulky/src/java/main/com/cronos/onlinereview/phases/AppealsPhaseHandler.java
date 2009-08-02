@@ -109,23 +109,31 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            Connection conn = null;
-            boolean canCloseAppealsEarly = false;
-            try {
-                // check if all submitters agreed to close appeals phase early
-                conn = createConnection();
-                canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(),
-                    conn, phase.getProject().getId());
-            } catch (PhaseHandlingException phe) {
-                log.log(Level.ERROR,
-                    new LogMessage(new Long(phase.getId()), null, "Fail to check if appeals can be closed early.", phe));
-                throw phe;
-            } finally {
-                PhasesHelper.closeConnection(conn);
-            }
+        	if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
+        		return false;
+        	} else {
+        		if (PhasesHelper.reachedPhaseEndTime(phase)) {
+        			return true;
+        		}
+        		
+	            Connection conn = null;
+	            boolean canCloseAppealsEarly = false;
+	            try {
+	                // check if all submitters agreed to close appeals phase early
+	                conn = createConnection();
+	                canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(getManagerHelper().getResourceManager(),
+	                    getManagerHelper().getUploadManager(),
+	                    conn, phase.getProject().getId());
+	            } catch (PhaseHandlingException phe) {
+	                log.log(Level.ERROR,
+	                    new LogMessage(new Long(phase.getId()), null, "Fail to check if appeals can be closed early.", phe));
+	                throw phe;
+	            } finally {
+	                PhasesHelper.closeConnection(conn);
+	            }
 
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && (PhasesHelper.reachedPhaseEndTime(phase) || canCloseAppealsEarly));
+	            return canCloseAppealsEarly;
+        	}
         }
     }
 

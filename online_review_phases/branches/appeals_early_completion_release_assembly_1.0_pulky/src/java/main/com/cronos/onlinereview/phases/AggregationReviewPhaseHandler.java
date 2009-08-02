@@ -6,6 +6,7 @@ package com.cronos.onlinereview.phases;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.Resource;
@@ -133,8 +134,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                     log.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
                     approvePendingAggregationReview(phase);
                 } catch (Exception e) {
-                    log.log(Level.WARN, "Was not able to automatically approve pending aggregation reviews: " + 
-                        e.getMessage());
+                	                	
+                    log.log(Level.WARN, 
+                        new LogMessage(new Long(phase.getId()), null, 
+                            "Was not able to automatically approve pending aggregation reviews.", e));
                     aggregationReviewDone = false;
                 }
             }

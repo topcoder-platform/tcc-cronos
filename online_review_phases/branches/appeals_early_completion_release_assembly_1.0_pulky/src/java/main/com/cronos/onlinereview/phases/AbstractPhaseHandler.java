@@ -155,12 +155,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
 
     /**
-     * This constant stores Online Review's project details page url
+     * This constant stores Online Review's project details page url property name
      *
      * @since 1.1
      */
-    private static final String PROJECT_DETAILS_URL = 
-        "http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=";
+    private static final String PROP_PROJECT_DETAILS_URL = "ProjectDetailsURL";
 
     /**
      * The factory instance used to create connection to the database. It is initialized in the constructor
@@ -251,6 +250,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private final String endEmailFromAddress;
 
     /**
+     * This constant stores Online Review's project details page URL
+     *
+     * @since 1.1
+     */
+    private final String projectDetailsBaseURL;
+
+    /**
      * <p>Creates a new instance of AbstractPhaseHandler using the given namespace for loading configuration
      * settings.</p>
      * <p>It initializes the DB connection factory, connection name, Manager Helper, start and end phase email variables
@@ -317,6 +323,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             this.endEmailSubject = null;
             this.endEmailFromAddress = null;
         }
+        
+        // get project details base url
+        this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(managerHelperNamespace, 
+        		PROP_PROJECT_DETAILS_URL, true);
     }
 
     /**
@@ -517,7 +527,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 } else if ("PHASE_TYPE".equals(field.getName())) {
                     field.setValue(phase.getPhaseType().getName());
                 } else if ("OR_LINK".equals(field.getName())) {
-                    field.setValue("<![CDATA[" + PROJECT_DETAILS_URL + project.getId() + "]]>");
+                    field.setValue("<![CDATA[" + projectDetailsBaseURL + project.getId() + "]]>");
                 }
             }
         }

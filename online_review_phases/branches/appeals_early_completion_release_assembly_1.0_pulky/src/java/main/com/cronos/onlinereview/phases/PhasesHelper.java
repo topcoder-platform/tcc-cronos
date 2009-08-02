@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,9 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
-import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
@@ -1407,15 +1408,10 @@ final class PhasesHelper {
      * @throws PhaseHandlingException if an error occurs when searching for resource.
      * @since 1.1
      */
-    static boolean canCloseAppealsEarly(ResourceManager resourceManager, Connection conn, long projectId)
-        throws PhaseHandlingException {
+    static boolean canCloseAppealsEarly(ResourceManager resourceManager, UploadManager uploadManager, 
+        Connection conn, long projectId) throws PhaseHandlingException {
         try {
             long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, SUBMITTER_ROLE_NAME);
-
-            AndFilter allSubmittersFilter = new AndFilter(Arrays.asList(new Filter[] {
-                    ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
-                    ResourceFilterBuilder.createProjectIdFilter(projectId)
-                }));
 
             AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
                     ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
@@ -1424,14 +1420,35 @@ final class PhasesHelper {
                     ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)
                 }));
 
-            Resource[] submitters = resourceManager.searchResources(allSubmittersFilter);
-            Resource[] earlyAppealCompletions = resourceManager.searchResources(fullFilter);
-            if (submitters.length == earlyAppealCompletions.length) {
-                // all submitters agreed
-                return true;
-            }
-            return false;
+            Resource[] earlyAppealCompletionsSubmitters = resourceManager.searchResources(fullFilter);
 
+            // move resource ids to a hashset to speed up lookup
+            Set<Long> earlyAppealResourceIds = new HashSet<Long>(earlyAppealCompletionsSubmitters.length);
+            for (Resource r : earlyAppealCompletionsSubmitters) {
+            	earlyAppealResourceIds.add(r.getId());
+            	System.out.println("--> adding " + r.getId() + " to hashset.");
+            }
+            
+            // check all submitters with active submission statuses (this will leave out failed screening and deleted)
+            long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+            Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+            Filter submissionActiveStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
+            AndFilter activeSubmissionsFilter = new AndFilter(Arrays.asList(new Filter[] {
+                projectIdFilter, submissionActiveStatusFilter}));
+            
+            Submission[] activeSubmissions = uploadManager.searchSubmissions(activeSubmissionsFilter);
+            for (Submission s : activeSubmissions) {
+            	System.out.println("--> checking " + s.getUpload().getOwner() + " in hashset.");
+            	
+            	if (!earlyAppealResourceIds.contains(new Long(s.getUpload().getOwner()))) {
+            		System.out.println("return false");
+            		return false;
+            	}
+            }
+    		System.out.println("return true");
+            return true;
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
         } catch (SQLException e) {
