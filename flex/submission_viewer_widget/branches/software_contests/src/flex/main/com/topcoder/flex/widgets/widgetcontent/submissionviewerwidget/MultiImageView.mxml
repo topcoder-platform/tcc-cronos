@@ -233,12 +233,8 @@
         ]]>
     </mx:Script>
 
-    <!--
-         Binding should happen with activeSubmissionId
-         since: Cockpit Submission Viewer Widget Enhancement Part 1
-    -->
-    <!--<mx:Binding source="model.activeSubmissionId"
-                destination="data"/>-->
+    <mx:Binding source="model.activeSubmissionId"
+                destination="data"/>
     <mx:DefaultTileListEffect id="myDTLE"
                               fadeInDuration="10"
                               fadeOutDuration="10"
