@@ -652,8 +652,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @since 1.0
      */
     //@RolesAllowed({"Cockpit Administrator" })
-    public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault {
-
+    public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault {
         logEnter("getProjectsForUser(long)");
         logParameters("user id: {0}", userId);
 
@@ -661,9 +660,9 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             List < ProjectData > projectDatas = doGetProjects(userId);
 
             // If there is no project linked to user, throw UserNotFoundFault
-            if (projectDatas.isEmpty()) {
-                throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
-            }
+            //if (projectDatas.isEmpty()) {
+            //    throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
+           // }
 
             logReturn(projectDatas.size() + " projects found. ");// formatProjectDatas(projectDatas));
             return projectDatas;
