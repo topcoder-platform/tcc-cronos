@@ -116,6 +116,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      * 
      * @since Cockpit Release Assembly for Receipts
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getEmailAddress(long userid) throws UserServiceException {
         try {
             logEnter("getEmailAddress(userid)");
