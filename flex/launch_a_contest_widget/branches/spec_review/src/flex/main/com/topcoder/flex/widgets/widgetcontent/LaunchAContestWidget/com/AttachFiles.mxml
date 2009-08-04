@@ -128,6 +128,9 @@
 	        
 	        // TCCC-1023
 	        private function loadDocumentTypes():void{
+		  		 if (!mainWidget._csws) {
+					return;
+		   		}
 	            var getAllDocumentTypesOp:AbstractOperation = mainWidget._csws.getOperation("getAllDocumentTypes");
                 getAllDocumentTypesOp.addEventListener("result", getAllDocumentTypesHandler);
                 getAllDocumentTypesOp.send();

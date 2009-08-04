@@ -157,12 +157,14 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 2
             //        - review data is read from persistent now.
             public function setAllValues():void {
-                if (mainWidget && mainWidget.contestSelect) {
-                    // set values from contest selection screen.
-                    cstTypeStep1=mainWidget.contestSelect.contestType.selection.label;
-                } else if (mainWidget && mainWidget.competitionType) {
+				if (mainWidget && mainWidget.competitionType) {
                     cstTypeStep1=mainWidget.competitionType;
                 }
+                
+                /*if (mainWidget && mainWidget.contestSelect) {
+                    // set values from contest selection screen.
+                    cstTypeStep1=mainWidget.contestSelect.contestType.selection.label;
+                } else*/
                 
                 if (mainWidget && mainWidget.studioContestType) {
                     if (mainWidget.overView) {
@@ -721,7 +723,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 }
                 
                 
-                mainWidget.showLoadingProgress();
+                //mainWidget.showLoadingProgress();
                 
                 closeReviewPopup();
             }

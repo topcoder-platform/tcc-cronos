@@ -331,6 +331,9 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function loadMasterTechnologies():void {
+				if (!mainWidget._csws) {
+					return;
+				}
                 var getActiveTechnologiesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveTechnologies");
                 getActiveTechnologiesOp.addEventListener("result", handleMasterTechnologiesLoad);
                 getActiveTechnologiesOp.send();
@@ -398,6 +401,9 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             public function loadCategories():void { // BUGR-1678
+				if (!mainWidget._csws) {
+					return;
+				}
                 var getActiveCategoriesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveCategories");
                 getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
                 getActiveCategoriesOp.send();

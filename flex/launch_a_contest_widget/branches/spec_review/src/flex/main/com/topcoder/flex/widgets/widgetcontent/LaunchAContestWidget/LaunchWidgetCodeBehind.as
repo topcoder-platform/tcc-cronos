@@ -322,6 +322,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             (container.contents as LaunchWidget).container=container;
             container.contents.widgetFramework=f;
             container.contents.name=name;
+
+		if (map) {
+                    (container.contents as LaunchWidget).isEditMode=true;
+                    (container.contents as LaunchWidget).contestid=map["contestid"];
+                    (container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
+                    (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
+                    (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
+            }
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
                 var isReviewScreen:Boolean=false;

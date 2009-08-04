@@ -15,7 +15,7 @@
                            verticalScrollPolicy="off"
                            horizontalScrollPolicy="off"
                            resizeEffect="{resize}"
-                           creationComplete="onCreateComplete(1)">
+                           creationComplete="setWidgetReferences();onCreateComplete(1);">
     <mx:Style source="Style.css"/>
     
 
@@ -186,13 +186,28 @@
             private function dummyServiceResultHandler(event:ResultEvent):void {
                
                     this.currentState="ContestSelectionState";
-                    initStepNums(true);
+		    		if (competitionType) {
+                        initStepNums(competitionType.toUpperCase() == "STUDIO");
+                    } else {
+                        initStepNums(true);
+                    }
+
+                    //initStepNums(true);
                     getDataService();
             }
             
             private function dummyServiceFaultHandler(event:FaultEvent):void {
+				trace("dummyServiceFaultHandler:: competitionType: " + competitionType);
+                trace("dummyServiceFaultHandler:: isStudioContestType: " + isStudioContestType);
+
 					this.currentState="ContestSelectionState";
-                    initStepNums(true);
+                     if (competitionType) {
+                        initStepNums(isStudioContestType);
+                    } else {
+                        initStepNums(true);
+                    }
+
+                    //initStepNums(true);
                     getDataService();                
             }
 
@@ -212,8 +227,19 @@
                 initComponent();
             }
 
+	    private function setWidgetReferences():void {
+                contestSelect.mainWidget=this;
+                overView.mainWidget=this;
+                details.mainWidget=this;
+                specf.mainWidget=this;
+                attch.mainWidget=this;
+                sched.mainWidget=this;
+                review.mainWidget=this;
+                activate.mainWidget=this;
+            }
+
             public function initComponent():void {
-                trace("IN INIT COMPONENT OF LAUNCH WIDGET");
+                trace("IN INIT COMPONENT OF LAUNCH WIDGET: " + this + "," + this.competitionType + "," + this.studioContestType);
                 // modified lines below for BUGR-1134
                 //this.height=760;
                 mainPanel.horizontalScrollPolicy="false";
@@ -229,14 +255,20 @@
                 //overView.height=700; // BUGR-1134
                 //review.height=1080; // BUGR-1134
 				//contestSelect.height=720;
-                contestSelect.mainWidget=this;
+
+		trace("In initComponent... this: " + this);
+                /*contestSelect.mainWidget=this;
                 overView.mainWidget=this;
                 details.mainWidget=this;
                 specf.mainWidget=this;
                 attch.mainWidget=this;
                 sched.mainWidget=this;
                 review.mainWidget=this;
-                activate.mainWidget=this;
+                activate.mainWidget=this;*/
+		setWidgetReferences();
+
+		trace("In initComponent... contestSelect.mainWidget: " + contestSelect.mainWidget);
+		trace("In initComponent... overView.mainWidget: " + overView.mainWidget);
 
                 // initialize web-services
                 initWebServices();
@@ -277,6 +309,19 @@
             public function onCreateComplete(f:int):void {
                 flag = flag + f;
                 trace("IN ON CREATE COMPLETE:: " + this.competition + "," + this.softwareCompetition + "," + this.competitionType + "," + flag);
+
+		// this is late onCreateComplete event.
+                if (flag > 3) {
+                    if (this.competition) {
+                        this.competitionType="STUDIO";
+                        this.studioContestType=true;
+                    } else if (this.softwareCompetition) {
+                        if (this.softwareCompetition.projectHeader && this.softwareCompetition.projectHeader.projectCategory) {
+                            this.competitionType=this.softwareCompetition.projectHeader.projectCategory.name.toUpperCase();    
+                        }
+                        this.studioContestType=false;
+                    }
+                }
                 if (flag >= 3) {
                     if (this.initWidgetCallbackFn!=null) {
                         initWidgetCallbackFn();
