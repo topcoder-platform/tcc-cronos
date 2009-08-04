@@ -441,7 +441,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             
             for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
                 if (e.key == PROJECT_INFO_TYPE_DR_POINTS_KEY) {
-                    e.value=drPoints.toFixed(0);
+                    e.value=drPoints.toFixed(2);
                     return;
                 }
             }
@@ -449,7 +449,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             var entry:MapEntry=new MapEntry();
 
             entry.key=PROJECT_INFO_TYPE_DR_POINTS_KEY;
-            entry.value=drPoints.toFixed(0);
+            entry.value=drPoints.toFixed(2);
 
             softwareCompetition.projectHeader.properties.push(entry);
         }

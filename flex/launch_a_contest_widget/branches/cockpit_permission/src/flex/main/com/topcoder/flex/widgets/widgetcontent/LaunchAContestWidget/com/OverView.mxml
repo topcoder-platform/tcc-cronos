@@ -235,8 +235,8 @@
 
                 mainWidget.competition.prizes=prizes;
 		mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
-		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(0));
-		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(0));
+		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 
                 // assign values to review screen.
                 mainWidget.review.cstTypeStep2=studioType.selection.label;
@@ -603,7 +603,7 @@
 
                 if (firstPlace > 0) {
                     ns_secondPlace.text=new Number(firstPlace * 0.5).toFixed(0);
-                    ns_dr.text=(0.24 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(0);
+                    ns_dr.text=(0.24 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(2);
                     // ns_contestf.text=(0.20 * (firstPlace + new Number(ns_secondPlace.text))).toFixed(2); BUGR-1737
                     ns_cntstTtl.text=(new Number(ns_firstPlace.text) + new Number(ns_secondPlace.text) + new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(2);
                 }
