@@ -1,0 +1,46 @@
+The usage of the Project Service Facade web service invlolves the following
+steps:
+
+1) Import the dependent classes:
+
+import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.AuthorizationFailedFault;
+import com.topcoder.service.project.ProjectNotFoundFault;
+import com.topcoder.service.project.UserNotFoundFault;
+import com.topcoder.service.project.ProjectHasCompetitionsFault;
+import com.topcoder.service.project.IllegalArgumentFault;
+
+import com.topcoder.service.facade.project.ProjectSerficeFacade;
+
+2) Instanitate the web service client
+
+String username = ...;
+String password = ...;
+
+URL wsdlUrl
+    = new URL("http://127.0.0.1:8380/services/ProjectServiceFacade?wsdl");
+QName serviceName = new QName("http://ejb.project.facade.service.topcoder.com/", "ProjectServiceFacadeBeanService");
+ProjectServiceFacade service = Service.create(wsdlUrl, serviceName).getPort(ProjectServiceFacade.class);
+
+StubExt stubExt = (StubExt) service;
+URL securityConfigURL = getClass().getClassLoader().getResource("jboss-wsse-client.xml");
+stubExt.setSecurityConfig(securityConfigURL.toURI().toString());
+stubExt.setConfigName("Standard WSSecurity Client");
+Map<String,Object> context = ((BindingProvider) service).getRequestContext();
+context.put(BindingProvider.USERNAME_PROPERTY, username);
+ontext.put(BindingProvider.PASSWORD_PROPERTY, password);
+
+3) Call the web service operations
+
+ProjetData newProject = new ProjectData();
+newProject.setName(...);
+newProject.setDescription(...);
+newProject = service.createProject(newProject);
+
+ProjectData existingProject = service.getProject(123);
+existingProject.setDescription("Updated");
+service.updateProject(existingProject );
+
+service.deleteProject(existingProject.getProjectid());
+
+List<ProjectData> projects = service.getAllProjects();
