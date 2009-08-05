@@ -345,7 +345,7 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
      * @throws EmailSendingException If errors occur while sending the email message.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
-        super.perform(phase, CockpitPhase.ACTIVE);
+        
         Contest contest = getProjectAttribute(phase, Contest.class, PROJECT_ATTR_CONTEST, true);
         if (contest.getForumId() == null) {
             long forumId = createForum(contest.getName(), contest.getCreatedUser());
@@ -362,6 +362,8 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
                                            "Contest ID: " + contest.getContestId());
             }
         }
+
+		super.perform(phase, CockpitPhase.ACTIVE);
     }
 
     /**
