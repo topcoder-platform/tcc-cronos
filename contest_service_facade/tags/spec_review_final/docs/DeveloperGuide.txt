@@ -1,0 +1,150 @@
+The usage of the Contest Service Facade web service invlolves the following
+steps:
+
+1) Import the dependent classes:
+
+import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.AuthorizationFailedFault;
+import com.topcoder.service.project.ProjectNotFoundFault;
+import com.topcoder.service.project.UserNotFoundFault;
+import com.topcoder.service.project.ProjectHasCompetitionsFault;
+import com.topcoder.service.project.IllegalArgumentFault;
+
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.service.AssetDTO;
+import com.topcoder.catalog.entity.CompDocumentation;
+import com.topcoder.management.project.Project;
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.project.ProjectCategory;
+import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.date.workdays.DefaultWorkdaysFactory;
+import com.topcoder.project.phases.PhaseType;
+import com.topcoder.project.phases.PhaseStatus;
+
+import com.topcoder.service.facade.contest.ContestSerficeFacade;
+
+2) Instanitate the web service client
+
+String username = ...;
+String password = ...;
+
+URL wsdlUrl
+    = new URL("http://127.0.0.1:8380/services-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl");
+QName serviceName = new QName("http://ejb.contest.facade.service.topcoder.com/", "ContestServiceFacadeBeanService");
+ContestServiceFacade service = Service.create(wsdlUrl, serviceName).getPort(TopCoderServiceFacade.class);
+
+StubExt stubExt = (StubExt) service;
+URL securityConfigURL = getClass().getClassLoader().getResource("jboss-wsse-client.xml");
+stubExt.setSecurityConfig(securityConfigURL.toURI().toString());
+stubExt.setConfigName("Standard WSSecurity Client");
+Map<String,Object> context = ((BindingProvider) service).getRequestContext();
+context.put(BindingProvider.USERNAME_PROPERTY, username);
+context.put(BindingProvider.PASSWORD_PROPERTY, password);
+
+3) Call the web service operations
+
+List<ContestTypeData> types = service.getAllContestTypes();
+List<MediumData> mediums = service.getAllMediums();
+List<ContestStatusData> statuses = service.getStatusList();
+String fileTypes = service.getSubmissionFileTypes();
+List<StudioCompetition> contests = service.getAllContestHeaders();
+
+GregorianCalendar calendar = new GregorianCalendar();
+calendar.setTime(new Date(System.currentTimeMillis() + 10  * 24 * 3600 * 1000L));
+StudioCompetition newContest = new StudioCompetition();
+newContest.setAdminFee(100);
+newContest.setCompetitionId(-1L);
+newContest.setCreatorUserId(((UserProfilePrincipal) request.getUserPrincipal()).getUserId());
+newContest.setDrPoints(50);
+newContest.setEligibility(request.getParameter("ce16"));
+newContest.setEndTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+newContest.setId(-1);
+newContest.setPrizes(new ArrayList<CompetitionPrize>());
+newContest.setProject(null);
+newContest.setShortSummary(request.getParameter("cs16"));
+newContest.setStartTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+newContest.setType(CompetionType.STUDIO);
+newContest = service.createContest(newContest, Long.parseLong(request.getParameter("pid16")));
+
+service.updateContestStatus(2, 1);
+
+// create software contest
+String tcDirectProjectId = request.getParameter("cid51");
+
+Category javaCategory = null;
+Category ejb3Category = null;
+
+// lookup all the categories
+List<Category> categories = service.getActiveCategories();
+for (Category category : categories) {
+    if (category.getId().longValue() == 2) {
+        javaCategory = category;
+    } else if (category.getId().longValue() == 3) {
+        ejb3Category = category;
+    }
+}
+
+Technology java15Technology = null;
+Technology informixTechnology = null;
+
+// lookup all the technologies
+List<Technology> technologies = service.getActiveTechnologies();
+for (Technology technology : technologies) {
+    if (technology.getId().longValue() == 1) {
+        java15Technology = technology;
+    } else if (technology.getId().longValue() == 2) {
+        informixTechnology = technology;
+    }
+}            
+
+AssetDTO newAsset = new AssetDTO();
+newAsset.setName("Catalog Services");
+newAsset.setVersionText("1.0");
+newAsset.setShortDescription("short");
+newAsset.setDetailedDescription("detailed");
+newAsset.setFunctionalDescription("functional");
+// set the root category
+newAsset.setRootCategory(javaCategory);
+
+// assign categories which this asset belongs to
+newAsset.setCategories(Arrays.asList(ejb3Category));
+
+newAsset.setTechnologies(Arrays.asList(
+    java15Technology,
+    informixTechnology
+));
+newAsset.setDocumentation(new ArrayList<CompDocumentation>());
+
+ProjectType projectType = new ProjectType(1, "projectType");
+ProjectCategory projectCategory = new ProjectCategory(123, "projectCategory", projectType);
+ProjectStatus projectStatus = new ProjectStatus(2, "projectStatus");
+com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
+    projectCategory, projectStatus);
+
+com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
+        new DefaultWorkdaysFactory().createWorkdaysInstance());
+PhaseType phaseTypeOne = new PhaseType(1, "one");
+com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
+phaseOne.setPhaseType(phaseTypeOne);
+phaseOne.setFixedStartDate(new Date());
+phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+Resource resource = new Resource();
+ResourceRole resourceRole = new ResourceRole();
+resource.setResourceRole(resourceRole);
+Resource[] projectResources = new Resource[] {resource};
+
+SoftwareCompetition contest = new SoftwareCompetition();
+contest.setAssetDTO(newAsset);
+contest.setProjectHeader(projectHeader);
+contest.setProjectPhases(projectPhases);
+contest.setProjectResources(projectResources);
+contest.setType(CompetionType.SOFTWARE);
+service.createSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
+
+// update the software contest
+contest.setProjectHeaderReason("projectHeaderReason");
+service.updateSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
