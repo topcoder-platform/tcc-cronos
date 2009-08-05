@@ -1,0 +1,9 @@
+<CMConfig>  
+    <Config name="com.topcoder.testing.generation.failure">
+        <Property name="templateLocation">
+            <Value>test_files/FailureTestGenerator.st</Value>
+        </Property>
+    </Config>
+    <Config name="defaultObjectFactory">
+    </Config>
+</CMConfig>

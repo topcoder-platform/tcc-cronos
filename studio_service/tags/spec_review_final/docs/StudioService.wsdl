@@ -1,0 +1,1730 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/StudioService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="StudioService" targetNamespace="http://www.example.org/StudioService/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/StudioService/">
+      <xsd:element name="createContest">
+        <xsd:complexType>
+          <xsd:sequence>
+
+
+          	<xsd:element name="competitionData"
+          		type="tns:ContestData" minOccurs="1" maxOccurs="1">
+                            <xsd:annotation>
+                            	<xsd:documentation>
+                            		The competition data for this
+                            		project.
+                            	</xsd:documentation>
+                            </xsd:annotation>
+          	</xsd:element>
+          	<xsd:element name="tc_direct_project_ID" type="xsd:long" minOccurs="1" maxOccurs="1">
+          		<xsd:annotation>
+          			<xsd:documentation>
+          				The project to which this competition will be
+          				associated with.
+          			</xsd:documentation>
+          		</xsd:annotation></xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createContestResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="competitionData" type="tns:ContestData" minOccurs="1" maxOccurs="1">
+            	<xsd:annotation>
+            		<xsd:documentation>
+            			If successfully created, returns the
+            			competitionData object populated with the
+            			competition_ID.
+            		</xsd:documentation>
+            	</xsd:annotation></xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="ContestData">
+      	<xsd:sequence>
+      		<xsd:element name="name" type="xsd:string" minOccurs="1"
+      			maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The competition name. This is an always
+      					required field.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="shortSummary" type="xsd:string"
+      			minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The competition description field. This is not
+      					required in draft mode; is required for active
+      					mode.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="contestID" type="xsd:long"
+      			minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The created competition ID. May be unpopulated
+      					until the competition is actually created in
+      					the system.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="prizes" type="tns:prizeData"
+      			minOccurs="1" maxOccurs="unbounded">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					There must be at least one prize listed. There
+      					may be multiple prize listed. The prize
+      					placement number must be unique.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="launchDateAndTime" type="xsd:time"
+      			minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The date and time the project will launch.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="DurationInHours" type="xsd:int"
+      			minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					How long the submission phase will last, in
+      					hours.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="projectID" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The associated project ID.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+
+      		<xsd:element name="WinnderAnnoucementDeadline"
+      			type="xsd:time" minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The date and time the winner will be
+      					announced.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="ContestCategoryID" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The type of competition. The list of
+      					competition types is obtained from the
+      					getCompetitionTypes() service call.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="finalFileFormat"
+      			type="xsd:string" minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Used to describe a file format not normally
+      					provided.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="otherFileFormats"
+      			type="xsd:string" minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					list of acceptable final file formats.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="documentationUpload"
+      			type="tns:uploadedDocument" minOccurs="0"
+      			maxOccurs="unbounded">
+      		</xsd:element>
+      		<xsd:element name="statusID" type="xsd:long" minOccurs="1"
+      			maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The competition's current status.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="ContestPayload"
+      			type="tns:ContestPayload" maxOccurs="unbounded"
+      			minOccurs="0">
+      		</xsd:element>
+
+      		<xsd:element name="contestDescriptionAndRequirements"
+      			type="xsd:string" minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="requiredOrRestrictedColors"
+      			type="xsd:string" minOccurs="0" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="requiredOrRestrictedFonts"
+      			type="xsd:string" minOccurs="0" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="sizeRequirements" type="xsd:string"
+      			minOccurs="0" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="otherRequirementsOrRestrictions"
+      			type="xsd:string" minOccurs="0" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="tc_direct_project_id" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="creator_user_id" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="getContest">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contestID" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getContestResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="ContestData" type="tns:ContestData" minOccurs="0" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCompetitionsForClient">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="clientID" type="xsd:long"></xsd:element>
+      			<xsd:element name="competitionStatusID" type="xsd:long"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCompetitionsForClientResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competitionDataList" type="tns:ContestData" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateContestStatus">
+                <xsd:annotation>
+                	<xsd:documentation>Provide</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contestID" type="xsd:long"></xsd:element>
+      			<xsd:element name="newStatusID" type="xsd:long">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						Provides means of updating competition
+      						status.
+      					</xsd:documentation>
+      				</xsd:annotation></xsd:element>
+      		</xsd:sequence>
+                </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateContestStatusResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="updatedContestStatus" type="tns:ContestData" minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+  				</xsd:annotation></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="uploadDocumentForContest">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="tns:uploadedDocument" minOccurs="1" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="uploadDocumentForContestResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="uploaded_document" type="tns:uploadedDocument" minOccurs="0" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="removeDocumentFromContest">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="document_to_remove" type="tns:uploadedDocument"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="removeDocumentFromContestResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getDocumentForCompetition">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getDocumentForCompetitionResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createProject">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createProjectResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateProject">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateProjectResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getProject">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getProjectResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteProject">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteProjectResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateProjectStatus">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateProjectStatusResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateContest">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="updated_contest" type="tns:ContestData"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateContestResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getContestTypes">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="getContestCategoriesResponse">
+      	<xsd:complexType>
+                    <xsd:annotation>
+                    	<xsd:documentation>
+                    		Returns a list of all available competitoin
+                    		types.
+                    	</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:sequence>
+
+      			<xsd:element name="contestCategory" type="tns:ContestCategoryData" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+        <xsd:element name="getContestCategories">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+        <xsd:element name="getSubmissionFileTypes">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="getContestForProject">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="tc_direct_projectID" type="xsd:long"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getContestForProjectResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_Data" type="tns:ContestData" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="prizeData">
+      	<xsd:sequence>
+      		<xsd:element name="amount" type="xsd:double" minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Amount in US dollars of the prize amount. Must
+      					be greater than or equal to 0.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      		<xsd:element name="place" type="xsd:int" minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The placement. This needs to be a sequential
+      					integer greater than 0.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="createContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="project_not_found"
+      				type="xsd:string">
+                            <xsd:annotation>
+                            	<xsd:documentation>
+                            		Thrown if the provided project_ID is
+                            		not found or is not associated with
+                            		the logged-in user.
+                            	</xsd:documentation>
+                            </xsd:annotation>
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="uploadedDocument">
+                <xsd:annotation>
+                	<xsd:documentation>
+                		Stores metadata and location of uploaded
+                		documents to be used for the competition
+                		documentation.
+                	</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="documentID" type="xsd:long"
+                		minOccurs="1">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				A unqiue ID to identify the uploaded
+                				document.
+							</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ContestID" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+                	<xsd:element name="file" type="xsd:byte" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+                	<xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				A description of the file.
+                			</xsd:documentation>
+                		</xsd:annotation></xsd:element>
+
+                    <xsd:element name="fileName" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+                    <xsd:element name="documentTypeId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+                    <xsd:element name="mimeTypeId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+                </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="competition_not_found">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competition_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="status_not_all">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="status_not_all"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCompetition_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateCompetitionStatus_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateCompetitionStatus_fault1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="status_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateCompetitionStatus_fault2">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="status_not_allowed"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="uploadDocumentForCompetition_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competition_id_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="document_not_found">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element
+      				name="document_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="removeDocumentFromCompetition_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element
+      				name="document_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateCompetition_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competition_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="ContestCategoryData">
+      	<xsd:sequence>
+      		<xsd:element name="contestCategoryID" type="xsd:long" minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Unique competitionID for the competition
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      		<xsd:element name="contestName" type="xsd:string" minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The competition Name
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      		<xsd:element name="contestDescription"
+      			type="xsd:string" minOccurs="1" maxOccurs="1">
+                        <xsd:annotation>
+                        	<xsd:documentation>
+                        		The cmopetition Wizard
+                        	</xsd:documentation>
+                        </xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="contestCategory" type="xsd:string" minOccurs="1" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The competition parent category. Examples are
+      					Studio, Software.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ContestPayload">
+                <xsd:annotation>
+                	<xsd:documentation>
+                		The competition payload is a comp
+					</xsd:documentation>
+                         	 </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+                	<xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+                	<xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+                	<xsd:element name="required" type="xsd:boolean" minOccurs="1" maxOccurs="1"></xsd:element>
+                </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="getStatusList">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="getStatusListResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="statuses" type="tns:ContestStatusData" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getFinalFormatList">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="in" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getSubmissionFileTypesResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="fileType" type="xsd:string" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCompetitionForProject_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="project_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="ContestStatusData">
+      	<xsd:sequence>
+      		<xsd:element name="satusID" type="xsd:long">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Unique ID for the status.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="name" type="xsd:string">
+      			<xsd:annotation>
+      				<xsd:documentation>Status Name</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="description" type="xsd:string">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Status Description
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="allowableNextStatus" type="xsd:long"
+      			minOccurs="0" maxOccurs="unbounded">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					list of all available next states from the
+      					current state.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="displayIcon" type="xsd:string">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					the icon displayed for the specified type.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="retrieveSubmissionsForContest">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contestID" type="xsd:long"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveSubmissionsForContestResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="submissions" type="tns:SubmissionData" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="removeSubmission">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="submissionID" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="removeNonPaidForSubmissionResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="result" type="xsd:int" minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						1: removed; 3: found but paid for so
+      						cannot remove.
+      					</xsd:documentation>
+      				</xsd:annotation></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveAllSubmissionsByMember">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="userID" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveAllSubmissionsByMemberResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="submissions" type="tns:SubmissionData" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+
+      <xsd:complexType name="SubmissionData">
+      	<xsd:sequence>
+
+      		<xsd:element name="submissionID" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="submitterID" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="submittedDateTimeStamp"
+      			type="xsd:dateTime" minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="submissionContent" type="xsd:anyURI"
+      			minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="competitionID" type="xsd:long"
+      			minOccurs="1" maxOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="passedScreening" type="xsd:boolean"
+      			minOccurs="0" maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					May be null if the submission has not yet been
+      					through screening.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+
+      		<xsd:element name="placement" type="xsd:int" minOccurs="0"
+      			maxOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					A numerical ranking from 1 to n, where n is
+      					the number of submissions. Is null when the
+      					submission is not ranked. The lower the
+      					number, the higher the ranking. A ranking of 1
+      					indicates the winner. This is not related to
+      					the paid for / price flag: a client may pay
+      					for more than one submission, or may pay for
+      					none.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="paidFor" type="xsd:boolean">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Indicates whether the customer has fully paid
+      					for this submission or not.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="price" type="xsd:double">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The price for this submission. This is what
+      					the client will have to pay to obtain the
+      					submission, or has already paid (if the paid
+      					flag is true).
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="markedForPurchase"
+      			type="xsd:boolean">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Indicates the client has selected this
+      					submission for purchase, but has not yet paid
+      					for it. This value is undefined if paidFor is
+      					true.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="removed" type="xsd:boolean">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					True if the user has removed this submissino
+      					from competition; this means the actual
+      					submission content has been removed, but not
+      					this record, which must remain for audit
+      					purposes. A submission cannot be removed if it
+      					has alredy been paid for; if paidFor is true,
+      					the value of this flag is undefined. A
+      					submission marked as removed cannot be
+      					displayed or paid or ranked or marked for
+      					purchase.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+
+
+        
+      <xsd:element name="retrievePaidForSubmissions">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competitionID" type="xsd:long"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrievePaidForSubmissionsResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateSubmission">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="submission" type="tns:SubmissionData" minOccurs="1" maxOccurs="1"></xsd:element>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="updateSubmissionStatusResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="submissionData" type="tns:SubmissionData" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <xsd:element name="createContest_fault1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="getContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="updateContestStatus_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="updateContestStatus_fault1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="status_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="updateContestStatus_fault2">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="status_not_allowed"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="uploadDocumentForContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="removeDocumentFromContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="document_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="updateContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      
+      <xsd:element name="getContestForProject_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="project_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="retrieveSubmissionsForContest_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element
+      				name="contest_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+      <xsd:element name="removeDocumentFromContest_fault1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="document_not_found"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    
+    
+    
+    
+    
+    
+    
+    
+    <xsd:element name="persistence_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="persistence_message"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="illegal_argument_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="illegal_argument_message"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+       <xsd:element name="user_not_authorized_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="user_not_authorized"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      
+  </wsdl:types>
+  <wsdl:message name="createContestRequest">
+    <wsdl:part element="tns:createContest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="createContestResponse">
+    <wsdl:part element="tns:createContestResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="getContestRequest">
+  	<wsdl:part name="parameters" element="tns:getContest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestResponse">
+  	<wsdl:part name="parameters" element="tns:getContestResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCompetitionsForClientRequest">
+  	<wsdl:part name="parameters" element="tns:getCompetitionsForClient"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCompetitionsForClientResponse">
+  	<wsdl:part name="parameters" element="tns:getCompetitionsForClientResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestStatusRequest">
+  	<wsdl:part name="parameters" element="tns:updateContestStatus"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestStatusResponse">
+  	<wsdl:part name="parameters" element="tns:updateContestStatusResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="uploadDocumentForContestRequest">
+  	<wsdl:part name="parameters" element="tns:uploadDocumentForContest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="uploadDocumentForContestResponse">
+  	<wsdl:part name="parameters" element="tns:uploadDocumentForContestResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeDocumentFromContestRequest">
+  	<wsdl:part name="parameters" element="tns:removeDocumentFromContest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeDocumentFromContestResponse">
+  	<wsdl:part name="parameters" element="tns:removeDocumentFromContestResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentForCompetitionRequest">
+  	<wsdl:part name="parameters" element="tns:getDocumentForCompetition"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentForCompetitionResponse">
+  	<wsdl:part name="parameters" element="tns:getDocumentForCompetitionResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createProjectRequest">
+  	<wsdl:part name="parameters" element="tns:createProject"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createProjectResponse">
+  	<wsdl:part name="parameters" element="tns:createProjectResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateProjectRequest">
+  	<wsdl:part name="parameters" element="tns:updateProject"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateProjectResponse">
+  	<wsdl:part name="parameters" element="tns:updateProjectResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProjectRequest">
+  	<wsdl:part name="parameters" element="tns:getProject"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProjectResponse">
+  	<wsdl:part name="parameters" element="tns:getProjectResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteProjectRequest">
+  	<wsdl:part name="parameters" element="tns:deleteProject"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteProjectResponse">
+  	<wsdl:part name="parameters" element="tns:deleteProjectResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateProjectStatusRequest">
+  	<wsdl:part name="parameters" element="tns:updateProjectStatus"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateProjectStatusResponse">
+  	<wsdl:part name="parameters" element="tns:updateProjectStatusResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestRequest">
+  	<wsdl:part name="parameters" element="tns:updateContest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestResponse">
+  	<wsdl:part name="parameters" element="tns:updateContestResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestTypesRequest">
+  	<wsdl:part name="parameters" element="tns:getContestTypes"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestCategoriesResponse">
+  	<wsdl:part name="parameters" element="tns:getContestCategoriesResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestForProjectRequest">
+  	<wsdl:part name="parameters" element="tns:getContestForProject"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestForProjectResponse">
+  	<wsdl:part name="parameters" element="tns:getContestForProjectResponse"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="getStatusListResponse"> 
+  	<wsdl:part name="parameters" element="tns:getStatusListResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFinalFormatListRequest">
+  	<wsdl:part name="parameters" element="tns:getFinalFormatList"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubmissionFileTypesResponse">
+  	<wsdl:part name="parameters" element="tns:getSubmissionFileTypesResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCompetitionForProject_faultMsg">
+  	<wsdl:part name="parameters" element="tns:getCompetitionForProject_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveSubmissionsForContestRequest">
+  	<wsdl:part name="parameters" element="tns:retrieveSubmissionsForContest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveSubmissionsForContestResponse">
+  	<wsdl:part name="parameters" element="tns:retrieveSubmissionsForContestResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSubmissionResponse">
+  </wsdl:message>
+  <wsdl:message name="retrievePaidForSubmissionsRequest">
+  	<wsdl:part name="parameters" element="tns:retrievePaidForSubmissions"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrievePaidForSubmissionsResponse">
+  	<wsdl:part name="parameters" element="tns:retrievePaidForSubmissionsResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeSubmissionRequest">
+  	<wsdl:part name="parameters" element="tns:removeSubmission"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeNonPaidForSubmissionResponse">
+  	<wsdl:part name="parameters" element="tns:removeNonPaidForSubmissionResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveAllSubmissionsByMemberRequest">
+  	<wsdl:part name="parameters" element="tns:retrieveAllSubmissionsByMember"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveAllSubmissionsByMemberResponse">
+  	<wsdl:part name="parameters" element="tns:retrieveAllSubmissionsByMemberResponse"></wsdl:part>
+  </wsdl:message>
+   <wsdl:message name="updateSubmissionRequest">
+  	<wsdl:part name="parameters" element="tns:updateSubmission"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSubmissionStatusResponse">
+  	<wsdl:part name="parameters" element="tns:updateSubmissionStatusResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:createContest_fault1"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:getContest_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestStatus_faultMsg">
+  	<wsdl:part name="parameters" element="tns:updateContestStatus_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestStatus_fault1Msg">
+  	<wsdl:part name="parameters" element="tns:updateContestStatus_fault1"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContestStatus_fault2Msg">
+  	<wsdl:part name="parameters" element="tns:updateContestStatus_fault2"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="uploadDocumentForContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:uploadDocumentForContest_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeDocumentFromContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:removeDocumentFromContest_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:updateContest_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContestForProject_faultMsg">
+  	<wsdl:part name="parameters" element="tns:getContestForProject_fault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveSubmissionsForContest_faultMsg">
+  	<wsdl:part name="parameters" element="tns:retrieveSubmissionsForContest_fault"></wsdl:part>
+  </wsdl:message>
+  
+    
+  <wsdl:message name="user_not_authorized_faultMsg">
+  	<wsdl:part name="parameters" element="tns:user_not_authorized_fault"></wsdl:part>
+  </wsdl:message>
+
+    <wsdl:message name="getStatusListRequest">
+  	<wsdl:part name="parameters" element="tns:getStatusList"></wsdl:part>
+  </wsdl:message>
+    <wsdl:message name="getContestCategoriesRequest">
+  	<wsdl:part name="parameters" element="tns:getContestCategories"></wsdl:part>
+  </wsdl:message>
+    <wsdl:message name="getSubmissionFileTypesRequest">
+  	<wsdl:part name="parameters" element="tns:getSubmissionFileTypes"></wsdl:part>
+  </wsdl:message>
+
+  
+  <wsdl:message name="illegal_argument_faultMsg">
+  	<wsdl:part name="parameters" element="tns:illegal_argument_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="persistence_faultMsg">
+  	<wsdl:part name="parameters" element="tns:persistence_fault"></wsdl:part>
+  </wsdl:message>
+  
+  
+  
+  
+  
+  <wsdl:portType name="StudioService">
+
+    <wsdl:operation name="createContest">
+      <wsdl:documentation>Creates a competition of the specified type for the provided project.
+A project may have more than one competition assigned to it.
+A competition may only be assigned to one competition.
+</wsdl:documentation>
+      <wsdl:input message="tns:createContestRequest"/>
+      <wsdl:output message="tns:createContestResponse"/>
+            <wsdl:fault name="fault" message="tns:createContest_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault3" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="getContest">
+    	<wsdl:documentation>Returns the competition identified by the specific competition ID
+</wsdl:documentation>
+    	<wsdl:input message="tns:getContestRequest"></wsdl:input>
+    	<wsdl:output message="tns:getContestResponse"></wsdl:output>
+            <wsdl:fault name="fault" message="tns:getContest_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+               <wsdl:fault name="fault3" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="updateContestStatus">
+    	<wsdl:documentation>Updates the competition status, moving it from one status to another, according to a pre-defined state-machine</wsdl:documentation>
+    	<wsdl:input message="tns:updateContestStatusRequest"></wsdl:input>
+    	<wsdl:output message="tns:updateContestStatusResponse"></wsdl:output>
+            <wsdl:fault name="fault" message="tns:updateContestStatus_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:updateContestStatus_fault1Msg"></wsdl:fault>
+            <wsdl:fault name="fault2" message="tns:updateContestStatus_fault2Msg"></wsdl:fault>
+            <wsdl:fault name="fault3" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault4" message="tns:persistence_faultMsg"></wsdl:fault>
+               <wsdl:fault name="fault5" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="uploadDocumentForContest">
+    	<wsdl:documentation>Uploads a document for the specified competiton. </wsdl:documentation>
+    	<wsdl:input message="tns:uploadDocumentForContestRequest"></wsdl:input>
+    	<wsdl:output message="tns:uploadDocumentForContestResponse"></wsdl:output>
+        <wsdl:fault name="fault" message="tns:uploadDocumentForContest_faultMsg"></wsdl:fault>
+        <wsdl:fault name="fault1" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+        <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+           <wsdl:fault name="fault3" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="removeDocumentFromContest">
+    	<wsdl:documentation>Removes an uploaded document from the competition</wsdl:documentation>
+    	<wsdl:input message="tns:removeDocumentFromContestRequest"></wsdl:input>
+    	<wsdl:fault name="fault" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+    	<wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+    	   <wsdl:fault name="fault2" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="updateContest">
+    	<wsdl:documentation>Updates a competition, allowing user to overwrite existing fields</wsdl:documentation>
+    	<wsdl:input message="tns:updateContestRequest"></wsdl:input>
+    	<wsdl:fault name="fault" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+    	<wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+    	   <wsdl:fault name="fault2" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+    <wsdl:operation name="getContestForProject">
+    	<wsdl:documentation>Returns all competitions for a specific project.</wsdl:documentation>
+    	<wsdl:input message="tns:getContestForProjectRequest"></wsdl:input>
+    	<wsdl:output message="tns:getContestForProjectResponse"></wsdl:output>
+        <wsdl:fault name="fault" message="tns:getContestForProject_faultMsg"></wsdl:fault>
+        <wsdl:fault name="fault1" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+        <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+           <wsdl:fault name="fault3" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+
+    <wsdl:operation name="retrieveSubmissionsForContest">
+    	<wsdl:documentation>Retrieves all submissions for a given competition ID</wsdl:documentation>
+    	<wsdl:input message="tns:retrieveSubmissionsForContestRequest"></wsdl:input>
+    	<wsdl:output message="tns:retrieveSubmissionsForContestResponse"></wsdl:output>
+        <wsdl:fault name="fault" message="tns:retrieveSubmissionsForContest_faultMsg"></wsdl:fault>
+        <wsdl:fault name="fault1" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+ <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+    <wsdl:fault name="fault3" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+
+    <wsdl:operation name="removeSubmission">
+    	<wsdl:documentation>Marks a submission as non-available (removed) from consideration.
+Submissions marked as non-available are not viewable or purchaseable by the client.
+A submission that has been purchased may not be removed by a member.
+A member may only remove a submission they have submitted
+An admin may remove any submission from any member, including those already paid for by the client.
+</wsdl:documentation>
+    	<wsdl:input message="tns:removeSubmissionRequest"></wsdl:input>
+    	<wsdl:fault name="fault" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+ <wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+    <wsdl:fault name="fault2" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+    </wsdl:operation>
+    
+    
+    <wsdl:operation name="retrieveAllSubmissionsByMember">
+    	<wsdl:documentation>Administrative function only; can allows a user to retrieve another users submissions by passing in the user ID</wsdl:documentation>
+    	<wsdl:input message="tns:retrieveAllSubmissionsByMemberRequest"></wsdl:input>
+    	<wsdl:output message="tns:retrieveAllSubmissionsByMemberResponse"></wsdl:output>
+    	<wsdl:fault name="fault" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+    	 <wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+    	    <wsdl:fault name="fault2" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="updateSubmission">
+    	<wsdl:documentation>Updates the submission metadata, such as selecting a winner and other positions;
+
+					Does not actually update the contents of the submission.
+
+	</wsdl:documentation>
+    	<wsdl:input message="tns:updateSubmissionRequest"></wsdl:input>
+<wsdl:fault name="fault" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+ <wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+    <wsdl:fault name="fault2" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+    </wsdl:operation>
+
+      <wsdl:operation name="getStatusList">
+    	<wsdl:documentation>Returns list of all available statuses</wsdl:documentation>
+        <wsdl:input message="tns:getStatusListRequest"></wsdl:input>
+        <wsdl:output message="tns:getStatusListResponse"></wsdl:output>
+         <wsdl:fault name="fault" message="tns:persistence_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+      <wsdl:operation name="getContestCategories">
+    	<wsdl:documentation>Provides a list of competition types, along with the default, minimum, maximum, and other parameters, for each type of competition</wsdl:documentation>
+    	<wsdl:input message="tns:getContestCategoriesRequest"></wsdl:input>
+        <wsdl:output message="tns:getContestCategoriesResponse"></wsdl:output>
+         <wsdl:fault name="fault" message="tns:persistence_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+    	</wsdl:operation>
+
+    <wsdl:operation name="getSubmissionFileTypes">
+    	<wsdl:documentation>Returns a list of all of the final formats allowed</wsdl:documentation>
+        <wsdl:input message="tns:getSubmissionFileTypesRequest"></wsdl:input>
+        <wsdl:output message="tns:getSubmissionFileTypesResponse"></wsdl:output>
+         <wsdl:fault name="fault" message="tns:persistence_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:user_not_authorized_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+
+  </wsdl:portType>
+  
+  
+  
+<wsdl:binding name="StudioServiceSOAP" type="tns:StudioService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault13">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault13">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+     <wsdl:operation name="updateContestStatus">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault3">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault4">
+        <soap:fault name="fault4" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault15">
+        <soap:fault name="fault5" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+     <wsdl:operation name="uploadDocumentForContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault13">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+     <wsdl:operation name="removeDocumentFromContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+       <wsdl:operation name="updateContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+       <wsdl:operation name="getContestCategories">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+           <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault11">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getContestForProject">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault13">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getStatusList">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+        <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSubmissionFileTypes">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+        <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault11">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="retrieveSubmissionsForContest">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault13">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+      <wsdl:operation name="removeSubmission">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="retrieveAllSubmissionsByMember">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="updateSubmission">
+      <soap:operation soapAction="http://www.example.org/StudioService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault12">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+                                      
+  </wsdl:binding>
+  <wsdl:service name="StudioService">
+    <wsdl:port binding="tns:StudioServiceSOAP" name="StudioServiceSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
