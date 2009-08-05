@@ -1,0 +1,112 @@
+/* CSS file */
+.toolBar {
+	background-image: Embed(source="./../assets/barBG.png",
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="2",scaleGridBottom="27");
+	background-size: "100%";
+	border-style: solid;
+	border-thickness: 2;
+	border-color: #8e8e8e;
+	border-sides: "bottom";
+}
+.toolButton {
+	font-family: Arial;
+	color: #636363;
+	text-roll-over-color: #363636;
+	text-selected-color: #363636;
+	font-weight: bold;
+	font-size: 13;
+	up-skin: Embed(source="./../assets/noBG.png");
+	down-skin: Embed(source="./../assets/barBG.png",
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="2",scaleGridBottom="27");
+	over-skin: Embed(source="./../assets/noBG.png");
+	selected-up-skin: Embed(source="./../assets/barSelectedBG.png",
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="7",scaleGridBottom="28");
+	selected-down-skin: Embed(source="./../assets/barSelectedBG.png",
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="7",scaleGridBottom="28");
+	selected-over-skin: Embed(source="./../assets/barSelectedBG.png",
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="7",scaleGridBottom="28");
+	
+}
+.toolSeparator {
+	background-image: Embed(source="./../assets/barSeparator.png");
+	background-size: "100%";
+}
+.viewBtn {
+	up-skin: Embed(source="./../assets/viewBG.png");
+	down-skin: Embed(source="./../assets/viewBG.png");
+	over-skin: Embed(source="./../assets/viewBGOver.png");
+}
+.downBtn {
+	up-skin: Embed(source="./../assets/down.png");
+	down-skin: Embed(source="./../assets/down.png");
+	over-skin: Embed(source="./../assets/downOver.png");
+}
+.downloadPanel {
+	background-image: Embed(source="./../assets/downloadSkin.png",
+			scaleGridTop="16",scaleGridLeft="13",scaleGridRight="137",scaleGridBottom="48");
+	background-size: "100%";
+}
+.popUpPanel {
+	background-image: Embed(source="./../assets/shadows.png",
+			scaleGridTop="1",scaleGridLeft="6",scaleGridRight="10",scaleGridBottom="96");
+	background-size: "100%";
+	background-alpha: 0.8;
+}
+.downloadBtn {
+	up-skin: Embed(source="./../assets/downBtn.png",
+			scaleGridTop="10",scaleGridLeft="10",scaleGridRight="24",scaleGridBottom="30");
+	down-skin: Embed(source="./../assets/downBtn.png",
+			scaleGridTop="10",scaleGridLeft="10",scaleGridRight="24",scaleGridBottom="30");
+	over-skin: Embed(source="./../assets/downBtn.png",
+			scaleGridTop="10",scaleGridLeft="10",scaleGridRight="24",scaleGridBottom="30");
+	color: #ffffff;
+	text-roll-over-color: #000000;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 13;
+}
+.pageBtn {
+	up-skin: Embed(source="./../assets/pageBtn.png");
+	down-skin: Embed(source="./../assets/pageBtnDown.png");
+	over-skin: Embed(source="./../assets/pageBtn.png");
+	disabled-skin: Embed(source="./../assets/pageBtn.png");
+	color: #acacac;
+	text-roll-over-color: #000000;
+	text-selected-color: #da0205;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 11;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+.backBtn {
+	up-skin: Embed(source="./../assets/backBtn.png");
+	down-skin: Embed(source="./../assets/backBtnOver.png");
+	over-skin: Embed(source="./../assets/backBtn.png");
+	color: #000000;
+	text-roll-over-color: #393939;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 11;
+	padding-left: 20;
+	padding-right: 1;
+}
+.normalLabel {
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+}
+.input {
+	border-skin: Embed(source="./../assets/textInput.png",
+			scaleGridTop="2",scaleGridLeft="1",scaleGridRight="126",scaleGridBottom="21");
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+}
+.searchBtn {
+	up-skin: Embed(source="./../assets/searchBtn.png");
+	down-skin: Embed(source="./../assets/searchBtn.png");
+	over-skin: Embed(source="./../assets/searchBtn.png");
+}

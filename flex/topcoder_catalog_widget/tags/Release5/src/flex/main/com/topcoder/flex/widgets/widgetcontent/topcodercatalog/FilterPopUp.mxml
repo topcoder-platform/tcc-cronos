@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for the category filter popup bar.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<tc:ShadowPopUp xmlns:mx="http://www.adobe.com/2006/mxml"
+                xmlns:tc="com.topcoder.flex.widgets.widgetcontent.topcodercatalog.*"
+                verticalScrollPolicy="auto"
+                horizontalScrollPolicy="off"
+                paddingLeft="10"
+                paddingRight="10"
+                paddingTop="10"
+                paddingBottom="10"
+                styleName="popUpPanel"
+                creationComplete="init()">
+    <mx:Script>
+        <![CDATA[
+            import mx.collections.ArrayCollection;
+            import mx.events.FlexEvent;
+            import mx.events.EffectEvent;
+            import mx.controls.Label;
+            import mx.containers.GridRow;
+            import mx.controls.CheckBox;
+            import mx.containers.GridItem;
+            import mx.charts.GridLines;
+
+            /**
+             * The list of category checkboxes.
+             */
+            private var checkList:Array;
+
+            /**
+             * Active checkbox.
+             */
+            public var activeCheck:CheckBox;
+
+            /**
+             * Default checkbox.
+             */
+            public var defaultCheck:CheckBox;
+
+            /**
+             * Original height of the component.
+             * This is used to set the height of the component when the child checkbox controls has been added.
+             */
+            private var originalHeight:Number=0;
+
+            /**
+             * Handler to be called on creation complete of this component.
+             */
+            private function init():void {
+                this.originalHeight=this.measuredHeight;
+            }
+
+            /**
+             * Sets the popup data for this popup.
+             *
+             * It creates the child checkbox control and renders them in a grid.
+             *
+             * @param data the category list.
+             */
+            override public function set popupData(data:Object):void {
+                content.removeAllChildren();
+                var tmp:GridRow=null;
+                var categoryList:ArrayCollection=data as ArrayCollection;
+                checkList=new Array();
+                if (categoryList) {
+                    for (var i:int=0; i < categoryList.length; i++) {
+                        var cate:String=categoryList.getItemAt(i) as String;
+                        if (i % 3 == 0) {
+                            var line:GridRow=new GridRow();
+                            line.percentWidth=100;
+                            tmp=line;
+                            content.addChild(line);
+                        }
+                        if (tmp) {
+                            var check:CheckBox=new CheckBox();
+                            check.label=cate;
+                            check.styleName="normalLabel";
+                            check.setStyle("color", 0xffffff);
+                            check.setStyle("textRollOverColor", 0xe1080d);
+                            if (cate == "All") {
+                                check.selected=true;
+                                activeCheck=check;
+                                defaultCheck=check;
+                            }
+                            check.data=cate;
+                            check.addEventListener(MouseEvent.CLICK, handleClick);
+                            checkList.push(check);
+                            var item:GridItem=new GridItem();
+                            item.percentWidth=100;
+                            item.addChild(check);
+                            tmp.addChild(item);
+                        }
+                    }
+
+                    if (content.measuredHeight == 0) {
+                        this.height=content.maxHeight + this.originalHeight;
+                    } else {
+                        this.height=content.measuredHeight + this.originalHeight;
+                    }
+
+                    trace("Content height --> " + content.height + ", Content.measuredHeight --> " + content.measuredHeight + ", Content.getExplicitOrMeasuredHeight --> " + content.getExplicitOrMeasuredHeight());
+                    trace("this height --> " + this.height + ", this.measuredHeight --> " + this.measuredHeight + ", this.getExplicitOrMeasuredHeight --> " + this.getExplicitOrMeasuredHeight());
+                }
+            }
+
+            /**
+             * Click handler for filter checkbox.
+             *
+             * It simple filters the components for selected category.
+             * And it also hides the popup bar.
+             *
+             * @param event the mouse click event.
+             */
+            private function handleClick(event:MouseEvent):void {
+                var check:CheckBox=event.currentTarget as CheckBox;
+                if (check) {
+                    if (check.selected == true) {
+                        activeCheck.selected=false;
+                        activeCheck=check;
+                    } else {
+                        activeCheck=defaultCheck;
+                        activeCheck.selected=true;
+                    }
+                    model.gotoFilter(activeCheck.data as String);
+                    this.showHidePanel(false);
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="lbl"
+              text="Select category:"
+              styleName="normalLabel"
+              color="#8d8d8d"/>
+    <mx:Grid width="100%"
+             height="100%"
+             maxHeight="150"
+             verticalScrollPolicy="auto"
+             id="content"/>
+</tc:ShadowPopUp>

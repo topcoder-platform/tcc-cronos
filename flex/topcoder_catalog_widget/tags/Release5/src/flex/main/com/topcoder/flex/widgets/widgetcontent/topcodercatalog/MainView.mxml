@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for the main view of this widget.
+
+     In main view most recent and most downloaded components are shown.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         verticalGap="0"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.topcodercatalog.*"
+         horizontalScrollPolicy="off"
+         verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
+
+            /**
+             * Instance of the data model class for this widget.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%"
+             backgroundColor="#f0f0f0"
+             height="30"
+             horizontalAlign="left"
+             borderStyle="solid"
+             borderColor="#dadada"
+             borderSides="bottom"
+             paddingLeft="9"
+             paddingTop="7">
+        <mx:Image source="@Embed('../assets/starIcon.png')"/>
+        <mx:Label text="Recent Components"
+                  color="#e53c29"
+                  fontFamily="Arial"
+                  fontWeight="bold"
+                  fontSize="13"/>
+    </mx:HBox>
+    <tc:SearchResult width="100%"
+                     dataProvider="{model.mostRecentReleaseList}"/>
+    <mx:HBox width="100%"
+             backgroundColor="#f0f0f0"
+             height="30"
+             horizontalAlign="left"
+             borderStyle="solid"
+             borderColor="#dadada"
+             borderSides="bottom"
+             paddingLeft="9"
+             paddingTop="7">
+        <mx:Image source="@Embed('../assets/starIcon.png')"/>
+        <mx:Label text="Most Downloaded Components"
+                  color="#e53c29"
+                  fontFamily="Arial"
+                  fontWeight="bold"
+                  fontSize="13"/>
+    </mx:HBox>
+    <tc:SearchResult width="100%"
+                     dataProvider="{model.topDownloadList}"/>
+</mx:VBox>
