@@ -1,0 +1,1430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           height="100%"
+           xmlns:tc="com.topcoder.flex.util.editor.*"
+           horizontalScrollPolicy="off"
+           verticalScrollPolicy="off"
+		   creationComplete="handleCreationComplete(event)">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
+            import mx.utils.ObjectUtil;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import mx.collections.ArrayCollection;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import mx.events.FlexEvent;
+            import com.topcoder.flex.Helper;
+            import flash.events.MouseEvent;
+            import mx.containers.Panel;
+            import com.topcoder.flex.util.editor.TCRichTextEditor;
+	    	import mx.controls.ButtonLabelPlacement; // BUGR-1501
+	    	import flash.utils.Dictionary;
+	    	import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.mxml.WebService;
+
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
+
+		    private static const ADDEDHEIGHT:Number = 80;
+		    private static const ADDEDHEIGHT_GOALS:Number = 380;
+		    private var dx:Number = 0;
+		    private var dy:Number = 0;
+
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+            public var widgetHeight:Number;
+            public var titleHint:String;
+            public var introductionHint:String;
+            public var primaryGoalHint:String;
+            public var targetAudienceHint:String;
+            public var brandGuidelinesHint:String;
+            public var likeAndDislikesHint:String;
+            public var criteriaHint:String;
+            
+            /**
+             * The config value for this page.
+             * 
+             * @since Cockpit Launch Contest - Update for Spec Creation
+             */ 
+            [Bindable]
+            private var config:XML;
+            
+            //
+            // Stores master technology list as retrieved from web-service.
+            // This is loaded only one time.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private static var _masterTechnologies:ArrayCollection;
+
+            //
+            // Stores list of categories as retrieved from web-service.
+            // This is loaded one time.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private static var _categories:ArrayCollection;
+
+            //
+            // Stores catalogs / root category.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private static var _catalogs:ArrayCollection;
+
+            //
+            // Map of catalog id to categories list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private static var _catalogToCategoriesMap:Dictionary=new Dictionary();
+
+            //
+            // Item list for currently available master technologies.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            public var _boundMasterTechnologies:ArrayCollection=new ArrayCollection();
+
+            //
+            // Item list for currently choosen technologies.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            public var _boundCurrentTechnologies:ArrayCollection=new ArrayCollection();
+
+            //
+            // Item list for currently available master categories.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            public var _boundMasterCategories:ArrayCollection=new ArrayCollection();
+
+            //
+            // Item list for currently choosen categories.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            public var _boundCurrentCategories:ArrayCollection=new ArrayCollection();
+
+            // BUGR-1641
+            private var currentResizingRTEditor:TCRichTextEditor = null;
+            
+            /**
+             * Stores the reference to application catalog.
+             * This is the default catalog for non design & non development contest.
+             * 
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+             */ 
+            public static var applicationCatalog:SoftwareCategory = null;
+            
+            /**
+             * Stores the reference to 'Business Layer' category.
+             * This is the default category for non design & non development contest.
+             * 
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+             */
+            public static var businessLayerApplicationCategory:SoftwareCategory = null;
+
+	        private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
+	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
+
+            public function initData():void {
+                
+                requestConfigData.send();
+                
+                //
+                // depending on the competition type set/reset the data.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (mainWidget.studioContestType) {
+                    ctInput.htmlText="";
+                    introInput.htmlText="";
+                    glsInput.htmlText="";
+                    
+                    if (!this.mainWidget.competition) {
+                        return;
+                    }
+
+                    ctInput.text=this.mainWidget.competition.contestData.name; // BUGR-1379
+                    introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
+                    glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
+                } else {
+                    ns_ctInput.text="";
+                    ns_shortDesc.htmlText="";
+                    //ns_detailedDesc.htmlText="";
+                    //ns_comments.htmlText="";
+                    ns_detailedRequirements.htmlText="";
+                    ns_submissionDeliverables.htmlText="";
+                    ns_environmentSetupInstructions.htmlText="";
+                    ns_finalSubmissionGuidelines.htmlText="";
+
+                    ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
+                    ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
+                    //ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
+                    //ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
+                    if (this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
+                        ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+                        ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
+                        ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
+                        ns_finalSubmissionGuidelines.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines;
+                    }
+                        
+                    //
+                    // load the master technologies if they have not already been loaded.
+                    // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                    //
+                    if (!_masterTechnologies) {
+                        loadMasterTechnologies();
+                    } else {
+                        _boundMasterTechnologies.removeAll();
+
+                        for (var i:int=0; i < _masterTechnologies.length; i++) {
+                            var o:Object=_masterTechnologies.getItemAt(i);
+
+                            _boundMasterTechnologies.addItem(o);
+                        }
+
+                        sortBoundMasterTechnologies();
+
+                        // assign technologies.
+                        setTechnologies();
+                    }
+
+                    //
+                    // Shows the catalog controls only if the contest is design or development.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                    //    
+                    if (isDesOrDevContestType()) {
+                        catalogContainer.visible=true;
+                        catalogContainer.includeInLayout=true;
+                    } else {
+                        catalogContainer.visible=false;
+                        catalogContainer.includeInLayout=false;
+                    }
+
+                    //
+                    // load the catalog names and categories if they have not already been loaded.
+                    // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                    //
+                    if (!_categories) {
+                        loadCategories();
+                    } else {
+                        // assign root category.
+                        setRootCategory();
+
+                        // set master categories.
+                        setMasterCategories(this.ns_catalogNameInput.selectedItem);
+
+                        // assign list of categories.
+                        setCategories();
+                    }
+                }
+	  }
+
+            /**
+             * Handler for loading config data from xml file.
+             * 
+             * @param e the result event. 
+             * @since Cockpit Launch Widget - Update Spec Reviews
+             */
+            private function loadConfigData(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    config=e.result as XML;
+                    if (!mainWidget.isEditMode) {
+                        if (!mainWidget.studioContestType) {
+                            ns_detailedRequirements.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
+                            ns_submissionDeliverables.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
+                            ns_environmentSetupInstructions.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                            ns_finalSubmissionGuidelines.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines'); 
+                        }    
+                    }
+                }
+            }
+
+            //
+            // set current and master technologies to the controls.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function setTechnologies():void {
+                if (!_masterTechnologies || !_boundMasterTechnologies) {
+                    return;
+                }
+
+
+
+                _boundCurrentTechnologies.removeAll();
+
+                if (this.mainWidget.softwareCompetition.assetDTO.technologies) {
+                    var technologies:Array=this.mainWidget.softwareCompetition.assetDTO.technologies;
+                    for (var m:int=0; m < technologies.length; m++) {
+                        var technology:SoftwareTechnology=technologies[m];
+
+                        for (var n:int=0; n < _boundMasterTechnologies.length; n++) {
+                            var masterTech:Object=_boundMasterTechnologies.getItemAt(n);
+                            if (masterTech.data.id == technology.id) {
+                                addToCurrentTechList(masterTech);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //
+            // set root catalog / category
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function setRootCategory():void {
+                trace("IN SET ROOT CATEGORY: " + _catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
+                if (!_catalogs || !this.ns_catalogNameInput || !this.catalogContainer.visible) {
+                    return;
+                }
+
+                if (this.mainWidget.softwareCompetition.assetDTO.rootCategory) {
+                    for (var j:int=0; j < _catalogs.length; j++) {
+                        var catalogObj:Object=_catalogs.getItemAt(j);
+                        
+                        trace("------> " + (catalogObj && catalogObj.data ? catalogObj.data.id : "") + "," + (this.mainWidget.softwareCompetition.assetDTO.rootCategory ? this.mainWidget.softwareCompetition.assetDTO.rootCategory.id : ""));
+                        if (catalogObj && catalogObj.data && catalogObj.data.id == this.mainWidget.softwareCompetition.assetDTO.rootCategory.id) {
+                            trace("-----> Selecting: " + catalogObj);
+                            this.ns_catalogNameInput.selectedItem=catalogObj;
+                            this.ns_catalogNameInput.selectedIndex=j;
+                        }
+                    }
+                } else {
+                    var emptyCatalogObj:Object=_catalogs.getItemAt(0);
+                    this.ns_catalogNameInput.selectedItem=emptyCatalogObj;
+                }
+            }
+
+            //
+            // set categories.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function setCategories():void {
+                trace("IN SET CATEGORIES: " + _boundMasterCategories + "," + _boundCurrentCategories + "," + this.catalogContainer);
+                if (!_boundMasterCategories || !_boundCurrentCategories || !this.catalogContainer.visible) {
+                    return;
+                }
+
+                if (this.mainWidget.softwareCompetition.assetDTO.categories) {
+                    var categories:Array=this.mainWidget.softwareCompetition.assetDTO.categories;
+                    for (var k:int=0; k < categories.length; k++) {
+                        var category:SoftwareCategory=categories[k];
+
+                        for (var l:int=0; l < this._boundMasterCategories.length; l++) {
+                            var sc:Object=_boundMasterCategories.getItemAt(l);
+                            if (sc && sc.data && sc.data.id && sc.data.id == category.id) {
+                                addToCurrentCategoryList(sc);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //
+            // load master technologies from web-service.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function loadMasterTechnologies():void {
+				if (!mainWidget._csws) {
+					return;
+				}
+                var getActiveTechnologiesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveTechnologies");
+                getActiveTechnologiesOp.addEventListener("result", handleMasterTechnologiesLoad);
+                getActiveTechnologiesOp.send();
+            }
+
+            //
+            // handle successful load of master technologies from web-service.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function handleMasterTechnologiesLoad(e:ResultEvent):void {
+                trace("handleMasterTechnologiesLoad: " + e + ", " + e.result);
+                if (e && e.result) {
+                    _boundMasterTechnologies.removeAll();
+
+                    var technologies:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SoftwareTechnology) as ArrayCollection;
+
+                    _masterTechnologies=new ArrayCollection();
+                    for (var i:int=0; i < technologies.length; i++) {
+                        var t:SoftwareTechnology=technologies.getItemAt(i) as SoftwareTechnology;
+                        var o:Object=new Object();
+                        o.label=t.name;
+                        o.data=t;
+                        _masterTechnologies.addItem(o);
+                        _boundMasterTechnologies.addItem(o);
+                    }
+
+                    if (!_masterTechnologies.sort) {
+                        var sort:Sort=new Sort();
+                        sort.compareFunction=compareListItem;
+                        _masterTechnologies.sort=sort;
+                    }
+
+                    _masterTechnologies.refresh();
+
+                    sortBoundMasterTechnologies();
+
+                    setTechnologies();
+                }
+            }
+
+            //
+            // sort master technologies item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortBoundMasterTechnologies():void {
+                if (!_boundMasterTechnologies.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundMasterTechnologies.sort=sort;
+                }
+
+                _boundMasterTechnologies.refresh();
+            }
+
+            //
+            // utility function to compare list item by label.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function compareListItem(a:Object, b:Object, fields:Array=null):int {
+                return ObjectUtil.stringCompare(a.label, b.label, true);
+            }
+
+            //
+            // load active categories from web-service.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            public function loadCategories():void { // BUGR-1678
+				if (!mainWidget._csws) {
+					return;
+				}
+                var getActiveCategoriesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveCategories");
+                getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
+                getActiveCategoriesOp.send();
+            }
+
+			// BUGR-1678
+			public function isDesOrDevContestType():Boolean {
+				return mainWidget.softwareCompetition && 
+					(mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
+					mainWidget.softwareCompetition.type == "DESIGN");
+			}
+			//
+            // handled for load of active categories from web-service.
+            // this method identifies the child / parent relationship as mentioned in 1.1.4
+            // and groups the categories into root and child categories.
+            // root categories are recognized as catalogs.
+            // while for child categories catalog-id to list of child categories map is created.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function handleCategoriesLoad(e:ResultEvent):void {
+                trace("handleCategoriesLoad: " + e + ", " + e.result);
+                const APPLICATION_DESCR:String = "Application"; // BUGR-1678
+                
+                //
+                // Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                const BUSINESS_LAYER_DESCR:String = "Business Layer";
+                _catalogToCategoriesMap = new Dictionary();  // BUGR-1678 
+                if (e && e.result) {
+                    _categories=ObjectTranslatorUtils.translateCollection(e.result, SoftwareCategory) as ArrayCollection;
+
+                    _catalogs=new ArrayCollection();
+                    var oEmpty:Object=new Object();
+                    oEmpty.label="";
+                    oEmpty.data=null;
+                    _catalogs.addItem(oEmpty);
+
+                    for (var i:int=0; i < _categories.length; i++) {
+                        var t:SoftwareCategory=_categories.getItemAt(i) as SoftwareCategory;
+                        
+                        //
+                        // For non admin user just consider the custom catalogs.
+                        // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        //
+                        if (!mainWidget.isAdmin && t.viewable) {
+                            continue;
+                        }
+
+                        if (t.catalogName) {
+                            // it is the root category.
+                            // add this catalog name to list of catalog names.
+                            var o:Object=new Object();
+                            o.label=t.name;
+                            o.data=t;
+                            _catalogs.addItem(o);
+                            
+                            //
+                            // Stores the reference of application catalog to the variable 'applicationCatalog'
+                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                            //
+                            if (o.label == APPLICATION_DESCR) {
+                                applicationCatalog = o.data;
+                            }
+                        } else if (t.parentCategory) {
+                            var categoryObj:Object=new Object();
+                            categoryObj.label=t.name;
+                            categoryObj.data=t;
+
+                            var rootCategoryId:Number=t.parentCategory.id;
+                            var categoriesList:ArrayCollection=null;
+                            if (!_catalogToCategoriesMap[rootCategoryId]) {
+                                categoriesList=new ArrayCollection();
+                                _catalogToCategoriesMap[rootCategoryId]=categoriesList;
+
+                                if (!categoriesList.sort) {
+                                    var srt:Sort=new Sort();
+                                    srt.compareFunction=compareListItem;
+                                    categoriesList.sort=srt;
+                                }
+
+                                categoriesList.addItem(categoryObj);
+                                categoriesList.refresh();
+
+                            } else {
+                                categoriesList=_catalogToCategoriesMap[rootCategoryId] as ArrayCollection;
+
+                                categoriesList.addItem(categoryObj);
+                                categoriesList.refresh();
+                            }
+                            
+                            //
+                            // Stores the reference of business layer category to the variable 'businessLayerApplicationCategory'
+                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                            //
+                            if (categoryObj.label == BUSINESS_LAYER_DESCR && categoryObj.data.parentCategory.name == APPLICATION_DESCR) {
+                                businessLayerApplicationCategory = categoryObj.data;
+                            }
+                        }
+                    }
+
+                    if (!_catalogs.sort) {
+                        var sort:Sort=new Sort();
+                        sort.compareFunction=compareListItem;
+                        _catalogs.sort=sort;
+                    }
+
+                    _catalogs.refresh();
+
+                    // set root category.
+                    setRootCategory();
+
+                    // set master categories.
+                    setMasterCategories(this.ns_catalogNameInput.selectedItem);
+
+                    setCategories();
+                }
+            }
+
+            public function validateFields():Boolean {
+                // BUGR-1475 & BUGR-1067
+                return mainWidget.studioContestType ? s_validateFieldsEx2(true, false) : ns_validateFieldsEx2(true, false);
+            }
+
+            public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+                // BUGR-1475 & BUGR-1067
+                return mainWidget.studioContestType ? s_validateFieldsEx2(showMsg, showPageName) : ns_validateFieldsEx2(showMsg, showPageName);
+            }
+
+            // BUGR-1475 & BUGR-1067
+            public function ns_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean { // BUGR-1067
+                if (ns_ctInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+
+                if (ns_shortDesc.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter short description" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                /*if (ns_detailedDesc.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter detailed description" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }*/
+
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_detailedRequirements.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter detailed requirements" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_submissionDeliverables.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter submission deliverables" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_environmentSetupInstructions.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter environment setup instructions" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+                
+                // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (ns_finalSubmissionGuidelines.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter final submission guidelines" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+
+                //
+                // technology, catalog name and categories are required fields.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (_boundCurrentTechnologies.length == 0 && !(this.mainWidget.competitionType == "SPECIFICATION" || this.mainWidget.competitionType == "CONCEPTUALIZATION")) {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please select some technologies" + (showPageName ? " at Details Page" : ""));
+                        return false;
+                    }
+                }
+
+                //
+                // If contest type is design or development then only validate input controls.
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    if (!ns_catalogNameInput.selectedItem || !ns_catalogNameInput.selectedItem.data) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Please select valid catalog name" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
+                    }
+    
+                    if (_boundMasterCategories && _boundMasterCategories.length > 0 && _boundCurrentCategories.length == 0) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Please select valid categories" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
+                    }
+                } else {
+                    if (!applicationCatalog || !businessLayerApplicationCategory) {
+                        if (showMsg) {
+                            Helper.showAlertMessage("Root category must be selected" + (showPageName ? " at Details Page" : ""));
+                            return false;
+                        }
+                    }
+                }
+
+                this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
+                this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
+                
+                // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                //this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
+                //this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
+
+				   // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                if (!this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
+                    this.mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                }
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements=ns_detailedRequirements.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables=ns_submissionDeliverables.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions.htmlText;
+                this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines.htmlText;
+
+				// for now, also set detailed Reuqirements on function description
+				this.mainWidget.softwareCompetition.assetDTO.detailedDescription=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+
+
+                //
+                // If contest type is design or development then only read catalog names from catalog input controls.
+                // otherwise assume that to be of type "Application"
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    // assign root category.
+                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
+                
+                    // assign list of categories.
+                    if (this._boundCurrentCategories) {
+                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                        for (var k:int=0; k < this._boundCurrentCategories.length; k++) {
+                            var item:Object=this._boundCurrentCategories[k];
+                            if (!item || !item.data) {
+                                continue;
+                            }
+    
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(item.data);
+                        }
+                    }
+                } else {
+                    // assign root category.
+                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=applicationCatalog;
+                    this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                    this.mainWidget.softwareCompetition.assetDTO.categories.push(businessLayerApplicationCategory);
+                }
+
+                // assign technologies.
+                if (this._boundCurrentTechnologies) {
+                    this.mainWidget.softwareCompetition.assetDTO.technologies=new Array();
+                    for (var l:int=0; l < this._boundCurrentTechnologies.length; l++) {
+                        var techItem:Object=this._boundCurrentTechnologies.getItemAt(l);
+                        this.mainWidget.softwareCompetition.assetDTO.technologies.push(techItem.data);
+                    }
+                }
+
+
+                /*this.mainWidget.review.ns_componentNameStr=ns_ctInput.text;
+                this.mainWidget.review.ns_shortDescStr=ns_shortDesc.text;
+                // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+                //this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
+                //this.mainWidget.review.ns_commentsStr=ns_comments.text;
+
+				  // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                this.mainWidget.review.ns_detailedRequirementsStr=ns_detailedRequirements.text;
+                this.mainWidget.review.ns_submissionDeliverablesStr=ns_submissionDeliverables.text;
+                this.mainWidget.review.ns_environmentSetupInstructionsStr=ns_environmentSetupInstructions.text;
+                this.mainWidget.review.ns_finalSubmissionGuidelinesStr=ns_finalSubmissionGuidelines.text;
+                this.mainWidget.review.ns_techListData=new ArrayCollection();
+                for (var m:int=0; m < this._boundCurrentTechnologies.length; m++) {
+                    this.mainWidget.review.ns_techListData.addItem(this._boundCurrentTechnologies.getItemAt(m).label);
+                }
+
+                //
+                // If contest type is design or development then only read catalog names from catalog input controls.
+                // otherwise assume that to be of type "Application"
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                //
+                if (isDesOrDevContestType()) {
+                    this.mainWidget.review.ns_catalogNameStr=ns_catalogNameInput.selectedItem.label;
+    
+                    this.mainWidget.review.ns_categoriesData=new ArrayCollection();
+                    for (var n:int=0; n < this._boundCurrentCategories.length; n++) {
+                        this.mainWidget.review.ns_categoriesData.addItem(this._boundCurrentCategories[n].label);
+                    }
+                } else {
+                    if (applicationCatalog) {
+                        this.mainWidget.review.ns_catalogNameStr=applicationCatalog.name;
+                    }
+                    this.mainWidget.review.ns_categoriesData=new ArrayCollection();
+                    if (businessLayerApplicationCategory) {
+                        this.mainWidget.review.ns_categoriesData.addItem(businessLayerApplicationCategory.name);
+                    }
+                }*/
+
+                return true;
+            }
+
+            // BUGR-1475 & BUGR-1067
+            public function s_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+                if (ctInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
+                if (introInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter introduction" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
+                if (glsInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter a detailed description" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
+                if (introInput.htmlText.length > 10000) { // BUGR-1279
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please shorten the intro" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+                if (glsInput.htmlText.length > 10000) { // BUGR-1279
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please shorten the detailed description" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
+                this.mainWidget.competition.contestData.name=ctInput.text; // BUGR-1379
+                this.mainWidget.competition.contestData.shortSummary=introInput.htmlText; // BUGR-1379
+                this.mainWidget.competition.contestData.contestDescriptionAndRequirements=glsInput.htmlText; // BUGR-1379
+                /*this.mainWidget.review.contentTitleStr=ctInput.text;
+                this.mainWidget.review.IntroductionStr=introInput.text;
+                this.mainWidget.review.glsInputStr=glsInput.text;*/
+
+                return true;
+            }
+
+            private function showContentTitleHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    contentTitleHint.height=ADDEDHEIGHT;
+                    contentTitleHint.text=titleHint;
+                    contentTitleHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    contentTitleHint.height=0;
+                    contentTitleHint.text="";
+                    contentTitleHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function showIntroductionHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    introHint.height=ADDEDHEIGHT;
+                    introHint.text=introductionHint;
+                    introHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    introHint.height=0;
+                    introHint.text="";
+                    introHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function showGoalsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    goalsHint.height=ADDEDHEIGHT_GOALS;
+                    goalsHint.htmlText=primaryGoalHint;
+                    goalsHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT_GOALS;
+                    widgetHeight+=ADDEDHEIGHT_GOALS;
+                } else {
+                    event.target.label="[+ show hint]";
+                    goalsHint.height=0;
+                    goalsHint.htmlText="";
+                    goalsHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT_GOALS;
+                    widgetHeight-=ADDEDHEIGHT_GOALS;
+                }
+            }
+
+	        // BUGR-1458
+	        private function handleRTEMouseMove(event:MouseEvent):void {
+	        	var editor:TCRichTextEditor = currentResizingRTEditor;
+	        	if (editor && editor.isResizing) {
+	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
+		        		mainWidget.height += (stage.mouseY - dy);
+		        		widgetHeight += (stage.mouseY - dy);
+
+		        		dx = stage.mouseX;
+		        		dy = stage.mouseY;
+	        		}
+	        	}
+	        }
+
+	        private function handleRTEDragStart(event:Event): void {
+	        	dx = stage.mouseX;
+	        	dy = stage.mouseY;
+	        	currentResizingRTEditor = event.currentTarget as TCRichTextEditor;
+	        }
+
+	        private function handleCreationComplete(event:Event):void {
+	        	// BUGR-1641
+				// The rich text editors in this view
+				var rtEditors:Array = [
+	        		introInput, glsInput, ns_shortDesc, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
+	        	];
+
+				for each (var rtEditor:TCRichTextEditor in rtEditors) {
+					if (rtEditor != null) {
+						rtEditor.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
+		        		rtEditor.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+	   				}
+				}
+
+				this.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+	        }
+
+            //
+            // handler for adding technology to master list.
+            // this removes technology from current list and adds to master list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToMasterTechList():void {
+                var items:Array = this.ns_curTechList.selectedItems;
+                for each (var item:Object in items) {
+                	// remove item from current technologies.
+	                var index:int=_boundCurrentTechnologies.getItemIndex(item);
+	                _boundCurrentTechnologies.removeItemAt(index);
+
+	                // add item to master technologies.
+	                _boundMasterTechnologies.addItem(item);
+                }
+
+                sortBoundMasterTechnologies();
+            }
+
+            //
+            // handler for adding technology to current list.
+            // this removes technology from master list and adds to current list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToCurrentTechList(item:Object):void {
+                if (!item) {
+                    var items:Array = this.ns_masterTech.selectedItems;
+                    for each (var itm:Object in items) {
+                    	// remove item from master technologies;
+		                var index:int=_boundMasterTechnologies.getItemIndex(itm);
+		                _boundMasterTechnologies.removeItemAt(index);
+
+		                // add item to current technologies;
+		                _boundCurrentTechnologies.addItem(itm);
+                    }
+                } else {
+	                // remove item from master technologies;
+	                var index:int=_boundMasterTechnologies.getItemIndex(item);
+	                _boundMasterTechnologies.removeItemAt(index);
+
+	                // add item to current technologies;
+	                _boundCurrentTechnologies.addItem(item);
+                }
+
+                sortCurrentTechnologies();
+            }
+
+            //
+            // it sorts the current technology item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortCurrentTechnologies():void {
+                if (!_boundCurrentTechnologies.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundCurrentTechnologies.sort=sort;
+                }
+
+                _boundCurrentTechnologies.refresh();
+            }
+
+            //
+            // handler for adding category to master list.
+            // this removes technology from current list and adds to master list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToMasterCategoryList():void {
+                var items:Array = this.ns_curCategoryList.selectedItems;
+                for each (var item:Object in items) {
+	                // remove item from current technologies.
+	                var index:int=_boundCurrentCategories.getItemIndex(item);
+	                _boundCurrentCategories.removeItemAt(index);
+
+	                // add item to master technologies.
+	                _boundMasterCategories.addItem(item);
+                }
+
+                sortBoundMasterCategories();
+            }
+
+            //
+            // handler for adding category to current list.
+            // this removes technology from master list and adds to current list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function addToCurrentCategoryList(item:Object):void {
+                if (!item) {
+                    var items:Array = this.ns_masterCategories.selectedItems;
+                    for each (var itm:Object in items) {
+                    	// remove item from master technologies;
+		                var index:int=_boundMasterCategories.getItemIndex(itm);
+		                _boundMasterCategories.removeItemAt(index);
+
+		                // add item to current technologies;
+		                _boundCurrentCategories.addItem(itm);
+                    }
+                } else {
+	                // remove item from master technologies;
+	                var index:int=_boundMasterCategories.getItemIndex(item);
+	                _boundMasterCategories.removeItemAt(index);
+
+	                // add item to current technologies;
+	                _boundCurrentCategories.addItem(item);
+                }
+
+                sortCurrentCategories();
+            }
+
+            //
+            // it sorts the current categories item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortCurrentCategories():void {
+                if (!_boundCurrentCategories.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundCurrentCategories.sort=sort;
+                }
+
+                _boundCurrentCategories.refresh();
+            }
+
+            //
+            // sort master categories item list.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function sortBoundMasterCategories():void {
+                if (!_boundMasterCategories.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    _boundMasterCategories.sort=sort;
+                }
+
+                _boundMasterCategories.refresh();
+            }
+
+            //
+            // Sets the master categories for the specified catalog data.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function setMasterCategories(catalogData:Object):void {
+                _boundMasterCategories.removeAll();
+                _boundCurrentCategories.removeAll();
+
+                if (catalogData && catalogData.data && catalogData.data.id) {
+                    // set master categories.
+                    var categories:ArrayCollection=_catalogToCategoriesMap[catalogData.data.id];
+                    for each (var c:Object in categories) {
+                        _boundMasterCategories.addItem(c);
+                    }
+
+                    sortBoundMasterCategories();
+                }
+            }
+        ]]>
+    </mx:Script>
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestConfigData"
+                    url="/i/cockpit/data/launch_a_contest/details.xml"
+                    resultFormat="e4x"
+                    result="loadConfigData(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+    
+    <mx:VBox width="100%"
+             styleName="boxStyle"
+             id="detailsContainer">
+        <mx:HBox horizontalAlign="right"
+                 width="100%">
+            <mx:Label text="Contest Details"
+                      styleName="sectionTitle"
+                      width="80%"/>
+            <mx:Spacer width="100"/>
+             <mx:Button styleName="arrowRightBtnStyle"
+	               labelPlacement="{ButtonLabelPlacement.LEFT}"
+		       label="PREVIEW CONTEST"
+		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+        </mx:HBox>
+		<mx:HBox horizontalAlign="right" width="100%">
+			<mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
+			<mx:Spacer width="100%" />
+		</mx:HBox>
+        <mx:Text width="100%"
+                 id="contestDetails">
+            <mx:text> {mainWidget.studioContestType ? ST_PROJECT_DESCRIPTION : SW_PROJECT_DESCRIPTION }
+            </mx:text>
+        </mx:Text>
+
+        <mx:Spacer height="5"/>
+        <mx:VBox visible="{mainWidget.studioContestType}"
+                 includeInLayout="{mainWidget.studioContestType}">
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Contest Title:"
+                              fontWeight="bold"/>
+                    <mx:TextInput id="ctInput"
+                                  width="308"
+                                  maxChars="100"/>
+                    <mx:LinkButton label="[+ show hint]"
+                                   click="showContentTitleHint(event)"/>
+                </mx:HBox>
+                <mx:Text id="contentTitleHint"
+                         color="0x888888"
+                         width="500"
+                         height="0"
+                         visible="false">
+                </mx:Text>
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Introduction:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="308"/>
+                    <!-- BUGR-1279 -->
+                    <mx:LinkButton label="[+ show hint]"
+                                   click="showIntroductionHint(event)"/>
+                </mx:HBox>
+                <mx:Text id="introHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="introInput"
+                                     width="100%"
+                                     height="150"
+                                     minHeight="150"/>
+                <!-- BUGR-1279 -->
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Detailed Description:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="308"/>
+                    <!-- BUGR-1279 -->
+                    <mx:LinkButton label="[+ show hint]"
+                                   click="showGoalsHint(event)"/>
+                </mx:HBox>
+                <mx:Text id="goalsHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="glsInput"
+                                     width="100%"
+                                     height="300"
+                                     minHeight="300"/>
+                <!-- BUGR-1279 -->
+            </mx:VBox>
+        </mx:VBox>
+
+        <!-- BUGR-1067 -->
+        <mx:VBox visible="{!mainWidget.studioContestType}"
+                 includeInLayout="{!mainWidget.studioContestType}">
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="{mainWidget.studioContestType ? 'Component Name:' : 'Contest Name'}"
+                              fontWeight="bold"/>
+                    <mx:TextInput id="ns_ctInput"
+                                  width="292"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_componentNameHints"
+                         color="0x888888"
+                         width="500"
+                         height="0"
+                         visible="false">
+                </mx:Text>
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Short Description:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_shortDescHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_shortDesc"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Detailed Requirements:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_detailedRequirementsHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_detailedRequirements"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Submission Deliverables:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_submissionDeliverablesHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_submissionDeliverables"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Environment Setup Instructions:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_environmentSetupInstructionsHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_environmentSetupInstructions"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Final Submission Guidelines:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="295"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_finalSubmissionGuidelinesHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_finalSubmissionGuidelines"
+                                     width="500"
+                                     height="150"
+                                     minHeight="150" />
+            </mx:VBox>
+
+            <mx:Spacer height="5"/>
+
+            <!--
+            Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            In place of Detailed Description we would have 4 new fields.
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Detailed Description:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="280"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="ns_detailedDescHint"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false"
+                         verticalCenter="top">
+                </mx:Text>
+                <tc:TCRichTextEditor id="ns_detailedDesc"
+                                     width="500"
+                                     height="360"
+                                     minHeight="200" />
+            </mx:VBox>
+            -->
+
+            <!--
+                 since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                 Updated logic to handle add/remove of technologies both on button click and double click.
+            -->
+            <mx:VBox id="tech1" verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Master Technologies:"
+                              fontWeight="bold"/>
+                    <mx:Spacer width="100"/>
+                    <mx:Label text="Current Project Technologies:"
+                              fontWeight="bold"/>
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+                <mx:Text id="techListHint_ns"
+                         height="0"
+                         color="0x888888"
+                         width="500"
+                         visible="false"
+                         verticalCenter="top"/>
+            </mx:VBox>
+
+            <mx:HBox id="tech2" verticalAlign="top">
+                <mx:List id="ns_masterTech"
+                         width="225"
+                         dataProvider="{_boundMasterTechnologies}"
+                         doubleClickEnabled="true"
+                         doubleClick="addToCurrentTechList(null)"
+			 allowMultipleSelection="true"/>
+                <mx:VBox height="150" verticalAlign="middle">
+                    <mx:Button id="toCurrentTechList"
+                               label=">"
+                               click="addToCurrentTechList(null)"/>
+                    <mx:Spacer height="5"/>
+                    <mx:Button id="toMasterTechList"
+                               label="&lt;"
+                               click="addToMasterTechList()"/>
+                </mx:VBox>
+                <mx:List id="ns_curTechList"
+                         width="225"
+                         dataProvider="{_boundCurrentTechnologies}"
+                         doubleClickEnabled="true"
+                         doubleClick="addToMasterTechList()"
+			 allowMultipleSelection="true"/>
+            </mx:HBox>
+
+            <!--
+            Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
+            
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:HBox>
+                    <mx:Label text="Client:"
+                              fontWeight="bold"/>
+                    <mx:TextInput id="ns_comments" width="292" maxChars="100" /> 
+                    <mx:LinkButton label="[+ show hint]"/>
+                </mx:HBox>
+
+            </mx:VBox>
+            -->
+    
+            <!--
+                Enclose catalog name and categories in catalogContainer, so that we can hide / unhide.
+                since: Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+            -->
+            <mx:VBox width="100%" verticalGap="0" id="catalogContainer">
+            
+                <mx:Spacer height="5"/>
+    
+                <!--
+                     since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                     Added catalog name control.
+                -->
+                <mx:VBox width="100%"
+                         verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Catalog Name:"
+                                  fontWeight="bold"/>
+                        <mx:ComboBox id="ns_catalogNameInput"
+                                     width="292"
+                                     dataProvider="{_catalogs}"
+                                     change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
+                        <mx:LinkButton label="[+ show hint]"/>
+                    </mx:HBox>
+                    <mx:Text id="ns_catalogNameHints"
+                             color="0x888888"
+                             width="500"
+                             height="0"
+                             visible="false">
+                    </mx:Text>
+                </mx:VBox>
+    
+                <mx:Spacer height="5"/>
+    
+                <!--
+                     since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                     Added catalog categories control.
+                -->
+                <mx:VBox verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Master Categories:"
+                                  fontWeight="bold"/>
+                        <mx:Spacer width="100"/>
+                        <mx:Label text="Current Project Categories:"
+                                  fontWeight="bold"/>
+                        <mx:LinkButton label="[+ show hint]"/>
+                    </mx:HBox>
+                    <mx:Text id="categoriesHint_ns"
+                             height="0"
+                             color="0x888888"
+                             width="500"
+                             visible="false"
+                             verticalCenter="top"/>
+                </mx:VBox>
+    
+                <mx:HBox verticalAlign="top">
+                    <mx:List id="ns_masterCategories"
+                             width="225"
+                             dataProvider="{_boundMasterCategories}"
+                             doubleClickEnabled="true"
+                             doubleClick="addToCurrentCategoryList(null)"
+                             allowMultipleSelection="true" />
+                    <mx:VBox height="150" verticalAlign="middle">
+                        <mx:Button id="toCurrentCategoryList"
+                                   label=">"
+                                   click="addToCurrentCategoryList(null)"/>
+                        <mx:Spacer height="5"/>
+                        <mx:Button id="toMasterCategoryList"
+                                   label="&lt;"
+                                   click="addToMasterCategoryList()"/>
+                    </mx:VBox>
+                    <mx:List id="ns_curCategoryList"
+                             width="225"
+                             dataProvider="{_boundCurrentCategories}"
+                             doubleClickEnabled="true"
+                             doubleClick="addToMasterCategoryList()"
+                             allowMultipleSelection="true" />
+                </mx:HBox>
+            
+            </mx:VBox>
+        </mx:VBox>
+    </mx:VBox>
+</mx:VBox>
