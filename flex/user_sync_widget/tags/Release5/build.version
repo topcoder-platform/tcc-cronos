@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=User Sync Widget
+component.distfilename=user_sync_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.usersync
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/usersync
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
