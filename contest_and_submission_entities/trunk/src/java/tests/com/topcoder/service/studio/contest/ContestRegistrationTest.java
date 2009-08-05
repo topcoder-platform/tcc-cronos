@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Query;
+
+import com.topcoder.service.studio.submission.MilestonePrize;
+import com.topcoder.service.studio.submission.PrizeType;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -18,8 +21,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link ContestRegistration} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestRegistrationTest extends TestCase {
 
@@ -229,6 +232,25 @@ public class ContestRegistrationTest extends TestCase {
 
     /**
      * <p>
+     * Accuracy test for <code>toString</code> method.
+     * </p>
+     */
+    public void test_toString() {
+        ContestRegistration entity = new ContestRegistration();
+        Contest contest = new Contest();
+        contest.setContestId(1L);
+        entity.setContest(contest);
+        entity.setCreateDate(new Date());
+        entity.setUserId(1L);
+        entity.setTermsOfUseId(1L);
+
+        String str = entity.toString();
+
+        assertTrue("invalid string representation.", str.indexOf("ContestId") >= 0);
+    }
+
+    /**
+     * <p>
      * Checks how the composite id logic in the hash code and equals performs in a set addition.
      * </p>
      * <p>
@@ -264,13 +286,10 @@ public class ContestRegistrationTest extends TestCase {
         try {
             HibernateUtil.getManager().getTransaction().begin();
             Date date = new Date();
-            StudioFileType fileType = new StudioFileType();
-            TestHelper.populateStudioFileType(fileType);
-            HibernateUtil.getManager().persist(fileType);
 
-            ContestChannel contestCategory = new ContestChannel();
-            TestHelper.populateContestCategory(contestCategory, fileType);
-            HibernateUtil.getManager().persist(contestCategory);
+            ContestChannel channel = new ContestChannel();
+            TestHelper.populateContestChannel(channel);
+            HibernateUtil.getManager().persist(channel);
 
             ContestType contestType = new ContestType();
             TestHelper.populateContestType(contestType);
@@ -279,11 +298,44 @@ public class ContestRegistrationTest extends TestCase {
             ContestStatus status = new ContestStatus();
             status.setDescription("description");
             status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             HibernateUtil.getManager().persist(status);
+
+            ContestGeneralInfo generalInfo = new ContestGeneralInfo();
+            generalInfo.setBrandingGuidelines("guideline");
+            generalInfo.setDislikedDesignsWebsites("disklike");
+            generalInfo.setGoals("goal");
+            generalInfo.setOtherInstructions("instruction");
+            generalInfo.setTargetAudience("target audience");
+            generalInfo.setWinningCriteria("winning criteria");
+
+            ContestMultiRoundInformation multiRoundInformation = new ContestMultiRoundInformation();
+            multiRoundInformation.setMilestoneDate(new Date());
+            multiRoundInformation.setRoundOneIntroduction("round one");
+            multiRoundInformation.setRoundTwoIntroduction("round two");
+
+            ContestSpecifications specifications = new ContestSpecifications();
+            specifications.setAdditionalRequirementsAndRestrictions("none");
+            specifications.setColors("white");
+            specifications.setFonts("Arial");
+            specifications.setLayoutAndSize("10px");
+
+            PrizeType prizeType = new PrizeType();
+            prizeType.setDescription("Good");
+            prizeType.setPrizeTypeId(1L);
+            HibernateUtil.getManager().persist(prizeType);
+
+            MilestonePrize milestonePrize = new MilestonePrize();
+            milestonePrize.setAmount(10.0);
+            milestonePrize.setCreateDate(new Date());
+            milestonePrize.setNumberOfSubmissions(1);
+            milestonePrize.setType(prizeType);
 
             Contest contest = new Contest();
 
-            TestHelper.populateContest(contest, date, contestCategory, contestType, status);
+            TestHelper.populateContest(contest, date, channel, contestType, status, generalInfo, multiRoundInformation,
+                    specifications, milestonePrize);
             HibernateUtil.getManager().persist(contest);
 
             ContestRegistration entity = new ContestRegistration();
@@ -315,10 +367,10 @@ public class ContestRegistrationTest extends TestCase {
             // delete the entity
             HibernateUtil.getManager().remove(entity);
             HibernateUtil.getManager().remove(contest);
+            HibernateUtil.getManager().remove(prizeType);
             HibernateUtil.getManager().remove(status);
             HibernateUtil.getManager().remove(contestType);
-            HibernateUtil.getManager().remove(contestCategory);
-            HibernateUtil.getManager().remove(fileType);
+            HibernateUtil.getManager().remove(channel);
 
         } finally {
             HibernateUtil.getManager().getTransaction().commit();

@@ -24,26 +24,11 @@ public class StressTests extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(ConfigStressTest.class));
-        suite.addTest(new TestSuite(ContestCategoryStressTest.class));
-        suite.addTest(new TestSuite(ContestResultStressTest.class));
-        suite.addTest(new TestSuite(ContestStatusStressTest.class));
-        suite.addTest(new TestSuite(ContestStressTest.class));
-        suite.addTest(new TestSuite(ContestTypeStressTest.class));
-        suite.addTest(new TestSuite(DocumentStressTest.class));
-        suite.addTest(new TestSuite(DocumentTypeStressTest.class));
-        suite.addTest(new TestSuite(FilePathStressTest.class));
-        suite.addTest(new TestSuite(MimeTypeStressTest.class));
-        suite.addTest(new TestSuite(PaymentStatusStressTest.class));
-        suite.addTest(new TestSuite(PrizeStressTest.class));
-        suite.addTest(new TestSuite(PrizeTypeStressTest.class));
-        suite.addTest(new TestSuite(ReviewStatusStressTest.class));
-        suite.addTest(new TestSuite(StudioFileTypeStressTest.class));
-        suite.addTest(new TestSuite(SubmissionPaymentStressTest.class));
-        suite.addTest(new TestSuite(SubmissionReviewStressTest.class));
-        suite.addTest(new TestSuite(SubmissionStatusStressTest.class));
-        suite.addTest(new TestSuite(SubmissionStressTest.class));
-        suite.addTest(new TestSuite(SubmissionTypeStressTest.class));
+        suite.addTest(new TestSuite(ContestGeneralInfoStressTest.class));
+        suite.addTest(new TestSuite(ContestMultiRoundInformationStressTest.class));
+        suite.addTest(new TestSuite(ContestResourceStressTest.class));
+        suite.addTest(new TestSuite(ContestSpecificationsStressTest.class));
+        suite.addTest(new TestSuite(MilestonePrizeStressTest.class));
 
         return suite;
     }

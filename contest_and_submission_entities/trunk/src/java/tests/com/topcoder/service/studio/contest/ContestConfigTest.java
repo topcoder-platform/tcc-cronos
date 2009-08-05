@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.persistence.Query;
 
 import com.topcoder.service.studio.contest.ContestConfig.Identifier;
+import com.topcoder.service.studio.submission.MilestonePrize;
+import com.topcoder.service.studio.submission.PrizeType;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -18,8 +20,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link ContestConfig} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestConfigTest extends TestCase {
 
@@ -59,7 +61,7 @@ public class ContestConfigTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestConfig#Config()} constructor.
+     * Accuracy test for {@link ContestConfig#ContestConfig()} constructor.
      * </p>
      * <p>
      * Creates an instance and checks its instantiation.
@@ -109,13 +111,13 @@ public class ContestConfigTest extends TestCase {
         property.setPropertyId(1L);
         Contest contest = new Contest();
         contest.setContestId(1L);
-        
+
         Identifier id = new Identifier();
         id.setContest(contest);
         id.setProperty(property);
-		config1.setId(id);
-		config.setId(id);
-		
+        config1.setId(id);
+        config.setId(id);
+
         assertTrue("failed equals", config1.equals(config));
         assertTrue("failed hashCode", config1.hashCode() == config.hashCode());
     }
@@ -135,18 +137,18 @@ public class ContestConfigTest extends TestCase {
         Identifier id = new Identifier();
         id.setContest(contest1);
         id.setProperty(property);
-		config1.setId(id);
+        config1.setId(id);
 
         Contest contest2 = new Contest();
         contest2.setContestId(2L);
-		
+
         Identifier id2 = new Identifier();
         id2.setContest(contest2);
         id2.setProperty(property);
-		
+
         config.setId(id2);
-		
-		assertFalse("failed equals", config1.equals(config));
+
+        assertFalse("failed equals", config1.equals(config));
         assertFalse("failed hashCode", config1.hashCode() == config.hashCode());
     }
 
@@ -162,6 +164,67 @@ public class ContestConfigTest extends TestCase {
 
     /**
      * <p>
+     * Accuracy test for {@link ContestConfig#equals(Object)}. Objects are unequal.
+     * </p>
+     */
+    public void test_equals_4() {
+        ContestConfig config1 = new ContestConfig();
+        ContestProperty property = new ContestProperty();
+        property.setPropertyId(1L);
+
+        Identifier id = new Identifier();
+        id.setProperty(property);
+        config1.setId(id);
+
+        ContestProperty property2 = new ContestProperty();
+        property2.setPropertyId(2L);
+
+        Identifier id2 = new Identifier();
+        id2.setProperty(property2);
+
+        config.setId(id2);
+
+        assertFalse("failed equals", config1.equals(config));
+        assertFalse("failed hashCode", config1.hashCode() == config.hashCode());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for {@link ContestConfig#equals(Object)}. Objects are unequal.
+     * </p>
+     */
+    public void test_equals_5() {
+        ContestConfig config1 = new ContestConfig();
+        Contest contest1 = new Contest();
+        contest1.setContestId(1L);
+
+        Identifier id = new Identifier();
+        id.setContest(contest1);
+        config1.setId(id);
+
+        Contest contest2 = new Contest();
+        contest2.setContestId(2L);
+
+        Identifier id2 = new Identifier();
+        id2.setContest(contest2);
+
+        config.setId(id2);
+
+        assertFalse("failed equals", config1.equals(config));
+        assertFalse("failed hashCode", config1.hashCode() == config.hashCode());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for {@link ContestConfig#equals(Object)}. Both objects are equal.
+     * </p>
+     */
+    public void test_equals_6() {
+        assertTrue("failed equals", config.equals(new ContestConfig()));
+    }
+
+    /**
+     * <p>
      * Persistence tests for the entity <code>{@link ContestConfig}</code>.
      * </p>
      */
@@ -173,12 +236,9 @@ public class ContestConfigTest extends TestCase {
             HibernateUtil.getManager().persist(property);
 
             Date date = new Date();
-            StudioFileType fileType = new StudioFileType();
-            TestHelper.populateStudioFileType(fileType);
-            HibernateUtil.getManager().persist(fileType);
 
             ContestChannel channel = new ContestChannel();
-            TestHelper.populateContestCategory(channel, fileType);
+            TestHelper.populateContestChannel(channel);
             channel.setContestChannelId(10L);
             HibernateUtil.getManager().persist(channel);
 
@@ -191,18 +251,51 @@ public class ContestConfigTest extends TestCase {
             status.setDescription("description");
             status.setName("Name");
             status.setContestStatusId(10L);
+            status.setStatusId(1L);
             HibernateUtil.getManager().persist(status);
+
+            ContestGeneralInfo generalInfo = new ContestGeneralInfo();
+            generalInfo.setBrandingGuidelines("guideline");
+            generalInfo.setDislikedDesignsWebsites("disklike");
+            generalInfo.setGoals("goal");
+            generalInfo.setOtherInstructions("instruction");
+            generalInfo.setTargetAudience("target audience");
+            generalInfo.setWinningCriteria("winning criteria");
+
+            ContestMultiRoundInformation multiRoundInformation = new ContestMultiRoundInformation();
+            multiRoundInformation.setMilestoneDate(new Date());
+            multiRoundInformation.setRoundOneIntroduction("round one");
+            multiRoundInformation.setRoundTwoIntroduction("round two");
+
+            ContestSpecifications specifications = new ContestSpecifications();
+            specifications.setAdditionalRequirementsAndRestrictions("none");
+            specifications.setColors("white");
+            specifications.setFonts("Arial");
+            specifications.setLayoutAndSize("10px");
+
+            PrizeType prizeType = new PrizeType();
+            prizeType.setDescription("description");
+            prizeType.setPrizeTypeId(1L);
+            HibernateUtil.getManager().persist(prizeType);
+
+            MilestonePrize milestonePrize = new MilestonePrize();
+            milestonePrize.setAmount(10.0);
+            milestonePrize.setCreateDate(new Date());
+            milestonePrize.setNumberOfSubmissions(1);
+            milestonePrize.setType(prizeType);
 
             Contest contest = new Contest();
 
-            TestHelper.populateContest(contest, date, channel, contestType, status);
+            TestHelper.populateContest(contest, date, channel, contestType, status, generalInfo, multiRoundInformation,
+                    specifications, milestonePrize);
+
             HibernateUtil.getManager().persist(contest);
 
             ContestConfig entity = new ContestConfig();
-            Identifier id = new Identifier ();
+            Identifier id = new Identifier();
             id.setContest(contest);
             id.setProperty(property);
-			entity.setId(id );
+            entity.setId(id);
             entity.setValue("value");
             // save the entity
             HibernateUtil.getManager().persist(entity);
@@ -213,13 +306,15 @@ public class ContestConfigTest extends TestCase {
             ContestConfig persisted = (ContestConfig) query.getResultList().get(0);
 
             assertEquals("Failed to persist - value mismatch", entity.getValue(), persisted.getValue());
-            assertEquals("Failed to persist - contest mismatch", entity.getId().getContest(), persisted.getId().getContest());
-            assertEquals("Failed to persist - property mismatch", entity.getId().getProperty(), persisted.getId().getProperty());
+            assertEquals("Failed to persist - contest mismatch", entity.getId().getContest(), persisted.getId()
+                    .getContest());
+            assertEquals("Failed to persist - property mismatch", entity.getId().getProperty(), persisted.getId()
+                    .getProperty());
 
             entity.setValue(null);
-            HibernateUtil.getManager().persist(entity);            
+            HibernateUtil.getManager().persist(entity);
             assertNull("Failed to persist - value mismatch", persisted.getValue());
-            
+
             // update the entity
             entity.setValue("new value");
             HibernateUtil.getManager().merge(entity);
@@ -232,11 +327,10 @@ public class ContestConfigTest extends TestCase {
             HibernateUtil.getManager().remove(entity);
             HibernateUtil.getManager().remove(property);
             HibernateUtil.getManager().remove(contest);
+            HibernateUtil.getManager().remove(prizeType);
             HibernateUtil.getManager().remove(status);
             HibernateUtil.getManager().remove(contestType);
             HibernateUtil.getManager().remove(channel);
-            HibernateUtil.getManager().remove(fileType);
-
         } finally {
             HibernateUtil.getManager().getTransaction().commit();
         }

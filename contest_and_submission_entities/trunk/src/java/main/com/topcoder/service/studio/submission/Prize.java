@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -20,8 +20,8 @@ import com.topcoder.service.studio.contest.Helper;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
- * @version 1.0
+ * @author tushak, cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class Prize implements Serializable {
     /**
@@ -214,11 +214,7 @@ public class Prize implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Prize) {
-            Prize prize2 = (Prize) obj;
-            return getPlace() == prize2.getPlace() &&
-                    getType() == prize2.getType() &&
-                    getContests() == prize2.getContests() &&
-                    getSubmissions() == prize2.getSubmissions();
+            return getPrizeId() == ((Prize) obj).getPrizeId();
         }
         return false;
     }
@@ -231,6 +227,6 @@ public class Prize implements Serializable {
      */
     @Override
     public int hashCode() {
-        return (prizeId + "-" + getPlace() + getContests() + "-" + getSubmissions()).hashCode();
+        return Helper.calculateHash(prizeId);
     }
 }

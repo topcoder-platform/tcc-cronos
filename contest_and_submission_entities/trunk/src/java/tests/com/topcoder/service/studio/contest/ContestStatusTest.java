@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -15,8 +15,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link ContestStatus} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestStatusTest extends TestCase {
 
@@ -119,7 +119,7 @@ public class ContestStatusTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link ContestStatus#getStatuses()} and
-     * {@link ContestStatus#setStatuses(List<ContestStatus>)} method.
+     * {@link ContestStatus#setStatuses(List)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -133,7 +133,7 @@ public class ContestStatusTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestStatus#setStatuses(List<ContestStatus>)} and
+     * Accuracy test for {@link ContestStatus#setStatuses(List)} and
      * {@link ContestStatus#getStatuses()} method.
      * </p>
      * <p>
@@ -197,6 +197,8 @@ public class ContestStatusTest extends TestCase {
             ContestStatus entity = new ContestStatus();
             entity.setDescription("description");
             entity.setName("Name");
+            entity.setStatusId(1L);
+            entity.setContestStatusId(10L);
 
             // save the entity
             HibernateUtil.getManager().persist(entity);

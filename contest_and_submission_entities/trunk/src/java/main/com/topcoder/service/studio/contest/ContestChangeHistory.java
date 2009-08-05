@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -13,20 +13,20 @@ import java.util.Date;
  * change, a transaction ID that groups changes made at the same time, and the
  * old data and new data that represents the change.
  * </p>
- * 
+ *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
- * 
+ *
  * @author Ghostar, superZZ
  * @version 1.0
  */
 public class ContestChangeHistory implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 4782740922219724079L;
-    
+
     /**
      * Represents the ContestId.
      */
@@ -69,7 +69,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the contestId.
-     * 
+     *
      * @return the contestId.
      */
     public Long getContestId() {
@@ -78,7 +78,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the fieldName.
-     * 
+     *
      * @return the fieldName.
      */
     public String getFieldName() {
@@ -87,7 +87,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the newData.
-     * 
+     *
      * @return the newData.
      */
     public String getNewData() {
@@ -96,7 +96,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the oldData.
-     * 
+     *
      * @return the oldData.
      */
     public String getOldData() {
@@ -105,7 +105,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the timestamp.
-     * 
+     *
      * @return the timestamp.
      */
     public Date getTimestamp() {
@@ -114,7 +114,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the transactionId.
-     * 
+     *
      * @return the transactionId.
      */
     public Long getTransactionId() {
@@ -123,7 +123,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the userName.
-     * 
+     *
      * @return the userName.
      */
     public String getUserName() {
@@ -132,7 +132,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Returns the isUserAdmin.
-     * 
+     *
      * @return the isUserAdmin.
      */
     public boolean isUserAdmin() {
@@ -141,7 +141,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the ContestId with the specified value.
-     * 
+     *
      * @param contestId
      *            the contestId to set.
      */
@@ -151,7 +151,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the FieldName with the specified value.
-     * 
+     *
      * @param fieldName
      *            the fieldName to set.
      */
@@ -161,7 +161,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the NewData with the specified value.
-     * 
+     *
      * @param newData
      *            the newData to set.
      */
@@ -171,7 +171,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the OldData with the specified value.
-     * 
+     *
      * @param oldData
      *            the oldData to set.
      */
@@ -181,7 +181,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the Timestamp with the specified value.
-     * 
+     *
      * @param timestamp
      *            the timestamp to set.
      */
@@ -191,7 +191,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the TransactionId with the specified value.
-     * 
+     *
      * @param transactionId
      *            the transactionId to set.
      */
@@ -201,7 +201,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the IsUserAdmin with the specified value.
-     * 
+     *
      * @param isUserAdmin
      *            the isUserAdmin to set.
      */
@@ -211,7 +211,7 @@ public class ContestChangeHistory implements Serializable {
 
     /**
      * Updates the UserName with the specified value.
-     * 
+     *
      * @param userName
      *            the userName to set.
      */

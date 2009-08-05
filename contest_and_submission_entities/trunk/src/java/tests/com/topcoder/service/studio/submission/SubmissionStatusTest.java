@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -14,8 +14,8 @@ import com.topcoder.service.studio.contest.HibernateUtil;
  * Tests the functionality of {@link SubmissionStatus} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class SubmissionStatusTest extends TestCase {
 
@@ -161,7 +161,7 @@ public class SubmissionStatusTest extends TestCase {
      * </p>
      */
     public void test_equals_3() {
-        Object status = new SubmissionStatus();
+        Object status = new Object();
         submissionStatus.setSubmissionStatusId(1L);
         assertFalse("failed equals", submissionStatus.equals(status));
     }
@@ -176,6 +176,7 @@ public class SubmissionStatusTest extends TestCase {
             HibernateUtil.getManager().getTransaction().begin();
             SubmissionStatus entity = new SubmissionStatus();
             entity.setDescription("description");
+            entity.setSubmissionStatusId(1L);
 
             // save the entity
             HibernateUtil.getManager().persist(entity);

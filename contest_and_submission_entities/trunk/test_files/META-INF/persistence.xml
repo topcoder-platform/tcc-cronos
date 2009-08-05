@@ -6,7 +6,7 @@
 		transaction-type="RESOURCE_LOCAL">
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.ejb.cfgfile"
 				value="hibernate.cfg.xml" />

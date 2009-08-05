@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -9,13 +9,12 @@ import java.io.Serializable;
  * <p>
  * Represents the entity class for db table <i>contest_type_config</i>.
  * </p>
- *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
- * @version 1.0
+ * @author tushak, cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestTypeConfig implements Serializable {
     /**
@@ -47,18 +46,18 @@ public class ContestTypeConfig implements Serializable {
 
     /**
      * Return the identifier.
-     * 
+     *
      * @return the identifier.
      */
     public Identifier getId() {
         return id;
     }
 
-
     /**
-     * Set the identifier
-     * 
-     * @param id the identifier
+     * Set the identifier.
+     *
+     * @param id
+     *            the identifier
      */
     public void setId(Identifier id) {
         this.id = id;
@@ -111,33 +110,32 @@ public class ContestTypeConfig implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-    	if (this == obj) {
-    		return true;
-    	}
-    	
-    	if ((obj == null) || (obj.getClass() != this.getClass())) {
-    		return false;
-    	}
+        if (obj instanceof ContestTypeConfig) {
+            Identifier id2 = ((ContestTypeConfig) obj).getId();
+            if (id != null) {
+                return id.equals(id2);
+            } else {
+                return id2 == null;
+            }
+        }
 
-    	ContestTypeConfig other = (ContestTypeConfig) obj;
-    	
-    	return id.equals(other.getId());
+        return false;
     }
 
     /**
-     * Overrides {@code Object.hashCode()} to provide a hash code consistent with this class's
-     * {@link #equals(Object)}} method.
+     * Overrides {@code Object.hashCode()} to provide a hash code consistent with this class's {@link #equals(Object)}}
+     * method.
      *
      * @return a hash code for this {@code ContestTypeConfig}
      */
     @Override
     public int hashCode() {
-    	return id.hashCode();
+        return id != null ? id.hashCode() : super.hashCode();
     }
 
     /**
-     * Composite identifier for a ContestTypeConfig
-     * 
+     * Composite identifier for a ContestTypeConfig.
+     *
      * @since 1.1
      */
     public static class Identifier implements Serializable {
@@ -147,12 +145,12 @@ public class ContestTypeConfig implements Serializable {
         private static final long serialVersionUID = -1512528048724458809L;
 
         /**
-         * ContestType to which this configuration belongs
+         * ContestType to which this configuration belongs.
          */
         private ContestType contestType;
-        
+
         /**
-         * Property being configured
+         * Property being configured.
          */
         private ContestProperty property;
 
@@ -168,8 +166,8 @@ public class ContestTypeConfig implements Serializable {
         /**
          * Updates the contestType with the specified value.
          *
-         * @param contest
-         *            the contest to set.
+         * @param contestType
+         *            the contest type to set.
          */
         public void setContestType(ContestType contestType) {
             this.contestType = contestType;
@@ -193,38 +191,61 @@ public class ContestTypeConfig implements Serializable {
         public void setProperty(ContestProperty property) {
             this.property = property;
         }
-        
+
         /**
-         * Override the equals method to be consistent with this class definition
-         * 
-         * @param obj object to compare to this
+         * Override the equals method to be consistent with this class definition.
+         *
+         * @param obj
+         *            object to compare to this
          * @return true if obj is equal to this object
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
+            if (obj instanceof Identifier) {
+                Long contestType1 = null;
+                if (getContestType() != null) {
+                    contestType1 = getContestType().getContestType();
+                }
+                long propertyId1 = -1;
+                if (getProperty() != null) {
+                    propertyId1 = getProperty().getPropertyId();
+                }
+
+                Identifier id = (Identifier) obj;
+                Long contestType2 = null;
+                if (id.getContestType() != null) {
+                    contestType2 = id.getContestType().getContestType();
+                }
+                long propertyId2 = -1;
+                if (id.getProperty() != null) {
+                    propertyId2 = id.getProperty().getPropertyId();
+                }
+
+                return (contestType1 == null ? contestType2 == null : contestType1.equals(contestType2))
+                        && (propertyId1 == propertyId2);
             }
-            
-            if ((obj == null) || (obj.getClass() != this.getClass())) {
-                return false;
-            }
-            
-            Identifier id = (Identifier) obj;
-            
-            return id.getContestType().getContestType().equals(contestType.getContestType()) &&
-                id.getProperty().getPropertyId() == property.getPropertyId();
+
+            return false;
         }
-        
+
         /**
          * Override the hashCode method to provide a hash code based on the identifier.
-         * 
+         *
          * @return a hashcode for this identifier
          */
         @Override
         public int hashCode() {
-            return (contestType.getContestType() + "-" + property.getPropertyId()).hashCode();
+            Long contestType1 = null;
+            if (getContestType() != null) {
+                contestType1 = getContestType().getContestType();
+            }
+            long propertyId1 = -1;
+            if (getProperty() != null) {
+                propertyId1 = getProperty().getPropertyId();
+            }
+
+            return (contestType1 + "-" + propertyId1).hashCode();
         }
-        
+
     }
 }

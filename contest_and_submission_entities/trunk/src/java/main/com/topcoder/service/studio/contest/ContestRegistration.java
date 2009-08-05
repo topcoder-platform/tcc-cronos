@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -11,11 +11,11 @@ import java.util.Date;
  * <p>
  * Represents the entity class for db table <i>contest_registration</i>.
  * </p>
- * 
+ *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
- * 
+ *
  * @author tushak, cyberjag
  * @version 1.0
  */
@@ -54,7 +54,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Returns the contest.
-     * 
+     *
      * @return the contest.
      */
     public Contest getContest() {
@@ -63,7 +63,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Updates the contest with the specified value.
-     * 
+     *
      * @param contest
      *            the contest to set.
      */
@@ -73,7 +73,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Returns the userId.
-     * 
+     *
      * @return the userId.
      */
     public Long getUserId() {
@@ -82,7 +82,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Updates the userId with the specified value.
-     * 
+     *
      * @param userId
      *            the userId to set.
      */
@@ -92,7 +92,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Returns the termsOfUseId.
-     * 
+     *
      * @return the termsOfUseId.
      */
     public Long getTermsOfUseId() {
@@ -101,7 +101,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Updates the termsOfUseId with the specified value.
-     * 
+     *
      * @param termsOfUseId
      *            the termsOfUseId to set.
      */
@@ -111,7 +111,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Returns the createDate.
-     * 
+     *
      * @return the createDate.
      */
     public Date getCreateDate() {
@@ -120,7 +120,7 @@ public class ContestRegistration implements Serializable {
 
     /**
      * Updates the createDate with the specified value.
-     * 
+     *
      * @param createDate
      *            the createDate to set.
      */
@@ -131,7 +131,7 @@ public class ContestRegistration implements Serializable {
     /**
      * Compares this object with the passed object for equality. Only the
      * composite id will be compared.
-     * 
+     *
      * @param obj
      *            the {@code Object} to compare to this one
      * @return true if this object is equal to the other, {@code false} if not
@@ -148,7 +148,7 @@ public class ContestRegistration implements Serializable {
     /**
      * Overrides {@code Object.hashCode()} to provide a hash code consistent
      * with this class's {@link #equals(Object)} method.
-     * 
+     *
      * @return a hash code for this {@code ContestRegistration}
      */
     @Override
@@ -156,8 +156,12 @@ public class ContestRegistration implements Serializable {
         return Helper.calculateHash(contest != null ? contest.getContestId() : null, userId);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+
+    /**
+     * <p>
+     * Returns the string representation.
+     * </p>
+     * @return the string representation
      */
     @Override
     public String toString() {

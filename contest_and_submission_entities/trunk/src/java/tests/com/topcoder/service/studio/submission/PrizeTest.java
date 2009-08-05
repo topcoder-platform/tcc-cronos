@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -19,8 +19,8 @@ import com.topcoder.service.studio.contest.HibernateUtil;
  * Tests the functionality of {@link Prize} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class PrizeTest extends TestCase {
 
@@ -157,7 +157,7 @@ public class PrizeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Prize#getContests()} and {@link Prize#setContests(Set<Contest>)} method.
+     * Accuracy test for {@link Prize#getContests()} and {@link Prize#setContests(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -171,7 +171,7 @@ public class PrizeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Prize#setContests(Set<Contest>)} and {@link Prize#getContests()} method.
+     * Accuracy test for {@link Prize#setContests(Set)} and {@link Prize#getContests()} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is Valid.
@@ -187,7 +187,7 @@ public class PrizeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Prize#getSubmissions()} and {@link Prize#setSubmissions(Set<Submission>)} method.
+     * Accuracy test for {@link Prize#getSubmissions()} and {@link Prize#setSubmissions(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -201,7 +201,7 @@ public class PrizeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Prize#setSubmissions(Set<Submission>)} and {@link Prize#getSubmissions()} method.
+     * Accuracy test for {@link Prize#setSubmissions(Set)} and {@link Prize#getSubmissions()} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is Valid.
@@ -323,6 +323,7 @@ public class PrizeTest extends TestCase {
             HibernateUtil.getManager().getTransaction().begin();
             PrizeType type = new PrizeType();
             type.setDescription("description");
+            type.setPrizeTypeId(1L);
             HibernateUtil.getManager().persist(type);
 
             Prize entity = new Prize();

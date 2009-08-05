@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -15,6 +15,9 @@ import junit.framework.TestSuite;
 
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
+import com.topcoder.service.studio.contest.ContestGeneralInfo;
+import com.topcoder.service.studio.contest.ContestMultiRoundInformation;
+import com.topcoder.service.studio.contest.ContestSpecifications;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.FilePath;
@@ -28,8 +31,8 @@ import com.topcoder.service.studio.contest.TestHelper;
  * Tests the functionality of {@link ContestResult} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestResultTest extends TestCase {
 
@@ -344,9 +347,9 @@ public class ContestResultTest extends TestCase {
             TestHelper.populateStudioFileType(fileType);
             HibernateUtil.getManager().persist(fileType);
 
-            ContestChannel contestCategory = new ContestChannel();
-            TestHelper.populateContestCategory(contestCategory, fileType);
-            HibernateUtil.getManager().persist(contestCategory);
+            ContestChannel channel = new ContestChannel();
+            TestHelper.populateContestChannel(channel);
+            HibernateUtil.getManager().persist(channel);
 
             ContestType contestType = new ContestType();
             TestHelper.populateContestType(contestType);
@@ -354,30 +357,67 @@ public class ContestResultTest extends TestCase {
 
             ContestStatus status = new ContestStatus();
             status.setDescription("description");
-            status.setName("name");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             HibernateUtil.getManager().persist(status);
+
+            ContestGeneralInfo generalInfo = new ContestGeneralInfo();
+            generalInfo.setBrandingGuidelines("guideline");
+            generalInfo.setDislikedDesignsWebsites("disklike");
+            generalInfo.setGoals("goal");
+            generalInfo.setOtherInstructions("instruction");
+            generalInfo.setTargetAudience("target audience");
+            generalInfo.setWinningCriteria("winning criteria");
+
+            ContestMultiRoundInformation multiRoundInformation = new ContestMultiRoundInformation();
+            multiRoundInformation.setMilestoneDate(new Date());
+            multiRoundInformation.setRoundOneIntroduction("round one");
+            multiRoundInformation.setRoundTwoIntroduction("round two");
+
+            ContestSpecifications specifications = new ContestSpecifications();
+            specifications.setAdditionalRequirementsAndRestrictions("none");
+            specifications.setColors("white");
+            specifications.setFonts("Arial");
+            specifications.setLayoutAndSize("10px");
+
+            PrizeType prizeType = new PrizeType();
+            prizeType.setDescription("Good");
+            prizeType.setPrizeTypeId(1L);
+            HibernateUtil.getManager().persist(prizeType);
+
+            MilestonePrize milestonePrize = new MilestonePrize();
+            milestonePrize.setAmount(10.0);
+            milestonePrize.setCreateDate(new Date());
+            milestonePrize.setNumberOfSubmissions(1);
+            milestonePrize.setType(prizeType);
 
             Contest contest = new Contest();
 
-            TestHelper.populateContest(contest, date, contestCategory, contestType, status);
+            TestHelper.populateContest(contest, date, channel, contestType, status, generalInfo, multiRoundInformation,
+                    specifications, milestonePrize);
             HibernateUtil.getManager().persist(contest);
 
             FilePath filePath = new FilePath();
             filePath.setModifyDate(new Date());
             filePath.setPath("path");
+
             HibernateUtil.getManager().persist(filePath);
 
             MimeType mimeType = new MimeType();
             mimeType.setDescription("description");
             mimeType.setStudioFileType(fileType);
+            mimeType.setMimeTypeId(1L);
             HibernateUtil.getManager().persist(mimeType);
 
             SubmissionType submissionType = new SubmissionType();
             submissionType.setDescription("description");
+            submissionType.setSubmissionTypeId(1L);
             HibernateUtil.getManager().persist(submissionType);
 
             SubmissionStatus submissionStatus = new SubmissionStatus();
             submissionStatus.setDescription("description");
+            submissionStatus.setSubmissionStatusId(1L);
             HibernateUtil.getManager().persist(submissionStatus);
 
             Submission submission = new Submission();
@@ -393,7 +433,6 @@ public class ContestResultTest extends TestCase {
             entity.setCreateDate(date);
 
             HibernateUtil.getManager().persist(entity);
-
             // load the persisted object
             Query query = HibernateUtil.getManager().createQuery("from ContestResult as c");
 
@@ -422,13 +461,14 @@ public class ContestResultTest extends TestCase {
             HibernateUtil.getManager().remove(mimeType);
             HibernateUtil.getManager().remove(filePath);
             HibernateUtil.getManager().remove(contest);
+            HibernateUtil.getManager().remove(prizeType);
             HibernateUtil.getManager().remove(status);
             HibernateUtil.getManager().remove(contestType);
-            HibernateUtil.getManager().remove(contestCategory);
+            HibernateUtil.getManager().remove(channel);
             HibernateUtil.getManager().remove(fileType);
-
         } finally {
             HibernateUtil.getManager().getTransaction().commit();
         }
+
     }
 }

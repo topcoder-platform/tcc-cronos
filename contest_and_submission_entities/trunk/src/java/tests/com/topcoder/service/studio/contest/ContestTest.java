@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -7,20 +7,24 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Query;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.topcoder.service.studio.submission.ContestResult;
+import com.topcoder.service.studio.submission.MilestonePrize;
+import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
 
 /**
  * <p>
  * Tests the functionality of {@link Contest} class.
  * </p>
- * 
- * @author cyberjag
- * @version 1.0
+ *
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestTest extends TestCase {
 
@@ -51,7 +55,7 @@ public class ContestTest extends TestCase {
      * <p>
      * Returns all tests.
      * </p>
-     * 
+     *
      * @return Test suite of all tests of this class.
      */
     public static Test suite() {
@@ -338,7 +342,7 @@ public class ContestTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link Contest#getSubmissions()} and {@link
-     * Contest#setSubmissions(Set<Submission>)} method.
+     * Contest#setSubmissions(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is
@@ -353,7 +357,7 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setSubmissions(Set<Submission>)} and
+     * Accuracy test for {@link Contest#setSubmissions(Set)} and
      * {@link Contest#getSubmissions()} method.
      * </p>
      * <p>
@@ -372,7 +376,7 @@ public class ContestTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link Contest#getFileTypes()} and {@link
-     * Contest#setFileTypes(Set<StudioFileType>)} method.
+     * Contest#setFileTypes(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is
@@ -387,7 +391,7 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setFileTypes(Set<StudioFileType>)} and
+     * Accuracy test for {@link Contest#setFileTypes(Set)} and
      * {@link Contest#getFileTypes()} method.
      * </p>
      * <p>
@@ -406,7 +410,7 @@ public class ContestTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link Contest#getResults()} and {@link
-     * Contest#setResults(Set<ContestResult>)} method.
+     * Contest#setResults(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is
@@ -421,7 +425,7 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setResults(Set<ContestResult>)} and
+     * Accuracy test for {@link Contest#setResults(Set)} and
      * {@link Contest#getResults()} method.
      * </p>
      * <p>
@@ -440,7 +444,7 @@ public class ContestTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link Contest#getDocuments()} and {@link
-     * Contest#setDocuments(Set<Document>)} method.
+     * Contest#setDocuments(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is
@@ -455,7 +459,7 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setDocuments(Set<Document>)} and
+     * Accuracy test for {@link Contest#setDocuments(Set)} and
      * {@link Contest#getDocuments()} method.
      * </p>
      * <p>
@@ -474,7 +478,7 @@ public class ContestTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link Contest#getConfig()} and {@link
-     * Contest#setConfig(Set<Config>)} method.
+     * Contest#setConfig(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is
@@ -489,7 +493,7 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setConfig(Set<Config>)} and
+     * Accuracy test for {@link Contest#setConfig(Set)} and
      * {@link Contest#getConfig()} method.
      * </p>
      * <p>
@@ -716,97 +720,165 @@ public class ContestTest extends TestCase {
      * Persistence tests for the entity <code>{@link Contest}</code>.
      * </p>
      */
-    public void test_persistence_find() {
+    public void test_persistence() {
         try {
             HibernateUtil.getManager().getTransaction().begin();
-            Contest persisted = HibernateUtil.getManager().find(Contest.class, 2011L);
-            System.out.println(persisted.getContestRegistrations().toArray()[0]);
+
+            StudioFileType fileType = new StudioFileType();
+            TestHelper.populateStudioFileType(fileType);
+            HibernateUtil.getManager().persist(fileType);
+
+            ContestChannel channel = new ContestChannel();
+            TestHelper.populateContestChannel(channel);
+            HibernateUtil.getManager().persist(channel);
+
+            ContestType contestType = new ContestType();
+            TestHelper.populateContestType(contestType);
+            contestType.setContestType(1L);
+            HibernateUtil.getManager().persist(contestType);
+
+            ContestStatus status = new ContestStatus();
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
+            HibernateUtil.getManager().persist(status);
+
+            Date date = new Date();
+            ContestGeneralInfo generalInfo = new ContestGeneralInfo();
+            generalInfo.setBrandingGuidelines("guideline");
+            generalInfo.setDislikedDesignsWebsites("disklike");
+            generalInfo.setGoals("goal");
+            generalInfo.setOtherInstructions("instruction");
+            generalInfo.setTargetAudience("target audience");
+            generalInfo.setWinningCriteria("winning criteria");
+
+            ContestMultiRoundInformation multiRoundInformation = new ContestMultiRoundInformation();
+            multiRoundInformation.setMilestoneDate(new Date());
+            multiRoundInformation.setRoundOneIntroduction("round one");
+            multiRoundInformation.setRoundTwoIntroduction("round two");
+
+            ContestSpecifications specifications = new ContestSpecifications();
+            specifications.setAdditionalRequirementsAndRestrictions("none");
+            specifications.setColors("white");
+            specifications.setFonts("Arial");
+            specifications.setLayoutAndSize("10px");
+
+            PrizeType prizeType = new PrizeType();
+            prizeType.setDescription("Good");
+            prizeType.setPrizeTypeId(1L);
+            HibernateUtil.getManager().persist(prizeType);
+
+            MilestonePrize milestonePrize = new MilestonePrize();
+            milestonePrize.setAmount(10.0);
+            milestonePrize.setCreateDate(new Date());
+            milestonePrize.setNumberOfSubmissions(1);
+            milestonePrize.setType(prizeType);
+
+            Contest entity = new Contest();
+
+            TestHelper.populateContest(entity, date, channel, contestType, status, generalInfo, multiRoundInformation,
+                    specifications, milestonePrize);
+
+            Set<Medium> media = new HashSet<Medium>();
+            Medium medium1 = new Medium();
+            medium1.setMediumId(1L);
+            medium1.setDescription("Web");
+            HibernateUtil.getManager().persist(medium1);
+            media.add(medium1);
+            Medium medium2 = new Medium();
+            medium2.setMediumId(2L);
+            medium2.setDescription("Application");
+            HibernateUtil.getManager().persist(medium2);
+            media.add(medium2);
+            entity.setMedia(media);
+            // save the entity
+            HibernateUtil.getManager().persist(entity);
+
+            // load the persisted object
+            Contest persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
+            assertEquals("Failed to persist - contestCategory mismatch", entity.getContestChannel(), persisted
+                    .getContestChannel());
+            assertEquals("Failed to persist - name contestType", entity.getContestType(), persisted.getContestType());
+            assertEquals("Failed to persist - createdUser mismatch", entity.getCreatedUser(), persisted
+                    .getCreatedUser());
+            assertEquals("Failed to persist - endDate mismatch", entity.getEndDate(), persisted.getEndDate());
+            assertEquals("Failed to persist - eventId mismatch", entity.getEventId(), persisted.getEventId());
+            assertEquals("Failed to persist - forumId mismatch", entity.getForumId(), persisted.getForumId());
+            assertEquals("Failed to persist - projectId mismatch", entity.getProjectId(), persisted.getProjectId());
+            assertEquals("Failed to persist - name mismatch", entity.getName(), persisted.getName());
+            assertEquals("Failed to persist - startDate mismatch", entity.getStartDate(), persisted.getStartDate());
+            assertEquals("Failed to persist - status mismatch", entity.getStatus(), persisted.getStatus());
+            assertEquals("Failed to persist - tcDirectProjectId mismatch", entity.getTcDirectProjectId(), persisted
+                    .getTcDirectProjectId());
+            assertEquals("Failed to persist - winnerAnnoucementDeadline mismatch", entity
+                    .getWinnerAnnoucementDeadline(), persisted.getWinnerAnnoucementDeadline());
+            assertNotNull("Failed to persist - milestone prize mismatch", persisted.getMilestonePrize());
+            assertEquals("Failed to persist - milestone prize mismatch", entity.getMilestonePrize()
+                    .getNumberOfSubmissions(), persisted.getMilestonePrize().getNumberOfSubmissions());
+            assertNotNull("Failed to persist - contest genreral info mismatch", persisted.getGeneralInfo());
+            assertEquals("Failed to persist - goals mismatch", entity.getGeneralInfo().getGoals(), persisted
+                    .getGeneralInfo().getGoals());
+            assertEquals("Failed to persist - audience mismatch", entity.getGeneralInfo().getTargetAudience(),
+                    persisted.getGeneralInfo().getTargetAudience());
+            assertEquals("Failed to persist - guideline mismatch", entity.getGeneralInfo().getBrandingGuidelines(),
+                    persisted.getGeneralInfo().getBrandingGuidelines());
+            assertEquals("Failed to persist - websites mismatch", entity.getGeneralInfo().getDislikedDesignsWebsites(),
+                    persisted.getGeneralInfo().getDislikedDesignsWebsites());
+            assertEquals("Failed to persist - other instruction mismatch", entity.getGeneralInfo()
+                    .getOtherInstructions(), persisted.getGeneralInfo().getOtherInstructions());
+            assertEquals("Failed to persist - criteria mismatch", entity.getGeneralInfo().getWinningCriteria(),
+                    persisted.getGeneralInfo().getWinningCriteria());
+            assertNotNull("Failed to persist - specifications mismatch", persisted.getSpecifications());
+            assertEquals("Failed to persist - colors mismatch", entity.getSpecifications().getColors(), persisted
+                    .getSpecifications().getColors());
+            assertEquals("Failed to persist - fonts mismatch", entity.getSpecifications().getFonts(), persisted
+                    .getSpecifications().getFonts());
+            assertEquals("Failed to persist - layout and size mismatch", entity.getSpecifications().getLayoutAndSize(),
+                    persisted.getSpecifications().getLayoutAndSize());
+            assertEquals("Failed to persist - restriction mismatch", entity.getSpecifications()
+                    .getAdditionalRequirementsAndRestrictions(), persisted.getSpecifications()
+                    .getAdditionalRequirementsAndRestrictions());
+            assertNotNull("Failed to persist - multi-round information mismatch", persisted.getMultiRoundInformation());
+            assertEquals("Failed to persist - multi-round information mismatch", entity.getMultiRoundInformation()
+                    .getRoundOneIntroduction(), persisted.getMultiRoundInformation().getRoundOneIntroduction());
+            assertEquals("Failed to persist - fonts mismatch", entity.getMultiRoundInformation()
+                    .getRoundTwoIntroduction(), persisted.getMultiRoundInformation().getRoundTwoIntroduction());
+            assertEquals("Failed to persist - media mismatch", 2, persisted.getMedia().size());
+
+
+            // update the entity
+            entity.setName("new name");
+            entity.getGeneralInfo().setGoals("new goal");
+            HibernateUtil.getManager().merge(entity);
+
+            persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
+            assertEquals("Failed to update - name mismatch", entity.getName(), persisted.getName());
+            assertEquals("Failed to update - goal mismatch", entity.getGeneralInfo().getGoals(), persisted
+                    .getGeneralInfo().getGoals());
+
+            // delete the entity
+            HibernateUtil.getManager().remove(entity);
+
+            // verify cascade delete
+            Query query = HibernateUtil.getManager().createQuery("FROM ContestGeneralInfo");
+            assertEquals("general info is deleted cascadingly.", 0, query.getResultList().size());
+            query = HibernateUtil.getManager().createQuery("FROM MilestonePrize");
+            assertEquals("milestone prize is deleted cascadingly.", 0, query.getResultList().size());
+            query = HibernateUtil.getManager().createQuery("FROM ContestSpecifications");
+            assertEquals("contest specifications is deleted cascadingly.", 0, query.getResultList().size());
+            query = HibernateUtil.getManager().createQuery("FROM ContestMultiRoundInformation");
+            assertEquals("contest multi-round information is deleted cascadingly.", 0, query.getResultList().size());
+            HibernateUtil.getManager().remove(channel);
+            HibernateUtil.getManager().remove(fileType);
+            HibernateUtil.getManager().remove(contestType);
+            HibernateUtil.getManager().remove(status);
+            HibernateUtil.getManager().remove(prizeType);
+            HibernateUtil.getManager().remove(medium1);
+            HibernateUtil.getManager().remove(medium2);
+
         } finally {
             HibernateUtil.getManager().getTransaction().commit();
         }
-    }
-
-    /**
-     * <p>
-     * Persistence tests for the entity <code>{@link Contest}</code>.
-     * </p>
-     */
-    public void test_persistence() {
-        // try {
-        HibernateUtil.getManager().getTransaction().begin();
-
-        StudioFileType fileType = new StudioFileType();
-        TestHelper.populateStudioFileType(fileType);
-        HibernateUtil.getManager().persist(fileType);
-
-        ContestChannel contestCategory = new ContestChannel();
-        TestHelper.populateContestCategory(contestCategory, fileType);
-        contestCategory.setContestChannelId(1L);
-        HibernateUtil.getManager().persist(contestCategory);
-
-        ContestType contestType = new ContestType();
-        TestHelper.populateContestType(contestType);
-        contestType.setContestType(1L);
-        HibernateUtil.getManager().persist(contestType);
-
-        ContestStatus status = new ContestStatus();
-        status.setDescription("description");
-        status.setName("name");
-        status.setContestStatusId(1L);
-        HibernateUtil.getManager().persist(status);
-
-        Date date = new Date();
-        Contest entity = new Contest();
-
-        TestHelper.populateContest(entity, date, contestCategory, contestType, status);
-        Set<Medium> media = new HashSet<Medium>();
-        Medium medium = new Medium();
-        medium.setMediumId(1L);
-        medium.setDescription("Web");
-        media.add(medium);
-        medium = new Medium();
-        medium.setMediumId(2L);
-        medium.setDescription("Application");
-        media.add(medium);
-        entity.setMedia(media);
-        // save the entity
-        HibernateUtil.getManager().persist(entity);
-
-        // load the persisted object
-        Contest persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
-        assertEquals("Failed to persist - contestCategory mismatch", entity.getContestChannel(), persisted
-                .getContestChannel());
-        assertEquals("Failed to persist - name contestType", entity.getContestType(), persisted.getContestType());
-        assertEquals("Failed to persist - createdUser mismatch", entity.getCreatedUser(), persisted.getCreatedUser());
-        assertEquals("Failed to persist - endDate mismatch", entity.getEndDate(), persisted.getEndDate());
-        assertEquals("Failed to persist - eventId mismatch", entity.getEventId(), persisted.getEventId());
-        assertEquals("Failed to persist - forumId mismatch", entity.getForumId(), persisted.getForumId());
-        assertEquals("Failed to persist - projectId mismatch", entity.getProjectId(), persisted.getProjectId());
-        assertEquals("Failed to persist - name mismatch", entity.getName(), persisted.getName());
-        assertEquals("Failed to persist - startDate mismatch", entity.getStartDate(), persisted.getStartDate());
-        assertEquals("Failed to persist - status mismatch", entity.getStatus(), persisted.getStatus());
-        assertEquals("Failed to persist - tcDirectProjectId mismatch", entity.getTcDirectProjectId(), persisted
-                .getTcDirectProjectId());
-        assertEquals("Failed to persist - winnerAnnoucementDeadline mismatch", entity.getWinnerAnnoucementDeadline(),
-                persisted.getWinnerAnnoucementDeadline());
-        assertEquals("Failed to persist - media mismatch", 2, persisted.getMedia().size());
-
-        // update the entity
-        entity.setName("new name");
-        HibernateUtil.getManager().merge(entity);
-
-        persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
-        assertEquals("Failed to update - name mismatch", entity.getName(), persisted.getName());
-
-        // delete the entity
-        HibernateUtil.getManager().remove(entity);
-        HibernateUtil.getManager().remove(contestCategory);
-        HibernateUtil.getManager().remove(fileType);
-        HibernateUtil.getManager().remove(contestType);
-        HibernateUtil.getManager().remove(status);
-
-        // } finally {
-        // HibernateUtil.getManager().getTransaction().commit();
-        // }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -12,8 +12,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link ContestChannel} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ContestChannelTest extends TestCase {
 
@@ -53,15 +53,15 @@ public class ContestChannelTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestChannel#ContestCategory()} constructor.
+     * Accuracy test for {@link ContestChannel#ContestChannel()} constructor.
      * </p>
      * <p>
      * Creates an instance and checks its instantiation.
      * </p>
      */
-    public void test_accuracy_ContestCategory() {
+    public void test_accuracy_ContestChannel() {
         // check for null
-        assertNotNull("ContestCategory creation failed", contestChannel);
+        assertNotNull("ContestChannel creation failed", contestChannel);
     }
 
     /**
@@ -73,10 +73,10 @@ public class ContestChannelTest extends TestCase {
      * Sets the value and expects the same while retrieving. Input value is new Long(1).
      * </p>
      */
-    public void test_accuracy_getContestCategoryId() {
+    public void test_accuracy_getContestChannelId() {
         // set the value to test
         contestChannel.setContestChannelId(new Long(1));
-        assertEquals("getContestCategoryId and setContestCategoryId failure occured", new Long(1), contestChannel
+        assertEquals("getContestChannelId and setContestChannelId failure occured", new Long(1), contestChannel
                 .getContestChannelId());
     }
 
@@ -89,10 +89,10 @@ public class ContestChannelTest extends TestCase {
      * Sets the value and expects the same while retrieving. Input value is Valid.
      * </p>
      */
-    public void test_accuracy_setContestCategoryId() {
+    public void test_accuracy_setContestChannelId() {
         // set the value to test
         contestChannel.setContestChannelId(1L);
-        assertEquals("getContestCategoryId and setContestCategoryId failure occured", 1L, (long) contestChannel
+        assertEquals("getContestChannelId and setContestChannelId failure occured", 1L, (long) contestChannel
                 .getContestChannelId());
     }
 
@@ -128,108 +128,15 @@ public class ContestChannelTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestChannel#getName()} and {@link ContestChannel#setName(String)} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
-     * </p>
-     */
-    public void test_accuracy_getName() {
-        // set the value to test
-        contestChannel.setName(null);
-        assertEquals("getName and setName failure occured", null, contestChannel.getName());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestChannel#setName(String)} and {@link ContestChannel#getName()} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is "test".
-     * </p>
-     */
-    public void test_accuracy_setName() {
-        // set the value to test
-        contestChannel.setName("test");
-        assertEquals("getName and setName failure occured", "test", contestChannel.getName());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestChannel#getParentChannelId()} and
-     * {@link ContestChannel#setParentChannelId(Long)} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
-     * </p>
-     */
-    public void test_accuracy_getParentCategoryId() {
-        // set the value to test
-        contestChannel.setParentChannelId(new Long(1));
-        assertEquals("getParentCategoryId and setParentCategoryId failure occured", new Long(1), contestChannel
-                .getParentChannelId());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestChannel#setParentChannelId(Long)} and
-     * {@link ContestChannel#getParentChannelId()} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
-     * </p>
-     */
-    public void test_accuracy_setParentCategoryId() {
-        // set the value to test
-        contestChannel.setParentChannelId(1L);
-        assertEquals("getParentCategoryId and setParentCategoryId failure occured", 1L, (long) contestChannel
-                .getParentChannelId());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestChannel#getFileType()} and
-     * {@link ContestChannel#setFileType(StudioFileType)} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
-     * </p>
-     */
-    public void test_accuracy_getFileType() {
-        // set the value to test
-        contestChannel.setFileType(null);
-        assertEquals("getFileType and setFileType failure occured", null, contestChannel.getFileType());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestChannel#setFileType(StudioFileType)} and
-     * {@link ContestChannel#getFileType()} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
-     * </p>
-     */
-    public void test_accuracy_setFileType() {
-        // set the value to test
-        StudioFileType type = new StudioFileType();
-        type.setStudioFileType(1L);
-        contestChannel.setFileType(type);
-        assertEquals("getFileType and setFileType failure occured", type.getStudioFileType(), contestChannel
-                .getFileType().getStudioFileType());
-    }
-
-    /**
-     * <p>
      * Accuracy test for {@link ContestChannel#equals(Object)}. Both objects are equal.
      * </p>
      */
     public void test_equals_1() {
-        ContestChannel category = new ContestChannel();
-        category.setContestChannelId(1L);
+        ContestChannel channel = new ContestChannel();
+        channel.setContestChannelId(1L);
         contestChannel.setContestChannelId(1L);
-        assertTrue("failed equals", category.equals(contestChannel));
-        assertTrue("failed hashCode", category.hashCode() == contestChannel.hashCode());
+        assertTrue("failed equals", channel.equals(contestChannel));
+        assertTrue("failed hashCode", channel.hashCode() == contestChannel.hashCode());
     }
 
     /**
@@ -238,11 +145,11 @@ public class ContestChannelTest extends TestCase {
      * </p>
      */
     public void test_equals_2() {
-        ContestChannel category = new ContestChannel();
-        category.setContestChannelId(2L);
+        ContestChannel channel = new ContestChannel();
+        channel.setContestChannelId(2L);
         contestChannel.setContestChannelId(1L);
-        assertFalse("failed equals", category.equals(contestChannel));
-        assertFalse("failed hashCode", category.hashCode() == contestChannel.hashCode());
+        assertFalse("failed equals", channel.equals(contestChannel));
+        assertFalse("failed hashCode", channel.hashCode() == contestChannel.hashCode());
     }
 
     /**
@@ -251,9 +158,9 @@ public class ContestChannelTest extends TestCase {
      * </p>
      */
     public void test_equals_3() {
-        Object category = new Object();
+        Object channel = new Object();
         contestChannel.setContestChannelId(1L);
-        assertFalse("failed equals", contestChannel.equals(category));
+        assertFalse("failed equals", contestChannel.equals(channel));
     }
 
     /**
@@ -265,12 +172,9 @@ public class ContestChannelTest extends TestCase {
 
         try {
             HibernateUtil.getManager().getTransaction().begin();
-            StudioFileType type = new StudioFileType();
-            TestHelper.populateStudioFileType(type);
-            HibernateUtil.getManager().persist(type);
 
             ContestChannel entity = new ContestChannel();
-            TestHelper.populateContestCategory(entity, type);
+            TestHelper.populateContestChannel(entity);
 
             // save the entity
             HibernateUtil.getManager().persist(entity);
@@ -281,10 +185,6 @@ public class ContestChannelTest extends TestCase {
 
             assertEquals("Failed to persist - description mismatch", entity.getDescription(), persisted
                     .getDescription());
-            assertEquals("Failed to persist - fileType mismatch", entity.getFileType(), persisted.getFileType());
-            assertEquals("Failed to persist - name mismatch", entity.getName(), persisted.getName());
-            assertEquals("Failed to persist - parent category id mismatch", entity.getParentChannelId(),
-                    persisted.getParentChannelId());
 
             // update the entity
             entity.setDescription("new description");
@@ -298,7 +198,6 @@ public class ContestChannelTest extends TestCase {
 
             // delete the entity
             HibernateUtil.getManager().remove(entity);
-            HibernateUtil.getManager().remove(type);
         } finally {
             HibernateUtil.getManager().getTransaction().commit();
         }

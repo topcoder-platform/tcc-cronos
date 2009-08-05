@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -12,8 +12,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link DocumentType} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class DocumentTypeTest extends TestCase {
 
@@ -174,6 +174,7 @@ public class DocumentTypeTest extends TestCase {
             HibernateUtil.getManager().getTransaction().begin();
             DocumentType entity = new DocumentType();
             entity.setDescription("description");
+            entity.setDocumentTypeId(1L);
 
             // save the entity
             HibernateUtil.getManager().persist(entity);

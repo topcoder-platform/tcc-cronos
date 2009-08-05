@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -14,8 +14,8 @@ import com.topcoder.service.studio.contest.HibernateUtil;
  * Tests the functionality of {@link ReviewStatus} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class ReviewStatusTest extends TestCase {
 
@@ -175,6 +175,7 @@ public class ReviewStatusTest extends TestCase {
         try {
             HibernateUtil.getManager().getTransaction().begin();
             ReviewStatus entity = new ReviewStatus();
+            entity.setReviewStatusId(1L);
             entity.setDescription("description");
 
             // save the entity

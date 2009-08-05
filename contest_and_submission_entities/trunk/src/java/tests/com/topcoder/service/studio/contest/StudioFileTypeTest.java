@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -15,8 +15,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link StudioFileType} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class StudioFileTypeTest extends TestCase {
 
@@ -102,7 +102,7 @@ public class StudioFileTypeTest extends TestCase {
     /**
      * <p>
      * Accuracy test for {@link StudioFileType#getMimeTypes()} and
-     * {@link StudioFileType#setMimeTypes(Set<MimeType>)} method.
+     * {@link StudioFileType#setMimeTypes(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -116,7 +116,7 @@ public class StudioFileTypeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link StudioFileType#setMimeTypes(Set<MimeType>)} and
+     * Accuracy test for {@link StudioFileType#setMimeTypes(Set)} and
      * {@link StudioFileType#getMimeTypes()} method.
      * </p>
      * <p>
@@ -169,10 +169,10 @@ public class StudioFileTypeTest extends TestCase {
      * Sets the value and expects the same while retrieving. Input value is null.
      * </p>
      */
-    public void test_accuracy_getImageFile() {
+    public void test_accuracy_isImageFile() {
         // set the value to test
         studioFileType.setImageFile(null);
-        assertEquals("getImageFile and setImageFile failure occured", null, studioFileType.isImageFile());
+        assertEquals("isImageFile and setImageFile failure occured", null, studioFileType.isImageFile());
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * Represents the entity class for payment type. Currently supported types are: Paypal and TC Purchase order.
- * 
+ *
  * @author Margarita
  * @version 1.0
  * @since BUGR-1076
@@ -32,7 +32,7 @@ public class PaymentType implements Serializable {
 
     /**
      * Returns the paymentType.
-     * 
+     *
      * @return the paymentType.
      */
     public Long getPaymentTypeId() {
@@ -41,7 +41,7 @@ public class PaymentType implements Serializable {
 
     /**
      * Updates the paymentType with the specified value.
-     * 
+     *
      * @param paymentType
      *            the paymentType to set.
      */
@@ -51,7 +51,7 @@ public class PaymentType implements Serializable {
 
     /**
      * Returns the description.
-     * 
+     *
      * @return the description.
      */
     public String getDescription() {
@@ -60,7 +60,7 @@ public class PaymentType implements Serializable {
 
     /**
      * Updates the description with the specified value.
-     * 
+     *
      * @param description
      *            the description to set.
      */
@@ -70,7 +70,7 @@ public class PaymentType implements Serializable {
 
     /**
      * Compares this object with the passed object for equality. Only the id will be compared.
-     * 
+     *
      * @param obj
      *            the {@code Object} to compare to this one
      * @return true if this object is equal to the other, {@code false} if not
@@ -86,7 +86,7 @@ public class PaymentType implements Serializable {
     /**
      * Overrides {@code Object.hashCode()} to provide a hash code consistent with this class's {@link #equals(Object)}
      * method.
-     * 
+     *
      * @return a hash code for this {@code PaymentType}
      */
     @Override

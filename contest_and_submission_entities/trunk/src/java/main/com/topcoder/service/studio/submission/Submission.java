@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -20,10 +20,15 @@ import com.topcoder.service.studio.contest.MimeType;
  * </p>
  *
  * <p>
+ * Changes for Complex Submission Viewer Assembly - Part 2 -
+ *      added artifactCount member variable to represent the number of artifacts in submission.
+ * </p>
+ *
+ * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
+ * @author tushak, cyberjag, TCSDEVELOPER
  * @version 1.0
  */
 public class Submission implements Serializable {
@@ -128,29 +133,38 @@ public class Submission implements Serializable {
     private Date submissionDate;
 
     /**
-     * Represents the submission's payment id. Or null if it doesn't 
+     * Represents the submission's payment id. Or null if it doesn't
      * have a payment or it's unknown.
      */
     private Long paymentId;
-    
+
     /**
-     * Represents the user feedback on submission. 
+     * Represents the user feedback on submission.
      * @since BUGR-1366
      */
     private String feedbackText;
-    
+
     /**
      * Represents the feedback thumb on submission.
      * Feedback thumb can be Thumb Up (== 1), Thumb Down (== -1) or No Thumb (== 0)
      * @since BUGR-1366
      */
     private Integer feedbackThumb;
-    
+
     /**
      * Represents the rank given by user on submission.
      * @since TCCC-1219
      */
     private Integer userRank;
+
+    /**
+     * Represents the number of artifacts (images) for this submission.
+     * For single image submission this value would always be 1.
+     * While for multi image submission it would be > 1.
+     *
+     * @since Cockpit Submission Viewer Assembly - Part 2
+     */
+    private Integer artifactCount;
 
     /**
      * Default constructor.
@@ -543,7 +557,7 @@ public class Submission implements Serializable {
      * <p>
      * Gets the feedback text on the submission.
      * </p>
-     *  
+     *
      * @return a <code>String</code> feedback text.
      * @since BUGR-1366
      */
@@ -555,7 +569,7 @@ public class Submission implements Serializable {
      * <p>
      * Sets the feedback text on the submission.
      * </p>
-     * 
+     *
      * @param feedbackText a <code>String</code> feedback text.
      * @since BUGR-1366
      */
@@ -567,8 +581,8 @@ public class Submission implements Serializable {
      * <p>
      * Gets the feedback thumb of the submission.
      * </p>
-     * 
-     * @return a <code>Integer</code> 
+     *
+     * @return a <code>Integer</code>
      * @since BUGR-1366
      */
     public Integer getFeedbackThumb() {
@@ -579,19 +593,19 @@ public class Submission implements Serializable {
      * <p>
      * Sets the feedback thumb of the submission.
      * </p>
-     * 
+     *
      * @param feedbackThumb a <code>Integer</code>
      * @since BUGR-1366
      */
     public void setFeedbackThumb(Integer feedbackThumb) {
         this.feedbackThumb = feedbackThumb;
     }
-    
+
     /**
      * <p>
      * Gets the user rank for this submission.
      * </p>
-     * 
+     *
      * @return the userRank
      * @since TCCC-1219
      */
@@ -603,7 +617,7 @@ public class Submission implements Serializable {
      * <p>
      * Sets the user rank for this submission.
      * </p>
-     * 
+     *
      * @param userRank the userRank to set
      * @since TCCC-1219
      */
@@ -635,5 +649,29 @@ public class Submission implements Serializable {
     @Override
     public int hashCode() {
         return Helper.calculateHash(submissionId);
+    }
+
+    /**
+     * <p>
+     * Gets the artifact count for this submission.
+     * </p>
+     *
+     * @return the artifactCount
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public Integer getArtifactCount() {
+        return this.artifactCount;
+    }
+
+    /**
+     * <p>
+     * Sets the artifact count for this submission.
+     * </p>
+     *
+     * @param artifactCount the artifactCount to set
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public void setArtifactCount(Integer artifactCount) {
+        this.artifactCount = artifactCount;
     }
 }

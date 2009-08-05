@@ -3,8 +3,15 @@ create sequence STUDIO_DOCUMENT_SEQ;
 create sequence STUDIO_CONTEST_SEQ;
 create sequence STUDIO_PRIZE_SEQ;
 create sequence STUDIO_SUBMISSION_SEQ;
-
+create sequence CONTEST_PAYMENT_SEQ;
 create sequence STUDIO_CONTEST_DETAILED_STATUS_SEQ;
+create sequence CONTEST_GENERAL_INFO_SEQ;
+create sequence CONTEST_MULTI_ROUND_INFORMATION_SEQ;
+create sequence CONTEST_RESOURCE_SEQ;
+create sequence CONTEST_SPECIFICATIONS_SEQ;
+create sequence CONTEST_MILESTONE_PRIZE_SEQ;
+create sequence PERMISSION_TYPE_SEQ;
+create sequence PERMISSION_SEQ;
 
 
 CREATE SEQUENCE sq_mime_type_lu;

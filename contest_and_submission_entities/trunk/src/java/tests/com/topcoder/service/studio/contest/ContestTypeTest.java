@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -192,7 +192,7 @@ public class ContestTypeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestType#getConfig()} and {@link ContestType#setConfig(List<Config>)} method.
+     * Accuracy test for {@link ContestType#getConfig()} and {@link ContestType#setConfig(List)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -206,7 +206,7 @@ public class ContestTypeTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link ContestType#setConfig(List<Config>)} and {@link ContestType#getConfig()} method.
+     * Accuracy test for {@link ContestType#setConfig(List)} and {@link ContestType#getConfig()} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is Valid.

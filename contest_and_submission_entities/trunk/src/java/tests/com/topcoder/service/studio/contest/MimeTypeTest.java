@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -203,6 +203,7 @@ public class MimeTypeTest extends TestCase {
             HibernateUtil.getManager().persist(type);
 
             MimeType entity = new MimeType();
+            entity.setMimeTypeId(1L);
             entity.setDescription("description");
             entity.setStudioFileType(type);
 

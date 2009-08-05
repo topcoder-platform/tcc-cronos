@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 
 package com.topcoder.service.studio.contest;
 
 import java.util.Date;
 
+import com.topcoder.service.studio.submission.MilestonePrize;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.SubmissionStatus;
 import com.topcoder.service.studio.submission.SubmissionType;
@@ -15,8 +16,8 @@ import com.topcoder.service.studio.submission.SubmissionType;
  * Test helper class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class TestHelper {
     /**
@@ -33,16 +34,26 @@ public class TestHelper {
      *            the contest entity
      * @param date
      *            date to set
-     * @param contestCategory
+     * @param contestChannel
      *            category to set
      * @param contestType
      *            contest type
      * @param status
      *            contest status
+     * @param generalInfo
+     *            general info
+     * @param multiRoundInformation
+     *            multi-round info
+     * @param specifications
+     *            contest specification
+     * @param milestonePrize
+     *            the milestone prize
      */
-    public static void populateContest(Contest entity, Date date, ContestChannel contestCategory,
-            ContestType contestType, ContestStatus status) {
-        entity.setContestChannel(contestCategory);
+    public static void populateContest(Contest entity, Date date, ContestChannel contestChannel,
+            ContestType contestType, ContestStatus status, ContestGeneralInfo generalInfo,
+            ContestMultiRoundInformation multiRoundInformation, ContestSpecifications specifications,
+            MilestonePrize milestonePrize) {
+        entity.setContestChannel(contestChannel);
         entity.setContestType(contestType);
         entity.setCreatedUser(10L);
         entity.setEndDate(date);
@@ -55,6 +66,10 @@ public class TestHelper {
         entity.setStatusId(1L);
         entity.setTcDirectProjectId(1101L);
         entity.setWinnerAnnoucementDeadline(date);
+        entity.setGeneralInfo(generalInfo);
+        entity.setSpecifications(specifications);
+        entity.setMultiRoundInformation(multiRoundInformation);
+        entity.setMilestonePrize(milestonePrize);
     }
 
     /**
@@ -75,11 +90,10 @@ public class TestHelper {
      *
      * @param entity
      *            the entity to be set
-     * @param fileType
-     *            the studio file type
      */
-    public static void populateContestCategory(ContestChannel entity, StudioFileType fileType) {
+    public static void populateContestChannel(ContestChannel entity) {
         entity.setDescription("description");
+        entity.setContestChannelId(1L);
     }
 
     /**
@@ -92,6 +106,7 @@ public class TestHelper {
         contestType.setDescription("description");
         contestType.setRequirePreviewFile(true);
         contestType.setRequirePreviewImage(true);
+        contestType.setContestType(1L);
     }
 
     /**

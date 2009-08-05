@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -37,7 +37,7 @@ public class ContestProperty implements Serializable {
      * Represents the name.
      */
     private String name;
-    
+
     /**
      * Default constructor.
      */
@@ -101,7 +101,7 @@ public class ContestProperty implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * Compares this object with the passed object for equality. Only the id will be compared.
      *

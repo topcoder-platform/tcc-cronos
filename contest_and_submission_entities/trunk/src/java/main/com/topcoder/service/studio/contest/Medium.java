@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +34,7 @@ public class Medium implements Serializable {
      * Represents the description.
      */
     private String description;
-    
+
     /**
      * Represents the contest which have this document.
      */
@@ -104,7 +103,7 @@ public class Medium implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * Compares this object with the passed object for equality. Only the id will be compared.
      *

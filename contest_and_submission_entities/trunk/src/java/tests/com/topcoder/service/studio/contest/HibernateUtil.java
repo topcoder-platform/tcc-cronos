@@ -1,26 +1,25 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.hibernate.ejb.Ejb3Configuration;
+import javax.persistence.Persistence;
 
 /**
  * <p>
  * Helper class to get the singleton hibernate <code>EntityManager</code>.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class HibernateUtil {
     /**
      * Represents the EntityManager. It is initialized in the static block.
      */
-    private static final EntityManager MANAGER;
+    private static final EntityManager MANAGER = Persistence.createEntityManagerFactory("contest_submission")
+            .createEntityManager();;
 
     /**
      * No instance allowed.
@@ -29,17 +28,10 @@ public class HibernateUtil {
         // empty
     }
 
-    static {
-        // Create the SessionFactory from hibernate.cfg.xml
-        Ejb3Configuration cfg = new Ejb3Configuration();
-        EntityManagerFactory emf = cfg.configure("hibernate.cfg.xml").buildEntityManagerFactory();
-        MANAGER = emf.createEntityManager();
-    }
-
     /**
      * Returns the singleton instance.
      *
-     * @return the session factory
+     * @return the entity manager
      */
     public static EntityManager getManager() {
         return MANAGER;

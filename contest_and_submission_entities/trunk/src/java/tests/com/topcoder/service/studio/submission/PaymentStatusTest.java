@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -14,8 +14,8 @@ import com.topcoder.service.studio.contest.HibernateUtil;
  * Tests the functionality of {@link PaymentStatus} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class PaymentStatusTest extends TestCase {
 
@@ -175,6 +175,7 @@ public class PaymentStatusTest extends TestCase {
             HibernateUtil.getManager().getTransaction().begin();
             PaymentStatus entity = new PaymentStatus();
             entity.setDescription("description");
+            entity.setPaymentStatusId(1L);
 
             // save the entity
             HibernateUtil.getManager().persist(entity);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -17,9 +17,9 @@ import java.io.Serializable;
  * <p>
  * Version 1.1: removed name, parentChannelId and fileType fields.
  * </p>
- * 
+ *
  * @author tushak, cyberjag
- * @version 1.0
+ * @version 1.1
  */
 public class ContestChannel implements Serializable {
     /**
@@ -101,7 +101,7 @@ public class ContestChannel implements Serializable {
      * Overrides {@code Object.hashCode()} to provide a hash code consistent with this class's
      * {@link #equals(Object)}} method.
      *
-     * @return a hash code for this {@code ContestCategory}
+     * @return a hash code for this {@code ContestChannel}
      */
     @Override
     public int hashCode() {

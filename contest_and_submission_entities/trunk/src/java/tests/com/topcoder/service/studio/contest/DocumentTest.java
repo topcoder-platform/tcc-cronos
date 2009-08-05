@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -16,8 +16,8 @@ import junit.framework.TestSuite;
  * Tests the functionality of {@link Document} class.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, TCSDEVELOPER
+ * @version 1.2
  */
 public class DocumentTest extends TestCase {
 
@@ -98,7 +98,7 @@ public class DocumentTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Document#getContests()} and {@link Document#setContests(Set<Contest>)} method.
+     * Accuracy test for {@link Document#getContests()} and {@link Document#setContests(Set)} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is null.
@@ -112,7 +112,7 @@ public class DocumentTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Document#setContests(Set<Contest>)} and {@link Document#getContests()} method.
+     * Accuracy test for {@link Document#setContests(Set)} and {@link Document#getContests()} method.
      * </p>
      * <p>
      * Sets the value and expects the same while retrieving. Input value is Valid.
@@ -362,22 +362,24 @@ public class DocumentTest extends TestCase {
             FilePath path = new FilePath();
             path.setModifyDate(new Date());
             path.setPath("path");
+            HibernateUtil.getManager().persist(path);
+
             StudioFileType studioFileType = new StudioFileType();
             studioFileType.setDescription("description");
             studioFileType.setExtension("extension");
             studioFileType.setImageFile(true);
             studioFileType.setSort(1);
+            HibernateUtil.getManager().persist(studioFileType);
 
             MimeType mimeType = new MimeType();
             mimeType.setDescription("description");
             mimeType.setStudioFileType(studioFileType);
+            mimeType.setMimeTypeId(1L);
+            HibernateUtil.getManager().persist(mimeType);
 
             DocumentType type = new DocumentType();
             type.setDescription("description");
-
-            HibernateUtil.getManager().persist(path);
-            HibernateUtil.getManager().persist(studioFileType);
-            HibernateUtil.getManager().persist(mimeType);
+            type.setDocumentTypeId(1L);
             HibernateUtil.getManager().persist(type);
 
             Document entity = new Document();

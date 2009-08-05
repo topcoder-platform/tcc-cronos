@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -50,7 +50,7 @@ public class Document implements Serializable {
      * Represents the description.
      */
     private String description;
-    
+
     /**
      * Represents the document path.
      */
@@ -172,7 +172,7 @@ public class Document implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * Returns the path.
      *

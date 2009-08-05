@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- * Represents the entity class for db table <i>contest_status_lu</i>.
+ * Represents the entity class for db table <i>contest_detailed_status_lu</i>.
  * </p>
  *
  * <p>
@@ -33,7 +33,7 @@ public class ContestStatus implements Serializable {
      * Represents the status id.
      */
     private Long statusId;
-    
+
     /**
      * Represents the status description.
      */
