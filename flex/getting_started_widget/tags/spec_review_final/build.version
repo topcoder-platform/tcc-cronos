@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Getting Started widget
+component.distfilename=getting_started_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.gettingstarted
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/gettingstarted
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

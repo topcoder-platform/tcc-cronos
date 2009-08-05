@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tc:QuickLinksWidgetCodeBehind width="100%" 
+	      verticalScrollPolicy="off" 
+	      xmlns:mx="http://www.adobe.com/2006/mxml"
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.quicklinks.*" >
+
+
+    <mx:Script>
+        <![CDATA[
+            import flash.events.TextEvent; 
+
+            public function linkHandler(url:String):void {
+                // Open the link in a new window.
+                navigateToURL(new URLRequest(url), '_blank')
+            }
+        ]]>
+    </mx:Script>
+    
+    <mx:LinkButton label="TopCoder Home" click="linkHandler('http://www.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="TopCoder Studio" click="linkHandler('http://studio.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="Online Review" click="linkHandler('http://software.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="TopCoder Forums" click="linkHandler('http://forums.topcoder.com/?module=Main');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="TopCoder Wiki" click="linkHandler('http://www.topcoder.com/wiki');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="TopCoder Bug Tracker" click="linkHandler('http://www.topcoder.com/bugs');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    <mx:LinkButton label="TopCoder Vault" click="linkHandler('http://www.topcoder.com/wiki/display/VAULT/Home');" width="100%" visible="true"  height="26"  textAlign="left"/>
+    
+</tc:QuickLinksWidgetCodeBehind>
+	
+
+
