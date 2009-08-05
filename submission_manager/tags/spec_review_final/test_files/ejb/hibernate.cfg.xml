@@ -1,0 +1,35 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.InformixDialect</property>
+    <property name="show_sql">true</property>
+
+    <!--  Entity Mappings -->
+    <mapping resource="META-INF/mappings/ContestStatus.hbm.xml" />
+    <mapping resource="META-INF/mappings/StudioFileType.hbm.xml" />
+    <mapping resource="META-INF/mappings/MimeType.hbm.xml" />
+    <mapping resource="META-INF/mappings/FilePath.hbm.xml" />
+    <mapping resource="META-INF/mappings/DocumentType.hbm.xml" />
+    <mapping resource="META-INF/mappings/PrizeType.hbm.xml" />
+    <mapping resource="META-INF/mappings/PaymentStatus.hbm.xml" />
+    <mapping resource="META-INF/mappings/SubmissionStatus.hbm.xml" />
+    <mapping resource="META-INF/mappings/SubmissionType.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestChannel.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestProperty.hbm.xml" />
+    <mapping resource="META-INF/mappings/ReviewStatus.hbm.xml" />
+    <mapping resource="META-INF/mappings/Contest.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestConfig.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestType.hbm.xml" />
+    <mapping resource="META-INF/mappings/Document.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestResult.hbm.xml" />
+    <mapping resource="META-INF/mappings/Submission.hbm.xml" />
+    <mapping resource="META-INF/mappings/Prize.hbm.xml" />
+    <mapping resource="META-INF/mappings/SubmissionReview.hbm.xml" />
+    <mapping resource="META-INF/mappings/SubmissionPayment.hbm.xml" />
+    <mapping resource="META-INF/mappings/ContestRegistration.hbm.xml" />
+  </session-factory>
+</hibernate-configuration>
