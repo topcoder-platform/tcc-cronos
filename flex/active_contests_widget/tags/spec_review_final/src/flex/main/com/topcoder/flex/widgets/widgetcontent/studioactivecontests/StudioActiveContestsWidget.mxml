@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:StudioActiveContestsWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
+  initialize="init()"
+  horizontalAlign="left" headerHeight="5" width="100%"
+  creationComplete="complete()" resizeEffect="{resize}">
+<!--	creationComplete="handleJsonStringResult()"> -->
+
+  <mx:Style source="DataGridStyle.css"/>
+  <mx:HTTPService id="jsonRequest" url="http://localhost/" resultFormat="text" result="handleJsonResult(event)" >
+  <!--mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/data/?" resultFormat="text" result="handleJsonResult(event)" -->
+      <mx:request>
+      <module>BasicData</module>
+      <c>dd_active_contests</c>
+      <dsid>33</dsid>
+      <drt>json</drt>
+    </mx:request>
+    </mx:HTTPService>
+
+
+  <mx:Script>
+      <![CDATA[
+          import mx.controls.dataGridClasses.DataGridItemRenderer;
+          import com.adobe.serialization.json.JSON;
+
+          import mx.collections.ArrayCollection;
+          import mx.controls.dataGridClasses.DataGridColumn;
+          import mx.formatters.CurrencyFormatter;
+          import mx.formatters.DateFormatter;
+          import mx.rpc.events.ResultEvent;
+          [Bindable]
+          private var contestList : Array = ["Studio","Conceptualization","Specification","Software Architecture","Component Design","Component Development","Software Assembly","Software Testing"];
+
+          // Skins
+          [Bindable]
+          [Embed(source="assets/headerseparator.png")]
+          private var headerSeparatorSkin:Class;
+
+          [Bindable]
+          [Embed(source="assets/sortarrow.png")]
+          private var sortArrowSkin:Class;
+
+      // Use this when testing locally
+      private var jsonString:String =
+        '{"feedname":"dd_active_contests",' +
+        '"data":[{"submission_count":"0","contest_name":"Flash Arcade Game $1500 Mini-Tournament - Round Two",' +
+        '"registrants":"7","end_time":"2008-11-26 10:00:00.0","forum_id":"514","contest_id":"2422",' +
+        '"start_time":"2008-11-19 10:00:00.0","prize_total":"1000.00"},{"submission_count":' +
+        '"0","contest_name":"Diana EHR 3.1 $650 ADS Wireframe Contest","registrants":"9","end_time":"2008-11-26 13:00:00.0",' +
+        '"forum_id":"515","contest_id":"2423","start_time":"2008-11-20 14:15:00.0","prize_total":"650.00"},' +
+        '{"submission_count":"0","contest_name":"Beer Pong Widget Storyboard and Design","registrants":"8",' +
+        '"end_time":"2008-11-28 09:59:00.0","forum_id":"525","contest_id":"1000322","start_time":"2008-11-21 15:58:00.0",' +
+        '"prize_total":"550.00"},' +
+        '{"submission_count":"0","contest_name":"AOL Auto Show Widget Storyboard and Design","registrants":"11",' +
+        '"end_time":"2008-11-27 09:44:00.0","forum_id":"524","contest_id":"1000326","start_time":"2008-11-21 15:39:00.0",' +
+        '"prize_total":"550.00"},{"submission_count":"0","contest_name":"TradeKing Direct Response Interactive Banner Ad Contest",' +
+        '"registrants":"15","end_time":"2008-11-26 14:00:00.0","forum_id":"520","contest_id":"2425",' +
+        '"start_time":"2008-11-21 14:15:00.0","prize_total":"500.00"},{"submission_count":"0","contest_name"' +
+        ':"Agricultural Energy Efficiency Homepage","registrants":"17","end_time":"2008-11-29 23:23:00.0","forum_id":"523",' +
+        '"contest_id":"1000327","start_time":"2008-11-21 14:23:00.0","prize_total":"200.00"},' +
+        '{"submission_count":"0","contest_name":"ChumBonus Site Storyboard","registrants":"14",' +
+        '"end_time":"2008-11-25 22:59:00.0","forum_id":"522","contest_id":"1000328","start_time":"2008-11-21 14:22:00.0",' +
+        '"prize_total":"800.00"},{"submission_count":"0","contest_name":"LendingTree Promotional Email Design",' +
+        '"registrants":"17","end_time":"2008-11-28 10:00:00.0","forum_id":"521","contest_id":"2426",' +
+        '"start_time":"2008-11-21 15:15:00.0","prize_total":"600.00"},' +
+        '{"submission_count":"0","contest_name":"TopCoder Competition Language Type Icons Round 3","registrants":"4",' +
+        '"end_time":"2008-11-26 11:00:00.0","forum_id":"526","contest_id":"2427","start_time":"2008-11-24 15:30:00.0",' +
+        '"prize_total":"100.00"}]}';
+
+          // Date formatter for the date/time columns
+          private var dateFormatter:DateFormatter = new DateFormatter();
+          // Currency formatter for the prize column
+          private var currencyFormatter:CurrencyFormatter = new CurrencyFormatter();
+
+          // Initialization: Simply sets the format string for the DateFormatter
+          private function init():void {
+              dateFormatter.formatString = "MM.DD.YYYY JJ:NN";
+          }
+
+          // Formatter for the prize column
+          private function formatPrice(item:Object, col:DataGridColumn):String {
+              return currencyFormatter.format(item.prize_total);
+          }
+
+          // Formatter for the start_time column
+          private function formatStartDate(item:Object, col:DataGridColumn):String {
+              return dateFormatter.format(item.start_time);
+          }
+
+          // Formatter for the end_time column
+          private function formatEndDate(item:Object, col:DataGridColumn):String {
+              return dateFormatter.format(item.end_time);
+          }
+
+          // Formatter for the prize column
+          private function formatPrice2(item:Object, col:DataGridColumn):String {
+              return currencyFormatter.format(item.price );
+          }
+
+          // Formatter for the reg_end_date column
+          private function formatRegDate(item:Object, col:DataGridColumn):String {
+              return dateFormatter.format(item.reg_end_date);
+          }
+
+          // Formatter for the initial_submission_date column
+          private function formatSubmissionDate(item:Object, col:DataGridColumn):String {
+              return dateFormatter.format(item.initial_submission_date);
+          }
+
+          // Handles the result from the HTTPService
+          protected function handleJsonResult(event:ResultEvent):void {
+
+              //Use this when testing locally. Comment out when testing on web server.
+              //var json:String = jsonString;
+              //Use this when running on web server. Comment out when testing locally.
+              var json:String = event.result as String;
+
+              var jsonData:Object = JSON.decode(json);
+
+              // Set the title for the Panel
+              //dataPanel.title = jsonData.feedname;
+
+              // Get the data for the DataGrid
+              var arrayData:Array = jsonData.data as Array;
+              this.activeContents = new ArrayCollection(arrayData);
+          }
+
+          // Handles the result if using jsonString
+          private function handleJsonStringResult():void {
+
+        //Use this when testing locally. Comment out when testing on web server.
+              var json:String = jsonString;
+
+              var jsonData:Object = JSON.decode(json);
+
+              // Set the title for the Panel
+              //dataPanel.title = jsonData.feedname;
+
+              // Get the data for the DataGrid
+              var arrayData:Array = jsonData.data as Array;
+              activeContents = new ArrayCollection(arrayData);
+          }
+
+          private function complete():void{
+            contestCombo.selectedIndex=0;
+          }
+
+          private function handleContest():void {
+            var req:Dictionary=new Dictionary();
+            activeContents=new ArrayCollection();
+            if(contestCombo.selectedItem=="Studio"){
+
+              jsonRequest.url="http://www.topcoder.com/tc?";
+              req.module="BasicData";
+              req.c="dd_active_contests";
+              req.dsid=33;
+              req.json="true";
+
+              jsonRequest.send(req);
+              if(dataGrid)dataGrid.columns=[s1,s2,s3,s4,s5,s6,s7];
+
+            }
+            else
+            {
+              req.module="BasicData";
+              req.c="active_contests_list";
+              req.dsid=28;
+              req.sc=1;
+              req.sd="asc";
+              //req.pt=1;
+              req.json="true";
+              jsonRequest.url="http://www.topcoder.com/data/?";
+              if(contestCombo.selectedIndex==0)
+              {
+                req.pt=1;
+              }
+              else if(contestCombo.selectedIndex==1)
+              {
+                req.pt=14;
+              }
+              else if(contestCombo.selectedIndex==2)
+              {
+                req.pt=14;
+              }
+              else if(contestCombo.selectedIndex==3)
+              {
+                req.pt=13;
+              }
+              else if(contestCombo.selectedIndex==4)
+              {
+                req.pt=7;
+              }
+              else if(contestCombo.selectedIndex==5)
+              {
+                req.pt=23;
+              }
+              else if(contestCombo.selectedIndex==6)
+              {
+                req.pt=22;
+              }
+              jsonRequest.send(req);
+              if(dataGrid)dataGrid.columns=[n1,n2,n3,n4,n5,n6,n7];
+            }
+
+          }
+
+          private function handleActivate(event:Event):void {
+              DataGridColumn(event.currentTarget).setStyle("fontWeight", "bold");
+          }
+
+      ]]>
+  </mx:Script>
+  <mx:Canvas width="100%" minWidth="755" height="50">
+  <mx:Label text="Contest Type :" left="40" top="11"
+                        styleName="normalText" paddingTop="0" paddingBottom="0" />
+    <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
+                        valueCommit="handleContest()" 
+                        labelField="name"  dataProvider="{contestList}" />
+    </mx:Canvas>
+
+  <tc:TCDataGrid id="dataGrid" width="100%" height="100%" dataProvider="{activeContents}"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60"
+        styleName="TCDataGrid" headerStyleName="DataGridHeader"
+        headerSeparatorSkin="{headerSeparatorSkin}" sortArrowSkin="{sortArrowSkin}"
+        headerHeight="29" rowHeight="26">
+
+   </tc:TCDataGrid>
+            <mx:DataGridColumn id="s1" dataField="contest_name"
+                itemRenderer="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.ContestLinkButton"
+                textAlign="left" headerText="Name" activate="handleActivate(event)" />
+            <mx:DataGridColumn id="s2" dataField="prize_total"
+                labelFunction="formatPrice" textAlign="right" headerText="Prize" />
+            <mx:DataGridColumn id="s3" dataField="registrants"
+                textAlign="right" headerText="Registrants" />
+            <mx:DataGridColumn id="s4" dataField="submission_count"
+                textAlign="right" headerText="Submission Count" />
+            <mx:DataGridColumn id="s5" dataField="forum_id" textAlign="right" headerText="Forum ID" />
+            <mx:DataGridColumn id="s6" dataField="start_time" labelFunction="formatStartDate"
+                headerText="Start Time" textAlign="center" />
+            <mx:DataGridColumn id="s7" dataField="end_time" labelFunction="formatEndDate"
+                headerText="End Time" textAlign="center" />
+                <!--
+        </mx:columns>
+    <mx:columns id="nonstudio">
+    -->
+
+            <mx:DataGridColumn id="n1" dataField="contest_name"
+                itemRenderer="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.ContestLinkButton"
+                textAlign="left" headerText="Name" />
+            <mx:DataGridColumn id="n2" dataField="price"
+                labelFunction="formatPrice2" textAlign="right" headerText="Prize" />
+            <mx:DataGridColumn id="n3" dataField="total_inquiries"
+                textAlign="right" headerText="Registrants" />
+            <mx:DataGridColumn id="n4" dataField="total_submissions"
+                textAlign="right" headerText="Submission Count" />
+            <mx:DataGridColumn id="n5" textAlign="right" headerText="Forum" />
+            <mx:DataGridColumn id="n6" dataField="reg_end_date" labelFunction="formatRegDate"
+                headerText="Registration End" textAlign="center" />
+            <mx:DataGridColumn id="n7" dataField="initial_submission_date" labelFunction="formatSubmissionDate"
+                headerText="Submission End" textAlign="center" />
+
+
+        <!--
+
+    <mx:DataGrid id="notStudiodataGrid" width="100%" height="100%" dataProvider="{activeContents}"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60">
+
+    </mx:DataGrid>
+    -->
+  <mx:Resize id="resize" /> 
+</tc:StudioActiveContestsWidgetCodeBehind>
