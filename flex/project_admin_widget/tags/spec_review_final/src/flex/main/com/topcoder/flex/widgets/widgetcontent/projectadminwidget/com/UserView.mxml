@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for user project tree view.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         creationComplete="init()"
+         xmlns:com="com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.*"
+         verticalGap="0">
+    <mx:Script>
+        <![CDATA[
+            import mx.core.Application;
+            import mx.managers.PopUpManager;
+            import mx.events.CloseEvent;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Contest;
+            import mx.controls.Alert;
+            import com.topcoder.flex.Helper;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.User;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Project;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.ProjectRenderer;
+            import mx.events.ListEvent;
+            
+            import mx.collections.ArrayCollection;
+            import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.SOAPHeader;
+            
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+
+            /**
+             * The current tree node for which config popup has been opened.
+             */
+            private var current:XML;
+
+            /**
+             * The underlying data for the current tree node for which config popup has been opened.
+             * Underlying data can either be a project or a contest.
+             */
+            private var treeNodeData:Object;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Handler for initializing the component.
+             */
+            private function init():void {
+                if (config) {
+                    config.parentWidget=this.parentWidget;
+                }
+                if (parentWidget.model.currentUser) {
+                    tree.dataProvider=parentWidget.model.currentUser.getTreeXML();
+                }
+            }
+
+            /**
+             * Sets the data provider for this view.
+             *
+             * @param value parameter not in use.
+             */
+            public function set dataProvider(value:Boolean):void {
+                if (initialized) {
+                    tree.dataProvider=parentWidget.model.currentUser.getTreeXML();
+                }
+            }
+
+            /**
+             * Popup the permission config box on click on given tree item.
+             *
+             * @param event event for the given list item.
+             */
+            public function popUpConfig(event:ListEvent):void {
+                if (!event || !event.itemRenderer || !event.itemRenderer.data) {
+                    return;
+                }
+
+                var renderer:ProjectRenderer=event.itemRenderer as ProjectRenderer;
+                var xml:XML=renderer.data as XML;
+                current=xml;
+
+                config.parentWidget=this.parentWidget;
+
+                var nodeType:String=xml.attribute("type")[0];
+                if (nodeType == "project") {
+                    var proj:Project=parentWidget.model.currentUser.getProject(xml.attribute("id")[0]);
+                    config.data=proj;
+                    treeNodeData=proj;
+                } else if (nodeType == "contest") {
+                    var contest:Contest=parentWidget.model.currentUser.getContest(xml.attribute("pid")[0], xml.attribute("id")[0]);
+                    config.data=contest;
+                    treeNodeData=contest;
+                }
+
+                config.visible=true;
+                var h:Number=renderer.y + renderer.height;
+                if (h + 78 > container.height) {
+                    config.y=renderer.y - 78;
+                    config.upMode=false;
+                } else {
+                    config.y=h;
+                    config.upMode=true;
+                }
+            }
+
+            /**
+             * Binding handler for model.refresh tree.
+             * This refreshes the permission values on the node.
+             *
+             * @param value true if full tree refresh is required otherwise false.
+             */
+            public function set refreshTree(value:Boolean):void {
+                if (initialized) {
+                    var output:String="";
+                    if (current && treeNodeData) {
+                        output=treeNodeData.name;
+                        if (treeNodeData.access.toLowerCase().indexOf("read") >= 0) {
+                            output+="[Read]";
+                        }
+                        if (treeNodeData.access.toLowerCase().indexOf("write") >= 0) {
+                            output+="[Read][Write]";
+                        }
+                        if (treeNodeData.access.toLowerCase().indexOf("full") >= 0) {
+                            output+="[Read][Write][Full]";
+                        }
+                        current.attribute("label")[0]=output;
+                    }
+                    if (parentWidget.model.refreshFullTree && treeNodeData is Project) {
+                        for (var j:int=0; j < treeNodeData.contests.length; j++) {
+                            var contest:Contest=treeNodeData.contests.getItemAt(j) as Contest;
+                            var cnode:XMLList=current.node.(@id == contest.id);
+                            output=contest.name;
+                            if (contest.access.toLowerCase().indexOf("read") >= 0) {
+                                output+="[Read]";
+                            }
+                            if (contest.access.toLowerCase().indexOf("write") >= 0) {
+                                output+="[Read][Write]";
+                            }
+                            if (contest.access.toLowerCase().indexOf("full") >= 0) {
+                                output+="[Read][Write][Full]";
+                            }
+                            cnode.attribute("label")[0]=output;
+                        }
+
+                        parentWidget.model.refreshFullTree=false;
+                    }
+                }
+            }
+            
+            public function handleCancelAction(e:CloseEvent):void {
+                if (e.detail == Alert.CANCEL) {
+                    return;
+                }
+                
+                config.visible=false;
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    project.access=project.persistedAccess;
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        contest.access=contest.persistedAccess;
+                    }
+                }
+                
+                parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
+            }
+            
+            /**
+             * Handles the save of permissions.
+             *
+             * Updated for Cockpit Project Admin Release Assembly v1.0
+             *    - now all changed permissions are saved in one go.
+             * 
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+             *    - Now the persistedAccess is set on success event of the webservice call.
+             * 
+             * @param e the close event for the control that fired this event.
+             */
+            public function handleSaveAction(e:CloseEvent):void {
+                if (e.detail == Alert.CANCEL) {
+                    return;
+                }
+                
+                config.visible=false;
+                
+                parentWidget.showLoadingProgress();
+                
+                var permissionsToUpdate:ArrayCollection=new ArrayCollection();
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access == project.persistedAccess) {
+                        // do nothing.
+                    } else {
+                        var o1:Object=getPermissionDTO(project.user.id, project.id, -1, project.access, "project", false);
+                        permissionsToUpdate.addItem(o1);
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        
+                        if (contest.access == contest.persistedAccess) {
+                            // do nothing.
+                        } else {
+                            var o2:Object=getPermissionDTO(contest.project.user.id, contest.id, -1, contest.access, "contest", contest.studio);
+                            permissionsToUpdate.addItem(o2);
+                        }
+                    }
+                }
+                
+                var header:SOAPHeader=parentWidget.getHeader(parentWidget.username, parentWidget.password);
+                parentWidget.contestServiceFacadeWS.clearHeaders();
+                parentWidget.contestServiceFacadeWS.addHeader(header);
+                var updatePermissions:AbstractOperation=parentWidget.contestServiceFacadeWS.getOperation("updatePermissions");
+                if (updatePermissions) {
+                    updatePermissions.send(permissionsToUpdate);
+                }
+            }
+            
+            
+            /**
+             * Handles cancel of permission for given user.
+             */
+            public function cancelAction():void {
+                showAlertMessage("Do you want to cancel permission changes ?", "Confirm Cancel", this, handleCancelAction);
+            }
+            
+            /**
+             * Handles save of permission for given user.
+             */
+            public function saveAction():void {
+                
+                showAlertMessage("Do you want to save permission changes ?", "Confirm Save", this, handleSaveAction);
+            
+            }
+            
+            /*public function addPermissions():void {
+                for (var i:int=0; i < parentWidget.model.currentUser.projects.length; i++) {
+                    var project:Project=parentWidget.model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access != project.persistedAccess && project.access != "") {
+                        
+                        project.addPermission(parentWidget);
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        
+                        if (contest.access != contest.persistedAccess && contest.access != "") {
+                            contest.addPermission(parentWidget);
+                        }
+                    }
+                }
+                parentWidget.model.selectedIndex=parentWidget.model.lastIndex;
+            }*/
+
+            /**
+             * Show alert message dialog according to given info
+             *
+             * @param message the message to show
+             * @param title the tile of the message box
+             * @param parentSprite the parent sprite in which alert box to be shown.
+             * @param closeHandler the handler to be called on close of message box.
+             * @param height the alert dialog height
+             * @param y  the alert dialog vertical position
+             *
+             * @throws ArgumentError if value is null or an empty string
+             */
+            private function showAlertMessage(message:String, title:String, parentSprite:Sprite, closeHandler:Function, height:int=150, y:int=0):void {
+                var a:Alert=Alert.show(message, title, Alert.OK | Alert.CANCEL, parentSprite, closeHandler);
+                a.height=height;
+                PopUpManager.centerPopUp(a);
+            /*
+               if (!Application.application || !Application.application.getWindowCenterX || !Application.application.getWindowCenterY) {
+               return;
+               }
+            
+               var alertX:Number=Application.application.getWindowCenterX();
+               var alertY:Number=Application.application.getWindowCenterY();
+               if (alertX - 53 > 2 * a.x)
+               alertX=2 * a.x;
+               else
+               alertX=alertX - 53;
+            
+               if (alertY - 168 > 2 * a.y)
+               alertY=2 * a.y;
+               else
+               alertY=alertY - 168;
+               a.move(alertX, alertY);
+             */
+            }
+            
+            /**
+             * Gets the permission dto object.
+             *
+             * @return permission dto object for persistance.
+             */
+            private function getPermissionDTO(userId:int, projectId:int, permissionId:int, access:String, accessType:String, studio:Boolean):Object {
+                var perm:Object=new Object();
+                
+                if (permissionId && permissionId > 0) {
+                    perm.permissionId=permissionId;
+                }
+                perm.userId=userId;
+                perm.resourceId=projectId;
+                perm.permissionType=new Object();
+                perm.permissionType.name="";
+                
+                perm.studio=studio;
+                if (accessType == "contest") {
+                    if (access == "Full") {
+                        perm.permissionType.name="contest_full";
+                        perm.permissionType.permissionTypeId=6;
+                    } else if (access == "Write") {
+                        perm.permissionType.name="contest_write";
+                        perm.permissionType.permissionTypeId=5;
+                    } else if (access == "Read") {
+                        perm.permissionType.name="contest_read";
+                        perm.permissionType.permissionTypeId=4;
+                    }
+                } else if (accessType == "project") {
+                    if (access == "Full") {
+                        perm.permissionType.name="project_full";
+                        perm.permissionType.permissionTypeId=3;
+                    } else if (access == "Write") {
+                        perm.permissionType.name="project_write";
+                        perm.permissionType.permissionTypeId=2;
+                    } else if (access == "Read") {
+                        perm.permissionType.name="project_read";
+                        perm.permissionType.permissionTypeId=1;
+                    }
+                }
+                
+                if (perm.permissionType.name == "") {
+                    perm.permissionType=null;
+                }
+                
+                return perm;
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Binding source="parentWidget.model.refresh"
+                destination="dataProvider"/>
+    <mx:Binding source="parentWidget.model.refreshTree"
+                destination="refreshTree"/>
+    <mx:HBox id="header"
+             width="100%"
+             horizontalAlign="left"
+             height="24"
+             paddingLeft="5"
+             borderStyle="solid"
+             borderColor="#bfbfbf"
+             borderSides="top left right"
+             backgroundColor="#4d4d4d">
+        <mx:Label id="title"
+                  text="{parentWidget.model.currentUser.name}"
+                  fontSize="13"
+                  fontWeight="bold"
+                  fontFamily="Arial"
+                  color="#ffffff"/>
+    </mx:HBox>
+    <mx:Canvas width="100%"
+               height="100%"
+               id="container">
+        <mx:Tree id="tree"
+                 height="100%"
+                 width="100%"
+                 itemClick="popUpConfig(event)"
+                 allowMultipleSelection="false"
+                 allowDragSelection="false"
+                 paddingLeft="10"
+                 labelField="@label"
+                 itemRenderer="com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.ProjectRenderer"
+                 fontSize="12"
+                 fontFamily="Arial"
+                 wordWrap="true"
+                 rollOverColor="#ffffff"
+                 selectionColor="#ffffff"
+                 disclosureClosedIcon="@Embed('../../assets/winMax.png')"
+                 disclosureOpenIcon="@Embed('../../assets/winMin.png')"/>
+
+        <com:ConfigPopUp visible="false"
+                         id="config"
+                         left="50"/>
+    </mx:Canvas>
+    <mx:HBox width="100%"
+             paddingTop="3"
+             paddingBottom="3"
+             paddingLeft="0"
+             paddingRight="0"
+             horizontalGap="3">
+        <mx:Button width="100%"
+                   click="saveAction()"
+                   label="Save"
+                   styleName="normalBtn"/>
+        <mx:Button width="100%"
+                   click="cancelAction()"
+                   label="Cancel"
+                   styleName="normalBtn"/>
+    </mx:HBox>
+</mx:VBox>
