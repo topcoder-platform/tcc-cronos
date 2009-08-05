@@ -1,0 +1,626 @@
+/* CSS file */
+
+.NewWidgetPanel {
+     
+   borderColor: #B7BABC;
+   borderThicknessLeft: 0;
+   borderThicknessTop: 0;
+   borderThicknessBottom: 0;
+   borderThicknessRight: 0;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+
+ComboBox
+{
+	upSkin: Embed(source="../assets/bg_ComboBox_Up.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	overSkin: Embed(source="../assets/bg_ComboBox_Over.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	downSkin: Embed(source="../assets/bg_ComboBox_Over.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	disabledSkin: Embed(source="../assets/bg_ComboBox_Up.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	color: #3E3E3E;
+	fontWeight: normal;
+	paddingLeft: 6;
+	paddingBottom: 1;
+}
+
+TextInput
+{
+	borderSkin: Embed(source="../assets/bg_TextInput.png",scaleGridTop="5",scaleGridLeft="6",scaleGridRight="146",scaleGridBottom="17");
+	paddingLeft: 6;
+	paddingRight: 6;
+	paddingTop: 2;
+	paddingBottom: 2;
+	color: #3E3E3E;
+	focusAlpha: 0;
+}
+
+.TCDataGrid {
+    border-sides: "top";
+    border-style: "solid";
+    border-color: #d6d6d6;
+    vertical-grid-lines: false;
+    horizontal-grid-lines: true;
+    horizontal-grid-line-color: #c8c8be;
+    font-family: "Arial";
+    font-size: 11px;
+    header-colors: #ececec, #cecece;
+    alternating-item-colors: #fcfcfc, #fbfbfb;
+    sorted-header-colors: #920000, #ef6769;
+    row-selection-colors: #fffbb9, #ffe681;
+}
+
+.DataGridHeader {
+    font-weight: bold;
+    text-align: center;
+    color: #333333
+}
+
+.SortedDataGridHeader {
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff
+}
+
+TextArea {
+   borderStyle: inset;
+   borderColor: #000000;
+}
+
+LinkButton
+{
+	color: #E2280F;
+	textRollOverColor: #434343;
+	rollOverColor: #FFFFFF;
+	selectionColor: #92C8EB;
+	themeColor: #FFFFFF;
+}
+
+.content {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #797979;
+}
+
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Black.otf");
+	font-family: "Myriad Pro";
+}
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+
+.normalText {
+	font-weight: bold;
+	font-size: 11;
+	font-family: Arial;
+	color: #000000;
+}
+
+.text {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+}	
+
+.rankLogo {
+    color: #ffffff;
+    font-weight:bold;
+    /*skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+    over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+    down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');*/
+    skin: Embed("../assets/26x26_norank.png");
+    over-skin: Embed("../assets/26x26_norank.png");
+    down-skin: Embed("../assets/26x26_norank.png");
+    padding-left:0;
+    padding-right:0;
+}
+
+.purchaseLogo {
+	background-image: Embed("../assets/purchase.png"); 
+}
+
+.middle {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+
+.thumbnailBgr {
+	background-color: #eeeeee;
+}
+
+.previewAreaBorder {
+	border-skin: Embed('../assets/image_preview_border.png',scaleGridTop="15",scaleGridLeft="15",scaleGridRight="670",scaleGridBottom="400");
+}
+
+.ZoomInButton {		
+	disabledSkin: Embed(source="../assets/zoom_in.png");
+	downSkin: Embed(source="../assets/zoom_in_hover.png");
+	overSkin: Embed(source="../assets/zoom_in_hover.png");
+	upSkin: Embed(source="../assets/zoom_in.png");		
+}	
+
+.ZoomOutButton {		
+	disabledSkin: Embed(source="../assets/zoom_out.png");
+	downSkin: Embed(source="../assets/zoom_out_hover.png");
+	overSkin: Embed(source="../assets/zoom_out_hover.png");
+	upSkin: Embed(source="../assets/zoom_out.png");			}
+
+.ImageInNewWindowButton {		
+	disabledSkin: Embed(source="../assets/zoom_new_window.png");
+	downSkin: Embed(source="../assets/zoom_new_window_hover.png");
+	overSkin: Embed(source="../assets/zoom_new_window_hover.png");
+	upSkin: Embed(source="../assets/zoom_new_window.png");
+}
+.sliderStyle {
+    track-skin: Embed('../assets/slider.png');
+    thumb-up-skin: Embed('../assets/slider_thumb.png');
+    thumb-over-skin: Embed('../assets/slider_thumb_hover.png');
+    thumb-down-skin: Embed('../assets/slider_thumb_hover.png');
+}
+.ButtonStyle {
+    letter-spacing: 1;
+    color: #FFFFFF;
+    text-roll-over-color: #FFFFFF;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 11;
+    padding-top: 5;
+    skin: Embed(source="../assets/green_button.png",scaleGridTop="7",scaleGridLeft="14",scaleGridRight="76",scaleGridBottom="20");
+    over-skin: Embed(source="../assets/green_button_hover.png",scaleGridTop="7",scaleGridLeft="14",scaleGridRight="76",scaleGridBottom="20");
+    down-skin: Embed(source="../assets/green_button_hover.png",scaleGridTop="7",scaleGridLeft="14",scaleGridRight="76",scaleGridBottom="20");
+}
+.BoxStyle {
+    corner-radius: 5;
+    border-style: solid;
+    border-thickness: 2;
+    drop-shadow-enabled: true;
+    shadow-direction: center;
+}
+.CheckBoxStyle {
+    font-weight: normal;
+    font-size: 11;
+    font-family: Arial;
+    color: #000000;
+    selected-down-icon: Embed("../assets/checkbox_checked.png");
+    selected-up-icon: Embed("../assets/checkbox_checked.png");
+    selected-over-icon: Embed("../assets/checkbox_checked.png");
+    icon: Embed("../assets/checkbox.png");
+}
+
+/* BUGR-1142 */
+.rankButton {
+    color: #000000;
+    font-weight: normal;
+    font-size: 11;
+    font-family: Arial;
+    padding-left: 5;
+    padding-right:0;
+    text-align: left;
+    
+    skin: Embed("../assets/btn_check_grey.png");
+    over-skin: Embed("../assets/btn_check_green_hover.png");
+    down-skin: Embed("../assets/btn_check_green.png");
+    selected-over-skin: Embed("../assets/btn_check_green_hover.png");
+    selected-up-skin: Embed("../assets/btn_check_green.png");
+    selected-down-skin: Embed("../assets/btn_check_green.png");
+}
+/* BUGR-1142 */
+.prev {
+    skin: Embed("../assets/btn_left_arrow.png");
+    over-skin: Embed("../assets/btn_left_arrow_hover.png");
+    down-skin: Embed("../assets/btn_left_arrow_hover.png");
+}
+
+.next {
+    skin: Embed("../assets/btn_right_arrow.png");
+    over-skin: Embed("../assets/btn_right_arrow_hover.png");
+    down-skin: Embed("../assets/btn_right_arrow_hover.png");
+}
+
+.up {
+    skin: Embed("../assets/btn_top_arrow.png");
+    over-skin: Embed("../assets/btn_top_arrow_hover.png");
+    down-skin: Embed("../assets/btn_top_arrow_hover.png");   
+}
+
+.down {
+    skin: Embed("../assets/btn_bottom_arrow.png");
+    over-skin: Embed("../assets/btn_bottom_arrow_hover.png");
+    down-skin: Embed("../assets/btn_bottom_arrow_hover.png");    
+}
+
+/*BUGR-1089 */
+.arrowRightBtnStyle{
+    icon: Embed(source="../assets/arrow_right_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
+.arrowLeftBtnStyle{
+    icon: Embed(source="../assets/arrow_left_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
+
+
+
+/* CSS file */
+.toolTip {
+	skin: Embed("../assets/tooltips.png");
+}
+.button {
+	skin: Embed("../assets/button.png");
+	over-skin: Embed("../assets/button-hover.png");
+	down-skin: Embed("../assets/button.png");
+	selected-over-skin: Embed("../assets/button-hover.png");
+	selected-up-skin: Embed("../assets/button-hover.png");
+	selected-down-skin: Embed("../assets/button-hover.png");
+	font-weight: normal;
+	font-size: 11;
+	font-family: Arial;
+	color: #000000;
+}
+
+.button2 {
+	skin: Embed("../assets/rank-button.png");
+	over-skin: Embed("../assets/rank-button-hover.png");
+	down-skin: Embed("../assets/rank-button.png");
+	selected-over-skin: Embed("../assets/rank-button-hover.png");
+	selected-up-skin: Embed("../assets/rank-button-hover.png");
+	selected-down-skin: Embed("../assets/rank-button-hover.png");
+	font-weight: normal;
+	font-size: 9;
+	font-family: Arial;
+	color: #000000;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.button3 {
+	icon: Embed("../assets/sort-button-icon.png");
+	skin: Embed("../assets/button.png");
+	over-skin: Embed("../assets/button-hover.png");
+	down-skin: Embed("../assets/button.png");
+	selected-over-skin: Embed("../assets/button-hover.png");
+	selected-up-skin: Embed("../assets/button-hover.png");
+	selected-down-skin: Embed("../assets/button-hover.png");
+	font-weight: normal;
+	font-size: 11;
+	font-family: Arial;
+	color: #000000;
+}
+
+.pop {
+	border-skin: Embed("../assets/pop.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+.showPrev {
+	skin: Embed("../assets/icon-magnifying-glass.png");
+	up-skin: Embed("../assets/icon-magnifying-glass.png");
+	over-skin: Embed("../assets/icon-magnifying-glass.png");
+	down-skin: Embed("../assets/icon-magnifying-glass.png");
+}
+
+.popReverse {
+	border-skin: Embed("../assets/pop-revese.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 38;
+	
+}
+.CheckBoxStyle {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+	selected-down-icon: Embed("../assets/checkbox_checked.png");
+	selected-up-icon: Embed("../assets/checkbox_checked.png");
+	selected-over-icon: Embed("../assets/checkbox_checked.png");
+	icon: Embed("../assets/checkbox.png");
+}
+
+.downThumb {
+	skin: Embed("../assets/thumbs-down-off.png");
+	up-skin: Embed("../assets/thumbs-down-off.png");
+	over-skin: Embed("../assets/thumbs-down-hover.png");
+	down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-up-skin: Embed("../assets/thumbs-down-on.png");
+	selected-down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-over-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.upThumb {
+	skin: Embed("../assets/thumbs-up-off.png");
+	up-skin: Embed("../assets/thumbs-up-off.png");
+	over-skin: Embed("../assets/thumbs-up-hover.png");
+	down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-up-skin: Embed("../assets/thumbs-up-on.png");
+	selected-down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-over-skin: Embed("../assets/thumbs-up-on.png");	
+}
+
+.downThumbDisabled {
+	skin: Embed("../assets/thumbs-down-off.png");
+	up-skin: Embed("../assets/thumbs-down-off.png");
+	over-skin: Embed("../assets/thumbs-down-off.png");
+	down-skin: Embed("../assets/thumbs-down-off.png");
+	selected-up-skin: Embed("../assets/thumbs-down-on.png");
+	selected-down-skin: Embed("../assets/thumbs-down-on.png");
+	selected-over-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.upThumbDisabled {
+	skin: Embed("../assets/thumbs-up-off.png");
+	up-skin: Embed("../assets/thumbs-up-off.png");
+	over-skin: Embed("../assets/thumbs-up-off.png");
+	down-skin: Embed("../assets/thumbs-up-off.png");
+	selected-up-skin: Embed("../assets/thumbs-up-on.png");
+	selected-down-skin: Embed("../assets/thumbs-up-on.png");
+	selected-over-skin: Embed("../assets/thumbs-up-on.png");	
+}
+
+.showUp {
+	skin: Embed("../assets/thumbs-up-on.png");
+	up-skin: Embed("../assets/thumbs-up-on.png");
+	over-skin: Embed("../assets/thumbs-up-on.png");
+	down-skin: Embed("../assets/thumbs-up-on.png");
+}
+
+.showDown {
+	skin: Embed("../assets/thumbs-down-on.png");
+	up-skin: Embed("../assets/thumbs-down-on.png");
+	over-skin: Embed("../assets/thumbs-down-on.png");
+	down-skin: Embed("../assets/thumbs-down-on.png");
+}
+
+.showHideBtnClose {
+	skin: Embed("../assets/tab-close.png");
+	up-skin: Embed("../assets/tab-close.png");
+	over-skin: Embed("../assets/tab-close-hover.png");
+	down-skin: Embed("../assets/tab-close.png");
+}
+
+.showHideBtnOpen {
+	skin: Embed("../assets/tab-open.png");
+	up-skin: Embed("../assets/tab-open.png");
+	over-skin: Embed("../assets/tab-open-hover.png");
+	down-skin: Embed("../assets/tab-open.png");
+}
+
+.showHideBtnClose2 {
+	skin: Embed("../assets/tab-close2.png");
+	up-skin: Embed("../assets/tab-close2.png");
+	over-skin: Embed("../assets/tab-close2-hover.png");
+	down-skin: Embed("../assets/tab-close2.png");
+}
+
+.showHideBtnOpen2 {
+	skin: Embed("../assets/tab-open2.png");
+	up-skin: Embed("../assets/tab-open2.png");
+	over-skin: Embed("../assets/tab-open2-hover.png");
+	down-skin: Embed("../assets/tab-open2.png");
+}
+
+.normalText {
+	font-weight: bold;
+	font-size: 13;
+	font-family: Arial;
+	color: #000000;
+}
+
+.text {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+}	
+
+.prev {
+	skin: Embed("../assets/bt-bg.png");
+	over-skin: Embed("../assets/bt-bg.png");
+	down-skin: Embed("../assets/bt-bg.png");
+	up-skin: Embed("../assets/bt-bg.png");
+	icon: Embed("../assets/arrow-left.png");
+	over-icon: Embed("../assets/arrow-left-hover.png");
+	down-icon: Embed("../assets/arrow-left.png");
+}
+
+.next {
+	skin: Embed("../assets/bt-bg.png");
+	over-skin: Embed("../assets/bt-bg.png");
+	down-skin: Embed("../assets/bt-bg.png");
+	up-skin: Embed("../assets/bt-bg.png");
+	icon: Embed("../assets/arrow-right.png");
+	over-icon: Embed("../assets/arrow-right-hover.png");
+	down-icon: Embed("../assets/arrow-right.png");
+}
+
+.goPrev {
+	skin: Embed("../assets/arrow-left.png");
+	over-skin: Embed("../assets/arrow-left-hover.png");
+	down-skin: Embed("../assets/arrow-left.png");
+	up-skin: Embed("../assets/arrow-left.png");
+}
+
+.goNext {
+	skin: Embed("../assets/arrow-right.png");
+	over-skin: Embed("../assets/arrow-right-hover.png");
+	down-skin: Embed("../assets/arrow-right.png");
+	up-skin: Embed("../assets/arrow-right.png");
+}
+
+.gallery {
+	skin: Embed("../assets/gallery-icon.png");
+	over-skin: Embed("../assets/gallery-icon-hover.png");
+	down-skin: Embed("../assets/gallery-icon.png");
+	up-skin: Embed("../assets/gallery-icon.png");
+}
+	
+
+.buttonStyleName {
+	color: #000000;
+	/* skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank_over.png");
+	down-skin: Embed("../assets/rank_over.png");
+	selected-over-skin: Embed("../assets/rank_over.png");
+	selected-up-skin: Embed("../assets/rank_over.png");
+	selected-down-skin: Embed("../assets/rank_over.png"); */
+	padding-left:0;
+	padding-right:0;
+}
+
+.rankLogo {
+	color: #000000;
+	/* skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank.png");
+	down-skin: Embed("../assets/rank.png"); */
+	padding-left:0;
+	padding-right:0;
+}
+
+.purchaseLogo {
+	/* background-image: Embed("../assets/purchase.png"); */
+}
+
+.priorBtn {
+	/* skin: Embed("../assets/PriorButton.png");
+	over-skin: Embed("../assets/PriorButton_over.png");
+	down-skin: Embed("../assets/PriorButton.png"); */
+}
+
+.ComboBoxStyle {
+	up-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	over-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	down-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+}
+
+.CheckBoxStyle {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+/* 	selected-down-icon: Embed("../assets/checkbox_checked.png");
+	selected-up-icon: Embed("../assets/checkbox_checked.png");
+	selected-over-icon: Embed("../assets/checkbox_checked.png");
+	icon: Embed("../assets/checkbox.png"); */
+}
+
+.SaveContinueButtonStyle {
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+	color: #767676;
+	up-skin: Embed(source="../assets/button2.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	over-skin: Embed(source="../assets/button2_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	down-skin: Embed(source="../assets/button2_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26"); 
+}
+
+.first {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: left top;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.last {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: top right;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.middle {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+
+.NumericStepper {
+/*  	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up2.png");
+	down-arrow-skin: Embed(source="../assets/down2.png");  */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
