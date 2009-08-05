@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+	<class name="ContestChannel" table="contest_channel_lu" lazy="true">
+		<comment>
+			This table describes channel of component.
+		</comment>
+
+		<id name="contestChannelId" column="contest_channel_id"
+			type="long">
+			<generator class="sequence">
+				<param name="sequence">sq_contest_channel_lu</param>
+			</generator>
+		</id>
+
+		<property name="description" length="254"
+			column="channel_description" />
+
+		<many-to-one name="fileType" column="file_type_id"
+			class="com.topcoder.service.studio.contest.StudioFileType"
+			 />
+
+		<property name="name" length="100" column="channel_name" />
+		<property name="parentChannelId" column="parent_channel" />
+	</class>
+</hibernate-mapping>
