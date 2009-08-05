@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the project admin widget.
+     
+     <p>
+     Updated for Cockpit Release Assembly 3 [RS: 1.1.4]
+        - added a pop up message to show the result of updating permissions.
+        - moved the pcIds and _currentProjList properties to ProjectAdminWidgetCodeBehind.as
+     </p>
+
+     @author snow01, TCSASSEMBLER
+     @since Cockpit Share Submission Integration
+-->
+<tc:ProjectAdminWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                                 minWidth="400"
+                                 width="100%"
+                                 minHeight="300"
+                                 height="100%"
+                                 xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectadminwidget.*"
+                                 xmlns:com="com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.*"
+                                 creationComplete="init()">
+    <mx:Style source="./Style.css"/>
+    
+   
+    
+    <mx:Script>
+        <![CDATA[
+        	import mx.events.CollectionEvent;
+        	import mx.core.Container;
+            import mx.utils.ObjectUtil;
+            import mx.collections.Sort;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Contest;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Project;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.User;
+            import mx.collections.ArrayCollection;
+            import mx.rpc.AbstractOperation;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.soap.SOAPHeader;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.events.FaultEvent;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.DGHeaderSkin;
+            import mx.core.UIComponent;
+            import mx.core.Application;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.model.Model;
+
+            /**
+             * Variable set to true if the app is running in local testing mode.
+             * otherwisein production mode it should be set to false.
+             */
+            private var _isLocalTesting:Boolean=false;
+
+            /**
+             * Reference to the blazeds end point url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+            /**
+             * Reference to the contest service facade url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _contestServiceFacadeWsdl:String=_isLocalTesting ? "http://127.0.0.1:8080/contestfacade/ContestServiceFacadeBean?wsdl" : Application.application.parameters.contestServiceFacadeWsdl;
+
+            /**
+             * Current selected column index.
+             */
+            [Bindable]
+            public var columnIndx:int;
+
+            /**
+             * Current selected row index.
+             */
+            [Bindable]
+            public var rowIndx:int;
+
+            /**
+             * Left mask for shutter animation.
+             */
+            private var masks1:UIComponent=new UIComponent;
+
+            /**
+             * Right mask for shutter animation.
+             */
+            private var masks2:UIComponent=new UIComponent;
+
+            /**
+             * Gets the password from remote service.
+             */
+            private function getDataService():void {
+                if (_isLocalTesting) {
+                    initComponent();
+                } else {
+                    //dataservice.getPassword();
+                    dummyService.send();
+                }
+            }
+            
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+                    dataservice.getPassword();
+
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                    dataservice.getPassword();
+            }
+
+            /**
+             * Handler for password retrieval.
+             */
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    this.password=e.result.toString();
+                }
+
+                // initialize component.
+                initComponent();
+            }
+
+            /**
+             * Initializes various components and loads data from webservices.
+             */
+            private function initComponent():void {
+                trace("----------------------- initComponent");
+
+                var header:SOAPHeader=getHeader(username, password);
+                this.contestServiceFacadeWS.clearHeaders();
+                this.contestServiceFacadeWS.addHeader(header);
+                
+                var getCommonProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getCommonProjectPermissionDataForUser");
+                
+                if (getCommonProjectPermissionDataForUser) {
+                    trace("Sending userid: " + this.userid + ", " + this.contestServiceFacadeWS.wsdl);
+                    showLoadingProgress();
+                    getCommonProjectPermissionDataForUser.send(-1);//this.userid);
+                }
+            }
+
+            /**
+             * Initialization function that gets called on widget creation complete.
+             */
+            private function init():void {
+                // assigns itself to various child viewers.
+                searchBar.parentWidget=this;
+                normalViewer.parentWidget=this;
+                searchResultViewer.parentWidget=this;
+                userViewer.parentWidget=this;
+
+                if (_isLocalTesting) {
+                    this.username="user";
+                    this.password="password";
+                    this.userid=132458;
+                }
+
+                trace("--------------- Project Admin Widget:: username: " + this.username);
+                trace("--------------- Project Admin Widget:: userid: " + this.userid);
+                trace("--------------- Project Admin Widget:: password: " + this.password);
+
+                model.user=this.username;
+
+                // initialize webservices.
+                var header:SOAPHeader=getHeader(username, password);
+                ContestServiceFacadeBean.clearHeaders();
+                ContestServiceFacadeBean.addHeader(header);
+                this.contestServiceFacadeWS=ContestServiceFacadeBean;
+
+                getDataService();
+            }
+
+            /**
+             * Selects the view in animated way as per the view index.
+             *
+             * @value view index.
+             */
+            public function set selectedIndex(value:int):void {
+                if (initialized) {
+                    if (stack.width > 0 && stack.height > 0) {
+                        if (!masks1.parent) {
+                            viewContainer.addChildAt(masks1, 1);
+                        }
+                        if (!masks2.parent) {
+                            viewContainer.addChildAt(masks2, 2);
+                        }
+                        var bmd1:BitmapData=new BitmapData(stack.width / 2, stack.height);
+                        bmd1.draw(stack);
+                        var bm1:Bitmap=new Bitmap(bmd1);
+                        if (masks1.numChildren > 0) {
+                            masks1.removeChildAt(0);
+                        }
+                        masks1.addChild(bm1);
+                        masks1.visible=true;
+                        masks2.visible=true;
+
+                        var bmd2:BitmapData=new BitmapData(stack.width / 2, stack.height);
+                        var m:Matrix=new Matrix();
+                        m.tx=-stack.width / 2;
+                        bmd2.draw(stack, m);
+                        var bm2:Bitmap=new Bitmap(bmd2);
+                        bm2.x=stack.width / 2;
+
+                        if (masks2.numChildren > 0) {
+                            masks2.removeChildAt(0);
+                        }
+                        masks2.addChild(bm2);
+
+                        move1.target=masks1;
+                        move2.target=masks2;
+                        moves.play();
+
+                            //move2.play();
+                    }
+                    stack.selectedIndex=value;
+                }
+            }
+
+            /**
+             * Animation effect-end handler.
+             */
+            private function handleEffectEnd():void {
+                if (masks1) {
+                    masks1.visible=false;
+                    masks1.includeInLayout=false;
+                }
+                if (masks2) {
+                    masks2.visible=false;
+                    masks2.includeInLayout=false;
+                }
+            }
+
+            /**
+             * Count of to be retrieved contest by project.
+             */
+            private var _tobeRetrievedContestByProjectCount:int=0;
+
+            /**
+             * Count of to be retrieved permissions.
+             */
+            private var _tobeRetrievedPermissionCount:int=0;
+
+            /**
+             * Project ids.
+             */
+            private var _myProjectIds:Dictionary=new Dictionary();
+
+            /**
+             * Project ids to permissions.
+             */
+            private var _projectIdsToPermission:Dictionary=new Dictionary();
+
+            /**
+             * Project ids to contests.
+             */
+            private var _projectIdsToContests:Dictionary=new Dictionary();
+
+            /**
+             * All available user ids.
+             */
+            private var _userIds:Dictionary=new Dictionary();
+            
+            
+            
+           
+            private var _modelUserIdx:int=0;
+            
+            
+            //public var deletedPermissionNumber=0;
+            
+             //public var getPermissionNumber=0;
+
+
+
+            /**
+             * Sorts the given collection by name
+             *
+             * @param coll specified array collection to be sorted.
+             */
+            private function sortByName(coll:ArrayCollection):void {
+                if (!coll.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareName;
+                    coll.sort=sort;
+                }
+                
+                coll.refresh();
+            }
+
+            /**
+             * Callback function on sorting by name.
+             */
+            private function compareName(a:Object, b:Object, fields:Array=null):int {
+                
+                return ObjectUtil.stringCompare(a.name, b.name, true);
+            }
+            
+            /**
+             * Callback function on sorting by projectId.
+             */
+            private function compareprojectId(a:Object, b:Object, fields:Array=null):int {
+                
+                return ObjectUtil.compare(a.projectId, b.projectId);
+            }
+            
+            public function loadDataforUser(idx:int):void
+            {
+            	_modelUserIdx=idx;
+            	var getCommonProjectPermissionDataForUser:AbstractOperation=this.contestServiceFacadeWS.getOperation("getCommonProjectPermissionDataForUser");
+                
+                 if (getCommonProjectPermissionDataForUser) {
+            		showLoadingProgress();
+                	getCommonProjectPermissionDataForUser.send(model.userList.getItemAt(_modelUserIdx).id);
+                 }
+            }
+            
+            private function handleCommonProjectPermissionDataForUser(event:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	if(event && event.result && event.result is ArrayCollection)
+            	{
+            		if(pcIds==null){
+            		    //
+            		    // Updated for Cockpit Release Assembly 3.
+            		    //    nullify the key that is shown in the search bar box.
+            		    //
+            		    if (searchBar && searchBar.searchKey) {
+            		        searchBar.searchKey.text="";
+            		    }
+            			currentProjList=getProjectList(event.result as ArrayCollection);
+            		}
+            		else
+            		{
+            			var projects:ArrayCollection=getProjectList(event.result as ArrayCollection);
+            			var u:User=model.userList.getItemAt(_modelUserIdx) as User;
+            			for each(var p:Project in projects)
+            			{
+            				p.user=u;
+            			}
+            			u.projects=projects;
+            			
+            			//model.userList.filterFunction=model.doFilter;
+                        model.currentUser=model.userList.getItemAt(_modelUserIdx) as User;
+                        model.refresh=!model.refresh;
+                        model.selectedIndex=2;
+                    }
+            	}
+            }
+            
+            public function searchUser(key:String):void
+            {
+            	var searchUserOp:AbstractOperation=this.contestServiceFacadeWS.getOperation("searchUser");
+                
+                if (searchUserOp) {
+                	showLoadingProgress();
+                    searchUserOp.send(key);
+                }
+            }
+            
+            private function handleSearchUser(event:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	if(event && event.result )
+            	{
+            		var _userIds:ArrayCollection=new ArrayCollection();
+            		if(event.result is ArrayCollection){
+            		     _userIds=event.result as ArrayCollection;
+            		}
+            		else
+            		{
+            			_userIds.addItem(event.result);
+            		}
+            		model.userList=new ArrayCollection();
+                    //for each (var u:Object in _userIds) {
+                    for(var i:int=0;i<_userIds.length;i++){
+                    	var u:Object=_userIds.getItemAt(i);
+                        var user:User=new User();
+                        user.id=u.userId;
+                        user.name=u.handle;
+                        user.projLen=this.currentProjList.length;
+                        /*
+                        var permissions:ArrayCollection=new ArrayCollection();
+                        for(var j:int=i;j<_userIds.length;j++){
+                        	var uj:Object=_userIds.getItemAt(j);
+                        	if(uj.userId!=user.id)break;
+                        	permissions.addItem(uj.permission);
+                        }
+                        var projects:ArrayCollection=getProjectList(permissions);
+            			for each(var p:Project in projects)
+            			{
+            				p.user=user;
+            			}
+            			user.projects=projects;
+            			
+            			
+                        i=j;
+*/
+                        model.userList.addItem(user);
+                    }
+                    model.selectedIndex=0;
+                    /*
+                    if(model.userList.length>0){
+                    	
+            			model.userList.filterFunction=model.doFilter;
+                        model.doSearch();
+                    }*/
+                    
+            	}
+            	else
+            	{
+                    model.doSearch();
+            	}
+            }
+            
+            private function getProjectList(result:ArrayCollection):ArrayCollection
+            {
+            	var sort:Sort=new Sort();
+                sort.compareFunction=compareprojectId;
+                result.sort=sort;
+                
+                result.refresh();
+                
+                var first:Boolean=false;
+                if(pcIds==null) {
+                	first=true;	
+                	pcIds=new  Dictionary();
+                }
+                var ret:ArrayCollection=new ArrayCollection();
+                for(var i:int=0;i<result.length;)
+                {
+                	var item:Object=result.getItemAt(i);
+                	var p:Project=new Project();
+                	
+                	p.id=item.projectId;
+                	p.name=item.pname;
+                	
+                	var studio:Boolean=item.studio;
+                	
+                	if (item.pfull>0) {
+                           p.access="Full";
+                           p.persistedAccess="Full";
+                    } else if (item.pwrite>0) {
+                           p.access="Write";
+                           p.persistedAccess="Write";
+                     } else if (item.pread>0) {
+                           p.access="Read";
+                           p.persistedAccess="Read";
+                     } else {
+                           p.access="";
+                           p.persistedAccess="";
+                     }
+                     var contests:ArrayCollection=new ArrayCollection();
+                     for(var j:int=i;j<result.length && result.getItemAt(j).projectId==p.id;j++)
+                     {
+                     	var c:Contest=new Contest();
+                     	
+                     	var it:Object=result.getItemAt(j);
+                     	c.id=it.contestId;
+			c.studio=it.studio;
+                     	c.name=it.cname;
+                     	if (it.cfull>0) {
+                           c.access="Full";
+                           c.persistedAccess="Full";
+                    	} else if (it.cwrite>0) {
+                           c.access="Write";
+                           c.persistedAccess="Write";
+                     	} else if (it.cread>0) {
+                           c.access="Read";
+                           c.persistedAccess="Read";
+                     	} else {
+                           c.access="";
+                           c.persistedAccess="";
+                     	}
+                     	c.project=p;
+			// if Full on contest, or contest permission is null, then check project
+                     	if(first && (c.access=="Full" || (p.access=="Full" && c.access==""))){
+                     	    contests.addItem(c);
+                     	    pcIds[c.id]="c"
+                     	}
+                     	else if(!first && pcIds[c.id]=="c"){
+                     	    contests.addItem(c);
+                     	}
+                     }
+
+		     sortByName(contests);
+
+                     p.contests=contests;
+                     i=j;
+                     if(first && p.access=="Full"){
+                        ret.addItem(p);
+                     	pcIds[p.id]="p";
+                     }
+                     else if(!first && pcIds[p.id]=="p"){
+                        ret.addItem(p);
+                     }
+                }
+		sortByName(ret);
+                return ret;
+            }
+            
+            /*private function handleGetPermissions(e:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	this.getPermissionNumber--;
+                if (e!=null && e.result!=null) {
+                       var deleted:ArrayCollection=new ArrayCollection();
+                       if(e.result is ArrayCollection)
+                       {
+                           	deleted=e.result as ArrayCollection;
+                       }
+                       else
+                       {
+                          	deleted.addItem(e.result);
+                       }
+                       deletedPermissionNumber+=deleted.length;
+                       if(getPermissionNumber==0 && deletedPermissionNumber==0)
+                		{
+                		userViewer.addPermissions();
+                		}
+                       for(var i:int=0;i<deleted.length;i++)
+                       {
+                          	ContestServiceFacadeBean.deletePermission(deleted.getItemAt(i).permissionId);
+                       }
+                             
+                }
+                else
+                {
+                	if(getPermissionNumber==0 && deletedPermissionNumber==0)
+                		{
+                		userViewer.addPermissions();
+                		}
+                }
+                
+            }
+            private function handleDeletePermissions(e:ResultEvent):void
+            {
+            	hideLoadingProgress();
+            	deletedPermissionNumber--;
+            	if(getPermissionNumber==0 && deletedPermissionNumber==0)
+            	{
+            		userViewer.addPermissions();
+            	}
+            }*/
+            
+            /**
+             * <p>
+             * Handles the success event for updatePermissions webservice call.
+             * </p> 
+             *
+             * @since Cockpit Release Assembly 3 [RS: 1.1.4]
+             */ 
+            private function handleUpdatePermissions(e:ResultEvent):void {
+                hideLoadingProgress();
+                
+                var permissionsToUpdate:ArrayCollection=new ArrayCollection();
+                for (var i:int=0; i < model.currentUser.projects.length; i++) {
+                    var project:Project=model.currentUser.projects.getItemAt(i) as Project;
+                    
+                    if (project.access == project.persistedAccess) {
+                        // do nothing.
+                    } else {
+                        project.persistedAccess=project.access;
+                    }
+                    
+                    for (var j:int=0; j < project.contests.length; j++) {
+                        var contest:Contest=project.contests.getItemAt(j) as Contest;
+                        
+                        if (contest.access == contest.persistedAccess) {
+                            // do nothing.
+                        } else {
+                            contest.persistedAccess=contest.access;
+                        }
+                    }
+                }
+                
+                Helper.showAlertMessage("Permissions Saved Successfully");
+            }
+
+            
+        ]]>
+    </mx:Script>
+
+	 <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
+
+     <mx:WebService id="ContestServiceFacadeBean"
+                   useProxy="true"
+                   destination="contest-facade">
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                    <mx:SecureAMFChannel uri="{_blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
+
+		<!--<mx:operation name="getPermissions"
+                      resultFormat="object"
+                      result="handleGetPermissions(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('addPermission: ' + event.fault.faultString);">
+        </mx:operation>
+    
+
+        <mx:operation name="addPermission"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('addPermission: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="updatePermission"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('updatePermission: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="deletePermission"
+                      resultFormat="object"
+                      result="handleDeletePermissions(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('deletePermission: ' + event.fault.faultString);">
+        </mx:operation>-->
+        
+        <mx:operation name="getCommonProjectPermissionDataForUser"
+                      resultFormat="object"
+                      result="handleCommonProjectPermissionDataForUser(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getCommonProjectPermissionDataForUser: ' + event.fault.faultString);">
+        </mx:operation>
+        
+        <mx:operation name="searchUser"
+                      resultFormat="object"
+                      result="handleSearchUser(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('searchUser: ' + event.fault.faultString);">
+        </mx:operation>
+        
+        <mx:operation name="updatePermissions"
+                      resultFormat="object"
+                      result="handleUpdatePermissions(event);"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('updatePermissions: ' + event.fault.faultString);">        
+	</mx:operation>
+        
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{_blazedsendpoint}"
+                     fault="Helper.showAlertMessage('dataservice: ' + event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="Helper.showAlertMessage('getPassword: ' + event.fault.faultString);"/>
+
+    </mx:RemoteObject>
+
+    <mx:Binding source="model.selectedIndex"
+                destination="selectedIndex"/>
+    <mx:VBox id="content"
+             width="100%"
+             height="100%"
+             includeInLayout="true"
+             verticalScrollPolicy="off"
+             paddingLeft="5"
+             paddingRight="5">
+        <com:SearchBar id="searchBar"
+                       width="100%"
+                       height="46"/>
+        <mx:Canvas width="100%"
+                   height="100%"
+                   id="viewContainer">
+            <mx:ViewStack width="100%"
+                          height="100%"
+                          id="stack">
+                <com:NormalView id="normalViewer"
+                                width="100%"
+                                height="100%"/>
+                <com:SearchResult id="searchResultViewer"
+                                  width="100%"
+                                  height="100%"/>
+                <com:UserView id="userViewer"
+                              width="100%"
+                              height="100%"/>
+            </mx:ViewStack>
+        </mx:Canvas>
+    </mx:VBox>
+    <mx:Parallel id="moves"
+                 effectEnd="handleEffectEnd()">
+        <mx:Move id="move1"
+                 xFrom="0"
+                 xTo="{-stack.width / 2}"
+                 duration="500"/>
+        <mx:Move id="move2"
+                 xFrom="{0}"
+                 xTo="{stack.width / 2}"
+                 duration="500"/>
+    </mx:Parallel>
+</tc:ProjectAdminWidgetCodeBehind>
