@@ -1,0 +1,78 @@
+Panel {
+   borderColor: #d6d6d6;
+   roundedBottomCorners: true;
+   backgroundAlpha: 1;
+   headerColors: #FFFFFF, #a8a8a8;
+   titleStyleName: "mypanelTitle";
+   background-image:"assets/images/panelbg.png";
+   background-size:"100%";
+ }
+.mypanelTitle {
+   color: #000000;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: bold;
+}
+.infoBox{
+	background-image:"assets/images/infobg.png";
+}
+.infoBoxTxt{
+	font-family:"Myriad Pro Regular";
+	font-size:14;
+	color:#000000;
+	padding-left:50;
+	text-align:left;
+}
+.infoBoxTxtNormal{
+	font-family:"Myriad Pro Regular";
+	font-size:14;
+	color:#000000;
+	padding-top:2;
+}
+.sliderBox{
+	background-image:"assets/images/sliderbg.png"
+}
+@font-face 
+{
+	src:url("/assets/fonts/MyriadPro-Black.otf");
+	font-family: "Myriad Pro";
+}
+@font-face 
+{
+	src:url("/assets/fonts/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+.customHSlider
+{
+	thumb-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.contestmonitor.skins.SliderThumbSkin');
+	trackHighlightSkin: ClassReference("com.topcoder.flex.widgets.widgetcontent.contestmonitor.skins.SliderTrackHighlight");
+	trackSkin: ClassReference("com.topcoder.flex.widgets.widgetcontent.contestmonitor.skins.SliderTrack");
+} 
+.labelStyle
+{
+	font-family:"Myriad Pro";
+	font-size:12;
+	color:#000000;
+	font-weight:bold;
+	top: 50;
+}
+.refreshBtn
+{
+	up-skin: Embed("/assets/images/refresh.png");
+	over-skin: Embed("/assets/images/refresh.png");
+	down-skin: Embed("/assets/images/refresh.png");
+}
+
+.maximizeBtn
+{
+	up-skin: Embed("/assets/images/max.png");
+	over-skin: Embed("/assets/images/max.png");
+	down-skin: Embed("/assets/images/max.png");
+}
+
+.closeBtn
+{
+	up-skin: Embed("/assets/images/close.png");
+	over-skin: Embed("/assets/images/close.png");
+	down-skin: Embed("/assets/images/close.png");
+}
