@@ -46,7 +46,7 @@ public class InformixProjectPersistence extends
         AbstractInformixProjectPersistence {
 
 	/** Logger instance using the class name as category */
-    private static final Log LOGGER = com.topcoder.util.log.LogManager.getLog(InformixProjectPersistence.class.getName()); 
+    private static final Log LOGGER = com.topcoder.util.log.LogFactory.getLog(InformixProjectPersistence.class.getName()); 
 
     
     /**
