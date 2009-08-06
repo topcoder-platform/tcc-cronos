@@ -1062,6 +1062,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
             Template template = templateSource == null
                 ? documentGenerator.getTemplate(templateName)
                 : documentGenerator.getTemplate(templateSource, templateName);
+
             String messageBody = this.emailMessageGenerator.generateMessage(template, phase);
 
             if (this.log == null) {

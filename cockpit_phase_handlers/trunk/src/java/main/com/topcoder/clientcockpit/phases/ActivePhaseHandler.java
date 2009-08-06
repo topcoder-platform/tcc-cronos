@@ -351,6 +351,7 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
             long forumId = createForum(contest.getName(), contest.getCreatedUser());
             if (forumId > 0) {
                 contest.setForumId(forumId);
+				phase.getProject().setAttribute("ContestForumID", String.valueOf(forumId));
                 try {
                     getContestManager().updateContest(contest, this.randomizer.nextInt(), operator, false);
                 } catch (ContestManagementException e) {
