@@ -1,0 +1,54 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory name="contestAndSubmission">
+    <!-- Database connection settings -->
+    <property name="connection.driver_class">com.informix.jdbc.IfxDriver</property>
+    <property name="connection.url">jdbc:informix-sqli://192.168.0.3:1526/contest:informixserver=informix_server</property>
+    <property name="connection.username">informix</property>
+    <property name="connection.password">101777</property>
+
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.InformixDialect</property>
+    <!--property name="hbm2ddl.auto">validate</property-->
+    <property name="show_sql">true</property>
+
+    <!--  Entity Mappings -->
+    <mapping resource="mappings/ContestChangeHistory.hbm.xml" />
+    <mapping resource="mappings/ContestStatus.hbm.xml" />
+    <mapping resource="mappings/StudioFileType.hbm.xml" />
+    <mapping resource="mappings/MimeType.hbm.xml" />
+    <mapping resource="mappings/FilePath.hbm.xml" />
+    <mapping resource="mappings/DocumentType.hbm.xml" />
+    <mapping resource="mappings/PrizeType.hbm.xml" />
+    <mapping resource="mappings/PaymentStatus.hbm.xml" />
+    <mapping resource="mappings/SubmissionStatus.hbm.xml" />
+    <mapping resource="mappings/SubmissionType.hbm.xml" />
+    <mapping resource="mappings/ContestChannel.hbm.xml" />
+    <mapping resource="mappings/ContestProperty.hbm.xml" />
+    <mapping resource="mappings/ReviewStatus.hbm.xml" />
+    <mapping resource="mappings/Contest.hbm.xml" />
+    <mapping resource="mappings/ContestConfig.hbm.xml" />
+    <mapping resource="mappings/ContestType.hbm.xml" />
+    <mapping resource="mappings/ContestTypeConfig.hbm.xml" />
+    <mapping resource="mappings/Document.hbm.xml" />
+    <mapping resource="mappings/ContestResult.hbm.xml" />
+    <mapping resource="mappings/Submission.hbm.xml" />
+    <mapping resource="mappings/Prize.hbm.xml" />
+    <mapping resource="mappings/SubmissionReview.hbm.xml" />
+    <mapping resource="mappings/SubmissionPayment.hbm.xml" />
+    <mapping resource="mappings/ContestRegistration.hbm.xml" />
+
+    <mapping resource="mappings/ContestPayment.hbm.xml" />
+    <mapping resource="mappings/Medium.hbm.xml" />
+
+    <mapping resource="mappings/PaymentType.hbm.xml" />
+    <mapping resource="mappings/ContestMultiRoundInformation.hbm.xml" />
+    <mapping resource="mappings/ContestSpecifications.hbm.xml" />
+    <mapping resource="mappings/ContestResource.hbm.xml" />
+    <mapping resource="mappings/ContestGeneralInfo.hbm.xml" />
+    <mapping resource="mappings/MilestonePrize.hbm.xml" />
+  </session-factory>
+</hibernate-configuration>
