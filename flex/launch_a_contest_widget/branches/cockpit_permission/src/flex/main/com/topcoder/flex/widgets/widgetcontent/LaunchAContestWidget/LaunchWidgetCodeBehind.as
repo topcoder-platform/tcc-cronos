@@ -40,12 +40,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * <p>
      * This is the code behind script part for the launch a contest widget. It implements the IWidget interface.
      * It extends from the Panel.
+     * 
+     * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change Notes:
+     *    - Introduced methods to check whether the contest is a paid contest or not.
+     *    - henceforth updated for BUGR-1983
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      * 
      * @author TCSDEVELOPER
-     * @version 1.0
+     * @version 1.0.1
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
         /**
@@ -128,6 +132,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
         * @since BUGR-1737
         */     
+        [Bindable]
         public function get isAdmin():Boolean {
         	return _isAdmin;
         }    
@@ -891,15 +896,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * Updates studio contest.
          * 
          * Just name has been updated in this version
+         * 
+         * Updated for Version 1.0.1
+         *    - unpaid contests are considered inactive.
          */
         private function updateStudioContest():void {
 
-	    if (getExtraContestFee() > 0) 
-	    {
-		competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-		competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
-		
-	    }
+	        if (!isPaidContest() || getExtraContestFee() > 0) {
+		        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+		        competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
+	        }
 
             var updateContestOp:AbstractOperation=_csws.getOperation("updateContest");
 
@@ -1006,8 +1012,31 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function hideLoadingProgress():void {
         	ProgressWindowManager.hideProgressWindow(this.container);
         }
+        
+        /**
+         * Determines whether the current contest is a paid contest or unpaid.
+         * It returns true if current contest is a paid contest otherwise returns false.
+         * 
+         * @return true if current contest is a paid contest otherwise returns false.
+         * @since 1.0.1
+         */ 
+        public function isPaidContest():Boolean {
+            if (this.competitionType == "STUDIO") {
+                if (!competition.contestData.payments) {
+                    return false;
+                }
+                
+                return true;
+            } else {
+                if (!softwareCompetition || !softwareCompetition.projectData || !softwareCompetition.projectData.contestSales) {
+                    return false;
+                }
+                
+                return true;
+            }
+        }
 
-	// BUGR-1363
+	    // BUGR-1363
         public function getPaidContestFee():Number {
             if (this.competitionType == "STUDIO") {
                 if (!competition.contestData.payments) {

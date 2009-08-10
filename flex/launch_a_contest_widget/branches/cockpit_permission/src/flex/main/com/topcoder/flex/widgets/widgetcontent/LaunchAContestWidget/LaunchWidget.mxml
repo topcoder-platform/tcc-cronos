@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+    This mxml component is the main entry point for the launch contest widget.
+    
     Updated for Cockpit Release Assembly 3
         - save as draft button is not shown in ReadOnlyMode.
         - next button is not shown on review screen in ReadOnlyMode.
         - changes for above on previous, next, skipTo methods.
+    
+    Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - BUGR-2119: now both studio and software html text is correctly escaped.
+
+    @author shailendra_80, TCSASSEMBLER
+    @since Launch Contest Widget
+    @version 1.0.1
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                            xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
@@ -48,7 +62,6 @@
             import mx.controls.ButtonLabelPlacement;
 
             import mx.collections.ArrayCollection;
-            import mx.utils.ObjectUtil;
 
             // BUGR-1141
             [Bindable]
@@ -468,7 +481,7 @@
                         
                         save.includeInLayout=save.visible=false;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                     
                         goNext.includeInLayout=goNext.visible=true;
@@ -490,7 +503,7 @@
                             this.currentState="OverViewState";
                             save.includeInLayout=save.visible=false;
                             if (save.visible) {
-                                save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                                save.label=getSaveLabel();
                             }
                     
                             goNext.includeInLayout=goNext.visible=true;
@@ -511,7 +524,7 @@
 			            this.currentState = "DetailsState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
                         goNext.includeInLayout=goNext.visible=true;
@@ -537,7 +550,7 @@
                        this.currentState = "SpecificationsState";
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
                         goNext.includeInLayout=goNext.visible=true;
@@ -553,7 +566,7 @@
 			            this.currentState = "AttachFilesState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
                         goNext.includeInLayout=goNext.visible=true;
@@ -574,7 +587,7 @@
                        this.currentState = "ScheduleState";
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
                         goNext.includeInLayout=goNext.visible=true;
@@ -589,10 +602,10 @@
 			           this.currentState = "ReviewState";
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
-                        if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                        if (!isNextAllowed()) {
                             goNext.includeInLayout=goNext.visible=false;
                         } else {
                             goNext.includeInLayout=goNext.visible=true;
@@ -665,7 +678,7 @@
 
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -724,7 +737,7 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -743,7 +756,7 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -761,7 +774,7 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -777,10 +790,10 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
-                    if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                    if (!isNextAllowed()) {
                         goNext.includeInLayout=goNext.visible=false;
                     } else {
                         goNext.includeInLayout=goNext.visible=true;
@@ -881,10 +894,10 @@
                         
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                     
-                        if (getExtraContestFee() <= 0 || isReadOnlyMode) {
+                        if (!isNextAllowed()) {
                             goNext.includeInLayout=goNext.visible=false;
                         } else {
                             goNext.includeInLayout=goNext.visible=true;
@@ -902,7 +915,7 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -915,7 +928,7 @@
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -935,7 +948,7 @@
                         this.currentState="DetailsState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
-                            save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                            save.label=getSaveLabel();
                         }
                         
                         goNext.includeInLayout=goNext.visible=true;
@@ -951,7 +964,7 @@
                     
 					save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -967,7 +980,7 @@
                     this.currentState="DetailsState";
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -981,7 +994,7 @@
                     
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -995,7 +1008,7 @@
                     
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
-                        save.label=getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT";
+                        save.label=getSaveLabel();
                     }
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -1214,6 +1227,48 @@
                         //this.contestSelect.contestType.enabled=isSoftwareAdmin;
                 }
             }
+            
+            /**
+             * A do nothing implementation of xmlSpecialCharsFilter for the webservice.
+             * In many cases webservice does double escaping/quoting - this leads to incorrect cases at server side.
+             * 
+             * By having this we override the behaviour of XMLEncoder and allow only one time encoding.
+             * 
+             * @param input the input object that need to be escaped/quoted.
+             * @return the escaped/quoted object
+             * @since 1.0.1
+             */
+            private function xmlSpecialCharsFilter(input:Object):String {
+                return input.toString();
+            }
+            
+            /**
+             * Gets the label name for save button.
+             * 
+             * @return the label name for save button.
+             * @since 1.0.1
+             */
+            private function getSaveLabel():String {
+                if (!isPaidContest() || getExtraContestFee() > 0) {
+                    return "SAVE AS DRAFT";
+                } 
+                
+                return "SAVE";
+            }
+            
+            /**
+             * Determines whether next is allowed on  particular screen or not.
+             * 
+             * @return true if next is allowed otherwise false.
+             * @since 1.0.1
+             */
+            private function isNextAllowed():Boolean {
+                if ((isPaidContest() && getExtraContestFee() <= 0) || isReadOnlyMode) {
+                    return false;
+                }
+                
+                return true;
+            }
         ]]>
     </mx:Script>
 
@@ -1255,7 +1310,8 @@
     </mx:WebService>
 
      <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
-                    destination="contest-facade">
+                    destination="contest-facade"
+                    xmlSpecialCharsFilter="xmlSpecialCharsFilter">
 		<mx:channelSet>
 			<mx:ChannelSet id="contestfacadeChannelSet">
 			    <mx:channels>
