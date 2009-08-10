@@ -34,19 +34,21 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.rpc.soap.mxml.WebService;
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
-    
-    import flash.events.Event;
 
     /**
      * <p>
      * This is the code behind mxml widget component for the submission viewer widget. It implements the IWidget interface.
      * It extends from the VBox.
+     * 
+     * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+     *    - introduced new state variable _isMaxView to correctly capture the view state of the widget.
+     * 
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
-     * @author shailendra_80
-     * @version 1.0
+     * @author shailendra_80, TCSASSEMBLER
+     * @version 1.0.1
      * @since Flex Submission Viewer Overhaul
      */
     [Bindable]
@@ -282,6 +284,13 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         * @since Cockpit Submission Viewer Widget Enhancement Part 1.
         */
         private var _airViewer:AirViewer;
+        
+        /**
+         * Introduced new state variable to correctly capture the state of the widget.
+         * 
+         * @since 1.0.1 
+         */
+        private var _isMaxView:Boolean=false;
 
         /**
          * SubmissionViewerWidgetCodeBehind constructor.
@@ -1007,20 +1016,26 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This will tell the caller if the widget is in minimzie mode or not.
+         * 
+         * Updated for Version 1.0.1
+         *    - returning value as per state variable '_isMaxView'
          *
          * @return true if the widget is minimized, false otherwise.
          */
         public function isMinimized():Boolean {
-            return false;
+            return !this._isMaxView;
         }
 
         /**
          * This will tell the caller if the widget is in maximize mode or not.
+         * 
+         * Updated for Version 1.0.1
+         *    - returning value as per state variable '_isMaxView'
          *
          * @return true if the widget is maximized, false otherwise.
          */
         public function isMaximized():Boolean {
-            return false;
+            return this._isMaxView;
         }
 
         /**
@@ -1098,15 +1113,22 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This action will minimize this widget.
+         * 
+         * Updated for Version 1.0.1
+         *    - setting variable '_isMaxView' to true.
          */
         public function minimize():void {
-
+            this._isMaxView=false;
         }
 
         /**
          * This action will restpre this widget (for example from a menu bar).
+         * 
+         * Updated for Version 1.0.1
+         *    - setting variable '_isMaxView' to true.
          */
         public function restore():void {
+            this._isMaxView=false;
             if (this.restoreFn != null) {
                 this.restoreFn();
             }
@@ -1114,8 +1136,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This action will maximize this widget.
+         * 
+         * Updated for Version 1.0.1
+         *    - setting variable '_isMaxView' to true.
          */
         public function maximize():void {
+            this._isMaxView=true;
             if (this.maximizeFn != null) {
                 this.maximizeFn();
             }
@@ -1227,6 +1253,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * Webservice Callback function for handling the status list load.
+         * 
+         * Updated for Version 1.0.1
+         *    - if status list is loaded later then contest status id is set here.
          *
          * @param event webservice result event.
          */
@@ -1234,6 +1263,17 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             if (event != null && event.result != null) {
                 for each (var item:*in event.result as ArrayCollection) {
                     this.statusTypeDictionary[item.statusId as int]=item;
+                }
+            }
+            
+            if (this.selectedContestId) {
+                if (this.contestInfoDictionary) {
+                    var statusId:int=this.contestInfoDictionary[this.selectedContestId].statusId;
+                    this.selectedContestStatusId=statusId;
+                    
+                    if (this.statusTypeDictionary) {
+                        this.selectedContestStatus=this.statusTypeDictionary[statusId].name;
+                    }
                 }
             }
         }

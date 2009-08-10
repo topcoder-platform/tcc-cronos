@@ -6,10 +6,14 @@
 
 <!--
 
-     This mxml component is the main entry point for the submission viewer widget.
+    This mxml component is the main entry point for the submission viewer widget.
+    
+    Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - correctly setting the view index for case of maximize.
 
-     @author shailendra_80
-     @since Submission Viewer Overhaul
+    @author shailendra_80, TCSASSEMBLER
+    @since Submission Viewer Overhaul
+    @version 1.0.1
 -->
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                                      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
@@ -23,8 +27,6 @@
 
 
     <mx:Style source="Style.css"/>
-
-   
 
     <mx:Script>
         <![CDATA[
@@ -89,6 +91,9 @@
              * - It initializes webservices.
              * - It defines filter, maximize and restore callback functions
              * - It calls data services to load password and hence load the data from webservices.
+             * 
+             * Updated for Version 1.0.1
+             *    - for maximize case, correctly setting the view index.
              */
             private function init():void {
                 trace("----------------------- init");
@@ -133,8 +138,11 @@
                         }
                     } else {
                          if (gallery.initialized) {
-			    gallery.handleContest(null);
-                            gallery.model.selectedIndex=0;
+                             gallery.model.selectedIndex=-1;
+			                 gallery.handleContest(null);
+			                 if (gallery.model.selectedIndex==-1) {
+                                gallery.model.selectedIndex=0;
+                            }
                         }
                         //gallery.handleContest(null);
 
@@ -211,6 +219,8 @@
              * Handle successful credit card purchase.
              * 
              * Updated for Cockpit Release Assembly for Receipts.
+             * 
+             * @param event the webservice result event.
              */
             private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void {
                 // BUGR-1393

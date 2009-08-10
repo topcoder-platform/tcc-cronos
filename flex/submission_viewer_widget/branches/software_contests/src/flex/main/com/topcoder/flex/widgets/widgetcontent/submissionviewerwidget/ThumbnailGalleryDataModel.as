@@ -10,11 +10,15 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
      * <p>
      * This is the data model class for Thumbnail Gallery Viewer.
      * </p>
+     * 
+     * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change Notes:
+     *    - BUGR-2134: also storing submission data in ranked object.
+     * 
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
-     * @author shailendra_80
-     * @version 1.0
+     * @author shailendra_80, TCSASSEMBLER
+     * @version 1.0.1
      * @since Flex Submission Viewer Overhaul
      */
     [Bindable]
@@ -252,6 +256,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * Updates rank of the specified submission data to i
+         * 
+         * Updated for Version 1.0.1
+         *    - for ranked object we also store the original submission data.
          */
         public function updateRank(i:int, id:Number=0):void {
             //trace("----------------------------- ################# id: " + id);
@@ -310,6 +317,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 rankObj.label=rankLabel[i] as String;
                 rankObj.purchased=data.id ? data.purchased : false;
                 rankObj.parentModel=this;
+                rankObj.submission=data;
 
                 rankedSubmissionList.setItemAt(rankObjProxy, i);
             } else {
@@ -320,6 +328,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 rankObj.label=rankLabel[i] as String;
                 rankObj.purchased=false;
                 rankObj.parentModel=this;
+                rankObj.submission=null;
 
                 rankedSubmissionList.setItemAt(rankObjProxy, i);        
             }

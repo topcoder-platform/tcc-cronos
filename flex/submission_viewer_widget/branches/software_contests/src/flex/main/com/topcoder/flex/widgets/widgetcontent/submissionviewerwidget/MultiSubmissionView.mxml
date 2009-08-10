@@ -31,6 +31,7 @@
          creationComplete="init()">
     <mx:Script>
         <![CDATA[
+            import mx.core.Application;
             import mx.core.ScrollPolicy;
             import mx.containers.Box;
             import mx.controls.Image;
@@ -195,9 +196,18 @@
                     model.selectedImage=item;
                     model.imageList=data.fullsizepreviewList as ArrayCollection;
                     model.selectedIndex=3;
-                    model.thumbnailView.multiImageViewer.refreshImages();
                 }
             }
+            
+            /**
+             * Event handler for download link button click.
+             *
+             * @since 1.0.1
+             */
+            private function downloadLinkHandler():void {
+		        // Open the link in a new window.
+		        navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + data.id), '_blank');
+	        }
         ]]>
     </mx:Script>
 
@@ -242,6 +252,14 @@
                    click="updateUpDown(false)"
                    selected="{data.upDown == 'down'}"
                    toolTip="Not Interested"/>
+    </mx:HBox>
+    <mx:HBox width="100%"
+             horizontalAlign="center"
+             visible="{model.showDownloadFullPreview}"
+             includeInLayout="{model.showDownloadFullPreview}">
+        <!-- BUGR-1664 -->
+        <mx:LinkButton label="Download Full Preview"
+                       click="{downloadLinkHandler()}"/>
     </mx:HBox>
     <mx:Spacer height="50%"/>
     <mx:Button id="btn"

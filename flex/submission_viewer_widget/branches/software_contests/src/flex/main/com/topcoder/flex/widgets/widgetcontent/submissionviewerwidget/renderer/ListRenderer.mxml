@@ -7,9 +7,13 @@
 <!--
 
      This is item renderer for submission list on the gallery view.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
+        - BUGR-2134: for multi submission MultiImageView is opened rather than MultiSubmissionView.
 
-     @author snow01
+     @author snow01, TCSASSEMBLER
      @since Submission Viewer Overhaul
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="180"
@@ -23,6 +27,7 @@
          xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
     <mx:Script>
         <![CDATA[
+            import mx.collections.ArrayCollection;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ThumbnailGalleryDataModel;
 
             /**
@@ -35,13 +40,22 @@
              * Event handler for double click on submission.
              *
              * Double click opens another view depending on the type of desired view.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2134: for multi image submission, we first show MultiImageView rather than MultiSubmissionView
              *
              * @param event mouse event.
              */
             private function handleDoubleClick(event:MouseEvent):void {
                 data.parentModel.setCurrentSubmission(data.id);
                 if (data.hasOwnProperty("multi") && data.multi == true) {
-                    data.parentModel.selectedIndex=2
+                    data.parentModel.imageList=data.fullsizepreviewList as ArrayCollection;
+                    if (data.parentModel.imageList && data.parentModel.imageList.length > 0) {
+                        data.parentModel.selectedImage=data.parentModel.imageList.getItemAt(0) as String;
+                    } else {
+                        data.parentModel.selectedImage="";
+                    }
+                    data.parentModel.selectedIndex=2;
                 } else {
                     data.parentModel.selectedIndex=1;
                 }

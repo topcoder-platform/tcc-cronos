@@ -6,21 +6,34 @@
 <!--
 
      This is item renderer for rank bar.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
+        - BUGR-2134: (1) for multi submission MultiImageView is opened rather than MultiSubmissionView.
+                     (2) double click on rank box (that has thumbnail) lead to 
+                         image (multi or simple, depending on submission type) view.
+                     (3) hid the bad looking rank box header.
 
-     @author snow01
+     @author snow01, TCSASSEMBLER
      @since Submission Viewer Overhaul
+     @version 1.0.1
 -->
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
                 xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
                 width="190"
                 height="206"
+                borderStyle="none"
+                borderAlpha="0.0"
+                dropShadowEnabled="false"
+                cornerRadius="0"
                 verticalScrollPolicy="off"
                 horizontalScrollPolicy="off"
-                borderStyle="none"
-                showCloseButton="{data.parentModel.isRankMode &amp;&amp; data &amp;&amp; data.showClose}"
+                doubleClick="handleDoubleClick(event)"
+                doubleClickEnabled="true"
+                showCloseButton="{data &amp;&amp; data.parentModel.isRankMode &amp;&amp; data.showClose}"
                 close="removeRank()">
     <mx:Script>
         <![CDATA[
+            import mx.collections.ArrayCollection;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ThumbnailGalleryDataModel;
             import mx.events.DragEvent;
 
@@ -77,20 +90,48 @@
                     image.source="";
                 }*/
             }
+            
+            /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens another view depending on the type of desired view.
+             * 
+             * @param event mouse event.
+             * @since 1.0.1
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                // if this rank does not have any submission then simply return.
+                if (!data || !data.thumbnail|| data.thumbnail == '') {
+                    return;
+                }
+                
+                data.parentModel.setCurrentSubmission(data.id);
+                if (data.submission && data.submission.hasOwnProperty("multi") && data.submission.multi == true) {
+                    data.parentModel.imageList=data.submission.fullsizepreviewList as ArrayCollection;
+                    if (data.parentModel.imageList && data.parentModel.imageList.length > 0) {
+                        data.parentModel.selectedImage=data.parentModel.imageList.getItemAt(0) as String;
+                    } else {
+                        data.parentModel.selectedImage="";
+                    }
+                    data.parentModel.selectedIndex=2;
+                } else {
+                    data.parentModel.selectedIndex=1;
+                }
+            }
         ]]>
     </mx:Script>
     <mx:ViewStack width="190"
                   height="206"
+                  includeInLayout="false"
+                  left="0" 
+                  top="0" 
+			      paddingTop="0" 
+			      paddingBottom="0" 
+			      paddingLeft="14"
+                  paddingRight="15"
                   selectedIndex="{data &amp;&amp; data.thumbnail != null &amp;&amp; data.thumbnail != '' ? 1 : 0}">
-        <mx:VBox width="190"
-                 height="206"
-                 left="0"
-                 top="0"
-                 includeInLayout="false"
-                 paddingLeft="14"
-                 paddingRight="15"
-                 paddingTop="0"
-                 paddingBottom="0"
+        <mx:VBox width="100%"
+                 height="100%"
                  verticalScrollPolicy="off"
                  horizontalScrollPolicy="off">
             <tc:TCImage id="thumbnail_empty"
@@ -105,15 +146,8 @@
                           styleName="normalText"/>
             </mx:HBox>
         </mx:VBox>
-        <mx:VBox width="190"
-                 height="206"
-                 left="0"
-                 top="0"
-                 includeInLayout="false"
-                 paddingLeft="14"
-                 paddingRight="15"
-                 paddingTop="0"
-                 paddingBottom="0"
+        <mx:VBox width="100%"
+                 height="100%"
                  verticalScrollPolicy="off"
                  horizontalScrollPolicy="off">
             <mx:Canvas>

@@ -25,9 +25,14 @@
      - for past but completed contest, 'Download' button is visible. On click, the flow leads to Download page.
      
      Updated for Cockpit Release Assembly 2 [BUGR-1940, BUGR-1666]
+     
+     Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
+        - BUGR-2134: for multi submission MultiImageView is opened rather than MultiSubmissionView.
+        - BUGR-2128: for abandoned contest, a different screen shown.
 
-     @author snow01
+     @author snow01, TCSASSEMBLER
      @since Submission Viewer Overhaul
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
@@ -150,17 +155,21 @@
 
             /**
              * Sets the reference of the parent submission viewer widget.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2134: MultiSubmissionView is no more supported.
+             *    - BUGR-2128: For abdandoned contest, a different view is shown.
              *
              * @param viewer the parent submission viewer widget.
              */
             public function set subViewer(viewer:SubmissionViewerWidget):void {
                 this._subViewer=viewer;
                 this.model=viewer.model;
-                this.model.thumbnailView=this;
                 if (_isInitialized) {
                     this.simpleSubViewer.model=this.model;
-                    this.multiSubViewer.model=this.model;
+                    //this.multiSubViewer.model=this.model;
                     this.multiImageViewer.model=this.model;
+                    this.abandonedContestViewer.subViewer=this._subViewer;
                 }
             }
 
@@ -180,13 +189,18 @@
              * Initializes this component.
              *
              * This component simply calls handleComplete and handleSubComplete through timers, to produce smooth effect.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2134: MultiSubmissionView is no more supported.
+             *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
             private function init():void {
                 trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALLING CREATION COMPLETE: " + this.model);
                 _isInitialized=true;
                 this.simpleSubViewer.model=this.model;
-                this.multiSubViewer.model=this.model;
+                //this.multiSubViewer.model=this.model;
                 this.multiImageViewer.model=this.model;
+                this.abandonedContestViewer.subViewer=this._subViewer;
                 
                 timer=new Timer(200, 1);
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleComplete);
@@ -287,9 +301,9 @@
              * Depending on the contest type, it updates the ui.
              * If contest is different from last, then it loads the submission data through webservice.
              * Else it simply updates the ui for currently loaded submissions.
-	     *
-	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
-	     *		-- handle abandoned contest correctly.
+    	     *
+    	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+    	     *		-- handle abandoned contest correctly.
              *
              * @param event not used parameter.
              */
@@ -326,16 +340,16 @@
                     //		rating selector -- active for any active or action required only.
                     //
                     // I can do both save as draft or continue to checkout here.
-		    // 'in danger' has same logic as 'action required'
+		            // 'in danger' has same logic as 'action required'
                     if (this.subViewer.selectedContestStatusId == this.subViewer.actionRequiredContestTypeId
-		          || this.subViewer.selectedContestStatusId == this.subViewer.inDangerContestTypeId) {
+		                || this.subViewer.selectedContestStatusId == this.subViewer.inDangerContestTypeId) {
                         updateUIForActionRequiredContest();
                     } else if (this.subViewer.activeContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForActiveContest();
-
                     } else if (this.subViewer.selectedContestStatusId == this.subViewer.completedContestTypeId) {
                         updateUIForCompletedContest();
-                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
+                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId 
+                        || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
                         updateUIForAbandonedContest();
                     } else if (this.subViewer.pastContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForPastContest();
@@ -504,6 +518,7 @@
                 enablePurchaseSelector();
                 enableSaveClearBtns();
             }
+            
 
             /**
             * Updates ui for active but not action required contests.
@@ -547,37 +562,17 @@
 
             /**
              * Update ui for abandoned contests.
-	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
-	     *		-- handle abandoned contest correctly.
+	         * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	         *		-- handle abandoned contest correctly.
+	         * 
+	         * Updated for Version 1.0.1
+            *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
             private function updateUIForAbandonedContest():void {
                 model.isRankMode=false;
                 model.showDownloadFullPreview=false;
                 
-                if (rankContainer) {
-                    rankContainer.visible=false;
-                    rankContainer.includeInLayout=false;
-                }
-                
-                if (contentActionControlContainer) {
-                    contentActionControlContainer.visible=false;
-                    contentActionControlContainer.includeInLayout=false;
-                }
-                
-                if (feedbackContainer) {
-                    feedbackContainer.visible=false;
-                    feedbackContainer.includeInLayout=false;
-                }
-                
-                if (purchaseTotalContainer) {
-                    purchaseTotalContainer.visible=false;
-                    purchaseTotalContainer.includeInLayout=false;
-                }
-
-                disableNoWinnerSelector();
-                hideCheckout();
-                disablePurchaseSelector();
-                disableSaveClearBtns();
+                model.selectedIndex=3;
             }
 
             /**
@@ -667,14 +662,14 @@
                     purchase.visible=true;
                     purchase.includeInLayout=true;
 
-		    if (!model.isPermissionReadOnly())
-		    {
-			purchase.enabled=true;
-		    }
-		    else
-		    {
-			purchase.enabled=false;
-		    }
+        		    if (!model.isPermissionReadOnly())
+        		    {
+        			    purchase.enabled=true;
+        		    }
+        		    else
+        		    {
+        			    purchase.enabled=false;
+        		    }
                 }
             }
 
@@ -977,7 +972,10 @@
 
             /**
              * Handle different gallery layout.
-             *
+             * 
+             * Updated for Version 1.0.1
+            *    - BUGR-2128: For abdandoned contest, a different view is shown.
+             * 
              * @param value the layout index.
              */
             private function set handleLayout(value:int):void {
@@ -991,7 +989,6 @@
                     handleContest(null);
                     model.showFooter=true;
                     currentRank.selectedIndex=model.getRank();
-
                     updatePurchaseButton();
                 } else if (value == 0) {
                     trace("handle layout... for value == 0");
@@ -1001,6 +998,12 @@
                     handleContest(null);
                     model.showFooter=false;
                     footer.height=0;
+                } else if (value == 3) {
+                    extraBtnPanel.visible=false;
+                    extraBtnPanel.includeInLayout=false;
+                    model.showFooter=false;
+                    footer.height=0;
+                    multiImageViewer.refreshImages();
                 }
             }
 
@@ -1068,10 +1071,10 @@
 
             /**
             * Go to previous page / submission in animated form.
-	    *
-	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-	    *	-- Better animation on sub viewer
-	    *	-- Start image load earlier.
+    	    *
+    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+    	    *	-- Better animation on sub viewer
+    	    *	-- Start image load earlier.
             */
             public function goPrev():void {
                 if (!model.canGoPrev()) {
@@ -1122,10 +1125,10 @@
 
             /**
             * Go to next page / submission in animated form.
-	    *
-	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-	    *	-- Better animation on sub viewer
-	    *	-- Start image load earlier.
+    	    *
+    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+    	    *	-- Better animation on sub viewer
+    	    *	-- Start image load earlier.
             */
             public function goNext():void {
                 if (!model.canGoNext()) {
@@ -1282,10 +1285,10 @@
 
             /**
             * Go to previous submission in animated form.
-	    *
-	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-	    *	-- Better animation on sub viewer
-	    *	-- Start image load earlier.
+    	    *
+    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+    	    *	-- Better animation on sub viewer
+    	    *	-- Start image load earlier.
             */
             public function prevSub():void {
                 if (model.activeSubmissionIndex <= 0) {
@@ -1335,10 +1338,10 @@
 
             /**
             * Go to next submission in animated form.
-	    *
-	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-	    *	-- Better animation on sub viewer
-	    *	-- Start image load earlier.
+    	    *
+    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+    	    *	-- Better animation on sub viewer
+    	    *	-- Start image load earlier.
             */
             public function nextSub():void {
                 if (model.activeSubmissionIndex >= this.subViewer.submissionList.length - 1) {
@@ -1458,17 +1461,29 @@
             
             /**
              * Shows a given submission in full size view.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2134: for multi image submission, we first show MultiImageView rather than MultiSubmissionView
              *
              * @param data submission object.
              */
             public function showSubmission(data:Object):void {
                 this.model.selectedIndex=-1;
                 handleContest(null);
-                this.model.setCurrentSubmission(data.id);
-                if (data.hasOwnProperty("multi") && data.multi == true) {
-                    this.model.selectedIndex=2
-                } else {
-                    this.model.selectedIndex=1;
+                
+                if (data) {
+                    this.model.setCurrentSubmission(data.id);
+                    if (data.hasOwnProperty("multi") && data.multi == true) {
+                        model.imageList=data.fullsizepreviewList as ArrayCollection;
+                        if (model.imageList && model.imageList.length > 0) {
+                            model.selectedImage=model.imageList.getItemAt(0) as String;
+                        } else {
+                            model.selectedImage="";
+                        }            
+                        this.model.selectedIndex=2;
+                    } else {
+                        this.model.selectedIndex=1;
+                    }
                 }
                 
                 _tobeShownSubmission = null;
@@ -1481,6 +1496,9 @@
             
             /**
              * Sets the title of the view.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
             private function setTitle():void {
                 if (contestCombo && contestCombo.selectedItem && content) {
@@ -1488,8 +1506,10 @@
                     var item:Object=contestCombo.selectedItem;
                     if (model.selectedIndex == 0) {
                         content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
-                    } else if (model.selectedIndex == 1 || model.selectedIndex == 2 || model.selectedIndex == 3) {
+                    } else if (model.selectedIndex == 1 || model.selectedIndex == 2) {
                         content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                    } else if (model.selectedIndex == 3) {
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>";
                     }
                 } else if (content) {
                     content.htmlText="";
@@ -1623,6 +1643,7 @@
                                      rowCount="1"
                                      columnCount="5"
                                      backgroundAlpha="0.0"
+                                     backgroundColor="#f0f0f0"
                                      selectionColor="#f0f0f0"
                                      rollOverColor="#f0f0f0"
                                      columnWidth="190"
@@ -1754,10 +1775,12 @@
                 </mx:VBox>
                 <tc:SimpleSubmissionView id="simpleSubViewer"
                                          width="100%"/>
-                <tc:MultiSubmissionView id="multiSubViewer"
-                                        width="100%"/>
+                <!--<tc:MultiSubmissionView id="multiSubViewer"
+                                        width="100%"/>-->
                 <tc:MultiImageView id="multiImageViewer"
                                    width="100%"/>
+                <tc:AbandonedContestScreen id="abandonedContestViewer" 
+                                           width="100%"/>
             </mx:ViewStack>
         </mx:Canvas>
 
