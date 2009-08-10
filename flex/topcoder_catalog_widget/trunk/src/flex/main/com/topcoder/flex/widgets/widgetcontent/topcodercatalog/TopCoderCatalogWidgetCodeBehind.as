@@ -7,9 +7,9 @@ package com.topcoder.flex.widgets.widgetcontent.topcodercatalog {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
-
+    
     import flash.utils.Dictionary;
-
+    
     import mx.containers.Canvas;
 
     /**
@@ -50,6 +50,13 @@ package com.topcoder.flex.widgets.widgetcontent.topcodercatalog {
          * Instance of the data model class for this widget.
          */
         private var _model:Model=Model.instance;
+        
+        /**
+         * Widget refresh callback function.
+         * 
+         * @since 1.0.1
+         */ 
+        private var _refreshCallbackFn:Function=null;
 
         /**
          * A default empty constructor.
@@ -207,8 +214,14 @@ package com.topcoder.flex.widgets.widgetcontent.topcodercatalog {
 
         /**
          * This action will reload this widget.
+         * 
+         * Updated for Version 1.0.1
+         *    - on refresh button click refresh callback function is executed.
          */
         public function reload():void {
+            if (refreshCallbackFn != null) {
+                refreshCallbackFn();
+            }
         }
 
         /**
@@ -301,12 +314,32 @@ package com.topcoder.flex.widgets.widgetcontent.topcodercatalog {
         }
 
         /**
-         * Gets the password.
+         * Sets the password.
          *
-         * @return the password.
+         * @param m the password.
          */
         public function set model(m:Model):void {
             this._model=m;
+        }
+        
+        /**
+         * Gets the refresh callback function.
+         *
+         * @return the callback function.
+         * @since 1.0.1
+         */
+        public function get refreshCallbackFn():Function {
+            return this._refreshCallbackFn;
+        }
+
+        /**
+         * Sets the refresh callback function.
+         *
+         * @param f the callback function.
+         * @since 1.0.1
+         */
+        public function set refreshCallbackFn(f:Function):void {
+            this._refreshCallbackFn=f;
         }
     }
 }

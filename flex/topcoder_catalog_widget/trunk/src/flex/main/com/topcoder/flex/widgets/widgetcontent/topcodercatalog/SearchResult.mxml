@@ -119,7 +119,7 @@
                 } else {
                     var rowCount:int=(this.height - 55) / 52;
                     var i:int;
-                    for (i=start; i < Math.min(start + rowCount, _dp.length); i++) {
+                    for (i=start; _dp && i < Math.min(start + rowCount, _dp.length); i++) {
                         var coms:TCComponent=_dp.getItemAt(i) as TCComponent;
                         render=new ComponentRenderer();
                         render.data=coms;
