@@ -598,8 +598,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
             return null;
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
         }
     }
 
@@ -881,8 +882,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             return (Long[]) submissions.toArray(new Long[submissions.size()]);
         } finally {
+             Util.closeResultSet(rs);
             Util.closeStatement(statement);
-            Util.closeResultSet(rs);
+           
         }
     }
 
@@ -993,8 +995,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to get external properties for resource.", e));
             throw new ResourcePersistenceException("Failed to select external properties for resource.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
         }
     }
 
@@ -1039,8 +1042,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             LOGGER.log(Level.ERROR, new LogMessage(new Long(resourceId), null,"Failed to load resource instance.",e));
             throw new ResourcePersistenceException("Failed to load resource instance.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
             closeConnection(connection);
         }
     }
@@ -1087,6 +1091,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
         	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to load the Resource from ResultSet.", e));
             throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
+        }finally {
+            Util.closeResultSet(rs);
+
         }
     }
 
@@ -1104,7 +1111,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             Resource resource = new Resource();
 
             resource.setId(rs.getLong("resource_id"));
-            ResourceRole role = this.loadResourceRole(rs.getLong("resource_role_id"));
+            ResourceRole role = this.loadResourceRole(rs.getLong("resource_role_id"), connection);
 
             resource.setResourceRole(role);
 
@@ -1293,8 +1300,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             		+ notificationType+ " of the project:" + project + " with external_ref user:" + user));
             throw new ResourcePersistenceException("Failed to load the notification.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
             closeConnection(connection);
         }
     }
@@ -1393,8 +1400,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
                 return type;
             }
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);        
         }
 
         return null;
@@ -1709,6 +1716,35 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         LOGGER.log(Level.INFO, "load ResourceRole with id:" + resourceRoleId);
         
         Connection connection = openConnection();
+        try
+        {
+
+            return loadResourceRole(resourceRoleId, connection);
+
+        } finally {
+            
+            closeConnection(connection);
+        }
+    }
+
+
+    /**
+     * <p>
+     * Loads the resource role from the persistence with the given id. Returns <code>null</code> if there is
+     * no resource role with the given id.
+     * </p>
+     *
+     * @return The loaded resource role
+     * @param resourceRoleId The id of the resource role to load
+     *
+     * @throws IllegalArgumentException If resourceRoleId is <= 0
+     * @throws ResourcePersistenceException If there is an error loading the resource role
+     */
+    private ResourceRole loadResourceRole(long resourceRoleId, Connection connection) throws ResourcePersistenceException {
+        Util.checkPositiveValue(resourceRoleId, "resourceRoleId");
+
+        LOGGER.log(Level.INFO, "load ResourceRole with id:" + resourceRoleId);
+        
         ResultSet rs = null;
         PreparedStatement statement = null;
 
@@ -1728,9 +1764,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             		"Failed load a resource role with id:" + resourceRoleId, e));
             throw new ResourcePersistenceException("Failed to load ResourceRole instance.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
-            closeConnection(connection);
+            Util.closeStatement(statement);
+            
         }
 
         return null;
@@ -1858,8 +1894,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to load Resources with ids:" + idString,e));
             throw new ResourcePersistenceException("Failed to load all the resources.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
             closeConnection(connection);
         }
     }
@@ -2083,8 +2120,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         			"Failed for getting all NotificationType with ids:" + idString, e));
             throw new ResourcePersistenceException("Failed to load NotificationTypes instances.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
             closeConnection(connection);
         }
 
@@ -2216,8 +2254,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         			"Failed for getting ResourceRoles ids:" + idString, e));
             throw new ResourcePersistenceException("Failed to load nResourceRole instance.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+
             closeConnection(connection);
         }
     }
@@ -2324,8 +2363,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             		"Failed to load Notifications with array of userIds/projectIds/notificationTypes.", e));
             throw new ResourcePersistenceException("Failed to load Notification instances.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+
             closeConnection(connection);
         }
     }
