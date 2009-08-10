@@ -26,11 +26,14 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
      *    - Removed the singleton nature of this class.
      * </p>
      * 
+     * Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
+     *    - commented variable index, that is no more used.
+     * 
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
-     * @author TCSDEVELOPER
-     * @version 1.0
+     * @author TCSDEVELOPER, TCSASSEMBLER
+     * @version 1.0.1
      * @since My Project Overhaul Assembly.
      */
     [Bindable]
@@ -40,10 +43,14 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
          */
         public var isMax:Boolean=true;
 
-        /**
-         * The currently selected project in the widget.
-         */
-        public var selectedProject:Project;
+        //
+        // Commented for Version 1.0.1
+        //     - Unused
+        //
+        ///**
+        // * The currently selected project in the widget.
+        // */
+        //public var selectedProject:Project;
 
         /**
          * The contest of the current selected project.
@@ -80,10 +87,13 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.model {
          */
         public var stopDrag:Boolean;
 
-        /**
-         *
-         */
-        public var index:int=-1;
+          //
+          // Commented for Version 1.0.1 - no more needed, new implementation does it in different way.
+          //
+          //        /**
+          //         *
+          //         */
+          //        public var index:int=-1;
 
         /**
          * Current project of this widget.
