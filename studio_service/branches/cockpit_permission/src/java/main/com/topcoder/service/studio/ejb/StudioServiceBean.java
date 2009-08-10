@@ -2748,7 +2748,6 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
     {
     	logEnter("getSimpleProjectContestData");
@@ -2790,7 +2789,6 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException
     {
     	logEnter("getSimpleProjectContestData(pid)");
