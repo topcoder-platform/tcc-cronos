@@ -1451,8 +1451,35 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			}
             if (conn != null) {
                 closeConnectionOnError(conn);
+                conn = null;
             }
             throw new PersistenceException(e.getMessage());
+        } finally {
+            if (rs != null)
+			{
+				try
+				{
+					rs.close();	
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+            if (conn != null) {
+                closeConnection(conn);
+            }
         }
 
 
@@ -2416,6 +2443,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the connection
             conn = openConnection();
 
+            return getSaleStatus(saleStatusId, conn);
+
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the sale status" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+        finally {
+
+            closeConnection(conn);
+        }
+    }
+
+
+     /**
+     * <p>
+     * Gets the sale status by given id.
+     * </p>
+     *
+     * @param saleStatusId the given sale status id.
+     *
+     * @return the sale status by given id.
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private SaleStatus getSaleStatus(long saleStatusId, Connection conn) throws PersistenceException {
+
             // get the sale status
             Object[][] rows = Helper.doQuery(conn,
             		QUERY_SALE_STATUS_BY_ID_SQL, new Object[] {saleStatusId},
@@ -2430,17 +2489,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             saleStatus.setSaleStatusId(((Long) rows[0][0]));
             saleStatus.setDescription((String) rows[0][1]);
 
-			closeConnection(conn);
 
             return saleStatus;
-        } catch (PersistenceException e) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null,
-                  "Fails to retrieve the sale status" , e));
-            if (conn != null) {
-                closeConnectionOnError(conn);
-            }
-            throw e;
-        }
+
     }
 
     /**
@@ -2462,6 +2513,39 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the connection
             conn = openConnection();
 
+            return getSaleType(saleTypeId, conn);
+
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve the sale type" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        } finally {
+            closeConnection(conn);
+
+        }
+
+    }
+
+
+
+    /**
+     * <p>
+     * Gets the sale type by given id.
+     * </p>
+     *
+     * @param saleTypeId the given sale type id.
+     *
+     * @return the sale type by given id.
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     */
+    private SaleType getSaleType(long saleTypeId, Connection conn) throws PersistenceException {
+
             // get the sale type
             Object[][] rows = Helper.doQuery(conn,
             		QUERY_SALE_TYPE_BY_ID_SQL, new Object[] {saleTypeId},
@@ -2476,17 +2560,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             saleType.setSaleTypeId(((Long) rows[0][0]));
             saleType.setDescription((String) rows[0][1]);
 
-			closeConnection(conn);
-
             return saleType;
-        } catch (PersistenceException e) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null,
-                  "Fails to retrieve the sale type" , e));
-            if (conn != null) {
-                closeConnectionOnError(conn);
-            }
-            throw e;
-        }
+
     }
 
     /**
@@ -2522,14 +2597,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             ContestSale contestSale = new ContestSale();
             contestSale.setContestSaleId(((Long) rows[0][0]));
             contestSale.setContestId((Long) rows[0][1]);
-            contestSale.setStatus(this.getSaleStatus((Long) rows[0][2]));
+            contestSale.setStatus(this.getSaleStatus((Long) rows[0][2], conn));
             contestSale.setPrice((Double) rows[0][3]);
             contestSale.setPayPalOrderId((String) rows[0][4]);
             contestSale.setCreateDate((Date) rows[0][5]);
             contestSale.setSaleReferenceId((String) rows[0][6]);
-            contestSale.setSaleType(this.getSaleType((Long) rows[0][7]));
+            contestSale.setSaleType(this.getSaleType((Long) rows[0][7], conn));
 
-			closeConnection(conn);
 
             return contestSale;
         } catch (PersistenceException e) {
@@ -2539,6 +2613,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
+        }
+        finally {
+
+            closeConnection(conn);
         }
     }
 
@@ -2573,17 +2651,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 ContestSale contestSale = new ContestSale();
                 contestSale.setContestSaleId(((Long) rows[i][0]));
                 contestSale.setContestId((Long) rows[i][1]);
-                contestSale.setStatus(this.getSaleStatus((Long) rows[i][2]));
+                contestSale.setStatus(this.getSaleStatus((Long) rows[i][2], conn));
                 contestSale.setPrice((Double) rows[i][3]);
                 contestSale.setPayPalOrderId((String) rows[i][4]);
                 contestSale.setCreateDate((Date) rows[i][5]);
                 contestSale.setSaleReferenceId((String) rows[i][6]);
-                contestSale.setSaleType(this.getSaleType((Long) rows[i][7]));
+                contestSale.setSaleType(this.getSaleType((Long) rows[i][7], conn));
 
                 ret.add(contestSale);
             }
 
-			closeConnection(conn);
 
             return ret;
         } catch (PersistenceException e) {
@@ -2593,6 +2670,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
+        }
+         finally {
+
+            closeConnection(conn);
         }
     }
 
@@ -3420,9 +3501,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     public void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
             throws PersistenceException {
 
+        PreparedStatement ps = null;
+
 		try
 		{
-			PreparedStatement ps = null;
+			
 
 			StringBuffer query = new StringBuffer(1024);
 			query.append("INSERT ");
@@ -3445,6 +3528,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 		{
 			throw(new PersistenceException(e.getMessage()));
 		}
+         finally {
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+        }
         
     }
 }
