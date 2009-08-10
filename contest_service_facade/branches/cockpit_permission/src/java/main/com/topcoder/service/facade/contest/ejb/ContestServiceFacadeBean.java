@@ -50,6 +50,7 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
+import com.topcoder.catalog.service.SearchCriteria;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
 import com.topcoder.clientcockpit.phases.EmailSendingException;
@@ -149,9 +150,15 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  * <p>
  * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
+ * 
+ * <p>
+ * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+ *  - For development contests, we seek if there is corresponding design component.
+ *    If yes, we use the same instead of creating new one. Forum is also used the same.
+ * </p>
  *
- * @author snow01
- * @version 1.0
+ * @author snow01, TCSASSEMBLER
+ * @version 1.0.1
  */
 @Stateless
 @WebService
@@ -448,6 +455,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+    
+    /**
+     * Represents the project category id for development contests.
+     * 
+     * @since 1.0.1
+     */
+    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
 
 	
 
@@ -1728,7 +1742,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // calculate the difference which user has to pay
             paymentAmount = currentFee - paidFee;
             Logger.getLogger(this.getClass()).info("extra payment is: " + paymentAmount);
-            if (Double.compare(paymentAmount, 0.0) <= 0) {
+            if (Double.compare(paymentAmount, 0.0) <= 0 && paidFee != 0) {
                 throw new PersistenceException("cannot decrease prize amount at this time", "");
             }
 
@@ -2518,6 +2532,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
+     * 
+     * Updated for Version 1.0.1
+     *      - BUGR-2185: For development contests, if asset (or component) exists from design contests then that is used
+     *        to create a new contest. Otherwise a new asset is also created.
      *
      * @param contest the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId the TC direct project id.
@@ -2542,18 +2560,48 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			XMLGregorianCalendar productionDate = null;
 
             if (assetDTO != null) {
-
-				if(assetDTO.getProductionDate() == null) { // BUGR-1445
-				/*
-				   - start: current time + 24 hour (round the minutes up to the nearest 15) 
-				 */
-					GregorianCalendar startDate = new GregorianCalendar();
-					startDate.setTime(new Date());
-					startDate.add(Calendar.HOUR, 24*14); //BUGR-1789
-					int m = startDate.get(Calendar.MINUTE);
-					startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
-					assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
-				}
+                
+                boolean isDevContest = contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+                boolean useExistingAsset=false;
+                
+                if (isDevContest) {
+                    String componentName = assetDTO.getName();
+                    SearchCriteria searchCriteria = new SearchCriteria(null, null, null, componentName, null, null, null, null, null);
+                    List<AssetDTO> foundDTOs = this.catalogService.findAssets(searchCriteria, false);
+                    if (foundDTOs != null && foundDTOs.size() > 0) {
+                        System.out.println("createSoftwareContest ====================> FoundAssetDTO for DEV: " + foundDTOs);
+                        useExistingAsset=true;
+                        assetDTO=foundDTOs.get(0);
+                        
+                        // re-get it, as the one found from findAsset seem to be shallow instance.
+                        assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getCompVersionId());
+                        
+                        if (assetDTO.getProductionDate() == null) {
+                            GregorianCalendar startDate = new GregorianCalendar();
+                            startDate.setTime(new Date());
+                            startDate.add(Calendar.HOUR, 24 * 14);
+                            int m = startDate.get(Calendar.MINUTE);
+                            startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+                            assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
+                        }
+                     
+                        productionDate = assetDTO.getProductionDate();
+                        assetDTO.setProductionDate(null);
+                    }
+                }
+                
+                if (!useExistingAsset) {
+                    if (assetDTO.getProductionDate() == null) { // BUGR-1445
+                        /*
+                         * - start: current time + 24 hour (round the minutes up to the nearest 15)
+                         */
+                        GregorianCalendar startDate = new GregorianCalendar();
+                        startDate.setTime(new Date());
+                        startDate.add(Calendar.HOUR, 24 * 14); // BUGR-1789
+                        int m = startDate.get(Calendar.MINUTE);
+                        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+                        assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
+                    }
 
 				// product date is used to pass the project start date
 				// bcoz we need to use XMLGregorianCalendar and project start date 
@@ -2563,48 +2611,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				productionDate = assetDTO.getProductionDate();
 				assetDTO.setProductionDate(null);
 
+                    if (contest.getProjectHeader() != null) {
+                        // comp development, set phase to dev
+                        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+                            assetDTO.setPhase("Development");
+                        }
+                        // else set to design
+                        else {
+                            assetDTO.setPhase("Design");
+                        }
+                    }
 
-				if (contest.getProjectHeader() != null) 
-				{
-					// comp development, set phase to dev
-					if (contest.getProjectHeader().getProjectCategory().getId() == 2)
-					{
-						assetDTO.setPhase("Development");
-					} 
-					// else set to design
-					else 
-					{
-						assetDTO.setPhase("Design");
-					}
+                    assetDTO = this.catalogService.createAsset(assetDTO);
+                    contest.setAssetDTO(assetDTO);
+                }
 
+                // create forum
+                if (createForum) {
+                    if (useExistingAsset && assetDTO.getForum() != null) {
+                        forumId = assetDTO.getForum().getJiveCategoryId();
+                    } else {
+                        forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory()
+                            .getId());
+                    }
+                }
 
-				}
-                assetDTO = this.catalogService.createAsset(assetDTO);
-                contest.setAssetDTO(assetDTO);
-				
-				
-
-				// create forum
-				
-				if (createForum)
-				{
-					forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
-				}
-
-				// if forum created
-				if (forumId > 0)
-				{
-					
-					// create a comp forum 
-					CompForum compForum = new CompForum();
-					compForum.setJiveCategoryId(forumId);
-					assetDTO.setForum(compForum);
-					assetDTO = this.catalogService.updateAsset(assetDTO);
-					// avoid cycle
-					assetDTO.getForum().setCompVersion(null);
-
-				}
-				
+                // if forum created
+                if (forumId > 0 && (!useExistingAsset || assetDTO.getForum() == null)) {
+                    // create a comp forum
+                    CompForum compForum = new CompForum();
+                    compForum.setJiveCategoryId(forumId);
+                    assetDTO.setForum(compForum);
+                    assetDTO = this.catalogService.updateAsset(assetDTO);
+                    // avoid cycle
+                    assetDTO.getForum().setCompVersion(null);
+                }
             }
 
             if (contest.getProjectHeader() != null) {
@@ -2675,6 +2716,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 contest.setProjectData(projectData);
 				contest.setId(projectData.getProjectHeader().getId());
 				contest.setAssetDTO(assetDTO);
+
+
+                // set null to avoid cycle
+                contest.getAssetDTO().setDependencies(null);
+                if (contest.getAssetDTO().getForum() != null)
+                {
+                    contest.getAssetDTO().getForum().setCompVersion(null);
+                }
+                if (contest.getAssetDTO().getLink() != null)
+                {
+                    contest.getAssetDTO().getLink().setCompVersion(null);
+                }
+                if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0)
+                {
+                    for (CompDocumentation doc : contest.getAssetDTO().getDocumentation())
+                    {
+                        doc.setCompVersion(null);
+                    }
+                }
 
 				// set project start date in production date
 				contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
@@ -3006,7 +3066,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
     }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException
     {
     	List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
@@ -3078,7 +3137,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *         found.
      * @throws PersistenceException if any error occurs when getting contest.
      */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException {
         List<CommonProjectContestData> ret=new ArrayList<CommonProjectContestData>();
         for(SimpleProjectContestData data:studioService.getSimpleProjectContestData()){
@@ -3199,12 +3257,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
     		return contest;
     	} catch(ProjectServicesException pse) {
+            sessionContext.setRollbackOnly();
     		throw new ContestServiceException("Fail to get project data from project services.", pse);
     	} catch(NumberFormatException nfe) {
+            sessionContext.setRollbackOnly();
     		throw new ContestServiceException("the properites 'Version ID' is not of Long value in project.", nfe);
     	} catch (EntityNotFoundException e) {
+            sessionContext.setRollbackOnly();
     		throw new ContestServiceException("the version id does not exist.", e);
 		} catch (com.topcoder.catalog.service.PersistenceException e) {
+            sessionContext.setRollbackOnly();
 			throw new ContestServiceException("Fail to get project asset.", e);
 		}    	
     }
@@ -3224,7 +3286,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 * 
 	 * @since TCCC-1329
 	 */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
 			long createdUser) throws PersistenceException
 	{
@@ -3281,7 +3342,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 * @return list of matching users, empty list if none matches.
 	 * @since TCCC-1329
 	 */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<User> searchUser(String key) throws PersistenceException
     {
 		return studioService.searchUser(key);
