@@ -9,7 +9,7 @@
     <property name="package" value="com.cronos.onlinereview.phases" />
     <property name="packagedir" value="com/cronos/onlinereview/phases" />
     <property name="distfilename" value="online_review_phases" />
-    <property name="component_version" value="1.0.5" />
+    <property name="component_version" value="1.0.6" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
