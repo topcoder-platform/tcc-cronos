@@ -180,7 +180,7 @@
                         }
                         
                         var adminFee:Number=SoftwareCompetitionUtils.instance().getAdminFeeProp(mainWidget.softwareCompetition);
-                        if (adminFee > 0) {
+                        if (adminFee >= 0) {
                             ns_contestf.text=adminFee.toFixed(0);
                         } else {
                             // rely on the value from config file.
