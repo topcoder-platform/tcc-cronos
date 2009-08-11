@@ -20,6 +20,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.topcoder.service.user.Helper;
@@ -60,6 +61,11 @@ import com.topcoder.util.log.LogManager;
 @Stateless
 public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
     /**
+     * TC administrator group.
+     */
+    private static final String TC_GROUP_ADMIN = "group_Admin";
+
+    /**
      * <p>
      * Represents the sessionContext of the EJB.
      * </p>
@@ -91,11 +97,6 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      * </p>
      */
     private Log logger;
-
-    /**
-     * Static instance of Pattern that validates user handle for the mock implementation.
-     */
-    private static final Pattern validUserHandlePattern = Pattern.compile("[A-Za-z][_A-Za-z0-9]*");
 
     /**
      * A default empty constructor.
@@ -147,7 +148,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             logOneParameter(userid);
 
             EntityManager em = getEntityManager();
-            Query query = em.createNativeQuery("select max(address) from email where user_id = " + userid);
+            Query query = em.createNativeQuery("select max(address) from email where primary_ind = 1 and user_id = " + userid);
             Object result = query.getSingleResult();
             if (result != null) {
                 return result.toString();
@@ -156,6 +157,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             return null;
         } catch (IllegalStateException e) {
             throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            return null;
         } catch (PersistenceException e) {
             throw wrapUserServiceException(e, "There are errors while retrieving the user's email address.");
         } finally {
@@ -182,25 +185,32 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getEmailAddress(String userHandle) throws UserServiceException {
-        String ret = null;
         try {
-            logEnter("getEmailAddress(userHandle)", userHandle);
+            logEnter("getEmailAddress(userHandle)");
+            logOneParameter(userHandle);
+
             Helper.checkNull(userHandle, "userHandle");
             Helper.checkEmpty(userHandle, "userHandle");
-
-            Matcher matcher = validUserHandlePattern.matcher(userHandle);
-            if (matcher.matches()) {
-                ret = userHandle + "@topcoder.com";
-            } else {
-                ret = null;
+           
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("select max(e.address) from email e, user u" 
+                                             + " where e.primary_ind = 1 and e.user_id = u.user_id and u.handle = :handle");
+            query.setParameter("handle", userHandle);
+            Object result = query.getSingleResult();
+            if (result != null) {
+                return result.toString();
             }
-        } catch (IllegalStateException e) {
-            throw wrapUserServiceException(e, "IllegalStateException.");
-        } finally {
-            logExit("getEmailAddress(userHandle)", ret);
-        }
 
-        return ret;
+            return null;
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            return null;
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors while retrieving the user's email address.");
+        } finally {
+            logExit("getEmailAddress(userid)");
+        }
     }
 
     /**
@@ -227,9 +237,25 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Helper.checkNull(userHandle, "userHandle");
             Helper.checkEmpty(userHandle, "userHandle");
 
-            ret = userHandle.equals("user") || (userHandle.toUpperCase().equals(userHandle));
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("select security_status_id from user_role_xref x, user u, security_roles sr " 
+                                             + " where x.login_id = u.user_id and "
+                                             + " x.role_id = sr.role_id and "
+                                             + "sr.description = :description and "
+                                             + "u.handle = :handle");
+            query.setParameter("description", TC_GROUP_ADMIN);
+            query.setParameter("handle", userHandle);
+            Object result = query.getSingleResult();
+            if (result != null) {
+                ret = (1L == ((Number) result).longValue());
+            }
+
         } catch (IllegalStateException e) {
             throw wrapUserServiceException(e, "IllegalStateException.");
+        } catch (NoResultException e) {
+            return false;
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors while retrieving the user's admin status.");
         } finally {
             logExit("isAdmin(userHandle)", ret);
         }
