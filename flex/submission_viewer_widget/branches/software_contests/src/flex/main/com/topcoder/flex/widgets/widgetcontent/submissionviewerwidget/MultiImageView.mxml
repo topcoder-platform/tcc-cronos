@@ -37,6 +37,7 @@
             import mx.collections.ArrayCollection;
             import mx.events.ListEvent;
 	    import mx.core.Application; 
+        import com.topcoder.flex.Helper;
 
             /**
              * Reference to the gallery view model class.
@@ -168,7 +169,13 @@
                 if ((value as int) != -1) {
                     super.data=null;
                     super.data=model.getSubmission((value as int));                    
-                    thumbnailImageList=new ArrayCollection(model.imageList.toArray().slice(0, 6));
+                     thumbnailImageList=new ArrayCollection(super.data.fullsizepreviewList.toArray().slice(0, 6));
+                     if (thumbnailImageList.length > 0) {
+                         model.selectedImage=thumbnailImageList.getItemAt(0) as String;
+                     } else {
+                         model.selectedImage="";
+                     }
+
                     trace("--------------- MultiImageView:: Setting data to:" + super.data.id + ", -----> " + thumbnailImageList.length);
                 } else {
                     trace("--------------- MultiImageView:: Setting data to null.");

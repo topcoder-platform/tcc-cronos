@@ -49,13 +49,14 @@
             private function handleDoubleClick(event:MouseEvent):void {
                 data.parentModel.setCurrentSubmission(data.id);
                 if (data.hasOwnProperty("multi") && data.multi == true) {
+                    data.parentModel.selectedIndex=2;
                     data.parentModel.imageList=data.fullsizepreviewList as ArrayCollection;
                     if (data.parentModel.imageList && data.parentModel.imageList.length > 0) {
                         data.parentModel.selectedImage=data.parentModel.imageList.getItemAt(0) as String;
                     } else {
                         data.parentModel.selectedImage="";
                     }
-                    data.parentModel.selectedIndex=2;
+                    
                 } else {
                     data.parentModel.selectedIndex=1;
                 }

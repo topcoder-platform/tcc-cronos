@@ -1474,13 +1474,14 @@
                 if (data) {
                     this.model.setCurrentSubmission(data.id);
                     if (data.hasOwnProperty("multi") && data.multi == true) {
+                        this.model.selectedIndex=2;
                         model.imageList=data.fullsizepreviewList as ArrayCollection;
                         if (model.imageList && model.imageList.length > 0) {
                             model.selectedImage=model.imageList.getItemAt(0) as String;
                         } else {
                             model.selectedImage="";
                         }            
-                        this.model.selectedIndex=2;
+                        
                     } else {
                         this.model.selectedIndex=1;
                     }

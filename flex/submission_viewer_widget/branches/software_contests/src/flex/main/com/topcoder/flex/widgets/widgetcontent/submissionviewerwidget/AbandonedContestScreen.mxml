@@ -62,7 +62,7 @@
     <mx:VBox width="100%"
              horizontalAlign="center"
              verticalGap="5">
-        <mx:Label width="100%"
+        <mx:Text width="100%"
                   fontFamily="Arial"
                   fontWeight="bold"
                   fontSize="16"
