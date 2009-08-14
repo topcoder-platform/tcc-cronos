@@ -10,10 +10,14 @@
      Updated for Cockpit Release Assembly 2 [BUGR-1830]
         - Added a button for "Open in New Tab"
         - Added handler for the same.
-        - Made Model class non singleton. 
+        - Made Model class non singleton.
+        
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        -  BUGR-2135: on refresh previous selected project and view is preserved.
 
-     @author TCSDEVELOPER
+     @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
+     @version 1.0.1
 -->
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                             width="100%"
@@ -28,9 +32,6 @@
                             xmlns:mxeffects="com.adobe.ac.mxeffects.*"
 			    resizeEffect="{resize}">
     <mx:Style source="./Style.css"/>
-    
-   
-    
     <mx:Script>
         <![CDATA[
             import mx.events.EffectEvent;
@@ -49,6 +50,13 @@
             import mx.core.UIComponent;
             import flash.events.Event;
             import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Moved the magic number 7, project list row size, to a const variable.
+             * 
+             * @since 1.0.1
+             */
+            private static const ProjectListRowSize:int=7;
 
             /**
              * Blazed end point application parameter.
@@ -356,59 +364,91 @@
                 //trace(">>>>>>>> doRotate end: " + new Date());
             }
 
-            /**
-             * Sets the project list selected index.
-             */
-            public function set setList(value:int):void {
-                //trace(">>>>>>>> setList start: " + new Date());
-                if (proList) {
-                    proList.selectedIndex=0;
-                }
-                
-                //trace(">>>>>>>> setList end: " + new Date());
-            }
+              //
+              // Commented for Version 1.0.1 - no more needed, new implementation does it in different way.
+              //
+              //            /**
+              //             * Sets the project list selected index.
+              //             */
+              //            public function set setList(value:int):void {
+              //                //trace(">>>>>>>> setList start: " + new Date());
+              //                if (proList) {
+              //                    proList.selectedIndex=0;
+              //                }
+              //                
+              //                //trace(">>>>>>>> setList end: " + new Date());
+              //            }
 
             /**
              * Pagination handler for project list.
+             * 
+             * Updated for Version 1.0.1
+             *    - refactored: have put the logic of show/hide of pagination buttons 
+             *      in another method 'showHideProjListPagination'.
+             *    - refactored: have put the logic of setting index and proList.verticalScrollPosition 
+             *      in another method 'setIndex'
              *
              * @param up true if up pagination, false if down pagination.
              */
             private function moveList(up:Boolean):void {
-                //trace(">>>>>>>> moveList start: " + new Date());
                 if (index > 0 && up) {
-                    index--;
-                    proList.verticalScrollPosition=proList.verticalScrollPosition - 1;
+                    setPaginationIndex(index-1);
                 } else if (!up && index < proList.dataProvider.length - 7) {
-
-                    index++;
-                    proList.verticalScrollPosition=proList.verticalScrollPosition + 1;
+                    setPaginationIndex(index+1);
                 }
 
+                showHideProjListPagination();
+            }
+            
+            /**
+             * It sets the pagination index for the left hand side project list.
+             * 
+             * Refactored from moveList method.
+             * 
+             * @since 1.0.1 
+             */ 
+            private function setPaginationIndex(i:int):void {
+                var diff:int=i-index;
+                
+                index+=diff;
+                proList.verticalScrollPosition=proList.verticalScrollPosition + diff;
+            }
+            
+            /**
+             * It shows hides project list pagination controls.
+             * 
+             * Refactored from moveList method.
+             * 
+             * @since 1.0.1 
+             */ 
+            private function showHideProjListPagination():void {
                 if (index == 0) {
                     prevBtn.visible=false;
                 } else {
                     prevBtn.visible=true
                 }
-                if (index >= model.proList.length - 7) {
+                if (index >= model.proList.length - ProjectListRowSize) {
                     nextBtn.visible=false;
                 } else {
                     nextBtn.visible=true;
                 }
-                
-                //trace(">>>>>>>> moveList end: " + new Date());
             }
 
             /**
              * Webservice result event handler for project contest data retrieval.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2135: on refresh previous selected project and view is preserved.
              *
              * @param e webservice result event.
              */
             private function setProject(e:ResultEvent):void {
-                //trace(">>>>>>>> setProject start: " + new Date());
-                
                 hideLoadingProgress();
 
                 if (e != null && e.result != null) {
+                    
+                    var selectedProject:Project=model.currentProj;
+                    
                     var prjArray:ArrayCollection=new ArrayCollection;
                     if (e.result is ArrayCollection)
                         prjArray=e.result as ArrayCollection;
@@ -448,13 +488,46 @@
 
                     sortByName(model.proList);
 
+                    //
+                    // Updated for Version 1.0.1 [BUGR-2135]
+                    //
+                    // previous selected project is available in model.currentProj
+                    // use the same to keep the view and project same on refresh.
+                    //
                     if (model.proList.length > 0) {
-                        model.currentProj=model.proList.getItemAt(0) as Project;
-                        model.index=1;
+                        var selectedProjectIndex:int=0;
+                        trace("-----------> SetProject selectedProject: " + selectedProject);
+                        if (selectedProject) {
+                            var k:int=0;
+                            for each (var p:Project in model.proList) {
+                                trace("-----------> SetProject if (p.id == selectedProject.id): " + p.id + " == " + selectedProject.id + " = " + (p.id == selectedProject.id));
+                                // id would be same but project instance would be different,
+                                // so we need to found that. 
+                                if (p.id == selectedProject.id) {
+                                    model.currentProj=p;
+                                    selectedProjectIndex=k;
+                                    break;
+                                }
+                                
+                                k++;
+                            }
+                        }
+                        
+                        trace("-----------> SetProject selectedProjectIndex: " + selectedProjectIndex);
+                        
+                        // selected project was not found, so default to first one.
+                        if (!selectedProject || selectedProjectIndex == 0) {
+                            model.currentProj=model.proList.getItemAt(0) as Project;    
+                            selectedProjectIndex=0;
+                        }                
+                        
+                        proList.selectedIndex=selectedProjectIndex;
+                        index=0;
+                        proList.verticalScrollPosition=0;
+                        setPaginationIndex(selectedProjectIndex);
+                        showHideProjListPagination();
                     }
                 }
-                
-                //trace(">>>>>>>> setProject end: " + new Date());
             }
 
             /**
@@ -581,8 +654,8 @@
 
     </mx:RemoteObject>
 
-    <mx:Binding source="model.index"
-                destination="setList"/>
+    <!--<mx:Binding source="model.index"
+                destination="setList"/>-->
     <mx:DefaultTileListEffect id="myDTLE"
                               fadeInDuration="10"
                               fadeOutDuration="10"
@@ -631,7 +704,7 @@
                      paddingLeft="0"
                      paddingRight="0"
                      borderStyle="none"
-                     rowCount="7"
+                     rowCount="{ProjectListRowSize}"
                      selectionColor="#FFFFFF"
                      dataProvider="{model.proList}"
                      labelField="name"
