@@ -29,8 +29,11 @@
       <!-- Informix Dialect -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
 
-      <!-- JBoss transction manager -->
-      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" />
+      <property name="hibernate.transaction.factory_class"
+                      value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory"/>
+
+      <property name="hibernate.transaction.manager_lookup_class"
+                  value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
 
       <!-- Show SQL for dev purpose -->
       <property name="hibernate.show_sql" value="true"/>
