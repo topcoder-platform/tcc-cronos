@@ -1022,15 +1022,22 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         public function isPaidContest():Boolean {
             if (this.competitionType == "STUDIO") {
-                if (!competition.contestData.payments) {
+                if (!competition.contestData.payments 
+                         || competition.contestData.payments.length <= 0) {
                     return false;
                 }
                 
+                trace("STUDIO isPaidContest: " + competition.contestData.payments);
+                
                 return true;
             } else {
-                if (!softwareCompetition || !softwareCompetition.projectData || !softwareCompetition.projectData.contestSales) {
+                if (!softwareCompetition || !softwareCompetition.projectData 
+                         || !softwareCompetition.projectData.contestSales 
+                         || softwareCompetition.projectData.contestSales.length <= 0) {
                     return false;
                 }
+                
+                trace("SOFTWARE isPaidContest: " + softwareCompetition.projectData.contestSales);
                 
                 return true;
             }
