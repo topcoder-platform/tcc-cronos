@@ -65,7 +65,7 @@
         <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${configuration_api.jar}"/>
         <pathelement location="${search_builder.jar}"/>
-        <pathelement location="${project_service.jar}"/>
+
         <pathelement location="${PactsClientServices.jar}"/>
         <pathelement location="${forums.jar}"/>
     </path>
