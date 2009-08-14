@@ -523,10 +523,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @return the first place prize
          */
         public function getFirstPrize(softwareCompetition:SoftwareCompetition):Number {
-            for each (var entry:MapEntry in softwareCompetition.projectHeader.properties) {
-                trace("GET FIRST PRIZE: entry: " + entry.key + "," + entry.value);
-                if (entry.key == PROJECT_INFO_TYPE_PAYMENT_KEY) {
-                    return new Number(entry.value);
+            if (softwareCompetition && softwareCompetition.projectHeader && softwareCompetition.projectHeader.properties) {
+                for each (var entry:MapEntry in softwareCompetition.projectHeader.properties) {
+                    trace("GET FIRST PRIZE: entry: " + entry.key + "," + entry.value);
+                    if (entry.key == PROJECT_INFO_TYPE_PAYMENT_KEY) {
+                        return new Number(entry.value);
+                    }
                 }
             }
             
@@ -579,9 +581,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @return admin fee of the competition.
          */
         public function getAdminFeeProp(softwareCompetition:SoftwareCompetition):Number {
-            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
-                if (e.key == PROJECT_INFO_TYPE_ADMIN_FEE_KEY) {
-                    return new Number(e.value);
+            if (softwareCompetition && softwareCompetition.projectHeader && softwareCompetition.projectHeader.properties) {
+                for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                    if (e.key == PROJECT_INFO_TYPE_ADMIN_FEE_KEY) {
+                        return new Number(e.value);
+                    }
                 }
             }
             

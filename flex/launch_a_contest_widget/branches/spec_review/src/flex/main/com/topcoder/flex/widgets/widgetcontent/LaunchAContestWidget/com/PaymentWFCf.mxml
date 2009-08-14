@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     This mxml component implements the payment workflow (UI) for credit card.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - masks credit card number and do not shows the csc.
+
+     @author TCSASSEMBLER
+     @version 1.0.1
+     @since Launch Contest Widget
+-->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
 	<mx:Script>
 		<![CDATA[
@@ -13,6 +27,18 @@
 			[Bindable]
 			private var model:Model = Model.instance;
 			
+			/**
+			 * Represents the prefix Mask for the credit card.
+			 * 
+			 * @since 1.0.1
+			 */
+			private static const Mask:String="************";
+			
+			/**
+			 * Shows the credit card approval message.
+			 * 
+			 * @param referenceNumber the reference number for successful credit card payment.
+			 */
 			public function showApproval(referenceNumber:String):void {
 				approval.visible = true;
 				//btPanel.visible = true;
@@ -42,8 +68,8 @@
 							<mx:VBox width="100%">
 								<!-- BUGR-1398 -->
 								<mx:HBox width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
-									<mx:Label text="{model.cardNum}" styleName="content" />
-									<mx:Label text="{model.csc}" styleName="content" />	
+									<mx:Label id="cardNum" text="{Mask+model.cardNum.substring(model.cardNum.length-4)}" styleName="content" />
+									<!--<mx:Label id="csc" text="{model.csc}" styleName="content" />-->
 								</mx:HBox>
 								<mx:Label text="{model.cardType}" styleName="content" />
 								<mx:Label text="{model.cardExpDateStr}" styleName="content" />

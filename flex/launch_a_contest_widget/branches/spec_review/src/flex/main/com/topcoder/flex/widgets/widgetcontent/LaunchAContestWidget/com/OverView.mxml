@@ -185,7 +185,7 @@
                         }
                         
                         var adminFee:Number=SoftwareCompetitionUtils.instance().getAdminFeeProp(mainWidget.softwareCompetition);
-                        if (adminFee > 0) {
+                        if (adminFee >= 0) {
                             ns_contestf.text=adminFee.toFixed(0);
                         } else {
                             // rely on the value from config file.
@@ -956,7 +956,7 @@
                                       text=""
                                       width="55"
                                       change="s_updateAmount()"
-                                      /> <!-- BUGR-1737 -->
+                                      editable="{mainWidget &amp;&amp; mainWidget.isAdmin}"/> <!-- BUGR-1737 -->
                         <mx:TextInput id="cntstTtl"
                                       text=""
                                       width="55"
@@ -1022,7 +1022,7 @@
                                       width="55"
                                       borderStyle="none"
                                       change="ns_updateAmount()"
-                                      /> <!-- BUGR-1737 -->
+                                      editable="{mainWidget &amp;&amp; mainWidget.isAdmin}"/> <!-- BUGR-1737 -->
                         <mx:TextInput id="ns_cntstTtl"
                                       text=""
                                       width="55"
