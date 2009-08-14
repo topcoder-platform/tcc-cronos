@@ -136,6 +136,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function get isAdmin():Boolean {
         	return _isAdmin;
         }    
+        public function set isAdmin(value:Boolean):void {
+        	_isAdmin = value;
+        }    
 
 		/**
 		 * If user is software admin
@@ -317,6 +320,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (!container.contents.isMaximized()) {
                 container.startMaximize();
             }
+
+            var admin:Boolean=this.isAdmin;
             var f:IWidgetFramework=widgetFramework;
             container.contents=new LaunchWidget();
             // Now with changes in WidgetContainer, widget.parent != container.
@@ -324,6 +329,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             (container.contents as LaunchWidget).container=container;
             container.contents.widgetFramework=f;
             container.contents.name=name;
+            (container.contents as LaunchWidget).isAdmin=admin;
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
                 if (map) {
