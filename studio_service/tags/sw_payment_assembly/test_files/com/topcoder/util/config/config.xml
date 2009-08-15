@@ -1,0 +1,7 @@
+<CMConfig>
+        <Property name="SimplePCDService">
+            <Property name="type">
+                <Value>com.hermes.eventdb.pcd.Mo</Value>
+            </Property>
+        </Property>
+</CMConfig>
