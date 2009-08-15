@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render draggable accordion on contests page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+           height="100%">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.renderer.ContestRenderer;
+            import mx.events.CollectionEventKind;
+            import mx.events.CollectionEvent;
+            import mx.collections.ArrayCollection;
+            import mx.managers.DragManager;
+            import mx.events.DragEvent;
+
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var parentWidget:ProjectWidget=null;
+
+            /**
+             * Data provider for this.
+             */
+            private var _dataProvider:ArrayCollection;
+
+            /**
+             * Setter for the data provider.
+             *
+             * @param value array collection.
+             */
+            public function set dataProvider(value:ArrayCollection):void {
+                this._dataProvider=value;
+                if (container) {
+                    updateContainer();
+                }
+                _dataProvider.addEventListener(CollectionEvent.COLLECTION_CHANGE, updateChild);
+            }
+
+            /**
+             * Updates the container.
+             */
+            private function updateContainer():void {
+                container.removeAllChildren();
+                for each (var item:Object in _dataProvider) {
+                    var render:ContestRenderer=new ContestRenderer();
+                    render.parentWidget=parentWidget;
+                    render.data=item;
+                    container.addChild(render);
+                }
+            }
+
+            /**
+             * Event handler for child updates.
+             *
+             * @param event collection event.
+             */
+            public function updateChild(event:CollectionEvent):void {
+                if (event.kind == CollectionEventKind.MOVE) {
+                    var child:ContestRenderer=container.getChildAt(event.oldLocation) as ContestRenderer;
+                    container.setChildIndex(child, event.location);
+                }
+            }
+
+            /**
+             * Event handler for drop.
+             *
+             * @param event drag event.
+             */
+            private function handleDrop(event:DragEvent):void {
+                if (event.dragSource && event.dragSource.hasFormat('contest')) {
+                    var source:ContestRenderer=event.dragInitiator as ContestRenderer;
+                    if (source && source.data) {
+                        //trace("Over Spacer: put it at last");
+                        parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
+                        parentWidget.model.adjustList(source.data);
+                    }
+                }
+                parentWidget.model.doDrag=false;
+            }
+
+            /**
+             * Event handler for drag complete.
+             *
+             * @param event drag event.
+             */
+            private function handleComplete(event:DragEvent):void {
+                parentWidget.model.doDrag=false;
+                parentWidget.model.stopDrag=!parentWidget.model.stopDrag;
+            }
+
+            /**
+             * Event handler for checking drag as it is happening.
+             *
+             * @param event drag event.
+             */
+            private function checkDrag(event:DragEvent):void {
+                if (event.dragSource && event.dragSource.hasFormat('contest') && event.currentTarget == spacer) {
+                    DragManager.acceptDragDrop(spacer);
+                    DragManager.showFeedback("move");
+                    //trace("Over Spacer: Show it at last.");
+                    arrow.visible=true;
+                    arrow.y=spacer.y - 6;
+
+                }
+            }
+
+            /**
+             * Sets the arrow non visible.
+             *
+             * @param nouse not in use parameter.
+             */
+            public function set setArrow(nouse:Boolean):void {
+                this.arrow.visible=false;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="parentWidget.model.contest"
+                destination="dataProvider"/>
+    <mx:Binding source="parentWidget.model.canShowArrow"
+                destination="setArrow"/>
+    <mx:VBox width="100%"
+             height="100%"
+             verticalGap="0">
+        <mx:VBox width="100%"
+                 id="container"
+                 creationComplete="updateContainer()"
+                 verticalGap="0"
+                 horizontalScrollPolicy="off"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 paddingLeft="0"
+                 paddingRight="0"/>
+        <mx:Canvas height="100%"
+                   width="100%"
+                   dragEnter="checkDrag(event)"
+                   dragComplete="handleComplete(event)"
+                   dragDrop="handleDrop(event)"
+                   id="spacer"
+                   backgroundColor="white"/>
+    </mx:VBox>
+    <mx:Canvas width="11"
+               height="11"
+               id="arrow"
+               x="-11"
+               y="0"
+               styleName="arrow"
+               visible="false"
+               includeInLayout="false"/>
+</mx:Canvas>
