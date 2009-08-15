@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for multi submission view of the submission viewer.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1378]
+	    - Show horizontal scroll bar for multi image submission.
+
+     @author snow01
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         backgroundColor="#f7f7f7"
+         borderStyle="solid"
+         borderSides="bottom"
+         borderColor="#d6d6d6"
+         paddingLeft="20"
+         paddingRight="20"
+         paddingTop="0"
+         paddingBottom="0"
+         horizontalAlign="left"
+         creationPolicy="all"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         creationComplete="init()">
+    <mx:Script>
+        <![CDATA[
+            import mx.core.Application;
+            import mx.core.ScrollPolicy;
+            import mx.containers.Box;
+            import mx.controls.Image;
+            import mx.collections.ArrayCollection;
+            
+            /**
+             * Reference to the gallery view model class.
+             */
+            [Bindable]
+            public var model:ThumbnailGalleryDataModel;
+            
+	    /**
+	     * Load the data on control initialization complete
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            private function init():void {
+                if (model && model.activeSubmissionId > 0) {
+                    this.data=model.activeSubmissionId;
+                }
+            }
+            
+	    /**
+	     * Current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            [Bindable]
+            private var _currentThumbPage:int=0;
+            
+	    /**
+	     * Get the current page index for the page navigation of thumbnail images.
+	     *
+	     * @return the current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            [Bindable]
+            public function get currentThumbPage():int {
+                return this._currentThumbPage;
+            }
+            
+	    /**
+	     * Set the current page index for the page navigation of thumbnail images.
+	     *
+	     * @param i the current page index for the page navigation of thumbnail images.
+	     *
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            public function set currentThumbPage(i:int):void {
+                this._currentThumbPage=i;
+                drawMain();
+            }
+            
+            /**
+             * Handler for thumb up/down.
+             */
+            private function updateUpDown(up:Boolean):void {
+                if (!model.isRankMode || model.isPermissionReadOnly()) {
+                    return;
+                }
+
+                data.upDown=(up) ? "up" : "down";
+                if (up) {
+                    downData.selected=false;
+                    upData.selected=true;
+                } else {
+                    upData.selected=false;
+                    downData.selected=true;
+                }
+            }
+            
+            /**
+             * Handler for showing/hiding the footer.
+             */
+            private function showHideFooter():void {
+                model.showFooter=!model.showFooter;
+                if (model.showFooter) {
+                    btn.styleName="showHideBtnOpen2";
+                } else {
+                    btn.styleName="showHideBtnClose2";
+                }
+            }
+            
+	    /**
+	     * Draws the main view of the thumbnail images.
+	     * @since Cockpit Release Assembly 2 [BUGR-1378]
+	     */
+            private function drawMain():void {
+                if (data && main && data.hasOwnProperty("multi") && data.multi == true && data.hasOwnProperty("fullsizepreviewList")) {
+                    var items:ArrayCollection=new ArrayCollection(data.fullsizepreviewList.toArray().slice(this._currentThumbPage * 6, this._currentThumbPage * 6 + 6));
+                    if (items) {
+                        main.removeAllChildren();
+                        for each (var item:String in items) {
+                            var box:Box=new Box();
+                            box.setStyle("borderStyle", "solid");
+                            box.data=item;
+                            box.verticalScrollPolicy=ScrollPolicy.OFF;
+                            box.horizontalScrollPolicy=ScrollPolicy.OFF;
+                            var img:Image=new Image();
+                            img.source=item;
+                            img.addEventListener(Event.COMPLETE, handleComplete);
+                            box.addEventListener(MouseEvent.CLICK, handleClick);
+                            box.addChild(img);
+                            main.addChild(box);
+                        }
+                    }
+                }
+            }
+            
+            /**
+             * Overrides the data method, so that caller can the properties on it.
+             *
+             * <p>
+             * Changed for Cockpit Submission Viewer Widget Enhancement Part 1:
+             *    Now multi images are read from fullsizepreviewList.
+             * </p>
+             *
+             * @param value value from the caller.
+             */
+            override public function set data(value:Object):void {
+                trace("--------------- MultiSubmissionView:: value: " + value);
+                
+                if ((value as int) != -1) {
+                    currentThumbPage=0;
+                    super.data=null;
+                    trace("--------------- MultiSubmissionView:: active submission id: " + model.activeSubmissionId);
+                    super.data=model.getSubmission((value as int));
+                    
+                    trace("--------------- MultiSubmissionView:: Setting data to:" + super.data);
+                    
+                    // this is first time we draw so reset the size.
+                    if (main) {
+                        main.overriddenSize=0;
+                    }
+                    
+                    drawMain();
+                    
+                } else {
+                    trace("--------------- MultiSubmissionView:: Setting data to null.");
+                }
+            }
+            
+            /**
+            * Handler for image load complete.
+            */
+            private function handleComplete(event:Event):void {
+                var img:Image=event.currentTarget as Image;
+                if (img && img.content) {
+                    img.scaleContent=false;
+                    img.content.width=img.width;
+                    img.content.height=img.height;
+                }
+            }
+
+            /**
+            * Handler for image box click.
+            */
+            private function handleClick(event:Event):void {
+                var item:String=(event.currentTarget as Box).data as String;
+                if (item) {
+                    model.selectedImage=item;
+                    model.imageList=data.fullsizepreviewList as ArrayCollection;
+                    model.selectedIndex=3;
+                }
+            }
+            
+            /**
+             * Event handler for download link button click.
+             *
+             * @since 1.0.1
+             */
+            private function downloadLinkHandler():void {
+		        // Open the link in a new window.
+		        navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + data.id), '_blank');
+	        }
+        ]]>
+    </mx:Script>
+
+    <!--
+         Binding should happen with activeSubmissionId
+         since: Cockpit Submission Viewer Widget Enhancement Part 1
+    -->
+    <mx:Binding source="model.activeSubmissionId"
+                destination="data"/>
+    <mx:Spacer height="50%"/>
+    <mx:HBox width="100%"
+             horizontalAlign="center"
+             verticalAlign="middle">
+        <mx:Button id="prev"
+                   styleName="goPrev"
+                   visible="{currentThumbPage > 0}"
+                   includeInLayout="{prev.visible}"
+                   click="{currentThumbPage--}"/>
+        <tc:CustomBox width="100%"
+                    paddingLeft="10"
+                    paddingRight="10"
+                      verticalAlign="middle"
+                      horizontalAlign="center"
+                      id="main"/>
+        <mx:Button id="next"
+                   styleName="goNext"
+                   visible="{data &amp;&amp; data.fullsizepreviewList.length - currentThumbPage * 6 - 6 > 0}"
+                   includeInLayout="{next.visible}"
+                   click="{currentThumbPage++}"/>
+    </mx:HBox>
+    <mx:HBox width="100%"
+             horizontalAlign="center">
+        <mx:Label text="{data.id}"
+                  styleName="normalText"/>
+        <mx:Button id="upData"
+                   styleName="{model.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
+                   click="updateUpDown(true)"
+                   selected="{data.upDown == 'up'}"
+                   toolTip="Feel Good"/>
+        <mx:Button id="downData"
+                   styleName="{model.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
+                   click="updateUpDown(false)"
+                   selected="{data.upDown == 'down'}"
+                   toolTip="Not Interested"/>
+    </mx:HBox>
+    <mx:HBox width="100%"
+             horizontalAlign="center"
+             visible="{model.showDownloadFullPreview}"
+             includeInLayout="{model.showDownloadFullPreview}">
+        <!-- BUGR-1664 -->
+        <mx:LinkButton label="Download Full Preview"
+                       click="{downloadLinkHandler()}"/>
+    </mx:HBox>
+    <mx:Spacer height="50%"/>
+    <mx:Button id="btn"
+               styleName="showHideBtnOpen2"
+               includeInLayout="true"
+               click="showHideFooter()"/>
+</mx:VBox>
