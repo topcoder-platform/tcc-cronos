@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to show the search results (filtered or search results).
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:com="com.*"
+         creationComplete="init()"
+         paddingTop="0"
+         paddingBottom="0"
+         verticalGap="0"
+         verticalScrollPolicy="off"
+         resize="handleResize(event)">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.vo.TCComponent;
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.renderer.ComponentRenderer;
+            import mx.events.ResizeEvent;
+            import mx.core.IUIComponent;
+            import mx.events.CollectionEventKind;
+            import mx.events.CollectionEvent;
+            import mx.collections.ArrayCollection;
+
+            /**
+             * Instance of the data model class for this widget.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+
+            /**
+             * If navigation page container has been created or not.
+             */
+            [Bindable]
+            public var page:Boolean=false;
+
+            /**
+             * Index of current page.
+             */
+            [Bindable]
+            private var currentPage:int=0;
+
+            /**
+             * Start index of pages in this search results.
+             */
+            [Bindable]
+            private var start:int=0;
+
+            /**
+             * End index of pages in this search results.
+             */
+            [Bindable]
+            private var end:int=0;
+
+            /**
+             * The search result data provider.
+             */
+            [Bindable]
+            private var _dp:ArrayCollection;
+
+            /**
+             * Handler that gets called on creation complete of this widget.
+             *
+             * It executes only if data provider is valid.
+             */
+            private function init():void {
+                if (_dp) {
+                    currentPage=0;
+                    start=0;
+                    end=0;
+                    container.removeAllChildren();
+                    renderData();
+                }
+            }
+
+            /**
+             * Gets the data provider for this search results.
+             *
+             * @return the data provider for this search results.
+             */
+            public function get dataProvider():ArrayCollection {
+                return _dp;
+            }
+
+            /**
+             * Sets the data provider for this search results.
+             *
+             * @param dp the data provider for this search results.
+             */
+            public function set dataProvider(dp:ArrayCollection):void {
+                _dp=dp;
+                if (initialized && _dp) {
+                    currentPage=0;
+                    start=0;
+                    end=0;
+                    container.removeAllChildren();
+                    renderData();
+                }
+            }
+
+            /**
+             * Renders the search result page by rendering each row of search result through ComponentRenderer.
+             */
+            private function renderData():void {
+                var render:ComponentRenderer;
+                if (!page) {
+                    for each (var item:TCComponent in _dp) {
+                        render=new ComponentRenderer();
+                        render.data=item;
+                        container.addChild(render);
+                    }
+                } else {
+                    var rowCount:int=(this.height - 55) / 52;
+                    var i:int;
+                    for (i=start; _dp && i < Math.min(start + rowCount, _dp.length); i++) {
+                        var coms:TCComponent=_dp.getItemAt(i) as TCComponent;
+                        render=new ComponentRenderer();
+                        render.data=coms;
+                        container.addChild(render);
+                    }
+                    end=i - 1;
+                }
+            }
+
+            /**
+             * Navigate to next page.
+             */
+            private function gotoNext():void {
+                var rowCount:int=(this.height - 55) / 52;
+                start=Math.min(_dp.length - 1, rowCount + start);
+                container.removeAllChildren();
+                renderData();
+                currentPage++;
+            }
+
+            /**
+             * Navigate to previous page.
+             */
+            private function gotoLast():void {
+                var rowCount:int=(this.height - 55) / 52;
+                start=Math.max(0, start - rowCount);
+                container.removeAllChildren();
+                renderData();
+                currentPage--;
+            }
+
+            /**
+             * Resize event handler for the component row.
+             */
+            private function handleResize(event:ResizeEvent):void {
+                if (this.height > 0 && this.height != event.oldHeight && page) {
+                    currentPage=0;
+                    start=0;
+                    end=0
+                    container.removeAllChildren();
+                    renderData();
+
+                }
+                if (this.width == 0 || this.width == event.oldWidth) {
+                    return;
+                }
+                for each (var child:ComponentRenderer in container.getChildren()) {
+                    child.width=this.width - 5;
+                }
+            }
+
+            /**
+             * Identifies if given navigation button should be visible or not.
+             *
+             * @param h the specified navigation button.
+             */
+            private function isBtnVisible(h:Number):Boolean {
+                var rowCount:int=(this.height - 55) / 52;
+                return rowCount <= _dp.length;
+            }
+        ]]>
+    </mx:Script>
+    <mx:VBox id="container"
+             width="100%"
+             height="100%"
+             paddingRight="5"
+             paddingLeft="0"
+             paddingTop="0"
+             paddingBottom="0"
+             verticalGap="0"
+             horizontalScrollPolicy="off"
+             verticalScrollPolicy="off"/>
+    <mx:HBox id="bottom"
+             width="100%"
+             height="35"
+             borderStyle="solid"
+             borderColor="#e5e5e5"
+             borderSides="top"
+             visible="{page}"
+             includeInLayout="{page}"
+             horizontalAlign="right"
+             horizontalScrollPolicy="off"
+             paddingTop="9"
+             paddingRight="7"
+             horizontalGap="5">
+        <mx:Button label="&lt;"
+                   styleName="pageBtn"
+                   click="gotoLast()"
+                   width="21"
+                   height="21"
+                   id="last"
+                   visible="{start != 0}"
+                   includeInLayout="{start != 0}"/>
+        <mx:Button label="{currentPage}"
+                   styleName="pageBtn"
+                   click="gotoLast()"
+                   width="21"
+                   height="21"
+                   visible="{start != 0}"
+                   includeInLayout="{start != 0}"/>
+        <mx:Button label="{currentPage + 1}"
+                   styleName="pageBtn"
+                   textRollOverColor="#da0205"
+                   width="21"
+                   height="21"
+                   color="#da0205"
+                   enabled="false"
+                   disabledColor="#da0205"
+                   visible="{isBtnVisible(height)}"
+                   includeInLayout="{isBtnVisible(height)}"/>
+        <mx:Button label="{currentPage + 2}"
+                   styleName="pageBtn"
+                   click="gotoNext()"
+                   width="21"
+                   height="21"
+                   visible="{end != _dp.length - 1}"
+                   includeInLayout="{end != _dp.length - 1}"/>
+        <mx:Button label="&gt;"
+                   styleName="pageBtn"
+                   click="gotoNext()"
+                   width="21"
+                   height="21"
+                   id="next"
+                   visible="{end != _dp.length - 1}"
+                   includeInLayout="{end != _dp.length - 1}"/>
+    </mx:HBox>
+</mx:VBox>
