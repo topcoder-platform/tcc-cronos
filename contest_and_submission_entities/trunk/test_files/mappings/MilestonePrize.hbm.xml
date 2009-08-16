@@ -24,7 +24,7 @@
       column="number_of_submissions" not-null="false" />
 
     <set name="submissions" table="submission_milestone_prize_xref"
-      inverse="true" fetch="select">
+      inverse="false" fetch="select">
       <key column="contest_milestone_prize_id" />
       <many-to-many column="submission_id"
         class="com.topcoder.service.studio.submission.Submission" />
