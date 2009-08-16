@@ -213,7 +213,7 @@ CREATE TABLE  submission_payment  (
 CREATE TABLE  submission_prize_xref  (
         prize_id decimal(10) NOT NULL ,
         submission_id decimal(10) NOT NULL ,
-        create_date DATETIME YEAR to FRACTION(3) NOT NULL
+        create_date DATETIME YEAR TO FRACTION(3) default CURRENT YEAR TO FRACTION not null
 );
 
 CREATE TABLE  submission_review  (
