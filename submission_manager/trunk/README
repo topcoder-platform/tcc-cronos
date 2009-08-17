@@ -9,8 +9,36 @@ TO RUN:
 	tcs_libdir - root of topcoder components
 	cronos_libdir - root of cronos components
 	java_1_5_bootclasspath - installation path for java 1.5 (only needed for compile_targets task)
-	jboss.dir - root of JBoss 4.2.2 installation.
-	jboss.config.name - the name for the jboss server configuration (default)
+	jboss_dir - root of JBoss 4.2.3 installation. Like D:/Application/DevApp/jboss-4.2.3.GA
+	jboss_lib - the lib dir in JBoss default server. Like D:/Application/DevApp/jboss-4.2.3.GA/server/default/lib
+
+	The structure of tcs_libdir: 
+	${tcs_libdir}
+	- base_exception
+		- 2.0.0
+			- base_exception.jar
+	- logging_wrapper
+		- 2.0.0
+			- logging_wrapper.jar
+	- object_formatter
+		- 2.0.0
+			- object_formatter.jar
+			
+	The structure of ext_libdir:
+	${ext_libdir}:
+		- cobertura
+			- 1.8
+		- jdbc
+			- informix
+				- 1.4.1
+		- junit
+			- 3.8.2
+	The structure of cronse_libdir:
+	${crons_libdir}:
+		- contest_and_submission_entities
+			- 1.2.0
+
+
 
 4. The following standard build script properties can be changed (defaults are noted)
 	debug=off - as expected
@@ -22,49 +50,24 @@ TO RUN:
 5. The following properties need to be set for this component
 	None
 
-NB:
-	The folder ${basedir}/test_reflib contains TopCoder components 
-	that are required by this component's test code. This component is
-	used to by compile_test and test targets. Components are listed under
-	the following directory structure "component name"/"component version".
-	Components are provided AS IS for development purposes only.
-
-	Included:
-
-    Configuration API 1.0.0
-    Configuration Manager 2.1.5
-    Configuration Persistence 1.0.1
-    DB Connection Factory 1.1
-    Typesafe Enum 1.1.0
-
 Setup
 ------------------------------------------------------
-Database
+Setup Database
 
 1. install Informix and make sure the database is started.
 2. create a database named 'contest' in Informix.
-3. use 'dbaccess project <path>/test_files/schema_create_nullOutCreateDate.sql' and 'create_seq.sql' to create database.
-It will create tables and sequences. Note, you can use 'dbaccess project <path>/test_files/drop.sql' to drop tables and sequences.
-The reason why not use 'schema_create.sql', because the create_date of submission_prize_xref table, is unable to populated by current hibernate mapping.
-see http://forums.topcoder.com/?module=Thread&threadID=607621&start=0
-4. change the hostname or ip address and port in test_files/informix-ds.xml and test_files/InformixDBConnectionFactory.xml.
-
-Here, database is ready.
-
-JBoss
-
-1. Download and install JBoss 4.2.2.
+3. use 'dbaccess project <path>/test_files/schema_create.sql' and 'create_seq.sql' to create tables and sequences.
+4. change the database connection properties in test_files/ear/informix-ds.xml and test_files/InformixDBConnectionFactory.xml.
 
 
-Now, all the setup is ready. Let's start.
+Setup JBoss
 
-1. start Jboss 4.2.2
-2. use 'ant test' to run the test cases.
+1. Download and install JBoss 4.2.3.
+2. change 'jboss.home' property in build-dependencies.xml
 
 
-This is the most simplified process I can offer you:)
+Run Test
 
-Other Notes
-------------------------------------------------------------------------
-
-1. About the coverage report, there are some issue with using codertura with jboss. So the coverage report is incorrect. I covered all the case for testing.
+1. use 'ant deploy_jboss' to deploy ear to jboss
+2. start Jboss 4.2.3
+3. use 'ant test' to run the test cases.

@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
-	<class name="ContestType" table="contest_type_lu" lazy="true">
+	<class name="ContestType" table="contest_type_lu" lazy="false">
 		<comment>
 			This table describes type of contest. It describe which
 			images type should contain. Also it is linked to
@@ -12,11 +12,7 @@
 			2 Prototype 3 Logo.
 		</comment>
 
-		<id name="contestType" column="contest_type_id" type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_contest_type_lu</param>
-			</generator>
-		</id>
+		<id name="contestType" column="contest_type_id" type="long" />
 
 		<property name="description" length="100"
 			column="contest_type_desc" />
@@ -27,10 +23,10 @@
 		<property name="requirePreviewImage"
 			column="require_preview_image" />
 
-		<bag name="config">
+		<bag name="config" fetch="subselect">
 			<key column="contest_type_id" />
 			<one-to-many
-				class="com.topcoder.service.studio.contest.ContestConfig" />
+				class="com.topcoder.service.studio.contest.ContestTypeConfig" />
 		</bag>
 
 	</class>

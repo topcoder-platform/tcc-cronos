@@ -4,18 +4,13 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.submission">
 	<class name="SubmissionStatus" table="submission_status_lu"
-		lazy="true">
+		lazy="false">
 		<comment>
 			Tables which describe submission status. Possible values: 1.
 			Active 2. Deleted
 		</comment>
 
-		<id name="submissionStatusId" column="submission_status_id"
-			type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_submission_status_lu</param>
-			</generator>
-		</id>
+		<id name="submissionStatusId" column="submission_status_id" type="long" />
 
 		<property name="description" length="100" not-null="true"
 			column="submission_status_desc" />

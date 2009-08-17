@@ -7,6 +7,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+
 /**
  * <p>
  * This test case aggregates all Unit test cases.
@@ -16,7 +17,6 @@ import junit.framework.TestSuite;
  * @version 1.0
  */
 public class UnitTests extends TestCase {
-
     /**
      * <p>
      * Aggregates all unit tests.
@@ -31,12 +31,10 @@ public class UnitTests extends TestCase {
         suite.addTest(EntityNotFoundExceptionUnitTests.suite());
         suite.addTest(SubmissionManagementConfigurationExceptionUnitTests.suite());
         suite.addTest(SubmissionManagementExceptionUnitTests.suite());
-
+        suite.addTest(InconsistentContestsExceptionUnitTests.suite());
+        suite.addTest(NumberOfSubmissionsExceededExceptionUnitTests.suite());
         suite.addTest(SubmissionManagerBeanUnitTests.suite());
-
         suite.addTest(Demo.suite());
-
         return suite;
     }
-
 }

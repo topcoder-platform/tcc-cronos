@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission.accuracytests;
 
@@ -9,31 +9,24 @@ import junit.framework.TestSuite;
 
 /**
  * <p>
- * This test case aggregates all Unit test cases.
+ * This test case aggregates all Accuracy test cases.
  * </p>
- *
- * @author TCSDEVELOPER
+ * @author TopCoder
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {
 
     /**
      * <p>
-     * Aggregates all unit tests.
+     * Suite.
      * </p>
-     *
-     * @return test suite aggregating all unit tests.
+     * @return the test
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(EntityExistsExceptionAccuracyTests.class);
-        suite.addTestSuite(EntityNotFoundExceptionAccuracyTest.class);
-        suite.addTestSuite(SubmissionManagementConfigurationExceptionAccuracyTest.class);
-        suite.addTestSuite(SubmissionManagementExceptionAccuracyTest.class);
-        suite.addTestSuite(SubmissionManagerBeanAccuracyTest.class);
+        suite.addTestSuite(SubmissionManagerBeanAccV12Tests.class);
 
         return suite;
     }
-
 }

@@ -19,11 +19,10 @@
     </composite-id>
 
     <property name="finalScore" column="final_score"
-      not-null="true" />
+      not-null="false" />
 
     <property name="placed" not-null="true" />
 
-    <property name="createDate" column="create_date"
-      not-null="true" />
+    <property name="createDate" column="create_date" not-null="true" />
   </class>
 </hibernate-mapping>

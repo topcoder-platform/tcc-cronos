@@ -47,5 +47,5 @@
       </session>
     </enterprise-beans>
 
-    <security-domain>java:/jaas/other</security-domain>
+    <!-- <security-domain>java:/jaas/other</security-domain> -->
 </jboss>

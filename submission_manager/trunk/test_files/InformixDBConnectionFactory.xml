@@ -14,13 +14,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.18.100:9088/contest:informixserver=ol_svr_tcs</Value>
+                        <Value>jdbc:informix-sqli://192.168.0.3:1526/contest:informixserver=informix_server</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>mie81120</Value>
+                        <Value>101777</Value>
                     </Property>
                 </Property>
             </Property>

@@ -1,75 +1,54 @@
+<?xml version="1.0"?>
 <project name="Override Macrodef Standard Behaviour Import" basedir=".">
-    <!-- macrodef override definition in order to change the standard behaviour from
-         build.xml/build_dist.xml
-     -->
-    <macrodef name="test.setup">
-        <sequential>
-            <property name="jboss_libdir" value="${jboss.dir}/server/${jboss.config.name}/lib"/>
-            <property name="deploy-dir" value="${jboss.dir}/server/${jboss.config.name}/deploy"/>
+	<!-- Package and Deploy EJB -->
 
-            <property name="component.conf.dir" value="${build_distdir}/conf"/>
-            <property name="component.ejb.dir" value="${build_distdir}/application/ejb"/>
-            <property name="component.ejb.jar" value="${component.ejb.dir}/${distfilename}.jar"/>
-            <property name="component.ear.dir" value="${build_distdir}/application/ear"/>
-            <property name="component.ear" value="${component.ear.dir}/${distfilename}.ear"/>
-            <property name="package.dir" value="${builddir}/package"/>
+	  <property name="ejb_name" value="submission_manager.jar"/>
+	  <property name="ear_name" value="submissionmanager.ear"/>
+	  <property name="ejb_dir" value="build/${ejb_name}"/>
+	  <property name="ear_dir" value="build/${ear_name}"/>
 
-            <delete dir="${package.dir}"/>
+		<target name="package_ejb" depends="compile, compile_tests">
+			<delete dir="${ejb_dir}"/>
+			<copy todir="${ejb_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${build_classdir}">
+					<include name="**/*"/>
+				</fileset>
+				<fileset dir="${testfiles}/ejb/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+			<copy todir="${ejb_dir}/mappings" overwrite="true" encoding="UTF-8">
+				<fileset dir="${testfiles}/ejb/mappings/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+		</target>
+			
+		<target name="package_ear" depends="package_ejb">
+			<delete dir="${ear_dir}"/>
+			<copy todir="${ear_dir}/${ejb_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ejb_dir}"/>
+			</copy>
+			<copy todir="${ear_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+				<fileset dir="${testfiles}/ear/">
+					<include name="**/*"/>
+			    </fileset>
+			</copy>
+			
+			<copy file="${ifxjdbc.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${base_exception.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${logging_wrapper.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${typesafe_enum.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${object_formatter.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${contest_and_submission_entities.jar}" todir="${ear_dir}" overwrite="true"/>
 
-            <copy todir="${package.dir}" overwrite="true">
-                <fileset dir="${build_classdir}">
-                    <include name="**/*"/>
-                </fileset>
-            </copy>
-
-            <copy todir="${package.dir}" overwrite="true">
-                <fileset dir="${testfiles}">
-                    <include name="users.properties"/>
-                    <include name="roles.properties"/>
-                </fileset>
-            </copy>
-
-            <mkdir dir="${component.ejb.dir}"/>
-            <jar basedir="${package.dir}" destfile="${component.ejb.jar}">
-                <metainf dir="${testfiles}/ejb">
-                </metainf>
-            </jar>
-
-            <delete file="${component.ear}" failonerror="false"/>
-
-            <mkdir dir="${component.ear.dir}"/>
-
-            <copy file="${component.ejb.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            
-            <copy file="${test_reflib}\typesafe_enum\1.1.0\typesafe_enum.jar" todir="${component.ear.dir}"
-                  overwrite="true"/>
-            <copy file="${test_reflib}\configuration_api\1.0.0\configuration_api.jar" todir="${component.ear.dir}"
-                  overwrite="true"/>
-            <copy file="${test_reflib}\configuration_persistence\1.0.1\configuration_persistence.jar"
-                  todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${test_reflib}\typesafe_enum\1.1.0\typesafe_enum.jar"
-                  todir="${component.ear.dir}" overwrite="true"/>
-
-            <copy file="${base_exception.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${contest_and_submission_entities.jar}" todir="${component.ear.dir}" overwrite="true" />
-
-            <copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true"/>
-
-            <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true"/>
-            
-            <ear earfile="${component.ear}" basedir="${component.ear.dir}" appxml="${testfiles}/ear/application.xml"/>
-
-            <copy file="${component.ear}" todir="${deploy-dir}"/>
-
-            <sleep seconds="10"/>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="test.teardown">
-        <sequential>
-            <delete file="${deploy-dir}/${distfilename}.ear"/>
-        </sequential>
-    </macrodef>
+		</target>
+			
+		<target name="deploy_jboss" depends="package_ear">
+			<!--<copy file="${testfiles}/login-config.xml" tofile="${jboss.home}/server/${server}/conf/login-config.xml" overwrite="true" encoding="UTF-8"/>-->
+			<copy todir="${jboss.home}/server/${server}/deploy/${ear_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+			</copy>
+		</target>
 </project>

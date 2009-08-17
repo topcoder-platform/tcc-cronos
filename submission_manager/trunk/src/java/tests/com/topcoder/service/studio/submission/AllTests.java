@@ -3,13 +3,14 @@
  */
 package com.topcoder.service.studio.submission;
 
-import com.topcoder.service.studio.submission.accuracytests.AccuracyTests;
-import com.topcoder.service.studio.submission.failuretests.FailureTests;
-import com.topcoder.service.studio.submission.stresstests.StressTests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import com.topcoder.service.studio.submission.accuracytests.AccuracyTests;
+import com.topcoder.service.studio.submission.failuretests.FailureTests;
+import com.topcoder.service.studio.submission.stresstests.StressTests;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ public class AllTests extends TestCase {
      * <p>
      * Aggregates all tests.
      * </p>
-     * 
+     *
      * @return test suite aggregating all unit tests.
      */
     public static Test suite() {

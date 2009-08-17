@@ -4,7 +4,7 @@
 package com.topcoder.service.studio.submission;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +19,7 @@ import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 
+
 /**
  * <p>
  * This base test case provides common functionality for configuration and database.
@@ -28,27 +29,27 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
  * @version 1.0
  */
 public abstract class BaseTestCase extends TestCase {
-
     /**
      * <p>
      * Represents the date format for parsing date string.
      * </p>
      */
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss");
 
     /**
      * <p>
      * Represents the property file for configuration persistence.
      * </p>
      */
-    private static final String UNITTEST_PROPERTIES_FILE = "test_files/unittests.properties";
+    private static final String UNITTEST_PROPERTIES_FILE = "unittests.properties";
 
     /**
      * <p>
      * Represents the <code>DBConnectionFactory</code> instance for testing.
      * </p>
      */
-    private DBConnectionFactory dbConnectionFactory;
+    private  static DBConnectionFactory dbConnectionFactory;
 
     /**
      * <p>
@@ -61,11 +62,7 @@ public abstract class BaseTestCase extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        ConfigurationFileManager configurationFileManager = new ConfigurationFileManager(UNITTEST_PROPERTIES_FILE);
-
-        dbConnectionFactory = new DBConnectionFactoryImpl(configurationFileManager
-                .getConfiguration("InformixDBConnectionFactory"));
+        getDBConnectionFactory();
     }
 
     /**
@@ -74,8 +71,16 @@ public abstract class BaseTestCase extends TestCase {
      * </p>
      *
      * @return the <code>DBConnectionFactory</code> instance
+     * @throws Exception to JUnit
      */
-    public DBConnectionFactory getDBConnectionFactory() {
+    public  static DBConnectionFactory getDBConnectionFactory() throws Exception {
+
+        if (dbConnectionFactory == null) {
+            ConfigurationFileManager configurationFileManager = new ConfigurationFileManager(UNITTEST_PROPERTIES_FILE);
+
+            dbConnectionFactory = new DBConnectionFactoryImpl(configurationFileManager.getConfiguration(
+                        "InformixDBConnectionFactory"));
+        }
         return dbConnectionFactory;
     }
 
@@ -89,19 +94,21 @@ public abstract class BaseTestCase extends TestCase {
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
-    public void executeScriptFile(String filename) throws Exception {
+    public static void executeScriptFile(String filename) throws Exception {
         Connection conn = null;
         Statement stmt = null;
         BufferedReader bufferedReader = null;
 
         try {
-            conn = dbConnectionFactory.createConnection();
+            conn = getDBConnectionFactory().createConnection();
             conn.setAutoCommit(false);
 
             stmt = conn.createStatement();
 
             String sql = null;
-            bufferedReader = new BufferedReader(new FileReader(filename));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(BaseTestCase.class.getResourceAsStream(filename)));
+
             while (null != (sql = bufferedReader.readLine())) {
                 stmt.executeUpdate(sql);
             }
@@ -114,6 +121,7 @@ public abstract class BaseTestCase extends TestCase {
         } finally {
             closeStatement(stmt);
             closeConnection(conn);
+
             if (null != bufferedReader) {
                 bufferedReader.close();
             }
@@ -130,12 +138,12 @@ public abstract class BaseTestCase extends TestCase {
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
-    public void executeSQL(String[] sqls) throws Exception {
+    public  static void executeSQL(String[] sqls) throws Exception {
         Connection conn = null;
         Statement stmt = null;
 
         try {
-            conn = dbConnectionFactory.createConnection();
+            conn = getDBConnectionFactory().createConnection();
             conn.setAutoCommit(false);
 
             stmt = conn.createStatement();
@@ -223,9 +231,11 @@ public abstract class BaseTestCase extends TestCase {
      * @throws Exception
      *             any exception occurs.
      */
-    public static Object getFieldValue(Object obj, String fieldName) throws Exception {
+    public static Object getFieldValue(Object obj, String fieldName)
+        throws Exception {
         Field field = obj.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
+
         return field.get(obj);
     }
 }
