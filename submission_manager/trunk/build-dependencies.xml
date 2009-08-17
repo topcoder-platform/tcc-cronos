@@ -52,10 +52,10 @@
         <pathelement location="${base_exception.jar}"/>
         <pathelement location="${logging_wrapper.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
-        <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${contest_and_submission_entities.jar}"/>
 
         <!-- For test only -->
+        <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${configuration_api.jar}"/>
         <pathelement location="${configuration_manager.jar}"/>
         <pathelement location="${db_connection_factory.jar}"/>
