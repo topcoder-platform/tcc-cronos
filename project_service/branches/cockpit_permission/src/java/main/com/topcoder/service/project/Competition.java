@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.topcoder.management.resource.Resource;
 
 /**
  * <p>
@@ -24,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * @author humblefool, FireIce
  * @version 1.0
  */
+@XmlSeeAlso ({StudioCompetition.class, SoftwareCompetition.class})
 public abstract class Competition implements Serializable {
     /**
      * <p>
@@ -300,4 +304,109 @@ public abstract class Competition implements Serializable {
      * @param type the competition type.
      */
     public abstract void setType(CompetionType type);
+    
+    /**
+     * @return ReviewPayment
+    */
+    public abstract double getReviewPayment();
+    /**
+     * @param reviewPayment 
+    */
+    public abstract void setReviewPayment(double reviewPayment);
+    /**
+     * @return SpecificationReviewPayment
+    */
+    public abstract double getSpecificationReviewPayment();
+    /**
+     * @param specificationReviewPayment 
+    */
+    public abstract void setSpecificationReviewPayment(double specificationReviewPayment);
+    /**
+     * @return ContestFee
+    */
+    public abstract double getContestFee() ;
+    /**
+     * @param contestFee 
+    */
+    public abstract void setContestFee(double contestFee) ;
+    /**
+     * @return ClientName
+    */
+    public abstract String getClientName();
+    /**
+     * @param clientName 
+    */
+    public abstract void setClientName(String clientName) ;
+    /**
+     * @return Resources
+    */
+    public abstract Resource[] getResources();
+    /**
+     * @param resources 
+    */
+    public abstract void setResources(Resource[] resources) ;
+    /**
+     * @return Confidence
+    */
+    public abstract int getConfidence() ;
+    /**
+     * @param confidence 
+    */
+    public abstract void setConfidence(int confidence) ;
+    /**
+     * @return ClientApproval
+    */
+    public abstract boolean getClientApproval();
+    /**
+     * @param clientApproval 
+    */
+    public abstract void setClientApproval(boolean clientApproval) ;
+    /**
+     * @return PricingApproval
+    */
+    public abstract boolean getPricingApproval();
+    /**
+     * @param pricingApproval 
+    */
+    public abstract void setPricingApproval(boolean pricingApproval);
+    /**
+     * @return HasWikiSpecification
+    */
+    public abstract boolean getHasWikiSpecification();
+    /**
+     * @param hasWikiSpecification 
+    */
+    public abstract void setHasWikiSpecification(boolean hasWikiSpecification);
+    /**
+     * @return PassedSpecReview
+    */
+    public abstract boolean getPassedSpecReview() ;
+    /**
+     * @param passedSpecReview 
+    */
+    public abstract void setPassedSpecReview(boolean passedSpecReview) ;
+    /**
+     * @return HasDependentCompetitions
+    */
+    public abstract boolean getHasDependentCompetitions();
+    /**
+     * @param hasDependentCompetitions 
+    */
+    public abstract void setHasDependentCompetitions(boolean hasDependentCompetitions) ;
+    /**
+     * @return WasReposted
+    */
+    public abstract boolean getWasReposted() ;
+    /**
+     * @param wasReposted 
+    */
+    public abstract void setWasReposted(boolean wasReposted) ;
+    /**
+     * @return Notes
+    */
+    public abstract String getNotes();
+    /**
+     * @param notes 
+    */
+    public abstract void setNotes(String notes);
 }
