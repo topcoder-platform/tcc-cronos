@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is details panel for the widget
+     
+     Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
+        - defines the click handler for RSS and ICAL feeds.
+     
+     @author snow01, TCSASSEMBLER
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*" >
+	<mx:Script>
+		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.component.WeekPanel;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+			import mx.collections.ArrayCollection;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+			
+			import flash.net.URLRequest;
+			
+			[Bindable]
+			private var model:Model;
+			[Bindable]
+			private var _puid:String;
+			public function set puid(value:String):void {
+				model = Model.getInstance(value);
+				_puid = value;
+			}
+			 override protected function measure():void {
+//			 	filter.percentWidth = 100;
+//			 	trace(getExplicitOrMeasuredWidth());
+				super.measure();
+			} 
+			[Bindable]
+			private var _list:ArrayCollection;
+			
+			public function set list(value:ArrayCollection):void {
+				_list = new ArrayCollection();
+				var total:Summary = new Summary(null);
+				total.isTotal = true;
+				for each (var wk:Summary in model.weekList) {
+					total.fee += wk.fee;
+					total.cost += wk.cost;
+					total.actualA += wk.actualA;
+					total.actualB += wk.actualB;
+					_list.addItem(wk);
+				}
+				_list.addItem(total);
+			}
+			private function expandAll():void {
+				for (var i:int = 0; i < numChildren; i++) {
+					var child:WeekPanel = this.getChildAt(i) as WeekPanel;
+					if (child) {
+						child.doOpen(true);
+					}
+				}
+				
+			}
+			private function CollapseAll():void {
+				for (var i:int = 0; i < numChildren; i++) {
+					var child:WeekPanel = this.getChildAt(i) as WeekPanel;
+					if (child) {
+						child.doOpen(false);
+					}
+				}
+			}
+			private function handleResize():void {
+				/* var w:Number = this.getExplicitOrMeasuredWidth() - getStyle("paddingLeft") - getStyle("paddingRight");
+				trace(w);
+				for (var i:int = 0; i < numChildren; i++) {
+					var child:DisplayObject = getChildAt(i);
+					if (child.width < w) {
+						child.width = w;
+					}
+				} */
+			}
+			
+			/**
+			  * Opens the RSS feed url in new window.
+			  * 
+			  * @since 1.0.1
+			  */  
+			private function openRSSFeed():void {
+			    var url:String=model.createRssFeedURL();
+			    gotoURL(url);
+			}
+			
+			/**
+			  * Opens the ICAL feed url in new window.
+			  * 
+			  * @since 1.0.1
+			  */  
+			private function openICALFeed():void {
+			    var url:String=model.createICalFeedURL();
+			    gotoURL(url);
+			}
+			
+			/**
+			  * Opens the specified url in new window.
+			  * 
+			  * @param url the url to open.
+			  * @since 1.0.1
+			  */  
+			private function gotoURL(url:String):void {
+			    // Open the link in a new window.
+                            navigateToURL(new URLRequest(url), '_blank');
+			}
+		]]>
+	</mx:Script>
+	<mx:Binding source="model.weekList" destination="list" />
+	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
+	<tccomp:FilterShower width="100%" id="shower" puid="{_puid}" />
+	<mx:Spacer width="100%" height="20" />
+	<mx:HBox width="100%" height="45" id="content">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Pipeline Summary" />
+		<mx:Spacer width="100%" />
+		<mx:Button label="View Change History" styleName="btn" click="model.navigateToMode('DATE')" />
+		<mx:Button label="View Breakdown" styleName="btn" click="model.navigateToMode('BREAK')" />
+		<mx:Button label="iCalendar" styleName="btn" click="openICALFeed()"/>
+		<mx:Button label="Feed RSS/Atom Feed" styleName="btn" click="openRSSFeed()"/>
+	</mx:HBox>
+	<mx:DataGrid id="grid" width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"
+			verticalGridLines="false" rowCount="{_list.length}" resizableColumns="false"
+			headerColors="[#FF0000, #FF0000]" dataProvider="{_list}"
+			verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:columns>
+			<mx:DataGridColumn width="90" sortable="false" headerText="Week" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.WeekRenderer" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Member Costs" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CostRenderer" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Contest Fee" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.FeeRenderer" />
+			<mx:DataGridColumn sortable="false" headerText="Actual" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ActualRenderer" />
+		</mx:columns>
+	</mx:DataGrid>
+	<tccomp:ClientList width="100%" id="client" puid="{_puid}" />
+	<tccomp:ProjectList width="100%" id="project" puid="{_puid}" />
+	<mx:Spacer width="100%" height="20" />
+	<mx:HBox width="100%" height="45">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Pipeline Details" />
+		<mx:Spacer width="100%" />
+		<mx:Button label="Expand All" styleName="btn" click="expandAll()" />
+		<mx:Button label="Collapse All" styleName="btn" click="CollapseAll()" />
+	</mx:HBox>
+	<!--<mx:HBox width="100%" height="30" backgroundColor="red" id="test" />-->
+	<mx:Repeater dataProvider="{model.weekList}" id="rpt">
+		<tccomp:WeekPanel week="{rpt.currentItem}" width="100%" puid="{_puid}" horizontalScrollPolicy="auto"/>
+	</mx:Repeater>
+</mx:VBox>
