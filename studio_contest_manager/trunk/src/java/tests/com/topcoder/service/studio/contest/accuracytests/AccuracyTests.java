@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.accuracytests;
 
@@ -13,8 +13,8 @@ import junit.framework.TestSuite;
  * This test case aggregates all the accuracy test cases.
  * </p>
  *
- * @author KLW
- * @version 1.0
+ * @author KLW, chenhong, myxgyy
+ * @version 1.3
  */
 public class AccuracyTests extends TestCase {
     /**
@@ -26,8 +26,8 @@ public class AccuracyTests extends TestCase {
         final TestSuite suite = new TestSuite();
 
         suite.addTestSuite(TestContestManagerBeanAccuracy.class);
-        //suite.addTestSuite(TestSocketDocumentContentManagerAccuracy.class);
-        
+        suite.addTestSuite(TestContestManagerBeanAccuracy1.class);
+
         return suite;
     }
 }

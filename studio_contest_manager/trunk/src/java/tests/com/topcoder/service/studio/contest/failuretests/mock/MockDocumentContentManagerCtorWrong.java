@@ -551,4 +551,17 @@ public class MockDocumentContentManagerCtorWrong implements DocumentContentManag
 
         throw new DocumentContentManagementException(decodeString(msgBuf));
     }
+
+    /**
+     * Dummy implementation.
+     *
+     * @param filename file name
+     * @param contestId contest id
+     * @throws IOException never
+     * @throws DocumentContentManagementException never
+     */
+    public void moveDocumentToContestFolder(String filename, long contestId)
+        throws IOException, DocumentContentManagementException {
+        // empty
+    }
 }

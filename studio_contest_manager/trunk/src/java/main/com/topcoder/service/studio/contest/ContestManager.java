@@ -1,17 +1,13 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.security.PermitAll;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -29,23 +25,43 @@ import com.topcoder.service.studio.PaymentType;
  * content; operations to get all contest statues, categories and studio file
  * types.
  * </p>
- * 
+ *
  * <p>
  * Note: It will use the DocumentContentManager to manage the document content.
  * </p>
- * 
+ *
  * <p>
  * 1.1 change: 2 new methods <code>searchContests(Filter)</code> and
  * <code>getAllContests()</code> are added.
  * </p>
- * 
+ *
+ * <p>
+ * 1.3 change: One method <code>getUserContests(String)</code> is added. the
+ * parameter of getConfig is changed from long to Identifier.
+ * </p>
+ * <p>
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new
+ * methods related to the permission and permission type are added.
+ * </p>
+ *
+ * <p>
+ * Module Cockpit Share Submission Integration Assembly change: Added method to
+ * retrieve all permissions by projectId.
+ * </p>
+ *
+ * <p>
+ * All the methods that does CRUD on permission have been commented for Cockpit
+ * Project Admin Release Assembly v1.0.
+ * </p>
+ *
  * <p>
  * <strong>Thread safety:</strong> It's up to concrete implementations.
  * </p>
- * 
- * @author Standlove, TCSDEVELOPER
+ *
+ * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
  * @author AleaActaEst, BeBetter
- * @version 1.1
+ * @author TCSDESIGNER, TCSDEVELOPER
+ * @version 1.3
  * @since 1.0
  */
 public interface ContestManager {
@@ -54,17 +70,14 @@ public interface ContestManager {
      * <p>
      * Creates a new contest and returns the created contest.
      * </p>
-     * 
-     * @param contest
-     *            the contest to create
+     *
+     * @param contest the contest to create
      * @return the created contest
-     * 
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public Contest createContest(Contest contest) throws ContestManagementException;
 
@@ -73,13 +86,12 @@ public interface ContestManager {
      * Gets contest by id, and return the retrieved contest. If the contest
      * doesn't exist, null is returned.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
+     *
+     * @param contestId the contest id
      * @return the retrieved contest, or null if id doesn't exist
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest.
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest.
      */
     public Contest getContest(long contestId) throws ContestManagementException;
 
@@ -89,13 +101,12 @@ public interface ContestManager {
      * with the given tcDirectProjectId should be returned. If there is no such
      * contests, an empty list should be returned.
      * </p>
-     * 
-     * @param tcDirectProjectId
-     *            the project id
+     *
+     * @param tcDirectProjectId the project id
      * @return a list of associated contests
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contests
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contests
      */
     public List<Contest> getContestsForProject(long tcDirectProjectId) throws ContestManagementException;
 
@@ -104,13 +115,12 @@ public interface ContestManager {
      * Gets contests by the created user. If there is no such contests, an empty
      * list should be returned.
      * </p>
-     * 
-     * @param createdUser
-     *            the created user.
+     *
+     * @param createdUser the created user.
      * @return a list of associated contests
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contests
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contests
      */
     public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException;
 
@@ -120,39 +130,34 @@ public interface ContestManager {
      * is not active. If contest is active it is possible to increase prize
      * amount and duration.
      * </p>
-     * 
-     * @param contest
-     *            the contest to update
-     * @param userAdmin 
-     * @param username 
-     * @param transactionId 
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityNotFoundException
-     *             if the contest doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when updating contest.
+     *
+     * @param contest the contest to update
+     * @param userAdmin
+     * @param username
+     * @param transactionId
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contest doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any error occurs when updating
+     *         contest.
      */
-    public void updateContest(Contest contest, long transactionId, String username, boolean userAdmin) throws ContestManagementException;
+    public void updateContest(Contest contest, long transactionId, String username, boolean userAdmin)
+        throws ContestManagementException;
 
     /**
      * <p>
      * Updates contest status to the given value.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
-     * @param newStatusId
-     *            the new status id
-     * 
-     * @throws EntityNotFoundException
-     *             if there is no corresponding Contest or ContestStatus in
-     *             persistence.
-     * @throws ContestStatusTransitionException
-     *             if it's not allowed to update the contest to the given
-     *             status.
-     * @throws ContestManagementException
-     *             if any error occurs when updating contest's status.
+     *
+     * @param contestId the contest id
+     * @param newStatusId the new status id
+     *
+     * @throws EntityNotFoundException if there is no corresponding Contest or
+     *         ContestStatus in persistence.
+     * @throws ContestStatusTransitionException if it's not allowed to update
+     *         the contest to the given status.
+     * @throws ContestManagementException if any error occurs when updating
+     *         contest's status.
      */
     public void updateContestStatus(long contestId, long newStatusId) throws ContestManagementException;
 
@@ -160,16 +165,14 @@ public interface ContestManager {
      * <p>
      * Gets client for contest, the client id is returned.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
+     *
+     * @param contestId the contest id
      * @return the id of the client for this contest
-     * 
-     * @throws EntityNotFoundException
-     *             if there is no corresponding contest (or project) in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
+     *
+     * @throws EntityNotFoundException if there is no corresponding contest (or
+     *         project) in persistence.
+     * @throws ContestManagementException if any error occurs when retrieving
+     *         the client id.
      */
     public long getClientForContest(long contestId) throws ContestManagementException;
 
@@ -177,14 +180,13 @@ public interface ContestManager {
      * <p>
      * Gets client for project, and return the retrieved client id.
      * </p>
-     * 
-     * @param projectId
-     *            the project id
+     *
+     * @param projectId the project id
      * @return the client id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding project in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
+     * @throws EntityNotFoundException if there is no corresponding project in
+     *         persistence.
+     * @throws ContestManagementException if any error occurs when retrieving
+     *         the client id.
      */
     public long getClientForProject(long projectId) throws ContestManagementException;
 
@@ -192,16 +194,13 @@ public interface ContestManager {
      * <p>
      * Adds contest status, and return the added contest status.
      * </p>
-     * 
-     * @param contestStatus
-     *            the contest status to add
+     *
+     * @param contestStatus the contest status to add
      * @return the added contest status
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public ContestStatus addContestStatus(ContestStatus contestStatus) throws ContestManagementException;
 
@@ -209,15 +208,12 @@ public interface ContestManager {
      * <p>
      * Updates contest status.
      * </p>
-     * 
-     * @param contestStatus
-     *            the contest status to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contestStatus doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestStatus the contest status to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contestStatus doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void updateContestStatus(ContestStatus contestStatus) throws ContestManagementException;
 
@@ -226,13 +222,11 @@ public interface ContestManager {
      * Removes contest status, return true if the contest status exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
-     * 
-     * @param contestStatusId
-     *            the contest status id
+     *
+     * @param contestStatusId the contest status id
      * @return true if the contest status exists and removed successfully,
      *         return false if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs.
+     * @throws ContestManagementException if any error occurs.
      */
     public boolean removeContestStatus(long contestStatusId) throws ContestManagementException;
 
@@ -241,12 +235,11 @@ public interface ContestManager {
      * Gets contest status, and return the retrieved contest status. Return null
      * if it doesn't exist.
      * </p>
-     * 
-     * @param contestStatusId
-     *            the contest status id
+     *
+     * @param contestStatusId the contest status id
      * @return the retrieved contest status, or null if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest status.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest status.
      */
     public ContestStatus getContestStatus(long contestStatusId) throws ContestManagementException;
 
@@ -254,16 +247,13 @@ public interface ContestManager {
      * <p>
      * Adds new document, and return the added document.
      * </p>
-     * 
-     * @param document
-     *            the document to add
+     *
+     * @param document the document to add
      * @return the added document
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public Document addDocument(Document document) throws ContestManagementException;
 
@@ -271,15 +261,12 @@ public interface ContestManager {
      * <p>
      * Updates the document.
      * </p>
-     * 
-     * @param document
-     *            the document to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param document the document to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the document doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void updateDocument(Document document) throws ContestManagementException;
 
@@ -288,12 +275,11 @@ public interface ContestManager {
      * Gets document by id, and return the retrieved document. Return null if
      * the document doesn't exist.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
+     *
+     * @param documentId the document id
      * @return the retrieved document, or null if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting document.
+     * @throws ContestManagementException if any error occurs when getting
+     *         document.
      */
     public Document getDocument(long documentId) throws ContestManagementException;
 
@@ -302,13 +288,11 @@ public interface ContestManager {
      * Removes document, return true if the document exists and removed
      * successfully, return false if it doesn't exist.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
+     *
+     * @param documentId the document id
      * @return true if the document exists and removed successfully, return
      *         false if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs.
+     * @throws ContestManagementException if any error occurs.
      */
     public boolean removeDocument(long documentId) throws ContestManagementException;
 
@@ -317,16 +301,12 @@ public interface ContestManager {
      * Adds document to contest. Nothing happens if the document already exists
      * in contest.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
-     * @param contestId
-     *            the contest id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding document or contest in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param documentId the document id
+     * @param contestId the contest id
+     * @throws EntityNotFoundException if there is no corresponding document or
+     *         contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void addDocumentToContest(long documentId, long contestId) throws ContestManagementException;
 
@@ -336,35 +316,29 @@ public interface ContestManager {
      * contest and removed successfully, return false if it doesn't exist in
      * contest.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
-     * @param contestId
-     *            the contest id
+     *
+     * @param documentId the document id
+     * @param contestId the contest id
      * @return true if the document exists in the contest and removed
      *         successfully, returns false if it doesn't exist in contest
-     * @throws EntityNotFoundException
-     *             if there is no corresponding document or contest in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if there is no corresponding document or
+     *         contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
-    public boolean removeDocumentFromContest(long documentId, long contestId) throws ContestManagementException;
+    public boolean removeDocumentFromContest(long documentId, long contestId)
+        throws ContestManagementException;
 
     /**
      * <p>
      * Adds contest category, and return the added contest category.
      * </p>
-     * 
-     * @param contestChannel
-     *            the contest channel to add
+     *
+     * @param contestChannel the contest channel to add
      * @return the added contest channel
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public ContestChannel addContestChannel(ContestChannel contestChannel) throws ContestManagementException;
 
@@ -372,15 +346,12 @@ public interface ContestManager {
      * <p>
      * Updates contest channel.
      * </p>
-     * 
-     * @param contestChannel
-     *            the contest channel to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contestChannel doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestChannel the contest channel to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contestChannel doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void updateContestChannel(ContestChannel contestChannel) throws ContestManagementException;
 
@@ -389,13 +360,12 @@ public interface ContestManager {
      * Removes contest channel, return true if the contest category exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
-     * 
-     * @param contestChannelId
-     *            the contest channel id
+     *
+     * @param contestChannelId the contest channel id
      * @return true if the contest channel exists and removed successfully,
      *         return false if it doesn't exist.
-     * @throws ContestManagementException
-     *             if fail to remove the contest category when it exists.
+     * @throws ContestManagementException if fail to remove the contest category
+     *         when it exists.
      */
     public boolean removeContestChannel(long contestChannelId) throws ContestManagementException;
 
@@ -404,12 +374,11 @@ public interface ContestManager {
      * Gets contest channel, and return the retrieved contest channel. Return
      * null if it doesn't exist.
      * </p>
-     * 
-     * @param contestChannelId
-     *            the contest channel id
+     *
+     * @param contestChannelId the contest channel id
      * @return the retrieved contest channel, or null if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest channel.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest channel.
      */
     public ContestChannel getContestChannel(long contestChannelId) throws ContestManagementException;
 
@@ -418,16 +387,13 @@ public interface ContestManager {
      * Adds contest configuration parameter, and return the added contest
      * configuration parameter.
      * </p>
-     * 
-     * @param contestConfig
-     *            the contest configuration parameter to add
+     *
+     * @param contestConfig the contest configuration parameter to add
      * @return the added contest configuration parameter
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public ContestConfig addConfig(ContestConfig contestConfig) throws ContestManagementException;
 
@@ -435,16 +401,12 @@ public interface ContestManager {
      * <p>
      * Updates contest configuration parameter.
      * </p>
-     * 
-     * @param contestConfig
-     *            the contest configuration parameter to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contest configuration parameter doesn't exist in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestConfig the contest configuration parameter to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contest configuration parameter
+     *         doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void updateConfig(ContestConfig contestConfig) throws ContestManagementException;
 
@@ -453,35 +415,31 @@ public interface ContestManager {
      * Gets contest configuration parameter by id, and return the retrieved
      * contest configuration parameter. Return null if it doesn't exist.
      * </p>
-     * 
-     * @param contestConfigId
-     *            the contest configuration parameter id
+     *
+     * @param compositeId the composite parameter id.
      * @return the retrieved contest configuration parameter, or null if it
      *         doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest configuration
-     *             parameter
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest configuration parameter
      */
-    public ContestConfig getConfig(long contestConfigId) throws ContestManagementException;
+    public ContestConfig getConfig(Identifier compositeId) throws ContestManagementException;
 
     /**
      * <p>
      * Saves document content in file system. This method should call
      * DocumentContentManager.saveDocumentContent to save the document content.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
-     * @param documentContent
-     *            the file data of the document to save
-     * @throws IllegalArgumentException
-     *             if fileData argument is null or empty array.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param documentId the document id
+     * @param documentContent the file data of the document to save
+     * @throws IllegalArgumentException if fileData argument is null or empty
+     *         array.
+     * @throws EntityNotFoundException if the document doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
-    public void saveDocumentContent(long documentId, byte[] documentContent) throws ContestManagementException;
+    public void saveDocumentContent(long documentId, byte[] documentContent)
+        throws ContestManagementException;
 
     /**
      * <p>
@@ -489,15 +447,13 @@ public interface ContestManager {
      * returned. It will use DocumentContentManager to get document content. It
      * can also return empty array if the document content is empty.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
+     *
+     * @param documentId the document id
      * @return the document content in byte array. If the document is not saved,
      *         null is returned.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if the document doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public byte[] getDocumentContent(long documentId) throws ContestManagementException;
 
@@ -507,14 +463,12 @@ public interface ContestManager {
      * return false otherwise. It will use DocumentContentManager to check
      * document content's existence.
      * </p>
-     * 
-     * @param documentId
-     *            the document id
+     *
+     * @param documentId the document id
      * @return true if the document content exists, return false otherwise.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if the document doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public boolean existDocumentContent(long documentId) throws ContestManagementException;
 
@@ -523,10 +477,10 @@ public interface ContestManager {
      * Gets all contest statuses to return. If no contest status exists, return
      * an empty list.
      * </p>
-     * 
+     *
      * @return a list of contest statuses
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest statuses.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest statuses.
      */
     public List<ContestStatus> getAllContestStatuses() throws ContestManagementException;
 
@@ -535,10 +489,10 @@ public interface ContestManager {
      * Gets all contest channels to return. If no contest category exists,
      * return an empty list.
      * </p>
-     * 
+     *
      * @return a list of contest channels
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest channels.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest channels.
      */
     public List<ContestChannel> getAllContestChannels() throws ContestManagementException;
 
@@ -547,10 +501,10 @@ public interface ContestManager {
      * Get all studio file types to return. If no studio file type exists,
      * return an empty list.
      * </p>
-     * 
+     *
      * @return a list of studio file types
-     * @throws ContestManagementException
-     *             if any error occurs when getting studio file types.
+     * @throws ContestManagementException if any error occurs when getting
+     *         studio file types.
      */
     public List<StudioFileType> getAllStudioFileTypes() throws ContestManagementException;
 
@@ -559,50 +513,43 @@ public interface ContestManager {
      * Adds contest type configuration parameter, and return the added contest
      * type configuration parameter.
      * </p>
-     * 
-     * @param contestTypeConfig
-     *            the contest type configuration parameter to add
+     *
+     * @param contestTypeConfig the contest type configuration parameter to add
      * @return the added contest type configuration parameter
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public ContestTypeConfig addContestTypeConfig(ContestTypeConfig contestTypeConfig)
-            throws ContestManagementException;
+        throws ContestManagementException;
 
     /**
      * <p>
      * Updates contest type configuration parameter.
      * </p>
-     * 
-     * @param contestTypeConfig
-     *            the contest type configuration parameter to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contest type configuration parameter doesn't exist in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestTypeConfig the contest type configuration parameter to
+     *        update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contest type configuration
+     *         parameter doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
-    public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig) throws ContestManagementException;
+    public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig)
+        throws ContestManagementException;
 
     /**
      * <p>
      * Gets contest type configuration parameter by id, and return the retrieved
      * contest type configuration parameter. Return null if it doesn't exist.
      * </p>
-     * 
-     * @param contestTypeConfigId
-     *            the contest type configuration parameter id
+     *
+     * @param contestTypeConfigId the contest type configuration parameter id
      * @return the retrieved contest type configuration parameter, or null if it
      *         doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest type configuration
-     *             parameter
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest type configuration parameter
      */
     public ContestTypeConfig getContestTypeConfig(long contestTypeConfigId) throws ContestManagementException;
 
@@ -611,15 +558,12 @@ public interface ContestManager {
      * Adds prize to the given contest. Nothing happens if the prize already
      * exists in contest.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
-     * @param prizeId
-     *            the prize id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding prize or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestId the contest id
+     * @param prizeId the prize id
+     * @throws EntityNotFoundException if there is no corresponding prize or
+     *         contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void addPrizeToContest(long contestId, long prizeId) throws ContestManagementException;
 
@@ -629,17 +573,14 @@ public interface ContestManager {
      * contest and removed successfully, return false if it doesn't exist in
      * contest.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
-     * @param prizeId
-     *            the prize id
+     *
+     * @param contestId the contest id
+     * @param prizeId the prize id
      * @return true if the prize exists in the contest and removed successfully,
      *         return false if it doesn't exist in contest.
-     * @throws EntityNotFoundException
-     *             if there is no corresponding prize or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if there is no corresponding prize or
+     *         contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public boolean removePrizeFromContest(long contestId, long prizeId) throws ContestManagementException;
 
@@ -648,15 +589,13 @@ public interface ContestManager {
      * Retrieves all prizes in the given contest to return. An empty list is
      * returned if there is no such prizes.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
+     *
+     * @param contestId the contest id
      * @return a list of prizes
-     * 
-     * @throws EntityNotFoundException
-     *             if there is no corresponding contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @throws EntityNotFoundException if there is no corresponding contest in
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public List<Prize> getContestPrizes(long contestId) throws ContestManagementException;
 
@@ -665,16 +604,14 @@ public interface ContestManager {
      * This is going to get all the matching contest entities that fulfill the
      * input criteria.
      * </p>
-     * 
-     * @param filter
-     *            a search filter used as criteria for contests.
+     *
+     * @param filter a search filter used as criteria for contests.
      * @return a list (possibly empty) of all the matched contest entities.
-     * 
-     * @throws IllegalArgumentException
-     *             if the input filter is null or filter is not supported for
-     *             searching
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest categories
+     *
+     * @throws IllegalArgumentException if the input filter is null or filter is
+     *         not supported for searching
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest categories
      */
     public List<Contest> searchContests(Filter filter) throws ContestManagementException;
 
@@ -682,156 +619,168 @@ public interface ContestManager {
      * <p>
      * This is going to fetch all the currently available contests.
      * </p>
-     * 
+     *
      * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
      */
     public List<Contest> getAllContests() throws ContestManagementException;
-    
-    /**
-     * <p>
-     * This is going to fetch all the currently available contests for contest monitor widget.
-     * </p>
-     * 
-     * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1
-     */
-    public List<SimpleContestData> getSimpleContestData() throws ContestManagementException;
-    
-    
-    /**
-     * <p>
-     * This is going to fetch all the currently available contests related to given project.
-     * </p>
-     * @param the given project id;
-     * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1
-     */
-    public List<SimpleContestData> getSimpleContestData(long pid) throws ContestManagementException;
-    
-    
-    /**
-     * <p>
-     * This is going to fetch user's currently available contests for contest monitor widget.
-     * </p>
-     * 
-     * @param createdUser
-     *            the created user.
-     * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1
-     */
-    public List<SimpleContestData> getSimpleContestDataForUser(long createdUser) throws ContestManagementException;
-    
-    
-    /**
-     * <p>
-     * This is going to fetch user's currently available contests for myproject widget.
-     * </p>
-     * @param createdUser
-     *            the created user.
-     * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1
-     */
-    public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(long createdUser) throws ContestManagementException;
 
     /**
      * <p>
-     * This is going to fetch all the currently available contests for myproject widget.
+     * This is going to fetch all the currently available contests for contest
+     * monitor widget.
      * </p>
-     * 
+     *
      * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
+    public List<SimpleContestData> getSimpleContestData() throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related to
+     * given project.
+     * </p>
+     *
+     * @param the given project id;
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
+    public List<SimpleContestData> getSimpleContestData(long pid) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch user's currently available contests for contest
+     * monitor widget.
+     * </p>
+     *
+     * @param createdUser the created user.
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
+    public List<SimpleContestData> getSimpleContestDataForUser(long createdUser)
+            throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch user's currently available contests for myproject
+     * widget.
+     * </p>
+     *
+     * @param createdUser the created user.
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(long createdUser)
+            throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for myproject
+     * widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1
      */
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws ContestManagementException;
 
     /**
      * <p>
-     * This is going to fetch all the currently available contests related the given projects.
+     * This is going to fetch all the currently available contests related the
+     * given projects.
      * </p>
-     * 
+     *
      * @param the given project id
      * @return the list of all available contents (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1
      */
-    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws ContestManagementException;
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
+            throws ContestManagementException;
 
     /**
      * <p>
      * This is going to fetch only contestid and contest name for contest.
      * </p>
-     * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @return the list of all available contents (only id and name) (or empty
+     *         if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1
      */
     public List<SimpleContestData> getContestDataOnly() throws ContestManagementException;
 
-	/**
+    /**
      * <p>
-     * This is going to fetch only contestid and contest name for contest related to given project.
+     * This is going to fetch only contestid and contest name for contest
+     * related to given project.
      * </p>
-     * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @return the list of all available contents (only id and name) (or empty
+     *         if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException;
+    public List<SimpleContestData> getContestDataOnly(long createdUser, long pid)
+            throws ContestManagementException;
 
-	/**
+    /**
      * <p>
      * This is going to fetch only contestid and contest name for contest.
      * </p>
-     * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @return the list of all available contents (only id and name) (or empty
+     *         if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException;
+    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser)
+            throws ContestManagementException;
 
     /**
      * <p>
      * Gets all the currently available contests types.
      * </p>
-     * 
+     *
      * @return the list of all available contents type (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest types
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest types
      */
     public List<ContestType> getAllContestTypes() throws ContestManagementException;
 
@@ -839,12 +788,12 @@ public interface ContestManager {
      * <p>
      * Get all the ContestProperty objects.
      * </p>
-     * 
+     *
      * @return the list of all available ContestProperty
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1.2
      */
     public List<ContestProperty> getAllContestProperties() throws ContestManagementException;
@@ -853,12 +802,11 @@ public interface ContestManager {
      * <p>
      * Get the ContestProperty with the specified id.
      * </p>
-     * 
-     * @param contestPropertyId
-     *            id to look for
+     *
+     * @param contestPropertyId id to look for
      * @return the ContestProperty with the specified id.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
      * @since 1.1.2
      */
     public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException;
@@ -867,12 +815,12 @@ public interface ContestManager {
      * <p>
      * Get all the MimeType objects.
      * </p>
-     * 
+     *
      * @return the list of all available MimeType
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting MimeType
-     * 
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         MimeType
+     *
      * @since 1.1.2
      */
     public List<MimeType> getAllMimeTypes() throws ContestManagementException;
@@ -881,12 +829,11 @@ public interface ContestManager {
      * <p>
      * Get the MimeType with the specified id.
      * </p>
-     * 
-     * @param mimeTypeId
-     *            id to look for
+     *
+     * @param mimeTypeId id to look for
      * @return the MimeType with the specified id.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
      * @since 1.1.2
      */
     public MimeType getMimeType(long mimeTypeId) throws ContestManagementException;
@@ -895,12 +842,12 @@ public interface ContestManager {
      * <p>
      * Get all the DocumentType objects.
      * </p>
-     * 
+     *
      * @return the list of all available DocumentType
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
      * @since 1.1.2
      */
     public List<DocumentType> getAllDocumentTypes() throws ContestManagementException;
@@ -909,12 +856,11 @@ public interface ContestManager {
      * <p>
      * Get the DocumentType with the specified id.
      * </p>
-     * 
-     * @param documentTypeId
-     *            id to look for
+     *
+     * @param documentTypeId id to look for
      * @return the DocumentType with the specified id.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
      * @since 1.1.2
      */
     public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException;
@@ -923,17 +869,14 @@ public interface ContestManager {
      * <p>
      * Creates a new prize and returns the created prize.
      * </p>
-     * 
-     * @param prize
-     *            the prize to create
+     *
+     * @param prize the prize to create
      * @return the created prize
-     * 
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public Prize createPrize(Prize prize) throws ContestManagementException;
 
@@ -941,32 +884,29 @@ public interface ContestManager {
      * <p>
      * Creates a new contest payment and returns the created contest payment.
      * </p>
-     * 
-     * @param contestPayment
-     *            the contest payment to create
+     *
+     * @param contestPayment the contest payment to create
      * @return the created contest payment.
-     * 
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
-    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException;
+    public ContestPayment createContestPayment(ContestPayment contestPayment)
+            throws ContestManagementException;
 
     /**
      * <p>
      * Gets contest payment by id, and return the retrieved contest payment. If
      * the contest payment doesn't exist, null is returned.
      * </p>
-     * 
-     * @param contestId
-     *            the contest id
+     *
+     * @param contestId the contest id
      * @return the retrieved contest, or null if id doesn't exist
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest.
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest.
      * @since BUGR-1363 changed method signature
      */
     public List<ContestPayment> getContestPayments(long contestId) throws ContestManagementException;
@@ -975,15 +915,13 @@ public interface ContestManager {
      * <p>
      * Updates contest payment data.
      * </p>
-     * 
-     * @param contestPayment
-     *            the contest payment to update
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityNotFoundException
-     *             if the contest payment doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when updating contest payment.
+     *
+     * @param contestPayment the contest payment to update
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contest payment doesn't exist in
+     *         persistence.
+     * @throws ContestManagementException if any error occurs when updating
+     *         contest payment.
      */
     public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException;
 
@@ -992,35 +930,33 @@ public interface ContestManager {
      * Removes contest payment, return true if the contest payment exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
-     * 
-     * @param contestPaymentId
-     *            the contest payment id
+     *
+     * @param contestPaymentId the contest payment id
      * @return true if the contest payment exists and removed successfully,
      *         return false if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs.
+     * @throws ContestManagementException if any error occurs.
      */
     public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException;
 
     /**
      * Returns all mediums.
-     * 
+     *
      * @return all mediums.
-     * @throws ContestManagementException if any error occurs when getting contests
+     * @throws ContestManagementException if any error occurs when getting
+     *         contests
      */
     public List<Medium> getAllMedia() throws ContestManagementException;
-    
 
     /**
      * <p>
      * Get all the PrizeType objects.
      * </p>
-     * 
+     *
      * @return the list of all available PrizeType
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting PrizeType.
-     * @since TCCC-349            
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         PrizeType.
+     * @since TCCC-349
      */
     public List<PrizeType> getAllPrizeTypes() throws ContestManagementException;
 
@@ -1028,60 +964,58 @@ public interface ContestManager {
      * <p>
      * Get the PrizeType with the specified id.
      * </p>
-     * 
-     * @param prizeTypeId
-     *            id to look for
+     *
+     * @param prizeTypeId id to look for
      * @return the PrizeType with the specified id.
-     * @throws ContestManagementException
-     *             if any error occurs when getting PrizeType.
+     * @throws ContestManagementException if any error occurs when getting
+     *         PrizeType.
      * @since TCCC-349
      */
     public PrizeType getPrizeType(long prizeTypeId) throws ContestManagementException;
 
     /**
      * <p>
-     * Get all the PaymentStatus  objects.
+     * Get all the PaymentStatus objects.
      * </p>
-     * 
-     * @return the list of all available PaymentStatus 
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting PaymentStatus.
-     *             
+     *
+     * @return the list of all available PaymentStatus
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         PaymentStatus.
+     *
      * @since TCCC-349
      */
-    public List<PaymentStatus > getAllPaymentStatuses() throws ContestManagementException;
+    public List<PaymentStatus> getAllPaymentStatuses() throws ContestManagementException;
 
     /**
      * <p>
      * Get the PaymentStatus with the specified id.
      * </p>
-     * 
-     * @param paymentStatusId
-     *            id to look for
+     *
+     * @param paymentStatusId id to look for
      * @return the PaymentStatus with the specified id.
-     * @throws ContestManagementException
-     *             if any error occurs when getting PaymentStatus
+     * @throws ContestManagementException if any error occurs when getting
+     *         PaymentStatus
      * @since TCCC-349
      */
     public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException;
 
     /**
      * Returns contest post count.
-     * 
+     *
      * @return contest post count.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest post count.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest post count.
      */
     public int getContestPostCount(long forumId) throws ContestManagementException;
 
     /**
      * Returns contest post count.
-     * 
+     *
      * @param forumIds forum ids.
      * @return contest post count.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest post count.
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest post count.
      */
     public Map<Long, Long> getContestPostCount(List<Long> forumIds) throws ContestManagementException;
 
@@ -1089,113 +1023,135 @@ public interface ContestManager {
      * <p>
      * Creates a new contest result and returns the created contest result.
      * </p>
-     * 
-     * @param contestResult
-     *            the contest result to create
+     *
+     * @param contestResult the contest result to create
      * @return the created contest result.
-     * 
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the
+     *         persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException;
-    
-    
+
     /**
      * <p>
-     * Returns the contest result associated with submissionId, contestId if any.
+     * Returns the contest result associated with submissionId, contestId if
+     * any.
      * </p>
-     * 
-     * @param submissionId
-     *            the submission Id
-     * @param contestId
-     * 			  the contest Id
+     *
+     * @param submissionId the submission Id
+     * @param contestId the contest Id
      * @return the contest result or null.
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs.
+     *
+     * @throws ContestManagementException if any error occurs.
      */
-    public ContestResult findContestResult(long submissionId, long contestId) throws ContestManagementException;
-    
+    public ContestResult findContestResult(long submissionId, long contestId)
+            throws ContestManagementException;
+
     /**
      * Add a change history entity.
-     * 
-     * @param history
-     *            Change history entity to be added.
-     * 
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param history Change history entity to be added.
+     *
+     * @throws ContestManagementException if any other error occurs.
      */
     public void addChangeHistory(List<ContestChangeHistory> history) throws ContestManagementException;
 
     /**
      * Returns change history entity list.
-     * 
-     * @param contestId
-     *            contest id to search for.
+     *
+     * @param contestId contest id to search for.
      * @return Change history entities match the contest id.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws ContestManagementException if any other error occurs.
      */
     public List<ContestChangeHistory> getChangeHistory(long contestId) throws ContestManagementException;
 
     /**
      * Returns change history entity list.
-     * 
-     * @param contestId
-     *            contest id to search for.
-     * @param transactionId
-     *            transaction id to search for.
-     * 
+     *
+     * @param contestId contest id to search for.
+     * @param transactionId transaction id to search for.
+     *
      * @return Change history entities match the contest id and transaction id.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws ContestManagementException if any other error occurs.
      */
-    public List<ContestChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException;
+    public List<ContestChangeHistory> getChangeHistory(long contestId, long transactionId)
+            throws ContestManagementException;
 
     /**
      * Returns latest transaction id.
-     * 
-     * @param contestId
-     *            contest id to search for.
+     *
+     * @param contestId contest id to search for.
      * @return Transaction id.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws ContestManagementException if any other error occurs.
      */
     public Long getLatestTransactionId(long contestId) throws ContestManagementException;
-    
+
     /**
      * Delete contest.
-     * 
-     * @param contestId
-     *            contest id to search for.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     *
+     * @param contestId contest id to search for.
+     * @throws ContestManagementException if any other error occurs.
      */
     public void deleteContest(long contestId) throws ContestManagementException;
 
     /**
-     * Loads and returns the list of payment types (currently it is 'Paypal' and 'TC Purchase order')
-     * 
+     * Loads and returns the list of payment types (currently it is 'Paypal' and
+     * 'TC Purchase order')
+     *
      * @since BUGR-1067
      * @return list of payment types
-     * @throws PersistenceException
-     *             if any error occurs
+     * @throws PersistenceException if any error occurs
      */
     public List<PaymentType> getAllPaymentTypes() throws ContestManagementException;
 
     /**
      * Loads and returns the concrete payment type
-     * 
+     *
      * @since BUGR-1076
-     * @param id
-     *            the id of paymentTypeId
+     * @param id the id of paymentTypeId
      * @return list of payment types
-     * @throws PersistenceException
-     *             if any error occurs
+     * @throws PersistenceException if any error occurs
      */
     public PaymentType getPaymentType(long paymentTypeId) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Gets the list of project, contest and their read/write/full permissions.
+     * </p>
+     *
+     * Comment added for Cockpit Project Admin Release Assembly v1.0
+     *
+     * @param createdUser the specified user for which to get the permission
+     * @return the list of project, contest and their read/write/full
+     *         permissions.
+     */
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
+        throws ContestManagementException;
+
+    /**
+     * <p>
+     * Retrieves the list of users whose handle contains the specified key.
+     * </p>
+     *
+     * Comment added for Cockpit Project Admin Release Assembly v1.0
+     *
+     * @param specified key to search for.
+     * @return the list of users.
+     */
+    public List<User> searchUser(String key) throws ContestManagementException;
+
+    /**
+     * Retrieves the list of contests for which the user with the given name is
+     * a resource. Returns an empty list if no contests are found.
+     *
+     * @param username the name of the user
+     * @return the list of found contests (empty list of none found)
+     *
+     * @throws IllegalArgumentException if username is null or empty
+     * @throws ContestManagementException when any other error occurs
+     * @since 1.3
+     */
+    public List<Contest> getUserContests(String username) throws ContestManagementException;
 }

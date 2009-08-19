@@ -12,8 +12,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager;
-import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
-import com.topcoder.service.studio.contest.failuretests.mock.MockServer;
 
 /**
  * <p>
@@ -29,7 +27,7 @@ public class SocketDocumentContentManagerFailureTest extends TestCase {
      * The server port to connect to.
      * </p>
      */
-    private static final int PORT = 20000;
+    private static int PORT = 20000;
 
     /**
      * <p>
@@ -40,31 +38,15 @@ public class SocketDocumentContentManagerFailureTest extends TestCase {
 
     /**
      * <p>
-     * The SocketDocumentContentServer instance for testing.
-     * </p>
-     */
-    private SocketDocumentContentServer server;
-
-    /**
-     * <p>
-     * The MockServer instance for testing.
-     * </p>
-     */
-    private MockServer mockServer;
-
-    /**
-     * <p>
      * Sets up the environment.
      * </p>
      * 
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
-        server = new SocketDocumentContentServer(PORT, 0);
 
         managerUnderTest = new SocketDocumentContentManager("127.0.0.1", PORT);
 
-        mockServer = new MockServer(PORT, 0);
     }
 
     /**
@@ -73,9 +55,6 @@ public class SocketDocumentContentManagerFailureTest extends TestCase {
      * </p>
      */
     protected void tearDown() {
-        server.stop();
-
-        mockServer.stop();
     }
 
     /**

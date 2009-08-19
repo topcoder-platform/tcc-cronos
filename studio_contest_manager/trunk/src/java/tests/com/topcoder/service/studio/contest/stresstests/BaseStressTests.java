@@ -21,7 +21,7 @@ class BaseStressTests extends TestCase {
      * The times that a method will be called.
      * </p>
      */
-    protected static final int RUN_TIMES = 20;
+    protected static final int RUN_TIMES = 10;
 
     /**
      * <p>

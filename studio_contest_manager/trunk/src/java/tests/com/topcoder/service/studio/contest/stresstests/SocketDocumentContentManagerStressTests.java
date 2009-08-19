@@ -3,10 +3,11 @@
  */
 package com.topcoder.service.studio.contest.stresstests;
 
-import com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager;
+import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
 
 
 /**
@@ -18,6 +19,10 @@ import junit.framework.TestSuite;
  * @version 1.0
  */
 public class SocketDocumentContentManagerStressTests extends BaseStressTests {
+    /**
+     * <p>The server port to connect to.</p>
+     */
+    private static int PORT = 20001;
 
     /**
      * <p>
@@ -27,6 +32,11 @@ public class SocketDocumentContentManagerStressTests extends BaseStressTests {
     private SocketDocumentContentManager manager;
 
     /**
+     * <p>The <code>SocketDocumentContentServer</code> instance for testing.</p>
+     */
+    private SocketDocumentContentServer server;
+
+    /**
      * <p>
      * Setup test environment.
      * </p>
@@ -34,7 +44,15 @@ public class SocketDocumentContentManagerStressTests extends BaseStressTests {
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
-        manager = new SocketDocumentContentManager("127.0.0.1", 2100);
+        // Wait the previous worker thread to stop.
+        Thread.sleep(500);
+        server = new SocketDocumentContentServer(++PORT, 0);
+
+        server.start();
+
+        // Wait the worker thread to begin.
+        Thread.sleep(500);
+        manager = new SocketDocumentContentManager("127.0.0.1", PORT);
     }
 
     /**
@@ -45,6 +63,7 @@ public class SocketDocumentContentManagerStressTests extends BaseStressTests {
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
+        server.stop();
         manager = null;
     }
 
@@ -71,7 +90,7 @@ public class SocketDocumentContentManagerStressTests extends BaseStressTests {
 
         String path = "a.txt";
         byte[] contents = new byte[] {'a', 'b', 'c' };
-        for (int i = 0; i < RUN_TIMES; i++) {
+        for (int i = 0; i < 1; i++) {
             manager.saveDocumentContent(path, contents);
         }
 

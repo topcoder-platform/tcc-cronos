@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.documentcontentservers;
 
@@ -33,7 +33,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
     /**
      * <p>The server port to listen to.</p>
      */
-    private static int PORT = 30002;
+    private static int PORT = 31002;
 
     /**
      * <p>The <code>SocketDocumentContentServer</code> instance for testing.</p>
@@ -526,8 +526,6 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
      * @throws Exception to Junit.
      */
     public void testIsRunning() throws Exception {
-        // Wait for previous worker thread to stop.
-        Thread.sleep(1000);
 
         boolean running = server.isRunning();
 
@@ -557,12 +555,10 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
         assertNull("The last exception should be null at first.",
             server.getLastException());
 
-        // Wait the worker thread to stop.
-        Thread.sleep(1000);
         server.start();
 
         // Wait for the worker thread to begin.
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -598,7 +594,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
     public void testWorkerThread_Failure1() throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -638,7 +634,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
     public void testWorkerThread_Failure2() throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -685,7 +681,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
     public void testWorkerThread_Failure3() throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -744,7 +740,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
         throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -801,7 +797,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
         throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -853,7 +849,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
         throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -908,7 +904,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
     public void testWorkerThread_GetDocumentContent() throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -987,7 +983,7 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
         throws Exception {
         // Start the server and wait the worker thread to begin.
         server.start();
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // Connect to the server.
         SocketChannel channel = SocketChannel.open();
@@ -1022,109 +1018,5 @@ public class SocketDocumentContentServerUnitTest extends TestCase {
             readBuf.array()[0]);
     }
 
-    /**
-     * <p>
-     * Accuracy test for method <code>SocketDocumentContentWorker.run()</code>.
-     * </p>
-     *
-     * <p>
-     * Verify case: Sends an existDocumentContent request, and the specified path
-     * exists. The worker should, and only should return 2 bytes. The first
-     * byte indicates the request is processed successfully (which is 1), the second
-     * bytes should indicates the path exists (which is 1).
-     * </p>
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testWorkerThread_ExistDocumentContent_Exist()
-        throws Exception {
-        // Start the server and wait for the worker thread to begin.
-        server.start();
-        Thread.sleep(1000);
 
-        // Connect to the server.
-        SocketChannel channel = SocketChannel.open();
-        channel.configureBlocking(true);
-        channel.connect(new InetSocketAddress("127.0.0.1", PORT));
-
-        // Sends an existDocumentContent request.
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
-        buffer.put((byte) 0x03);
-
-        // Using utf-8 encode the path.
-        String path = new File("test_files\\test1.txt").getAbsolutePath();
-        Charset charset = Charset.forName("utf-8");
-        CharsetEncoder encoder = charset.newEncoder();
-        ByteBuffer pathBuf = encoder.encode(CharBuffer.wrap(path.toCharArray()));
-
-        // 2 bytes to indicates the path's length.
-        buffer.putShort((short) pathBuf.remaining());
-        // the encode bytes of the path.
-        buffer.put(pathBuf);
-
-        // Sends out the request.
-        buffer.flip();
-        channel.write(buffer);
-
-        ByteBuffer readBuf = ByteBuffer.allocate(16);
-        int count = channel.read(readBuf);
-
-        assertEquals("There should be, and only be 2 bytes.", 2, count);
-
-        assertEquals("The first byte should be 1.", 1, readBuf.array()[0]);
-        assertEquals("The path should exist.", 1, readBuf.array()[1]);
-    }
-
-    /**
-     * <p>
-     * Accuracy test for method <code>SocketDocumentContentWorker.run()</code>.
-     * </p>
-     *
-     * <p>
-     * Verify case: Sends an existDocumentContent request, and the specified path
-     * doesn't exist. The worker should, and only should return 2 bytes. The first
-     * byte indicates the request is processed successfully (which is 1), the second
-     * bytes should indicates the path doesn't exist (which is 0).
-     * </p>
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testWorkerThread_ExistDocumentContent_UnExist()
-        throws Exception {
-        // Start the server and wait for the worker thread to begin.
-        server.start();
-        Thread.sleep(1000);
-
-        // Connect to the server.
-        SocketChannel channel = SocketChannel.open();
-        channel.configureBlocking(true);
-        channel.connect(new InetSocketAddress("127.0.0.1", PORT));
-
-        // Sends an existDocumentContent request.
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
-        buffer.put((byte) 0x03);
-
-        // Using utf-8 encode the path.
-        String path = new File("test_files\\unknown.txt").getAbsolutePath();
-        Charset charset = Charset.forName("utf-8");
-        CharsetEncoder encoder = charset.newEncoder();
-        ByteBuffer pathBuf = encoder.encode(CharBuffer.wrap(path.toCharArray()));
-
-        // 2 bytes to indicates the path's length.
-        buffer.putShort((short) pathBuf.remaining());
-        // the encode bytes of the path.
-        buffer.put(pathBuf);
-
-        // Sends out the request.
-        buffer.flip();
-        channel.write(buffer);
-
-        ByteBuffer readBuf = ByteBuffer.allocate(16);
-        int count = channel.read(readBuf);
-
-        assertEquals("There should be, and only be 2 bytes.", 2, count);
-
-        assertEquals("The first byte should be 1.", 1, readBuf.array()[0]);
-        assertEquals("The path should doesn't exist.", 0, readBuf.array()[1]);
-    }
 }

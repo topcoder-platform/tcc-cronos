@@ -22,10 +22,6 @@ import javax.persistence.TransactionRequiredException;
  * @version 1.0
  */
 public class MockEntityManager implements EntityManager {
-    /**
-     * The EntityManagerFactory used to mock the jpa EntityManager.
-     */
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("contest_submission");
 
     /**
      * <p>EntityManager proxy.</p>
@@ -53,10 +49,10 @@ public class MockEntityManager implements EntityManager {
      */
     public MockEntityManager() {
         if (manager == null) {
-            manager = emf.createEntityManager();
+            manager = com.topcoder.service.studio.contest.bean.MockEntityManager.EMF.createEntityManager();
         } else {
             if (!manager.isOpen()) {
-                manager = emf.createEntityManager();
+                manager = com.topcoder.service.studio.contest.bean.MockEntityManager.EMF.createEntityManager();
             }
         }
     }

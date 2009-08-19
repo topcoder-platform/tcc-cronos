@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.utils;
 
@@ -35,7 +35,8 @@ import com.topcoder.util.classassociations.IllegalHandlerException;
 
 /**
  * <p>
- * This is a simple converter helper which converts the composite Filter object into an SQL statement.
+ * This is a simple converter helper which converts the composite Filter object
+ * into an SQL statement.
  * </p>
  *
  * <p>
@@ -49,47 +50,48 @@ import com.topcoder.util.classassociations.IllegalHandlerException;
 public class FilterToSqlConverter {
     /**
      * <p>
-     * Search context string. It contains the first part of SQL string and will prepend to returned conditional
-     * statement to form a detailed search SQL string.
+     * Search context string. It contains the first part of SQL string and will
+     * prepend to returned conditional statement to form a detailed search SQL
+     * string.
      * </p>
      * Fixed: [27074412-7]
      */
     private static final String SQL_SEARCH_CONTEXT = ""
-    	+ "SELECT contest.contest_id,contest.contest_channel_id,contest.name,contest.contest_type_id, "  
-        + "contest.project_id,contest.tc_direct_project_id,contest.contest_status_id,contest.contest_detailed_status_id,contest.forum_id, " 
-        + "contest.event_id,contest.start_time,contest.end_time,contest.winner_announcement_time, "  
-        + "contest.create_user_id, contest.launch_immediately, contest.deleted "
-        + "FROM contest "
-        + "INNER JOIN contest_status_lu ON contest.contest_status_id = contest_status_lu.contest_status_id "
-        + "INNER JOIN contest_channel_lu ON contest.contest_channel_id = contest_channel_lu.contest_channel_id "
-        + "WHERE ";
-
+            + "SELECT contest.contest_id,contest.contest_channel_id,contest.name,contest.contest_type_id, "
+            + "contest.project_id,contest.tc_direct_project_id,contest.contest_status_id,"
+            + "contest.contest_detailed_status_id,contest.forum_id, "
+            + "contest.event_id,contest.start_time,contest.end_time,contest.winner_announcement_time, "
+            + "contest.create_user_id, contest.launch_immediately, contest.deleted " + "FROM contest WHERE ";
 
     /**
      * <p>
-     * This is the classAssociator that will be mapping the Filter classes to their respective SearchFragmentBuilders.
-     * The keys are non-null Filter classes, and the values are non-null FragmentBuilders. It is used for providing the
-     * FragmentBuilder lookup for certain SearchFragmentBuilders that need to delegate to other SearchFragmentBuilders.
+     * This is the classAssociator that will be mapping the Filter classes to
+     * their respective SearchFragmentBuilders. The keys are non-null Filter
+     * classes, and the values are non-null FragmentBuilders. It is used for
+     * providing the FragmentBuilder lookup for certain SearchFragmentBuilders
+     * that need to delegate to other SearchFragmentBuilders.
      * </p>
      */
-    private static final ClassAssociator fragmentBuilders = new ClassAssociator();
+    private static final ClassAssociator FRAGMENTBUILDERS = new ClassAssociator();
     static {
         try {
             // see SearchBuilderHelper#loadClassAssociator
-            fragmentBuilders.addClassAssociation(AndFilter.class, new AndFragmentBuilder());
-            fragmentBuilders.addClassAssociation(OrFilter.class, new OrFragmentBuilder());
-            fragmentBuilders.addClassAssociation(LikeFilter.class, new LikeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(NotFilter.class, new NotFragmentBuilder());
-            fragmentBuilders.addClassAssociation(NullFilter.class, new NullFragmentBuilder());
-            fragmentBuilders.addClassAssociation(EqualToFilter.class, new EqualsFragmentBuilder());
-            fragmentBuilders.addClassAssociation(GreaterThanFilter.class, new RangeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(GreaterThanOrEqualToFilter.class, new RangeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(BetweenFilter.class, new RangeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(LessThanOrEqualToFilter.class, new RangeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(LessThanFilter.class, new RangeFragmentBuilder());
-            fragmentBuilders.addClassAssociation(InFilter.class, new InFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(AndFilter.class, new AndFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(OrFilter.class, new OrFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(LikeFilter.class, new LikeFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(NotFilter.class, new NotFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(NullFilter.class, new NullFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(EqualToFilter.class, new EqualsFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(GreaterThanFilter.class, new RangeFragmentBuilder());
+            FRAGMENTBUILDERS
+                    .addClassAssociation(GreaterThanOrEqualToFilter.class, new RangeFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(BetweenFilter.class, new RangeFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(LessThanOrEqualToFilter.class, new RangeFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(LessThanFilter.class, new RangeFragmentBuilder());
+            FRAGMENTBUILDERS.addClassAssociation(InFilter.class, new InFragmentBuilder());
         } catch (IllegalHandlerException e) {
-            // since we initiate fragment builders manually, this exception will not occur as the case through
+            // since we initiate fragment builders manually, this exception will
+            // not occur as the case through
             // configuration file.
         }
     }
@@ -109,39 +111,48 @@ public class FilterToSqlConverter {
      * </p>
      *
      * @param filter to be converted
-     * @return a simple 2 element array and the first element contains sql string and the second contains a
-     *         <code>List</code> including all bind variable values accumulated during SQL string construction
+     * @return a simple 2 element array and the first element contains sql
+     *         string and the second contains a <code>List</code> including
+     *         all bind variable values accumulated during SQL string
+     *         construction
      *
-     * @throws IllegalArgumentException if the input is null or if the sql string cannot be generated from the given
-     *             input due to not supported filter(s)
+     * @throws IllegalArgumentException if the input is null or if the sql
+     *         string cannot be generated from the given input due to not
+     *         supported filter(s)
      */
     public static Object[] convert(Filter filter) {
         Helper.checkNull(filter, "filter");
         SearchContext searchContext = buildSearchContext(filter);
-        // see http://forums.topcoder.com/?module=Thread&threadID=613082&start=0&mc=6#974556
+        // see
+        // http://forums.topcoder.com/?module=Thread&threadID=613082&start=0&mc=6#974556
 
         return new Object[] {SQL_SEARCH_CONTEXT + searchContext.getSearchString().toString(),
-            searchContext.getBindableParameters()};
+                searchContext.getBindableParameters()};
     }
 
     /**
      * <p>
-     * Uses database fragment builder to construct actual search SQL as well as all bind parameter values.
+     * Uses database fragment builder to construct actual search SQL as well as
+     * all bind parameter values.
      * </p>
      *
      * @param filter used to build search SQL
-     * @return SeachContext object containing search SQL to be used for building final search statement
+     * @return SeachContext object containing search SQL to be used for building
+     *         final search statement
      *
-     * @throws IllegalArgumentException if no builder can be found for given filter or if one of nested filter can not
-     *             be recognized due to no corresponding builder
+     * @throws IllegalArgumentException if no builder can be found for given
+     *         filter or if one of nested filter can not be recognized due to no
+     *         corresponding builder
      */
     private static SearchContext buildSearchContext(Filter filter) {
-        // PLEASE see http://forums.topcoder.com/?module=Thread&threadID=613082&start=0&mc=4#974554
-        // we use mature existing code base from search builder. this factory could be converted to another or improved
+        // PLEASE see
+        // http://forums.topcoder.com/?module=Thread&threadID=613082&start=0&mc=4#974554
+        // we use mature existing code base from search builder. this factory
+        // could be converted to another or improved
         // database search strategy based on
         // this code easily
         SearchFragmentBuilder builder = getFragmentBuilder(filter);
-        SearchContext searchContext = new SearchContext(fragmentBuilders, new HashMap<String, String>());
+        SearchContext searchContext = new SearchContext(FRAGMENTBUILDERS, new HashMap<String, String>());
         try {
             builder.buildSearch(filter, searchContext);
         } catch (UnrecognizedFilterException e) {
@@ -153,18 +164,20 @@ public class FilterToSqlConverter {
 
     /**
      * <p>
-     * Retrieves the SearchFragmentBuilder that is associated for the provided filter. Throws IllegalArgumentException
-     * if no fragment builder could be found.
+     * Retrieves the SearchFragmentBuilder that is associated for the provided
+     * filter. Throws IllegalArgumentException if no fragment builder could be
+     * found.
      * </p>
      *
      * @param filter The filter to retrieve a SearchFragmentBuidler form.
-     * @return the SearchFragmentBuilder that is associated for the provided filter.
+     * @return the SearchFragmentBuilder that is associated for the provided
+     *         filter.
      *
      * @throws IllegalArgumentException if builder can not be found
      */
     private static SearchFragmentBuilder getFragmentBuilder(Filter filter) {
-        SearchFragmentBuilder builder = (SearchFragmentBuilder) fragmentBuilders.getAssociations().get(
-            filter.getClass());
+        SearchFragmentBuilder builder = (SearchFragmentBuilder) FRAGMENTBUILDERS.getAssociations().get(
+                filter.getClass());
         if (builder == null) {
             throw new IllegalArgumentException("The filter is not supported in converting to sql.");
         } else {

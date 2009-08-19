@@ -3,10 +3,25 @@
  */
 package com.topcoder.service.studio.contest.accuracytests;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
+import junit.framework.TestCase;
+
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
+import com.topcoder.service.studio.contest.ContestGeneralInfo;
+import com.topcoder.service.studio.contest.ContestMultiRoundInformation;
 import com.topcoder.service.studio.contest.ContestProperty;
+import com.topcoder.service.studio.contest.ContestSpecifications;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
@@ -15,30 +30,21 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.contest.bean.ContestManagerBean;
+import com.topcoder.service.studio.contest.bean.MockEntityManager;
 import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
+import com.topcoder.service.studio.submission.MilestonePrize;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 
-import junit.framework.TestCase;
-
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
 /**
  * Accuracy test cases for class <code>ContestManagerBean </code>.
- * 
- * @author Chenhong
- * @version 1.0
+ *
+ * @author Chenhong, myxgyy
+ * @version 1.3
+ * @since 1.0
  */
 public class TestContestManagerBeanAccuracy extends TestCase {
     /** Represents the ContestManagerBean instance for testing. */
@@ -46,8 +52,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * <p>
-     * The mock <code>SessionContext</code> for simulating the ejb
-     * environment.
+     * The mock <code>SessionContext</code> for simulating the ejb environment.
      * </p>
      */
     private MockSessionContext context;
@@ -60,14 +65,30 @@ public class TestContestManagerBeanAccuracy extends TestCase {
      */
     private EntityTransaction transaction = null;
 
+    private int port = 40000;
     /**
      * Set up.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void setUp() throws Exception {
         DBUtil.clearDatabase();
+
+        // create EntityManager.
+        entityManager = MockEntityManager.EMF.createEntityManager();
+
+        initialize();
+
+        entityManager.getTransaction().begin();
+        entityManager.createNativeQuery(
+            "insert into contest_status_lu(contest_status_id," +
+            " contest_status_desc) values(1, 'open')").executeUpdate();
+        entityManager.getTransaction().commit();
+
+    }
+
+    private void initialize() throws Exception {
 
         manager = new ContestManagerBean();
 
@@ -76,16 +97,15 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         context.addEntry("unitName", "contest_submission");
         context.addEntry("activeContestStatusId", new Long(10));
         context.addEntry("defaultDocumentPathId", new Long(1));
-        context.addEntry("loggerName", "System.out");
+        //context.addEntry("loggerName", "System.out");
+        context.addEntry("auditChange", new Boolean(false));
 
         context.addEntry("documentContentManagerClassName",
-                "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+            "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
-        context.addEntry("serverPort", new Integer(2000));
-
-        // create EntityManager.
-        entityManager = Persistence.createEntityManagerFactory("contest_submission").createEntityManager();
+        context.addEntry("serverPort", new Integer(port));
 
         context.addEntry("contest_submission", entityManager);
 
@@ -93,7 +113,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         field.setAccessible(true);
         field.set(manager, context);
 
-        Method method = manager.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = manager.getClass()
+                               .getDeclaredMethod("initialize", new Class[0]);
 
         method.setAccessible(true);
         method.invoke(manager, new Object[0]);
@@ -101,12 +122,15 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Tear down.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void tearDown() throws Exception {
         DBUtil.clearDatabase();
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();
+        }
     }
 
     /**
@@ -119,10 +143,10 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     /**
      * Test the CRUD method <code>Contest createContest(Contest contest) </code>.
      * <p>
-     * The contest should be persisted into the database. The transaction will
-     * be commited.
+     * The contest should be persisted into the database. The transaction will be
+     * commited.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -130,6 +154,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         transaction = entityManager.getTransaction();
 
         transaction.begin();
+
         // persist StudioFileType.
         StudioFileType fileType = new StudioFileType();
         fileType.setDescription("desc");
@@ -141,13 +166,13 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         // Persist ContestChannel.
         ContestChannel contestChannel = new ContestChannel();
         contestChannel.setDescription("desc");
-        contestChannel.setName("name");
-        contestChannel.setFileType(fileType);
+        contestChannel.setContestChannelId(1L);
         entityManager.persist(contestChannel);
 
         // Persist ContestType.
         ContestType contestType = new ContestType();
         contestType.setDescription("desc");
+        contestType.setContestType(1L);
         contestType.setRequirePreviewFile(false);
         contestType.setRequirePreviewImage(false);
         entityManager.persist(contestType);
@@ -156,6 +181,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         ContestStatus status = new ContestStatus();
         status.setDescription("description");
         status.setName("status");
+        status.setContestStatusId(1L);
+        status.setStatusId(1L);
         entityManager.persist(status);
 
         Date date = new Date();
@@ -174,18 +201,58 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         contest.setStartDate(new Date());
         contest.setStatus(status);
         contest.setWinnerAnnoucementDeadline(new Date());
+        contest.setStatusId(1L);
+
+        ContestSpecifications specData = new ContestSpecifications();
+        specData.setAdditionalRequirementsAndRestrictions("not null");
+        specData.setColors("Red");
+        specData.setFonts("Arial");
+        specData.setLayoutAndSize("10px");
+        contest.setSpecifications(specData);
+
+        PrizeType type = new PrizeType();
+        type.setDescription("payment");
+        type.setPrizeTypeId(2L);
+        entityManager.persist(type);
+
+        MilestonePrize prizeData = new MilestonePrize();
+        prizeData.setType(type);
+        prizeData.setCreateDate(new Date());
+        prizeData.setAmount(20.00d);
+        prizeData.setNumberOfSubmissions(10);
+        contest.setMilestonePrize(prizeData);
+
+        ContestMultiRoundInformation infoData = new ContestMultiRoundInformation();
+        infoData.setMilestoneDate(new Date());
+        infoData.setRoundOneIntroduction("one");
+        infoData.setRoundTwoIntroduction("two");
+        infoData.setSubmittersLockedBetweenRounds(true);
+        contest.setMultiRoundInformation(infoData);
+
+        ContestGeneralInfo generalInfoData = new ContestGeneralInfo();
+        generalInfoData.setBrandingGuidelines("brandingGuidelines");
+        generalInfoData.setDislikedDesignsWebsites("dislikedDesignsWebsites");
+        generalInfoData.setGoals("goals");
+        generalInfoData.setOtherInstructions("otherInstructions");
+        generalInfoData.setTargetAudience("targetAudience");
+        generalInfoData.setWinningCriteria("winningCriteria");
+        contest.setGeneralInfo(generalInfoData);
+
         // Create the Contest in the bean.
         manager.createContest(contest);
 
         // try to find the Entity.
-        Contest c = this.entityManager.find(Contest.class, contest.getContestId());
+        Contest c = this.entityManager.find(Contest.class,
+                contest.getContestId());
         assertNotNull("The contest must be created.", c);
 
         assertEquals("The name must be contest1.", "contest1", c.getName());
 
-        assertEquals("The create User must be 1.", new Long(1), c.getCreatedUser());
+        assertEquals("The create User must be 1.", new Long(1),
+            c.getCreatedUser());
 
-        assertEquals("The status name must be 'status'", "status", c.getStatus().getName());
+        assertEquals("The status name must be 'status'", "status",
+            c.getStatus().getName());
 
         // the Contest should be commited.
         entityManager.getTransaction().commit();
@@ -193,11 +260,10 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>Contest getContest(long contestId) </code>.
-     * 
      * <p>
      * The contest with id 1 does not existed. Null is expected.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -208,17 +274,17 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>Contest getContest(long contestId) </code>.
-     * 
      * <p>
      * The contest with id 1 does not existed. Null is expected.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testGetContest_2() throws Exception {
         Long id = DBUtil.persisteOneContest(entityManager).getContestId();
         assertNotNull("The Contest id should not be null.", id);
+
         Contest ret = manager.getContest(id);
 
         assertNotNull("The Contest with id=" + id + " must exist.", ret);
@@ -227,7 +293,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     /**
      * Test method
      * <code>List<Contest> getContestsForProject(long tcDirectProjectId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -235,19 +301,20 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         DBUtil.persisteOneContest(entityManager);
 
         List<Contest> ret = manager.getContestsForProject(1);
-        assertEquals("There should be one Contest with project 1.", 1, ret.size());
-        assertEquals("The contest name is 'contest1'", "contest1", ret.get(0).getName());
+        assertEquals("There should be one Contest with project 1.", 1,
+            ret.size());
+        assertEquals("The contest name is 'contest1'", "contest1",
+            ret.get(0).getName());
     }
 
     /**
      * Test method
      * <code>List<Contest> getContestsForProject(long tcDirectProjectId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testGetContestsForProject_2() throws Exception {
-
         List<Contest> ret = manager.getContestsForProject(1000);
 
         assertTrue("The return list should be empty.", ret.isEmpty());
@@ -255,7 +322,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>void updateContest(Contest contest) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -269,24 +336,24 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         contest.setStartDate(new Date());
         contest.setTcDirectProjectId(new Long(5));
 
-        manager.updateContest(contest);
+        manager.updateContest(contest, 1, "admin", true);
+
         Contest ret = manager.getContest(contest.getContestId());
 
         assertEquals("Equal is expected.", new Long(111), ret.getCreatedUser());
         assertEquals("Equal is expected.", new Long(11), ret.getEventId());
 
-        assertEquals("Equal is expected.", new Long(5), ret.getTcDirectProjectId());
+        assertEquals("Equal is expected.", new Long(5),
+            ret.getTcDirectProjectId());
         assertEquals("Equal is expected.", new Long(1111), ret.getForumId());
-
     }
 
     /**
      * Test method <code>void updateContest(Contest contest) </code>.
-     * 
      * <p>
      * In this test case the ContestChannel is updated.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -298,10 +365,12 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         contest.setContestChannel(channel);
 
-        manager.updateContest(contest);
+        manager.updateContest(contest, 1, "admin", true);
+
         Contest ret = manager.getContest(contest.getContestId());
 
-        assertEquals("The ContestChannel name should be 'update'.", "update", ret.getContestChannel().getName());
+        assertEquals("The ContestChannel name should be 'update channel'.",
+            "update channel", ret.getContestChannel().getDescription());
     }
 
     /**
@@ -309,7 +378,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
      * <p>
      * In this test case the ContestStatus of the Contest will be updated.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -321,10 +390,12 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         contest.setStatus(status);
 
-        manager.updateContest(contest);
+        manager.updateContest(contest, 1, "admin", true);
+
         Contest ret = manager.getContest(contest.getContestId());
 
-        assertEquals("The ContestStatus name should be 'update'.", "update", ret.getStatus().getName());
+        assertEquals("The ContestStatus name should be 'update'.", "update",
+            ret.getStatus().getName());
     }
 
     /**
@@ -332,7 +403,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
      * <p>
      * In this test case, the ContestType will be updated.
      * </p>
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -344,70 +415,18 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         contest.setContestType(type);
 
-        manager.updateContest(contest);
-        Contest ret = manager.getContest(contest.getContestId());
-
-        assertEquals("The ContestType des should be 'update'.", "update", ret.getContestType().getDescription());
-    }
-
-    /**
-     * Test method
-     * <code>updateContestStatus(long contestId, long newStatusId) </code>.
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testUpdateContestStatusLongLong() throws Exception {
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-
-        ContestStatus status = DBUtil.persistContestStatus(entityManager);
-
-        List<ContestStatus> list = new ArrayList<ContestStatus>();
-        list.add(status);
-
-        // Set the status to the next possible status.
-        contest.getStatus().setStatuses(list);
-
-        manager.updateContestStatus(contest.getContestId(), status.getContestStatusId());
+        manager.updateContest(contest, 1, "admin", true);
 
         Contest ret = manager.getContest(contest.getContestId());
 
-        assertEquals("Equal is expected.", status.getContestStatusId(), ret.getStatus().getContestStatusId());
-    }
-
-    /**
-     * Test method <code>long getClientForContest(long contestId) </code>.
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testGetClientForContest() throws Exception {
-        DBUtil.prepareProject();
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-
-        long ret = manager.getClientForContest(contest.getContestId());
-
-        assertEquals("The client id must be 10.", 10, ret);
-    }
-
-    /**
-     * Test method <code> long getClientForProject(long projectId) </code>.
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testGetClientForProject() throws Exception {
-        DBUtil.prepareProject();
-
-        long ret = manager.getClientForProject(1L);
-
-        assertEquals("Equal to 10.", 10, ret);
+        assertEquals("The ContestType des should be 'update'.", "update",
+            ret.getContestType().getDescription());
     }
 
     /**
      * Test method
      * <code>ContestStatus addContestStatus(ContestStatus contestStatus) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -416,11 +435,14 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         ContestStatus status = new ContestStatus();
         status.setDescription("new");
+        status.setContestStatusId(1L);
+        status.setStatusId(1L);
         status.setName("review");
 
         ContestStatus added = manager.addContestStatus(status);
 
-        ContestStatus ret = entityManager.find(ContestStatus.class, added.getContestStatusId());
+        ContestStatus ret = entityManager.find(ContestStatus.class,
+                added.getContestStatusId());
 
         assertNotNull("The ContestStatus should be persisted.", ret);
 
@@ -429,23 +451,25 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>updateContestStatus(ContestStatus contestStatus) </code>.
-     * 
+     * Test method <code>updateContestStatus(ContestStatus contestStatus) </code>.
+     *
      * @throws Exception
      *             to junit
      */
-    public void testUpdateContestStatusContestStatus() throws Exception {
+    public void testUpdateContestStatusContestStatus()
+        throws Exception {
         ContestStatus status = DBUtil.persistContestStatus(entityManager);
 
         entityManager.getTransaction().begin();
 
         status.setDescription("update");
         status.setName("screening");
+        status.setContestStatusId(2L);
 
         manager.updateContestStatus(status);
 
-        ContestStatus ret = entityManager.find(ContestStatus.class, status.getContestStatusId());
+        ContestStatus ret = entityManager.find(ContestStatus.class,
+                status.getContestStatusId());
 
         assertEquals("Des should be 'update'", "update", ret.getDescription());
 
@@ -454,9 +478,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>boolean removeContestStatus(long contestStatusId) </code>.
-     * 
+     * Test method <code>boolean removeContestStatus(long contestStatusId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -467,9 +490,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>boolean removeContestStatus(long contestStatusId) </code>.
-     * 
+     * Test method <code>boolean removeContestStatus(long contestStatusId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -486,9 +508,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>ContestStatus getContestStatus(long contestStatusId) </code>.
-     * 
+     * Test method <code>ContestStatus getContestStatus(long contestStatusId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -497,9 +518,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>ContestStatus getContestStatus(long contestStatusId) </code>.
-     * 
+     * Test method <code>ContestStatus getContestStatus(long contestStatusId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -508,13 +528,14 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         ContestStatus ret = manager.getContestStatus(status.getContestStatusId());
 
-        assertEquals("Equal is expected.", status.getDescription(), ret.getDescription());
+        assertEquals("Equal is expected.", status.getDescription(),
+            ret.getDescription());
         assertEquals("Equal is expected.", status.getName(), ret.getName());
     }
 
     /**
      * Test method <code>Document addDocument(Document document) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -527,6 +548,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         fileType.setExtension("ext");
         fileType.setImageFile(false);
         fileType.setSort(new Integer(10));
+        fileType.setStudioFileType(1);
         entityManager.persist(fileType);
 
         Document document = new Document();
@@ -535,6 +557,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         MimeType type = new MimeType();
         type.setDescription("des");
         type.setStudioFileType(fileType);
+        type.setMimeTypeId(1L);
         entityManager.persist(type);
 
         document.setMimeType(type);
@@ -552,6 +575,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         DocumentType documentType = new DocumentType();
         documentType.setDescription("documentType");
+        documentType.setDocumentTypeId(1L);
 
         entityManager.persist(documentType);
 
@@ -564,12 +588,13 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         assertNotNull("The document created should not be null.", doc);
 
-        assertEquals("SThe system file name should be 'test'", "test", doc.getSystemFileName());
+        assertEquals("SThe system file name should be 'test'", "test",
+            doc.getSystemFileName());
     }
 
     /**
      * Test method <code> void updateDocument(Document document) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -583,11 +608,13 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         fileType.setExtension("ext");
         fileType.setImageFile(false);
         fileType.setSort(new Integer(10));
+        fileType.setStudioFileType(2);
         entityManager.persist(fileType);
 
         MimeType type = new MimeType();
         type.setDescription("update");
         type.setStudioFileType(fileType);
+        type.setMimeTypeId(3L);
         entityManager.persist(type);
 
         document.setMimeType(type);
@@ -599,6 +626,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         document.setPath(path);
 
         DocumentType documentType = new DocumentType();
+        documentType.setDocumentTypeId(2L);
         documentType.setDescription("update");
 
         entityManager.persist(documentType);
@@ -613,17 +641,20 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         entityManager.getTransaction().commit();
 
         // validate if update succesfully.
-        Document ret = entityManager.find(Document.class, document.getDocumentId());
-        assertEquals("Equal to 'update'", "update", ret.getMimeType().getDescription());
+        Document ret = entityManager.find(Document.class,
+                document.getDocumentId());
+        assertEquals("Equal to 'update'", "update",
+            ret.getMimeType().getDescription());
         assertEquals("Equal to 'update'", "update", ret.getOriginalFileName());
         assertEquals("Equal to 'update'", "update", ret.getPath().getPath());
 
-        assertEquals("Equal to 'update'", "update", ret.getType().getDescription());
+        assertEquals("Equal to 'update'", "update",
+            ret.getType().getDescription());
     }
 
     /**
      * Test method <code>Document getDocument(long documentId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -633,7 +664,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>Document getDocument(long documentId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -647,7 +678,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>boolean removeDocument(long documentId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -659,7 +690,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>boolean removeDocument(long documentId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -667,6 +698,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         Document document = DBUtil.persisteDocument(entityManager);
 
         entityManager.getTransaction().begin();
+
         boolean ret = manager.removeDocument(document.getDocumentId());
 
         assertTrue(ret);
@@ -676,67 +708,29 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method
-     * <code>void addDocumentToContest(long documentId, long contestId) </code>.
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testAddDocumentToContest() throws Exception {
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-        Document document = DBUtil.persisteDocument(entityManager);
-
-        entityManager.getTransaction().begin();
-        manager.addDocumentToContest(document.getDocumentId(), contest.getContestId());
-        entityManager.getTransaction().commit();
-
-        assertTrue(contest.getDocuments().contains(document));
-        assertTrue(document.getContests().contains(contest));
-    }
-
-    /**
-     * Test method
      * <code>boolean removeDocumentFromContest(long documentId, long contestId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
-    public void testRemoveDocumentFromContest_1() throws Exception {
+    public void testRemoveDocumentFromContest() throws Exception {
         Document document = DBUtil.persisteDocument(entityManager);
         Contest contest = DBUtil.persisteOneContest(entityManager);
 
-        boolean ret = manager.removeDocumentFromContest(document.getDocumentId(), contest.getContestId());
+        boolean ret = manager.removeDocumentFromContest(document.getDocumentId(),
+                contest.getContestId());
 
         assertFalse(ret);
     }
 
     /**
      * Test method
-     * <code>boolean removeDocumentFromContest(long documentId, long contestId) </code>.
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testRemoveDocumentFromContest_2() throws Exception {
-        Document document = DBUtil.persisteDocument(entityManager);
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-
-        entityManager.getTransaction().begin();
-        manager.addDocumentToContest(document.getDocumentId(), contest.getContestId());
-        boolean ret = manager.removeDocumentFromContest(document.getDocumentId(), contest.getContestId());
-
-        assertTrue(ret);
-        entityManager.getTransaction().commit();
-    }
-
-    /**
-     * Test method
      * <code>ContestChannel addContestChannel(ContestChannel contestChannel) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testAddContestChannel() throws Exception {
-
         entityManager.getTransaction().begin();
 
         StudioFileType fileType = new StudioFileType();
@@ -744,25 +738,23 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         fileType.setExtension("doc");
         fileType.setImageFile(false);
         fileType.setSort(new Integer(100));
+        fileType.setStudioFileType(1);
 
         entityManager.persist(fileType);
 
         ContestChannel channel = new ContestChannel();
         channel.setDescription("des1");
-        channel.setFileType(fileType);
-        channel.setName("name1");
+        channel.setContestChannelId(1L);
 
         ContestChannel ret = manager.addContestChannel(channel);
         entityManager.getTransaction().commit();
 
         assertNotNull(ret);
-        assertEquals("Name should be 'name1'", "name1", ret.getName());
     }
 
     /**
-     * Test method
-     * <code>updateContestChannel(ContestChannel contestChannel) </code>.
-     * 
+     * Test method <code>updateContestChannel(ContestChannel contestChannel) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -780,22 +772,19 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         entityManager.persist(fileType);
 
         channel.setDescription("des2");
-        channel.setFileType(fileType);
-        channel.setName("name2");
 
         manager.updateContestChannel(channel);
         entityManager.getTransaction().commit();
 
-        ContestChannel ret = entityManager.find(ContestChannel.class, channel.getContestChannelId());
+        ContestChannel ret = entityManager.find(ContestChannel.class,
+                channel.getContestChannelId());
 
-        assertEquals("Name should be 'name2'", "name2", ret.getName());
-
+        assertEquals("Name should be 'des2'", "des2", ret.getDescription());
     }
 
     /**
-     * Test method
-     * <code>boolean removeContestChannel(long contestChannelId) </code>.
-     * 
+     * Test method <code>boolean removeContestChannel(long contestChannelId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -804,9 +793,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>boolean removeContestChannel(long contestChannelId) </code>.
-     * 
+     * Test method <code>boolean removeContestChannel(long contestChannelId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -823,9 +811,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>ContestChannel getContestChannel(long contestChannelId) </code>.
-     * 
+     * Test method <code>ContestChannel getContestChannel(long contestChannelId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -834,9 +821,8 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code>ContestChannel getContestChannel(long contestChannelId) </code>.
-     * 
+     * Test method <code>ContestChannel getContestChannel(long contestChannelId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
@@ -847,63 +833,65 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code> ContestConfig addConfig(ContestConfig contestConfig) </code>.
-     * 
+     * Test method <code> ContestConfig addConfig(ContestConfig contestConfig) </code>.
+     *
      * @throws Exception
      *             to junit
      */
     public void testAddConfig() throws Exception {
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-
-        entityManager.getTransaction().begin();
-        ContestConfig config = new ContestConfig();
-        config.setValue("value");
-
         ContestProperty property = new ContestProperty();
         property.setDescription("description");
 
-        entityManager.persist(property);
-
-        config.setProperty(property);
-        config.setContest(contest);
+        ContestConfig config = new ContestConfig();
+        Identifier id = new Identifier();
+        id.setProperty(property);
+        config.setId(id);
+        config.setValue("value");
 
         ContestConfig ret = manager.addConfig(config);
-
-        entityManager.getTransaction().commit();
 
         assertNotNull(ret);
 
         assertEquals("The value should be 'value'", "value", ret.getValue());
     }
 
+    private SocketDocumentContentServer startSocketDocumentContentServer() throws Exception {
+        port++;
+        SocketDocumentContentServer server = null;
+        try {
+            server = new SocketDocumentContentServer(port, 0);
+            server.start();
+        } catch (IOException e) {
+            return startSocketDocumentContentServer();
+        }
+
+        Thread.sleep(500);
+        return server;
+    }
+
     /**
      * Test method
      * <code>saveDocumentContent(long documentId, byte[] documentContent) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testSaveDocumentContent() throws Exception {
         Document document = DBUtil.persisteDocument(entityManager);
+        SocketDocumentContentServer server = startSocketDocumentContentServer();
+        initialize();
 
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
-        server.start();
-
-        Thread.sleep(2000);
         try {
-            manager.saveDocumentContent(document.getDocumentId(), "abc".getBytes());
-
+            manager.saveDocumentContent(document.getDocumentId(),
+                "abc".getBytes());
         } finally {
             server.stop();
-
-            Thread.sleep(2000);
         }
     }
 
     /**
      * Test method <code>byte[] getDocumentContent(long documentId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -915,12 +903,10 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         }
 
         Document document = DBUtil.persisteDocument(entityManager);
-
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
-        server.start();
+        SocketDocumentContentServer server = startSocketDocumentContentServer();
+        initialize();
 
         try {
-
             byte[] content = manager.getDocumentContent(document.getDocumentId());
 
             assertEquals("The size should be equal", 3, content.length);
@@ -930,17 +916,16 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     }
 
     /**
-     * Test method
-     * <code> public boolean existDocumentContent(long documentId) </code>.
-     * 
+     * Test method <code> public boolean existDocumentContent(long documentId) </code>.
+     *
      * @throws Exception
      *             to junit
      */
     public void testExistDocumentContent() throws Exception {
         Document doc = DBUtil.persisteDocument(entityManager);
 
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
-        server.start();
+        SocketDocumentContentServer server = startSocketDocumentContentServer();
+        initialize();
 
         try {
             boolean ret = manager.existDocumentContent(doc.getDocumentId());
@@ -953,7 +938,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>List<ContestStatus> getAllContestStatuses() </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -965,7 +950,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>List<ContestStatus> getAllContestStatuses() </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -979,7 +964,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>List<ContestChannel> getAllContestChannels() </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -993,7 +978,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>List<StudioFileType> getAllStudioFileTypes() </code>.
-     * 
+     *
      * @throws Exception
      *             to junit.
      */
@@ -1007,69 +992,34 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code> ContestTypeConfig addContestTypeConfig </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testAddContestTypeConfig() throws Exception {
         entityManager.getTransaction().begin();
-        ContestTypeConfig config = new ContestTypeConfig();
-        config.setPropertyValue("value");
-        config.setRequired(true);
-
-        ContestType type = new ContestType();
-        type.setDescription("d");
-        type.setRequirePreviewFile(true);
-        type.setRequirePreviewImage(false);
-
-        entityManager.persist(type);
-
-        config.setType(type);
 
         ContestProperty contestProperty = new ContestProperty();
         contestProperty.setDescription("des");
         entityManager.persist(contestProperty);
 
-        config.setProperty(contestProperty);
+        ContestType type = new ContestType();
+        type.setDescription("d");
+        type.setRequirePreviewFile(true);
+        type.setRequirePreviewImage(false);
+        type.setContestType(1L);
+
+        entityManager.persist(type);
+
+        ContestTypeConfig.Identifier id = new ContestTypeConfig.Identifier();
+        ContestTypeConfig config = new ContestTypeConfig();
+        config.setPropertyValue("value");
+        config.setRequired(true);
+        id.setProperty(contestProperty);
+        id.setContestType(type);
+        config.setId(id);
 
         manager.addContestTypeConfig(config);
-
-        entityManager.getTransaction().commit();
-
-    }
-
-    /**
-     * Test method
-     * <code>void addPrizeToContest(long contestId, long prizeId) </code>
-     * 
-     * @throws Exception
-     *             to junit
-     */
-    public void testAddPrizeToContest() throws Exception {
-        Contest contest = DBUtil.persisteOneContest(entityManager);
-
-        entityManager.getTransaction().begin();
-        Prize prize = new Prize();
-        prize.setAmount(new Double(1000));
-        prize.setCreateDate(new Date());
-        prize.setPlace(new Integer(1));
-
-        PrizeType prizeType = new PrizeType();
-        prizeType.setDescription("des");
-        entityManager.persist(prizeType);
-
-        prize.setType(prizeType);
-
-        entityManager.persist(prize);
-
-        entityManager.getTransaction().commit();
-
-        // The above code should be ok.
-
-        Prize ret = entityManager.find(Prize.class, prize.getPrizeId());
-
-        entityManager.getTransaction().begin();
-        manager.addPrizeToContest(contest.getContestId(), ret.getPrizeId());
 
         entityManager.getTransaction().commit();
     }
@@ -1077,7 +1027,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
     /**
      * Test method
      * <code> boolean removePrizeFromContest(long contestId, long prizeId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -1085,6 +1035,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         Contest contest = DBUtil.persisteOneContest(entityManager);
 
         entityManager.getTransaction().begin();
+
         Prize prize = new Prize();
         prize.setAmount(new Double(1000));
         prize.setCreateDate(new Date());
@@ -1092,6 +1043,7 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
         PrizeType prizeType = new PrizeType();
         prizeType.setDescription("des");
+        prizeType.setPrizeTypeId(1L);
         entityManager.persist(prizeType);
 
         prize.setType(prizeType);
@@ -1101,13 +1053,13 @@ public class TestContestManagerBeanAccuracy extends TestCase {
         entityManager.getTransaction().commit();
 
         // The above code should be ok.
-
         Prize ret = entityManager.find(Prize.class, prize.getPrizeId());
 
         entityManager.getTransaction().begin();
         manager.addPrizeToContest(contest.getContestId(), ret.getPrizeId());
 
-        boolean res = manager.removePrizeFromContest(contest.getContestId(), ret.getPrizeId());
+        boolean res = manager.removePrizeFromContest(contest.getContestId(),
+                ret.getPrizeId());
         entityManager.getTransaction().commit();
 
         assertTrue("The prize should be removed.", res);
@@ -1115,12 +1067,11 @@ public class TestContestManagerBeanAccuracy extends TestCase {
 
     /**
      * Test method <code>List<Prize> getContestPrizes(long contestId) </code>.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testGetContestPrizes() throws Exception {
-
         Contest contest = DBUtil.persisteOneContest(entityManager);
 
         List<Prize> list = manager.getContestPrizes(contest.getContestId());

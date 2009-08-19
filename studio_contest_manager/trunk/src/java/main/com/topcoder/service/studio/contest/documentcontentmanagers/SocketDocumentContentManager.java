@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.documentcontentmanagers;
 
@@ -586,9 +586,9 @@ public class SocketDocumentContentManager implements DocumentContentManager {
         throw new DocumentContentManagementException(decodeString(msgBuf));
     }
 
-	public void moveDocumentToContestFolder(String filename, long contestId)
-			throws IOException, DocumentContentManagementException {
-		throw new UnsupportedOperationException(
-				"moveDocumentToContestFolder method is unsupported now for SocketDocumentContentManager.");
-	}
+    public void moveDocumentToContestFolder(String filename, long contestId)
+            throws IOException, DocumentContentManagementException {
+        throw new UnsupportedOperationException(
+                "moveDocumentToContestFolder method is unsupported now for SocketDocumentContentManager.");
+    }
 }

@@ -85,10 +85,11 @@ public class ContestManagerBean2FailureTest extends TestCase {
      *             to JUnit
      */
     private void initContext() throws Exception {
+        sessionContext.addEntry("auditChange", new Boolean(false));
         sessionContext.addEntry("unitName", "contestManager");
         sessionContext.addEntry("activeContestStatusId", new Long(1));
         sessionContext.addEntry("defaultDocumentPathId", new Long(1));
-        sessionContext.addEntry("loggerName", "contestManager");
+        //sessionContext.addEntry("loggerName", "contestManager");
         sessionContext.addEntry("documentContentManagerClassName",
                 "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
         sessionContext.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");

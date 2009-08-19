@@ -3,11 +3,25 @@
  */
 package com.topcoder.service.studio.contest.accuracytests;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
+import com.topcoder.service.studio.contest.ContestGeneralInfo;
+import com.topcoder.service.studio.contest.ContestMultiRoundInformation;
+import com.topcoder.service.studio.contest.ContestSpecifications;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
@@ -15,36 +29,18 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
-
-import com.topcoder.util.config.ConfigManager;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import java.util.Date;
-
-import javax.persistence.EntityManager;
+import com.topcoder.service.studio.submission.MilestonePrize;
+import com.topcoder.service.studio.submission.PrizeType;
 
 
 /**
  * This is a helper class for database operation.
  *
- * @author Chenhong
- * @version 1.0
+ * @author Chenhong, myxgyy
+ * @version 1.3
+ * @since 1.0
  */
 final class DBUtil {
-    /**
-     * <p>
-     * Represents the <code>DBConnectionFactory</code> instance for testing.
-     * </p>
-     */
-    private static DBConnectionFactory factory;
 
     /**
      * Private ctor.
@@ -54,19 +50,26 @@ final class DBUtil {
     }
 
     /**
-     * Clear the database.
+     * Clears the database.
      *
      * @throws Exception to junit
      */
     static void clearDatabase() throws Exception {
-        factory = getDBConnectionFactory();
-
-        executeScriptFile("test_files/acc_files/delete_contest_table.sql");
-        executeScriptFile("test_files/acc_files/clean_project_table.sql");
+        executeScriptFile("/acc_files/delete_contest_table.sql");
+        executeScriptFile("/acc_files/clean_project_table.sql");
     }
 
     /**
-     * Get DBConnectionFactory instance.
+     * Initializes the database.
+     *
+     * @throws Exception to junit
+     */
+    static void initDatabase() throws Exception {
+        executeSqlFile("/acc_files/insert.sql");
+    }
+
+    /**
+     * Gets DBConnectionFactory instance.
      *
      * @return DBConnectionFactory instance.
      *
@@ -74,13 +77,7 @@ final class DBUtil {
      */
     static DBConnectionFactory getDBConnectionFactory()
         throws Exception {
-        ConfigManager cm = ConfigManager.getInstance();
-
-        if (!cm.existsNamespace("accuracytests")) {
-            cm.add(new File("test_files/acc_files/InformixDBConnectionFactory.xml").getCanonicalPath());
-        }
-
-        return new DBConnectionFactoryImpl("accuracytests");
+        return com.topcoder.service.studio.contest.bean.DBUtil.getDBConnectionFactory();
     }
 
     /**
@@ -93,44 +90,88 @@ final class DBUtil {
      * @throws Exception pass any unexpected exception to JUnit.
      */
     static void executeScriptFile(String filename) throws Exception {
-        Connection conn = null;
-        Statement stmt = null;
-        BufferedReader bufferedReader = null;
+        com.topcoder.service.studio.contest.bean.DBUtil.executeScriptFile(filename);
+    }
+
+    /**
+     * Execute the sql statements in a file.
+     *
+     * @param filename
+     *            the sql file.
+     * @throws Exception
+     *             to JUnit.
+     */
+    private static void executeSqlFile(String filename) throws Exception {
+        InputStream in = DBUtil.class.getResourceAsStream(filename);
+
+        byte[] buf = new byte[1024];
+        int len = 0;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        String content;
 
         try {
-            conn = factory.createConnection();
-
-            //conn.setAutoCommit(false);
-            stmt = conn.createStatement();
-
-            String sql = null;
-            bufferedReader = new BufferedReader(new FileReader(filename));
-
-            while (null != (sql = bufferedReader.readLine())) {
-                try {
-                    stmt.executeUpdate(sql);
-                } catch (SQLException e) {
-                    System.out.println("bad sql=" + sql);
-
-                    // ignore.
-                }
+            while ((len = in.read(buf)) != -1) {
+                out.write(buf, 0, len);
             }
 
-            conn.commit();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-            // ignore.
+            content = out.toString();
         } finally {
-            closeStatement(stmt);
-            closeConnection(conn);
+            in.close();
+            out.close();
+        }
 
-            if (null != bufferedReader) {
-                bufferedReader.close();
+        List<String> sqls = new ArrayList<String>();
+        int lastIndex = 0;
+
+        // parse the sqls
+        for (int i = 0; i < content.length(); i++) {
+            if (content.charAt(i) == ';') {
+                sqls.add(content.substring(lastIndex, i).trim());
+                lastIndex = i + 1;
             }
+        }
+
+        Connection conn = getDBConnectionFactory().createConnection();
+
+        try {
+            for (int i = 0; i < sqls.size(); i++) {
+                doSQLUpdate((String) sqls.get(i), conn);
+            }
+        } finally {
+            closeConnection(conn);
         }
     }
 
+    /**
+     * Does the update operation to the database.
+     *
+     * @param sql
+     *            the SQL statement to be executed.
+     * @param conn the database connection.
+     * @throws Exception
+     *             to JUnit.
+     */
+    private static void doSQLUpdate(String sql, Connection conn) throws Exception {
+        PreparedStatement ps = null;
+
+        try {
+            // creates the prepared statement
+            ps = conn.prepareStatement(sql);
+
+
+            // do the update
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("bad sql=" + sql);
+
+            // ignore.
+        } finally {
+            // close the resources
+            closeStatement(ps);
+        }
+    }
+    
     /**
      * Persist a Contest into the database.
      *
@@ -150,13 +191,13 @@ final class DBUtil {
         fileType.setExtension("ext");
         fileType.setImageFile(false);
         fileType.setSort(new Integer(10));
+        fileType.setStudioFileType(1);
         entityManager.persist(fileType);
 
         // Persist ContestChannel.
         ContestChannel contestChannel = new ContestChannel();
         contestChannel.setDescription("desc");
-        contestChannel.setName("name");
-        contestChannel.setFileType(fileType);
+        contestChannel.setContestChannelId(1L);
         entityManager.persist(contestChannel);
 
         // Persist ContestType.
@@ -164,12 +205,15 @@ final class DBUtil {
         contestType.setDescription("desc");
         contestType.setRequirePreviewFile(false);
         contestType.setRequirePreviewImage(false);
+        contestType.setContestType(1L);
         entityManager.persist(contestType);
 
         // Persist ContestStatus.
         ContestStatus status = new ContestStatus();
         status.setDescription("description");
         status.setName("status");
+        status.setStatusId(1L);
+        status.setContestStatusId(1L);
 
         entityManager.persist(status);
 
@@ -189,6 +233,41 @@ final class DBUtil {
         contest.setStartDate(new Date());
         contest.setStatus(status);
         contest.setWinnerAnnoucementDeadline(new Date());
+
+        ContestSpecifications specData = new ContestSpecifications();
+        specData.setAdditionalRequirementsAndRestrictions("not null");
+        specData.setColors("Red");
+        specData.setFonts("Arial");
+        specData.setLayoutAndSize("10px");
+        contest.setSpecifications(specData);
+
+        PrizeType type = new PrizeType();
+        type.setDescription("payment");
+        type.setPrizeTypeId(2L);
+        entityManager.persist(type);
+
+        MilestonePrize prizeData = new MilestonePrize();
+        prizeData.setType(type);
+        prizeData.setCreateDate(new Date());
+        prizeData.setAmount(20.00d);
+        prizeData.setNumberOfSubmissions(10);
+        contest.setMilestonePrize(prizeData);
+
+        ContestMultiRoundInformation infoData = new ContestMultiRoundInformation();
+        infoData.setMilestoneDate(new Date());
+        infoData.setRoundOneIntroduction("one");
+        infoData.setRoundTwoIntroduction("two");
+        infoData.setSubmittersLockedBetweenRounds(true);
+        contest.setMultiRoundInformation(infoData);
+
+        ContestGeneralInfo generalInfoData = new ContestGeneralInfo();
+        generalInfoData.setBrandingGuidelines("brandingGuidelines");
+        generalInfoData.setDislikedDesignsWebsites("dislikedDesignsWebsites");
+        generalInfoData.setGoals("goals");
+        generalInfoData.setOtherInstructions("otherInstructions");
+        generalInfoData.setTargetAudience("targetAudience");
+        generalInfoData.setWinningCriteria("winningCriteria");
+        contest.setGeneralInfo(generalInfoData);
 
         entityManager.persist(contest);
 
@@ -225,6 +304,7 @@ final class DBUtil {
         MimeType type = new MimeType();
         type.setDescription("des");
         type.setStudioFileType(fileType);
+        type.setMimeTypeId(1L);
         entityManager.persist(type);
 
         document.setMimeType(type);
@@ -241,6 +321,7 @@ final class DBUtil {
         document.setSystemFileName("test");
 
         DocumentType documentType = new DocumentType();
+        documentType.setDocumentTypeId(1L);
         documentType.setDescription("documentType");
 
         entityManager.persist(documentType);
@@ -263,13 +344,12 @@ final class DBUtil {
      * @throws Exception to junit
      */
     static void prepareProject() throws Exception {
-        factory = getDBConnectionFactory();
 
-        Connection connection = factory.createConnection();
+        Connection connection = getDBConnectionFactory().createConnection();
 
         try {
-            String query = "INSERT INTO tc_direct_project (project_id, name, user_id, create_date) " +
-                "values (1, 'project', 10, '2008-03-19 01:01:01')";
+            String query = "INSERT INTO tc_direct_project (project_id, name, user_id, description, create_date, modify_date) " +
+                "values (1, 'project', 10, 'desc', current, current)";
             connection.createStatement().executeUpdate(query);
         } finally {
             closeConnection(connection);
@@ -316,6 +396,8 @@ final class DBUtil {
         ContestStatus status = new ContestStatus();
         status.setDescription("description");
         status.setName("update");
+        status.setContestStatusId(2L);
+        status.setStatusId(1L);
         entityManager.persist(status);
 
         entityManager.getTransaction().commit();
@@ -340,6 +422,7 @@ final class DBUtil {
         contestType.setDescription("update");
         contestType.setRequirePreviewFile(false);
         contestType.setRequirePreviewImage(false);
+        contestType.setContestType(2L);
         entityManager.persist(contestType);
 
         entityManager.getTransaction().commit();
@@ -365,12 +448,12 @@ final class DBUtil {
         fileType.setExtension("doc");
         fileType.setImageFile(false);
         fileType.setSort(new Integer(100));
+        fileType.setStudioFileType(2);
         entityManager.persist(fileType);
 
         ContestChannel contestChannel = new ContestChannel();
         contestChannel.setDescription("update channel");
-        contestChannel.setName("update");
-        contestChannel.setFileType(fileType);
+        contestChannel.setContestChannelId(2L);
 
         entityManager.persist(contestChannel);
 

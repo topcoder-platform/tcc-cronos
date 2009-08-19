@@ -22,12 +22,11 @@ public class AllTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        //unit tests
         suite.addTest(UnitTests.suite());
+        suite.addTest(FailureTests.suite());
         suite.addTest(AccuracyTests.suite());
         suite.addTest(StressTests.suite());
-        suite.addTest(FailureTests.suite());
-        
+
         return suite;
     }
 }

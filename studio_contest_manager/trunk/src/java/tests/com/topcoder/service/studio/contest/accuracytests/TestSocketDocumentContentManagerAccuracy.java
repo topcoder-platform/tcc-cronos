@@ -24,11 +24,12 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
     /** Represents the SocketDocumentContentManager instance for testing. */
     private SocketDocumentContentManager manager = null;
 
+    private int port = 50000;
     /**
      * set up.
      */
     public void setUp() {
-        manager = new SocketDocumentContentManager("127.0.0.1", 2000);
+        manager = new SocketDocumentContentManager("127.0.0.1", ++port);
     }
 
     /**
@@ -44,11 +45,11 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
      * @throws Exception to junit
      */
     public void testSaveDocumentContent_1() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(port, 0);
         server.start();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             manager.saveDocumentContent("test_files/acc_files/temp/a.txt", "abc".getBytes());
 
@@ -68,7 +69,6 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
         } finally {
             server.stop();
 
-            Thread.sleep(2000);
         }
     }
 
@@ -78,11 +78,11 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
      * @throws Exception to junit
      */
     public void testSaveDocumentContent_2() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(port, 0);
         server.start();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             ByteArrayOutputStream output = new ByteArrayOutputStream();
 
@@ -95,7 +95,6 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
         } finally {
             server.stop();
 
-            Thread.sleep(2000);
         }
     }
 
@@ -105,11 +104,11 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
      * @throws Exception to junit
      */
     public void testGetDocumentContent_1() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(port, 0);
         server.start();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             byte[] ret = manager.getDocumentContent("test_files/acc_files/temp/b.txt");
 
@@ -117,7 +116,6 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
         } finally {
             server.stop();
 
-            Thread.sleep(2000);
         }
     }
 
@@ -127,11 +125,11 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
      * @throws Exception to junit
      */
     public void testGetDocumentContent_2() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(port, 0);
         server.start();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             byte[] ret = manager.getDocumentContent("test_files/acc_files/temp/a.txt");
 
@@ -139,7 +137,6 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
         } finally {
             server.stop();
 
-            Thread.sleep(2000);
         }
     }
 
@@ -149,11 +146,11 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
      * @throws Exception to junit
      */
     public void testExistDocumentContent() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(2000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(port, 0);
         server.start();
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             boolean ret = manager.existDocumentContent("test_files/acc_files/temp/a.txt");
 
@@ -161,7 +158,6 @@ public class TestSocketDocumentContentManagerAccuracy extends TestCase {
         } finally {
             server.stop();
 
-            Thread.sleep(1000);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.failuretests;
 
@@ -17,29 +17,36 @@ import junit.framework.TestSuite;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
-import com.topcoder.service.studio.contest.ContestConfig;
+import com.topcoder.service.studio.contest.ContestGeneralInfo;
 import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.service.studio.contest.ContestMultiRoundInformation;
+import com.topcoder.service.studio.contest.ContestSpecifications;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
+import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.bean.ContestManagerBean;
+import com.topcoder.service.studio.contest.bean.DBUtil;
 import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
 import com.topcoder.service.studio.contest.failuretests.mock.MockEntityManager;
 import com.topcoder.service.studio.contest.failuretests.mock.MockSessionContext;
+import com.topcoder.service.studio.submission.MilestonePrize;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
+
 
 /**
  * <p>
  * Failure tests for ContestManagerBean class.
  * </p>
- * 
- * @author kaqi072821
- * @version 1.0
+ *
+ * @author liuliquan
+ * @version 1.3
  */
 public class ContestManagerBeanFailureTest extends TestCase {
     /**
@@ -67,7 +74,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Sets up the environment.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
@@ -78,6 +85,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
         Field field = beanUnderTest.getClass().getDeclaredField("sessionContext");
         field.setAccessible(true);
         field.set(beanUnderTest, context);
+
+        entityManager = new MockEntityManager();
+        DBUtil.clearDatabase();
+        DBUtil.initDatabase();
     }
 
     /**
@@ -88,13 +99,17 @@ public class ContestManagerBeanFailureTest extends TestCase {
     protected void tearDown() {
         beanUnderTest = null;
         context = null;
+        if (entityManager.isOpen()) {
+            //clearTables();
+            entityManager.close();
+        }
     }
 
     /**
      * <p>
      * Returns the test suite of this class.
      * </p>
-     * 
+     *
      * @return the test suite of this class.
      */
     public static Test suite() {
@@ -105,26 +120,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Initialize the context.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     private void initContext() throws Exception {
+        context.addEntry("auditChange", new Boolean(false));
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
-        context.addEntry("loggerName", "contestManager");
+        //context.addEntry("loggerName", "contestManager");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
         method.invoke(beanUnderTest, new Object[0]);
 
-        entityManager = new MockEntityManager();
         context.addEntry("contestManager", entityManager);
     }
 
@@ -132,24 +150,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the unitName is missing, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure1_miss_unitName() throws Exception {
+    public void test_Initialize_Failure1_miss_unitName()
+        throws Exception {
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("loggerName", "contestManager");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -165,25 +187,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the unitName isn't instance of String, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure2_unitName_notString() throws Exception {
+    public void test_Initialize_Failure2_unitName_notString()
+        throws Exception {
         context.addEntry("unitName", new Object());
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("loggerName", "contestManager");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -199,25 +225,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the unitName is empty string, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure3_empty_unitName() throws Exception {
+    public void test_Initialize_Failure3_empty_unitName()
+        throws Exception {
         context.addEntry("unitName", "  ");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("loggerName", "contestManager");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -233,24 +263,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the activeContestStatusId is missing, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure4_miss_activeContestStatusId() throws Exception {
+    public void test_Initialize_Failure4_miss_activeContestStatusId()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         // context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -266,24 +300,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the activeContestStatusId isn't a Long value, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure5_activeContestStatusId_notLong() throws Exception {
+    public void test_Initialize_Failure5_activeContestStatusId_notLong()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Object());
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -299,24 +337,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the defaultDocumentPathId is missing, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure6_miss_defaultDocumentPathId() throws Exception {
+    public void test_Initialize_Failure6_miss_defaultDocumentPathId()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         // context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -332,24 +374,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the defaultDocumentPathId isn't a Long value, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure7_defaultDocumentPathId_notLong() throws Exception {
+    public void test_Initialize_Failure7_defaultDocumentPathId_notLong()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Object());
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -365,25 +411,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the loggerName is an empty string, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure8_loggerName_empty() throws Exception {
+    public void test_Initialize_Failure8_loggerName_empty()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Object());
         context.addEntry("loggerName", " ");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -399,24 +449,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the documentContentManagerClassName's class doesn't exist, ContestManagementException will be
      * thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure9_miss_documentManagerClassName() throws Exception {
+    public void test_Initialize_Failure9_miss_documentManagerClassName()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
-        context.addEntry("documentContentManagerClassName", "SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerClassName",
+            "SocketDocumentContentManager");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -432,24 +487,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the documentContentManagerClassName's class is not a DocumentContentManager,
      * ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure10_documentContentManagerClassName_type_wrong() throws Exception {
+    public void test_Initialize_Failure10_documentContentManagerClassName_type_wrong()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName", "java.lang.String");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -465,25 +524,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: If the documentContentManagerClassName's class doesn't have a constructor using parameter
      * Map&ltString, Object&gt, ContestManagementException will be thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure11_documentContentManagerClassName_ctor_wrong() throws Exception {
+    public void test_Initialize_Failure11_documentContentManagerClassName_ctor_wrong()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.failuretests.mock.SocketDocumentContentManagerCtorWrong");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
         context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
 
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -499,24 +562,29 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for private method initialize().
      * </p>
-     * 
+     *
      * <p>
      * Failure cause: The attributes for document content manager is invalid, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_Initialize_Failure12_SocketDocumentContentManager_attr_miss() throws Exception {
+    public void test_Initialize_Failure12_SocketDocumentContentManager_attr_miss()
+        throws Exception {
         context.addEntry("unitName", "contestManager");
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-        context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
+        context.addEntry("documentContentManagerAttributeKeys",
+            "serverAddress,serverPort");
 
         // context.addEntry("serverAddress", "127.0.0.1");
         context.addEntry("serverPort", new Integer(40000));
-        Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
+
+        Method method = beanUnderTest.getClass()
+                                     .getDeclaredMethod("initialize",
+                new Class[0]);
 
         method.setAccessible(true);
 
@@ -526,63 +594,142 @@ public class ContestManagerBeanFailureTest extends TestCase {
         } catch (InvocationTargetException e) {
             // success
         }
+    }
+
+    /**
+     * Sets all the required values studio file type.
+     *
+     * @param entity
+     *            the entity to set
+     */
+    private static void populateStudioFileType(StudioFileType entity) {
+        entity.setDescription("description");
+        entity.setExtension("extension");
+        entity.setImageFile(true);
+        entity.setSort(10);
+    }
+
+    /**
+     * Sets all the required values for contest category.
+     *
+     * @param entity
+     *            the entity to be set
+     */
+    private static void populateContestChannel(ContestChannel entity) {
+        entity.setDescription("description");
+        entity.setContestChannelId(18L);
+    }
+
+    /**
+     * Sets all the required values for contest type.
+     *
+     * @param contestType
+     *            the entity to be set.
+     */
+    private static void populateContestType(ContestType contestType) {
+        contestType.setDescription("description");
+        contestType.setRequirePreviewFile(true);
+        contestType.setRequirePreviewImage(true);
+        contestType.setContestType(1L);
     }
 
     /**
      * <p>
      * Creates a contest for testing.
      * </p>
-     * 
+     *
      * @return a contest for testing.
      */
     private Contest createContestForTest() {
-        StudioFileType fileType = new StudioFileType();
-        fileType.setDescription("desc");
-        fileType.setExtension("ext");
-        fileType.setImageFile(false);
-        fileType.setSort(new Integer(10));
+        EntityManager em = com.topcoder.service.studio.contest.bean.MockEntityManager.EMF.createEntityManager();
+        em.getTransaction().begin();
 
-        ContestChannel contestChannel = new ContestChannel();
-        contestChannel.setDescription("desc");
-        contestChannel.setName("name");
-        contestChannel.setFileType(fileType);
+        StudioFileType fileType = new StudioFileType();
+        populateStudioFileType(fileType);
+        em.persist(fileType);
+
+        ContestChannel channel = new ContestChannel();
+        populateContestChannel(channel);
+        em.persist(channel);
 
         ContestType contestType = new ContestType();
-        contestType.setDescription("desc");
-        contestType.setRequirePreviewFile(false);
-        contestType.setRequirePreviewImage(false);
+        populateContestType(contestType);
+        contestType.setContestType(1L);
+        em.persist(contestType);
 
         ContestStatus status = new ContestStatus();
         status.setDescription("description");
-        status.setName("name");
+        status.setName("Name");
+        status.setContestStatusId(10L);
+        status.setStatusId(1L);
+        em.persist(status);
 
         Date date = new Date();
+        ContestGeneralInfo generalInfo = new ContestGeneralInfo();
+        generalInfo.setBrandingGuidelines("guideline");
+        generalInfo.setDislikedDesignsWebsites("disklike");
+        generalInfo.setGoals("goal");
+        generalInfo.setOtherInstructions("instruction");
+        generalInfo.setTargetAudience("target audience");
+        generalInfo.setWinningCriteria("winning criteria");
 
-        Contest contest = new Contest();
-        contest.setName("contest1");
-        contest.setCreatedUser(new Long(1));
-        contest.setContestChannel(contestChannel);
-        contest.setContestType(contestType);
-        contest.setEndDate(date);
-        contest.setEventId(new Long(1));
-        contest.setForumId(new Long(1));
-        contest.setProjectId(new Long(1));
-        contest.setTcDirectProjectId(new Long(1));
-        contest.setStartDate(new Date());
-        contest.setWinnerAnnoucementDeadline(new Date());
+        ContestMultiRoundInformation multiRoundInformation = new ContestMultiRoundInformation();
+        multiRoundInformation.setMilestoneDate(new Date());
+        multiRoundInformation.setRoundOneIntroduction("round one");
+        multiRoundInformation.setRoundTwoIntroduction("round two");
 
-        return contest;
+        ContestSpecifications specifications = new ContestSpecifications();
+        specifications.setAdditionalRequirementsAndRestrictions("none");
+        specifications.setColors("white");
+        specifications.setFonts("Arial");
+        specifications.setLayoutAndSize("10px");
+
+        PrizeType prizeType = new PrizeType();
+        prizeType.setDescription("Good");
+        prizeType.setPrizeTypeId(1L);
+        em.persist(prizeType);
+
+        MilestonePrize milestonePrize = new MilestonePrize();
+        milestonePrize.setAmount(10.0);
+        milestonePrize.setCreateDate(new Date());
+        milestonePrize.setNumberOfSubmissions(1);
+        milestonePrize.setType(prizeType);
+
+        Contest entity = new Contest();
+
+        entity.setContestChannel(channel);
+        entity.setContestType(contestType);
+        entity.setCreatedUser(10L);
+        entity.setEndDate(date);
+        entity.setEventId(101L);
+        entity.setForumId(1000L);
+        entity.setName("name");
+        entity.setProjectId(101L);
+        entity.setStartDate(date);
+        entity.setStatus(status);
+        entity.setStatusId(1L);
+        entity.setTcDirectProjectId(1L);
+        entity.setWinnerAnnoucementDeadline(date);
+        entity.setGeneralInfo(generalInfo);
+        entity.setSpecifications(specifications);
+        entity.setMultiRoundInformation(multiRoundInformation);
+        entity.setMilestonePrize(milestonePrize);
+
+        em.getTransaction().commit();
+
+        em.close();
+        return entity;
     }
 
     /**
      * <p>
      * Failure test for createContest(Contest).
      * </p>
-     * 
+     *
      * <p>
      * If the contest is null, IllegalArgumentException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_CreateContest_Failure1_null() throws Exception {
@@ -599,14 +746,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for createContest(Contest).
      * </p>
-     * 
+     *
      * <p>
      * If the contest is already in the persistence, EntityAlreadyExistsException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_CreateContest_Failure2_EntityAlreadyExistsException() throws Exception {
+    public void test_CreateContest_Failure2_EntityAlreadyExistsException()
+        throws Exception {
         try {
             initContext();
 
@@ -627,14 +775,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for createContest(Contest).
      * </p>
-     * 
+     *
      * <p>
      * If the EntityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_CreateContest_Failure3_EntityManagerClosed() throws Exception {
+    public void test_CreateContest_Failure3_EntityManagerClosed()
+        throws Exception {
         try {
             initContext();
 
@@ -654,14 +803,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for createContest(Contest).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception is thrown, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_CreateContest_Failure4_PersistenceException() throws Exception {
+    public void test_CreateContest_Failure4_PersistenceException()
+        throws Exception {
         try {
             initContext();
 
@@ -681,14 +831,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for createContest(Contest).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception is thrown, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_CreateContest_Failure5_TransactionException() throws Exception {
+    public void test_CreateContest_Failure5_TransactionException()
+        throws Exception {
         try {
             initContext();
 
@@ -708,14 +859,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If the EntityManager has been closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_GetContest_Failure1_EntityManagerClosed() throws Exception {
+    public void test_GetContest_Failure1_EntityManagerClosed()
+        throws Exception {
         initContext();
 
         EntityManager em = (EntityManager) context.lookup("contestManager");
@@ -733,14 +885,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception is thrown from EntityManager, ContestManagementException is thrown instead.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_GetContest_Failure2_PersistenceException() throws Exception {
+    public void test_GetContest_Failure2_PersistenceException()
+        throws Exception {
         initContext();
 
         entityManager.enablePersistenceException(true);
@@ -757,14 +910,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContestsForProject(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_GetContestsForProject_Failure1_EMClosed() throws Exception {
+    public void test_GetContestsForProject_Failure1_EMClosed()
+        throws Exception {
         initContext();
 
         entityManager.close();
@@ -781,14 +935,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContestsForProject(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception is thrown from EntityManager, ContestManagementException is thrown instead.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_GetContestsForProject_Failure2_PersistenceException() throws Exception {
+    public void test_GetContestsForProject_Failure2_PersistenceException()
+        throws Exception {
         initContext();
 
         entityManager.enablePersistenceException(true);
@@ -805,11 +960,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContest(Contest contest).
      * </p>
-     * 
+     *
      * <p>
      * If the contest status doesn't exists, EntityNotFoundException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_updateContest_Failure1() throws Exception {
@@ -817,7 +972,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             Contest contest = createContestForTest();
-            beanUnderTest.updateContest(contest);
+            beanUnderTest.updateContest(contest, 1, "2", true);
 
             fail("EntityNotFoundException is expected.");
         } catch (EntityNotFoundException e) {
@@ -829,11 +984,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContest(Contest contest).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_updateContest_Failure2() throws Exception {
@@ -846,7 +1001,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.close();
 
             contest.setName("sss");
-            beanUnderTest.updateContest(contest);
+            beanUnderTest.updateContest(contest, 1, "2", true);
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -858,11 +1013,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContest(Contest contest).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_updateContest_Failure3() throws Exception {
@@ -875,7 +1030,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.enableTransactionException(true);
 
             contest.setName("sss");
-            beanUnderTest.updateContest(contest);
+            beanUnderTest.updateContest(contest, 1, "2", true);
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -887,11 +1042,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContest(Contest contest).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_updateContest_Failure4() throws Exception {
@@ -904,7 +1059,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.enablePersistenceException(true);
 
             contest.setName("sss");
-            beanUnderTest.updateContest(contest);
+            beanUnderTest.updateContest(contest, 1, "2", true);
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -916,11 +1071,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForContest_Failure1() throws Exception {
@@ -939,11 +1094,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForContest_Failure2() throws Exception {
@@ -962,11 +1117,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If the contest doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForContest_Failure3() throws Exception {
@@ -983,11 +1138,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForContest(long).
      * </p>
-     * 
+     *
      * <p>
      * If the project doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForContest_Failure4() throws Exception {
@@ -1007,11 +1162,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForProject(long).
      * </p>
-     * 
+     *
      * <p>
      * If the project doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForProject_Failure1() throws Exception {
@@ -1029,11 +1184,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForProject(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForProject_Failure2() throws Exception {
@@ -1061,11 +1216,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getClientForProject(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception is thrown, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetClientForProject_Failure3() throws Exception {
@@ -1093,11 +1248,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If the contest status already exists, EntityAlreadyExistException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestStatus_Failure1() throws Exception {
@@ -1105,8 +1260,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             beanUnderTest.addContestStatus(status);
@@ -1120,11 +1277,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestStatus_Failure2() throws Exception {
@@ -1134,8 +1291,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.close();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             fail("ContestManagementException is expected.");
@@ -1148,11 +1307,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestStatus_Failure3() throws Exception {
@@ -1162,8 +1321,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.enableTransactionException(true);
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             fail("ContestManagementException is expected.");
@@ -1176,11 +1337,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestStatus_Failure4() throws Exception {
@@ -1190,8 +1351,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             entityManager.enablePersistenceException(true);
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             fail("ContestManagementException is expected.");
@@ -1204,11 +1367,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If the contest status doesn't exists, EntityNotFoundException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestStatus_Failure1() throws Exception {
@@ -1216,8 +1379,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.updateContestStatus(status);
 
             fail("EntityNotFoundException is expected.");
@@ -1230,11 +1395,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestStatus_Failure2() throws Exception {
@@ -1242,8 +1407,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             entityManager.close();
@@ -1261,11 +1428,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestStatus_Failure3() throws Exception {
@@ -1273,8 +1440,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             entityManager.enableTransactionException(true);
@@ -1292,11 +1461,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestStatus(ContestStatus).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestStatus_Failure4() throws Exception {
@@ -1304,8 +1473,10 @@ public class ContestManagerBeanFailureTest extends TestCase {
             initContext();
 
             ContestStatus status = new ContestStatus();
-            status.setDescription("A new status");
-            status.setName("StatusA");
+            status.setDescription("description");
+            status.setName("Name");
+            status.setContestStatusId(10L);
+            status.setStatusId(1L);
             beanUnderTest.addContestStatus(status);
 
             entityManager.enablePersistenceException(true);
@@ -1323,11 +1494,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestStatus(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestStatus_Failure1() throws Exception {
@@ -1347,11 +1518,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestStatus(long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestStatus_Failure2() throws Exception {
@@ -1371,11 +1542,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestStatus(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestStatus_Failure3() throws Exception {
@@ -1395,11 +1566,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContestStatus(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetContestStatus_Failure1() throws Exception {
@@ -1419,11 +1590,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestStatus(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetContestStatus_Failure2() throws Exception {
@@ -1440,28 +1611,66 @@ public class ContestManagerBeanFailureTest extends TestCase {
     }
 
     /**
+     * Create document for test.
+     * @return document
+     */
+    private Document createDocumentForTest() {
+
+        EntityManager em = com.topcoder.service.studio.contest.bean.MockEntityManager.EMF.createEntityManager();
+        em.getTransaction().begin();
+
+        FilePath path = new FilePath();
+        path.setModifyDate(new Date());
+        path.setPath("path");
+
+        StudioFileType studioFileType = new StudioFileType();
+        studioFileType.setDescription("description");
+        studioFileType.setExtension("extension");
+        studioFileType.setImageFile(true);
+        studioFileType.setSort(1);
+        em.persist(studioFileType);
+
+        MimeType mimeType = new MimeType();
+        mimeType.setDescription("description");
+        mimeType.setStudioFileType(studioFileType);
+        mimeType.setMimeTypeId(1L);
+        em.persist(mimeType);
+
+        DocumentType type = new DocumentType();
+        type.setDescription("description");
+        type.setDocumentTypeId(1L);
+        em.persist(type);
+
+        em.getTransaction().commit();
+        em.close();
+
+        Document document = new Document();
+        document.setOriginalFileName("originalFileName");
+        document.setSystemFileName("systemFileName");
+        document.setPath(path);
+        document.setMimeType(mimeType);
+        document.setType(type);
+        document.setCreateDate(new Date());
+
+        return document;
+    }
+
+    /**
      * <p>
      * Failure test for addDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If the document already exist, EntityAlreadyExistsException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocument_Failure1() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
-
+            Document document = createDocumentForTest();
             beanUnderTest.addDocument(document);
             beanUnderTest.addDocument(document);
             fail("EntityAlreadyExistsException is expected.");
@@ -1474,11 +1683,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocument_Failure2() throws Exception {
@@ -1487,8 +1696,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
 
             entityManager.close();
 
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
 
             beanUnderTest.addDocument(document);
             fail("ContestManagementException is expected.");
@@ -1501,11 +1709,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocument_Failure3() throws Exception {
@@ -1514,8 +1722,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
 
             entityManager.enableTransactionException(true);
 
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
 
             beanUnderTest.addDocument(document);
             fail("ContestManagementException is expected.");
@@ -1528,11 +1735,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocument_Failure4() throws Exception {
@@ -1541,8 +1748,7 @@ public class ContestManagerBeanFailureTest extends TestCase {
 
             entityManager.enablePersistenceException(true);
 
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
 
             beanUnderTest.addDocument(document);
             fail("ContestManagementException is expected.");
@@ -1555,24 +1761,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateDocument(Document).
      * </p>
-     * 
+     *
      * <p>
-     * If the document exists, EntityNotFoundException is thrown.
+     * If the document does not exist, EntityNotFoundException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateDocument_Failure1() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
 
             beanUnderTest.updateDocument(document);
 
@@ -1586,24 +1786,19 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateDocument_Failure2() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
 
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
             beanUnderTest.addDocument(document);
             entityManager.close();
 
@@ -1619,24 +1814,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateDocument_Failure3() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
             beanUnderTest.addDocument(document);
 
             entityManager.enableTransactionException(true);
@@ -1653,24 +1842,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateDocument(Document).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateDocument_Failure4() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = createDocumentForTest();
             beanUnderTest.addDocument(document);
 
             entityManager.enablePersistenceException(true);
@@ -1686,11 +1869,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getDocument(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetDocument_Failure1() throws Exception {
@@ -1710,11 +1893,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocument(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetDocument_Failure2() throws Exception {
@@ -1734,11 +1917,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocument(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveDocument_Failure1() throws Exception {
@@ -1758,11 +1941,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocument(long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveDocument_Failure2() throws Exception {
@@ -1782,11 +1965,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocument(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveDocument_Failure3() throws Exception {
@@ -1806,11 +1989,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocumentToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the document doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocumentToContest_Failure1() throws Exception {
@@ -1831,41 +2014,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocumentToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the contest doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocumentToContest_Failure2() throws Exception {
         try {
-            entityManager = new MockEntityManager();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            context.addEntry("unitName", "contestManager");
-            context.addEntry("activeContestStatusId", new Long(1));
-            context.addEntry("defaultDocumentPathId", filePath.getFilePathId());
-            context.addEntry("loggerName", "contestManager");
-            context.addEntry("documentContentManagerClassName",
-                "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-            context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
-            context.addEntry("serverAddress", "127.0.0.1");
-            context.addEntry("serverPort", new Integer(40000));
-
-            Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
-
-            method.setAccessible(true);
-            method.invoke(beanUnderTest, new Object[0]);
-
-            context.addEntry("contestManager", entityManager);
-            
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            this.initContext();
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
@@ -1880,11 +2040,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocumentToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocumentToContest_Failure3() throws Exception {
@@ -1904,11 +2064,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocumentToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocumentToContest_Failure4() throws Exception {
@@ -1928,11 +2088,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addDocumentToContest(long, long)(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddDocumentToContest_Failure5() throws Exception {
@@ -1952,14 +2112,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocumentFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the document doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemoveDocumentFromContest_Failure1() throws Exception {
+    public void test_RemoveDocumentFromContest_Failure1()
+        throws Exception {
         try {
             initContext();
 
@@ -1977,45 +2138,23 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocumentFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the contest doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemoveDocumentFromContest_Failure2() throws Exception {
+    public void test_RemoveDocumentFromContest_Failure2()
+        throws Exception {
         try {
-            entityManager = new MockEntityManager();
-
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            context.addEntry("unitName", "contestManager");
-            context.addEntry("activeContestStatusId", new Long(1));
-            context.addEntry("defaultDocumentPathId", filePath.getFilePathId());
-            context.addEntry("loggerName", "contestManager");
-            context.addEntry("documentContentManagerClassName",
-                "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-            context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
-            context.addEntry("serverAddress", "127.0.0.1");
-            context.addEntry("serverPort", new Integer(40000));
-
-            Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
-
-            method.setAccessible(true);
-            method.invoke(beanUnderTest, new Object[0]);
-
-            context.addEntry("contestManager", entityManager);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            this.initContext();
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
-            beanUnderTest.removeDocumentFromContest(document.getDocumentId(), 1000);
+            beanUnderTest.removeDocumentFromContest(document.getDocumentId(),
+                1000);
             fail("EntityNotFoundException is expected.");
         } catch (EntityNotFoundException e) {
             // success
@@ -2026,14 +2165,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocumentFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_removeDocumentFromContest_Failure3() throws Exception {
+    public void test_removeDocumentFromContest_Failure3()
+        throws Exception {
         try {
             initContext();
 
@@ -2050,14 +2190,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocumentFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_removeDocumentFromContest_Failure4() throws Exception {
+    public void test_removeDocumentFromContest_Failure4()
+        throws Exception {
         try {
             initContext();
 
@@ -2074,14 +2215,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeDocumentFromContest(long, long)(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_removeDocumentFromContest_Failure5() throws Exception {
+    public void test_removeDocumentFromContest_Failure5()
+        throws Exception {
         try {
             initContext();
 
@@ -2095,32 +2237,33 @@ public class ContestManagerBeanFailureTest extends TestCase {
     }
 
     /**
+     * Create ContestChannel for test.
+     * @return ContestChannel
+     */
+    private ContestChannel createContestChannelForTest() {
+
+        ContestChannel channel = new ContestChannel();
+        channel.setContestChannelId(1L);
+        channel.setDescription("desc");
+        return channel;
+    }
+
+    /**
      * <p>
      * Failure test for addContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If the ContestChannel already exist, EntityAlreadyExistsException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestChannel_Failure1() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             beanUnderTest.addContestChannel(channel);
 
@@ -2135,29 +2278,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestChannel_Failure3() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             entityManager.close();
 
@@ -2173,30 +2305,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestChannel_Failure4() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
-
+            ContestChannel channel = createContestChannelForTest();
             entityManager.enableTransactionException(true);
 
             beanUnderTest.addContestChannel(channel);
@@ -2211,29 +2331,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddContestChannel_Failure5() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             entityManager.enablePersistenceException(true);
             beanUnderTest.addContestChannel(channel);
@@ -2248,29 +2357,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If the ContestChannel doesn't exists, EntityNotFoundException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestChannel_Failure1() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             // bean.addContestChannel(channel);
             beanUnderTest.updateContestChannel(channel);
@@ -2285,30 +2383,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestChannel_Failure2() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
-
+            ContestChannel channel = createContestChannelForTest();
             beanUnderTest.addContestChannel(channel);
 
             entityManager.close();
@@ -2325,29 +2411,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestChannel_Failure3() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             beanUnderTest.addContestChannel(channel);
 
@@ -2365,29 +2440,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for updateContestChannel(ContestChannel).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_UpdateContestChannel_Failure4() throws Exception {
         try {
             initContext();
 
-            StudioFileType fileType = new StudioFileType();
-            fileType.setDescription("desc");
-            fileType.setExtension("ext");
-            fileType.setImageFile(true);
-            fileType.setSort(new Integer(1));
-            entityManager.persist(fileType);
-
-            ContestChannel channel = new ContestChannel();
-            channel.setDescription("desc");
-            channel.setName("sss");
-            channel.setParentChannelId(new Long(1));
-            channel.setFileType(fileType);
+            ContestChannel channel = createContestChannelForTest();
 
             beanUnderTest.addContestChannel(channel);
 
@@ -2404,11 +2468,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContestChannel(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetContestChannel_Failure1() throws Exception {
@@ -2428,11 +2492,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestChannel(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetContestChannel_Failure2() throws Exception {
@@ -2452,11 +2516,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestChannel(long).
      * </p>
-     * 
+     *
      * <p>
      * If the entityManager is closed, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestChannel_Failure1() throws Exception {
@@ -2476,11 +2540,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestChannel(long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestChannel_Failure2() throws Exception {
@@ -2500,11 +2564,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removeContestChannel(long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is thrown.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_RemoveContestChannel_Failure3() throws Exception {
@@ -2522,133 +2586,24 @@ public class ContestManagerBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Failure test for addConfig(ContestConfig).
-     * </p>
-     * 
-     * <p>
-     * If entity manager is closed, ContestManagementException is expected.
-     * </p>
-     * 
-     * @throws Exception to JUnit.
-     */
-    public void test_AddConfig_Failure1() throws Exception {
-        try {
-            initContext();
-
-            entityManager.close();
-
-            ContestConfig config = new ContestConfig();
-
-            config.setValue("desc");
-
-            beanUnderTest.addConfig(config);
-
-            fail("ContestManagementException is expected.");
-        } catch (ContestManagementException e) {
-            // success
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test for addConfig(ContestConfig).
-     * </p>
-     * 
-     * <p>
-     * If any transaction exception occurs, ContestManagementException is expected.
-     * </p>
-     * 
-     * @throws Exception to JUnit.
-     */
-    public void test_AddConfig_Failure2() throws Exception {
-        try {
-            initContext();
-
-            entityManager.enableTransactionException(true);
-
-            ContestConfig config = new ContestConfig();
-
-            config.setValue("desc");
-
-            beanUnderTest.addConfig(config);
-
-            fail("ContestManagementException is expected.");
-        } catch (ContestManagementException e) {
-            // success
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test for addConfig(ContestConfig).
-     * </p>
-     * 
-     * <p>
-     * If any persistence exception occurs, ContestManagementException is expected.
-     * </p>
-     * 
-     * @throws Exception to JUnit.
-     */
-    public void test_AddConfig_Failure3() throws Exception {
-        try {
-            initContext();
-
-            entityManager.enablePersistenceException(true);
-
-            ContestConfig config = new ContestConfig();
-
-            config.setValue("desc");
-
-            beanUnderTest.addConfig(config);
-
-            fail("ContestManagementException is expected.");
-        } catch (ContestManagementException e) {
-            // success
-        }
-    }
-
-    /**
-     * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the content is empty, IllegalArgumentException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure1() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(40000, 0);
+        SocketDocumentContentServer server = new SocketDocumentContentServer(40000,
+                0);
         server.start();
 
         try {
-            entityManager = new MockEntityManager();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("sss");
-            entityManager.persist(filePath);
-
-            context.addEntry("unitName", "contestManager");
-            context.addEntry("activeContestStatusId", new Long(1));
-            context.addEntry("defaultDocumentPathId", filePath.getFilePathId());
-            context.addEntry("loggerName", "contestManager");
-            context.addEntry("documentContentManagerClassName",
-                "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
-            context.addEntry("documentContentManagerAttributeKeys", "serverAddress,serverPort");
-            context.addEntry("serverAddress", "127.0.0.1");
-            context.addEntry("serverPort", new Integer(40000));
-
-            Method method = beanUnderTest.getClass().getDeclaredMethod("initialize", new Class[0]);
-
-            method.setAccessible(true);
-            method.invoke(beanUnderTest, new Object[0]);
-
-            context.addEntry("contestManager", entityManager);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            this.initContext();
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
@@ -2669,11 +2624,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the document with specified id doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure2() throws Exception {
@@ -2698,24 +2653,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure3() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
@@ -2736,25 +2685,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the any transaction exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure4() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
-
+            Document document = this.createDocumentForTest();
             beanUnderTest.addDocument(document);
 
             byte[] content = new byte[1];
@@ -2774,24 +2716,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure5() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
@@ -2812,24 +2748,18 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for saveDocumentContent(long, byte[]).
      * </p>
-     * 
+     *
      * <p>
      * If the server doesn't open, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_SaveDocumentContent_Failure6() throws Exception {
         try {
             initContext();
 
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
+            Document document = this.createDocumentForTest();
 
             beanUnderTest.addDocument(document);
 
@@ -2848,11 +2778,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllContestStatuses().
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllContestStatuses_Failure1() throws Exception {
@@ -2872,11 +2802,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllContestStatuses().
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception throws, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllContestStatuses_Failure2() throws Exception {
@@ -2896,11 +2826,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllContestStatuses().
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception throws, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllContestStatuses_Failure3() throws Exception {
@@ -2920,11 +2850,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllContestChannels().
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllContestChannels_Failure1() throws Exception {
@@ -2944,11 +2874,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllContestChannels().
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception throws, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllContestChannels_Failure2() throws Exception {
@@ -2968,11 +2898,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllStudioFileTypes().
      * </p>
-     * 
+     *
      * <p>
      * If the entity manager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllStudioFileTypes_Failure1() throws Exception {
@@ -2992,11 +2922,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure1 test for getAllStudioFileTypes().
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception throws, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetAllStudioFileTypes_Failure2() throws Exception {
@@ -3016,11 +2946,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addPrizeToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the prize with specified id doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddPrizeToContest_Failure1() throws Exception {
@@ -3040,30 +2970,47 @@ public class ContestManagerBeanFailureTest extends TestCase {
     }
 
     /**
+     * Create Prize for test.
+     * @return Prize
+     */
+    private Prize createPrizeForTest() {
+
+        EntityManager em = com.topcoder.service.studio.contest.bean.MockEntityManager.EMF.createEntityManager();
+        em.getTransaction().begin();
+
+        PrizeType prizeType = new PrizeType();
+        prizeType.setDescription("desc");
+        prizeType.setPrizeTypeId(2L);
+        em.persist(prizeType);
+
+        Prize prize = new Prize();
+        prize.setAmount(new Double(100));
+        prize.setCreateDate(new Date());
+        prize.setPlace(new Integer(1));
+        prize.setType(prizeType);
+        em.persist(prize);
+        em.getTransaction().commit();
+        em.close();
+
+        return prize;
+    }
+
+    /**
      * <p>
      * Failure test for addPrizeToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the contest with specified id doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddPrizeToContest_Failure2() throws Exception {
         try {
             initContext();
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             // It should process successfully.
             beanUnderTest.addPrizeToContest(100, prize.getPrizeId());
@@ -3078,11 +3025,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addPrizeToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If entityManager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddPrizeToContest_Failure3() throws Exception {
@@ -3092,20 +3039,12 @@ public class ContestManagerBeanFailureTest extends TestCase {
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.close();
             // It should process successfully.
-            beanUnderTest.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.addPrizeToContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3117,11 +3056,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addPrizeToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddPrizeToContest_Failure4() throws Exception {
@@ -3131,21 +3070,13 @@ public class ContestManagerBeanFailureTest extends TestCase {
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.enableTransactionException(true);
 
             // It should process successfully.
-            beanUnderTest.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.addPrizeToContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3157,11 +3088,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for addPrizeToContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_AddPrizeToContest_Failure5() throws Exception {
@@ -3171,20 +3102,12 @@ public class ContestManagerBeanFailureTest extends TestCase {
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.enablePersistenceException(true);
             // It should process successfully.
-            beanUnderTest.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.addPrizeToContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3196,14 +3119,15 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removePrizeFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the prize with specified id doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemovePrizeFromContest_Failure1() throws Exception {
+    public void test_RemovePrizeFromContest_Failure1()
+        throws Exception {
         try {
             initContext();
 
@@ -3223,27 +3147,19 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removePrizeFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If the contest with specified id doesn't exist, EntityNotFoundException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemovePrizeFromContest_Failure2() throws Exception {
+    public void test_RemovePrizeFromContest_Failure2()
+        throws Exception {
         try {
             initContext();
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             // It should process successfully.
             beanUnderTest.removePrizeFromContest(100, prize.getPrizeId());
@@ -3258,34 +3174,27 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removePrizeFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If entityManager is closed, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemovePrizeFromContest_Failure3() throws Exception {
+    public void test_RemovePrizeFromContest_Failure3()
+        throws Exception {
         try {
             initContext();
 
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.close();
             // It should process successfully.
-            beanUnderTest.removePrizeFromContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.removePrizeFromContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3297,35 +3206,28 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removePrizeFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any transaction exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemovePrizeFromContest_Failure4() throws Exception {
+    public void test_RemovePrizeFromContest_Failure4()
+        throws Exception {
         try {
             initContext();
 
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.enableTransactionException(true);
 
             // It should process successfully.
-            beanUnderTest.removePrizeFromContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.removePrizeFromContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3337,34 +3239,27 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for removePrizeFromContest(long, long).
      * </p>
-     * 
+     *
      * <p>
      * If any persistence exception occurs, ContestManagementException is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
-    public void test_RemovePrizeFromContest_Failure5() throws Exception {
+    public void test_RemovePrizeFromContest_Failure5()
+        throws Exception {
         try {
             initContext();
 
             Contest contest = createContestForTest();
             beanUnderTest.createContest(contest);
 
-            PrizeType prizeType = new PrizeType();
-            prizeType.setDescription("desc");
-            entityManager.persist(prizeType);
-
-            Prize prize = new Prize();
-            prize.setAmount(new Double(100));
-            prize.setCreateDate(new Date());
-            prize.setPlace(new Integer(1));
-            prize.setType(prizeType);
-            entityManager.persist(prize);
+            Prize prize = createPrizeForTest();
 
             entityManager.enablePersistenceException(true);
             // It should process successfully.
-            beanUnderTest.removePrizeFromContest(contest.getContestId(), prize.getPrizeId());
+            beanUnderTest.removePrizeFromContest(contest.getContestId(),
+                prize.getPrizeId());
 
             fail("ContestManagementException is expected.");
         } catch (ContestManagementException e) {
@@ -3376,12 +3271,12 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for getContestPrizes(long).
      * </p>
-     * 
+     *
      * <p>
      * There is a bug in Contest And Submission Entities for relation between Prize<->Contest, this would lead to the
      * method's implementation doesn't work.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetContestPrizes_Failure() throws Exception {
@@ -3392,11 +3287,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for <code>getDocumentContent(long, byte[])</code>.
      * </p>
-     * 
+     *
      * <p>
      * If the document with specified id doesn't exist, <code>EntityNotFoundException</code> is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_GetDocumentContent_Failure1() throws Exception {
@@ -3415,11 +3310,11 @@ public class ContestManagerBeanFailureTest extends TestCase {
      * <p>
      * Failure test for <code>existDocumentContent(long)</code>.
      * </p>
-     * 
+     *
      * <p>
      * If the document doesn't exist, <code>EntityNotFoundException</code> is expected.
      * </p>
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void test_ExistDocumentContent_Failure() throws Exception {

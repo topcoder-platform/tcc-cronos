@@ -1,21 +1,24 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.bean;
 
-import com.topcoder.service.studio.contest.Document;
-import com.topcoder.service.studio.contest.EntityNotFoundException;
-import com.topcoder.service.studio.contest.FilePath;
-import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import java.util.Date;
+import com.topcoder.service.studio.contest.Document;
+import com.topcoder.service.studio.contest.EntityNotFoundException;
+import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.MimeType;
+import com.topcoder.service.studio.contest.TestHelper;
+import com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer;
 
 
 /**
@@ -43,6 +46,13 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
     private MockEntityManager entityManager;
 
     /**
+     * <p>
+     * entities created during tests. They will be removed in the end of test.
+     * </p>
+     */
+    private List entities = new ArrayList();
+
+    /**
      * <p>Sets up the environment.</p>
      *
      * @throws Exception to JUnit.
@@ -61,6 +71,14 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
      * <p>Destroy the environment.</p>
      */
     protected void tearDown() {
+        if (entityManager != null) {
+            try {
+                TestHelper.removeContests(entityManager, entities);
+                entityManager.close();
+            } catch (Exception e) {
+                // ignore.
+            }
+        }
     }
 
     /**
@@ -81,9 +99,10 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
      */
     private void initContext() throws Exception {
         context.addEntry("unitName", "contestManager");
+        context.addEntry("auditChange", new Boolean(false));
         context.addEntry("activeContestStatusId", new Long(1));
         context.addEntry("defaultDocumentPathId", new Long(1));
-        context.addEntry("loggerName", "contestManager");
+        //context.addEntry("loggerName", "contestManager");
         context.addEntry("documentContentManagerClassName",
             "com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManager");
         context.addEntry("documentContentManagerAttributeKeys",
@@ -112,19 +131,21 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void tes1tGetDocumentContent() throws Exception {
+    public void testGetDocumentContent() throws Exception {
         SocketDocumentContentServer server = new SocketDocumentContentServer(40000,
                 0);
         server.start();
+        Thread.sleep(500);
 
         try {
             entityManager = new MockEntityManager();
 
             FilePath filePath = new FilePath();
             filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
+            filePath.setPath("c:");
             entityManager.persist(filePath);
-
+            entities.add(filePath);
+            context.addEntry("auditChange", new Boolean(false));
             context.addEntry("unitName", "contestManager");
             context.addEntry("activeContestStatusId", new Long(1));
             context.addEntry("defaultDocumentPathId", filePath.getFilePathId());
@@ -146,6 +167,13 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
 
             Document document = new Document();
             document.setCreateDate(new Date());
+
+            MimeType mt = new MimeType();
+            mt.setMimeTypeId(1L);
+            mt.setDescription("description");
+            document.setMimeType(mt);
+            entityManager.persist(mt);
+            entities.add(mt);
 
             bean.addDocument(document);
 
@@ -177,7 +205,7 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void testGetDocumentContent_Failure2() throws Exception {
+    public void testGetDocumentContent_Failure() throws Exception {
         try {
             initContext();
 
@@ -194,59 +222,12 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
      * </p>
      *
      * <p>
-     * If the document content exist, return true.
-     * </p>
-     *
-     * @throws Exception to JUnit.
-     */
-    public void te1stExistDocumentContent1() throws Exception {
-        SocketDocumentContentServer server = new SocketDocumentContentServer(40000,
-                0);
-        Thread.sleep(1000);
-        server.start();
-        Thread.sleep(1000);
-
-        try {
-            initContext();
-
-            FilePath filePath = new FilePath();
-            filePath.setModifyDate(new Date());
-            filePath.setPath("test_files");
-            entityManager.persist(filePath);
-
-            Document document = new Document();
-            document.setCreateDate(new Date());
-
-            bean.addDocument(document);
-
-            byte[] content = new byte[4];
-            content[0] = 1;
-            content[1] = 1;
-            content[2] = 1;
-            content[3] = 1;
-
-            // It should process successfully.
-            bean.saveDocumentContent(document.getDocumentId(), content);
-
-            boolean result = bean.existDocumentContent(document.getDocumentId());
-            assertTrue("The result should exist.", result);
-        } finally {
-            server.stop();
-        }
-    }
-
-    /**
-     * <p>
-     * Accuracy test for <code>existDocumentContent(long)</code>.
-     * </p>
-     *
-     * <p>
      * If the document content doesn't exist, return false.
      * </p>
      *
      * @throws Exception to JUnit.
      */
-    public void testExistDocumentContent2() throws Exception {
+    public void tes1tExistDocumentContent() throws Exception {
         SocketDocumentContentServer server = new SocketDocumentContentServer(40000,
                 0);
         server.start();
@@ -258,8 +239,10 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
             filePath.setModifyDate(new Date());
             filePath.setPath("test_files");
             entityManager.persist(filePath);
+            entities.add(filePath);
 
             context.addEntry("unitName", "contestManager");
+            context.addEntry("auditChange", new Boolean(false));
             context.addEntry("activeContestStatusId", new Long(1));
             context.addEntry("defaultDocumentPathId", filePath.getFilePathId());
             context.addEntry("loggerName", "contestManager");
@@ -280,6 +263,12 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
 
             Document document = new Document();
             document.setCreateDate(new Date());
+            MimeType mt = new MimeType();
+            mt.setMimeTypeId(1L);
+            mt.setDescription("description");
+            document.setMimeType(mt);
+            entityManager.persist(mt);
+            entities.add(mt);
 
             bean.addDocument(document);
 
@@ -292,24 +281,20 @@ public class ContestManagerBeanUnitTest3 extends TestCase {
 
     /**
      * <p>
-     * Failure test for <code>existDocumentContent(long)</code>.
+     * Failure test for <code>searchContests(Filter)</code>.
      * </p>
-     *
      * <p>
-     * If the document doesn't exist, <code>EntityNotFoundException</code> is expected.
+     * Passes in null filter value. A <code>IllegalArgumentException</code> should be thrown.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception to JUnit, indicates an error
      */
-    public void te1stExistDocumentContent_Failure() throws Exception {
+    public void testSearchContests_Failure1() throws Exception {
         try {
-            initContext();
-
-            // It should process successfully.
-            bean.existDocumentContent(100);
-            fail("EntityNotFoundException is expected.");
-        } catch (EntityNotFoundException e) {
-            // success
+            bean.searchContests(null);
+            fail("IllegalArgumentException should be thrown.");
+        } catch (IllegalArgumentException e) {
+            // pass
         }
     }
 }

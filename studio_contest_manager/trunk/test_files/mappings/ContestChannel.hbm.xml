@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
-	<class name="ContestChannel" table="contest_channel_lu" lazy="true">
+	<class name="ContestChannel" table="contest_channel_lu" lazy="false">
 		<comment>
 			This table describes channel of component.
 		</comment>

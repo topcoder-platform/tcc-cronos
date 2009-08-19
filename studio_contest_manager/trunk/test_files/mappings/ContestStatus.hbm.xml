@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
-	<class name="ContestStatus" table="contest_detailed_status_lu" lazy="true">
+	<class name="ContestStatus" table="contest_detailed_status_lu" lazy="false">
 		<comment>Table which describes contest status</comment>
 
 		<id name="contestStatusId" column="contest_detailed_status_id" type="long" />

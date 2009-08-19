@@ -29,7 +29,8 @@ public class StressTests extends TestCase {
         final TestSuite suite = new TestSuite();
 
         // Aggregates all stress test cases
-        //suite.addTest(AjaxBridgeServletStressTests.suite());
+        //suite.addTest(ContestManagerBeanStressTests.suite());
+        suite.addTest(SocketDocumentContentManagerStressTests.suite());
 
         return suite;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.bean;
 
@@ -22,19 +22,20 @@ import javax.persistence.TransactionRequiredException;
  * @version 1.0
  */
 public class MockEntityManager implements EntityManager {
-    /**
-     * <p>
-     * EntityManager proxy.
-     * </p>
-     */
-    private static EntityManager manager;
 
     /**
      * <p>
      * The public share entity manager factory.
      * </p>
      */
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("contest_submission");
+    public static final EntityManagerFactory EMF = Persistence.createEntityManagerFactory("contest_submission");
+
+    /**
+     * <p>
+     * EntityManager proxy.
+     * </p>
+     */
+    private static EntityManager manager;
 
     /**
      * <p>
@@ -57,10 +58,10 @@ public class MockEntityManager implements EntityManager {
      */
     public MockEntityManager() {
         if (manager == null) {
-            manager = emf.createEntityManager();
+            manager = EMF.createEntityManager();
         } else {
             if (!manager.isOpen()) {
-                manager = emf.createEntityManager();
+                manager = EMF.createEntityManager();
             }
         }
     }

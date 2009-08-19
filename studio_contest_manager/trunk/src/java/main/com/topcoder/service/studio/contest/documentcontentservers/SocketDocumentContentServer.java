@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.documentcontentservers;
 
@@ -437,8 +437,10 @@ public class SocketDocumentContentServer {
                             } else if (key.isReadable()) {
                                 // The server is ready to read now.
                                 it.remove();
+                                key.cancel();
 
                                 client = (SocketChannel) key.channel();
+
                                 processData(client);
                             }
                         }

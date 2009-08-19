@@ -71,6 +71,24 @@ public class SimpleContestData {
     private List<Double> prizes;
 
     /**
+     * <p>
+     * Represents the type of content.
+     * </p>
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    private String contestType;
+
+    /**
+     * <p>
+     * Represents the user permission.
+     * </p>
+     * 
+     * @since BUGR-1797 .
+     */
+    private String permission;
+
+    /**
      * Default constructor.
      */
     public SimpleContestData() {
@@ -237,4 +255,56 @@ public class SimpleContestData {
     public void setPrizes(List<Double> prizes) {
         this.prizes = prizes;
     }
+
+    /**
+     * <p>
+     * Gets the contest type.
+     * </p>
+     * 
+     * @return the contestType
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public String getContestType() {
+        return this.contestType;
+    }
+
+    /**
+     * <p>
+     * Sets the contest type.
+     * </p>
+     * 
+     * @param contestType the contestType to set
+     * 
+     * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+     */
+    public void setContestType(String contestType) {
+        this.contestType = contestType;
+    }
+
+    /**
+     * <p>
+     * Sets the permission.
+     * </p>
+     * 
+     * @param permission user permission to set
+     * 
+     * @since BUGR-1797.
+     */
+	public String getPermission() {
+		return permission;
+	}
+
+	/**
+     * <p>
+     * Sets the permission.
+     * </p>
+     * 
+     * @return permission user permission to set
+     * 
+     * @since BUGR-1797.
+     */
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
 }

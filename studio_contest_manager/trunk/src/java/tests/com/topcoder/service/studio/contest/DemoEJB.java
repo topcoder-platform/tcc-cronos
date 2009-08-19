@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -23,11 +23,11 @@ import com.topcoder.service.studio.contest.utils.ContestFilterFactory;
 
 /**
  * <p>
- * Demo Studio Manager 1.1.
+ * Demo Studio Manager 1.3.
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 1.3
  * @since 1.1
  */
 public class DemoEJB extends TestCase {
@@ -36,7 +36,7 @@ public class DemoEJB extends TestCase {
      * The JBoss's url for naming service.
      * </p>
      */
-    private static String PROVIDER_URL;
+    private static String url;
 
     /**
      * <p>
@@ -56,7 +56,7 @@ public class DemoEJB extends TestCase {
         try {
             Properties prop = new Properties();
             prop.load(DemoEJB.class.getResourceAsStream("/jndi.properties"));
-            PROVIDER_URL = prop.getProperty("java.naming.provider.url");
+            url = prop.getProperty("java.naming.provider.url");
         } catch (IOException e) {
             e.printStackTrace(System.err);
         } catch (SecurityException e) {
@@ -116,7 +116,7 @@ public class DemoEJB extends TestCase {
         Properties props = new Properties();
         props.setProperty("java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory");
         props.setProperty("java.naming.factory.url.pkgs", "org.jboss.naming");
-        props.setProperty("java.naming.provider.url", PROVIDER_URL);
+        props.setProperty("java.naming.provider.url", url);
 
         InitialContext ctx;
 
@@ -174,6 +174,9 @@ public class DemoEJB extends TestCase {
             // use it to search
             List<Contest> contestByForumIdorContestId = bean.searchContests(compositeOr);
 
+            // Retrieve all contests for which test_user is a resource
+            List<Contest> contests = bean.getUserContests("my name");
+            assertEquals("It should have no user contest with user name my name.", 0, contests.size());
         } finally {
             server.stop();
         }
