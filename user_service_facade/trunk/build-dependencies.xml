@@ -95,25 +95,25 @@
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
     
-    <property name="confluence_user_soap_client.version" value="1.0"/>
+    <property name="confluence_user_soap_client.version" value="1.0.2"/>
     <property name="confluence_user_soap_client.jar.name" value="confluence_user_soap_client.jar"/>
     <property name="confluence_user_soap_client.path" value="confluence_user_soap_client/${confluence_user_soap_client.version}"/>
     <property name="confluence_user_soap_client.jar" value="${tcs_libdir}/${confluence_user_soap_client.path}/${confluence_user_soap_client.jar.name}"/>
     
     <property name="confluence-service-axis-client.version" value="2.7.3"/>
     <property name="confluence-service-axis-client.jar.name" value="confluence-service-axis-client.jar"/>
-    <property name="confluence-service-axis-client.path" value="confluence-service-axis-client/${confluence-service-axis-client.version}"/>
-    <property name="confluence-service-axis-client.jar" value="${tcs_libdir}/${confluence-service-axis-client.path}/${confluence-service-axis-client.jar.name}"/>
+    <property name="confluence-service-axis-client.path" value="confluence/${confluence-service-axis-client.version}"/>
+    <property name="confluence-service-axis-client.jar" value="${ext_libdir}/${confluence-service-axis-client.path}/${confluence-service-axis-client.jar.name}"/>
     
-    <property name="jira_user_soap_client.version" value="1.0"/>
+    <property name="jira_user_soap_client.version" value="1.0.2"/>
     <property name="jira_user_soap_client.jar.name" value="jira_user_soap_client.jar"/>
     <property name="jira_user_soap_client.path" value="jira_user_soap_client/${jira_user_soap_client.version}"/>
     <property name="jira_user_soap_client.jar" value="${tcs_libdir}/${jira_user_soap_client.path}/${jira_user_soap_client.jar.name}"/>
     
     <property name="jira-service-axis-client.version" value="3.13.4"/>
     <property name="jira-service-axis-client.jar.name" value="jira-service-axis-client.jar"/>
-    <property name="jira-service-axis-client.path" value="jira-service-axis-client/${jira-service-axis-client.version}"/>
-    <property name="jira-service-axis-client.jar" value="${tcs_libdir}/${jira-service-axis-client.path}/${jira-service-axis-client.jar.name}"/>
+    <property name="jira-service-axis-client.path" value="jira/${jira-service-axis-client.version}"/>
+    <property name="jira-service-axis-client.jar" value="${ext_libdir}/${jira-service-axis-client.path}/${jira-service-axis-client.jar.name}"/>
     
     <!-- Added for Jira and Confluence User Sync Widget 1.0 -->
     <property name="project_service.version" value="1.0.1"/>
@@ -175,9 +175,9 @@
         <pathelement location="${activation.jar}"/>
         
         <pathelement location="${confluence_user_soap_client.jar}"/>
-        <pathelement location="${confluence-service-axis-client.jar}"/>
+        
         <pathelement location="${jira_user_soap_client.jar}"/>
-        <pathelement location="${jira-service-axis-client.jar}"/>
+
         
         <pathelement location="${project_service.jar}"/>
     </path>
@@ -196,6 +196,8 @@
         
         <pathelement location="${jaxb-api.jar}"/>
         <pathelement location="${jaxb-impl.jar}"/>
+        <pathelement location="${confluence-service-axis-client.jar}"/>
+        <pathelement location="${jira-service-axis-client.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">

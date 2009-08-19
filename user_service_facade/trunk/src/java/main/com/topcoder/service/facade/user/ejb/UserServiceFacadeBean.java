@@ -131,6 +131,16 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
     private static final String ADMIN_USER_CONFLUENCE_GROUPS_KEY = "adminUserConfluenceGroups";
 
     /**
+     * Represents the config key for the HTTP authentication user.
+     */
+    private static final String AUTH_USERNAME_KEY = "authUserName";
+
+    /**
+     * Represents the config key for the HTTP authentication password.
+     */
+    private static final String AUTH_PASSWORD_KEY = "authPassword";
+
+    /**
      * <p>
      * Represents the sessionContext of the EJB.
      * </p>
@@ -190,6 +200,16 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * The confluence webservice admin user password.
      */
     private String confluenceServiceAdminUserPassword;
+
+    /**
+     * HTTP authentication user.
+     */
+    private String authUserName;
+
+    /**
+     * HTTP authentication password.
+     */
+    private String authPassword;
 
     /**
      * <p>
@@ -318,6 +338,15 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
             // get the value for confluence groups for admin users (it's comma separated values)
             this.adminUserConfluenceGroups = Helper.getStringPropertyValue(configNamespace,
                     ADMIN_USER_CONFLUENCE_GROUPS_KEY, true).split(",");
+
+            // get the (optional) value for HTTP authentication user
+            this.authUserName = Helper.getStringPropertyValue(configNamespace,
+                    AUTH_USERNAME_KEY, false);
+
+            // get the (optional) value for HTTP authentication password
+            this.authPassword = Helper.getStringPropertyValue(configNamespace,
+                    AUTH_PASSWORD_KEY, this.authUserName != null);
+
         } catch (Exception e) {
             logError(e, "Error during init()");
             throw new IllegalStateException("Failed to execute the Post Constructor init() method", e);
@@ -362,8 +391,8 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
 
             // Call JiraUserService#getUser and return the remoteUser#email
             com.atlassian.jira.rpc.soap.beans.RemoteUser jiraUser = this.jiraUserService.getUser(
-                    this.jiraServiceEndPoint, this.jiraServiceAdminUserName, this.jiraServiceAdminUserPassword,
-                    userHandle);
+                    this.jiraServiceEndPoint, this.authUserName, this.authPassword, this.jiraServiceAdminUserName, 
+                    this.jiraServiceAdminUserPassword, userHandle);
 
             logDebug("For handle: " + userHandle + " jiraUser: " + jiraUser);
 
@@ -425,7 +454,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
                 throw wrapUserServiceFacadeException("TC-HANDLE-NOT-FOUND: The user handle '" + userHandle + "' should be a valid TC user.");
             }
 
-            boolean hasUser = this.confluenceUserService.hasUser(this.confluenceServiceEndPoint,
+            boolean hasUser = this.confluenceUserService.hasUser(this.confluenceServiceEndPoint, this.authUserName, this.authPassword,
                     this.confluenceServiceAdminUserName, this.confluenceServiceAdminUserPassword, userHandle);
             logDebug("For handle: " + userHandle + " confluence user exists: " + hasUser);
             if (!hasUser) {
@@ -438,13 +467,13 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
 
                 logDebug("For handle: " + userHandle + " confluence groups are: " + Arrays.toString(groups));
 
-                this.confluenceUserService.createUser(this.confluenceServiceEndPoint,
+                this.confluenceUserService.createUser(this.confluenceServiceEndPoint, this.authUserName, this.authPassword,
                         this.confluenceServiceAdminUserName, this.confluenceServiceAdminUserPassword, userHandle,
                         email, groups);
             }
 
             com.atlassian.confluence.rpc.soap.beans.RemoteUser confluenceUser = this.confluenceUserService.getUser(
-                    this.confluenceServiceEndPoint, this.confluenceServiceAdminUserName,
+                    this.confluenceServiceEndPoint, this.authUserName, this.authPassword, this.confluenceServiceAdminUserName,
                     this.confluenceServiceAdminUserPassword, userHandle);
 
             logDebug("For handle: " + userHandle + " confluenceUser: " + confluenceUser);
