@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<jboss>
+    <enterprise-beans>
+      <session>
+        <ejb-name>SubmissionManagerBean</ejb-name>
+        <jndi-name>remote/SubmissionManagerBean</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanWithoutLog</ejb-name>
+        <jndi-name>SubmissionManagerBeanWithoutLog</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanEmptyLogName</ejb-name>
+        <jndi-name>SubmissionManagerBeanEmptyLogName</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanTrimmedEmptyLogName</ejb-name>
+        <jndi-name>SubmissionManagerBeanTrimmedEmptyLogName</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanTrimmedInvalidType</ejb-name>
+        <jndi-name>SubmissionManagerBeanTrimmedInvalidType</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanWithoutUnitName</ejb-name>
+        <jndi-name>SubmissionManagerBeanWithoutUnitName</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanEmptyUnitName</ejb-name>
+        <jndi-name>SubmissionManagerBeanEmptyUnitName</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanTrimmedEmptyUnitName</ejb-name>
+        <jndi-name>SubmissionManagerBeanTrimmedEmptyUnitName</jndi-name>
+      </session>
+
+      <session>
+        <ejb-name>SubmissionManagerBeanTrimmedNotFoundUnitName</ejb-name>
+        <jndi-name>SubmissionManagerBeanTrimmedNotFoundUnitName</jndi-name>
+      </session>
+    </enterprise-beans>
+
+    <!-- <security-domain>java:/jaas/other</security-domain> -->
+</jboss>

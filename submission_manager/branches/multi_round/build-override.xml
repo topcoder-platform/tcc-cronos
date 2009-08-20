@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+	<!-- Package and Deploy EJB -->
+
+	  <property name="ejb_name" value="submission_manager.jar"/>
+	  <property name="ear_name" value="submissionmanager.ear"/>
+	  <property name="ejb_dir" value="build/${ejb_name}"/>
+	  <property name="ear_dir" value="build/${ear_name}"/>
+
+		<target name="package_ejb" depends="compile, compile_tests">
+			<delete dir="${ejb_dir}"/>
+			<copy todir="${ejb_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${build_classdir}">
+					<include name="**/*"/>
+				</fileset>
+				<fileset dir="${testfiles}/ejb/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+			<copy todir="${ejb_dir}/mappings" overwrite="true" encoding="UTF-8">
+				<fileset dir="${testfiles}/ejb/mappings/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+		</target>
+			
+		<target name="package_ear" depends="package_ejb">
+			<delete dir="${ear_dir}"/>
+			<copy todir="${ear_dir}/${ejb_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ejb_dir}"/>
+			</copy>
+			<copy todir="${ear_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+				<fileset dir="${testfiles}/ear/">
+					<include name="**/*"/>
+			    </fileset>
+			</copy>
+			
+			<copy file="${ifxjdbc.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${base_exception.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${logging_wrapper.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${typesafe_enum.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${object_formatter.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${contest_and_submission_entities.jar}" todir="${ear_dir}" overwrite="true"/>
+
+		</target>
+			
+		<target name="deploy_jboss" depends="package_ear">
+			<!--<copy file="${testfiles}/login-config.xml" tofile="${jboss.home}/server/${server}/conf/login-config.xml" overwrite="true" encoding="UTF-8"/>-->
+			<copy todir="${jboss.home}/server/${server}/deploy/${ear_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+			</copy>
+		</target>
+</project>
