@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -20,7 +20,7 @@ import junit.framework.TestSuite;
  * <p>
  * This test case aggregates all Unit test cases.
  * </p>
- * 
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -28,19 +28,24 @@ public class UnitTests extends TestCase {
 
     /**
      * Gathers all unit tests together and return.
-     * 
+     *
      * @return all tests in one suite
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        suite.addTest(Demo.suite());
+        suite.addTestSuite(MilestonePrizeDataUnitTests.class);
+        suite.addTestSuite(ContestSpecificationsDataUnitTests.class);
+        suite.addTestSuite(ContestMultiRoundInformationDataUnitTests.class);
+        suite.addTestSuite(ContestGeneralInfoDataUnitTests.class);
+        suite.addTest(SubmissionDataTest.suite());
         suite.addTest(StudioServiceBeanTest.suite());
+
+        suite.addTest(Demo.suite());
         suite.addTest(ContestDataTest.suite());
         suite.addTest(ContestPayloadTest.suite());
         suite.addTest(ContestStatusDataTest.suite());
         suite.addTest(PrizeDataTest.suite());
-        suite.addTest(SubmissionDataTest.suite());
         suite.addTest(UploadedDocumentTest.suite());
         suite.addTest(ContestNotFoundFaultTest.suite());
         suite.addTest(DocumentNotFoundFaultTest.suite());

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.accuracytests;
 
@@ -8,23 +8,20 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * <p>This test case aggregates all Unit test cases.</p>
+ * <p>This test case aggregates all accuracy test cases.</p>
  *
- * @author TCSDEVELOPER
+ * @author myxgyy
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {
-
     /**
-     * Gathers all unit tests together and return.
+     * Gathers all accuracy tests together and return.
      *
      * @return all tests in one suite
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        suite.addTestSuite(ContestDataTest.class);
-        suite.addTestSuite(ContestPayloadTest.class);
-        suite.addTestSuite(ContestStatusDataTest.class);
+        suite.addTestSuite(StudioServiceBeanAccTests.class);
         suite.addTestSuite(StudioServiceBeanTest.class);
         return suite;
     }

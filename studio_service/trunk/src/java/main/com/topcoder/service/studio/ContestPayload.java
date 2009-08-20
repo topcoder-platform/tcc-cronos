@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -15,35 +15,34 @@ import java.io.Serializable;
  * not present in the setters. the ContestPayload is related with a
  * configuration parameter (Config class). It can only be retrieved.
  * </p>
- * 
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
- * 
+ *
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contestPayload", propOrder = { "name", "value", "required",
-        "description", "contestTypeId" })
+@XmlType(name = "contestPayload", propOrder = { "name", "value", "required", "description", "contestTypeId" })
 public class ContestPayload implements Serializable {
     /**
      * <p>
-     * Represents the name
+     * Represents the name.
      * </p>
      */
     private String name;
 
     /**
      * <p>
-     * Represents the value
+     * Represents the value.
      * </p>
      */
     private String value;
 
     /**
      * <p>
-     * Represents the required
+     * Represents the required.
      * </p>
      */
     private boolean required = false;
@@ -72,10 +71,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Return the name
+     * Return the name.
      * </p>
-     * 
-     * @return the name
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
@@ -83,11 +82,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Set the name
+     * Set the name.
      * </p>
-     * 
-     * @param name
-     *            the name to set
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
@@ -95,10 +93,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Return the value
+     * Return the value.
      * </p>
-     * 
-     * @return the value
+     *
+     * @return the value.
      */
     public String getValue() {
         return value;
@@ -106,11 +104,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Set the value
+     * Set the value.
      * </p>
-     * 
-     * @param value
-     *            the value to set
+     *
+     * @param value the value to set.
      */
     public void setValue(String value) {
         this.value = value;
@@ -118,10 +115,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Return the required
+     * Return the required.
      * </p>
-     * 
-     * @return the required
+     *
+     * @return the required.
      */
     public boolean isRequired() {
         return required;
@@ -129,11 +126,10 @@ public class ContestPayload implements Serializable {
 
     /**
      * <p>
-     * Set the required
+     * Set the required.
      * </p>
-     * 
-     * @param required
-     *            the required to set
+     *
+     * @param required the required to set.
      */
     public void setRequired(boolean required) {
         this.required = required;
@@ -143,8 +139,8 @@ public class ContestPayload implements Serializable {
      * <p>
      * Return the description.
      * </p>
-     * 
-     * @return the description
+     *
+     * @return the description.
      */
     public String getDescription() {
         return description;
@@ -154,9 +150,8 @@ public class ContestPayload implements Serializable {
      * <p>
      * Set the description.
      * </p>
-     * 
-     * @param description
-     *            the description to set
+     *
+     * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
@@ -164,7 +159,7 @@ public class ContestPayload implements Serializable {
 
     /**
      * Return contestTypeId.
-     * 
+     *
      * @return the contestTypeId
      */
     public long getContestTypeId() {
@@ -173,9 +168,8 @@ public class ContestPayload implements Serializable {
 
     /**
      * Sets contestTypeId.
-     * 
-     * @param contestTypeId
-     *            the contestTypeId to set
+     *
+     * @param contestTypeId the contestTypeId to set
      */
     public void setContestTypeId(long contestTypeId) {
         this.contestTypeId = contestTypeId;

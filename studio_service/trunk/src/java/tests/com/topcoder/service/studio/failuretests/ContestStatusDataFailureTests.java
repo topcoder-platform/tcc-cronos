@@ -4,10 +4,10 @@
 
 package com.topcoder.service.studio.failuretests;
 
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
-import com.topcoder.util.objectfactory.ObjectFactory;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.topcoder.service.studio.ContestStatusData;
 
 /**
@@ -26,9 +26,6 @@ public class ContestStatusDataFailureTests {
     /** The object to test. */
     private ContestStatusData testObject;
 
-    /** ObjectFactory instance for testing. */
-    private ObjectFactory objectFactory;
-    
     /**
      * Sets up testing environment
      *
@@ -36,7 +33,6 @@ public class ContestStatusDataFailureTests {
      */
     @Before
     public void setUp() throws Exception {
-        //objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory("defaultObjectFactory"));
         testObject = new ContestStatusData();
     }
 	
@@ -101,24 +97,6 @@ public class ContestStatusDataFailureTests {
      */
     public void setTestObject(ContestStatusData value) {
         testObject = value;
-    }
-    
-    /**
-     * Gets the ObjectFactory for testing.
-     *
-     * @return the ObjectFactory for testing
-     */
-    public ObjectFactory getObjectFactory() {
-        return objectFactory;
-    }
-    
-    /**
-     * Sets the ObjectFactory for testing.
-     *
-     * @param value ObjectFactory for testing
-     */
-    public void setObjectFactory(ObjectFactory value) {
-        objectFactory = value;
     }
     
     // This section contains tests for the <code>setAllowableNextStatus</code> method.

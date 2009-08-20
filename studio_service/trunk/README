@@ -20,11 +20,11 @@ This readme file explains how to setup and build this component.
 
 5. The following properties need to be set for this component:
 	[List the any specialized configuration needed]
-	${oracle.database.url} - points to the oracle instance used to run perf testing, e.g. ...
 
 6. The following third party libraries need to have their location specified - by default the build-dependencies.xml file looks for these under ${ext_libdir}, if you follow the setup listed in that file, you will not need to add these to global:
 	[List the third party libraries here as their property name, include comment of version to use]
-	${log4j.jar} - version 2.3.4 or later, testing only
+	${jaxb-api.jar} - version 2.1.7
+	${junit.jar} - version 4.5
 
 7. Ant Commands:
 	ant clean - removes temporary build files

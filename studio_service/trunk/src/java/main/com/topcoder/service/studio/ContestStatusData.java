@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -17,42 +17,42 @@ import java.util.List;
  * information can be null or can be empty, therefore this check is not present
  * in the setters. It's the related to the equivalent ContestStatus entity.
  * </p>
- * 
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
- * 
+ *
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contestStatusData", propOrder = { "statusId", "name",
-        "description", "allowableNextStatus", "displayIcon" })
+@XmlType(name = "contestStatusData", propOrder = { "statusId", "name", "description", "allowableNextStatus",
+        "displayIcon" })
 public class ContestStatusData implements Serializable {
     /**
      * <p>
-     * Represents the status Id
+     * Represents the status Id.
      * </p>
      */
     private long statusId = -1;
 
     /**
      * <p>
-     * Represents the name
+     * Represents the name.
      * </p>
      */
     private String name;
 
     /**
      * <p>
-     * Represents the description
+     * Represents the description.
      * </p>
      */
     private String description;
 
     /**
      * <p>
-     * Represents the allowable next statuses
+     * Represents the allowable next statuses.
      * </p>
      */
     private final List<Long> allowableNextStatus = new ArrayList<Long>();
@@ -72,9 +72,9 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Return the statusId
+     * Return the statusId.
      * </p>
-     * 
+     *
      * @return the statusId
      */
     public long getStatusId() {
@@ -83,11 +83,10 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Set the statusId
+     * Set the statusId.
      * </p>
-     * 
-     * @param statusId
-     *            the statusId to set
+     *
+     * @param statusId the statusId to set
      */
     public void setStatusId(long statusId) {
         this.statusId = statusId;
@@ -95,10 +94,10 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Return the name
+     * Return the name.
      * </p>
-     * 
-     * @return the name
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
@@ -106,11 +105,10 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Set the name
+     * Set the name.
      * </p>
-     * 
-     * @param name
-     *            the name to set
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
@@ -118,10 +116,10 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Return the description
+     * Return the description.
      * </p>
-     * 
-     * @return the description
+     *
+     * @return the description.
      */
     public String getDescription() {
         return description;
@@ -129,11 +127,10 @@ public class ContestStatusData implements Serializable {
 
     /**
      * <p>
-     * Set the description
+     * Set the description.
      * </p>
-     * 
-     * @param description
-     *            the description to set
+     *
+     * @param description the description to set.
      */
     public void setDescription(String description) {
         this.description = description;
@@ -143,8 +140,8 @@ public class ContestStatusData implements Serializable {
      * <p>
      * Return the allowableNextStatus. Make a shallow copy.
      * </p>
-     * 
-     * @return the allowableNextStatus
+     *
+     * @return the allowableNextStatus.
      */
     public List<Long> getAllowableNextStatus() {
         return new ArrayList<Long>(allowableNextStatus);
@@ -154,11 +151,9 @@ public class ContestStatusData implements Serializable {
      * <p>
      * Set the allowableNextStatus. Make a shallow copy.
      * </p>
-     * 
-     * @param allowableNextStatus
-     *            the allowableNextStatus to set
-     * @throws IllegalArgumentException
-     *             if the argument is null
+     *
+     * @param allowableNextStatus the allowableNextStatus to set.
+     * @throws IllegalArgumentException if the argument is null.
      */
     public void setAllowableNextStatus(List<Long> allowableNextStatus) {
         Util.checkNull("allowableNextStatus", allowableNextStatus);
@@ -168,8 +163,8 @@ public class ContestStatusData implements Serializable {
 
     /**
      * Returns displayIcon.
-     * 
-     * @return the displayIcon
+     *
+     * @return the displayIcon.
      */
     public String getDisplayIcon() {
         return displayIcon;
@@ -177,9 +172,8 @@ public class ContestStatusData implements Serializable {
 
     /**
      * Sets displayIcon.
-     * 
-     * @param displayIcon
-     *            the displayIcon to set
+     *
+     * @param displayIcon the displayIcon to set.
      */
     public void setDisplayIcon(String displayIcon) {
         this.displayIcon = displayIcon;

@@ -4,12 +4,12 @@
 
 package com.topcoder.service.studio.failuretests.ejb;
 
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
-import com.topcoder.util.objectfactory.ObjectFactory;
-import com.topcoder.service.studio.ejb.StudioServiceBean;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ejb.StudioServiceBean;
 
 /**
  * Generated failure test for the <code>StudioServiceBean.java</code> class.
@@ -28,9 +28,6 @@ public class StudioServiceBeanFailureTests {
     /** The object to test. */
     private StudioServiceBean testObject;
 
-    /** ObjectFactory instance for testing. */
-    private ObjectFactory objectFactory;
-
     /**
      * Sets up testing environment
      *
@@ -38,7 +35,6 @@ public class StudioServiceBeanFailureTests {
      */
     @Before
     public void setUp() throws Exception {
-        //objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory("defaultObjectFactory"));
         testObject = new StudioServiceBean();
     }
 
@@ -103,24 +99,6 @@ public class StudioServiceBeanFailureTests {
      */
     public void setTestObject(StudioServiceBean value) {
         testObject = value;
-    }
-
-    /**
-     * Gets the ObjectFactory for testing.
-     *
-     * @return the ObjectFactory for testing
-     */
-    public ObjectFactory getObjectFactory() {
-        return objectFactory;
-    }
-
-    /**
-     * Sets the ObjectFactory for testing.
-     *
-     * @param value ObjectFactory for testing
-     */
-    public void setObjectFactory(ObjectFactory value) {
-        objectFactory = value;
     }
 
     // This section contains tests for the <code>createContest</code> method.
@@ -325,5 +303,29 @@ public class StudioServiceBeanFailureTests {
         }
         getTestObject().removeSubmission(-1);
 
+    }
+
+    /**
+     * Tests getUserContests(username) method for null parameter.
+     * IllegalArgumentException expected.
+     *
+     * @throws Exception when it occurs deeper.
+     * @since 1.3
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUserContestsNull() throws Exception {
+        getTestObject().getUserContests(null);
+    }
+
+    /**
+     * Tests getUserContests(username) method for empty parameter.
+     * IllegalArgumentException expected.
+     *
+     * @throws Exception when it occurs deeper.
+     * @since 1.3
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUserContestsEmpty() throws Exception {
+        getTestObject().getUserContests(" ");
     }
 }

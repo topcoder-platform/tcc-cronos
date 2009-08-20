@@ -1,28 +1,37 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.accuracytests;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import junit.framework.TestCase;
 
-import com.topcoder.service.studio.ContestManagerImpl;
+import com.topcoder.service.studio.ContestGeneralInfoData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestMultiRoundInformationData;
+import com.topcoder.service.studio.ContestSpecificationsData;
 import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.MilestonePrizeData;
 import com.topcoder.service.studio.MockSessionContext;
 import com.topcoder.service.studio.SubmissionData;
-import com.topcoder.service.studio.SubmissionManagerImpl;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.ejb.StudioServiceBean;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.Submission;
+import com.topcoder.service.studio.submission.SubmissionStatus;
 
 /**
  * <p>
@@ -30,8 +39,8 @@ import com.topcoder.service.studio.submission.Submission;
  * In this test, the mocked managers are used.
  * </p>
  *
- * @author moon.river
- * @version 1.0
+ * @author moon.river, myxgyy
+ * @version 1.3
  */
 public class StudioServiceBeanTest extends TestCase {
     /**
@@ -173,7 +182,7 @@ public class StudioServiceBeanTest extends TestCase {
 
         ContestData contestData = bean.getContest(33);
         assertEquals("The name is wrong.", "name", contestData.getName());
-        assertEquals("The contest id is wrong.", 33, contestData.getContestId());
+        assertEquals("The project id is wrong.", 13, contestData.getTcDirectProjectId());
     }
 
     /**
@@ -299,6 +308,12 @@ public class StudioServiceBeanTest extends TestCase {
         s.setSubmissionDate(new Date());
         s.setSubmitterId(10l);
         s.setPrizes(new HashSet<Prize>());
+        s.setStatus(new SubmissionStatus());
+        ContestType type = new ContestType();
+        type.setDescription("Flex");
+        c.setContestType(type);
+        s.setContest(c);
+        s.setStatus(new SubmissionStatus());
         s.getPrizes().add(newPrize(3));
         s.getPrizes().add(newPrize(8));
         SubmissionManagerImpl.submissions.add(s);
@@ -306,6 +321,8 @@ public class StudioServiceBeanTest extends TestCase {
         // add second submission
         s = new Submission();
         s.setSubmissionId(2l);
+        s.setStatus(new SubmissionStatus());
+        s.setContest(c);
         SubmissionManagerImpl.submissions.add(s);
 
         List<SubmissionData> result = bean.retrieveSubmissionsForContest(33);
@@ -314,11 +331,10 @@ public class StudioServiceBeanTest extends TestCase {
         SubmissionData sd = result.get(0);
         assertEquals("The submission is wrong.", 1, sd.getSubmissionId());
         assertEquals("The contest id is wrong.", 33, sd.getContestId());
-        assertEquals("The placement is wrong.", 2, sd.getPlacement());
         assertEquals("The prize amount is wrong.", 3.0, sd.getPrice());
 
         sd = result.get(1);
-        assertEquals("The contest id is wrong.", -1, sd.getContestId());
+        assertEquals("The contest id is wrong.", 33, sd.getContestId());
         assertEquals("The placement is wrong.", -1, sd.getPlacement());
     }
 
@@ -330,7 +346,7 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testSubmissionFileTypes() throws Exception {
-        assertEquals("file types", "ex0,ex1,ex2", bean.getSubmissionFileTypes());
+        assertEquals("file types", "ex0,ex1,ex2,zip", bean.getSubmissionFileTypes());
     }
 
     /**
@@ -393,10 +409,49 @@ public class StudioServiceBeanTest extends TestCase {
     private ContestData createContest() {
         ContestData contestData = new ContestData();
 
-        contestData.setName(CONTEST_NAME);
+        contestData.setName("contestName");
         contestData.setContestId(33);
 
+        contestData.setShortSummary("ShortSummary");
+        contestData.setContestDescriptionAndRequirements("contestDescriptionAndRequirements");
+        contestData.setFinalFileFormat("zip");
+        contestData.setContestTypeId(99990);
+        contestData.setLaunchDateAndTime(getXMLGregorianCalendar(new Date()));
+
+        ContestSpecificationsData specData = new ContestSpecificationsData();
+        contestData.setSpecifications(specData);
+
+        MilestonePrizeData prizeData = new MilestonePrizeData();
+        contestData.setMilestonePrizeData(prizeData);
+
+        ContestMultiRoundInformationData infoData = new ContestMultiRoundInformationData();
+        contestData.setMultiRoundData(infoData);
+
+        ContestGeneralInfoData generalInfoData = new ContestGeneralInfoData();
+        contestData.setGeneralInfo(generalInfoData);
+
         return contestData;
+    }
+
+    /**
+     * Converts standard java Date object into XMLGregorianCalendar instance.
+     * Returns null if parameter is null.
+     *
+     * @param date Date object to convert
+     * @return converted calendar instance
+     */
+    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            // can't create calendar, return null
+            return null;
+        }
     }
 
     /**

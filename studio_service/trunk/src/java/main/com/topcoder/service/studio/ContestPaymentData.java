@@ -1,11 +1,9 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,15 +11,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * <p>
  * It is the DTO class which is used to transfer contest payment data. The
  * information can be null or can be empty, therefore this check is not present
  * in the setters. It's the related to the equivalent ContestPayment entity.
  * </p>
- * 
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
- * 
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -56,21 +55,21 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Represents the payment type.
-     * 
+     *
      * @since BUGR-1076
      */
     private Long paymentTypeId;
 
     /**
      * Represents the payment reference id.
-     * 
+     *
      * @since BUGR-1076
      */
     private String paymentReferenceId;
 
     /**
      * Returns price.
-     * 
+     *
      * @return the price
      */
     public Double getPrice() {
@@ -79,17 +78,16 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Sets price.
-     * 
-     * @param price
-     *            the price to set
+     *
+     * @param price the price to set
      */
     public void setPrice(Double price) {
         this.price = price;
     }
-    
+
     /**
      * Returns paypalOrderId.
-     * 
+     *
      * @return the paypalOrderId
      */
     public String getPaypalOrderId() {
@@ -98,17 +96,16 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Sets paypalOrderId.
-     * 
-     * @param paypalOrderId
-     *            the paypalOrderId to set
+     *
+     * @param paypalOrderId the paypalOrderId to set
      */
     public void setPaypalOrderId(String paypalOrderId) {
         this.paypalOrderId = paypalOrderId;
     }
-    
+
     /**
      * Returns contestId.
-     * 
+     *
      * @return the contestId
      */
     public Long getContestId() {
@@ -117,9 +114,8 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Sets contestId.
-     * 
-     * @param contestId
-     *            the contestId to set
+     *
+     * @param contestId the contestId to set
      */
     public void setContestId(Long contestId) {
         this.contestId = contestId;
@@ -127,7 +123,7 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Returns paymentStatusId.
-     * 
+     *
      * @return the paymentStatusId
      */
     public Long getPaymentStatusId() {
@@ -136,9 +132,8 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Sets paymentStatusId.
-     * 
-     * @param paymentStatusId
-     *            the paymentStatusId to set
+     *
+     * @param paymentStatusId the paymentStatusId to set
      */
     public void setPaymentStatusId(Long paymentStatusId) {
         this.paymentStatusId = paymentStatusId;
@@ -161,12 +156,12 @@ public class ContestPaymentData implements Serializable {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     /**
      * Updates the payment type with the specified value.
-     * 
+     *
      * @since BUGR-1076
-     * @param paymentTypeId
-     *            the payment order id to set.
+     * @param paymentTypeId the payment order id to set.
      */
     public void setPaymentTypeId(Long paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
@@ -174,7 +169,7 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Returns the paymentType.
-     * 
+     *
      * @since BUGR-1076
      * @return payment type
      */
@@ -184,10 +179,9 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Updates the payment reference id with the specified value.
-     * 
+     *
      * @since BUGR-1076
-     * @param paymentReferenceId
-     *            the payment order id to set.
+     * @param paymentReferenceId the payment order id to set.
      */
     public void setPaymentReferenceId(String paymentReferenceId) {
         this.paymentReferenceId = paymentReferenceId;
@@ -195,7 +189,7 @@ public class ContestPaymentData implements Serializable {
 
     /**
      * Returns the paymentOrderId.
-     * 
+     *
      * @since BUGR-1076
      * @return payment reference id
      */

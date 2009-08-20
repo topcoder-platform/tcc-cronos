@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -139,5 +139,71 @@ public class SubmissionDataTest extends TestCase {
         XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar();
         target.setSubmittedDate(cal);
         assertSame("new value", cal, target.getSubmittedDate());
+    }
+
+    /**
+     * Tests setter/getter for feedbackThumb field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testFeedbackThumb() throws Exception {
+        assertEquals("default value", 0, target.getFeedbackThumb());
+        target.setFeedbackThumb(123);
+        assertSame("new value", 123, target.getFeedbackThumb());
+    }
+
+    /**
+     * Tests setter/getter for feedbackText field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testFeedbackText() throws Exception {
+        assertNull("default value", target.getFeedbackText());
+        target.setFeedbackText("aa");
+        assertSame("new value", "aa", target.getFeedbackText());
+    }
+
+    /**
+     * Tests setter/getter for submissionUrl field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testSubmissionUrl() throws Exception {
+        assertNull("default value", target.getSubmissionUrl());
+        target.setSubmissionUrl("aa");
+        assertSame("new value", "aa", target.getSubmissionUrl());
+    }
+
+    /**
+     * Tests setter/getter for ArtifactCount field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testArtifactCount() throws Exception {
+        assertEquals("default value", 0, target.getArtifactCount());
+        target.setArtifactCount(123);
+        assertSame("new value", 123, target.getArtifactCount());
+    }
+
+    /**
+     * Tests setter/getter for userRank field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testUserRank() throws Exception {
+        assertEquals("default value", 0, target.getUserRank());
+        target.setUserRank(123);
+        assertSame("new value", 123, target.getUserRank());
+    }
+
+    /**
+     * Tests setter/getter for submissionType field.
+     *
+     * @throws Exception when it occurs deeper
+     */
+    public void testSubmissionType() throws Exception {
+        assertNull("default value", target.getSubmissionType());
+        target.setSubmissionType("aa");
+        assertSame("new value", "aa", target.getSubmissionType());
     }
 }

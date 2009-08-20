@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.studio;
 
 import java.io.Serializable;
@@ -8,14 +11,16 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Submission Data, basically used for purchased / ranked submissions when the contest has been made completed from
- * 'action required'
+ * Submission Data, basically used for purchased / ranked submissions when the
+ * contest has been made completed from 'action required'.
  * </p>
  *
  * @author shailendra_80
+ * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "submissionPaymentData", propOrder = { "id", "rank", "amount", "paymentTypeId", "paymentReferenceNumber", "paymentStatusId" })
+@XmlType(name = "submissionPaymentData", propOrder = { "id", "rank", "amount", "paymentTypeId",
+        "paymentReferenceNumber", "paymentStatusId" })
 public class SubmissionPaymentData implements Serializable {
     /**
      * Default serial version uid of this class.
@@ -39,14 +44,16 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Identifier of the payment-type. This value is set once the submission has been purchased.
+     * Identifier of the payment-type. This value is set once the submission has
+     * been purchased.
      * </p>
      */
     private long paymentTypeId = 0;
 
     /**
      * <p>
-     * Payment reference number. This value is set once the submission has been purchased.
+     * Payment reference number. This value is set once the submission has been
+     * purchased.
      * </p>
      */
     private String paymentReferenceNumber = null;
@@ -72,8 +79,7 @@ public class SubmissionPaymentData implements Serializable {
      * Sets the identifier of this submission.
      * </p>
      *
-     * @param id
-     *            identifier to be set.
+     * @param id identifier to be set.
      */
     public void setId(long id) {
         this.id = id;
@@ -81,7 +87,8 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Rank of this submission. Rank is index 1 based. If this submission is not ranked then rank would be zero.
+     * Rank of this submission. Rank is index 1 based. If this submission is not
+     * ranked then rank would be zero.
      * </p>
      *
      * @return 1 index based rank of this submission.
@@ -92,12 +99,11 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Sets the rank of this submission. Rank is index 1 based. If this submission is not ranked then rank would be
-     * zero.
+     * Sets the rank of this submission. Rank is index 1 based. If this
+     * submission is not ranked then rank would be zero.
      * </p>
      *
-     * @param rank
-     *            1 index based rank of this submission.
+     * @param rank 1 index based rank of this submission.
      */
     public void setRank(int rank) {
         this.rank = rank;
@@ -105,7 +111,8 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Gets the purchase amount of this submission, if any. Amount would be zero if this submission is not purchased.
+     * Gets the purchase amount of this submission, if any. Amount would be zero
+     * if this submission is not purchased.
      * </p>
      *
      * @return purchase amount of this submission.
@@ -116,11 +123,11 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Sets the purchase amount of this submission. Amount would be set to zero if this submission is not purchased.
+     * Sets the purchase amount of this submission. Amount would be set to zero
+     * if this submission is not purchased.
      * </p>
      *
-     * @param amount
-     *            the purchase amount of this submission.
+     * @param amount the purchase amount of this submission.
      */
     public void setAmount(double amount) {
         this.amount = amount;
@@ -128,8 +135,8 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Gets if this submission is additional purchase or part of the prize. If amount > 0 and rank <= 0, then true, else
-     * false/
+     * Gets if this submission is additional purchase or part of the prize. If
+     * amount > 0 and rank <= 0, then true, else false/
      * </p>
      *
      * @return if this submission is additional purchase.
@@ -162,7 +169,8 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Gets the payment type identifier. This value is set only when the submission has been purchased.
+     * Gets the payment type identifier. This value is set only when the
+     * submission has been purchased.
      * </p>
      *
      * @return The payment type identifier.
@@ -173,11 +181,11 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Sets the payment type identifier. This value is set only when the submission has been purchased.
+     * Sets the payment type identifier. This value is set only when the
+     * submission has been purchased.
      * </p>
      *
-     * @param paymentTypeId
-     *            the payment type identifier.
+     * @param paymentTypeId the payment type identifier.
      */
     public void setPaymentTypeId(long paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
@@ -185,7 +193,8 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Gets the payment reference number. This value is set only when the submission has been purchased.
+     * Gets the payment reference number. This value is set only when the
+     * submission has been purchased.
      * </p>
      *
      * @return payment reference number.
@@ -196,11 +205,11 @@ public class SubmissionPaymentData implements Serializable {
 
     /**
      * <p>
-     * Sets the payment reference number. This value is set only when the submission has been purchased.
+     * Sets the payment reference number. This value is set only when the
+     * submission has been purchased.
      * </p>
      *
-     * @param paymentReferenceNumber
-     *            payment reference number.
+     * @param paymentReferenceNumber payment reference number.
      */
     public void setPaymentReferenceNumber(String paymentReferenceNumber) {
         this.paymentReferenceNumber = paymentReferenceNumber;
@@ -218,8 +227,7 @@ public class SubmissionPaymentData implements Serializable {
     /**
      * Sets paymentStatusId.
      *
-     * @param paymentStatusId
-     *            the paymentStatusId to set
+     * @param paymentStatusId the paymentStatusId to set
      */
     public void setPaymentStatusId(Long paymentStatusId) {
         this.paymentStatusId = paymentStatusId;

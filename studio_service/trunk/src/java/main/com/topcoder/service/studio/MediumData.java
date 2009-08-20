@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -10,25 +10,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * <p>
  * It is the DTO class which is used to transfer contest payment data. The
  * information can be null or can be empty, therefore this check is not present
  * in the setters. It's the related to the equivalent ContestPayment entity.
  * </p>
- * 
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
- * 
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mediumData", propOrder = { "mediumId", "description"})
+@XmlType(name = "mediumData", propOrder = { "mediumId", "description" })
 public class MediumData implements Serializable {
     /**
      * Represents medium id.
      */
     private Long mediumId;
+
+    /**
+     * Represents description.
+     */
+    private String description;
 
     /**
      * @return the mediumId
@@ -45,13 +51,8 @@ public class MediumData implements Serializable {
     }
 
     /**
-     * Represents description.
-     */
-    private String description;
-
-    /**
      * Returns description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -60,9 +61,8 @@ public class MediumData implements Serializable {
 
     /**
      * Sets description.
-     * 
-     * @param description
-     *            the description to set
+     *
+     * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;

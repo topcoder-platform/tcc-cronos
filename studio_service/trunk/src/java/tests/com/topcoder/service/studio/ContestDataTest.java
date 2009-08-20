@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -80,9 +80,9 @@ public class ContestDataTest extends TestCase {
      * Tests setter/getter for durationInHours field.
      */
     public void testDurationInHours() {
-        assertEquals("default value", -1, target.getDurationInHours());
+        assertEquals("default value", -1.0, target.getDurationInHours());
         target.setDurationInHours(35);
-        assertEquals("new value", 35, target.getDurationInHours());
+        assertEquals("new value", 35.0, target.getDurationInHours());
     }
 
     /**

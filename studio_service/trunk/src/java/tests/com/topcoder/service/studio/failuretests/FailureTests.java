@@ -4,15 +4,14 @@
  */
 package com.topcoder.service.studio.failuretests;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.TestResult;
-import com.topcoder.service.studio.failuretests.ContestStatusDataFailureTests;
-import com.topcoder.service.studio.failuretests.ContestDataFailureTests;
-import com.topcoder.service.studio.failuretests.ejb.StudioServiceBeanFailureTests;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+import com.topcoder.service.studio.failuretests.ejb.StudioServiceBeanFailureTests;
 
 /**
  * <p>This test case aggregates all Failure test cases.</p>
@@ -26,5 +25,14 @@ import org.junit.runners.Suite;
   ContestStatusDataFailureTests.class,
   StudioServiceBeanFailureTests.class
 })
-public class FailureTests {
+public class FailureTests extends TestCase {
+
+    /**
+     * Gathers all unit tests together and return.
+     *
+     * @return all tests in one suite
+     */
+    public static Test suite() {
+        return new JUnit4TestAdapter(FailureTests.class);
+    }
 }

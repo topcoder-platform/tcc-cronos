@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -9,67 +9,92 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
- * <p> It is the DTO class which is used to transfer document and document content data. The information can be null or
- * can be empty, therefore this check is not present in the setters.  It's the related to the equivalent Document
- * entity.</p>
+ * <p>
+ * It is the DTO class which is used to transfer document and document content
+ * data. The information can be null or can be empty, therefore this check is
+ * not present in the setters. It's the related to the equivalent Document
+ * entity.
+ * </p>
  *
- * <p> This class is not thread safe because it's highly mutable</p>
+ * <p>
+ * This class is not thread safe because it's highly mutable
+ * </p>
  *
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "uploadedDocument",
-        propOrder = {"documentId", "contestId", "file", "description", "fileName", "documentTypeId", "mimeTypeId", "path"})
+@XmlType(name = "uploadedDocument", propOrder = { "documentId", "contestId", "file", "description",
+        "fileName", "documentTypeId", "mimeTypeId", "path" })
 public class UploadedDocument implements Serializable {
     /**
-     * <p> Represents the document Id</p>
+     * <p>
+     * Represents the document Id.
+     * </p>
      */
     private long documentId = -1;
 
     /**
-     * <p> Represents the contest Id</p>
+     * <p>
+     * Represents the contest Id.
+     * </p>
      */
     private long contestId = -1;
 
     /**
-     * <p> Represents the file content.</p>
+     * <p>
+     * Represents the file content.
+     * </p>
      */
     private byte[] file;
 
     /**
-     * <p> Represents the description of docuemnt type</p>
+     * <p>
+     * Represents the description of document type.
+     * </p>
      */
     private String description;
 
     /**
-     * <p> Represents the fileName</p>
+     * <p>
+     * Represents the fileName.
+     * </p>
      */
     private String fileName;
 
     /**
-     * <p> Represents the document Type Id</p>
+     * <p>
+     * Represents the document Type Id.
+     * </p>
      */
     private long documentTypeId = -1;
 
     /**
-     * <p> Represents the mimeType Id</p>
+     * <p>
+     * Represents the mimeType Id.
+     * </p>
      */
     private long mimeTypeId = -1;
 
     /**
-     * <p> Represents the document path</p>
+     * <p>
+     * Represents the document path.
+     * </p>
      */
     private String path;
 
     /**
-     * <p> This is the default constructor. It does nothing.</p>
+     * <p>
+     * This is the default constructor. It does nothing.
+     * </p>
      */
     public UploadedDocument() {
     }
 
     /**
-     * <p> Return the documentId</p>
+     * <p>
+     * Return the documentId.
+     * </p>
      *
      * @return the documentId
      */
@@ -78,7 +103,9 @@ public class UploadedDocument implements Serializable {
     }
 
     /**
-     * <p> Set the documentId</p>
+     * <p>
+     * Set the documentId.
+     * </p>
      *
      * @param documentId the documentId to set
      */
@@ -87,7 +114,9 @@ public class UploadedDocument implements Serializable {
     }
 
     /**
-     * <p> Return the contestId</p>
+     * <p>
+     * Return the contestId.
+     * </p>
      *
      * @return the contestId
      */
@@ -96,7 +125,9 @@ public class UploadedDocument implements Serializable {
     }
 
     /**
-     * <p> Set the contestId</p>
+     * <p>
+     * Set the contestId.
+     * </p>
      *
      * @param contestId the contestId to set
      */
@@ -105,16 +136,22 @@ public class UploadedDocument implements Serializable {
     }
 
     /**
-     * <p> Return the file.Return the reference, to save a bit of memory, a file could be large.</p>
+     * <p>
+     * Return the file.Return the reference, to save a bit of memory, a file
+     * could be large.
+     * </p>
      *
-     * @return the file
+     * @return the file.
      */
     public byte[] getFile() {
         return file;
     }
 
     /**
-     * <p> Set the file. Set the reference, to save a bit of memory,  a file could be large.</p>
+     * <p>
+     * Set the file. Set the reference, to save a bit of memory, a file could be
+     * large.
+     * </p>
      *
      * @param file the file to set
      */
@@ -123,93 +160,112 @@ public class UploadedDocument implements Serializable {
     }
 
     /**
-     * <p> Return the description</p>
+     * <p>
+     * Return the description.
+     * </p>
      *
-     * @return the description
+     * @return the description.
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * <p> Set the description</p>
+     * <p>
+     * Set the description.
+     * </p>
      *
-     * @param description the description to set
+     * @param description the description to set.
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * <p> Return the fileName</p>
+     * <p>
+     * Return the fileName.
+     * </p>
      *
-     * @return the fileName
+     * @return the fileName.
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * <p> Set the fileName</p>
+     * <p>
+     * Set the fileName.
+     * </p>
      *
-     * @param fileName the fileName to set
+     * @param fileName the fileName to set.
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
     /**
-     * <p> Return the documentTypeId</p>
+     * <p>
+     * Return the documentTypeId.
+     * </p>
      *
-     * @return the documentTypeId
+     * @return the documentTypeId.
      */
     public long getDocumentTypeId() {
         return documentTypeId;
     }
 
     /**
-     * <p> Set the documentTypeId</p>
+     * <p>
+     * Set the documentTypeId.
+     * </p>
      *
-     * @param documentTypeId the documentTypeId to set
+     * @param documentTypeId the documentTypeId to set.
      */
     public void setDocumentTypeId(long documentTypeId) {
         this.documentTypeId = documentTypeId;
     }
 
     /**
-     * <p> Return the mimeTypeId</p>
+     * <p>
+     * Return the mimeTypeId.
+     * </p>
      *
-     * @return the mimeTypeId
+     * @return the mimeTypeId.
      */
     public long getMimeTypeId() {
         return mimeTypeId;
     }
 
     /**
-     * <p> Set the mimeTypeId</p>
+     * <p>
+     * Set the mimeTypeId.
+     * </p>
      *
-     * @param mimeTypeId the mimeTypeId to set
+     * @param mimeTypeId the mimeTypeId to set.
      */
     public void setMimeTypeId(long mimeTypeId) {
         this.mimeTypeId = mimeTypeId;
     }
 
     /**
-     * <p> Return the path</p>
+     * <p>
+     * Return the path.
+     * </p>
      *
-     * @return the path
+     * @return the path.
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * <p> Set the path</p>
+     * <p>
+     * Set the path.
+     * </p>
      *
-     * @param path the path to set
+     * @param path the path to set.
      */
     public void setPath(String path) {
         this.path = path;
     }
 }
-
