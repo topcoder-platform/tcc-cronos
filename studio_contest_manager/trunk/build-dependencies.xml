@@ -2,7 +2,7 @@
     <!-- property file defining the component's dependencies -->
 
     
-	<property name="jboss_home" value="E:\jboss-4.2.3.GA"/>
+	<property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
 	<property name="server" value="default"/>
 	<property name="ejb_name" value="studio_contest_manager.jar"/>
 	<property name="ear_name" value="studiocontestmanager.ear"/>
@@ -10,8 +10,8 @@
 	<property name="ear_dir" value="build/${ear_name}"/>
 
     <!-- Properties used in compile_targets ANT target for JDK version x -->
-    <property name="component.target" value="1.x"/>
-    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 	
     <!-- TCS dependencies -->
 <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
