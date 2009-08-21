@@ -27,14 +27,13 @@
 <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar"/>
 <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
 <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.1/search_builder.jar"/>
+<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar"/>
 <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+<property name="project_service.jar" value="${tcs_libdir}/project_service/1.0.1/project_service.jar"/>
  
-<!--
-    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.2.0/contest_and_submission_entities.jar" />
--->
-<property name="contest_and_submission_entities.jar" value="${testfiles}/contest_and_submission_entities.jar"/>
-<property name="project_service.jar" value="${testfiles}/project_service.jar"/>
+
+<property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.2.0/contest_and_submission_entities.jar" />
+
 	
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -57,6 +56,7 @@
 
     <property name="jboss-jaxws.jar" value="${jboss_home}/client/jboss-jaxws.jar"/>
     <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
+     <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
 
 
 
@@ -83,6 +83,7 @@
         <pathelement location="${jboss-j2ee.jar}"/>
         <pathelement location="${jboss-ejb3x.jar}"/>
         <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
     </path>
 
 
