@@ -11,7 +11,7 @@
     <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -316,10 +316,10 @@
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
         <mkdir dir="${dist_coverage}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+      <!--  <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
-        </copy>
+        </copy>-->
 
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
