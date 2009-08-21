@@ -1,0 +1,73 @@
+TO RUN:
+
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	cronos_libdir - root of cronos components
+	java_1_5_bootclasspath - installation path for java 1.5 (only needed for compile_targets task)
+	jboss_dir - root of JBoss 4.2.3 installation. Like D:/Application/DevApp/jboss-4.2.3.GA
+	jboss_lib - the lib dir in JBoss default server. Like D:/Application/DevApp/jboss-4.2.3.GA/server/default/lib
+
+	The structure of tcs_libdir: 
+	${tcs_libdir}
+	- base_exception
+		- 2.0.0
+			- base_exception.jar
+	- logging_wrapper
+		- 2.0.0
+			- logging_wrapper.jar
+	- object_formatter
+		- 2.0.0
+			- object_formatter.jar
+			
+	The structure of ext_libdir:
+	${ext_libdir}:
+		- cobertura
+			- 1.8
+		- jdbc
+			- informix
+				- 1.4.1
+		- junit
+			- 3.8.2
+	The structure of cronse_libdir:
+	${crons_libdir}:
+		- contest_and_submission_entities
+			- 1.2.0
+
+
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
+
+5. The following properties need to be set for this component
+	None
+
+Setup
+------------------------------------------------------
+Setup Database
+
+1. install Informix and make sure the database is started.
+2. create a database named 'contest' in Informix.
+3. use 'dbaccess project <path>/test_files/schema_create.sql' and 'create_seq.sql' to create tables and sequences.
+4. change the database connection properties in test_files/ear/informix-ds.xml and test_files/InformixDBConnectionFactory.xml.
+
+
+Setup JBoss
+
+1. Download and install JBoss 4.2.3.
+2. change 'jboss.home' property in build-dependencies.xml
+
+
+Run Test
+
+1. use 'ant deploy_jboss' to deploy ear to jboss
+2. start Jboss 4.2.3
+3. use 'ant test' to run the test cases.
