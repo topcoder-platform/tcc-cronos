@@ -1,7 +1,7 @@
 <project name="Dependency Import"  basedir=".">
     <!-- property file defining the component's dependencies -->
 
-	<property name="jboss_home" value="E:\jboss-4.2.2.GA"/>
+	<property name="jboss_home" value="${ext_libdir}/jboss/4.2.2.GA"/>
 	<property name="server" value="default"/>
 	<property name="jboss_lib" value="${jboss_home}/server/${server}/lib"/>
 
@@ -34,7 +34,7 @@
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
     
     <!-- 3rd party dependencies -->
-    <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
+    <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/lib/jaxb-api.jar"/>
     <property name="jboss-j2ee.jar" value="${jboss_lib}/jboss-j2ee.jar"/>
     <property name="jboss-ejb3x.jar" value="${jboss_lib}/jboss-ejb3x.jar"/>
     <property name="ejb3-persistence.jar" value="${jboss_lib}/ejb3-persistence.jar"/>

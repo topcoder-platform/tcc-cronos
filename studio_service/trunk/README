@@ -42,5 +42,4 @@ NB:
 	Components are provided AS IS for development purposes only.
 
 	Included:
-		[List the contents of ${basedir}/test_reflib here - if needed explain how to build/access those contents]
-		logging_wrapper/2.0.0/logging_wrapper.jar - this is a rt of the logging wrapper component for boot strapping the tests (circular dependency)
+		failure_test_generator/1.0.0/failure_test_generator.jar 
