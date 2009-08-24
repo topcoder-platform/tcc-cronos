@@ -38,7 +38,7 @@ import java.util.List;
         "sizeRequirements", "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat", "otherFileFormats",
         "statusId","detailedStatusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
         "prizeDescription", "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
-		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants", "payments", "tcDirectProjectName"}) // BUGR-1363})
+		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants", "payments", "tcDirectProjectName", "billingProject"}) // BUGR-1363})
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -90,6 +90,16 @@ public class ContestData implements Serializable {
      * @since Cockpit Release Assembly for Receipts.
      */
     private String tcDirectProjectName = null;
+
+
+    /**
+     * <p>
+     * Represents the billing project
+     * @since Release 5 Assembly
+     * </p>
+     *
+     */
+    private long billingProject;
 
     /**
      * <p>
@@ -1137,5 +1147,30 @@ public class ContestData implements Serializable {
      */
     public void setTcDirectProjectName(String tcDirectProjectName) {
         this.tcDirectProjectName = tcDirectProjectName;
+    }
+
+
+    /**
+     * <p>
+     * Gets the tc direct project name.
+     * </p>
+     *  
+     * @return the tc direct project name.
+     * @since Release 5 Assembly
+     */
+    public long getBillingProject() {
+        return billingProject;
+    }
+
+    /**
+     * <p>
+     * Sets the tc direct project name.
+     * </p>
+     * 
+     * @param billingProject the billing project .
+     * @since Release 5 Assembly
+     */
+    public void setBillingProject(long billingProject) {
+        this.billingProject = billingProject;
     }
 }

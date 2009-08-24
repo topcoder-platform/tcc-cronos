@@ -236,7 +236,12 @@ Trouble formatting your submission or want to learn more? &lt;a href="http://stu
                 <env-entry-name>contestPropertyDigitalRunPointsId</env-entry-name>
                 <env-entry-type>java.lang.Long</env-entry-type>
                 <env-entry-value>24</env-entry-value>
-            </env-entry>             
+            </env-entry>     
+            <env-entry>
+                <env-entry-name>contestPropertyBillingProjectId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>28</env-entry-value>
+            </env-entry>
             <env-entry>
                 <env-entry-name>forumBeanProviderUrl</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
