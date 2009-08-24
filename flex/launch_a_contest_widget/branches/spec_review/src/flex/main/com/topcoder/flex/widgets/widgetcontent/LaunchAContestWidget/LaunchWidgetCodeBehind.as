@@ -743,14 +743,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     // for purchase order, set comments to po number.
                     //
                     softwareCompetition.assetDTO.compComments=purchaseOrderPaymentData.poNumber;
-                    
-                    //
-                    // Updated for Cockpit Release Assembly 3
-                    //     Add the billing project property.
-                    //
 
-					var pid:String = Model.instance.purchaseOrder.projectId;
-					SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, pid);
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
@@ -827,7 +820,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
 
-			SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
+            SoftwareCompetitionUtils.instance().addBillingProjectProp(softwareCompetition, invoicedProjectId.toString());
+
 	    }
 
         /**
@@ -930,8 +924,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             competition._id=competition.id;
             competition._type=competition.type;
 
-	    competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+	        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
             competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
+
+            competition.contestData.billingProject = invoicedProjectId;
             
             createContestOp.addEventListener("result", createStudioContestHandler);
             createContestOp.send(competition, competition.contestData.tcDirectProjectId);
@@ -982,6 +978,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
 		        competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
 	        }
+
+            competition.contestData.billingProject = invoicedProjectId;
 
             var updateContestOp:AbstractOperation=_csws.getOperation("updateContest");
 

@@ -65,5 +65,6 @@ public function ContestData() {}
                    public var numberOfRegistrants:Number;
                    [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData")]
                    public var payments:Array; // BUGR-1363
+                   public var billingProject:Number;
            	}
       	 }

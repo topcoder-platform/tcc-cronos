@@ -458,13 +458,7 @@
                     trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
                     trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
                     
-                    if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
-                        if (mainWidget.invoicedProjectId == 0) {
-                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '');
-                        } else {
-                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
-                        }   
-                    }
+                    
                 }
             }
 	      ]]>
