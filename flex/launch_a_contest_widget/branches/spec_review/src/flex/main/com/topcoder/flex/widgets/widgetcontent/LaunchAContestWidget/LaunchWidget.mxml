@@ -12,13 +12,14 @@
         - save as draft button is not shown in ReadOnlyMode.
         - next button is not shown on review screen in ReadOnlyMode.
         - changes for above on previous, next, skipTo methods.
+        
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to lead to purchase from Review page for the invoiced contest.
+        - Added webservice operation definition to get contest fees by project.
     
-    Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
-        - BUGR-2119: now both studio and software html text is correctly escaped.
-
-    @author shailendra_80, TCSASSEMBLER
-    @since Launch Contest Widget
+    @author TCSASSEMBLER
     @version 1.0.1
+    @since 1.0    
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                            xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
@@ -447,15 +448,25 @@
             private var stateToStepNum:Dictionary=null;
             private var stepBoxes:ArrayCollection=null;
 
-            //
-            // Updated to remove step number calculation.
-            // and moved assignment to review page in individual widgets.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            // Updated for Cockpit Release Assembly 3
-            // - save as draft button is not shown in ReadOnlyMode.
-            // - next button is not shown on review screen in ReadOnlyMode.
-            //
+            
+            /**
+             * Handles the click on left hand side step bars.
+             * 
+             *
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             * 
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             * 
+             * Updated for Version 1.0.1
+             *    - in case of invoiced contest, changed the name of the 'next' button on review page to 'ACTIVATE'
+             * 
+             * @param step the step number 
+             * 
+             */
             private function skipTo(step:int):void {
 
                 if (!stateToStepNum) {
@@ -682,7 +693,12 @@
                             goNext.includeInLayout=goNext.visible=false;
                         } else {
                             goNext.includeInLayout=goNext.visible=true;
-                            goNext.label = "NEXT";
+                            
+                            if (isInvoicedContest) {
+                                goNext.label="ACTIVATE";
+                            } else {
+                                goNext.label = "NEXT";
+                            }
                         }
 
 						 // on skip too - set the values. 
@@ -712,15 +728,25 @@
 			    }
 			}
 
-            //
-            // Updated to remove step number calculation.
-            // and moved assignment to review page in individual widgets.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            // Updated for Cockpit Release Assembly 3
-            // - save as draft button is not shown in ReadOnlyMode.
-            // - next button is not shown on review screen in ReadOnlyMode.
-            //
+            
+            /**
+             * Handler for click on next button.
+             * 
+             *
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             *
+             * Updated for Version 1.0.1
+             *    - in case of invoiced contest, changed the name of the next button to "Activate" on the Review screen.
+             *    - and for invoiced contest directly lead to purchase confirmation screen. 
+             * 
+             * @param event the animation effect event
+             */ 
             public function next(event:EffectEvent=null):void {
                 if (this.currentState == "ContestSelectionState") {
                     if (contestSelect.contestType.selectedValue == null) {
@@ -874,7 +900,12 @@
                         goNext.includeInLayout=goNext.visible=false;
                     } else {
                         goNext.includeInLayout=goNext.visible=true;
-                        goNext.label = "NEXT";
+                        
+                        if (isInvoicedContest) {
+                            goNext.label="ACTIVATE";
+                        } else {
+                            goNext.label = "NEXT";
+                        }
                     }
                     
                     this.currentState="ReviewState";
@@ -901,18 +932,35 @@
                     if (sched.validateFieldsEx2(true, true) == false) {
                         return;
                     }
-
-                    this.currentState="ActivateState";
-                    save.visible=false;
-                    //TODO-HEIGHT-this.height=ACTIVATE_HEIGHT;
-                    setPreviousStep(step7box);
-                    setCurStep(step8box);
-                    setButton(1);
-
-                    activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
-                    activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
-
-                    activate.initData();
+                    
+                    if (isInvoicedContest) {
+                        // for invoiced contest directly lead to purchase confirmation screen.
+                        this.currentState="ActivateState";
+                        save.visible=false;
+                        setPreviousStep(step7box);
+                        setCurStep(step8box);
+                        setButton(3);
+                        
+                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+    
+                        activate.initData();
+                        
+                        activate.stack.selectedIndex = 2;
+                        
+                        activate.goToNext();
+                    } else {
+                        this.currentState="ActivateState";
+                        save.visible=false;
+                        setPreviousStep(step7box);
+                        setCurStep(step8box);
+                        setButton(1);
+    
+                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+    
+                        activate.initData();
+                    }
                 } else if (this.currentState == "ActivateState") {
                     save.visible=false;
                     var index:int=activate.goToNext();
@@ -953,15 +1001,22 @@
                 }       
             }
 
-            //
-            // Updated to remove step number calculation.
-            // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            // Updated for Cockpit Release Assembly 3
-            // - save as draft button is not shown in ReadOnlyMode.
-            // - next button is not shown on review screen in ReadOnlyMode.
-            //
+            
+            /**
+             * Handler for click on back button.
+             * 
+             *
+             * Updated to remove step number calculation.
+             * This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             * 
+             * Updated for Version 1.0.1
+             *    - if the contest is invoiced then the next button name is changed to "ACTIVATE" on review screen. 
+             */ 
             private function previous():void {
                 if (this.currentState == "ActivateState") {
                     var index:int = activate.gotoPrev();
@@ -978,7 +1033,11 @@
                             goNext.includeInLayout=goNext.visible=false;
                         } else {
                             goNext.includeInLayout=goNext.visible=true;
-                            goNext.label = "NEXT";
+                            if (this.isInvoicedContest) {
+                                goNext.label = "ACTIVATE";
+                            } else {
+                                goNext.label = "NEXT";
+                            }
                         }
                         
                         //TODO-HEIGHT-this.height = REVIEW_HEIGHT; // BUGR-1134
@@ -1533,6 +1592,15 @@
                       resultFormat="object"
                       result="Helper.showAlertMessage('Saved successfully')"
                       fault="showWebserviceError('saveReviewStatus', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Release Assembly 5 v1.0
+             webservice operation to getContestFeesByProject
+        -->
+        <mx:operation name="getContestFeesByProject"
+                      resultFormat="object"
+                      fault="showWebserviceError('getContestFeesByProject', event);">
         </mx:operation>
 
     </mx:WebService>

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+<!--
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to use the type name instead of id for contest sub type.
+        - For invoiced contest, even admin can not edit the contest fee.
+        - For invoiced contest, contest fee is loaded from webservice.
+        
+    
+    @author TCSASSEMBLER
+    @version 1.0.1
+    @since 1.0
+-->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
          height="100%"
@@ -30,6 +44,7 @@
     <!-- BUGR-1737 -->
     <mx:Script>
         <![CDATA[
+            import mx.rpc.AbstractOperation;
             import mx.effects.easing.Back;
             import mx.collections.ArrayCollection;
             import mx.controls.RadioButton;
@@ -60,8 +75,13 @@
             [Bindable]
             private var contestFees:XML;
             
+            /**
+             * Change to use the type name instead of Id
+             * 
+             * Updated for Version 1.0.1
+             */ 
             [Bindable]
-            private var curContestType:int;
+            private var curContestType:String;
             
             //
             // Updated for Cockpit Release Assembly 1 v1.0
@@ -86,6 +106,9 @@
             
             /**
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+             * 
+             * Updated for Version 1.0.1
+             *    - for invoiced contest even admin can not edit contest fee.
              */
             public function initData():void {
                 for each (var inptName:String in s_inputs) {
@@ -96,10 +119,10 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
 
-		if (!mainWidget)
-		{
-			return;
-		}
+                if (!mainWidget)
+                {
+                    return;
+                }
 
                 if (mainWidget.studioContestType) {
                     // For studio contest it is loaded inside handler for requestContestTypes.
@@ -107,7 +130,12 @@
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
                 } else {
-                    requestContestFees.send(); // BUGR-1737
+                    if (mainWidget.isInvoicedContest) {
+                        getContestFeesByBillingProject();
+                    } else {
+                        requestContestFees.send();
+                    }
+                    //requestContestFees.send(); // BUGR-1737
                     //
                     // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
                     //    - Changed the name to more generic 'overview data' rather than 'examples'
@@ -308,13 +336,16 @@
              * Updated to set / unset whether exampleOne and exampleTwo box should be shown or not.
              *
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             * 
+             * Updated for Version 1.0.1
+             *    - for contest sub type use type name instead of id
              */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
-                curContestType=Number(studioType.selectedValue);
+                curContestType=typeName.text;
                 
                 if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                    adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
+                    adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
                 }
                 
                 if (mainWidget.studioContestType) {
@@ -535,6 +566,14 @@
                 }
             }
 
+            /**
+             * Loads the contest sub types.
+             * 
+             * Updated for Version 1.0.1
+             *    - for contest sub type use type name instead of id.
+             * 
+             * @param e the webservice result event.
+             */  
             private function preprocessTypes(e:ResultEvent):void {
                 studioTypeBox.removeAllChildren();
                 studioType.selection=null;
@@ -542,9 +581,13 @@
                 var contestType:String="";
                 if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
                     contestType=mainWidget.competition.contestData.contestTypeId.toString();
+                } else {
+                    // default id for Web Page Design
+                    contestType="1";
                 }
                 
                 var selectedValue:Number=-1;
+                var selectedLabel:String="";
 
                 if (e != null && e.result != null && e.result is XMLNode) {
                     var root:XMLNode=e.result as XMLNode;
@@ -565,26 +608,100 @@
                         if (typeRadio.value == contestType) {
                             typeRadio.selected=true;
                             selectedValue=Number(contestType);
+                            selectedLabel=typeRadio.label;
                         }
                         vbox.addChild(typeRadio);
                     }
+                    // this will not happen anymore.
                     if (selectedValue == -1) {
                         selectedValue=1;
                         studioType.selectedValue=selectedValue;
+                        selectedLabel=root.childNodes[0].attributes.description;
                     }
-                    curContestType=Number(selectedValue);
                     
-                    //
-                    // request overview data after studio contest types has been loaded.
-                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-                    //
-                    requestOverviewData.send();
+                    curContestType=selectedLabel;
                     
-                    //
-                    // request contest fees after studio contest types has been loaded.
-                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-                    //
+                    
+                }
+                
+                //
+                // request overview data after studio contest types has been loaded.
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                //
+                requestOverviewData.send();
+                
+                //
+                // request contest fees after studio contest types has been loaded.
+                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                //
+                if (mainWidget.isInvoicedContest) {
+                    getContestFeesByBillingProject();
+                } else {
                     requestContestFees.send();
+                }
+            }
+            
+            /**
+             * Gets the contest fees by billing project.
+             * 
+             * @since 1.0.1
+             */ 
+            private function getContestFeesByBillingProject():void {
+                var getContestFeesByProject:AbstractOperation=mainWidget._csws.getOperation("getContestFeesByProject");
+                getContestFeesByProject.addEventListener("result", handleGetContestFeesByProject);
+                getContestFeesByProject.send(mainWidget.invoicedProjectId);
+            }
+            
+            /**
+             * Handler for getting contest fees by project.
+             * 
+             * @param e the webservice result event.
+             * @since 1.0.1
+             */ 
+            private function handleGetContestFeesByProject(e:ResultEvent):void {
+                if (e && e.result) {
+                    // convert e.result into contestFees.xml
+                    trace("getContestFeesByProject:: e.result: " + e.result);
+                    
+                    var gotFees:Boolean=false;
+                    
+                    var xml:XML=<contestTypes></contestTypes>;
+                    var studioXML:XML=<contestType id='STUDIO'></contestType>;
+                    var pcfArray:ArrayCollection=e.result as ArrayCollection;
+                    for each (var pcf:Object in pcfArray) {
+                        gotFees=true;
+                        var contestType:String=pcf.contestType;
+                        var subType:String=pcf.subType;
+                        var contestFee:String=pcf.contestFee;
+                        
+                        if (contestType && contestType == "STUDIO") {
+                            var c:XML=XML("<subType id='" + subType + "'></subType>");
+                            c.appendChild(XML("<contestFee>" + contestFee + "</contestFee>"));
+                            studioXML.appendChild(c);
+                        } else {
+                            var c1:XML=XML("<contestType id='" + contestType + "'></contestType>");
+                            c1.appendChild(XML("<contestFee>" + contestFee + "</contestFee>"));
+                            xml.appendChild(c1);
+                        }
+                    }
+                    
+                    xml.appendChild(studioXML);
+                    
+                    trace("XML loaded from getContestFeesByProject: " + xml);
+                    
+                    if (gotFees) {
+                        contestFees=xml;
+                    } else {
+                        contestFees=null;
+                    }
+                    
+                    if (contestFees) {
+                        if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
+                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737       					
+                        } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                            adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
+                        }
+                    }
                 }
             }
 

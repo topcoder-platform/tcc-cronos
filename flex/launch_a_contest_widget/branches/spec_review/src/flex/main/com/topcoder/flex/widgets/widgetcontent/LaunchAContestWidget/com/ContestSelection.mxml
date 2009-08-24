@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+<!--
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Added new section "Invoice Me".
+        - Whether contest is invoiced or not is correctly set.
+    
+    @author TCSASSEMBLER
+    @version 1.0.1
+    @since 1.0
+-->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
            width="100%"
            height="100%"
@@ -6,6 +18,7 @@
            verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectType;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
@@ -32,7 +45,10 @@
             import mx.utils.ObjectUtil;
             import com.topcoder.flex.Helper;
             import mx.rpc.AbstractOperation;
-            import mx.controls.ButtonLabelPlacement; // BUGR-1501			
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501	
+            
+            import flash.events.Event;
+            import com.topcoder.flex.Helper;
 	        
 	        [Bindable]
             public var mainWidget:LaunchWidget;
@@ -121,12 +137,18 @@
                 }
             }
 
+        /**
+         * Gets the client billing project from web service.
+         * 
+         * Updated for Version 1.0.1
+         *    - the default label is "Select a Billing Account"
+         */ 
 	    private function getClientProjectsByUser():void {
 			    // add an empty item.
 			    var item:Object = null;
 			    
 			    item = new Object();
-			    item.label="";
+			    item.label="Select a Billing Account";
 			    item.data=null;
 			    mainWidget.clientProjectNames.addItem(item);
 			    
@@ -140,7 +162,15 @@
 			    }
 	    }
 			
-	    private function getClientProjectsHandler(e:ResultEvent):void {
+    	    /**
+    	     * Handles the load of client billing project from backend web-service.
+    	     * 
+    	     * Updated for Version 1.0.1
+    	     *    - the client projects are assigned to Billing Project combo box in ContestSelection page rather than activate page.
+    	     * 
+    	     * @param e the webservice result event.
+    	     */ 
+	        private function getClientProjectsHandler(e:ResultEvent):void {
 			    trace("getClientProjectsHandler: " + e + ", " + e.result);
 			    mainWidget.hideLoadingProgress();
 			    
@@ -173,10 +203,8 @@
             	        }
             	    }
             	    
-            	    // assign client project names here.
-            	    mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
             	}
-	   }
+	        }
             
             
             private function compareName(a:Object, b:Object, fields:Array = null):int {
@@ -403,6 +431,40 @@
                 		permissions.addItem(perm);
             			updatePermissions.send(permissions);
             		}
+                }
+            }
+            
+            /**
+             * Handle the change of billing account in combo box.
+             * 
+             * @param e the change event.
+             * @since 1.0.1
+             */ 
+            private function handleBillingAccountChange(e:Event):void {
+                if (mainWidget) {
+                    var val:Object=selectBillingAccount.selectedItem;
+                    if (val == null || val.data == null) {
+                        mainWidget.isInvoicedContest=false;
+                        mainWidget.invoicedProjectId=0;
+                        mainWidget.invoicedProjectData=null;
+                        Model.instance.purchaseOrder=null;
+                    } else {
+                        mainWidget.isInvoicedContest=true;
+                        mainWidget.invoicedProjectId=val.data.projectId;
+                        mainWidget.invoicedProjectData=val.data;
+                        Model.instance.purchaseOrder=mainWidget.invoicedProjectData;
+                    }
+                    
+                    trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
+                    trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
+                    
+                    if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
+                        if (mainWidget.invoicedProjectId == 0) {
+                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '');
+                        } else {
+                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
+                        }   
+                    }
                 }
             }
 	      ]]>
@@ -638,6 +700,19 @@
                     <mx:Spacer width="162"/>
                     <mx:Button label="save and continue" styleName="RedButton" click="goToOverView()" buttonMode="true"/>
                 </mx:HBox> -->
+                
+                <mx:HRule width="100%"/>
+                
+                <mx:HBox width="100%" horizontalGap="0">
+                    <mx:Label text="Invoice Me" fontWeight="bold" />
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Label text="Billing Account:" />
+                    <mx:ComboBox id="selectBillingAccount" width="100%" dataProvider="{mainWidget.clientProjectNames}" change="handleBillingAccountChange(event)"/>
+                    <mx:LinkButton label="?"
+                                   click="Helper.showAlertMessage('Help for billing account')"/>
+                </mx:HBox>
     	    </mx:VBox>
 	    </mx:HBox>
     </mx:VBox>

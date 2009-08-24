@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
 -->
-
 <!--
-
-    This mxml component manages the payment workflow.
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to remove the "Other Payment Options" section.
     
-    Updated for Cockpit Release Assembly 3
-        - save as draft button is not shown in ReadOnlyMode.
-        - next button is not shown on review screen in ReadOnlyMode.
-        - changes for above on previous, next, skipTo methods.
-    
-    Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
-        - BUGR-1983: Updated to support zero contest fee.
-
     @author TCSASSEMBLER
-    @since Launch Contest Widget
     @version 1.0.1
+    @since 1.0
 -->
 <mx:Grid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
 	<mx:Script>
@@ -43,62 +34,50 @@
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
        		
-       		[Bindable]
-       		public var clientProjectNames:ArrayCollection;
+       		//[Bindable]
+       		//public var clientProjectNames:ArrayCollection;
        		
 			public function saveData():int {
 				var inputs:Array = [cardname, csc, address, city, state, code, country, phone, email]; // BUGR-1398
 				var model:Model = Model.instance;
 				//Helper.showAlertMessage("MAIN-Widget: " + mainWidget);
-				if (order.selectedItem && order.selectedItem.data != null) {
-					 for each (var target:TextInput in inputs) {
-						removeValidate(target);
-					} 
-					//if (doValidate(order)) {
-						model.purchaseOrder = order.selectedItem.data;
-						return 3;
-					//} else {
-					//	showErrorMsg();
-					//	return -1;
-					//}
-				}  else {
-					//removeValidate(order);
-					var errors:Array = Validator.validateAll([ccv]);
-					var result:Boolean = true;
-					if (errors && errors.length > 0) {
-						result = false;
-					} else {
-						// Valid format for visa 4013 0714 3157 6550
-						// TODO: capture the price too.
-						result = true;
-						model.cardType = cardTypeCombo.selectedItem.data;
-						model.cardNum = cardNum.text;
-						model.cardExpMonth = month.selectedItem.data;
-						model.cardExpYear = year.selectedItem.data;
-						model.cardExpDateStr = month.selectedItem.data + "/" + year.selectedItem.data;
-						model.cardname = cardname.text;
-						model.firstName = cardname.text;
-						model.lastName = cardname.text;
-						model.address = address.text;
-						model.city = city.text;
-						model.state = state.text;
-						model.code = code.text;
-						model.country = country.text;
-						model.phone = phone.text;
-						model.email = email.text;
-						model.csc = csc.text; // BUGR-1398
-					}
-					for each (var item:TextInput in inputs) {
-						result = result && doValidate(item);
-						model[item.id] = item.text;
-					}
-					if (result) {
-						return 2;
-					} else {
-						showErrorMsg();
-						return -1;
-					}
-				} 
+
+				//removeValidate(order);
+				var errors:Array = Validator.validateAll([ccv]);
+				var result:Boolean = true;
+				if (errors && errors.length > 0) {
+					result = false;
+				} else {
+					// Valid format for visa 4013 0714 3157 6550
+					// TODO: capture the price too.
+					result = true;
+					model.cardType = cardTypeCombo.selectedItem.data;
+					model.cardNum = cardNum.text;
+					model.cardExpMonth = month.selectedItem.data;
+					model.cardExpYear = year.selectedItem.data;
+					model.cardExpDateStr = month.selectedItem.data + "/" + year.selectedItem.data;
+					model.cardname = cardname.text;
+					model.firstName = cardname.text;
+					model.lastName = cardname.text;
+					model.address = address.text;
+					model.city = city.text;
+					model.state = state.text;
+					model.code = code.text;
+					model.country = country.text;
+					model.phone = phone.text;
+					model.email = email.text;
+					model.csc = csc.text; // BUGR-1398
+				}
+				for each (var item:TextInput in inputs) {
+					result = result && doValidate(item);
+					model[item.id] = item.text;
+				}
+				if (result) {
+					return 2;
+				} else {
+					showErrorMsg();
+					return -1;
+				}
 				return true;
 			}
 			
@@ -160,58 +139,6 @@
                 sorted.refresh();   
                 return sorted;
             }
-            
-            /**
-             * Represents whether cc is enabled
-             * 
-             * @since 1.0.1
-             */ 
-            [Bindable]
-            private var _ccEnabled:Boolean=true;
-            
-            /**
-             * Gets whether cc is enabled
-             * 
-             * @return whether cc is enabled
-             * @since 1.0.1
-             */ 
-            [Bindable]
-            private function get ccEnabled():Boolean {
-                return this._ccEnabled;
-            }
-            
-            /**
-             * Sets whether cc is enabled
-             * 
-             * @param e whether cc is enabled
-             * @since 1.0.1
-             */
-            private function set ccEnabled(e:Boolean):void {
-                this._ccEnabled = e;
-            }
-            
-            /**
-             * An intermediate function that helps setting ccEnabled from the bound properties.
-             * 
-             * @param obj not in use.
-             * @since 1.0.1
-             */ 
-            private function set creditCardEnabled(obj:Object):void {
-                // if PO is selected then we need not consider other parameters.
-                var val:Boolean = order && !order.selectedItem.data;
-                
-                if (val && mainWidget && mainWidget.competitionType && mainWidget.overView) {
-                    if (mainWidget.competitionType != "STUDIO" && new Number(mainWidget.overView.ns_contestf.text) > 0) {
-                        val = val && true;
-                    } else if (mainWidget.competitionType == "STUDIO" && new Number(mainWidget.overView.adminf.text) > 0) {
-                        val = val && true;
-                    } else {
-                        val = val && false;
-                    }
-                }
-                
-                ccEnabled = val;
-            }
 
 		]]>
 	</mx:Script>
@@ -221,9 +148,6 @@
             <cardNumber>{cardNum.text}</cardNumber>
         </card>
 	</mx:Model>
-	<mx:Binding source="order.selectedItem.data" destination="creditCardEnabled"/>
-	<mx:Binding source="mainWidget.overView.ns_contestf.text" destination="creditCardEnabled"/>
-	<mx:Binding source="mainWidget.overView.adminf.text" destination="creditCardEnabled"/>
 	<mx:CreditCardValidator id="ccv" cardTypeSource="{creditcard}" cardTypeProperty="cardType"
         	cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
         	cardTypeListener="{cardTypeCombo}"
@@ -232,9 +156,6 @@
 	<mx:GridRow width="100%">
 		<mx:GridItem width="100%">
 			<mx:Label text="Credit Card Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-		</mx:GridItem>
-		<mx:GridItem width="100%">
-			<mx:Label text="Other Payment Options" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		</mx:GridItem>
 	</mx:GridRow>
 	<mx:GridRow  width="100%">
@@ -246,11 +167,11 @@
 			</mx:VBox>
 			<mx:VBox width="100%">
 				<mx:HBox verticalScrollPolicy="off" horizontalScrollPolicy="off">	 <!-- BUGR-1398 -->	
-					<mx:TextInput id="cardNum" width="125" enabled="{ccEnabled}"/>
-					<mx:TextInput id="csc" width="45" enabled="{ccEnabled}"/>
-					<mx:LinkButton label="What's this?" click="gotoCSC();" enabled="{ccEnabled}"/>
+					<mx:TextInput id="cardNum" width="125"/>
+					<mx:TextInput id="csc" width="45"/>
+					<mx:LinkButton label="What's this?" click="gotoCSC();"/>
 				</mx:HBox>
-				<mx:ComboBox width="100%" height="20" id="cardTypeCombo" enabled="{ccEnabled}">
+				<mx:ComboBox width="100%" height="20" id="cardTypeCombo">
 					<mx:dataProvider>
 						<mx:Object label="Visa" data="Visa"/>
 						<mx:Object label="MasterCard" data="MasterCard"/>
@@ -258,7 +179,7 @@
 					</mx:dataProvider>
 				</mx:ComboBox>
         <mx:HBox width="100%">
-          <mx:ComboBox width="50" height="20" id="month" enabled="{ccEnabled}">
+          <mx:ComboBox width="50" height="20" id="month">
             <mx:dataProvider>
               <mx:Object label="1" data="1"/>
               <mx:Object label="2" data="2"/>
@@ -275,7 +196,7 @@
             </mx:dataProvider>
           </mx:ComboBox>
           <mx:Text text="/" />
-          <mx:ComboBox width="70" height="20" id="year" enabled="{ccEnabled}">
+          <mx:ComboBox width="70" height="20" id="year">
             <mx:dataProvider>
               <mx:Object label="2009" data="2009"/>
               <mx:Object label="2010" data="2010"/>
@@ -331,27 +252,6 @@
             </mx:VBox>
             <mx:VBox width="10" height="100%" />
         </mx:GridItem>
-        <mx:GridItem width="100%">
-            <mx:VBox width="100%">
-                <mx:VBox width="100%" height="100%" borderStyle="solid" 
-                        paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
-                    <!--<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
-                            styleName="content" />-->
-                    <mx:Text text="Bypass Credit Card Payment" fontSize="11"
-                                fontWeight="normal" styleName="contentGrey" />
-                    <mx:HBox width="100%">
-                        <mx:Label text="Purchase Order #" styleName="content" />
-                        <!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
-                        <mx:ComboBox id="order" width="100%" dataProvider="{sortComboBox(clientProjectNames)}"/>
-                    </mx:HBox>
-                    <mx:HBox>
-                        <mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
-                                fontWeight="normal" styleName="contentGrey" />
-                        <mx:LinkButton label="click here." />
-                    </mx:HBox>
-                </mx:VBox>
-            </mx:VBox>
-        </mx:GridItem>
     </mx:GridRow>
     <mx:GridRow width="100%" >
         <mx:GridItem width="100%">
@@ -369,42 +269,42 @@
                 verticalGap="13">
                 <mx:HBox width="100%">
                     <mx:Label text="Name on Card:" width="100" />
-                    <mx:TextInput id="cardname" width="100%" enabled="{ccEnabled}" />
+                    <mx:TextInput id="cardname" width="100%" />
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="Address:" width="100" />
-                    <mx:TextInput id="address" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="address" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="City:" width="100" />
-                    <mx:TextInput id="city" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="city" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="State:" width="100" />
-                    <mx:TextInput id="state" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="state" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="Zip Code:" width="100" />
-                    <mx:TextInput id="code" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="code" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="Country:" width="100" />
-                    <mx:TextInput id="country" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="country" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="Phone:" width="100" />
-                    <mx:TextInput id="phone" width="100%" enabled="{ccEnabled}"/>
+                    <mx:TextInput id="phone" width="100%"/>
                     <mx:Label text="*" />
                 </mx:HBox>
                 <mx:HBox width="100%">
                     <mx:Label text="Email:" width="100" />
-                    <mx:TextInput id="email" width="100%" enabled="{ccEnabled}" />
+                    <mx:TextInput id="email" width="100%" />
                     <mx:Label text="*" height="20" />
                 </mx:HBox>
             </mx:VBox>

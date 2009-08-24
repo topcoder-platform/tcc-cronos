@@ -41,16 +41,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * <p>
      * This is the code behind script part for the launch a contest widget. It implements the IWidget interface.
      * It extends from the Panel.
-     * 
-     * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change Notes:
-     *    - Introduced methods to check whether the contest is a paid contest or not.
-     *    - henceforth updated for BUGR-1983
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      * 
-     * @author TCSDEVELOPER
+     * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+     *    - Added field to represent whether current contest is invoiced project or not and to hold invoiced project id.
+     * 
+     * @author TCSDEVELOPER, TCSASSEMBLER
      * @version 1.0.1
+     * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
         /**
@@ -185,6 +185,30 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var specReviews:ArrayCollection=null;
         
         public var contestCreateUser:String=null;
+        
+        /**
+         * Represents whether the current contest is invoiced or not.
+         * 
+         * @since 1.0.1
+         */
+        [Bindable]
+        private var _isInvoicedContest:Boolean=false;
+        
+        /**
+         * Represents the project id of the invoicing project.
+         * 
+         * @since 1.0.1
+         */
+        [Bindable] 
+        private var _invoicedProjectId:Number=0;
+        
+        /**
+         * Represents the data of the invoicing project.
+         * 
+         * @since 1.0.1
+         */
+        [Bindable] 
+        private var _invoicedProjectData:Object=null;
         
         /**
         * @since BUGR-1737
@@ -1170,6 +1194,66 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		[Bindable]
 		public function get tcDirectProjectId():String {
             return _tcDirectProjectId;
+        }
+        
+        /**
+         * Gets whether the current contest is invoiced or not
+         * 
+         * @return whether the current contest is invoiced or not
+         * @since 1.0.1 
+         */
+        public function get isInvoicedContest():Boolean {
+            return _isInvoicedContest;
+        }
+        
+        /**
+         * Sets whether the current contest is invoiced or not.
+         * 
+         * @param b whether the current contest is invoiced or not.
+         * @since 1.0.1
+         */ 
+        public function set isInvoicedContest(b:Boolean):void {
+            this._isInvoicedContest=b;
+        }
+        
+        /**
+         * Gets the invoiced billing project id.
+         * 
+         * @return the invoiced billing project id.
+         * @since 1.0.1
+         */
+        public function get invoicedProjectId():Number {
+            return this._invoicedProjectId;
+        }
+        
+        /**
+         * Sets the invoiced billing project id.
+         * 
+         * @param n the invoiced billing project id.
+         * @since 1.0.1
+         */ 
+        public function set invoicedProjectId(n:Number):void {
+            this._invoicedProjectId=n;
+        }
+        
+        /**
+         * Gets the invoiced billing project data.
+         * 
+         * @return the invoiced billing project data.
+         * @since 1.0.1
+         */
+        public function get invoicedProjectData():Object {
+            return this._invoicedProjectData;
+        }
+        
+        /**
+         * Sets the invoiced billing project data.
+         * 
+         * @param n the invoiced billing project data.
+         * @since 1.0.1
+         */ 
+        public function set invoicedProjectData(n:Object):void {
+            this._invoicedProjectData=n;
         }
     }
 }

@@ -123,7 +123,7 @@
             	    }
             	    
             	    // assign client project names here.
-            	    mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
+            	    //mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
             	}
 			}
             
