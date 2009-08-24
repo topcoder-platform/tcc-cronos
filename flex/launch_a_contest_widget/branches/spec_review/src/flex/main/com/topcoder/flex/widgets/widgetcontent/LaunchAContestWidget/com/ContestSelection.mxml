@@ -458,7 +458,16 @@
                     trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
                     trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
                     
-                    
+                    if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
+                        if (mainWidget.invoicedProjectId == 0) {
+                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
+                        } else {
+                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
+                        }   
+                    }
+                    else if (mainWidget.competitionType == "STUDIO" && mainWidget.competition) {
+                        mainWidget.competition.contestData.billingProject = mainWidget.invoicedProjectId;
+                    }
                 }
             }
 	      ]]>

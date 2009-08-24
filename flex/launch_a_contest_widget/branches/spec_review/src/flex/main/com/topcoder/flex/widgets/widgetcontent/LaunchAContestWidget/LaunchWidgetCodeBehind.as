@@ -820,8 +820,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
 
-            SoftwareCompetitionUtils.instance().addBillingProjectProp(softwareCompetition, invoicedProjectId.toString());
-
 	    }
 
         /**
@@ -926,8 +924,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 	        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
             competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
-
-            competition.contestData.billingProject = invoicedProjectId;
             
             createContestOp.addEventListener("result", createStudioContestHandler);
             createContestOp.send(competition, competition.contestData.tcDirectProjectId);
@@ -978,8 +974,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
 		        competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
 	        }
-
-            competition.contestData.billingProject = invoicedProjectId;
 
             var updateContestOp:AbstractOperation=_csws.getOperation("updateContest");
 
