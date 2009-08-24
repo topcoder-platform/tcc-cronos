@@ -55,6 +55,9 @@ import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
 import com.topcoder.clientcockpit.phases.EmailSendingException;
 import com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator;
+import com.topcoder.clients.dao.DAOException;
+import com.topcoder.clients.dao.ProjectDAO;
+import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.management.project.Project;
@@ -155,13 +158,19 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  * </p>
  * 
  * <p>
- * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
- *  - For development contests, we seek if there is corresponding design component.
- *    If yes, we use the same instead of creating new one. Forum is also used the same.
+ * Updated for Cockpit Launch Contest - Inline Spec Review Part 2
+ *      - Added methods for retrieve/save of Spec Reviews and their status.
+ *      - Added specReviewStatus set for CommonProjectContestData based methods.
+ * </p>
+ * 
+ * <p>
+ * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+ *  - Added method to retrieve contest fees by given billing project id.
  * </p>
  *
- * @author snow01, TCSASSEMBLER
+ * @author TCSDEVELOPER, TCSASSEMBLER
  * @version 1.0.1
+ * @since 1.0
  */
 @Stateless
 @WebService
@@ -223,6 +232,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/SpecReviewService")
     private SpecReviewService specReviewService = null;
+    
+    /**
+     * <p>A <code>ProjectDAO</code> providing access to available billing project related methods like retrieving 
+     * contest fee for given billing project.</p> 
+     *
+     * @since 1.0.1
+     */
+    @EJB(name = "ejb/ProjectDAOBean")
+    private ProjectDAO billingProjectDAO = null;
 
 	/**
 	 * <p>
@@ -3710,5 +3728,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void markReviewCommentSeen(long commentId) throws SpecReviewServiceException {
         this.specReviewService.markReviewCommentSeen(commentId);
+    }
+    
+    /**
+     * Gets all contest fees by billing project id.
+     * 
+     * @param projectId the billing project id
+     * @return the list of project contest fees for the given project id
+     * @throws ContestServiceException  if any persistence or other error occurs
+     * @since 1.0.1
+     */
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException {
+        try {
+            return this.billingProjectDAO.getContestFeesByProject(projectId);
+        } catch(DAOException e) {
+            throw new ContestServiceException("Error in retrieving contest fees by project: " + projectId, e);
+        }
     }
 }

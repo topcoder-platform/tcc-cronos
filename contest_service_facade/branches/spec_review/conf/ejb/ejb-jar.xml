@@ -161,6 +161,13 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.specreview.SpecReviewService</remote>
             </ejb-ref>
+            
+            <!-- added for Cockpit Release Assembly 5 v1.0 -->
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
+            </ejb-ref>
         </session>
     </enterprise-beans>
 </ejb-jar>

@@ -6,6 +6,7 @@ package com.topcoder.service.facade.contest;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
+import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
@@ -59,9 +60,15 @@ import java.util.List;
  * <p>
  * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
  * </p>
+ * 
+ * <p>
+ * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+ *  - Added method to retrieve contest fees by given billing project id.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author TCSDEVELOPER, TCSASSEMBLER
+ * @version 1.0.1
+ * @since 1.0
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -1216,4 +1223,14 @@ public interface ContestServiceFacade {
      * @since Cockpit Project Admin Release Assembly.
      */
     public void updatePermissions(Permission[] permissions) throws PermissionServiceException;
+    
+    /**
+     * Gets all contest fees by billing project id.
+     * 
+     * @param projectId the billing project id
+     * @return the list of project contest fees for the given project id
+     * @throws ContestServiceException  if any persistence or other error occurs
+     * @since 1.0.1
+     */
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException;
 }

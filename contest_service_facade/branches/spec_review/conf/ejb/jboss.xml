@@ -32,6 +32,12 @@
                 <ejb-ref-name>ejb/SpecReviewService</ejb-ref-name>
                 <jndi-name>SpecReviewServiceBean/remote</jndi-name>
             </ejb-ref>
+            
+            <!-- added for Cockpit Release Assembly 5 v1.0 -->
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
+                <jndi-name>ProjectDAOBean/remote</jndi-name>
+            </ejb-ref>
 
 			<port-component>
 				<port-component-name>ContestServiceFacadeBean</port-component-name>
