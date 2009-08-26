@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,7 @@ import java.util.List;
         "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection", "prizeDescription",
         "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
         "requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants",
-        "payments", "tcDirectProjectName", "generalInfo", "specifications", "multiRoundData",
+        "payments", "tcDirectProjectName", "billingProject", "generalInfo", "specifications", "multiRoundData",
         "milestonePrizeData", "nonWinningSubmissionsPurchased" })
 public class ContestData implements Serializable {
     /**
@@ -102,7 +103,16 @@ public class ContestData implements Serializable {
 
     /**
      * <p>
-     * Represents the prizes.
+     * Represents the billing project
+     * @since Release 5 Assembly
+     * </p>
+     *
+     */
+    private long billingProject;
+
+    /**
+     * <p>
+     * Represents the prizes
      * </p>
      */
     private final List<PrizeData> prizes = new ArrayList<PrizeData>();
@@ -1142,6 +1152,30 @@ public class ContestData implements Serializable {
      */
     public void setTcDirectProjectName(String tcDirectProjectName) {
         this.tcDirectProjectName = tcDirectProjectName;
+    }
+
+	 /**
+     * <p>
+     * Gets the tc direct project name.
+     * </p>
+     *  
+     * @return the tc direct project name.
+     * @since Release 5 Assembly
+     */
+    public long getBillingProject() {
+        return billingProject;
+    }
+
+    /**
+     * <p>
+     * Sets the tc direct project name.
+     * </p>
+     * 
+     * @param billingProject the billing project .
+     * @since Release 5 Assembly
+     */
+    public void setBillingProject(long billingProject) {
+        this.billingProject = billingProject;
     }
 
     /**

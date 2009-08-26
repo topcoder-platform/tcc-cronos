@@ -642,6 +642,16 @@ public class StudioServiceBean implements StudioService {
     @Resource(name = "contestPropertyContestAdministrationFeeId")
     private long contestPropertyContestAdministrationFeeId;
 
+
+    /**
+     * Represents the id for the Contest property "Billing Project".
+     *
+     * @since TCCC-499
+     */
+    @Resource(name = "contestPropertyBillingProjectId")
+    private long contestPropertyBillingProjectId;
+
+
     /**
      * Represents the id for the Contest property "Contest Administration Fee ".
      *
@@ -1430,6 +1440,8 @@ public class StudioServiceBean implements StudioService {
                 defaultContestNotesOnWinnerSelectionText);
         addContestConfig(result, contestPropertyPrizeDescriptionId, defaultContestPrizeDescriptionText);
 
+        addContestConfig(result, contestPropertyBillingProjectId, String.valueOf(data.getBillingProject()));
+
         result.setContestId(data.getContestId());
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
@@ -1763,6 +1775,10 @@ public class StudioServiceBean implements StudioService {
                 contestData.setDrPoints(Double.parseDouble(value));
             else if (propertyId == contestPropertyContestAdministrationFeeId)
                 contestData.setContestAdministrationFee(Double.parseDouble(value));
+            else if (propertyId == contestPropertyBillingProjectId)
+            {
+                contestData.setBillingProject(Long.parseLong(value));
+            }
         }
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
