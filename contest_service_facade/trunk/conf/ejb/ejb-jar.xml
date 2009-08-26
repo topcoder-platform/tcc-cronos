@@ -66,12 +66,95 @@
                 <env-entry-name>payFlowPassword</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>@build-rep.contest_service_facade.payFlowPassword@</env-entry-value>
+            </env-entry>
+			<env-entry>
+                <env-entry-name>forumBeanProviderUrl</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.forumBeanProviderUrl@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>createForum</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.createForum@</env-entry-value>
+            </env-entry> 
+			
+			<!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>documentManagerConfigFile</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>DocumentManager.xml</env-entry-value>
+            </env-entry> 
+            
+            <!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>activateContestReceiptEmailTemplatePath</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>email_templates/activate_contest_receipt.txt</env-entry-value>
+            </env-entry> 
+			
+			<!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>activateContestReceiptEmailFromAddr</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>directassist@topcoder.com</env-entry-value>
+            </env-entry>
+
+            <!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>activateContestReceiptEmailBCCAddr</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>directassist@topcoder.com</env-entry-value>
+            </env-entry> 
+            
+            <!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>activateContestReceiptEmailSubject</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Your TopCoder Direct Order (%ORDER_NUMBER%)</env-entry-value>
+            </env-entry> 
+			
+			<!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>purchaseSubmissionReceiptEmailTemplatePath</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>email_templates/purchase_submission_receipt.txt</env-entry-value>
+            </env-entry> 
+			
+			<!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>purchaseSubmissionReceiptEmailFromAddr</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>directassist@topcoder.com</env-entry-value>
+            </env-entry>
+
+            <!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>purchaseSubmissionReceiptEmailBCCAddr</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>directassist@topcoder.com</env-entry-value>
+            </env-entry> 
+            
+            <!-- Cockpit Release Assembly for Receipts -->
+			<env-entry>
+                <env-entry-name>purchaseSubmissionReceiptEmailSubject</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Your TopCoder Direct Order (%ORDER_NUMBER%)</env-entry-value>
             </env-entry> 
             
             <ejb-ref>
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.studio.StudioService</remote>
+            </ejb-ref>
+			 <ejb-ref>
+                <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.permission.PermissionService</remote>
+            </ejb-ref>
+ 			<ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.user.UserService</remote>
             </ejb-ref>
         </session>
     </enterprise-beans>
