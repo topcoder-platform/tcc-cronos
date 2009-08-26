@@ -9,19 +9,24 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * This is a bean class to hold the credit card details like number, expiry date, payer details etc. This class simply
- * captures the information from client. Client would have done the validation of various fields. It doesn't perform any
- * validation over that.
+ * This is a bean class to hold the credit card details like number, expiry
+ * date, payer details etc. This class simply captures the information from
+ * client. Client would have done the validation of various fields. It doesn't
+ * perform any validation over that.
  * </p>
+ * ---------update in version 1.1--------- Add some comments for the setter and
+ * getter of amount.
  * 
  * @author shailendra_80
+ * @version 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "creditCardPaymentData", propOrder = { "cardNumber", "cardType", "cardExpiryMonth", "cardExpiryYear",
-        "firstName", "lastName", "address", "city", "state", "zipCode", "country", "phone", "email", "ipAddress",
-        "sessionId", "amount", "comment1", "comment2", "csc" })
+@XmlType(name = "creditCardPaymentData", propOrder = { "cardNumber",
+        "cardType", "cardExpiryMonth", "cardExpiryYear", "firstName",
+        "lastName", "address", "city", "state", "zipCode", "country",
+        "phone", "email", "ipAddress", "sessionId", "amount", "comment1",
+        "comment2", "csc" })
 public class CreditCardPaymentData extends PaymentData {
-
     /**
      * Default serial version uid.
      */
@@ -132,7 +137,6 @@ public class CreditCardPaymentData extends PaymentData {
      * A do nothing default constructor.
      */
     public CreditCardPaymentData() {
-
     }
 
     /**
@@ -481,10 +485,21 @@ public class CreditCardPaymentData extends PaymentData {
         this.sessionId = sessionId;
     }
 
+    /**
+     * get amount of this payment
+     * 
+     * @return amount value
+     */
     public String getAmount() {
         return this.amount;
     }
 
+    /**
+     * set amount of this payment
+     * 
+     * @param amount
+     *            The amount to set
+     */
     public void setAmount(String amount) {
         this.amount = amount;
     }
@@ -563,5 +578,4 @@ public class CreditCardPaymentData extends PaymentData {
     public void setCsc(String csc) {
         this.csc = csc;
     }
-
 }

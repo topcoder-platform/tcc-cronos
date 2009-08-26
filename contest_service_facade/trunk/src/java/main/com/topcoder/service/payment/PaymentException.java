@@ -3,17 +3,18 @@
  */
 package com.topcoder.service.payment;
 
+
 /**
  * <p>
- * The exception class that captures any errors or failed transactions that happen on processing the payment through
- * implementing classes. This exception captures the error code and error message from the underlying implementation of
- * the payment processors.
+ * The exception class that captures any errors or failed transactions that
+ * happen on processing the payment through implementing classes. This exception
+ * captures the error code and error message from the underlying implementation
+ * of the payment processors.
  * </p>
- * 
+ *
  * @author shailendra_80
  */
 public class PaymentException extends Exception {
-
     /**
      * Default serial version UID
      */
@@ -28,7 +29,6 @@ public class PaymentException extends Exception {
      * A do nothing default constructor.
      */
     public PaymentException() {
-
     }
 
     /**
@@ -40,9 +40,10 @@ public class PaymentException extends Exception {
 
     /**
      * <p>
-     * This constructor initializes this exception instance for given error code and error message.
+     * This constructor initializes this exception instance for given error code
+     * and error message.
      * </p>
-     * 
+     *
      * @param errorCode
      *            the error code.
      * @param errorMessage
@@ -55,9 +56,10 @@ public class PaymentException extends Exception {
 
     /**
      * <p>
-     * This constructor initializes this exception instance for given error message and exception cause.
+     * This constructor initializes this exception instance for given error
+     * message and exception cause.
      * </p>
-     * 
+     *
      * @param message
      *            the error message
      * @param cause
@@ -69,9 +71,10 @@ public class PaymentException extends Exception {
 
     /**
      * <p>
-     * This constructor initializes this exception instance for given error code, error message and exception cause.
+     * This constructor initializes this exception instance for given error
+     * code, error message and exception cause.
      * </p>
-     * 
+     *
      * @param errorCode
      *            the error code
      * @param message
@@ -88,7 +91,7 @@ public class PaymentException extends Exception {
      * <p>
      * Gets the error code.
      * </p>
-     * 
+     *
      * @return the error code.
      */
     public String getErrorCode() {

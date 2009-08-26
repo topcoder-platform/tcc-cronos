@@ -9,23 +9,26 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
  * <p>
- * This class captures the payment result after successful processing of the payment data. The current implementation
- * just captures the payment reference number as the result.
+ * This class captures the payment result after successful processing of the
+ * payment data. The current implementation just captures the payment reference
+ * number as the result.
  * </p>
- * 
+ *
  * @author shailendra_80
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "paymentResult", propOrder = { "referenceNumber" })
+@XmlType(name = "paymentResult", propOrder =  {
+    "referenceNumber"}
+)
 public class PaymentResult implements Serializable {
-
     /**
-     * Default serial version UID. 
+     * Default serial version UID.
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * <p>
      * Represents the reference number of the successful payment.
@@ -41,9 +44,10 @@ public class PaymentResult implements Serializable {
 
     /**
      * <p>
-     * This constructor initializes this instance with the given payment reference number.
+     * This constructor initializes this instance with the given payment
+     * reference number.
      * </p>
-     * 
+     *
      * @param referenceNumber
      *            a <code>String</code> payment reference number.
      */
@@ -55,7 +59,7 @@ public class PaymentResult implements Serializable {
      * <p>
      * Gets the payment reference number of this result.
      * </p>
-     * 
+     *
      * @return a <code>String</code> the payment reference number.
      */
     public String getReferenceNumber() {
@@ -66,7 +70,7 @@ public class PaymentResult implements Serializable {
      * <p>
      * Sets the payment reference number of this result.
      * </p>
-     * 
+     *
      * @param referenceNumber
      *            a <code>String</code> payment reference number.
      */

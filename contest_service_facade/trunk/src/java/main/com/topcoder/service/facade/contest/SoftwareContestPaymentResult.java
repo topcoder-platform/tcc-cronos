@@ -1,7 +1,7 @@
 package com.topcoder.service.facade.contest;
 
 import com.topcoder.service.payment.PaymentResult;
-import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.project.SoftwareCompetition;
 
 import java.io.Serializable;
 
@@ -11,23 +11,23 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * This class contains payment result and contest data. Its instances are
- * created in reply to processing contest payment.
+ * This class contains payment result and software competition data. Its
+ * instances are created in reply to processing contest payment.
  *
  * @author Margarita
  * @version 1.0
- * @since BUGR-1494
+ * @since BUGR-1682
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contestPaymentResult", propOrder =  {
-    "paymentResult", "contestData"}
+@XmlType(name = "softwareContestPaymentResult", propOrder =  {
+    "paymentResult", "softwareCompetition"}
 )
-public class ContestPaymentResult implements Serializable {
+public class SoftwareContestPaymentResult implements Serializable {
     /**
      * Generated field.
      */
-    private static final long serialVersionUID = -1232655979944585284L;
+    private static final long serialVersionUID = 1213000777032191633L;
 
     /**
      * Payment result instance.
@@ -35,14 +35,14 @@ public class ContestPaymentResult implements Serializable {
     private PaymentResult paymentResult;
 
     /**
-     * Contest data for particular contest.
+     * Software competition data for particular contest.
      */
-    private ContestData contestData;
+    private SoftwareCompetition softwareCompetition;
 
     /**
      * Empty constructor.
      */
-    public ContestPaymentResult() {
+    public SoftwareContestPaymentResult() {
     }
 
     /**
@@ -65,20 +65,21 @@ public class ContestPaymentResult implements Serializable {
     }
 
     /**
-     * Returns the contest data.
+     * Returns the software competition.
      *
-     * @return the contest data
+     * @return the software competition
      */
-    public ContestData getContestData() {
-        return contestData;
+    public SoftwareCompetition getSoftwareCompetition() {
+        return softwareCompetition;
     }
 
     /**
-     * Sets the new value of contest data
+     * Sets the new value of software competition
      *
-     * @param contestData
+     * @param softwareCompetition
+     *            software competition
      */
-    public void setContestData(ContestData contestData) {
-        this.contestData = contestData;
+    public void setSoftwareCompetition(SoftwareCompetition softwareCompetition) {
+        this.softwareCompetition = softwareCompetition;
     }
 }

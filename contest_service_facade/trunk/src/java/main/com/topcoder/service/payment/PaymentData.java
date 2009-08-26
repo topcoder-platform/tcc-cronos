@@ -7,19 +7,19 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+
 /**
  * This is base class for capturing the payment data.
  *
  * @author shailendra_80
  */
-@XmlSeeAlso( { CreditCardPaymentData.class, TCPurhcaseOrderPaymentData.class })
+@XmlSeeAlso({CreditCardPaymentData.class, TCPurhcaseOrderPaymentData.class})
 public abstract class PaymentData implements Serializable {
-
     /**
      * Default serial version uid.
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Type of payment (like: Credit Card or Purchase Order).
      */
