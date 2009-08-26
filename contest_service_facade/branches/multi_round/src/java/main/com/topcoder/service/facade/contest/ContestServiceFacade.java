@@ -7,6 +7,8 @@ import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 
+import com.topcoder.clients.model.ProjectContestFee;
+
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -930,7 +932,7 @@ public interface ContestServiceFacade {
      * project widget related to given project.
      * </p>
      *
-     * @param the
+     * @param pid
      *            given project id
      * @return the list of all available contents (or empty if none found)
      *
@@ -1130,7 +1132,7 @@ public interface ContestServiceFacade {
      *
      * @param competition
      * @param paymentData
-     * @return
+     * @return ContestPaymentResult
      * @throws PersistenceException
      * @throws PaymentException
      * @throws ContestNotFoundException
@@ -1673,6 +1675,17 @@ public interface ContestServiceFacade {
     public void updatePermissions(Permission[] permissions)
         throws PermissionServiceException;
 
+	 
+    /**
+     * Gets all contest fees by billing project id.
+     * 
+     * @param projectId the billing project id
+     * @return the list of project contest fees for the given project id
+     * @throws ContestServiceException  if any persistence or other error occurs
+     * @since 1.0.1
+     */
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException;
+
     /**
      * Get the user contest by user name Return empty list if none found
      *
@@ -1691,10 +1704,9 @@ public interface ContestServiceFacade {
     /**
      * get milestone submissions for contest
      *
-     * @Return empty list of none submission found for the given contest id.
+     * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the milestone submissions.
-     * @param return A list of matching SubmissionData objects
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException
@@ -1707,10 +1719,9 @@ public interface ContestServiceFacade {
     /**
      * get final submissions for contest
      *
-     * @Return empty list of none submission found for the given contest id.
+     * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the final submissions
-     * @param return A list of macthing SubmissionData objects
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException
@@ -1733,7 +1744,6 @@ public interface ContestServiceFacade {
      *            The submission id
      * @param milestonePrizeId
      *            The milestone prize id
-     * @param return void
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException

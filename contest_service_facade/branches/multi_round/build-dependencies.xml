@@ -1,12 +1,11 @@
-<project name="TopCoder Contest Service Facade Dependency Import" basedir=".">
-    <!--property file defining the component's dependencies -->
+<project name="TopCoder Contest Service Facade Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies 
+    <property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
+    <property name="jboss_config_name" value="default"/>-->
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
     <property name="component.target" value="1.5"/>
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
-
-    <property name="jboss.home" value="E:\jboss-4.2.2.GA"/>
-    <property name="server.name" value="default"/>
 
     <!-- TCS dependencies -->
     <property name="auditor.version" value="2.0.1"/>
@@ -41,7 +40,7 @@
     <property name="configuration_api.jar"
               value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
 
-    <property name="configuration_persistence.version" value="1.0.1"/>
+    <property name="configuration_persistence.version" value="1.0"/>
     <property name="configuration_persistence.jar.name" value="configuration_persistence.jar"/>
     <property name="configuration_persistence.path"
               value="configuration_persistence/${configuration_persistence.version}"/>
@@ -68,7 +67,7 @@
               value="${tcs_libdir}/${user_group_manager.path}/${user_group_manager.jar.name}"/>
 
     <property name="search_builder.version" value="1.4.0"/>
-    <property name="search_builder.jar.name" value="search_builder.jar"/>
+    <property name="search_builder.jar.name" value="search_builder_1.4_modified.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
 
@@ -97,8 +96,8 @@
     <property name="document_generator.path" value="document_generator/${document_generator.version}"/>
     <property name="document_generator.jar" value="${tcs_libdir}/${document_generator.path}/${document_generator.jar.name}"/>
 
-    <!--
-    <property name="contest_and_submission_entities.version" value="1.1.0"/>
+
+    <property name="contest_and_submission_entities.version" value="1.2.0"/>
     <property name="contest_and_submission_entities.jar.name" value="contest_and_submission_entities.jar"/>
     <property name="contest_and_submission_entities.path" value="contest_and_submission_entities/${contest_and_submission_entities.version}"/>
     <property name="contest_and_submission_entities.jar" value="${tcs_libdir}/${contest_and_submission_entities.path}/${contest_and_submission_entities.jar.name}"/>
@@ -117,13 +116,8 @@
     <property name="studio_contest_manager.jar.name" value="studio_contest_manager.jar"/>
     <property name="studio_contest_manager.path" value="studio_contest_manager/${studio_contest_manager.version}"/>
     <property name="studio_contest_manager.jar" value="${tcs_libdir}/${studio_contest_manager.path}/${studio_contest_manager.jar.name}"/>
-    -->
-    <property name="contest_and_submission_entities.jar" value="${testfiles}/contest_and_submission_entities.jar"/>
-    <property name="studio_service.jar" value="${testfiles}/studio_service.jar"/>
-    <property name="submission_manager.jar" value="${testfiles}/submission_manager.jar"/>
-    <property name="studio_contest_manager.jar" value="${testfiles}/studio_contest_manager.jar"/>
     
-    <!--
+    
     <property name="online_review_upload_services.jar" value="${tcs_libdir}/online_review_upload_services/1.0/online_review_upload_services.jar"/>
     <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar"/>
     <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar"/>
@@ -135,18 +129,13 @@
     <property name="phase_management.jar" value="${tcs_libdir}/phase_management/1.0.4/phase_management.jar"/>
     <property name="cockpit_phase_handlers.jar" value="${tcs_libdir}/cockpit_phase_handlers/1.1.0/cockpit_phase_handlers.jar"/>
     <property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
-    -->
-    <property name="online_review_upload_services.jar" value="${testfiles}/online_review_upload_services.jar"/>
-    <property name="catalog_entities.jar" value="${testfiles}/catalog_entities.jar"/>
-    <property name="catalog_services.jar" value="${testfiles}/catalog_services.jar"/>
-    <property name="project_management.jar" value="${testfiles}/project_management.jar"/>
-    <property name="project_service.jar" value="${testfiles}/project_service.jar"/>
-    <property name="project_services.jar" value="${testfiles}/project_services.jar"/>
-    <property name="project_phases.jar" value="${testfiles}/project_phases.jar"/>
-    <property name="resource_management.jar" value="${testfiles}/resource_management.jar"/>
-    <property name="phase_management.jar" value="${testfiles}/phase_management.jar"/>
-    <property name="cockpit_phase_handlers.jar" value="${testfiles}/cockpit_phase_handlers.jar"/>
-    <property name="forums.jar" value="${testfiles}/forums.jar"/>
+
+	 <!-- added for Cockpit Release Assembly 5 v1.0 -->
+    <property name="client_project_entities_dao.version" value="1.0.0"/>
+    <property name="client_project_entities_dao.jar.name" value="client_project_entities_dao.jar"/>
+    <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
+    <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
+
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -179,7 +168,7 @@
     
     <property name="paypal_base.jar" value="${ext_libdir}/paypal/paypal_base.jar"/>
     <property name="paypal_stubs.jar" value="${ext_libdir}/paypal/paypal_stubs.jar"/>
-	  <property name="payflow.jar" value="${ext_libdir}/paypal/payflow.jar"/>
+	<property name="payflow.jar" value="${ext_libdir}/payflow/4.3/payflow.jar"/>
     
     <property name="axis.jar" value="${ext_libdir}/axis/1.4/axis.jar"/>
 
@@ -229,6 +218,9 @@
 		<pathelement location="${email_engine.jar}"/>
 		<pathelement location="${document_generator.jar}"/>
 		<pathelement location="${cockpit_phase_handlers.jar}"/>
+        
+        <!-- added for Cockpit Release Assembly 5 v1.0 -->
+        <pathelement location="${client_project_entities_dao.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.facade.contest;
 
 import java.util.Date;
@@ -109,6 +112,13 @@ public class CommonProjectContestData {
      */
     private String pperm;
 
+	 /** 
+     * Represents the status for spec reviews. 
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    private String specReviewStatus;
+    
     /**
      * Returns the contestId.
      * 
@@ -244,7 +254,7 @@ public class CommonProjectContestData {
      * Impl note: Set the namesake variable. This set method does not perform
      * any check on the argument.
      * 
-     * @param num_reg
+     * @param num_sub
      *            the num_sub attribute to set to the CommonProjectContestData
      *            entity
      */
@@ -269,7 +279,7 @@ public class CommonProjectContestData {
      * Impl note: Set the namesake variable. This set method does not perform
      * any check on the argument.
      * 
-     * @param num_sub
+     * @param pname
      *            the pname attribute to set to the CommonProjectContestData
      *            entity
      */
@@ -487,5 +497,28 @@ public class CommonProjectContestData {
      */
     public void setPperm(String pperm) {
         this.pperm = pperm;
+    }
+
+	/**
+     * Gets the spec review status.
+     * 
+     * @return the spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public String getSpecReviewStatus() {
+        return specReviewStatus;
+    }
+
+    /**
+     * Sets the spec review status.
+     * 
+     * @param specReviewStatus
+     *            the new spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public void setSpecReviewStatus(String specReviewStatus) {
+        this.specReviewStatus = specReviewStatus;
     }
 }

@@ -17,12 +17,14 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
-
+import com.topcoder.catalog.service.SearchCriteria;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
 import com.topcoder.clientcockpit.phases.EmailSendingException;
 import com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator;
-
+import com.topcoder.clients.dao.DAOException;
+import com.topcoder.clients.dao.ProjectDAO;
+import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 
@@ -61,6 +63,9 @@ import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.specreview.SpecReview;
+import com.topcoder.service.specreview.SpecReviewService;
+import com.topcoder.service.specreview.SpecReviewServiceException;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestData;
@@ -368,6 +373,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String EMAIL_FILE_TEMPLATE_SOURCE_KEY = "fileTemplateSource";
 
+	 /**
+     * Represents the project category id for development contests.
+     * 
+     * @since 1.0.1
+     */
+    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
+
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -427,6 +439,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     @EJB(name = "ejb/UserService")
     private UserService userService = null;
+
+	/**
+     * <p>A <code>SpecReviewService</code> providing access to available <code>Spec Review Service</code>. This bean is
+     * delegated to process the calls for CRUD spec reviews.</p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/SpecReviewService")
+    private SpecReviewService specReviewService = null;
+    
+    /**
+     * <p>A <code>ProjectDAO</code> providing access to available billing project related methods like retrieving 
+     * contest fee for given billing project.</p> 
+     *
+     * @since 1.0.1
+     */
+    @EJB(name = "ejb/ProjectDAOBean")
+    private ProjectDAO billingProjectDAO = null;
 
     /**
      * <p>
@@ -625,15 +655,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private EmailMessageGenerator emailMessageGenerator;
 
-    /**
-     * This variable represent the email of the current user. It's used in the
-     * process payment methods. It's injected, non-null and non-empty after set.
-     * In the old version, this variable misses the document, it's added in the
-     * version 1.1
-     *
-     * @since 1.1
-     */
-    private String currentUserEmailAddress;
+
 
     /**
      * The logger instance for logging the information in
@@ -711,14 +733,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         // the default email message generator.
         emailMessageGenerator = new DefaultEmailMessageGenerator();
 
-        try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
-            logger.debug("Current User Email Address: " +
-                currentUserEmailAddress);
-        } catch (Exception e) {
-            logger.debug(e);
-        }
     }
 
     /**
@@ -1258,7 +1272,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * project widget.
      * </p>
      *
-     * @param the
+     * @param pid
      *            given project id
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
@@ -1316,7 +1330,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * project widget related to given project.
      * </p>
      *
-     * @param the
+     * @param pid
      *            given project id
      * @return the list of all available contents (or empty if none found)
      *
@@ -2156,8 +2170,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </ul>
      * </p>
      *
-     * @param <code>ContestData</code> data that recognizes a contest.
-     * @param <code>PaymentData</code> payment information (credit card/po
+     * @param competition <code>StudioCompetition</code> data that recognizes a contest.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po
      *        details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PersistenceException
@@ -2199,8 +2213,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </ul>
      * </p>
      *
-     * @param <code>ContestData</code> data that recognizes a contest.
-     * @param <code>PaymentData</code> payment information (credit card/po
+     * @param competition <code>StudioCompetition</code> data that recognizes a contest.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po
      *        details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PersistenceException
@@ -2248,8 +2262,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * notification for payment receipts.
      * </p>
      *
-     * @param <code>ContestData</code> data that recognizes a contest.
-     * @param <code>PaymentData</code> payment information (credit card/po
+     * @param competition <code>StudioCompetition</code> data that recognizes a contest.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po
      *        details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PersistenceException
@@ -2313,7 +2327,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             paymentAmount = currentFee - paidFee;
             logger.info("extra payment is: " + paymentAmount);
 
-            if (Double.compare(paymentAmount, 0.0) <= 0) {
+            if (Double.compare(paymentAmount, 0.0) <= 0 && paidFee != 0) {
                 throw new PersistenceException("cannot decrease prize amount at this time",
                     "");
             }
@@ -2405,6 +2419,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -2639,6 +2654,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -2887,6 +2903,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -3262,11 +3279,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
+     * 
+     * Updated for Version 1.0.1
+     *      - BUGR-2185: For development contests, if asset (or component) exists from design contests then that is used
+     *        to create a new contest. Otherwise a new asset is also created.
      *
-     * @param contest
-     *            the <code>SoftwareCompetition</code> to create as a contest
-     * @param tcDirectProjectId
-     *            the TC direct project id.
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id.
      *
      * @return the created <code>SoftwareCompetition</code> as a contest
      *
@@ -3291,21 +3310,48 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             XMLGregorianCalendar productionDate = null;
 
             if (assetDTO != null) {
-                if (assetDTO.getProductionDate() == null) { // BUGR-1445
-                                                            /*
-                     * - start: current time + 24 hour (round the minutes up to
-                     * the nearest 15)
-                     */
-
-                    GregorianCalendar startDate = new GregorianCalendar();
-                    startDate.setTime(new Date());
-                    startDate.add(Calendar.HOUR, 24 * 14); // BUGR-1789
-
-                    int m = startDate.get(Calendar.MINUTE);
-                    startDate.add(Calendar.MINUTE, m + ((15 - (m % 15)) % 15));
-                    assetDTO.setProductionDate(getXMLGregorianCalendar(
-                            startDate.getTime()));
+                
+                boolean isDevContest = contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+                boolean useExistingAsset=false;
+                
+                if (isDevContest) {
+                    String componentName = assetDTO.getName();
+                    SearchCriteria searchCriteria = new SearchCriteria(null, null, null, componentName, null, null, null, null, null);
+                    List<AssetDTO> foundDTOs = this.catalogService.findAssets(searchCriteria, false);
+                    if (foundDTOs != null && foundDTOs.size() > 0) {
+                        System.out.println("createSoftwareContest ====================> FoundAssetDTO for DEV: " + foundDTOs);
+                        useExistingAsset=true;
+                        assetDTO=foundDTOs.get(0);
+                        
+                        // re-get it, as the one found from findAsset seem to be shallow instance.
+                        assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getCompVersionId());
+                        
+                        if (assetDTO.getProductionDate() == null) {
+                            GregorianCalendar startDate = new GregorianCalendar();
+                            startDate.setTime(new Date());
+                            startDate.add(Calendar.HOUR, 24 * 14);
+                            int m = startDate.get(Calendar.MINUTE);
+                            startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+                            assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
+                        }
+                     
+                        productionDate = assetDTO.getProductionDate();
+                        assetDTO.setProductionDate(null);
+                    }
                 }
+                
+                if (!useExistingAsset) {
+                    if (assetDTO.getProductionDate() == null) { // BUGR-1445
+                        /*
+                         * - start: current time + 24 hour (round the minutes up to the nearest 15)
+                         */
+                        GregorianCalendar startDate = new GregorianCalendar();
+                        startDate.setTime(new Date());
+                        startDate.add(Calendar.HOUR, 24 * 14); // BUGR-1789
+                        int m = startDate.get(Calendar.MINUTE);
+                        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+                        assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
+                    }
 
                 // product date is used to pass the project start date
                 // bcoz we need to use XMLGregorianCalendar and project start
@@ -3317,29 +3363,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 productionDate = assetDTO.getProductionDate();
                 assetDTO.setProductionDate(null);
 
-                if (contest.getProjectHeader() != null) {
-                    // comp development, set phase to dev
-                    if (contest.getProjectHeader().getProjectCategory().getId() == 2) {
-                        assetDTO.setPhase("Development");
+                    if (contest.getProjectHeader() != null) {
+                        // comp development, set phase to dev
+                        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+                            assetDTO.setPhase("Development");
+                        }
+                        // else set to design
+                        else {
+                            assetDTO.setPhase("Design");
+                        }
                     }
-                    // else set to design
-                    else {
-                        assetDTO.setPhase("Design");
-                    }
-                }
 
-                assetDTO = this.catalogService.createAsset(assetDTO);
-                contest.setAssetDTO(assetDTO);
+                    assetDTO = this.catalogService.createAsset(assetDTO);
+                    contest.setAssetDTO(assetDTO);
+                }
 
                 // create forum
                 if (createForum) {
-                    forumId = createForum(assetDTO, p.getUserId(),
-                            contest.getProjectHeader().getProjectCategory()
-                                   .getId());
+                    if (useExistingAsset && assetDTO.getForum() != null) {
+                        forumId = assetDTO.getForum().getJiveCategoryId();
+                    } else {
+                        forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory()
+                            .getId());
+                    }
                 }
 
                 // if forum created
-                if (forumId > 0) {
+                if (forumId > 0 && (!useExistingAsset || assetDTO.getForum() == null)) {
                     // create a comp forum
                     CompForum compForum = new CompForum();
                     compForum.setJiveCategoryId(forumId);
@@ -3438,6 +3488,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.setProjectData(projectData);
                 contest.setId(projectData.getProjectHeader().getId());
                 contest.setAssetDTO(assetDTO);
+
+		           // set null to avoid cycle
+                contest.getAssetDTO().setDependencies(null);
+                if (contest.getAssetDTO().getForum() != null)
+                {
+                    contest.getAssetDTO().getForum().setCompVersion(null);
+                }
+                if (contest.getAssetDTO().getLink() != null)
+                {
+                    contest.getAssetDTO().getLink().setCompVersion(null);
+                }
+                if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0)
+                {
+                    for (CompDocumentation doc : contest.getAssetDTO().getDocumentation())
+                    {
+                        doc.setCompVersion(null);
+                    }
+                }
 
                 // set project start date in production date
                 contest.getAssetDTO()
@@ -3885,7 +3953,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
     }
 
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestDataByPID(
         long pid) throws PersistenceException {
         logger.debug("getCommonProjectContestDataByPID (" + pid + ")");
@@ -3914,6 +3981,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
+				newData.setSpecReviewStatus(data.getSpecReviewStatus());
                 ret.add(newData);
             }
         }
@@ -3938,6 +4006,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
+ 			newData.setSpecReviewStatus(data.getSpecReviewStatus());	
             ret.add(newData);
         }
 
@@ -3966,7 +4035,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestData()
         throws PersistenceException {
         logger.debug("getCommonProjectContestDataByContestData");
@@ -3994,6 +4062,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
+				newData.setSpecReviewStatus(data.getSpecReviewStatus());
                 ret.add(newData);
             }
         }
@@ -4017,6 +4086,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
+			newData.setSpecReviewStatus(data.getSpecReviewStatus());
             ret.add(newData);
         }
 
@@ -4110,19 +4180,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return contest;
         } catch (ProjectServicesException pse) {
             logger.error("Fail to get project data from project services.", pse);
+			sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project data from project services.",
                 pse);
         } catch (NumberFormatException nfe) {
             logger.error("the properites 'Version ID' is not of Long value in project.",
                 nfe);
+			sessionContext.setRollbackOnly();
             throw new ContestServiceException("the properites 'Version ID' is not of Long value in project.",
                 nfe);
         } catch (EntityNotFoundException e) {
             logger.error("the version id does not exist.", e);
+			sessionContext.setRollbackOnly();
             throw new ContestServiceException("the version id does not exist.",
                 e);
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Fail to get project asset.", e);
+			sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project asset.", e);
         }
     }
@@ -4144,7 +4218,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since TCCC-1329
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
         long createdUser) throws PersistenceException {
         logger.debug("getCommonProjectPermissionDataForUser (" + createdUser +
@@ -4203,7 +4276,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @return list of matching users, empty list if none matches.
      * @since TCCC-1329
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<User> searchUser(String key) throws PersistenceException {
         logger.debug("searchUser (" + key + ")");
 
@@ -4565,6 +4637,102 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         phase.setAttribute("PROJECT_NAME", projectName);
     }
 
+	/**
+     * Gets the spec reviews for specified contest id.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * 
+     * @return the list of spec reviews that matches the specified contest id.
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public List<SpecReview> getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
+        return this.specReviewService.getSpecReviews(contestId, studio);
+    }
+
+    /**
+     * Save specified review comment and review status for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param isPass
+     *            the is pass
+     * @param role
+     *            the user role type           
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
+            throws SpecReviewServiceException {
+        this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+    }
+
+    /**
+     * Save specified review comment for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param role
+     *            the user role type           
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
+            throws SpecReviewServiceException {
+        this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+    }
+
+    /**
+     * Mark review comment with specified comment id as seen.
+     * 
+     * @param commentId
+     *            the comment id
+     * 
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void markReviewCommentSeen(long commentId) throws SpecReviewServiceException {
+        this.specReviewService.markReviewCommentSeen(commentId);
+    }
+    
+    /**
+     * Gets all contest fees by billing project id.
+     * 
+     * @param projectId the billing project id
+     * @return the list of project contest fees for the given project id
+     * @throws ContestServiceException  if any persistence or other error occurs
+     * @since 1.0.1
+     */
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException {
+        try {
+            return this.billingProjectDAO.getContestFeesByProject(projectId);
+        } catch(DAOException e) {
+            throw new ContestServiceException("Error in retrieving contest fees by project: " + projectId, e);
+        }
+    }
+
     /**
      * Get the user contest by user name Return empty list if none found
      *
@@ -4606,10 +4774,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     /**
      * get milestone submissions for contest
      *
-     * @Return empty list of none submission found for the given contest id.
+     * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the milestone submissions.
-     * @param return A list of matching SubmissionData objects
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException
@@ -4644,10 +4811,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     /**
      * get final submissions for contest
      *
-     * @Return empty list of none submission found for the given contest id.
+     * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the final submissions
-     * @param return A list of macthing SubmissionData objects
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException
@@ -4692,7 +4858,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *            The submission id
      * @param milestonePrizeId
      *            The milestone prize id
-     * @param return void
      * @throws IllegalArgumentException
      *             if long argument is negative
      * @throws ContestServiceException
