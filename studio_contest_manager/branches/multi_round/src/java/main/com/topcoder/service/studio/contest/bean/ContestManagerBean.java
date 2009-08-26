@@ -2844,7 +2844,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     }
 
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData()
             throws ContestManagementException {
         try {
@@ -2931,7 +2930,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData(long pid)
             throws ContestManagementException {
         try {
@@ -3003,7 +3001,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     }
 
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestDataForUser(long createdUser)
             throws ContestManagementException {
         try {
@@ -3139,7 +3136,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select name from permission_type "
                     + "where permission_type_id= NVL( (select max( permission_type_id)  "
                     + " from user_permission_grant as upg  where resource_id=p.project_id  "
-                    + " ),0)) as pperm "
+                    + " ),0)) as pperm, "
+					
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
 
                     + " from tc_direct_project p left OUTER JOIN contest c "
                     + "ON c.tc_direct_project_id = p.project_id "
@@ -3245,7 +3247,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " (select name from permission_type "
                     + "where permission_type_id= NVL( (select max( permission_type_id)  "
                     + " from user_permission_grant as upg  where resource_id=p.project_id  "
-                    + " ),0)) as pperm "
+                    + " ),0)) as pperm, "
+
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
 
                     + " from tc_direct_project p left OUTER JOIN contest c "
                     + "ON c.tc_direct_project_id = p.project_id "
@@ -3355,7 +3362,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " from user_permission_grant as upg  "
                     + "where resource_id=p.project_id and user_id = "
                     + createdUser
-                    + " ),0)) as pperm "
+                    + " ),0)) as pperm,  "
+
+					
+					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
+					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
+					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
+					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
+					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds "
                     + "on c.contest_detailed_status_id = ds.contest_detailed_status_id "
