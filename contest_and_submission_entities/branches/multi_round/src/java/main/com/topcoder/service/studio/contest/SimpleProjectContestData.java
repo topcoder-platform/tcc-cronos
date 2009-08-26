@@ -52,7 +52,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
                         @FieldResult(name="contestType",         column="contest_type_desc"),
                         @FieldResult(name="createUser",         column="create_user"),
                         @FieldResult(name="cperm",           column="cperm"),
-                        @FieldResult(name="pperm",           column="pperm")
+                        @FieldResult(name="pperm",           column="pperm"),
+						@FieldResult(name = "specReviewStatus", column = "spec_review_status")
                         }
         )})
 @Entity
@@ -150,6 +151,13 @@ public class SimpleProjectContestData {
      * Represents the permissionfor project.
      */
     private String pperm;
+
+	 /** 
+     * Represents the status for spec reviews. 
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    private String specReviewStatus;
 
 
     /**
@@ -504,5 +512,28 @@ public class SimpleProjectContestData {
      */
     public void setPperm(String pperm) {
         this.pperm = pperm;
+    }
+
+    /**
+     * Gets the spec review status.
+     * 
+     * @return the spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public String getSpecReviewStatus() {
+        return specReviewStatus;
+    }
+
+    /**
+     * Sets the spec review status.
+     * 
+     * @param specReviewStatus
+     *            the new spec review status
+     *            
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2           
+     */
+    public void setSpecReviewStatus(String specReviewStatus) {
+        this.specReviewStatus = specReviewStatus;
     }
 }
