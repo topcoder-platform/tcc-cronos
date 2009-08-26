@@ -219,6 +219,33 @@ import com.topcoder.util.log.LogManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
+
+
+    /**
+     * <p>
+     * Represents the default value for submitter_terms_id.  This value will be
+     * overridden by 'submitter_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    @Resource(name = "submitter_terms_id")
+    private long submitter_terms_id;
+
+
+    /**
+     * <p>
+     * Represents the default value for  submitter_role_id.  This value will be
+     * overridden by 'submitter_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    @Resource(name = "submitter_role_id")
+    private long submitter_role_id;
+
+
+
     /**
      * <p>
      * This field represents the <code>SessionContext</code> injected by the EJB
@@ -285,6 +312,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Represents whether contest change will be audited.
      */
     private Boolean auditChange;
+
     
     /**
      * <p>
@@ -485,6 +513,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
             em.persist(contest);
+
+            createProjectRoleTermsOfUse(contest.getContestId(), submitter_role_id, submitter_terms_id, em);
 
             return contest;
         } catch (IllegalStateException e) {
@@ -4964,4 +4994,35 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			logExit("searchUser()");
 		}
 	}
+
+
+    /**
+     * This method will create a project role terms of use association.
+     *
+     * @param projectId the project id to associate
+     * @param resourceRoleId the role id to associate
+     * @param termsOfUseId the terms of use id to associate
+     * @param dataSource the datasource.
+     * @throws PersistenceException if any error occurs
+     */
+    private void createProjectRoleTermsOfUse(Long contestId, long resourceRoleId, long termsOfUseId, EntityManager em)
+    {
+
+        StringBuffer querystr = new StringBuffer(1024);
+        querystr.append("INSERT ");
+        querystr.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
+        querystr.append("VALUES (?, ?, ?)");
+
+        Query query = em.createNativeQuery(querystr.toString());
+        query.setParameter(1, contestId);
+        query.setParameter(2, resourceRoleId);
+        query.setParameter(3, termsOfUseId);
+
+        int rc = query.executeUpdate();
+        if (rc != 1) {
+            throw(new PersistenceException("Wrong number of rows inserted into " +
+                    "'project_role_terms_of_use_xref'. Inserted " + rc + ", " +
+                    "should have inserted 1."));
+        }
+    }
 }
