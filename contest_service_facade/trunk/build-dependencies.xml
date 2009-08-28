@@ -5,7 +5,7 @@
     <property name="component.target" value="1.5"/>
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
-    <property name="jboss.home" value="E:\jboss-4.2.2.GA"/>
+    <property name="jboss.home" value="${ext_libdir}/jboss/4.2.2.GA"/>
     <property name="server.name" value="default"/>
 
     <!-- TCS dependencies -->
@@ -35,7 +35,7 @@
     <property name="security_facade.path" value="security_facade/${security_facade.version}"/>
     <property name="security_facade.jar" value="${tcs_libdir}/${security_facade.path}/${security_facade.jar.name}"/>
 
-    <property name="configuration_api.version" value="1.0"/>
+    <property name="configuration_api.version" value="1.0.0"/>
     <property name="configuration_api.jar.name" value="configuration_api.jar"/>
     <property name="configuration_api.path" value="configuration_api/${configuration_api.version}"/>
     <property name="configuration_api.jar"
@@ -77,7 +77,7 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
-    <property name="db_connection_factory.version" value="1.1"/>
+    <property name="db_connection_factory.version" value="1.1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
@@ -152,7 +152,7 @@
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="jdbc.informix.jar" value="${ext_libdir}/ifxjdbc.jar"/>
 
-    <property name="cglib.jar" value="${jboss_home}/server/${server.name}/lib/cglib.jar"/>
+    <property name="cglib.jar" value="${jboss.home}/server/${server.name}/lib/cglib.jar"/>
     <property name="dom4j.jar" value="${jboss.home}/server/${server.name}/lib/dom4j.jar"/>
     <property name="commons-collections.jar"
               value="${jboss.home}/server/${server.name}/lib/commons-collections.jar"/>
