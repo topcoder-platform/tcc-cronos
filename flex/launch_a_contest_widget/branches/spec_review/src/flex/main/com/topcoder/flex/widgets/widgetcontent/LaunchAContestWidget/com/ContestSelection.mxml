@@ -357,12 +357,27 @@
             private function createContestAndContinue(id:Number):void {
                 mainWidget.isEditMode=false;
                 
-                if (mainWidget.studioContestType) {
-                    initializeStudioContest(id);
+                if (!mainWidget.isEditMode 
+                    && ((mainWidget.studioContestType && !mainWidget.competition) 
+                    || (!mainWidget.studioContestType && !mainWidget.softwareCompetition))) { 
+                    if (mainWidget.studioContestType) {
+                        initializeStudioContest(id);
+                    } else {
+                        initializeSoftwareContest(id);
+                    }
                 } else {
-                    initializeSoftwareContest(id);
+                    if (mainWidget.studioContestType) {
+                        if (mainWidget.competition && mainWidget.competition.contestData) {
+                            mainWidget.competition.contestData.tcDirectProjectId=id;
+                            mainWidget.competition.contestData.tcDirectProjectName=mainWidget.tcDirectProjectName;
+                        }
+                    } else {
+                        if (mainWidget.softwareCompetition && mainWidget.softwareCompetition.projectHeader) {
+                            mainWidget.softwareCompetition.projectHeader.tcDirectProjectId=id;
+                        }
+                    }
                 }
-
+                
                 mainWidget.startLaunchProcess();
             }
 

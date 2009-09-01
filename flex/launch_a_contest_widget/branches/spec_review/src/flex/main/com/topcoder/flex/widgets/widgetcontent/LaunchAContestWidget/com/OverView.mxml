@@ -522,9 +522,11 @@
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
                     if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
-                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737       					
+                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737
+                        ns_updateAmount();       					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                         adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
+                        s_updateAmount();
                     }
                 }
             }
@@ -647,9 +649,11 @@
              * @since 1.0.1
              */ 
             private function getContestFeesByBillingProject():void {
+                trace("Getting contest fees by billing project...");
                 var getContestFeesByProject:AbstractOperation=mainWidget._csws.getOperation("getContestFeesByProject");
                 getContestFeesByProject.addEventListener("result", handleGetContestFeesByProject);
                 getContestFeesByProject.send(mainWidget.invoicedProjectId);
+                mainWidget.showLoadingProgress();
             }
             
             /**
@@ -659,6 +663,8 @@
              * @since 1.0.1
              */ 
             private function handleGetContestFeesByProject(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                trace("E --> " + e);
                 if (e && e.result) {
                     // convert e.result into contestFees.xml
                     trace("getContestFeesByProject:: e.result: " + e.result);
@@ -697,9 +703,12 @@
                     
                     if (contestFees) {
                         if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
-                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737       					
+                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
+                            ns_updateAmount();       					
                         } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                             adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
+                            s_updateAmount();
+                            
                         }
                     }
                 }
