@@ -789,9 +789,9 @@
             <mx:Text width="100%"
                      id="description"
                      styleName="smallBlackText">
-                <mx:text>
+                <mx:htmlText>
 					{getCurrentContestTypeXml().description}
-	            </mx:text>
+	            </mx:htmlText>
             </mx:Text>
             <mx:Spacer height="5"/>
             <!-- BUGR-1204 -->
