@@ -77,7 +77,9 @@
                         dataStrArr=startDateStr.split("T");
                         timeStrArray=dataStrArr[1].split(".");
                         timeStr=timeStrArray[1];
-                        timezoneStart.text="ET (GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2) + ")";
+                        if (timeStr) {
+                            timezoneStart.text="ET (GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2) + ")";
+                        }
                     }
                 }
 
@@ -112,7 +114,10 @@
                             dataStrArr=endDateStr.split("T");
                             timeStrArray=dataStrArr[1].split(".");
                             timeStr=timeStrArray[1];
-                            timezoneEnd.text="ET (GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2) + ")";
+                            if (timeStr) {
+                                timezoneStart.text="ET (GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2) + ")";
+                            }
+                            
                         }
                     }
 

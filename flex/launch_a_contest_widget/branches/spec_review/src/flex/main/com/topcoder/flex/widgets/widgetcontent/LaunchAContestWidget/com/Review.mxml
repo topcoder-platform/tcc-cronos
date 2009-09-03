@@ -824,11 +824,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+     visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSelection')"/>
                 <mx:Button id="contestSelection_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+     visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSelection')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -878,11 +880,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+ visible = "false" includeInLayout="false" 
                            click="openReviewPopup(event, 'contestOverview')"/>
                 <mx:Button id="contestOverview_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+  visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestOverview')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1044,11 +1048,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+   visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestDetails')"/>
                 <mx:Button id="contestDetails_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+    visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestDetails')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1198,11 +1204,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+ visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSpecs')"/>
                 <mx:Button id="contestSpecs_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+  visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSpecs')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1279,11 +1287,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+    visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'attachedFiles')"/>
                 <mx:Button id="attachedFiles_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+   visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'attachedFiles')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1333,11 +1343,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
+   visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSchedule')"/>
                 <mx:Button id="contestSchedule_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
+    visible = "false" includeInLayout="false"
                            click="openReviewPopup(event, 'contestSchedule')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>

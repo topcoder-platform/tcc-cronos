@@ -203,6 +203,15 @@
             	        }
             	    }
             	    
+            	    if (mainWidget.studioContestType && mainWidget.competition) {
+            	        selectBillingProject(mainWidget.competition.contestData.billingProject);
+            	    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
+            	        var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(mainWidget.softwareCompetition);
+            	        if (billingAccount) {
+            	            selectBillingProject(new Number(billingAccount));
+            	        }
+            	    }
+            	    
             	}
 	        }
             
@@ -449,6 +458,27 @@
                 }
             }
             
+            public function selectBillingProject(billingProject:Number):void {
+                trace("To select billing project: " + billingProject);
+                if (mainWidget && mainWidget.clientProjectNames && mainWidget.clientProjectNames.length > 0) {
+                    trace("Client Project Names: " + mainWidget.clientProjectNames);
+                    var index:int=0;
+                    for each (var o:Object in mainWidget.clientProjectNames) {
+                        if (o.data && o.data.projectId == billingProject) {
+                            trace("Selecting project: " + o + " at index: " + index);
+                            selectBillingAccount.selectedItem=o;
+                            selectBillingAccount.selectedIndex=index;
+                            if (mainWidget) {
+                                setBillingProjectProperties(o);
+                            }
+                            break;
+                        }
+                        
+                        index++;
+                    }
+                } 
+            }
+            
             /**
              * Handle the change of billing account in combo box.
              * 
@@ -458,31 +488,35 @@
             private function handleBillingAccountChange(e:Event):void {
                 if (mainWidget) {
                     var val:Object=selectBillingAccount.selectedItem;
-                    if (val == null || val.data == null) {
-                        mainWidget.isInvoicedContest=false;
-                        mainWidget.invoicedProjectId=0;
-                        mainWidget.invoicedProjectData=null;
-                        Model.instance.purchaseOrder=null;
+                    setBillingProjectProperties(val);    
+                }
+            }
+            
+            private function setBillingProjectProperties(val:Object):void {
+                if (val == null || val.data == null) {
+                    mainWidget.isInvoicedContest=false;
+                    mainWidget.invoicedProjectId=0;
+                    mainWidget.invoicedProjectData=null;
+                    Model.instance.purchaseOrder=null;
+                } else {
+                    mainWidget.isInvoicedContest=true;
+                    mainWidget.invoicedProjectId=val.data.projectId;
+                    mainWidget.invoicedProjectData=val.data;
+                    Model.instance.purchaseOrder=mainWidget.invoicedProjectData;
+                }
+                
+                trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
+                trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
+                
+                if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
+                    if (mainWidget.invoicedProjectId == 0) {
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
                     } else {
-                        mainWidget.isInvoicedContest=true;
-                        mainWidget.invoicedProjectId=val.data.projectId;
-                        mainWidget.invoicedProjectData=val.data;
-                        Model.instance.purchaseOrder=mainWidget.invoicedProjectData;
-                    }
-                    
-                    trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
-                    trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
-                    
-                    if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
-                        if (mainWidget.invoicedProjectId == 0) {
-                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
-                        } else {
-                            SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
-                        }   
-                    }
-                    else if (mainWidget.competitionType == "STUDIO" && mainWidget.competition) {
-                        mainWidget.competition.contestData.billingProject = mainWidget.invoicedProjectId;
-                    }
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
+                    }   
+                }
+                else if (mainWidget.competitionType == "STUDIO" && mainWidget.competition) {
+                    mainWidget.competition.contestData.billingProject = mainWidget.invoicedProjectId;
                 }
             }
 	      ]]>

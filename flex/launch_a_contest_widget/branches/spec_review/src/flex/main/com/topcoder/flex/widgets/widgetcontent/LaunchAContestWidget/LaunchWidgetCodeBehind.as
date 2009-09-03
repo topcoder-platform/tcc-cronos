@@ -637,6 +637,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).contestCreateUser=c.creatorUserId.toString();
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
+                (container.contents as LaunchWidget).contestSelect.selectBillingProject(c.contestData.billingProject);
             }
         }
         
@@ -655,6 +656,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).contestCreateUser=c.projectHeader.creationUser;
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
+                var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(c);
+    	        if (billingAccount) {
+    	            (container.contents as LaunchWidget).contestSelect.selectBillingProject(new Number(billingAccount));
+    	        }
             }
         }
 
@@ -731,6 +736,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 purchaseOrderPaymentData.clientName=Model.instance.purchaseOrder.clientName;
                 
                 if (studioContestType) { // BUGR-1682
+                    competition.contestData.billingProject = this.invoicedProjectId;
+                    
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
@@ -765,6 +772,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (this.competitionType == "STUDIO") {
                 var competionType:String="STUDIO";
                 this.competition.type=competionType;
+
+                this.competition.contestData.billingProject = this.invoicedProjectId;
+
                 if (isNaN(competition.contestData.contestId) || competition.contestData.contestId <= 0) {
                     createStudioContest();
                 } else {
@@ -819,6 +829,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
+
+            SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, this.invoicedProjectId.toString());
 
 	    }
 
