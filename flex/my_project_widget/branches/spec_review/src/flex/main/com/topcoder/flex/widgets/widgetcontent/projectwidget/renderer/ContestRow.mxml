@@ -494,6 +494,7 @@
                        id="lblForumPosts"
                        label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
         </mx:VBox>
+<!--
         <mx:VBox width="100%"
                  horizontalAlign="center"
                  verticalAlign="middle"
@@ -504,6 +505,7 @@
                        id="lblReviewStatus"
                        label="{setReviewStatusBtnProps(contest.reviewStatus, lblReviewStatus, openReviewScreen)}"/>
         </mx:VBox>
+-->
         <mx:VBox width="100%"
                  styleName="bottomAlign">
             <mx:LinkButton buttonMode="true"
