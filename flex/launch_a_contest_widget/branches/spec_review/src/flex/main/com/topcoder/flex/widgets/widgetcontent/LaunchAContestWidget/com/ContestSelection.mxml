@@ -99,14 +99,14 @@
                 getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
                 getAllProjectsOp.send();
                 
-		getClientProjectsByUser();
+		        getClientProjectsByUser();
 		
 		        mainWidget.showLoadingProgress();
 
                 selectContests.dataProvider = contestsData;
 
-		 // default to studio
-		if (mainWidget) {
+		        // default to studio
+		        if (mainWidget) {
                      mainWidget.competitionType= "STUDIO";
 
                     mainWidget.studioContestType=true;
@@ -115,7 +115,7 @@
                             mainWidget.competition.type="STUDIO";
                         }
                     } 
-            }
+                }
             
             // TCCC-1023
             private function getAllProjectsHandler(e:ResultEvent):void{
@@ -133,6 +133,12 @@
                     
                     for each (var prj:ProjectData in projects){
                         contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+                    }
+
+                    if (mainWidget && mainWidget.tcDirectProjectId)
+                    {   
+                        selectTCProject(mainWidget.tcDirectProjectId);
+
                     }
                 }
             }
@@ -476,6 +482,28 @@
                         
                         index++;
                     }
+                } 
+            }
+
+
+            public function selectTCProject(tcProjectId:String):void {
+                trace("To select billing project: " + tcProjectId);
+
+                var index:int=0;
+                if (contestsData && contestsData.length > 0) {
+                
+                    // set the project id.
+                    for each (var p:Object in contestsData) {
+ 
+                        if (p.data == tcProjectId) {
+                            // select the project.
+                            selectContests.selectedItem=p;
+                            selectContests.selectedIndex = index;
+                            break;
+                        }
+                        index++;
+                    }
+                    
                 } 
             }
             

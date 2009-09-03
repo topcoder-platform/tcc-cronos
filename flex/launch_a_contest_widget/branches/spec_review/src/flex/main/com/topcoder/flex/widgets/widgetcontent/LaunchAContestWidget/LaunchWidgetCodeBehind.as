@@ -638,6 +638,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
                 (container.contents as LaunchWidget).contestSelect.selectBillingProject(c.contestData.billingProject);
+
+                (container.contents as LaunchWidget).tcDirectProjectId = c.contestData.tcDirectProjectId.toString();
+                (container.contents as LaunchWidget).tcDirectProjectName = c.contestData.tcDirectProjectName;
+                
+                (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
             }
         }
         
@@ -660,6 +665,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	        if (billingAccount) {
     	            (container.contents as LaunchWidget).contestSelect.selectBillingProject(new Number(billingAccount));
     	        }
+
+                (container.contents as LaunchWidget).tcDirectProjectId = c.projectHeader.tcDirectProjectId.toString();
+                (container.contents as LaunchWidget).tcDirectProjectName = c.projectHeader.tcDirectProjectName;
+                (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
             }
         }
 
