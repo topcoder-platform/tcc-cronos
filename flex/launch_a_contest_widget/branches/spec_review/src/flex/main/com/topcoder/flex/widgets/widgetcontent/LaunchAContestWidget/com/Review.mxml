@@ -233,7 +233,9 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                         }
         
                         if (mainWidget.details.isDesOrDevContestType()) {
-                            ns_catalogNameStr=mainWidget.details.ns_catalogNameInput.selectedItem.label;
+                             if (mainWidget.details.ns_catalogNameInput && mainWidget.details.ns_catalogNameInput.selectedItem) {
+                                ns_catalogNameStr=mainWidget.details.ns_catalogNameInput.selectedItem.label;
+                            }
             
                             ns_categoriesData=new ArrayCollection();
                             for (var n:int=0; mainWidget.details._boundCurrentCategories && n < mainWidget.details._boundCurrentCategories.length; n++) {
