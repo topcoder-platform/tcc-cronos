@@ -27,6 +27,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -98,6 +99,7 @@ import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.specreview.SpecReviewService;
 import com.topcoder.service.specreview.SpecReviewServiceException;
+import com.topcoder.service.specreview.UpdatedSpecSectionData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestData;
@@ -167,9 +169,15 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
  *  - Added method to retrieve contest fees by given billing project id.
  * </p>
+ * </p>
+ * 
+ * Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+ *  - Made the getSpecReviews method return instance of SpecReview rather than a list.
+ *  - Added the methods to mark ready for review, review done and resubmit for review.
+ * </p>
  *
  * @author TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0.1
+ * @version 1.0.2
  * @since 1.0
  */
 @Stateless
@@ -3651,21 +3659,27 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
 	/**
-     * Gets the spec reviews for specified contest id.
+     * Gets the spec review for specified contest id.
+     * 
+     * Updated for Spec Reviews Finishing Touches v1.0
      * 
      * @param contestId
      *            the contest id
      * @param studio
      *            indicates whether the specified contest id is for studio contests.
      * 
-     * @return the list of spec reviews that matches the specified contest id.
+     * @return the spec review that matches the specified contest id.
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public List<SpecReview> getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
-        return this.specReviewService.getSpecReviews(contestId, studio);
+    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException {
+        try {
+            return this.specReviewService.getSpecReviews(contestId, studio);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during getSpecReviews", e);
+        }
     }
 
     /**
@@ -3684,13 +3698,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param role
      *            the user role type           
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
     public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
-            throws SpecReviewServiceException {
-        this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+            throws ContestServiceException {
+        try {
+            this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during saveReviewStatus", e);
+        }
     }
 
     /**
@@ -3707,13 +3725,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param role
      *            the user role type           
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
     public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
-            throws SpecReviewServiceException {
-        this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+            throws ContestServiceException {
+        try {
+            this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during saveReviewComment", e);
+        }
     }
 
     /**
@@ -3722,12 +3744,89 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param commentId
      *            the comment id
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void markReviewCommentSeen(long commentId) throws SpecReviewServiceException {
-        this.specReviewService.markReviewCommentSeen(commentId);
+    public void markReviewCommentSeen(long commentId) throws ContestServiceException {
+        try {
+            this.specReviewService.markReviewCommentSeen(commentId);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReviewCommentSeen", e);
+        }
+    }
+
+     /**
+     * Marks 'review done' by reviewer of the specs for specified contest.
+     * Persistence is updated and all end users having write/full permission on the contest are notified by email.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReviewDone(long contestId, boolean studio) throws ContestServiceException {
+        try {
+            // get updates.
+            List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
+            
+            this.specReviewService.markReviewDone(contestId, studio);
+            
+            // notify all users who have write permission by email.
+            List<Permission> permission = this.permissionService.getPermissionsByProject(contestId);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReviewDone", e);
+        } catch (PermissionServiceException e) {
+            throw new ContestServiceException("Error during retrieving permissions", e);
+        }
+    }
+
+    /**
+     * Marks 'ready for review' by the writer of the specs for specified contest.
+     * Persistence is updated, on update the spec would appear as review opportunity on tc site.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException {
+        try {
+            this.specReviewService.markReadyForReview(contestId, studio);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReadyForReview", e);
+        }
+    }
+
+    /**
+     * Marks 'resubmit for review' by the writer of the specs for specified contest.
+     * Persistence is updated. Reviewer (if any) is notified about the updates.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void resubmitForReview(long contestId, boolean studio, String reviewerUserHandle) throws ContestServiceException {
+        try {
+            // get updates.
+            List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
+            
+            this.specReviewService.resubmitForReview(contestId, studio);
+            
+            // notify the reviewer about updates.
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during resubmitForReview", e);
+        }
     }
     
     /**
