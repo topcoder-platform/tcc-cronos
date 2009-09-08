@@ -12,10 +12,15 @@
         - but the user can only view the contest information and can not update any thing. 
      
      Updated for Cockpit Release Assembly 2 [BUGR-1830]
-        - Made Model class and its uses non singleton. 
+        - Made Model class and its uses non singleton.
+        
+     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - added icon for spec review status.
+        - removed the extra column. 
 
      @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
@@ -162,21 +167,25 @@
 
             /**
              * Handles the set of review status link properties.
+             * 
+             * Updated for Version 1.0.1
+             *    - style name is set as per the status.
              *
              * @param input the review status value.
-             * @param linkButton the reference to link button.
-             * @param clickHandler the reference to click handler that need to be called on link button click.
              * 
              * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
              */
-            private function setReviewStatusBtnProps(status:String, linkButton:Button, clickHandler:Function):String {
-                linkButton.styleName="rowContentBtn";
-                linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
-                linkButton.buttonMode=true;
-                linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
-                linkButton.setStyle("textAlign", "right");
-                
-                return "" + status;
+            private function getReviewStatusBtnStyle(status:String):String {
+                var styleName:String="";
+                if (status == "PASSED") {
+                    styleName="reviewPassedIcon";
+                } else if (status == "FAILED") {
+                    styleName="reviewFailedIcon";
+                } else {
+                    styleName="reviewNeededIcon";    
+                } 
+
+                return styleName;
             }
             
             /**
@@ -401,6 +410,9 @@
             
             /**
              * Handler for click on review status button.
+             * 
+             * Updated for Version 1.0.1
+             *    - pass the mode to Launch Widget.
              *
              * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
              */
@@ -413,19 +425,37 @@
                 props["projectName"]=contest.projName;
                 props["screen"]="Review";
                 props["creator"]=contest.createUser;
+                
+                var mode:String="READ";
+    			
+    		    if(contest.permission=="contest_full" 
+    			    || contest.permission=="contest_write"
+        		    || (contest.permission==null && 
+        			        (parentWidget.model.currentProj.permission=="project_full" 
+        				        || parentWidget.model.currentProj.permission=="project_write"))) {
+                    mode="WRITE";				                
+                }
+                
+                props["mode"]=mode;
+                
                 widget.setAttributes(props);
                 parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
             }
         ]]>
     </mx:Script>
     <mx:HBox width="100%">
-        <mx:LinkButton width="100%"
-                       buttonMode="true"
+        <mx:LinkButton buttonMode="true"
                        useHandCursor="true"
                        id="lblContextName"
                        styleName="linkBtn"
                        label="{contest.name}"
                        click="handleClick()"/>
+        <mx:Button id="reviewStatusBtn"
+                   styleName="{getReviewStatusBtnStyle(contest.reviewStatus)}"
+                   width="20"
+                   height="20"
+                   visible="true"
+                   click="openReviewScreen(event)"/>
         <mx:Spacer width="100%"/>
         <mx:LinkButton width="10%"
                        id="editBtn"
@@ -494,18 +524,6 @@
                        id="lblForumPosts"
                        label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
         </mx:VBox>
-<!--
-        <mx:VBox width="100%"
-                 horizontalAlign="center"
-                 verticalAlign="middle"
-                 verticalGap="0">
-            <mx:Button buttonMode="false"
-                       width="60"
-                       styleName="rowContentLink"
-                       id="lblReviewStatus"
-                       label="{setReviewStatusBtnProps(contest.reviewStatus, lblReviewStatus, openReviewScreen)}"/>
-        </mx:VBox>
--->
         <mx:VBox width="100%"
                  styleName="bottomAlign">
             <mx:LinkButton buttonMode="true"

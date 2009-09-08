@@ -8,10 +8,14 @@
      This mxml component is to render one group of contest data grid.
      
      Updated for Cockpit Release Assembly 2 [BUGR-1830]
-        - Made Model class and its uses non singleton. 
+        - Made Model class and its uses non singleton.
+        
+     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - remove spec status column. 
 
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
@@ -197,10 +201,6 @@
                   textAlign="center"
                   id="lblForumPosts"
                   text="FORUM"/>
- <!--       <mx:Label width="100%"
-                  textAlign="center"
-                  id="lblReviewStatus"
-                  text="SPEC STATUS"/>       -->   
         <mx:Label width="100%"
                   textAlign="center"
                   id="lStatus"

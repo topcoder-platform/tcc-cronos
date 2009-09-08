@@ -297,3 +297,33 @@
   padding-right: 12;
   horizontal-gap: 4;
 }
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewPassedIcon {
+	skin: Embed("../assets/icon-review-passed.png");
+	up-skin: Embed("../assets/icon-review-passed.png");
+	over-skin: Embed("../assets/icon-review-passed.png");
+	down-skin: Embed("../assets/icon-review-passed.png");
+}
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewFailedIcon {
+	skin: Embed("../assets/icon-review-failed.png");
+	up-skin: Embed("../assets/icon-review-failed.png");
+	over-skin: Embed("../assets/icon-review-failed.png");
+	down-skin: Embed("../assets/icon-review-failed.png");
+}
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewNeededIcon {
+	skin: Embed("../assets/icon-review-needed.png");
+	up-skin: Embed("../assets/icon-review-needed.png");
+	over-skin: Embed("../assets/icon-review-needed.png");
+	down-skin: Embed("../assets/icon-review-needed.png");
+}
