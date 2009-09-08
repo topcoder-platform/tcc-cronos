@@ -88,6 +88,9 @@ import com.topcoder.util.log.Log;
  * Updated for Cockpit Launch Contest - Update for Spec Creation v1.0
  *      - added persist for project_spec.
  * </p>
+ * 
+ * Version 1.1.1 (Spec Reviews Finishing Touch v1.0) Change Notes:
+ *  - Changed the way now spec status is queried.
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -99,7 +102,7 @@ import com.topcoder.util.log.Log;
  * otherwise, show 'status' from db.  
  *
  * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
- * @version 1.1
+ * @version 1.1.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
@@ -419,6 +422,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *      - fetch tc project and s/w project permission.
      *      - whenever join with s/w project and user_permission_grant, add is_studio=0 constraint.
      * </p>
+     * 
+     * Updated for Spec Reviews Finishing Touch v1.0 (Version 1.1.1)
+     *  - Changed the way now spec status is queried.
      */
 
 		private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST = " select p.project_id as contest_id, "
@@ -442,10 +448,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
             + " from user_permission_grant as upg  where resource_id=tcd.project_id  "
             + " ),0)) as pperm, "
-			+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-			+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end " 
-            + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-            + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0 ) as spec_review_status"
+            + " NVL((select (select name " 
+            + "          from spec_review_status_type_lu as c " 
+            + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+            + " from spec_review as sr " 
+            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
@@ -460,6 +467,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *      - fetch tc project and s/w project permission.
      *      - whenever join with s/w project and user_permission_grant, add is_studio=0 constraint.
      * </p>
+     * 
+     * Updated for Spec Reviews Finishing Touch v1.0
+     *  - Changed the way now spec status is queried.
      */
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
@@ -484,11 +494,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
     + " from user_permission_grant as upg  where resource_id=tcd.project_id"
     + " ),0)) as pperm, "
-	+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-	+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-    + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-    + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0) as spec_review_status"
-			
+    + " NVL((select (select name " 
+    + "          from spec_review_status_type_lu as c " 
+    + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+    + " from spec_review as sr " 
+    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "	
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
@@ -3166,6 +3176,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 *     - project and contest permissions are also fetched now.
 	 * </p>
 	 * 
+	 * Updated for Spec Reviews Finishing Touch v1.0
+     *  - Changed the way now spec status is queried.
+	 * 
 	 * @param createdUser the specified user for which to get the list of contest.
 	 * @return the list of contest for specified user.
 	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -3205,11 +3218,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
 			+ " from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = " + createdUser
 			+ " ),0)) as pperm, "
-			+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-			+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end " 
-            + " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-            + " and a.is_studio = b.is_studio and b.contest_id = p.project_id) where a.is_studio = 0) as spec_review_status"
-					
+			+ " NVL((select (select name " 
+            		+ "          from spec_review_status_type_lu as c " 
+            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+            		+ " from spec_review as sr " 
+            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+" and p.project_status_id != 3";
