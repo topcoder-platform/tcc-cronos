@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
 -->
 
 <!--
@@ -16,9 +16,13 @@
     Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
         - Updated to lead to purchase from Review page for the invoiced contest.
         - Added webservice operation definition to get contest fees by project.
+
+     Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - introduced webservice methods to execute spec review workflow.
+        
     
     @author TCSASSEMBLER
-    @version 1.0.1
+    @version 1.0.2
     @since 1.0    
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -464,6 +468,14 @@
              * Updated for Version 1.0.1
              *    - in case of invoiced contest, changed the name of the 'next' button on review page to 'ACTIVATE'
              * 
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             *
              * @param step the step number 
              * 
              */
@@ -1577,20 +1589,24 @@
         <!--
              since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
              webservice operation to save review comment.
+             
+             Updated for Spec Reviews Finishing Touches v1.0
+                - removed popup on successful save.
         -->
         <mx:operation name="saveReviewComment"
                       resultFormat="object"
-                      result="Helper.showAlertMessage('Saved successfully')"
                       fault="showWebserviceError('saveReviewComment', event);">
         </mx:operation>
         
         <!--
              since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
              webservice operation to save review status.
+             
+             Updated for Spec Reviews Finishing Touches v1.0
+                - removed popup on successful save.
         -->
         <mx:operation name="saveReviewStatus"
                       resultFormat="object"
-                      result="Helper.showAlertMessage('Saved successfully')"
                       fault="showWebserviceError('saveReviewStatus', event);">
         </mx:operation>
         
@@ -1601,6 +1617,34 @@
         <mx:operation name="getContestFeesByProject"
                       resultFormat="object"
                       fault="showWebserviceError('getContestFeesByProject', event);">
+        </mx:operation>
+          <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to mark ready for review.
+        -->
+        <mx:operation name="markReadyForReview"
+                      resultFormat="object"
+                      fault="showWebserviceError('markReadyForReview', event);">
+        </mx:operation>
+        
+        <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to resubmit for review.
+        -->
+        <mx:operation name="resubmitForReview"
+                      resultFormat="object"
+                      result="hideLoadingProgress();Helper.showAlertMessage('Successfully re-submitted for review');"
+                      fault="showWebserviceError('resubmitForReview', event);">
+        </mx:operation>
+        
+        <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to mark review done.
+        -->
+        <mx:operation name="markReviewDone"
+                      resultFormat="object"
+                      result="hideLoadingProgress();Helper.showAlertMessage('Successfully marked review done');"
+                      fault="showWebserviceError('markReviewDone', event);">
         </mx:operation>
 
     </mx:WebService>

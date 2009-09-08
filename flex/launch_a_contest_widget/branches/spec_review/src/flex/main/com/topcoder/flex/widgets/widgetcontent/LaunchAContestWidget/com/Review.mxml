@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+
+<!--
+    Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
     - Inline Review Feature has been introduced.
     - As per the requirement the layout of the page has been updated.
     - Now sections are in accordion like panels.
+    
+    Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - based on the backend data now reviewer and writer are correctly handled.
+    
+    @author TCSASSEMBLER
+    @version 1.0.1
+    @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
@@ -15,6 +26,9 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
          creationComplete="init()">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.Helper;
+            import mx.rpc.events.ResultEvent;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecSectionReview;
             import mx.rpc.AbstractOperation;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReviewComment;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReview;
@@ -128,6 +142,41 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 2
              */
             private var sectionNameToIdMapping:Dictionary=new Dictionary();
+            
+            /**
+             * String constant that represents reader role of the specs.
+             * 
+             * @since 1.0.1
+             */  
+            private static const READER:String = "READER";
+            
+            /**
+             * String constant that represents reviewer role of the specs.
+             * 
+             * @since 1.0.1
+             */
+            private static const REVIEWER:String = "REVIEWER";
+            
+            /**
+             * String constant that represents writer role of the specs.
+             * 
+             * @since 1.0.1
+             */
+            private static const WRITER:String = "WRITER";
+            
+            /**
+             * Represents the spec user role type. This is computed based on the permission etc of the user.
+             * 
+             * @since 1.0.1
+             */ 
+            private var specUserRoleType:String=READER;
+            
+            /**
+             * Represents if the specs are ready for review.
+             * 
+             * @since 1.0.1
+             */ 
+            private var isReadyForReview:Boolean=false;
             
             /**
              * Initializes the review data structure.
@@ -391,34 +440,128 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             
             /**
              * Updates reviews
+             * 
+             * Updated for Version 1.0.1
+             *    - based on the backend data review controls are set in either REVIEWER, WRITER, READER mode.
              */ 
-            private function set updateReviews(specReviews:ArrayCollection):void {
+            private function set updateReviews(specReview:SpecReview):void {
                 // set the review data.
-                if (specReviews) {
-                    for each (var sr:SpecReview in specReviews) {
-                        var rd:ReviewData=new ReviewData();
-                        rd.sectionId=sectionNameToIdMapping[sr.sectionType.name];
-                        rd.sectionName=sr.sectionType.name;
-                        rd.reviewStatus=sr.reviewStatus.name;
-                        reviews[rd.sectionId]=rd;
-                        
-                        if (sr.comments) {
-                            for each (var comm:SpecReviewComment in sr.comments) {
-                                var cd:ConversationData=new ConversationData();
-                                cd.commentId=comm.commentId;
-                                cd.message=comm.comment;
-                                cd.user=comm.createUser;
-                                cd.time=comm.createTime;
-                                cd.reviewer=comm.roleType.name=="REVIEWER";
-                                
-                                rd.conversations.addItem(cd);
-                            }                    
+                if (specReview && specReview.reviewStatus && specReview.reviewStatus.name != "NOT_READY") {
+                    if (specReview.sectionReviews) {
+                        for each (var sr:SpecSectionReview in specReview.sectionReviews) {
+                            var rd:ReviewData=new ReviewData();
+                            rd.sectionId=sectionNameToIdMapping[sr.sectionType.name];
+                            rd.sectionName=sr.sectionType.name;
+                            rd.reviewStatus=sr.reviewStatus.name;
+                            reviews[rd.sectionId]=rd;
+                            
+                            if (sr.comments) {
+                                for each (var comm:SpecReviewComment in sr.comments) {
+                                    var cd:ConversationData=new ConversationData();
+                                    cd.commentId=comm.commentId;
+                                    cd.message=comm.comment;
+                                    cd.user=comm.createUser;
+                                    cd.time=comm.createTime;
+                                    cd.reviewer=comm.roleType.name==REVIEWER;
+                                    
+                                    rd.conversations.addItem(cd);
+                                }                    
+                            }
                         }
                     }
+                    
+                    // hide the review buttons on all sections.
+                    showReviewButton('contestSelection');
+                    showReviewButton('contestOverview');
+                    showReviewButton('contestDetails');
+                    
+                    if (mainWidget.studioContestType) {
+                        showReviewButton('contestSpecs');
+                    }
+                    showReviewButton('attachedFiles');
+                    showReviewButton('contestSchedule');
+                    
+                    // if current user has write permission, then show the Resubmit for Review button.
+                    if (!mainWidget.isReadOnlyMode) {
+                       reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
+                       reviewWorkflowButton.label="Resubmit Review";
+                       isReadyForReview=true;
+                       specUserRoleType=WRITER;
+                    } else {
+                        if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId) {
+                            reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
+                            reviewWorkflowButton.label="I'm Done Reviewing";
+                            isReadyForReview=true;
+                            specUserRoleType=REVIEWER;
+                        } else {
+                            reviewWorkflowButton.label="";
+                            reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=false;
+                            specUserRoleType=READER;
+                        }
+                    }
+                    
+                    // initialize review controls.
+                    initializeReviewControls();
+                } else {
+                    // hide the review buttons on all sections.
+                    hideReviewButton('contestSelection');
+                    hideReviewButton('contestOverview');
+                    hideReviewButton('contestDetails');
+                    
+                    if (mainWidget.studioContestType) {
+                        hideReviewButton('contestSpecs');
+                    }
+                    hideReviewButton('attachedFiles');
+                    hideReviewButton('contestSchedule');
+                    
+                    // if current user has write permission, then show the Ready for Review button.
+                    if (!mainWidget.isReadOnlyMode) {
+                       reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
+                       reviewWorkflowButton.label="Submit for Spec Review";
+                       specUserRoleType=WRITER;
+                       isReadyForReview=false;
+                    } else {
+                        // we do not show.
+                        // if this would have been reviewer then there would have been a valid reviewStatus and control would not come here.
+                        reviewWorkflowButton.label="";
+                        reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=false;
+                        specUserRoleType=READER;
+                    }            
                 }
+            }
+            
+            /**
+             * Hides the review buttons for specified section name.
+             * 
+             * @since 1.0.1
+             */ 
+            private function hideReviewButton(n:String):void {
+                var reviewStatusBtn:Button=this[n + "_reviewStatusBtn"] as Button;
+                var reviewCommentBtn:Button=this[n + "_reviewCommentBtn"] as Button;
                 
-                // initialize review controls.
-                initializeReviewControls();
+                if (reviewStatusBtn) {
+                    reviewStatusBtn.visible=false;
+                }
+                if (reviewCommentBtn) {
+                    reviewCommentBtn.visible=false;
+                }
+            }
+            
+            /**
+             * Shows the review buttons for specified section name.
+             * 
+             * @since 1.0.1
+             */
+            private function showReviewButton(n:String):void {
+                var reviewStatusBtn:Button=this[n + "_reviewStatusBtn"] as Button;
+                var reviewCommentBtn:Button=this[n + "_reviewCommentBtn"] as Button;
+                
+                if (reviewStatusBtn) {
+                    reviewStatusBtn.visible=true;
+                }
+                if (reviewCommentBtn) {
+                    reviewCommentBtn.visible=true;
+                }
             }
             
             /**
@@ -563,6 +706,12 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             /**
              * Opens the review popup modal window for the given section id
              * 
+             * Updated for Version 1.0.1
+             *    - based on spec user role type, controls are shown.
+             *    - WRITER can just add comments.
+             *    - REVIEWER can do both comments and status.
+             *    - READR can do none of them.
+             * 
              * @param event the mouse click event.
              * @param sectionId the specified section id. 
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
@@ -585,16 +734,22 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 //
                 // build the review popup data.
                 //
-                if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
+                if (specUserRoleType!="WRITER") {
                     passFailRadioContainer.visible=false;
                     passFailRadioContainer.includeInLayout=false;    
-                } else {
+                } else if (specUserRoleType == "REVIEWER") {
                     passFailRadioContainer.visible=true;
                     passFailRadioContainer.includeInLayout=true;
                     passRadio.selected=false;
                     failRadio.selected=false;
                 }
                 commentInputArea.text="";
+                
+                if (specUserRoleType == "READER") {
+                    commentInputArea.visible=commentInputArea.includeInLayout=false;
+                } else {
+                    commentInputArea.visible=commentInputArea.includeInLayout=true;
+                }
                 
                 oldConversationBox.removeAllChildren();
                 
@@ -608,7 +763,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 // save the conversation.
                 for each (var cd:ConversationData in currentReviewData.conversations) {
                     var stylePrefix:String="";
-                    if (!mainWidget.contestCreateUser || mainWidget.userid.toString()== mainWidget.contestCreateUser) {
+                    if (specUserRoleType=="WRITER") {
                         stylePrefix="creator";
                     } else {
                         stylePrefix="reviewer";
@@ -673,6 +828,9 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             /**
              * Saves the review data to DTO objects.
              * 
+             * Updated for Version 1.0.1
+             *    - based on spec user role type, conversation reviewer flag is set.
+             * 
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
              */ 
             private function saveReview():void {
@@ -691,7 +849,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                     cd.message=commentInputArea.text;
                     cd.time=new Date();
                     cd.user=mainWidget.username;
-                    if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
+                    if (specUserRoleType=="WRITER") {
                         cd.reviewer=false;
                     } else {
                         cd.reviewer=true;
@@ -707,7 +865,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                 //
                 // since Cockpit Launch Contest - Inline Spec Reviews Part 2
                 //
-                if (!mainWidget.contestCreateUser || mainWidget.userid.toString()==mainWidget.contestCreateUser) {
+                if (specUserRoleType=="WRITER") {
                     var saveReviewComment:AbstractOperation=mainWidget._csws.getOperation("saveReviewComment");
                     saveReviewComment.send(mainWidget.contestid, 
                         mainWidget.competitionType.toLocaleLowerCase() == "studio",
@@ -763,6 +921,46 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                     reviewCommentBtn.styleName="reviewCommentIcon";
                 }
             }
+            
+            /**
+             * Executes the logic of review workflow button click
+             * 
+             * @since 1.0.1
+             */ 
+            private function doReviewWorkflow():void {
+                if (specUserRoleType == "WRITER") {
+                    if (isReadyForReview) {
+                        var resubmitForReview:AbstractOperation=mainWidget._csws.getOperation("resubmitForReview");
+                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
+                        mainWidget.showLoadingProgress();
+                    } else {
+                        var markReadyForReview:AbstractOperation=mainWidget._csws.getOperation("markReadyForReview");
+                        markReadyForReview.addEventListener("result", handleMarkReadyForReview);
+                        markReadyForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio");
+                        mainWidget.showLoadingProgress();
+                    }
+                } else if (specUserRoleType == "REVIEWER") {
+                    var markReviewDone:AbstractOperation=mainWidget._csws.getOperation("markReviewDone");
+                    markReadyForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio");
+                    mainWidget.showLoadingProgress();
+                }
+            }
+            
+            /**
+             * Handles mark ready for review workflow.
+             * 
+             * It simply changes the label name and sets isReadyForReview to true.
+             * 
+             * @since 1.0.1
+             */ 
+            private function handleMarkReadyForReview(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                if (e) {
+                    isReadyForReview=true;
+                    reviewWorkflowButton.label="Resubmit for Review";
+                    Helper.showAlertMessage("Successfully marked ready for review");
+                }
+            }
         ]]>
     </mx:Script>
     
@@ -786,6 +984,14 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                        labelPlacement="{ButtonLabelPlacement.LEFT}"
                        label="PREVIEW CONTEST"
                        click="this.mainWidget.previewContest()"/>
+                       
+            <mx:Button id="reviewWorkflowButton"
+                       styleName="arrowRightBtnStyle"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       label="PREVIEW CONTEST"
+                       click="doReviewWorkflow()"
+                       visible="false"
+                       includeInLayout="false"/>
             <!-- BUGR-1501 -->
         </mx:HBox>
         <mx:Label id="projectName"
@@ -812,7 +1018,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             <mx:HBox width="100%"
                      id="contestSelection_header">
                 <mx:Button id="contestSelection_tabBtn"
-                           styleName="tabBtnClose"
+                           styleName="tabBtnOpen"
                            width="35"
                            height="23"
                            click="showHideTab('contestSelection')"/>
@@ -826,19 +1032,19 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
-     visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSelection')"/>
                 <mx:Button id="contestSelection_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-     visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSelection')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:HBox width="100%"
-                height="0"
+                     height="100%"
                      id="contestSelection_content"
                      verticalScrollPolicy="off"
                      horizontalScrollPolicy="off"
@@ -868,7 +1074,7 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
             <mx:HBox width="100%"
                      id="contestOverview_header">
                 <mx:Button id="contestOverview_tabBtn"
-                           styleName="tabBtnClose"
+                           styleName="tabBtnOpen"
                            width="35"
                            height="23"
                            click="showHideTab('contestOverview')"/>
@@ -882,20 +1088,20 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
- visible = "false" includeInLayout="false" 
+                           visible="false"
                            click="openReviewPopup(event, 'contestOverview')"/>
                 <mx:Button id="contestOverview_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-  visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestOverview')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:HBox id="contestOverview_content"
                      width="100%"
-                     height="0"
+                     height="100%"
                      verticalScrollPolicy="off"
                      horizontalScrollPolicy="off"
                      paddingLeft="10"
@@ -1050,13 +1256,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
-   visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestDetails')"/>
                 <mx:Button id="contestDetails_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-    visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestDetails')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1206,13 +1412,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
- visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSpecs')"/>
                 <mx:Button id="contestSpecs_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-  visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSpecs')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1289,13 +1495,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
-    visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'attachedFiles')"/>
                 <mx:Button id="attachedFiles_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-   visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'attachedFiles')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>
@@ -1345,13 +1551,13 @@ Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
                            styleName="reviewNeededIcon"
                            width="35"
                            height="35"
-   visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSchedule')"/>
                 <mx:Button id="contestSchedule_reviewCommentBtn"
                            styleName="reviewCommentIcon"
                            width="35"
                            height="35"
-    visible = "false" includeInLayout="false"
+                           visible="false"
                            click="openReviewPopup(event, 'contestSchedule')"/>
                 <mx:Spacer width="10"/>
             </mx:HBox>

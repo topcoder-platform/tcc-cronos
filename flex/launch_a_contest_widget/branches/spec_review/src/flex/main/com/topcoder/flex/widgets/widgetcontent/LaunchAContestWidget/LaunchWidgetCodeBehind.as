@@ -48,8 +48,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
      *    - Added field to represent whether current contest is invoiced project or not and to hold invoiced project id.
      * 
+     * 
+     * Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+     *    - changed the type of specReviews to SpecReview from ArrayCollection.
+     *    - corresponding update in webservice handler method.
+     * 
      * @author TCSDEVELOPER, TCSASSEMBLER
-     * @version 1.0.1
+     * @version 1.0.2
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -178,11 +183,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 		 /**
          * Represents the spec reviews for the current contest.
+         * 
+         * Updated for Version 1.0.1
+         *    - changed the type to SpecReview from ArrayCollection. 
          *  
          * since Cockpit Launch Contest - Inline Spec Reviews Part 2
          */ 
         [Bindable]
-        public var specReviews:ArrayCollection=null;
+        public var specReviews:SpecReview=null;
         
         public var contestCreateUser:String=null;
         
@@ -610,13 +618,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
          * Handles the webservice fetch of list of spec reviews. 
          * 
+         * Updated for Version 1.0.1
+         *    - Changed the type of specReviews to SpecReview from earlier ArrayCollection.
+         * 
          * @since Cockpit Launch Contest - Inline Spec Reviews Part 2
          */
         private function getSpecReviewsHandler(e:ResultEvent):void {
             hideLoadingProgress();
             trace("getSpecReviewsHandler: " + e + ", " + e.result);
             if (e && e.result) {
-                var srs:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SpecReview);
+                var srs:SpecReview=ObjectTranslatorUtils.translate(e.result, SpecReview) as SpecReview;
                 trace("getSpecReviewsHandler:: srs: " + srs);
                 (container.contents as LaunchWidget).specReviews=srs;
             }
