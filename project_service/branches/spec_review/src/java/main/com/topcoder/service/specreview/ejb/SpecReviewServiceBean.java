@@ -5,6 +5,8 @@ package com.topcoder.service.specreview.ejb;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,19 +31,26 @@ import com.topcoder.service.specreview.ReviewStatus;
 import com.topcoder.service.specreview.ReviewUserRoleType;
 import com.topcoder.service.specreview.SectionType;
 import com.topcoder.service.specreview.SpecReview;
+import com.topcoder.service.specreview.SpecSectionReview;
 import com.topcoder.service.specreview.SpecReviewServiceException;
 import com.topcoder.service.specreview.SpecReviewServiceLocal;
 import com.topcoder.service.specreview.SpecReviewServiceRemote;
+import com.topcoder.service.specreview.UpdatedSpecSectionData;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
 
 /**
- * The Class SpecReviewServiceBean.
+ * The Class SpecReviewServiceBean - the ejb mean class that provides various methods to read/update spec reviews.
  * 
- * @author snow01
+ * Version 1.0.1 (Spec Review Finishing Touches v1.0) Change Notes:
+ *  - Made the getSpecReviews method return instance of SpecReview rather than a list.
+ *  - Added the methods to get reviewer and writer updates.
+ *  - Added the methods to mark ready for review, review done and resubmit for review.
+ * 
+ * @author snow01, TCSASSEMBLER
  * @since Cockpit Launch Contest - Inline Spec Review Part 2
- * @version 1.0
+ * @version 1.0.1
  */
 @RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
@@ -92,11 +101,27 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      * Constant variable representing get spec review Named Query
      */
     private static final String SpecReviewsQuery = "getSpecReviews";
+    
+    /**
+     * Constant variable representing native query to get spec review id by contest id.
+     * 
+     * @since 1.0.1
+     */
+    private static final String SpecReviewIdByContestQuery = "SELECT spec_review_id from spec_review where contest_id = :contestId and is_studio = :isStudio";
+    
+    /**
+     * Constant variable representing get spec section reviews by spec review id Named Query
+     * 
+     * Updated for 1.0.1 - changed from SpecReviewByContestAndSectionQuery to SpecSectionReviewByContestAndNameQuery.
+     */
+    private static final String SpecSectionReviewsQuery = "getSpecSectionReviews";
 
     /**
-     * Constant variable representing get spec review by contest id and section name Named Query
+     * Constant variable representing get spec section review by contest id and section name Named Query
+     * 
+     * Updated for 1.0.1 - changed from SpecReviewByContestAndSectionQuery to SpecSectionReviewByContestAndNameQuery.
      */
-    private static final String SpecReviewByContestAndSectionQuery = "getSpecReviewByContestAndSection";
+    private static final String SpecSectionReviewByContestAndSectionQuery = "getSpecSectionReviewByContestAndSection";
 
     /**
      * Constant variable representing get section type by name Named Query.
@@ -115,8 +140,134 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
 
     /**
      * Constant variable representing get review comment views by comment ids Named Query
+     * 
+     * Updated for 1.0.1 - not getting used so commented out.
      */
-    private static final String ReviewCommentViewsByCommentIdsQuery = "getReviewCommentViewsByCommentIds";
+    //private static final String ReviewCommentViewsByCommentIdsQuery = "getReviewCommentViewsByCommentIds";
+    
+    /**
+     * Constant variable representing Native Query that updates overall review status for specified contest.
+     * 
+     * @since 1.0.1
+     */
+    private static final String UpdateOverallReviewStatusQuery = "UPDATE spec_review " +
+    		" SET review_status_type_id = (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 3" +
+    		"                              WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 1 else 2 end " +
+    		"                              from spec_review_section_type_lu as a " +
+    		"                              left join spec_section_review as b " +
+    		"                              on a.review_section_type_id = b.review_section_type_id" +
+    		"                              and a.is_studio = b.is_studio " +
+    		"                              and b.contest_id = :contestId " +
+    		"                              where a.is_studio = :isStudio)" +
+    		" WHERE contest_id = :contestId and is_studio = :isStudio";
+    
+    /**
+     * Constant variable representing Native Query that updates spec_review for 'ready for review' for specified reviewId.
+     * 
+     * @since 1.0.1
+     */
+    private static final String MarkReadyForReviewQuery = "UPDATE spec_review " +
+    		" SET review_status_type_id = 4, ready_for_review_time = CURRENT, modification_user = :modifyUser, modification_time = CURRENT" +
+    		" WHERE spec_review_id = :specReviewId";
+    
+    /**
+     * Constant variable representing Native Query that updates spec_review for 'review done' for specified contest.
+     * 
+     * @since 1.0.1
+     */
+    private static final String MarkReviewDoneQuery = "UPDATE spec_review " +
+            " SET review_done_time = CURRENT, modification_user = :modifyUser, modification_time = CURRENT" +
+            " WHERE contest_id = :contestId and is_studio = :isStudio";
+    
+    /**
+     * Constant variable representing Native Query that updates spec_review for 'resubmit for review' for specified contest.
+     * 
+     * @since 1.0.1
+     */
+    private static final String ResubmitForReviewQuery = "UPDATE spec_review " +
+            " SET ready_for_review_time = CURRENT, modification_user = :modifyUser, modification_time = CURRENT" +
+            " WHERE contest_id = :contestId and is_studio = :isStudio";
+    
+    
+    /**
+     * Constant string representing the native query to get section updates made by reviewer.
+     * 
+     * @since 1.0.1
+     */
+    private static final String GetReviewerUpdatesQuery = "select  " + 
+        "         (select name  " + 
+        "             from spec_review_section_type_lu as c " + 
+        "             where c.is_studio = :isStudio  " + 
+        "             and c.review_section_type_id = b.review_section_type_id) as sectionName, " + 
+        "         (select name  " + 
+        "             from spec_review_status_type_lu as c " + 
+        "             where c.review_status_type_id = b.review_status_type_id) as statusName, " + 
+        "         (select review_comment " + 
+        "         from spec_section_review_comment as d " + 
+        "         where d.comment_id = (select max(comment_id)  " + 
+        "                                 from spec_section_review_comment as c " + 
+        "                                 where c.spec_section_review_id = b.spec_section_review_id " + 
+        "                                 and c.create_time >= b.modification_time) " + 
+        "         ) as comment, " + 
+        "         b.modification_user " + 
+        " from spec_review as a " + 
+        " join spec_section_review as b " + 
+        " on a.spec_review_id = b.spec_review_id " + 
+        " and a.is_studio = :isStudio " + 
+        " and a.contest_id = :contestId " + 
+        " and (a.review_done_time is null " + 
+        " or b.modification_time > a.review_done_time)";
+    
+    /**
+     * Constant string representing the native query to get section updates made by creator.
+     * 
+     * @since 1.0.1
+     */
+    private static final String GetWriterUpdatesQuery = "select  " + 
+        "         (select name  " + 
+        "             from spec_review_section_type_lu as c " + 
+        "             where c.is_studio = :isStudio  " + 
+        "             and c.review_section_type_id = b.review_section_type_id) as sectionName, " + 
+        "         (select name  " + 
+        "             from spec_review_status_type_lu as c " + 
+        "             where c.review_status_type_id = b.review_status_type_id) as statusName, " + 
+        "         (select review_comment " + 
+        "         from spec_section_review_comment as d " + 
+        "         where d.comment_id = (select max(comment_id)  " + 
+        "                                 from spec_section_review_comment as c " + 
+        "                                 where c.spec_section_review_id = b.spec_section_review_id " + 
+        "                                 and c.create_time >= b.modification_time) " + 
+        "         ) as comment, " + 
+        "         b.modification_user " + 
+        " from spec_review as a " + 
+        " join spec_section_review as b " + 
+        " on a.spec_review_id = b.spec_review_id " + 
+        " and a.is_studio = :isStudio " + 
+        " and a.contest_id = :contestId " + 
+        " and (a.ready_for_review_time is null " + 
+        " or b.modification_time > a.ready_for_review_time)";
+        
+    
+    /**
+     * Constant representing the pending status name.
+     * 
+     * @since 1.0.1
+     */
+    private static final String PendingStatus = "PENDING";
+    
+    /**
+     * Constant representing the not ready status name.
+     * 
+     * @since 1.0.1
+     */
+    private static final String NotReadyStatus = "NOT_READY";
+    
+    /**
+     * Constant representing the ready status name.
+     * 
+     * @since 1.0.1
+     */
+    private static final String ReadyStatus = "READY";
 
     /**
      * Id that is set for unset entities.
@@ -156,21 +307,26 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
     }
 
     /**
-     * Gets the spec reviews for specified contest id.
+     * Gets the instance of <code>SpecReview</code> for specified contest id.
+     * 
+     * Updated for Version 1.0.1
+     *  - Changed to get SpecReview rather than list.
+     *  - SpecReview contains list of spec section reviews.
+     *  - In case of no result is found then an empty SpecReview is returned.
      * 
      * @param contestId
      *            the contest id
      * @param studio
      *            indicates whether the specified contest id is for studio contests.
      * 
-     * @return the list of spec reviews that matches the specified contest id.
+     * @return the instance of <code>SpecReview</code> that matches the specified contest id.
      * 
      * @throws SpecReviewServiceException
      *             if any error during retrieval/save from persistence
      */
     @SuppressWarnings("unchecked")
-    public List<SpecReview> getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
-        List<SpecReview> result = null;
+    public SpecReview getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
+        SpecReview result = null;
         try {
             logEnter("getSpecReviews(contestId, studio)", contestId, studio);
 
@@ -178,10 +334,26 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             query.setParameter("contestId", contestId);
             query.setParameter("studio", studio);
 
-            result = query.getResultList();
+            result = (SpecReview) query.getSingleResult();
+            
+            result.setSectionReviews(new HashSet<SpecSectionReview>());
+            
+            query = entityManager.createNamedQuery(SpecSectionReviewsQuery);
+            query.setParameter("specReviewId", result.getSpecReviewId());
+            
+            try {
+                List<SpecSectionReview> sectionReviews = (List<SpecSectionReview>) query.getResultList();
+                result.getSectionReviews().addAll(sectionReviews);
+            } catch (NoResultException nre) {
+                // ignore it
+            }
 
         } catch (IllegalStateException e) {
             throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            result = new SpecReview();
+            result.setContestId(contestId);
+            result.setStudio(studio);
         } catch (PersistenceException e) {
             throw wrapSpecReviewServiceException(e, "There are errors while retrieving the spec reviews.");
         } finally {
@@ -228,6 +400,10 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
     /**
      * Save specified review comment for specified section and specified contest id to persistence.
      * 
+     * Updated for Version 1.0.1
+     *  - updates made as per the schema changes.
+     *  - now SpecReview contains a list of SpecSectionReview. Each SpecSectionReview can contain set of comments.
+     * 
      * @param contestId
      *            the contest id
      * @param studio
@@ -254,30 +430,72 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             logDebug("UserName: " + userName);
 
             Query query = null;
-
-            query = entityManager.createNamedQuery(SpecReviewByContestAndSectionQuery);
+            
+            query = entityManager.createNativeQuery(SpecReviewIdByContestQuery);
             query.setParameter("contestId", contestId);
-            query.setParameter("studio", studio);
+            query.setParameter("isStudio", studio ? 1 : 0);
+            
+            long specReviewId = 0;
+            
+            try {
+                specReviewId = Long.parseLong(query.getSingleResult().toString());
+                logDebug("Found specReview: " + specReviewId);
+            } catch (NoResultException e) {
+                // ignore it.
+            }
+            
+            if (specReviewId == 0) {
+                query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
+                query.setParameter("name", NotReadyStatus);
+
+                ReviewStatus notReadyRS = (ReviewStatus) query.getSingleResult();
+
+                logDebug("Found notReadyRS: " + notReadyRS);
+                
+                SpecReview specReview = new SpecReview();
+                specReview.setSpecReviewId(UnsetId);
+                specReview.setContestId(contestId);
+                specReview.setStudio(studio);
+                specReview.setReviewStatus(notReadyRS);
+                
+                specReview.setCreateUser(userName);
+                specReview.setCreateTime(new Date());
+                specReview.setModifyUser(userName);
+                specReview.setModifyTime(new Date());
+                specReview.setReadyForReviewTime(null);
+                specReview.setReviewDoneTime(null);
+                specReview.setReviewerId(new Long(0));
+                specReview.setSectionReviews(null);
+
+                entityManager.persist(specReview);
+                entityManager.flush();
+                
+                specReviewId = specReview.getSpecReviewId();
+
+                logDebug("Persisted specReview: " + specReviewId);
+            }
+
+            query = entityManager.createNamedQuery(SpecSectionReviewByContestAndSectionQuery);
+            query.setParameter("specReviewId", specReviewId);
             query.setParameter("name", sectionName);
 
-            SpecReview specReview = null;
+            SpecSectionReview specSectionReview = null;
 
             try {
-                specReview = (SpecReview) query.getSingleResult();
+                specSectionReview = (SpecSectionReview) query.getSingleResult();
 
-                logDebug("Found specReview: " + specReview);
+                logDebug("Found specSectionReview: " + specSectionReview);
             } catch (NoResultException e) {
                 // ignore it.
             }
 
-            if (specReview == null) {
-                specReview = new SpecReview();
-                specReview.setSpecReviewId(UnsetId);
-                specReview.setContestId(contestId);
-                specReview.setStudio(studio);
+            if (specSectionReview == null) {
+                specSectionReview = new SpecSectionReview();
+                specSectionReview.setSpecSectionReviewId(UnsetId);
+                specSectionReview.setSpecReviewId(specReviewId);
 
                 query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
-                query.setParameter("name", "PENDING");
+                query.setParameter("name", PendingStatus);
 
                 ReviewStatus pendingRS = (ReviewStatus) query.getSingleResult();
 
@@ -291,18 +509,18 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
 
                 logDebug("Found sectionType: " + sectionType);
 
-                specReview.setReviewStatus(pendingRS);
-                specReview.setComments(null);
-                specReview.setCreateUser(userName);
-                specReview.setCreateTime(new Date());
-                specReview.setModifyUser(userName);
-                specReview.setModifyTime(new Date());
-                specReview.setSectionType(sectionType);
+                specSectionReview.setReviewStatus(pendingRS);
+                specSectionReview.setComments(null);
+                specSectionReview.setCreateUser(userName);
+                specSectionReview.setCreateTime(new Date());
+                specSectionReview.setModifyUser(userName);
+                specSectionReview.setModifyTime(new Date());
+                specSectionReview.setSectionType(sectionType);
 
-                entityManager.persist(specReview);
+                entityManager.persist(specSectionReview);
                 entityManager.flush();
 
-                logDebug("Persisted specReview: " + specReview.getSpecReviewId());
+                logDebug("Persisted specSectionReview: " + specSectionReview.getSpecReviewId());
             }
 
             query = entityManager.createNamedQuery(ReviewUserRoleTypeByNameQuery);
@@ -315,7 +533,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             rc.setCommentId(UnsetId);
             rc.setComment(comment);
             rc.setRoleType(roleType);
-            rc.setSpecReviewId(specReview.getSpecReviewId());
+            rc.setSpecSectionReviewId(specSectionReview.getSpecSectionReviewId());
             rc.setCreateUser(userName);
             rc.setCreateTime(new Date());
 
@@ -334,6 +552,11 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
 
     /**
      * Save specified review comment and review status for specified section and specified contest id to persistence.
+     * 
+     * Updated for Version 1.0.1
+     *  - updates made as per the schema changes.
+     *  - now SpecReview contains a list of SpecSectionReview. Each SpecSectionReview can contain set of comments.
+     *  - Overall status of the spec is saved to SpecReview. 
      * 
      * @param contestId
      *            the contest id
@@ -363,28 +586,69 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             logDebug("UserName: " + userName);
 
             Query query = null;
-
-            query = entityManager.createNamedQuery(SpecReviewByContestAndSectionQuery);
+            
+            query = entityManager.createNativeQuery(SpecReviewIdByContestQuery);
             query.setParameter("contestId", contestId);
-            query.setParameter("studio", studio);
+            query.setParameter("isStudio", studio ? 1 : 0);
+            
+            long specReviewId = 0;
+            
+            try {
+                specReviewId = Long.parseLong(query.getSingleResult().toString());
+                logDebug("Found specReview: " + specReviewId);
+            } catch (NoResultException e) {
+                // ignore it.
+            }
+            
+            if (specReviewId == 0) {
+                query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
+                query.setParameter("name", NotReadyStatus);
+
+                ReviewStatus notReadyRS = (ReviewStatus) query.getSingleResult();
+
+                logDebug("Found notReadyRS: " + notReadyRS);
+                
+                SpecReview specReview = new SpecReview();
+                specReview.setSpecReviewId(UnsetId);
+                specReview.setContestId(contestId);
+                specReview.setStudio(studio);
+                specReview.setReviewStatus(notReadyRS);
+                
+                specReview.setCreateUser(userName);
+                specReview.setCreateTime(new Date());
+                specReview.setModifyUser(userName);
+                specReview.setModifyTime(new Date());
+                specReview.setReadyForReviewTime(null);
+                specReview.setReviewDoneTime(null);
+                specReview.setReviewerId(new Long(0));
+                specReview.setSectionReviews(null);
+
+                entityManager.persist(specReview);
+                entityManager.flush();
+                
+                specReviewId = specReview.getSpecReviewId();
+
+                logDebug("Persisted specReview: " + specReviewId);
+            }
+            
+            query = entityManager.createNamedQuery(SpecSectionReviewByContestAndSectionQuery);
+            query.setParameter("specReviewId", specReviewId);
             query.setParameter("name", sectionName);
 
-            SpecReview specReview = null;
+            SpecSectionReview specSectionReview = null;
 
             try {
-                specReview = (SpecReview) query.getSingleResult();
+                specSectionReview = (SpecSectionReview) query.getSingleResult();
 
-                logDebug("Found specReview: " + specReview);
+                logDebug("Found specSectionReview: " + specSectionReview);
             } catch (NoResultException e) {
                 // ignore it.
             }
 
-            if (specReview == null) {
-                specReview = new SpecReview();
-                specReview.setSpecReviewId(UnsetId);
-                specReview.setContestId(contestId);
-                specReview.setStudio(studio);
-
+            if (specSectionReview == null) {
+                specSectionReview = new SpecSectionReview();
+                specSectionReview.setSpecReviewId(UnsetId);
+                
                 query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
                 query.setParameter("name", isPass ? "PASSED" : "FAILED");
 
@@ -400,30 +664,30 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
 
                 logDebug("Found sectionType: " + sectionType);
 
-                specReview.setReviewStatus(rs);
-                specReview.setComments(null);
-                specReview.setCreateUser(userName);
-                specReview.setCreateTime(new Date());
-                specReview.setModifyUser(userName);
-                specReview.setModifyTime(new Date());
-                specReview.setSectionType(sectionType);
+                specSectionReview.setReviewStatus(rs);
+                specSectionReview.setComments(null);
+                specSectionReview.setCreateUser(userName);
+                specSectionReview.setCreateTime(new Date());
+                specSectionReview.setModifyUser(userName);
+                specSectionReview.setModifyTime(new Date());
+                specSectionReview.setSectionType(sectionType);
 
-                entityManager.persist(specReview);
+                entityManager.persist(specSectionReview);
                 entityManager.flush();
 
-                logDebug("Persisted specReview: " + specReview.getSpecReviewId());
+                logDebug("Persisted specSectionReview: " + specSectionReview.getSpecReviewId());
             } else {
                 query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
                 query.setParameter("name", isPass ? "PASSED" : "FAILED");
 
                 ReviewStatus rs = (ReviewStatus) query.getSingleResult();
-                specReview.setReviewStatus(rs);
-                specReview.setModifyUser(userName);
-                specReview.setModifyTime(new Date());
+                specSectionReview.setReviewStatus(rs);
+                specSectionReview.setModifyUser(userName);
+                specSectionReview.setModifyTime(new Date());
 
-                entityManager.merge(specReview);
+                entityManager.merge(specSectionReview);
                 entityManager.flush();
-                logDebug("Persisted specReview: " + specReview.getSpecReviewId());
+                logDebug("Persisted specSectionReview: " + specSectionReview.getSpecReviewId());
             }
 
             query = entityManager.createNamedQuery(ReviewUserRoleTypeByNameQuery);
@@ -436,7 +700,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             rc.setCommentId(UnsetId);
             rc.setComment(comment);
             rc.setRoleType(roleType);
-            rc.setSpecReviewId(specReview.getSpecReviewId());
+            rc.setSpecSectionReviewId(specSectionReview.getSpecSectionReviewId());
             rc.setCreateUser(userName);
             rc.setCreateTime(new Date());
 
@@ -444,12 +708,287 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             entityManager.flush();
 
             logDebug("Persisted ReviewComment: " + rc.getCommentId());
+            
+            Query statusUpdateQuery = entityManager.createNativeQuery(UpdateOverallReviewStatusQuery);
+            statusUpdateQuery.setParameter("contestId", contestId);
+            statusUpdateQuery.setParameter("isStudio", studio ? 1 : 0);
+            int ret = statusUpdateQuery.executeUpdate();
+            logDebug("Updated review status: " + ret);
         } catch (IllegalStateException e) {
             throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
             throw wrapSpecReviewServiceException(e, "There are errors while retrieving the spec reviews.");
         } finally {
             logExit("saveReviewStatus(contestId, studio, sectionName, comment, isPass, role)");
+        }
+    }
+    
+    /**
+     * Gets List of <code>UpdatedSpecSectionData</code>, the updates made by reviewer of specs for specified contest id,
+     * since last notification.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether the contest is studio or not
+     * @return List of <code>UpdatedSpecSectionData</code>, the updates made by reviewer for specified contest id, since
+     *         last notification.
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1             
+     */
+    @SuppressWarnings("unchecked")
+    public List<UpdatedSpecSectionData> getReviewerUpdates(long contestId, boolean studio)
+            throws SpecReviewServiceException {
+        try {
+            logEnter("getReviewerUpdates(contestId, studio)", contestId, studio);
+
+            Query query = entityManager.createNamedQuery(GetReviewerUpdatesQuery);
+            query.setParameter("contestId", contestId);
+            query.setParameter("isStudio", studio ? 1 : 0);
+
+            List<UpdatedSpecSectionData> ret = new LinkedList<UpdatedSpecSectionData>();
+
+            List<Object[]> resultList = (List<Object[]>) query.getResultList();
+            for (Object[] row : resultList) {
+                // row[0] ==> section name.
+                // row[1] ==> status name.
+                // row[2] ==> comment
+                // row[3] ==> user who updated.
+                UpdatedSpecSectionData r = new UpdatedSpecSectionData();
+                r.setSectionName(row[0].toString());
+                r.setStatus(row[1].toString());
+                if (row[2] != null) {
+                    r.setComment(row[2].toString());
+                } else {
+                    r.setComment("");
+                }
+
+                r.setUser(row[3].toString());
+
+                ret.add(r);
+            }
+
+            return ret;
+        } catch (IllegalStateException e) {
+            throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapSpecReviewServiceException(e, "There are errors while retrieving the reviewer updates.");
+        } finally {
+            logExit("getReviewerUpdates(contestId, studio)");
+        }
+    }
+
+    /**
+     * Gets List of <code>UpdatedSpecSectionData</code>, the updates made by writer of specs for specified contest id,
+     * since last notification.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether the contest is studio or not
+     * @return List of <code>UpdatedSpecSectionData</code>, the updates made by writer for specified contest id, since
+     *         last notification.
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1             
+     */
+    @SuppressWarnings("unchecked")
+    public List<UpdatedSpecSectionData> getWriterUpdates(long contestId, boolean studio)
+            throws SpecReviewServiceException {
+        try {
+            logEnter("getReviewerUpdates(contestId, studio)", contestId, studio);
+
+            Query query = entityManager.createNamedQuery(GetWriterUpdatesQuery);
+            query.setParameter("contestId", contestId);
+            query.setParameter("isStudio", studio ? 1 : 0);
+
+            List<UpdatedSpecSectionData> ret = new LinkedList<UpdatedSpecSectionData>();
+
+            List<Object[]> resultList = (List<Object[]>) query.getResultList();
+            for (Object[] row : resultList) {
+                // row[0] ==> section name.
+                // row[1] ==> status name.
+                // row[2] ==> comment
+                // row[3] ==> user who updated.
+                UpdatedSpecSectionData r = new UpdatedSpecSectionData();
+                r.setSectionName(row[0].toString());
+                r.setStatus(row[1].toString());
+                if (row[2] != null) {
+                    r.setComment(row[2].toString());
+                } else {
+                    r.setComment("");
+                }
+
+                r.setUser(row[3].toString());
+
+                ret.add(r);
+            }
+
+            return ret;
+        } catch (IllegalStateException e) {
+            throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapSpecReviewServiceException(e, "There are errors while retrieving the reviewer updates.");
+        } finally {
+            logExit("getReviewerUpdates(contestId, studio)");
+        }
+    }
+
+    /**
+     * Marks the spec_review to review done for specified contest id.
+     * 
+     * It simply updates the review_done_time to the current.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReviewDone(long contestId, boolean studio) throws SpecReviewServiceException {
+        try {
+            logEnter("markReviewDone(contestId, studio)", contestId, studio);
+
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String userName = p.getName();
+
+            logDebug("UserName: " + userName);
+            Query statusUpdateQuery = entityManager.createNativeQuery(MarkReviewDoneQuery);
+            statusUpdateQuery.setParameter("contestId", contestId);
+            statusUpdateQuery.setParameter("studio", studio ? 1 : 0);
+            statusUpdateQuery.setParameter("modifyUser", userName);
+            int ret = statusUpdateQuery.executeUpdate();
+
+            logDebug("Updated review status: " + ret);
+        } catch (IllegalStateException e) {
+            throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapSpecReviewServiceException(e, "There are errors while markReviewDone.");
+        } finally {
+            logExit("markReviewDone(contestId, studio)");
+        }
+    }
+
+    /**
+     * Marks the spec_review to ready for review for specified contest id.
+     * 
+     * It simply updates the ready_for_review_time to the current and updates the review status to READY.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReadyForReview(long contestId, boolean studio) throws SpecReviewServiceException {
+        try {
+            logEnter("markReadyForReview(contestId, studio)", contestId, studio);
+
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String userName = p.getName();
+
+            logDebug("UserName: " + userName);
+            
+            Query query = null;
+            
+            query = entityManager.createNativeQuery(SpecReviewIdByContestQuery);
+            query.setParameter("contestId", contestId);
+            query.setParameter("isStudio", studio ? 1 : 0);
+            
+            long specReviewId = 0;
+            
+            try {
+                specReviewId = Long.parseLong(query.getSingleResult().toString());
+                logDebug("Found specReview: " + specReviewId);
+            } catch (NoResultException e) {
+                // ignore it.
+            }
+            
+            if (specReviewId == 0) {
+                query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
+                query.setParameter("name", ReadyStatus);
+
+                ReviewStatus readyRS = (ReviewStatus) query.getSingleResult();
+
+                logDebug("Found readyRS: " + readyRS);
+                
+                SpecReview specReview = new SpecReview();
+                specReview.setSpecReviewId(UnsetId);
+                specReview.setContestId(contestId);
+                specReview.setStudio(studio);
+                specReview.setReviewStatus(readyRS);
+                
+                specReview.setCreateUser(userName);
+                specReview.setCreateTime(new Date());
+                specReview.setModifyUser(userName);
+                specReview.setModifyTime(new Date());
+                specReview.setReadyForReviewTime(new Date());
+                specReview.setReviewDoneTime(null);
+                specReview.setReviewerId(new Long(0));
+                specReview.setSectionReviews(null);
+
+                entityManager.persist(specReview);
+                entityManager.flush();
+                
+                specReviewId = specReview.getSpecReviewId();
+
+                logDebug("Persisted specReview: " + specReviewId);
+            } else {
+                Query statusUpdateQuery = entityManager.createNativeQuery(MarkReadyForReviewQuery);
+                statusUpdateQuery.setParameter("specReviewId", specReviewId);
+                statusUpdateQuery.setParameter("modifyUser", userName);
+                int ret = statusUpdateQuery.executeUpdate();
+    
+                logDebug("Updated review status: " + ret);
+            }
+        } catch (IllegalStateException e) {
+            throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapSpecReviewServiceException(e, "There are errors while markReadyForReview.");
+        } finally {
+            logExit("markReadyForReview(contestId, studio)");
+        }
+    }
+
+    /**
+     * Marks the spec_review to resubmit for review for specified contest id.
+     * 
+     * It simply updates the ready_for_review_time to the current.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws SpecReviewServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void resubmitForReview(long contestId, boolean studio) throws SpecReviewServiceException {
+        try {
+            logEnter("resubmitForReview(contestId, studio)", contestId, studio);
+
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String userName = p.getName();
+
+            logDebug("UserName: " + userName);
+            Query statusUpdateQuery = entityManager.createNativeQuery(ResubmitForReviewQuery);
+            statusUpdateQuery.setParameter("contestId", contestId);
+            statusUpdateQuery.setParameter("studio", studio ? 1 : 0);
+            statusUpdateQuery.setParameter("modifyUser", userName);
+            int ret = statusUpdateQuery.executeUpdate();
+
+            logDebug("Updated review status: " + ret);
+        } catch (IllegalStateException e) {
+            throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapSpecReviewServiceException(e, "There are errors while resubmitForReview.");
+        } finally {
+            logExit("resubmitForReview(contestId, studio)");
         }
     }
 
