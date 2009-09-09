@@ -5,6 +5,12 @@ package com.topcoder.service.specreview;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityResult;
+import javax.persistence.FieldResult;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
+
 /**
  * The Class UpdatedSpecSectionData - represents the updates made to various sections.
  * 
@@ -14,10 +20,22 @@ import java.io.Serializable;
  * @version 1.0
  * @since Spec Review Finishing Touches v1.0
  */
+@SqlResultSetMapping(name = "UpdatedSpecSectionDataResults", 
+                     entities = { @EntityResult(entityClass = UpdatedSpecSectionData.class, 
+                     fields = {
+                                @FieldResult(name = "sectionId", column = "sectionId"),
+                                @FieldResult(name = "sectionName", column = "sectionName"), 
+                                @FieldResult(name = "status", column = "statusName"),
+                                @FieldResult(name = "comment", column = "comment"),
+                                @FieldResult(name = "user", column = "user")}) })
+@Entity
 public class UpdatedSpecSectionData implements Serializable {
 
     /** Default serial version id. */
     private static final long serialVersionUID = 1L;
+
+    @Id
+    private long sectionId;
 
     /** The section name. */
     private String sectionName;
@@ -30,6 +48,25 @@ public class UpdatedSpecSectionData implements Serializable {
 
     /** The user. */
     private String user;
+
+    /**
+     * Gets the section id.
+     * 
+     * @return the section id
+     */
+    public long getSectionId() {
+        return this.sectionId;
+    }
+
+    /**
+     * Sets the section id.
+     * 
+     * @param sectionId
+     *            the new section id
+     */
+    public void setSectionId(long sectionId) {
+        this.sectionId = sectionId;
+    }
 
     /**
      * Gets the section name.

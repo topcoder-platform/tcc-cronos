@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -151,15 +152,14 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      * @since 1.0.1
      */
     private static final String UpdateOverallReviewStatusQuery = "UPDATE spec_review " +
-    		" SET review_status_type_id = (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 3" +
-    		"                              WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 1 else 2 end " +
-    		"                              from spec_review_section_type_lu as a " +
-    		"                              left join spec_section_review as b " +
-    		"                              on a.review_section_type_id = b.review_section_type_id" +
-    		"                              and a.is_studio = b.is_studio " +
-    		"                              and b.contest_id = :contestId " +
-    		"                              where a.is_studio = :isStudio)" +
-    		" WHERE contest_id = :contestId and is_studio = :isStudio";
+      " SET review_status_type_id = (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 3" +
+      "                              WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 1 else 2 end " +
+      "                              from spec_review_section_type_lu as a " +
+      "                              left join spec_section_review as b " +
+      "                              on a.review_section_type_id = b.review_section_type_id" +
+            "                              and b.spec_review_id = spec_review.spec_review_id" +
+      "                              where a.is_studio = :isStudio)" +
+      " WHERE contest_id = :contestId and is_studio = :isStudio";
     
     /**
      * Constant variable representing Native Query that updates spec_review for 'ready for review' for specified reviewId.
@@ -195,6 +195,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      * @since 1.0.1
      */
     private static final String GetReviewerUpdatesQuery = "select  " + 
+        "         b.spec_section_review_id  as sectionId,  " +
         "         (select name  " + 
         "             from spec_review_section_type_lu as c " + 
         "             where c.is_studio = :isStudio  " + 
@@ -209,7 +210,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
         "                                 where c.spec_section_review_id = b.spec_section_review_id " + 
         "                                 and c.create_time >= b.modification_time) " + 
         "         ) as comment, " + 
-        "         b.modification_user " + 
+        "         b.modification_user as user " + 
         " from spec_review as a " + 
         " join spec_section_review as b " + 
         " on a.spec_review_id = b.spec_review_id " + 
@@ -224,6 +225,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      * @since 1.0.1
      */
     private static final String GetWriterUpdatesQuery = "select  " + 
+        "         b.spec_section_review_id  as sectionId,  " +
         "         (select name  " + 
         "             from spec_review_section_type_lu as c " + 
         "             where c.is_studio = :isStudio  " + 
@@ -238,7 +240,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
         "                                 where c.spec_section_review_id = b.spec_section_review_id " + 
         "                                 and c.create_time >= b.modification_time) " + 
         "         ) as comment, " + 
-        "         b.modification_user " + 
+        "         b.modification_user as user " + 
         " from spec_review as a " + 
         " join spec_section_review as b " + 
         " on a.spec_review_id = b.spec_review_id " + 
@@ -647,7 +649,8 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
 
             if (specSectionReview == null) {
                 specSectionReview = new SpecSectionReview();
-                specSectionReview.setSpecReviewId(UnsetId);
+                specSectionReview.setSpecSectionReviewId(UnsetId);
+                specSectionReview.setSpecReviewId(specReviewId);
                 
                 query = entityManager.createNamedQuery(ReviewStatusByNameQuery);
                 query.setParameter("name", isPass ? "PASSED" : "FAILED");
@@ -743,19 +746,33 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
         try {
             logEnter("getReviewerUpdates(contestId, studio)", contestId, studio);
 
-            Query query = entityManager.createNamedQuery(GetReviewerUpdatesQuery);
+            Query query = entityManager.createNativeQuery(GetReviewerUpdatesQuery, "UpdatedSpecSectionDataResults");
             query.setParameter("contestId", contestId);
             query.setParameter("isStudio", studio ? 1 : 0);
+            
+            List<UpdatedSpecSectionData> result = new ArrayList<UpdatedSpecSectionData>();
 
+            List list = query.getResultList();
+
+
+            for (int i = 0; i < list.size(); i++) {
+				UpdatedSpecSectionData data = (UpdatedSpecSectionData) list.get(i);
+                result.add(data);
+
+            }
+
+
+           /*
             List<UpdatedSpecSectionData> ret = new LinkedList<UpdatedSpecSectionData>();
 
-            List<Object[]> resultList = (List<Object[]>) query.getResultList();
-            for (Object[] row : resultList) {
+            List resultList = (List) query.getResultList();
+            for (int i = 0; i < resultList.size(); i++) {
                 // row[0] ==> section name.
                 // row[1] ==> status name.
                 // row[2] ==> comment
                 // row[3] ==> user who updated.
                 UpdatedSpecSectionData r = new UpdatedSpecSectionData();
+                Object[] row = (Object[]) resultList.get(i);
                 r.setSectionName(row[0].toString());
                 r.setStatus(row[1].toString());
                 if (row[2] != null) {
@@ -767,9 +784,9 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
                 r.setUser(row[3].toString());
 
                 ret.add(r);
-            }
+            } */
 
-            return ret;
+            return result;
         } catch (IllegalStateException e) {
             throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -799,14 +816,23 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
         try {
             logEnter("getReviewerUpdates(contestId, studio)", contestId, studio);
 
-            Query query = entityManager.createNamedQuery(GetWriterUpdatesQuery);
+            Query query = entityManager.createNativeQuery(GetWriterUpdatesQuery, "UpdatedSpecSectionDataResults");
             query.setParameter("contestId", contestId);
             query.setParameter("isStudio", studio ? 1 : 0);
 
-            List<UpdatedSpecSectionData> ret = new LinkedList<UpdatedSpecSectionData>();
+            List<UpdatedSpecSectionData> result = new ArrayList<UpdatedSpecSectionData>();
 
-            List<Object[]> resultList = (List<Object[]>) query.getResultList();
-            for (Object[] row : resultList) {
+            List list = query.getResultList();
+
+
+            for (int i = 0; i < list.size(); i++) {
+				UpdatedSpecSectionData data = (UpdatedSpecSectionData) list.get(i);
+                result.add(data);
+
+            }
+
+
+            /*for (Object[] row : resultList) {
                 // row[0] ==> section name.
                 // row[1] ==> status name.
                 // row[2] ==> comment
@@ -823,9 +849,9 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
                 r.setUser(row[3].toString());
 
                 ret.add(r);
-            }
+            }*/
 
-            return ret;
+            return result;
         } catch (IllegalStateException e) {
             throw wrapSpecReviewServiceException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -858,7 +884,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             logDebug("UserName: " + userName);
             Query statusUpdateQuery = entityManager.createNativeQuery(MarkReviewDoneQuery);
             statusUpdateQuery.setParameter("contestId", contestId);
-            statusUpdateQuery.setParameter("studio", studio ? 1 : 0);
+            statusUpdateQuery.setParameter("isStudio", studio ? 1 : 0);
             statusUpdateQuery.setParameter("modifyUser", userName);
             int ret = statusUpdateQuery.executeUpdate();
 
@@ -978,7 +1004,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             logDebug("UserName: " + userName);
             Query statusUpdateQuery = entityManager.createNativeQuery(ResubmitForReviewQuery);
             statusUpdateQuery.setParameter("contestId", contestId);
-            statusUpdateQuery.setParameter("studio", studio ? 1 : 0);
+            statusUpdateQuery.setParameter("isStudio", studio ? 1 : 0);
             statusUpdateQuery.setParameter("modifyUser", userName);
             int ret = statusUpdateQuery.executeUpdate();
 
