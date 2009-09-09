@@ -572,6 +572,7 @@
                     case 1:
 
                         this.currentState="ContestSelectionState";
+                        setReadOnlyMode();
                         //TODO-HEIGHT-this.height=CONTEST_SELECTION_HEIGHT;
                         back.visible=false;
                         
@@ -597,6 +598,7 @@
                         
                         if (ret == 0) {
                             this.currentState="OverViewState";
+                            setReadOnlyMode();
                             save.includeInLayout=save.visible=false;
                             if (save.visible) {
                                 save.label=getSaveLabel();
@@ -618,6 +620,8 @@
 			        case 3:
 			            
 			            this.currentState = "DetailsState";
+			            setReadOnlyMode();
+			            
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -644,6 +648,7 @@
 			           
 			           specf.requestFileTypes.send();
                        this.currentState = "SpecificationsState";
+                       setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -660,6 +665,7 @@
 			        case 5:
 			            
 			            this.currentState = "AttachFilesState";
+			            setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -681,6 +687,7 @@
                        sched.requestSchedule.send();
     
                        this.currentState = "ScheduleState";
+                       setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -696,6 +703,7 @@
 			        case 7:
 			            
 			           this.currentState = "ReviewState";
+			           setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -724,6 +732,7 @@
 			        case 8:
 			            
 			            this.currentState = "ActivateState";
+			            setReadOnlyMode();
                         save.visible = false;
                         //TODO-HEIGHT-this.height = ACTIVATE_HEIGHT;
                         
@@ -771,6 +780,7 @@
                        return;
                      }*/
                     this.currentState="OverViewState";
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=false;
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -790,6 +800,7 @@
 					}
 
                     this.currentState="DetailsState";
+                    setReadOnlyMode();
 
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -839,6 +850,7 @@
                     // BUGR-1067
                     if (!studioContestType) {
                         this.currentState="AttachFilesState";
+                        setReadOnlyMode();
                         //TODO-HEIGHT-this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                         setPreviousStep(step3box);
                         setCurStep(step4box);
@@ -849,6 +861,7 @@
 
                     specf.requestFileTypes.send();
                     this.currentState="SpecificationsState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -868,6 +881,7 @@
                     }
 
                     this.currentState="AttachFilesState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -886,6 +900,7 @@
                     sched.requestSchedule.send();
 
                     this.currentState="ScheduleState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -921,6 +936,7 @@
                     }
                     
                     this.currentState="ReviewState";
+                    setReadOnlyMode();
                     //BUGR-1792
                     /*if (!this.studioContestType)
                         goNext.visible = false;
@@ -948,6 +964,7 @@
                     if (isInvoicedContest) {
                         // for invoiced contest directly lead to purchase confirmation screen.
                         this.currentState="ActivateState";
+                        setReadOnlyMode();
                         save.visible=false;
                         setPreviousStep(step7box);
                         setCurStep(step8box);
@@ -963,6 +980,7 @@
                         activate.goToNext();
                     } else {
                         this.currentState="ActivateState";
+                        setReadOnlyMode();
                         save.visible=false;
                         setPreviousStep(step7box);
                         setCurStep(step8box);
@@ -1035,7 +1053,7 @@
                     setButton(index);
                     if (index <= 0) {
                         this.currentState = "ReviewState";
-                        
+                        setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -1059,6 +1077,7 @@
                     }
                 } else if (this.currentState == "ReviewState") {
                     this.currentState="ScheduleState";
+                    setReadOnlyMode();
                     //TODO-HEIGHT-this.height=SCHEDULE_HEIGHT; // BUGR-1134
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
@@ -1073,7 +1092,7 @@
                     setNextStep(step7box); // BUGR-1141
                 } else if (this.currentState == "ScheduleState") {
                     this.currentState="AttachFilesState";
-                    
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1094,6 +1113,7 @@
 					    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
 					    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                         this.currentState="DetailsState";
+                        setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -1119,6 +1139,7 @@
                     goNext.label = "NEXT";
                     
                     this.currentState="SpecificationsState";
+                    setReadOnlyMode();
                     //TODO-HEIGHT-this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setCurStep(step4box);
                     setNextStep(step5box); // BUGR-1141
@@ -1126,6 +1147,7 @@
 					details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
 					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                     this.currentState="DetailsState";
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1139,7 +1161,7 @@
                     setNextStep(step4box); // BUGR-1141
                 } else if (this.currentState == "DetailsState") {
                     this.currentState="OverViewState";
-                    
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1153,7 +1175,7 @@
                     setNextStep(step3box); // BUGR-1141
                 } else if (this.currentState == "OverViewState") {
                     this.currentState="ContestSelectionState";
-                    
+                    setReadOnlyMode();    
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1168,6 +1190,8 @@
                     setCurStep(step1box);
                     setNextStep(step2box); // BUGR-1141
                 }
+                
+                
             }
             public function goToStep1():void {
                 previous();
@@ -1451,6 +1475,20 @@
                 }
                 
                 return true;
+            }
+            
+            private function setReadOnlyMode():void {
+                if (isReadOnlyMode && currentState != "ReviewState") {
+                    mainPanel.mouseEnabled=false;
+                    mainPanel.mouseChildren=false;
+                    mainPanel.tabEnabled=false;
+                    mainPanel.tabChildren=false;
+                } else {
+                    mainPanel.mouseEnabled=true;
+                    mainPanel.mouseChildren=true;
+                    mainPanel.tabEnabled=true;
+                    mainPanel.tabChildren=true;
+                }
             }
         ]]>
     </mx:Script>

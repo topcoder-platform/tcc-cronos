@@ -710,8 +710,13 @@
                             s_updateAmount();
                             
                         }
+                    } else {
+                         requestContestFees.send();
                     }
+                } else {
+                    requestContestFees.send();
                 }
+
             }
 
             private function goToUrl(url:String):void {
