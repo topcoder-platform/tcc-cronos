@@ -411,7 +411,18 @@
             public function openOverViewPage():void {
                 this.overView.initData();
                 this.currentState="OverViewState";
-                save.visible=!isReadOnlyMode;
+                setReadOnlyMode();
+
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                goNext.includeInLayout=goNext.visible=true;
+                goNext.label = "NEXT";
+                
+                setReadOnlyMode();
+                    
                 //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT; // BUGR-1134
                 back.visible=true;
 
@@ -425,8 +436,28 @@
              */ 
             public function openReviewPage():void {
                 this.currentState="ReviewState";
+                
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                if (!isNextAllowed()) {
+                    goNext.includeInLayout=goNext.visible=false;
+                } else {
+                    goNext.includeInLayout=goNext.visible=true;
+                    
+                    if (isInvoicedContest) {
+                        goNext.label="ACTIVATE";
+                    } else {
+                        goNext.label = "NEXT";
+                    }
+                }
+                
+                setReadOnlyMode();
+                
                 this.review.setAllValues();
-                save.visible=true;
+
                 //TODO-HEIGHT-this.height=REVIEW_HEIGHT;
                 back.visible=true;
 
@@ -1351,7 +1382,27 @@
                 sched.initData();
                 review.setAllValues();
                 activate.initData();
-                save.visible=false;
+                
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                if (this.currentState == "ReviewState") {
+                    if (!isNextAllowed()) {
+                        goNext.includeInLayout=goNext.visible=false;
+                    } else {
+                        goNext.includeInLayout=goNext.visible=true;
+                        
+                        if (isInvoicedContest) {
+                            goNext.label="ACTIVATE";
+                        } else {
+                            goNext.label = "NEXT";
+                        }
+                    }
+                }
+                
+                setReadOnlyMode();
             }
 
             private function handleError(e:FaultEvent):void {
@@ -1473,6 +1524,8 @@
                 if ((isPaidContest() && getExtraContestFee() <= 0) || isReadOnlyMode) {
                     return false;
                 }
+                
+                trace("Is Next Allowed: " + isPaidContest() + ", " + getExtraContestFee() + ", " + isReadOnlyMode);
                 
                 return true;
             }
