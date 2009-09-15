@@ -1125,7 +1125,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         public function isPaidContest():Boolean {
             if (this.competitionType == "STUDIO") {
-                if (!competition.contestData.payments 
+                if (!competition || !competition.contestData || !competition.contestData.payments 
                          || competition.contestData.payments.length <= 0) {
                     return false;
                 }

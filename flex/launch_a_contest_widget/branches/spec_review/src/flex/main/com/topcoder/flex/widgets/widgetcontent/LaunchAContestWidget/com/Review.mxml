@@ -12,7 +12,7 @@
     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - based on the backend data now reviewer and writer are correctly handled.
     
-    @author TCSASSEMBLER
+    @author snow01
     @version 1.0.1
     @since 1.0
 -->
@@ -941,7 +941,8 @@
                 if (specUserRoleType == "WRITER") {
                     if (isReadyForReview) {
                         var resubmitForReview:AbstractOperation=mainWidget._csws.getOperation("resubmitForReview");
-                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
+                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                                               mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
                         mainWidget.showLoadingProgress();
                     } else {
                         var markReadyForReview:AbstractOperation=mainWidget._csws.getOperation("markReadyForReview");
@@ -951,7 +952,8 @@
                     }
                 } else if (specUserRoleType == "REVIEWER") {
                     var markReviewDone:AbstractOperation=mainWidget._csws.getOperation("markReviewDone");
-                    markReviewDone.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio");
+                    markReviewDone.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                                        mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.tcDirectProjectId);
                     mainWidget.showLoadingProgress();
                 }
             }
@@ -1610,6 +1612,7 @@
 
             </mx:VBox>
         </mx:VBox>
+        <mx:Spacer height="100"/>
     </mx:VBox>
     <mx:Canvas id="reviewPopupContainer">
         <mx:TitleWindow includeInLayout="false"
@@ -1633,6 +1636,7 @@
             </mx:filters>
             <mx:VBox width="274"
                      height="260"
+                     id="reviewPopupInnerBox"
                      horizontalScrollPolicy="off"
                      verticalScrollPolicy="off">
                 <mx:HBox horizontalAlign="center"
@@ -1649,8 +1653,9 @@
                                     groupName="passFailRadioGroup"/>
                 </mx:HBox>
                 <mx:Label text="Comments:"
+                          id="reviewCommentLbl"
                           fontWeight="bold"/>
-                <mx:VBox height="100%"
+                <mx:VBox height="{reviewPopupInnerBox.height - reviewCommentLbl.height - (passFailRadioContainer.visible ? passFailRadioContainer.height : 0) - (reviewModalButtonBar.visible ? reviewModalButtonBar.height : 0) - 15}"
                          width="274"
                          borderStyle="solid"
                          paddingLeft="2"
@@ -1664,7 +1669,7 @@
                          id="commentsBox">
 
                     <mx:VBox id="oldConversationBox"
-                             height="100%"
+                             height="{commentsBox.height - 35 - 5}"
                              width="270"
                              verticalScrollPolicy="auto"
                              horizontalScrollPolicy="off">

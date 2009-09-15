@@ -1468,13 +1468,13 @@
                 } else if (this.currentState == "ScheduleState") {
                     setGoodHeight(this.sched);
                 } else if (this.currentState == "ReviewState") {
-                    setGoodHeight(this.review);
+                    setGoodHeight(this.review,80);
                 } else if (this.currentState == "ActivateState") {
                     setGoodHeight(this.activate);
                 }
             }
             
-            private function setGoodHeight(obj:Box):void {
+            private function setGoodHeight(obj:Box, addOnHeight:Number=0):void {
                 var footerHeight:Number=100;
                 var minHeight:Number=600;
                 
@@ -1483,7 +1483,8 @@
                     mh=minHeight;
                 }
                 
-                this.height=mh+footerHeight;
+                //obj.height=mh+addOnHeight;
+                this.height=mh+footerHeight+addOnHeight;
             }
             
             /**
@@ -1761,6 +1762,7 @@
     <!--<pages:InitialWidget id="initialWdt" />-->
     <mx:HBox id="launchWdt"
              width="100%"
+             height="100%"
              horizontalGap="0"
              paddingLeft="10">
         <mx:VBox width="210"
