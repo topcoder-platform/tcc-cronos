@@ -523,7 +523,15 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
                 entityManager.flush();
 
                 logDebug("Persisted specSectionReview: " + specSectionReview.getSpecReviewId());
+            } else {
+
+                 specSectionReview.setModifyUser(userName);
+                 specSectionReview.setModifyTime(new Date());
+                 entityManager.merge(specSectionReview);
+                 entityManager.flush();
+                 logDebug("Updated specSectionReview: " + specSectionReview.getSpecReviewId());
             }
+
 
             query = entityManager.createNamedQuery(ReviewUserRoleTypeByNameQuery);
             query.setParameter("name", role);
