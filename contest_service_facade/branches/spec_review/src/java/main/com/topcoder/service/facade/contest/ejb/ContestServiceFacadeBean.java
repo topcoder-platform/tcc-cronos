@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -137,6 +139,7 @@ import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.user.UserService;
+import com.topcoder.service.user.UserServiceException;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
@@ -176,8 +179,15 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  *  - Added the methods to mark ready for review, review done and resubmit for review.
  * </p>
  *
+ * <p>
+ * Version 1.0.3 (Cockpit Software Contest Payments v1.0) Change notes:
+ *  - For software contest, payment is made for the sum of various costs.
+ *  - While doing so, only the increased amount is paid (if earlier payments were made).
+ *  - Introduced constants for new cost types
+ * </p>
+ *
  * @author TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0.2
+ * @version 1.0.3
  * @since 1.0
  */
 @Stateless
@@ -614,6 +624,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @Resource(name = "purchaseSubmissionReceiptEmailSubject")
     private String purchaseSubmissionReceiptEmailSubject;
+    
+    /**
+     * Email template file path for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailTemplatePath")
+    private String specReviewNotificationEmailTemplatePath;
+    
+    /**
+     * BCC Address for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailBCCAddr")
+    private String specReviewNotificationEmailBCCAddr;
+    
+    /**
+     * From Address for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailFromAddr")
+    private String specReviewNotificationEmailFromAddr;
+    
+    /**
+     * Subject line for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailSubject")
+    private String specReviewNotificationEmailSubject;
     
     /**
      * Document generator that stores email templates.
@@ -3423,7 +3465,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * 
      * @since Cockpit Release Assembly for Receipts. 
      */
-    private void sendEmail(String templateSource, String templateName, String subject, String toAddr, String ccAddr, String bccAddr, String fromAddr, com.topcoder.project.phases.Phase phase)
+    private void sendEmail(String templateSource, String templateName, String subject, String[] toAddrs, String ccAddr, String bccAddr, String fromAddr, com.topcoder.project.phases.Phase phase)
         throws EmailMessageGenerationException, EmailSendingException {
 
         boolean messageGenerated = false;
@@ -3446,8 +3488,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             email.setFromAddress(fromAddr);
             email.setBody(messageBody);
 
-            ExceptionUtils.checkNull(toAddr, null, null, "To address must be non-null.");
-            email.addToAddress(toAddr, TCSEmailMessage.TO);
+            ExceptionUtils.checkNull(toAddrs, null, null, "To address must be non-null.");
+            for (String toAddr : toAddrs) {
+                email.addToAddress(toAddr, TCSEmailMessage.TO);
+            }
+            
             if (ccAddr != null) {
             	email.addToAddress(ccAddr, TCSEmailMessage.CC);
             }
@@ -3461,7 +3506,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //Send email
             EmailEngine.send(email);
-            Logger.getLogger(this.getClass()).debug("Sent email message of subject [" + subject + "] to [" + fromAddr + "]");
+            Logger.getLogger(this.getClass()).debug("Sent email message of subject [" + subject + "] from [" + fromAddr + "] to [" + toAddrs + "]");
         } catch (BaseException e) {
             rethrowEmailError(e, messageGenerated);
         } catch (ConfigManagerException e) {
@@ -3542,8 +3587,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 activateContestReceiptEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        
         sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
-                orderNumber), toAddr, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
+                orderNumber), new String[] {toAddr}, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
                 phase);
     }
     
@@ -3608,7 +3654,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 purchaseSubmissionReceiptEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
         sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, purchaseSubmissionReceiptEmailSubject.replaceAll(
-                "%ORDER_NUMBER%", orderNumber), toAddr, null, purchaseSubmissionReceiptEmailBCCAddr,
+                "%ORDER_NUMBER%", orderNumber), new String[] {toAddr}, null, purchaseSubmissionReceiptEmailBCCAddr,
                 purchaseSubmissionReceiptEmailFromAddr, phase);
     }
     
@@ -3762,13 +3808,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * 
      * @param contestId
      *            the specified contest id.
+     * @param contestName
+     *            the contest name
      * @param studio
      *            whether contest is studio or not.
+     * @tcDirectProjectId
+     *            the tc direct project id.            
      * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReviewDone(long contestId, boolean studio) throws ContestServiceException {
+    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException {
         try {
             // get updates.
             List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
@@ -3776,11 +3826,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             this.specReviewService.markReviewDone(contestId, studio);
             
             // notify all users who have write permission by email.
-            List<Permission> permission = this.permissionService.getPermissionsByProject(contestId);
+            Set<String> toAddresses = new HashSet<String>();
+            
+            List<Permission> permissions = this.permissionService.getPermissionsByProject(contestId);
+            for (Permission p : permissions) {
+                if (p.getPermissionType().getPermissionTypeId() == 6 || p.getPermissionType().getPermissionTypeId() == 5) {
+                    String toAddr = this.userService.getEmailAddress(p.getUserHandle());
+                    toAddresses.add(toAddr);
+                }
+            }
+            
+            permissions = this.permissionService.getPermissionsByProject(tcDirectProjectId);
+            for (Permission p : permissions) {
+                if (p.getPermissionType().getPermissionTypeId() == 2 || p.getPermissionType().getPermissionTypeId() == 3) {
+                    String toAddr = this.userService.getEmailAddress(p.getUserHandle());
+                    toAddresses.add(toAddr);
+                }
+            }
+            
+            // send email to all toAddresses.
+            sendSpecReviewNotificationEmail(toAddresses.toArray(new String[0]), updates, contestName);
         } catch (SpecReviewServiceException e) {
             throw new ContestServiceException("Error during markReviewDone", e);
         } catch (PermissionServiceException e) {
             throw new ContestServiceException("Error during retrieving permissions", e);
+        } catch (UserServiceException e) {
+            throw new ContestServiceException("Error during retrieving permissions", e);
+        } catch (EmailMessageGenerationException e) {
+            // ignore email error.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        } catch (EmailSendingException e) {
+            // ignore email error.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
         }
     }
 
@@ -3810,23 +3887,91 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * 
      * @param contestId
      *            the specified contest id.
+     * @param contestName
+     *            the contest name
      * @param studio
      *            whether contest is studio or not.
+     * @param reviewerUserId
+     *            reviewer user id.
      * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void resubmitForReview(long contestId, boolean studio, String reviewerUserHandle) throws ContestServiceException {
+    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException {
         try {
             // get updates.
             List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
             
             this.specReviewService.resubmitForReview(contestId, studio);
+ System.out.println("---------------------------size---:"+updates.size());           
+            // do not send email if no updates are there.
+            if (updates.size() <= 0) {
+                return;
+            }
             
             // notify the reviewer about updates.
+            String reviewerEmail = this.userService.getEmailAddress(reviewerUserId);
+System.out.println("------------------------------:"+reviewerEmail);
+            if (reviewerEmail != null) {
+                sendSpecReviewNotificationEmail(new String[] {reviewerEmail}, updates, contestName);
+            }
         } catch (SpecReviewServiceException e) {
-            throw new ContestServiceException("Error during resubmitForReview", e);
+            throw new ContestServiceException("Error during resubmit for review.", e);
+        } catch (UserServiceException e) {
+            throw new ContestServiceException("Error during retrieving email for reviewer.", e);
+        } catch (EmailMessageGenerationException e) {
+            // ignore any email errors.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        } catch (EmailSendingException e) {
+            // ignore any email errors.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
         }
+    }
+    
+    /**
+     * Sends spec review notification email
+     * 
+     * @param toAddrs
+     *            array of to addresses to which spec review notification email should be sent.
+     * @param updates
+     *            the data about updated sections.
+     * @param contestName
+     *            the name of the contest
+     * @throws EmailMessageGenerationException
+     *             thrown if error during email message generation
+     * @throws EmailSendingException
+     *             thrown if error during email sending.
+     * @since 1.0.2             
+     */
+    private void sendSpecReviewNotificationEmail(String[] toAddrs, List<UpdatedSpecSectionData> updates,
+            String contestName) throws EmailMessageGenerationException, EmailSendingException {
+        com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
+
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (UpdatedSpecSectionData d : updates) {
+            StringBuffer s = new StringBuffer();
+            s.append("Section: ").append(d.getSectionName()).append("\n");
+            s.append("Review Status: ").append(d.getStatus()).append("\n");
+            s.append("Updated By: ").append(d.getUser()).append("\n");
+            s.append("Comment: ").append(d.getComment());
+
+            if (!first) {
+                sb.append("\n\n");
+            }
+
+            sb.append(s.toString());
+            first = false;
+        }
+
+        phase.setAttribute("SECTIONS", sb.toString());
+
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                specReviewNotificationEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, specReviewNotificationEmailSubject.replaceAll(
+                "%CONTEST_NAME%", contestName), toAddrs, null, specReviewNotificationEmailBCCAddr,
+                specReviewNotificationEmailFromAddr, phase);
     }
     
     /**

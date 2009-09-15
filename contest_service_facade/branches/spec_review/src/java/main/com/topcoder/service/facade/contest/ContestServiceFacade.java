@@ -1320,13 +1320,17 @@ public interface ContestServiceFacade {
      * 
      * @param contestId
      *            the specified contest id.
+     * @param contestName
+     *            the contest name.            
      * @param studio
      *            whether contest is studio or not.
+     * @param tcDirectProjectId
+     *            the tc direct project id.            
      * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReviewDone(long contestId, boolean studio) throws ContestServiceException;
+    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException;
 
     /**
      * Marks 'ready for review' by the writer of the specs for specified contest.
@@ -1348,11 +1352,15 @@ public interface ContestServiceFacade {
      * 
      * @param contestId
      *            the specified contest id.
+     * @param contestName
+     *            the contest name.            
      * @param studio
      *            whether contest is studio or not.
+     * @param reviewerUserId
+     *            reviewer user id.
      * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void resubmitForReview(long contestId, boolean studio, String reviewerUserHandle) throws ContestServiceException;
+    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException;
 }
