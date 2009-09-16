@@ -186,8 +186,13 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  *  - Introduced constants for new cost types
  * </p>
  *
+ * <p>
+ * Version 1.0.4 
+ *  - Add 'Applications'/'Components' to resource for project
+ * </p>
+ *
  * @author TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0.3
+ * @version 1.0.4
  * @since 1.0
  */
 @Stateless
@@ -469,12 +474,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID = "External Reference ID";
 
-	/**
-     * Private constant specifying resource ext ref id 
-     * 
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS = "22770213";
 
 	/**
      * Private constant specifying resource handle
@@ -485,10 +484,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 	/**
      * Private constant specifying resource handle
+     * @since 1.0.4
      * 
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_HANDLE_APPLICATIONS = "Applications";
+
+    /**
+     * Private constant specifying resource handle
+     *
+     * @since 1.0.4
+     */
+    private static final String RESOURCE_INFO_HANDLE_COMPONENTS = "Components";
+
 
 	/**
      * Private constant specifying resource pay
@@ -510,6 +517,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.0.1
      */
     private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
+
+
+    /**
+     * Represents the project category id for development contests.
+     * 
+     * @since 1.0.4
+     */
+    private static final int DESIGN_PROJECT_CATEGORY_ID = 1;
 
 	
 
@@ -677,6 +692,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final String EMAIL_FILE_TEMPLATE_SOURCE_KEY = "fileTemplateSource";
 
     /**
+     * user id for Applications
+     * 
+     * @since 1.0.4
+     */
+    private long applications_user_id;
+
+
+     /**
+     * user id for Components
+     * 
+     * @since 1.0.4
+     */
+    private long components_user_id;
+    
+
+    /**
      * <p>
      * Constructs new <code>ContestServiceFacadeBean</code> instance. This implementation instantiates new instance of
      * payment processor. Current implementation just support processing through PayPalCreditCard. When multiple
@@ -733,6 +764,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		
 		// the default email message generator.
     	emailMessageGenerator = new DefaultEmailMessageGenerator();
+
+        
+        try
+        {
+            components_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_COMPONENTS);
+
+            applications_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_APPLICATIONS);
+        }
+        catch (UserServiceException e) {
+			throw new IllegalStateException("Failed to get components/applications user id.", e);
+		}
+       
     	
     }
     
@@ -2754,7 +2797,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 					
                 }
 
-				com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[1];
+				com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
 				resources[0] = new com.topcoder.management.resource.Resource();
 				resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
 				ResourceRole role = new ResourceRole();
@@ -2766,13 +2809,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 				resources[0].setProperty(RESOURCE_INFO_HANDLE, String.valueOf(p.getName()));
 				resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
 
-				// comment out for now
-				/*resources[1] = new com.topcoder.management.resource.Resource();
-				resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-				resources[1].setResourceRole(role);
-				resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS);
-				resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
-				resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);*/
+                if (contest.getProjectHeader() != null) 
+                {
+                    // design/dev, add Components
+                    if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID 
+                         || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+
+                        resources[1] = new com.topcoder.management.resource.Resource();
+                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                        resources[1].setResourceRole(role);
+                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
+                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
+                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                    }
+                    // else add Applications
+                    else {
+                        resources[1] = new com.topcoder.management.resource.Resource();
+                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                        resources[1].setResourceRole(role);
+                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
+                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
+                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                    }
+                }
+
+				
 
 				contest.setProjectResources(resources);
 
@@ -3903,7 +3964,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
             
             this.specReviewService.resubmitForReview(contestId, studio);
- System.out.println("---------------------------size---:"+updates.size());           
+          
             // do not send email if no updates are there.
             if (updates.size() <= 0) {
                 return;
@@ -3911,7 +3972,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             
             // notify the reviewer about updates.
             String reviewerEmail = this.userService.getEmailAddress(reviewerUserId);
-System.out.println("------------------------------:"+reviewerEmail);
+
             if (reviewerEmail != null) {
                 sendSpecReviewNotificationEmail(new String[] {reviewerEmail}, updates, contestName);
             }
