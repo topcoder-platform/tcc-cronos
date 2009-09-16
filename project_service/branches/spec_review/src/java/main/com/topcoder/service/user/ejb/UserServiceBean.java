@@ -213,6 +213,52 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
         }
     }
 
+   /**
+     * <p>
+     * This method retrieve the user id for given user handle.
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return user id
+     * 
+     * @throws IllegalArgumentWSException
+     *             if the argument is invalid
+     * @throws UserServiceException
+     *             if any error occurs when getting user details
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public long getUserId(String userHandle) throws UserServiceException {
+        try {
+            logEnter("getUserId(userHandle)");
+            logOneParameter(userHandle);
+
+            Helper.checkNull(userHandle, "userHandle");
+            Helper.checkEmpty(userHandle, "userHandle");
+           
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("select user_id from user u where u.handle = :handle");
+            query.setParameter("handle", userHandle);
+            Object result = query.getSingleResult();
+            if (result != null) {
+                return Long.parseLong(result.toString());
+            }
+                
+            throw wrapUserServiceException(new NoResultException(), "No such user");
+            
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            throw wrapUserServiceException(e, "No such user");
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors while retrieving the user's email address.");
+        } finally {
+            logExit("getEmailAddress(userid)");
+        }
+    }
+
+
     /**
      * <p>
      * This method returns true if given user handle is admin otherwise it returns false.

@@ -58,6 +58,23 @@ public interface UserService {
      * @since Jira & Confluence User Sync Service
      */
     public String getEmailAddress(String userHandle) throws UserServiceException;
+
+    /**
+     * <p>
+     * This method retrieve the user id for given user handle.
+     * </p>
+     * 
+     * @param userHandle
+     *            user handle to look for
+     * 
+     * @return user id
+     * 
+     * @throws IllegalArgumentWSException
+     *             if the argument is invalid
+     * @throws UserServiceException
+     *             if any error occurs when getting user details
+     */
+    public long getUserId(String userHandle) throws UserServiceException;
     
     /**
      * <p>
