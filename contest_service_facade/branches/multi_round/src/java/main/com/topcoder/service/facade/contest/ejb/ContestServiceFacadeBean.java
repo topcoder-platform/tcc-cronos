@@ -66,6 +66,7 @@ import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.specreview.SpecReviewService;
 import com.topcoder.service.specreview.SpecReviewServiceException;
+import com.topcoder.service.specreview.UpdatedSpecSectionData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestData;
@@ -93,6 +94,7 @@ import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.UserService;
+import com.topcoder.service.user.UserServiceException;
 
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.BaseException;
@@ -120,6 +122,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.HashSet;
 
 import javax.activation.DataHandler;
 
@@ -161,6 +164,27 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * <p>
  * Module Cockpit Share Submission Integration Assembly change: Added method to
  * retrieve all permissions by projectId.
+ * </p>
+ * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+ *  - Added method to retrieve contest fees by given billing project id.
+ * </p>
+ * </p>
+ * 
+ * Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+ *  - Made the getSpecReviews method return instance of SpecReview rather than a list.
+ *  - Added the methods to mark ready for review, review done and resubmit for review.
+ * </p>
+ *
+ * <p>
+ * Version 1.0.3 (Cockpit Software Contest Payments v1.0) Change notes:
+ *  - For software contest, payment is made for the sum of various costs.
+ *  - While doing so, only the increased amount is paid (if earlier payments were made).
+ *  - Introduced constants for new cost types
+ * </p>
+ *
+ * <p>
+ * Version 1.0.4 
+ *  - Add 'Applications'/'Components' to resource for project
  * </p>
  *
  * * -----------------------changed in the version 1.1-----------------
@@ -332,13 +356,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID = "External Reference ID";
 
-    /**
-     * Private constant specifying resource ext ref id
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS =
-        "22770213";
 
     /**
      * Private constant specifying resource handle
@@ -355,6 +372,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private static final String RESOURCE_INFO_HANDLE_APPLICATIONS = "Applications";
 
     /**
+     * Private constant specifying resource handle
+     *
+     * @since 1.0.4
+     */
+    private static final String RESOURCE_INFO_HANDLE_COMPONENTS = "Components";
+
+      /**
+     * Represents the project category id for development contests.
+     * 
+     * @since 1.0.1
+     */
+    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
+
+
+    /**
+     * Represents the project category id for development contests.
+     * 
+     * @since 1.0.4
+     */
+    private static final int DESIGN_PROJECT_CATEGORY_ID = 1;
+
+
+	/**
      * Private constant specifying resource pay
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -373,12 +413,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String EMAIL_FILE_TEMPLATE_SOURCE_KEY = "fileTemplateSource";
 
-	 /**
-     * Represents the project category id for development contests.
-     * 
-     * @since 1.0.1
-     */
-    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
 
     /**
      * <p>
@@ -642,6 +676,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private String purchaseSubmissionReceiptEmailSubject;
 
     /**
+     * Email template file path for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailTemplatePath")
+    private String specReviewNotificationEmailTemplatePath;
+    
+    /**
+     * BCC Address for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailBCCAddr")
+    private String specReviewNotificationEmailBCCAddr;
+    
+    /**
+     * From Address for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailFromAddr")
+    private String specReviewNotificationEmailFromAddr;
+    
+    /**
+     * Subject line for Spec Review Notification Email
+     * 
+     * @since 1.0.2
+     */
+    @Resource(name = "specReviewNotificationEmailSubject")
+    private String specReviewNotificationEmailSubject;
+    
+    /**
      * Document generator that stores email templates.
      *
      * @since Cockpit Release Assembly for Receipts
@@ -655,7 +721,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private EmailMessageGenerator emailMessageGenerator;
 
+      
+    /**
+     * user id for Applications
+     * 
+     * @since 1.0.4
+     */
+    private long applications_user_id;
 
+
+     /**
+     * user id for Components
+     * 
+     * @since 1.0.4
+     */
+    private long components_user_id;
 
     /**
      * The logger instance for logging the information in
@@ -733,6 +813,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         // the default email message generator.
         emailMessageGenerator = new DefaultEmailMessageGenerator();
 
+        
+        try
+        {
+            components_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_COMPONENTS);
+
+            applications_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_APPLICATIONS);
+        }
+        catch (UserServiceException e) {
+			throw new IllegalStateException("Failed to get components/applications user id.", e);
+		}
+       
+    	
     }
 
     /**
@@ -2420,8 +2512,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
-                toAddr = currentUserEmailAddress;
-            } else if (paymentData instanceof CreditCardPaymentData) {
+				logger.debug("Current User Email Address: " + currentUserEmailAddress);
+
+                toAddr=currentUserEmailAddress; 
+            } else if (paymentData instanceof CreditCardPaymentData){
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
                 toAddr = cc.getEmail();
             }
@@ -3432,7 +3526,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                            .setStartDate(getDate(productionDate));
                 }
 
-                com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[1];
+                com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
                 resources[0] = new com.topcoder.management.resource.Resource();
                 resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
 
@@ -3448,21 +3542,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS,
                     RESOURCE_INFO_PAYMENT_STATUS_NA);
 
-                // comment out for now
-                /*
-                 * resources[1] = new
-                 * com.topcoder.management.resource.Resource();
-                 * resources[1].setId
-                 * (com.topcoder.management.resource.Resource.UNSET_ID);
-                 * resources[1].setResourceRole(role);
-                 * resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
-                 * RESOURCE_INFO_EXTERNAL_REFERENCE_ID_APPLICATIONS);
-                 * resources[1].setProperty(RESOURCE_INFO_HANDLE,
-                 * RESOURCE_INFO_HANDLE_APPLICATIONS);
-                 * resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS,
-                 * RESOURCE_INFO_PAYMENT_STATUS_NA);
-                 */
-                contest.setProjectResources(resources);
+                if (contest.getProjectHeader() != null) 
+                {
+                    // design/dev, add Components
+                    if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID 
+                         || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+
+                        resources[1] = new com.topcoder.management.resource.Resource();
+                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                        resources[1].setResourceRole(role);
+                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
+                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
+                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                    }
+                    // else add Applications
+                    else {
+                        resources[1] = new com.topcoder.management.resource.Resource();
+                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                        resources[1].setResourceRole(role);
+                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
+                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
+                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                    }
+                }
+
+				
+
+				contest.setProjectResources(resources);
 
                 contest.getProjectHeader()
                        .setTcDirectProjectId(tcDirectProjectId);
@@ -4333,9 +4439,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since Cockpit Release Assembly for Receipts.
      */
-    private void sendEmail(String templateSource, String templateName,
-        String subject, String toAddr, String ccAddr, String bccAddr,
-        String fromAddr, com.topcoder.project.phases.Phase phase)
+    private void sendEmail(String templateSource, String templateName, String subject, String[] toAddrs, String ccAddr, String bccAddr, String fromAddr, com.topcoder.project.phases.Phase phase)
         throws EmailMessageGenerationException, EmailSendingException {
         boolean messageGenerated = false;
 
@@ -4359,10 +4463,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             email.setFromAddress(fromAddr);
             email.setBody(messageBody);
 
-            ExceptionUtils.checkNull(toAddr, null, null,
-                "To address must be non-null.");
-            email.addToAddress(toAddr, TCSEmailMessage.TO);
-
+            ExceptionUtils.checkNull(toAddrs, null, null, "To address must be non-null.");
+            for (String toAddr : toAddrs) {
+                email.addToAddress(toAddr, TCSEmailMessage.TO);
+            }
+            
             if (ccAddr != null) {
                 email.addToAddress(ccAddr, TCSEmailMessage.CC);
             }
@@ -4481,14 +4586,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         phase.setAttribute("FROM_ADDRESS", activateContestReceiptEmailFromAddr);
 
-        String file = Thread.currentThread().getContextClassLoader()
-                            .getResource(activateContestReceiptEmailTemplatePath)
-                            .getFile();
-        logger.debug("File name for template: " + file);
-        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file,
-            activateContestReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
-                orderNumber), toAddr, null, activateContestReceiptEmailBCCAddr,
-            activateContestReceiptEmailFromAddr, phase);
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                activateContestReceiptEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
+                orderNumber), new String[] {toAddr}, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
+                phase);
     }
 
     /**
@@ -4570,15 +4674,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         phase.setAttribute("FROM_ADDRESS",
             purchaseSubmissionReceiptEmailFromAddr);
 
-        String file = Thread.currentThread().getContextClassLoader()
-                            .getResource(purchaseSubmissionReceiptEmailTemplatePath)
-                            .getFile();
-        logger.debug("File name for template: " + file);
-        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file,
-            purchaseSubmissionReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
-                orderNumber), toAddr, null,
-            purchaseSubmissionReceiptEmailBCCAddr,
-            purchaseSubmissionReceiptEmailFromAddr, phase);
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                purchaseSubmissionReceiptEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, purchaseSubmissionReceiptEmailSubject.replaceAll(
+                "%ORDER_NUMBER%", orderNumber), new String[] {toAddr}, null, purchaseSubmissionReceiptEmailBCCAddr,
+                purchaseSubmissionReceiptEmailFromAddr, phase);
     }
 
     /**
@@ -4645,14 +4746,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param studio
      *            indicates whether the specified contest id is for studio contests.
      * 
-     * @return the list of spec reviews that matches the specified contest id.
+     * @return the spec review that matches the specified contest id.
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public List<SpecReview> getSpecReviews(long contestId, boolean studio) throws SpecReviewServiceException {
-        return this.specReviewService.getSpecReviews(contestId, studio);
+    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException {
+        try {
+            return this.specReviewService.getSpecReviews(contestId, studio);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during getSpecReviews", e);
+        }
     }
 
     /**
@@ -4671,13 +4776,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param role
      *            the user role type           
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
     public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
-            throws SpecReviewServiceException {
-        this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+            throws ContestServiceException {
+        try {
+            this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during saveReviewStatus", e);
+        }
     }
 
     /**
@@ -4694,13 +4803,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param role
      *            the user role type           
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
     public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
-            throws SpecReviewServiceException {
-        this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+            throws ContestServiceException {
+        try {
+            this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during saveReviewComment", e);
+        }
     }
 
     /**
@@ -4709,12 +4822,188 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param commentId
      *            the comment id
      * 
-     * @throws SpecReviewServiceException
+     * @throws ContestServiceException
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void markReviewCommentSeen(long commentId) throws SpecReviewServiceException {
-        this.specReviewService.markReviewCommentSeen(commentId);
+    public void markReviewCommentSeen(long commentId) throws ContestServiceException {
+        try {
+            this.specReviewService.markReviewCommentSeen(commentId);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReviewCommentSeen", e);
+        }
+    }
+    
+    /**
+     * Marks 'review done' by reviewer of the specs for specified contest.
+     * Persistence is updated and all end users having write/full permission on the contest are notified by email.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param contestName
+     *            the contest name
+     * @param studio
+     *            whether contest is studio or not.
+     * @tcDirectProjectId
+     *            the tc direct project id.            
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException {
+        try {
+            // get updates.
+            List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
+            
+            this.specReviewService.markReviewDone(contestId, studio);
+            
+            // notify all users who have write permission by email.
+            Set<String> toAddresses = new HashSet<String>();
+            
+            List<Permission> permissions = this.permissionService.getPermissionsByProject(contestId);
+            for (Permission p : permissions) {
+                if (p.getPermissionType().getPermissionTypeId() == 6 || p.getPermissionType().getPermissionTypeId() == 5) {
+                    String toAddr = this.userService.getEmailAddress(p.getUserHandle());
+                    toAddresses.add(toAddr);
+                }
+            }
+            
+            permissions = this.permissionService.getPermissionsByProject(tcDirectProjectId);
+            for (Permission p : permissions) {
+                if (p.getPermissionType().getPermissionTypeId() == 2 || p.getPermissionType().getPermissionTypeId() == 3) {
+                    String toAddr = this.userService.getEmailAddress(p.getUserHandle());
+                    toAddresses.add(toAddr);
+                }
+            }
+            
+            // send email to all toAddresses.
+            sendSpecReviewNotificationEmail(toAddresses.toArray(new String[0]), updates, contestName);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReviewDone", e);
+        } catch (PermissionServiceException e) {
+            throw new ContestServiceException("Error during retrieving permissions", e);
+        } catch (UserServiceException e) {
+            throw new ContestServiceException("Error during retrieving permissions", e);
+        } catch (EmailMessageGenerationException e) {
+            // ignore email error.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        } catch (EmailSendingException e) {
+            // ignore email error.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        }
+    }
+
+    /**
+     * Marks 'ready for review' by the writer of the specs for specified contest.
+     * Persistence is updated, on update the spec would appear as review opportunity on tc site.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException {
+        try {
+            this.specReviewService.markReadyForReview(contestId, studio);
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during markReadyForReview", e);
+        }
+    }
+
+    /**
+     * Marks 'resubmit for review' by the writer of the specs for specified contest.
+     * Persistence is updated. Reviewer (if any) is notified about the updates.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param contestName
+     *            the contest name
+     * @param studio
+     *            whether contest is studio or not.
+     * @param reviewerUserId
+     *            reviewer user id.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException {
+        try {
+            // get updates.
+            List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
+            
+            this.specReviewService.resubmitForReview(contestId, studio);
+          
+            // do not send email if no updates are there.
+            if (updates.size() <= 0) {
+                return;
+            }
+            
+            // notify the reviewer about updates.
+            String reviewerEmail = this.userService.getEmailAddress(reviewerUserId);
+
+            if (reviewerEmail != null) {
+                sendSpecReviewNotificationEmail(new String[] {reviewerEmail}, updates, contestName);
+            }
+        } catch (SpecReviewServiceException e) {
+            throw new ContestServiceException("Error during resubmit for review.", e);
+        } catch (UserServiceException e) {
+            throw new ContestServiceException("Error during retrieving email for reviewer.", e);
+        } catch (EmailMessageGenerationException e) {
+            // ignore any email errors.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        } catch (EmailSendingException e) {
+            // ignore any email errors.
+            Logger.getLogger(this.getClass()).error("Email Error : "+e);
+        }
+    }
+    
+    /**
+     * Sends spec review notification email
+     * 
+     * @param toAddrs
+     *            array of to addresses to which spec review notification email should be sent.
+     * @param updates
+     *            the data about updated sections.
+     * @param contestName
+     *            the name of the contest
+     * @throws EmailMessageGenerationException
+     *             thrown if error during email message generation
+     * @throws EmailSendingException
+     *             thrown if error during email sending.
+     * @since 1.0.2             
+     */
+    private void sendSpecReviewNotificationEmail(String[] toAddrs, List<UpdatedSpecSectionData> updates,
+            String contestName) throws EmailMessageGenerationException, EmailSendingException {
+        com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
+
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (UpdatedSpecSectionData d : updates) {
+            StringBuffer s = new StringBuffer();
+            s.append("Section: ").append(d.getSectionName()).append("\n");
+            s.append("Review Status: ").append(d.getStatus()).append("\n");
+            s.append("Updated By: ").append(d.getUser()).append("\n");
+            s.append("Comment: ").append(d.getComment());
+
+            if (!first) {
+                sb.append("\n\n");
+            }
+
+            sb.append(s.toString());
+            first = false;
+        }
+
+        phase.setAttribute("SECTIONS", sb.toString());
+
+        String file = Thread.currentThread().getContextClassLoader().getResource(
+                specReviewNotificationEmailTemplatePath).getFile();
+        Logger.getLogger(this.getClass()).debug("File name for template: " + file);
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, specReviewNotificationEmailSubject.replaceAll(
+                "%CONTEST_NAME%", contestName), toAddrs, null, specReviewNotificationEmailBCCAddr,
+                specReviewNotificationEmailFromAddr, phase);
     }
     
     /**

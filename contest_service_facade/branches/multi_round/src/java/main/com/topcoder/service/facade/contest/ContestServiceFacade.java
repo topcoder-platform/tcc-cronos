@@ -8,6 +8,7 @@ import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 
 import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.service.specreview.SpecReview;
 
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
@@ -68,6 +69,11 @@ import javax.jws.WebService;
  * </p>
  *
  * <p>
+ * <p>
+ * Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+ *  - Made the getSpecReviews method return instance of SpecReview rather than a list.
+ *  - Added the methods to mark ready for review, review done and resubmit for review.
+ * </p>
  * Module Cockpit Share Submission Integration Assembly change: Added method to
  * retrieve all permissions by projectId.
  * </p>
@@ -1656,7 +1662,7 @@ public interface ContestServiceFacade {
      * @since TCCC-1329
      */
     public List<User> searchUser(String key) throws PersistenceException;
-
+    
     /**
      * <p>
      * This method updates array of permissions to the persistence.
@@ -1685,6 +1691,132 @@ public interface ContestServiceFacade {
      * @since 1.0.1
      */
     public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException;
+
+
+      
+    /**
+     * Gets the spec review for specified contest id.
+     * 
+     * Updated for Spec Reviews Finishing Touches v1.0
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * 
+     * @return the spec review that matches the specified contest id.
+     * 
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException;
+
+    /**
+     * Save specified review comment and review status for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param isPass
+     *            the is pass
+     * @param role
+     *            the user role type           
+     * 
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
+            throws ContestServiceException;
+
+    /**
+     * Save specified review comment for specified section and specified contest id to persistence.
+     * 
+     * @param contestId
+     *            the contest id
+     * @param studio
+     *            indicates whether the specified contest id is for studio contests.
+     * @param sectionName
+     *            the section name
+     * @param comment
+     *            the comment
+     * @param role
+     *            the user role type           
+     * 
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
+            throws ContestServiceException;
+
+    /**
+     * Mark review comment with specified comment id as seen.
+     * 
+     * @param commentId
+     *            the comment id
+     * 
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since Cockpit Launch Contest - Inline Spec Review Part 2
+     */
+    public void markReviewCommentSeen(long commentId) throws ContestServiceException;
+    
+    /**
+     * Marks 'review done' by reviewer of the specs for specified contest.
+     * Persistence is updated and all end users having write/full permission on the contest are notified by email.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param contestName
+     *            the contest name.            
+     * @param studio
+     *            whether contest is studio or not.
+     * @param tcDirectProjectId
+     *            the tc direct project id.            
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException;
+
+    /**
+     * Marks 'ready for review' by the writer of the specs for specified contest.
+     * Persistence is updated, on update the spec would appear as review opportunity on tc site.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param studio
+     *            whether contest is studio or not.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException;
+
+    /**
+     * Marks 'resubmit for review' by the writer of the specs for specified contest.
+     * Persistence is updated. Reviewer (if any) is notified about the updates.
+     * 
+     * @param contestId
+     *            the specified contest id.
+     * @param contestName
+     *            the contest name.            
+     * @param studio
+     *            whether contest is studio or not.
+     * @param reviewerUserId
+     *            reviewer user id.
+     * @throws ContestServiceException
+     *             if any error during retrieval/save from persistence
+     * @since 1.0.1
+     */
+    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException;
 
     /**
      * Get the user contest by user name Return empty list if none found
