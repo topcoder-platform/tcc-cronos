@@ -13,12 +13,15 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * It represents the review comment for a review section.
  * 
- * @author snow01
- * @version 1.0
+ * Version 1.0.1 (Spec Review Finishing Touches v1.0) Change Notes:
+ *  - Made to refer to SpecSectionReview through specSectionReviewId instead of earlier way of specReviewId.
+ * 
+ * @author snow01, TCSASSEMBLER
+ * @version 1.0.1
  * @since Cockpit Launch Contest - Inline Spec Review Part 2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "reviewComment", propOrder = { "commentId", "specReviewId", "comment", "createUser", "createTime",
+@XmlType(name = "reviewComment", propOrder = { "commentId", "specSectionReviewId", "comment", "createUser", "createTime",
         "roleType", "isViewed" })
 public class ReviewComment implements Serializable {
 
@@ -30,8 +33,12 @@ public class ReviewComment implements Serializable {
     /** The comment id. */
     private long commentId;
 
-    /** The spec review id. */
-    private long specReviewId;
+    /** 
+     * The spec section review id.
+     * 
+     *  Updated for Version 1.0.1
+     */
+    private long specSectionReviewId;
 
     /** The comment. */
     private String comment;
@@ -75,22 +82,26 @@ public class ReviewComment implements Serializable {
     }
 
     /**
-     * Gets the spec review id.
+     * Gets the spec section review id.
      * 
-     * @return the spec review id
+     * Updated for Version 1.0.1
+     * 
+     * @return the spec section review id
      */
-    public long getSpecReviewId() {
-        return specReviewId;
+    public long getSpecSectionReviewId() {
+        return specSectionReviewId;
     }
 
     /**
-     * Sets the spec review id.
+     * Sets the spec section review id.
      * 
-     * @param specReviewId
-     *            the new spec review id
+     * Updated for Version 1.0.1
+     * 
+     * @param specSectionReviewId
+     *            the new spec section review id
      */
-    public void setSpecReviewId(long specReviewId) {
-        this.specReviewId = specReviewId;
+    public void setSpecSectionReviewId(long specSectionReviewId) {
+        this.specSectionReviewId = specSectionReviewId;
     }
 
     /**

@@ -12,15 +12,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * The Class SpecReview.
+ * The Class SpecReviews - represents the set of spec sections reviews, reviewer (if any), status etc.
  * 
- * @author snow01
+ * @author TCSASSEMBLER
  * @version 1.0
- * @since Cockpit Launch Contest - Inline Spec Reviews Part 2
+ * @since Spec Review Finishing Touches v1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "specReview", propOrder = { "specReviewId", "contestId", "reviewStatus", "sectionType", "studio",
-        "comments", "createUser", "createTime", "modifyUser", "modifyTime" })
+@XmlType(name = "specReview", propOrder = { "specReviewId", "contestId", "reviewStatus", "studio",
+        "sectionReviews", "readyForReviewTime", "reviewDoneTime", "reviewerId", "createUser", "createTime", "modifyUser", "modifyTime" })
 public class SpecReview implements Serializable {
 
     /**
@@ -37,14 +37,11 @@ public class SpecReview implements Serializable {
     /** The review status. */
     private ReviewStatus reviewStatus;
 
-    /** The section type. */
-    private SectionType sectionType;
-
     /** The studio. */
     private boolean studio;
 
-    /** The comments. */
-    private Set<ReviewComment> comments;
+    /** The section reviews. */
+    private Set<SpecSectionReview> sectionReviews;
 
     /** The create user. */
     private String createUser;
@@ -57,6 +54,15 @@ public class SpecReview implements Serializable {
 
     /** The modify time. */
     private Date modifyTime;
+    
+    /** The last time when this spec review was made ready for review */
+    private Date readyForReviewTime;
+    
+    /** The last time when this spec review was marked 'review done' */
+    private Date reviewDoneTime;
+    
+    /** The user id of the reviewer (if any) */
+    private Long reviewerId;
 
     /**
      * Instantiates a new spec review.
@@ -123,25 +129,6 @@ public class SpecReview implements Serializable {
     }
 
     /**
-     * Gets the section type.
-     * 
-     * @return the section type
-     */
-    public SectionType getSectionType() {
-        return sectionType;
-    }
-
-    /**
-     * Sets the section type.
-     * 
-     * @param sectionType
-     *            the new section type
-     */
-    public void setSectionType(SectionType sectionType) {
-        this.sectionType = sectionType;
-    }
-
-    /**
      * Checks if is studio.
      * 
      * @return true, if is studio
@@ -161,22 +148,22 @@ public class SpecReview implements Serializable {
     }
 
     /**
-     * Gets the comments.
+     * Gets the spec sections reviews.
      * 
-     * @return the comments
+     * @return the spec sections reviews
      */
-    public Set<ReviewComment> getComments() {
-        return comments;
+    public Set<SpecSectionReview> getSectionReviews() {
+        return this.sectionReviews;
     }
 
     /**
-     * Sets the comments.
+     * Sets the spec sections reviews.
      * 
-     * @param comments
-     *            the new comments
+     * @param sectionReviews
+     *            the spec sections reviews
      */
-    public void setComments(Set<ReviewComment> comments) {
-        this.comments = comments;
+    public void setSectionReviews(Set<SpecSectionReview> sectionReviews) {
+        this.sectionReviews = sectionReviews;
     }
 
     /**
@@ -253,5 +240,59 @@ public class SpecReview implements Serializable {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /**
+     * Gets the last time when this spec review was marked ready for review.
+     * 
+     * @return the last time when this spec review was marked ready for review.
+     */
+    public Date getReadyForReviewTime() {
+        return this.readyForReviewTime;
+    }
+
+    /**
+     * Sets the last time when this spec review was marked ready for review.
+     * 
+     * @param readyForReviewTime the last time when this spec review was marked ready for review.
+     */
+    public void setReadyForReviewTime(Date readyForReviewTime) {
+        this.readyForReviewTime = readyForReviewTime;
+    }
+
+    /**
+     * Gets the last time when this spec review was marked review done.
+     * 
+     * @return the last time when this spec review was marked review done.
+     */
+    public Date getReviewDoneTime() {
+        return this.reviewDoneTime;
+    }
+
+    /**
+     * Sets the last time when this spec review was marked review done.
+     * 
+     * @param reviewDoneTime the last time when this spec review was marked review done.
+     */
+    public void setReviewDoneTime(Date reviewDoneTime) {
+        this.reviewDoneTime = reviewDoneTime;
+    }
+
+    /**
+     * Gets the reviewer id, if some reviewer exist else 0.
+     * 
+     * @return the reviewer id.
+     */
+    public Long getReviewerId() {
+        return this.reviewerId;
+    }
+
+    /**
+     * Sets the reviewer id.
+     * 
+     * @param reviewerId the reviewer id.
+     */
+    public void setReviewerId(Long reviewerId) {
+        this.reviewerId = reviewerId;
     }
 }
