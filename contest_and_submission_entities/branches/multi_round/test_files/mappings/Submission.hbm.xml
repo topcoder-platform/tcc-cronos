@@ -26,7 +26,8 @@
       class="com.topcoder.service.studio.contest.Contest"
       column="contest_id" fetch="select" not-null="true"/>
 
-    <property name="createDate" column="create_date" not-null="true" />
+		<property name="createDate" column="create_date" generated="insert"
+			not-null="true" />
 
     <property name="originalFileName" column="original_file_name"
       length="254" />
@@ -53,7 +54,8 @@
 
     <property name="width" />
 
-    <property name="modifyDate" column="modify_date" not-null="true" />
+		<property name="modifyDate" column="modify_date" generated="always"
+			not-null="true" />
 
     <property name="orSubmission" column="or_submission_id" />
 

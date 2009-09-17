@@ -14,8 +14,9 @@
 
     <property name="path" length="254" />
 
-    <property name="modifyDate" column="modify_date"
-      not-null="true" />
+		<property name="modifyDate" column="modify_date"
+			not-null="true"
+			generated="always" />
 
   </class>
 </hibernate-mapping>

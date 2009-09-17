@@ -41,7 +41,7 @@
       <many-to-many column="contest_id" class="com.topcoder.service.studio.contest.Contest" />
     </set>
 
-    <property name="createDate" column="create_date" not-null="true" />
+		<property name="createDate" column="create_date" generated="insert" not-null="true" />
 
   </class>
 </hibernate-mapping>

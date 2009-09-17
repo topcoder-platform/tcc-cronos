@@ -11,7 +11,8 @@
 
     <id name="reviewStatusId" column="review_status_id" type="long" />
 
-    <property name="description" column="review_status_desc" />
+		<property name="description" length="100" not-null="true"
+			column="review_status_desc" />
 
   </class>
 </hibernate-mapping>

@@ -23,6 +23,7 @@
 
     <property name="placed" not-null="true" />
 
-    <property name="createDate" column="create_date" not-null="true" />
-  </class>
+		<property name="createDate" column="create_date" generated="insert"
+			not-null="true" />
+	</class>
 </hibernate-mapping>
