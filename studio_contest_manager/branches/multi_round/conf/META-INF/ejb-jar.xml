@@ -47,7 +47,17 @@
                 <env-entry-name>auditChange</env-entry-name> 
                 <env-entry-type>java.lang.Boolean</env-entry-type> 
                 <env-entry-value>false</env-entry-value> 
-            </env-entry>             
+            </env-entry>        
+            <env-entry>
+                <env-entry-name>submitter_terms_id</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>20543</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submitter_role_id</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
                 <persistence-unit-name>contest_submission</persistence-unit-name>                     

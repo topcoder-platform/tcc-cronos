@@ -256,9 +256,34 @@ import com.topcoder.util.log.LogManager;
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
     /**
      * <p>
-     * This field represents the <code>SessionContext</code> injected by the
-     * EJB container automatically. It is marked with
-     *
+     * Represents the default value for submitter_terms_id.  This value will be
+     * overridden by 'submitter_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    @Resource(name = "submitter_terms_id")
+    private long submitter_terms_id;
+
+
+    /**
+     * <p>
+     * Represents the default value for  submitter_role_id.  This value will be
+     * overridden by 'submitter_role_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     */
+    @Resource(name = "submitter_role_id")
+    private long submitter_role_id;
+
+
+
+    /**
+     * <p>
+     * This field represents the <code>SessionContext</code> injected by the EJB
+     * container automatically. It is marked with
+     * 
      * @Resource annotation. It's non-null after injected when this bean is
      *           instantiated. And its reference is not changed afterwards. It
      *           is used in the initialize method to lookup JNDI resources.
@@ -540,6 +565,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
             em.persist(contest);
+
+            createProjectRoleTermsOfUse(contest.getContestId(), submitter_role_id, submitter_terms_id, em);
 
             return contest;
         } catch (IllegalStateException e) {
@@ -2223,6 +2250,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                                 + "' already exists.");
                 logException(e, "The contest type config with id '"
                         + contestTypeConfig.getId() + "' already exists.");
+                logException(e, "The contest type config with id '" + contestTypeConfig.getId() + "' already exists.");
                 sessionContext.setRollbackOnly();
 
                 throw e;
@@ -3109,47 +3137,41 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logEnter("getSimpleProjectContestData()");
 
             EntityManager em = getEntityManager();
-
-            String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
+            
+            
+            String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s "
-                    + "    left outer join submission_review sr "
-                    + "        on s.submission_id = sr.submission_id "
-                    + "    where contest_id = c.contest_id "
-                    + "     and s.submission_status_id = 1 "
-                    + "        and rank is not null "
-                    + "        and rank <= (select NVL(property_value, 10000) "
-                    + "                         from contest_config "
-                    + "                        where contest_id = c.contest_id and property_id = 8) "
-                    + "        and (sr.submission_id is null or (sr.review_status_id <> 2 "
-                    + "and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from submission as s " 
+                    + "	left outer join submission_review sr " 
+                    + "		on s.submission_id = sr.submission_id " 
+                    + "	where contest_id = c.contest_id " 
+                    + " 	and s.submission_status_id = 1 " 
+                    + "		and rank is not null " 
+                    + "		and rank <= (select NVL(property_value, 10000) " 
+                    + "					 	from contest_config "
+                    + "						where contest_id = c.contest_id and property_id = 8) "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
-                    + " (select contest_type_desc from contest_type_lu "
-                    + "where contest_type_id = c.contest_type_id) as contest_type_desc,"
-                    + " p.user_id as create_user, "
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  where resource_id=c.contest_id  "
-                    + " ),0)) as cperm, "
-
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  where resource_id=p.project_id  "
-                    + " ),0)) as pperm, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id  and is_studio=1 "
+					+ " ),0)) as cperm, "
 					
-					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
-
-                    + " from tc_direct_project p left OUTER JOIN contest c "
-                    + "ON c.tc_direct_project_id = p.project_id "
-                    + " left outer join contest_detailed_status_lu ds "
-                    + "on c.contest_detailed_status_id = ds.contest_detailed_status_id "
-                    + "  where (c.deleted is null or c.deleted = 0) "
-                    + "and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
-                    + "order by p.project_id";
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
+					+ " ),0)) as pperm, "
+					
+					+ " NVL((select (select name " 
+		            		+ "          from spec_review_status_type_lu as c " 
+		            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+		            		+ " from spec_review as sr " 
+		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+					
+                    + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
+                    + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+                    + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,
                     "ContestForMyProjectResults");
@@ -3222,45 +3244,37 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s "
-                    + "    left outer join submission_review sr "
-                    + "        on s.submission_id = sr.submission_id "
-                    + "    where contest_id = c.contest_id "
-                    + "     and s.submission_status_id = 1 "
-                    + "        and rank is not null "
-                    + "        and rank <= (select NVL(property_value, 10000) "
-                    + "                         from contest_config "
-                    + "                        where contest_id = c.contest_id and property_id = 8) "
-                    + "        and (sr.submission_id is null "
-                    + "or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
-                    + " (select count(*) from jivemessage "
-                    + "where forumid = c.forum_id ) as num_for, "
-                    + " (select contest_type_desc from contest_type_lu "
-                    + "where contest_type_id = c.contest_type_id) as contest_type_desc,"
-                    + " p.user_id as create_user, "
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  "
-                    + "where resource_id=c.contest_id and is_studio=1 "
-                    + " ),0)) as cperm, "
-
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  where resource_id=p.project_id  "
-                    + " ),0)) as pperm, "
-
-					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
-
-                    + " from tc_direct_project p left OUTER JOIN contest c "
-                    + "ON c.tc_direct_project_id = p.project_id "
-                    + " left outer join contest_detailed_status_lu ds "
-                    + "on c.contest_detailed_status_id = ds.contest_detailed_status_id "
-                    + "  where (c.deleted is null or c.deleted = 0) "
-                    + "and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
-                    + " and p.project_id = " + pid;
+                    + " (select count(*) from submission as s " 
+                    + "	left outer join submission_review sr " 
+                    + "		on s.submission_id = sr.submission_id " 
+                    + "	where contest_id = c.contest_id " 
+                    + " 	and s.submission_status_id = 1 " 
+                    + "		and rank is not null " 
+                    + "		and rank <= (select NVL(property_value, 10000) " 
+                    + "					 	from contest_config "
+                    + "						where contest_id = c.contest_id and property_id = 8) "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 "
+					+ " ),0)) as cperm, "
+					
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
+					+ " ),0)) as pperm, "
+					
+					+ " NVL((select (select name " 
+                    			+ "          from spec_review_status_type_lu as c " 
+                    			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+                    			+ " from spec_review as sr " 
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+					
+                    + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
+                    + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+                    + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
+                    + " and p.project_id = "+pid;
 
             Query query = em.createNativeQuery(qstr,
                     "ContestForMyProjectResults");
@@ -3330,56 +3344,45 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logEnter("getSimpleProjectContestDataForUser()");
 
             EntityManager em = getEntityManager();
-
-            String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
+            
+            
+            String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s "
-                    + "    left outer join submission_review sr "
-                    + "        on s.submission_id = sr.submission_id "
-                    + "    where contest_id = c.contest_id "
-                    + "     and s.submission_status_id = 1 "
-                    + "        and rank is not null "
-                    + "        and rank <= (select NVL(property_value, 10000) "
-                    + "                         from contest_config "
-                    + "                        where contest_id = c.contest_id and property_id = 8) "
-                    + "        and (sr.submission_id is null or"
-                    + " (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
-                    + " (select count(*) from jivemessage "
-                    + "where forumid = c.forum_id ) as num_for, "
-                    + " (select contest_type_desc from contest_type_lu "
-                    + "where contest_type_id = c.contest_type_id) as contest_type_desc,"
-                    + " p.user_id as create_user, "
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  "
-                    + "where resource_id=c.contest_id and is_studio=1 and user_id = "
-                    + createdUser
-                    + " ),0)) as cperm, "
-
-                    + " (select name from permission_type "
-                    + "where permission_type_id= NVL( (select max( permission_type_id)  "
-                    + " from user_permission_grant as upg  "
-                    + "where resource_id=p.project_id and user_id = "
-                    + createdUser
-                    + " ),0)) as pperm,  "
-
+                    + " (select count(*) from submission as s " 
+                    + "	left outer join submission_review sr " 
+                    + "		on s.submission_id = sr.submission_id " 
+                    + "	where contest_id = c.contest_id " 
+                    + " 	and s.submission_status_id = 1 " 
+                    + "		and rank is not null " 
+                    + "		and rank <= (select NVL(property_value, 10000) " 
+                    + "					 	from contest_config "
+                    + "						where contest_id = c.contest_id and property_id = 8) "
+                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
+					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+            		+ " p.user_id as create_user, "
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id = " + createdUser
+					+ " ),0)) as cperm, "
 					
-					+ " (select case when SUM(NVL(b.review_status_type_id - 1, 10000)) > 10000 then 'PENDING' "
-					+ " WHEN SUM(NVL(b.review_status_type_id - 1, 10000)) = 0 then 'PASSED' else 'FAILED' end  " 
-					+ " from spec_review_section_type_lu as a  left join spec_review as b on (a.review_section_type_id = b.review_section_type_id "
-					+ " and a.is_studio = b.is_studio and b.contest_id = c.contest_id) where a.is_studio = 1) as spec_review_status"
+					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+					+ " from user_permission_grant as upg  where resource_id=p.project_id and user_id = " + createdUser 
+					+ " ),0)) as pperm, "
+					
+					+ " NVL((select (select name " 
+                    			+ "          from spec_review_status_type_lu as c " 
+                    			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
+                    			+ " from spec_review as sr " 
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
-                    + " left outer join contest_detailed_status_lu ds "
-                    + "on c.contest_detailed_status_id = ds.contest_detailed_status_id "
-                    + "  where (c.deleted is null or c.deleted = 0) "
-                    + "and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
+                    + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+                    + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
 
                     + " order by p.project_id";
 
-            Query query = em.createNativeQuery(qstr,
-                    "ContestForMyProjectResults");
+            Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
             List list = query.getResultList();
 
@@ -4908,6 +4911,37 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     "There are errors while persisting the entity.");
         } finally {
             logExit("searchUser()");
+        }
+    }
+
+	
+     /**
+     * This method will create a project role terms of use association.
+     *
+     * @param projectId the project id to associate
+     * @param resourceRoleId the role id to associate
+     * @param termsOfUseId the terms of use id to associate
+     * @param dataSource the datasource.
+     * @throws PersistenceException if any error occurs
+     */
+    private void createProjectRoleTermsOfUse(Long contestId, long resourceRoleId, long termsOfUseId, EntityManager em)
+    {
+
+        StringBuffer querystr = new StringBuffer(1024);
+        querystr.append("INSERT ");
+        querystr.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
+        querystr.append("VALUES (?, ?, ?)");
+
+        Query query = em.createNativeQuery(querystr.toString());
+        query.setParameter(1, contestId);
+        query.setParameter(2, resourceRoleId);
+        query.setParameter(3, termsOfUseId);
+
+        int rc = query.executeUpdate();
+        if (rc != 1) {
+            throw(new PersistenceException("Wrong number of rows inserted into " +
+                    "'project_role_terms_of_use_xref'. Inserted " + rc + ", " +
+                    "should have inserted 1."));
         }
     }
 
