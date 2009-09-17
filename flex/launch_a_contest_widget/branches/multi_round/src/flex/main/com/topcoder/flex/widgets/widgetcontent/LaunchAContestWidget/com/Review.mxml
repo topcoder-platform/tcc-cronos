@@ -4,6 +4,8 @@
 -->
 
 <!--
+    This mxml component presents the review page for the launch contest widget.
+
     Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
     - Inline Review Feature has been introduced.
     - As per the requirement the layout of the page has been updated.
@@ -11,9 +13,12 @@
     
     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - based on the backend data now reviewer and writer are correctly handled.
-    
-    @author TCSASSEMBLER
-    @version 1.0.1
+
+    Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Added multi round specific fields to the corresponding review sections.
+
+    @author TCSDEVELOPER
+    @version 1.0.2
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -199,14 +204,22 @@
                 sectionNameToIdMapping["Attached Files"]="attachedFiles";
                 sectionNameToIdMapping["Contest Schedule"]="contestSchedule";
             }
-            
-            // Set all section values from previous steps
-            // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
-            //        - review data structure is updated.
-            // Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 2
-            //        - review data is read from persistent now.
+
+            /**
+             * This set all section values from previous steps
+             *
+             * Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             *        - review data structure is updated.
+             * Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 2
+             *        - review data is read from persistent now.
+             *
+             * Note: multi-round specific information was added to the corresponding sections
+             */
             public function setAllValues():void {
-				if (mainWidget && mainWidget.competitionType) {
+                var milestoneDateObj:Date;
+                var milestoneTimeStr:String;
+
+                if (mainWidget && mainWidget.competitionType) {
                     cstTypeStep1=mainWidget.competitionType;
                 }
                 
@@ -254,6 +267,13 @@
                         fromTime=mainWidget.sched.CmbHourStart.selectedItem.label + ":" + mainWidget.sched.CmbMinuteStart.selectedItem.label + " " + mainWidget.sched.timezoneStart.text;
                         toDate=mainWidget.sched.dfEnd.selectedDate;
                         toTime=mainWidget.sched.CmbHourEnd.selectedItem.label + ":" + mainWidget.sched.CmbMinuteEnd.selectedItem.label + " " + mainWidget.sched.timezoneEnd.text;
+
+                        if (mainWidget.multiRoundContest) {
+                            milestoneDateObj=mainWidget.sched.dfMilestone.selectedDate;
+                            milestoneTimeStr=mainWidget.sched.CmbHourMilestone.selectedItem.label + ":" +
+                               mainWidget.sched.CmbMinuteMilestone.selectedItem.label + " " +
+                                   mainWidget.sched.timezoneMilestone.text;
+                        }
                     }
                     
                 } else {
@@ -322,6 +342,26 @@
                 //
                 if (mainWidget && mainWidget.studioContestType) {
                     contestType_step2.text=cstTypeStep2;
+                    if (mainWidget.multiRoundContest && mainWidget.competition.contestData && 
+                        mainWidget.competition.contestData.milestonePrizeData) {
+                        contestFormat_step2.text="Multi-Round";
+
+                        if (mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions > 0) {
+                            var multiple:Boolean=mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions > 1;
+
+                            milestonePrize_step2.text=mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions +
+                            " prize" + (multiple ? "s" : "") +
+                            " at $" + mainWidget.competition.contestData.milestonePrizeData.amount + (multiple ? " each." : ".");
+                        } else {
+                            milestonePrize_step2.text="None.";
+                        }
+                        roundOneSpecificInstructionsText.htmlText=
+                            mainWidget.competition.contestData.multiRoundData.roundOneIntroduction;
+                        roundTwoSpecificInstructionsText.htmlText=
+                            mainWidget.competition.contestData.multiRoundData.roundTwoIntroduction;
+                    } else {
+                        contestFormat_step2.text="Single-Round";
+                    }
                     p1.text=firstPrize;
                     p2.text=secondPrize;
                     p3.text=thirdPrize;
@@ -414,6 +454,14 @@
                     }
 
                     endTime.text=toTime;
+                }
+
+                if (mainWidget && mainWidget.multiRoundContest) {
+                    if (milestoneDateObj) {
+                        milestoneDate.text=(milestoneDateObj.getMonth() + 1).toString() + '-' + milestoneDateObj.getDate() + '-' + milestoneDateObj.getFullYear().toString();
+                    }
+
+                    milestoneTime.text=milestoneTimeStr;
                 }
 
                 //
@@ -1119,6 +1167,12 @@
                                   fontWeight="bold"/>
                         <mx:Text id="contestType_step2"/>
                     </mx:HBox>
+                    <!-- New Format section -->
+                    <mx:HBox width="100%">
+                        <mx:Label text="Format:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="contestFormat_step2"/>
+                    </mx:HBox>
                     <mx:HBox verticalAlign="top"
                              width="100%"
                              height="100%">
@@ -1172,6 +1226,13 @@
                                          width="55"/>
                             </mx:HBox>
                         </mx:VBox>
+                    </mx:HBox>
+                    <!-- New Milestone prize section -->
+                    <mx:HBox width="100%" visible="{mainWidget.multiRoundContest}"
+                             includeInLayout="{mainWidget.multiRoundContest}">
+                        <mx:Label text="Milestone Prize:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="milestonePrize_step2"/>
                     </mx:HBox>
                 </mx:VBox>
                 <mx:HBox width="100%"
@@ -1304,6 +1365,24 @@
                     <mx:Text id="glsInput"
                              width="500"
                              height="100%"/>
+                    <!-- New Round one/two specific information section -->
+                    <mx:VBox width="100%"
+                             height="100%"
+                             visible="{mainWidget.multiRoundContest}"
+                             includeInLayout="{mainWidget.multiRoundContest}">
+                        <mx:Spacer height="5"/>
+                        <mx:Label text="Round 1 Specific Instructions:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="roundOneSpecificInstructionsText"
+                                 width="500"
+                                 height="100%"/>
+                        <mx:Spacer height="5"/>
+                        <mx:Label text="Round 2 Specific Instructions:"
+                                  fontWeight="bold"/>
+                        <mx:Text id="roundTwoSpecificInstructionsText"
+                                 width="500"
+                                 height="100%"/>
+                    </mx:VBox>
                 </mx:VBox>
                 <mx:VBox width="100%"
                          height="100%"
@@ -1583,6 +1662,21 @@
                              text="Start Time"/>
                 </mx:HBox>
 
+                <!-- New Milestone date section -->
+                <mx:HBox visible="{mainWidget.multiRoundContest}"
+                         includeInLayout="{mainWidget.multiRoundContest}"
+                         height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
+                    <mx:Label text="Milestone Date:"
+                              fontWeight="bold"/>
+                    <mx:Text id="milestoneDate"
+                             text="Milestone Date"/>
+                    <mx:Label text="Milestone Time:"
+                              fontWeight="bold"/>
+                    <mx:Text id="milestoneTime"
+                             text="Milestone Time"/>
+                </mx:HBox>
                 <mx:HBox visible="{mainWidget.studioContestType}"
                          includeInLayout="{mainWidget.studioContestType}"
                          height="100%"

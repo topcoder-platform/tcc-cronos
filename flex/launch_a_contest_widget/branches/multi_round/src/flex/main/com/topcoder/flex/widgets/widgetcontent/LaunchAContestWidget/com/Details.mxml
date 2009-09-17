@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+
+<!--
+
+    This mxml component presents the details page for the launch contest widget.
+
+    Version 1.0.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Project name title is hidden if the summary is shown since it's already there
+        - Added Round one/two specific information fields for studio multi-round contests.
+
+    @author TCSDEVELOPER
+    @version 1.0.1
+    @since 1.0
+-->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
            width="100%"
            height="100%"
            xmlns:tc="com.topcoder.flex.util.editor.*"
            horizontalScrollPolicy="off"
            verticalScrollPolicy="off"
-		   creationComplete="handleCreationComplete(event)">
+           creationComplete="handleCreationComplete(event)">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestMultiRoundInformationData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
             import mx.utils.ObjectUtil;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology;
@@ -19,21 +36,21 @@
             import flash.events.MouseEvent;
             import mx.containers.Panel;
             import com.topcoder.flex.util.editor.TCRichTextEditor;
-	    	import mx.controls.ButtonLabelPlacement; // BUGR-1501
-	    	import flash.utils.Dictionary;
-	    	import mx.rpc.AbstractOperation;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501
+            import flash.utils.Dictionary;
+            import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.soap.mxml.WebService;
 
             import mx.collections.SortField;
             import mx.collections.Sort;
-            
+
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
 
-		    private static const ADDEDHEIGHT:Number = 80;
-		    private static const ADDEDHEIGHT_GOALS:Number = 380;
-		    private var dx:Number = 0;
-		    private var dy:Number = 0;
+            private static const ADDEDHEIGHT:Number = 80;
+            private static const ADDEDHEIGHT_GOALS:Number = 380;
+            private var dx:Number = 0;
+            private var dy:Number = 0;
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -128,9 +145,12 @@
              */
             public static var businessLayerApplicationCategory:SoftwareCategory = null;
 
-	        private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
-	        private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
+            private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
+            private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
 
+            /**
+             * This method initializes the corresponding data necessary to show this page
+             */
             public function initData():void {
                 
                 requestConfigData.send();
@@ -151,6 +171,15 @@
                     ctInput.text=this.mainWidget.competition.contestData.name; // BUGR-1379
                     introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
                     glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
+
+                    // set multi round specific information fields
+                    if (this.mainWidget.competition.contestData.multiRoundData != null) {
+                        roundOneSpecificInstructionsInput.htmlText=
+                           this.mainWidget.competition.contestData.multiRoundData.roundOneIntroduction;
+                        roundTwoSpecificInstructionsInput.htmlText=
+                           this.mainWidget.competition.contestData.multiRoundData.roundTwoIntroduction;
+                    }
+
                 } else {
                     ns_ctInput.text="";
                     ns_shortDesc.htmlText="";
@@ -331,9 +360,9 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function loadMasterTechnologies():void {
-				if (!mainWidget._csws) {
-					return;
-				}
+                if (!mainWidget._csws) {
+                    return;
+                }
                 var getActiveTechnologiesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveTechnologies");
                 getActiveTechnologiesOp.addEventListener("result", handleMasterTechnologiesLoad);
                 getActiveTechnologiesOp.send();
@@ -401,21 +430,21 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             public function loadCategories():void { // BUGR-1678
-				if (!mainWidget._csws) {
-					return;
-				}
+                if (!mainWidget._csws) {
+                    return;
+                }
                 var getActiveCategoriesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveCategories");
                 getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
                 getActiveCategoriesOp.send();
             }
 
-			// BUGR-1678
-			public function isDesOrDevContestType():Boolean {
-				return mainWidget.softwareCompetition && 
-					(mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
-					mainWidget.softwareCompetition.type == "DESIGN");
-			}
-			//
+            // BUGR-1678
+            public function isDesOrDevContestType():Boolean {
+                return mainWidget.softwareCompetition &&
+                    (mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
+                    mainWidget.softwareCompetition.type == "DESIGN");
+            }
+            //
             // handled for load of active categories from web-service.
             // this method identifies the child / parent relationship as mentioned in 1.1.4
             // and groups the categories into root and child categories.
@@ -690,7 +719,7 @@
                 //this.mainWidget.review.ns_detailedDescStr=ns_detailedDesc.text;
                 //this.mainWidget.review.ns_commentsStr=ns_comments.text;
 
-				  // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                  // added for Cockpit Launch Contest - Update for Spec Creation v1.0
                 this.mainWidget.review.ns_detailedRequirementsStr=ns_detailedRequirements.text;
                 this.mainWidget.review.ns_submissionDeliverablesStr=ns_submissionDeliverables.text;
                 this.mainWidget.review.ns_environmentSetupInstructionsStr=ns_environmentSetupInstructions.text;
@@ -725,7 +754,14 @@
                 return true;
             }
 
-            // BUGR-1475 & BUGR-1067
+            /**
+             * This method validates fields for studio contests and sets the corresponding data in contest data object
+             *
+             * @param showMsg a flag indicating whether or not to show an error message
+             * @param showPageName a flag indicating whether or not to show the page name in the error message
+             *
+             * @return true if valid, false otherwise
+             */
             public function s_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
                 if (ctInput.text == "") {
                     if (showMsg) {
@@ -748,6 +784,21 @@
                     return false;
                 }
 
+                // validate multi round information only for multi round contests
+                if (mainWidget.competition.contestData.multiRound && roundOneSpecificInstructionsInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter specific instructions for Round One" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
+                if (mainWidget.competition.contestData.multiRound && roundTwoSpecificInstructionsInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please enter specific instructions for Round Two" + (showPageName ? " at Details Page" : ""));
+                    }
+                    return false;
+                }
+
                 if (introInput.htmlText.length > 10000) { // BUGR-1279
                     if (showMsg) {
                         Helper.showAlertMessage("Please shorten the intro" + (showPageName ? " at Details Page" : ""));
@@ -764,6 +815,22 @@
                 this.mainWidget.competition.contestData.name=ctInput.text; // BUGR-1379
                 this.mainWidget.competition.contestData.shortSummary=introInput.htmlText; // BUGR-1379
                 this.mainWidget.competition.contestData.contestDescriptionAndRequirements=glsInput.htmlText; // BUGR-1379
+
+                // set the corresponding multi round information data
+                if (mainWidget.competition.contestData.multiRound) {
+                    if (mainWidget.competition.contestData.multiRoundData == null) {
+                        mainWidget.competition.contestData.multiRoundData = new ContestMultiRoundInformationData();
+                    }
+
+                    this.mainWidget.competition.contestData.multiRoundData.roundOneIntroduction=roundOneSpecificInstructionsInput.htmlText;
+                    this.mainWidget.competition.contestData.multiRoundData.roundTwoIntroduction=roundTwoSpecificInstructionsInput.htmlText;
+                } else {
+                    if (mainWidget.competition.contestData.multiRoundData != null &&
+                        mainWidget.competition.contestData.multiRoundData.id == -1) {
+                        mainWidget.competition.contestData.multiRoundData=null;
+                    }
+                }
+
                 /*this.mainWidget.review.contentTitleStr=ctInput.text;
                 this.mainWidget.review.IntroductionStr=introInput.text;
                 this.mainWidget.review.glsInputStr=glsInput.text;*/
@@ -825,42 +892,42 @@
                 }
             }
 
-	        // BUGR-1458
-	        private function handleRTEMouseMove(event:MouseEvent):void {
-	        	var editor:TCRichTextEditor = currentResizingRTEditor;
-	        	if (editor && editor.isResizing) {
-	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
-		        		mainWidget.height += (stage.mouseY - dy);
-		        		widgetHeight += (stage.mouseY - dy);
+            // BUGR-1458
+            private function handleRTEMouseMove(event:MouseEvent):void {
+                var editor:TCRichTextEditor = currentResizingRTEditor;
+                if (editor && editor.isResizing) {
+                    if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
+                        mainWidget.height += (stage.mouseY - dy);
+                        widgetHeight += (stage.mouseY - dy);
 
-		        		dx = stage.mouseX;
-		        		dy = stage.mouseY;
-	        		}
-	        	}
-	        }
+                        dx = stage.mouseX;
+                        dy = stage.mouseY;
+                    }
+                }
+            }
 
-	        private function handleRTEDragStart(event:Event): void {
-	        	dx = stage.mouseX;
-	        	dy = stage.mouseY;
-	        	currentResizingRTEditor = event.currentTarget as TCRichTextEditor;
-	        }
+            private function handleRTEDragStart(event:Event): void {
+                dx = stage.mouseX;
+                dy = stage.mouseY;
+                currentResizingRTEditor = event.currentTarget as TCRichTextEditor;
+            }
 
-	        private function handleCreationComplete(event:Event):void {
-	        	// BUGR-1641
-				// The rich text editors in this view
-				var rtEditors:Array = [
-	        		introInput, glsInput, ns_shortDesc, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
-	        	];
+            private function handleCreationComplete(event:Event):void {
+                // BUGR-1641
+                // The rich text editors in this view
+                var rtEditors:Array = [
+                    introInput, glsInput, ns_shortDesc, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
+                ];
 
-				for each (var rtEditor:TCRichTextEditor in rtEditors) {
-					if (rtEditor != null) {
-						rtEditor.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
-		        		rtEditor.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
-	   				}
-				}
+                for each (var rtEditor:TCRichTextEditor in rtEditors) {
+                    if (rtEditor != null) {
+                        rtEditor.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
+                        rtEditor.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+                       }
+                }
 
-				this.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
-	        }
+                this.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+            }
 
             //
             // handler for adding technology to master list.
@@ -870,12 +937,12 @@
             private function addToMasterTechList():void {
                 var items:Array = this.ns_curTechList.selectedItems;
                 for each (var item:Object in items) {
-                	// remove item from current technologies.
-	                var index:int=_boundCurrentTechnologies.getItemIndex(item);
-	                _boundCurrentTechnologies.removeItemAt(index);
+                    // remove item from current technologies.
+                    var index:int=_boundCurrentTechnologies.getItemIndex(item);
+                    _boundCurrentTechnologies.removeItemAt(index);
 
-	                // add item to master technologies.
-	                _boundMasterTechnologies.addItem(item);
+                    // add item to master technologies.
+                    _boundMasterTechnologies.addItem(item);
                 }
 
                 sortBoundMasterTechnologies();
@@ -931,12 +998,12 @@
             private function addToMasterCategoryList():void {
                 var items:Array = this.ns_curCategoryList.selectedItems;
                 for each (var item:Object in items) {
-	                // remove item from current technologies.
-	                var index:int=_boundCurrentCategories.getItemIndex(item);
-	                _boundCurrentCategories.removeItemAt(index);
+                    // remove item from current technologies.
+                    var index:int=_boundCurrentCategories.getItemIndex(item);
+                    _boundCurrentCategories.removeItemAt(index);
 
-	                // add item to master technologies.
-	                _boundMasterCategories.addItem(item);
+                    // add item to master technologies.
+                    _boundMasterCategories.addItem(item);
                 }
 
                 sortBoundMasterCategories();
@@ -951,20 +1018,20 @@
                 if (!item) {
                     var items:Array = this.ns_masterCategories.selectedItems;
                     for each (var itm:Object in items) {
-                    	// remove item from master technologies;
-		                var index:int=_boundMasterCategories.getItemIndex(itm);
-		                _boundMasterCategories.removeItemAt(index);
+                        // remove item from master technologies;
+                        var index:int=_boundMasterCategories.getItemIndex(itm);
+                        _boundMasterCategories.removeItemAt(index);
 
-		                // add item to current technologies;
-		                _boundCurrentCategories.addItem(itm);
+                        // add item to current technologies;
+                        _boundCurrentCategories.addItem(itm);
                     }
                 } else {
-	                // remove item from master technologies;
-	                var index:int=_boundMasterCategories.getItemIndex(item);
-	                _boundMasterCategories.removeItemAt(index);
+                    // remove item from master technologies;
+                    var index:int=_boundMasterCategories.getItemIndex(item);
+                    _boundMasterCategories.removeItemAt(index);
 
-	                // add item to current technologies;
-	                _boundCurrentCategories.addItem(item);
+                    // add item to current technologies;
+                    _boundCurrentCategories.addItem(item);
                 }
 
                 sortCurrentCategories();
@@ -1043,10 +1110,12 @@
 		       label="PREVIEW CONTEST"
 		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
         </mx:HBox>
-		<mx:HBox horizontalAlign="right" width="100%">
-			<mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
-			<mx:Spacer width="100%" />
-		</mx:HBox>
+        <!-- Hide project name if the summary is shown since it's already there -->
+        <mx:HBox horizontalAlign="right" width="100%" visible="{!mainWidget.showSummary}"
+                     includeInLayout="{!mainWidget.showSummary}">
+            <mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
+            <mx:Spacer width="100%" />
+        </mx:HBox>
         <mx:Text width="100%"
                  id="contestDetails">
             <mx:text> {mainWidget.studioContestType ? ST_PROJECT_DESCRIPTION : SW_PROJECT_DESCRIPTION }
@@ -1124,6 +1193,39 @@
                                      height="300"
                                      minHeight="300"/>
                 <!-- BUGR-1279 -->
+            </mx:VBox>
+            <!-- New multi round specific information fields -->
+            <mx:VBox width="100%"
+                     verticalGap="0" visible="{mainWidget.multiRoundContest}"
+                     includeInLayout="{mainWidget.multiRoundContest}">
+                <mx:Spacer height="5"/>
+                <mx:VBox width="100%"
+                         verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Round 1 Specific Instructions:"
+                                  fontWeight="bold"/>
+                        <mx:Spacer width="308"/>
+                    </mx:HBox>
+                    <tc:TCRichTextEditor id="roundOneSpecificInstructionsInput"
+                                         width="100%"
+                                         height="150"
+                                         minHeight="150"/>
+                </mx:VBox>
+                <mx:Spacer height="5"/>
+                <mx:VBox width="100%"
+                         verticalGap="0">
+                    <mx:HBox>
+                        <mx:Label text="Round 2 Specific Instructions:"
+                                  fontWeight="bold"/>
+                        <mx:Spacer width="308"/>
+                    </mx:HBox>
+                    <tc:TCRichTextEditor id="roundTwoSpecificInstructionsInput"
+                                         width="100%"
+                                         height="150"
+                                         minHeight="150"/>
+                </mx:VBox>
+                <mx:Spacer height="5"/>
+                <mx:Label text="Please note you also need to add feedback for each milestone winner after the milestone ends. You can do this in your contest forum."/>
             </mx:VBox>
         </mx:VBox>
 

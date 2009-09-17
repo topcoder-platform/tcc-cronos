@@ -19,11 +19,15 @@
 
      Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - introduced webservice methods to execute spec review workflow.
-        
-    
-    @author TCSASSEMBLER
-    @version 1.0.2
-    @since 1.0    
+
+     Version 1.0.3 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - New summary box for studio contests.
+        - New multi contest and show summary flags attributes were added.
+
+
+    @author TCSDEVELOPER
+    @version 1.0.3
+    @since 1.0
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                            xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
@@ -44,6 +48,7 @@
             import mx.managers.PopUpManager;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
             import com.topcoder.flex.model.IWidgetFramework;
             import mx.rpc.soap.SOAPHeader;
             import mx.controls.Image;
@@ -69,6 +74,21 @@
 
             import mx.collections.ArrayCollection;
             import mx.utils.ObjectUtil;
+            import com.topcoder.flex.util.date.DateUtil;
+
+            /**
+             * Constant to store the "not available" message for the summary box.
+             *
+             * @since 1.0.3
+             */
+            private static const NOT_AVAILABLE_MESSAGE:String="(not available)";
+
+            /**
+             * Constant to store the "none" message for the summary box.
+             *
+             * @since 1.0.3
+             */
+            private static const NONE_MESSAGE:String="none";
 
             // BUGR-1141
             [Bindable]
@@ -126,7 +146,195 @@
             public function set studioContestType(val:Boolean):void {
                 initStepNums(val);
             }
-            
+
+            /**
+             * A flag indicating whether or not the studio contest is a multi-round contest
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            private var _multiRoundContest:Boolean=false;
+
+            /**
+             * Gets the multi round contest flag
+             *
+             * @return true if the contest is multi round, false otherwise
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            public function get multiRoundContest():Boolean {
+                return _multiRoundContest;
+            }
+
+            /**
+             * Sets the multi round contest flag
+             *
+             * @param val the multi round contest flag value
+             *
+             * @since 1.0.3
+             */
+            public function set multiRoundContest(val:Boolean):void {
+                _multiRoundContest=val;
+            }
+
+            /**
+             * A flag indicating whether or not to show the summary box
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            private var _showSummary:Boolean=false;
+
+            /**
+             * Gets the show summary flag
+             *
+             * @return true if the summary is shown, false otherwise
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            public function get showSummary():Boolean {
+                return _showSummary;
+            }
+
+            /**
+             * Sets the show summary flag
+             *
+             * @param val the show summary flag value
+             *
+             * @since 1.0.3
+             */
+            public function set showSummary(val:Boolean):void {
+                _showSummary=val;
+            }
+
+            /**
+             * This method updates the summary box content.
+             *
+             * @since 1.0.3
+             */
+            public function updateSummary():void {
+                var fee:Number=updateContestFee();
+                var prizes:Number=updateContestPrizes();
+
+                if (fee && prizes) {
+                    contestTotalCostTxt.text="$"+(prizes + fee).toString();
+                } else {
+                    contestTotalCostTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                }
+
+                updateContestSchedule();
+            }
+
+            /**
+             * This method calculates the total prize and updates the summary box.
+             *
+             * @return the contest prizes total
+             *
+             * @since 1.0.3
+             */
+            private function updateContestPrizes():Number {
+                var total:Number=0;
+                if (competition && competition.contestData) {
+                    if (competition.contestData.prizes) {
+                        for (var i:int=0; i < competition.contestData.prizes.length; i++) {
+                            var prize:PrizeData=competition.contestData.prizes[i] as PrizeData;
+                            var p:int=prize.place as int;
+                            if (p <= 5) {
+                                total+=prize.amount;
+                            }
+                        }
+                    }
+
+                    // if multi-round, add milestone prizes to the total
+                    if (competition.contestData.multiRound &&
+                        competition.contestData.milestonePrizeData &&
+                        competition.contestData.milestonePrizeData.numberOfSubmissions &&
+                        competition.contestData.milestonePrizeData.amount) {
+                        total+=competition.contestData.milestonePrizeData.numberOfSubmissions *
+                            competition.contestData.milestonePrizeData.amount;
+                    }
+                }
+
+                if (total > 0){
+                    contestPrizesTxt.text="$"+total.toString();
+                    return total;
+                } else {
+                    contestPrizesTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                    return NaN;
+                }
+            }
+
+            /**
+             * This method gets the contest administration fee amount and updates the summary box.
+             *
+             * @return the contest administration fee amount
+             *
+             * @since 1.0.3
+             */
+            private function updateContestFee():Number {
+                if (competition && competition.contestData &&
+                    competition.contestData.contestAdministrationFee) {
+                    contestFeeTxt.text="$"+competition.contestData.contestAdministrationFee.toString();
+                    return competition.contestData.contestAdministrationFee;
+                } else {
+                    contestFeeTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                    return NaN;
+                }
+            }
+
+            /**
+             * This method formats the given date to present it in the summary box
+             *
+             * @param dateStr the date string to re-format
+             *
+             * @return the formatted date
+             *
+             * @since 1.0.3
+             */
+            private function prepareDateForSummary(dateStr:String):String {
+                var dateObj:Date=DateUtil.parseFromString(dateStr);
+                return DateUtil.getDisplayableDateCompFromDate(dateObj) + " " +
+                    DateUtil.getDisplayableTimeCompFromDate(dateObj) + " " +
+                    DateUtil.getDisplayableTimeZoneCompFromDate(dateObj);
+            }
+
+            /**
+             * This method updates schedule information in the summary box
+             *
+             * @since 1.0.3
+             */
+            private function updateContestSchedule():void {
+                if (competition) {
+                    if (competition.startTime) {
+                        contestStartTxt.text=prepareDateForSummary(competition.startTime);
+                    } else {
+                        contestStartTxt.text=NOT_AVAILABLE_MESSAGE;
+                    }
+
+                    if (competition.endTime) {
+                        contestEndTxt.text=prepareDateForSummary(competition.endTime);
+                    } else {
+                        contestEndTxt.text=NOT_AVAILABLE_MESSAGE;
+                    }
+
+                    // if multi-round, show milestone date as well
+                    if (competition.contestData) {
+                        if (!competition.contestData.multiRound) {
+                            contestMilestoneTxt.text=NONE_MESSAGE;
+                        } else {
+                            if (competition.contestData.multiRoundData &&
+                                competition.contestData.multiRoundData.milestoneDate) {
+                                contestMilestoneTxt.text=prepareDateForSummary(competition.contestData.multiRoundData.milestoneDate);
+                            } else {
+                                contestMilestoneTxt.text=NOT_AVAILABLE_MESSAGE;
+                            }
+                           }
+                       }
+                }
+            }
+
             private function initStepNums(studio:Boolean):void {
                 isStudioContestType=studio;
                 //DETAILS_HEIGHT=(val ? 950 : 1850);
@@ -613,11 +821,11 @@
                                
                             result.type = contestSelect.contestType.selectedValue;
                         }
-			            
-			            break;
-			        case 3:
-			            
-			            this.currentState = "DetailsState";
+
+                        break;
+                    case 3:
+
+                        this.currentState = "DetailsState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -627,22 +835,22 @@
                         goNext.label = "NEXT";
                     
                        details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
-						details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
-						details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
-						details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
-					    details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
-					    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
-					    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+                        details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                        details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+                        details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                        details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                        details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                        details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                        //TODO-HEIGHT-this.height = DETAILS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-						details.initData();
-			            break;
-			        case 4:
-			            
-			           
-			           specf.requestFileTypes.send();
+                        details.initData();
+                        break;
+                    case 4:
+
+
+                       specf.requestFileTypes.send();
                        this.currentState = "SpecificationsState";
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
@@ -656,10 +864,10 @@
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-			            break;
-			        case 5:
-			            
-			            this.currentState = "AttachFilesState";
+                        break;
+                    case 5:
+
+                        this.currentState = "AttachFilesState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -672,12 +880,12 @@
                        //TODO-HEIGHT-this.height = ATTACH_FILES_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-                       
-			            break;
-			        case 6:
-			            
-			            //validate input
-    				   sched.curContestType = Number(overView.studioType.selectedValue);
+
+                        break;
+                    case 6:
+
+                        //validate input
+                       sched.curContestType = Number(overView.studioType.selectedValue);
                        sched.requestSchedule.send();
     
                        this.currentState = "ScheduleState";
@@ -692,10 +900,10 @@
                        //TODO-HEIGHT-this.height = SCHEDULE_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-			            break;
-			        case 7:
-			            
-			           this.currentState = "ReviewState";
+                        break;
+                    case 7:
+
+                       this.currentState = "ReviewState";
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -720,10 +928,10 @@
                        //TODO-HEIGHT-this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-			            break;
-			        case 8:
-			            
-			            this.currentState = "ActivateState";
+                        break;
+                    case 8:
+
+                        this.currentState = "ActivateState";
                         save.visible = false;
                         //TODO-HEIGHT-this.height = ACTIVATE_HEIGHT;
                         
@@ -785,9 +993,9 @@
                         //bottemline.height=mainPanel.height-710;
                 } else if (this.currentState == "OverViewState") {
                     //validate input
-					if (overView.validateFields() == false){
-						return;
-					}
+                    if (overView.validateFields() == false){
+                        return;
+                    }
 
                     this.currentState="DetailsState";
 
@@ -798,18 +1006,18 @@
                     
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
-                    
-				    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
-					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
-					details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
-					details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
-					details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
-					details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
-					details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+
+                    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+                    details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                    details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+                    details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                    details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                    //TODO-HEIGHT-this.height = DETAILS_HEIGHT;  // BUGR-1134
 
-			       if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
-                   		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
+                   if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
+                           review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')';
                    }
                   
                     setPreviousStep(step2box);
@@ -1088,11 +1296,11 @@
                 } else if (this.currentState == "AttachFilesState") {
                     // BUGR-1067
                     if (!studioContestType) {
-						details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
-						details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
-					    details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
-					    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
-					    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+                        details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
+                        details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                        details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                        details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                        details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                         this.currentState="DetailsState";
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
@@ -1123,8 +1331,8 @@
                     setCurStep(step4box);
                     setNextStep(step5box); // BUGR-1141
                 } else if (this.currentState == "SpecificationsState") {
-					details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
-					details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+                    details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                     this.currentState="DetailsState";
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1221,7 +1429,14 @@
                 stepNumber++;
             }
 
-	    private function setCurStep(stepBox:Box):void { // BUGR-1141
+            /**
+             * This method sets the current step in the launch contest flow
+             *
+             * Note: show summary flag is set to true for studio contests in steps 2-6.
+             *
+             * @param stepBox the step box to set
+             */
+            private function setCurStep(stepBox:Box):void {
                 var box:HBox = stepBox.parent as HBox;
                 if (box.numChildren == 3) {
                     var label:Label = box.getChildAt(1) as Label;
@@ -1230,7 +1445,7 @@
                 box.styleName = "curStepBgr";
                 // BUGR-1141
                 if(box.numChildren == 4) {
-                	box.removeChildAt(box.numChildren - 1);
+                    box.removeChildAt(box.numChildren - 1);
                 }
                 stepBox.styleName = "curStep";
                 
@@ -1240,6 +1455,9 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 stepNumber=_stepBoxToStepNum[stepBox];
+
+                // summary is shown only for studio contests in steps 2-6
+                showSummary=studioContestType && stepNumber > 1 && stepNumber < 7;
             }
             
             private function setNextStep(stepBox:Box):void {  // BUGR-1141
@@ -1398,7 +1616,14 @@
                     setGoodHeight(this.activate);
                 }
             }
-            
+
+            /**
+             * This method sets the correct height for the corresponding page
+             *
+             * Note: if show summary flag is set to true, it's considered in the height
+             *
+             * @param obj the box to update
+             */
             private function setGoodHeight(obj:Box):void {
                 var footerHeight:Number=100;
                 var minHeight:Number=600;
@@ -1407,8 +1632,9 @@
                 if (mh < minHeight) {
                     mh=minHeight;
                 }
-                
-                this.height=mh+footerHeight;
+
+                // adds summaryBox height only if it's shown.
+                this.height=mh+footerHeight+(showSummary ? summaryBox.height : 0);
             }
             
             /**
@@ -1495,13 +1721,13 @@
      <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
                     destination="contest-facade"
                     xmlSpecialCharsFilter="xmlSpecialCharsFilter">
-		<mx:channelSet>
-			<mx:ChannelSet id="contestfacadeChannelSet">
-			    <mx:channels>
-				<mx:SecureAMFChannel uri="{blazedsendpoint}"/>
-			    </mx:channels>
-			</mx:ChannelSet>
-		</mx:channelSet>
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                <mx:SecureAMFChannel uri="{blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
         <mx:operation name="createContest"
                       resultFormat="object"
                       fault="showWebserviceError('createContest', event);">
@@ -1930,6 +2156,62 @@
                  paddingRight="8"
                  paddingLeft="20"
                  id="mainPanel">
+
+            <!-- New summary box - since 1.0.3 -->
+            <mx:HRule width="100%" visible="{showSummary}"
+                      includeInLayout="{showSummary}"/>
+            <mx:VBox width="100%"
+                     height="60"
+                     verticalGap="0"
+                     paddingRight="8"
+                     paddingLeft="20"
+                     id="summaryBox"
+                      visible="{showSummary}"
+                      includeInLayout="{showSummary}">
+                     <mx:HBox width="100%">
+                         <mx:HBox width="33%" horizontalGap="0">
+                              <mx:Label text="Project:" fontWeight="bold"/>
+                              <mx:Label text="{tcDirectProjectName}"/>
+                         </mx:HBox>
+                         <mx:HBox width="33%" horizontalGap="0">
+                         </mx:HBox>
+                         <mx:HBox width="34%" horizontalGap="0">
+                              <mx:Label text="Contest Type:" fontWeight="bold"/>
+                              <mx:Label text="{competitionType}"/>
+                              <mx:Label text="({overView.studioType.selection.label})"/>
+                         </mx:HBox>
+                     </mx:HBox>
+                     <mx:HBox width="100%">
+                         <mx:HBox width="33%" horizontalGap="0">
+                              <mx:Label text="Contest Fee:" fontWeight="bold"/>
+                              <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                         <mx:HBox width="33%" horizontalGap="0">
+                              <mx:Label text="Prizes:" fontWeight="bold"/>
+                              <mx:Label id="contestPrizesTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                         <mx:HBox width="34%" horizontalGap="0">
+                              <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
+                              <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                     </mx:HBox>
+                     <mx:HBox width="100%">
+                         <mx:HBox width="33%" horizontalGap="0">
+                              <mx:Label text="Start date:" fontWeight="bold"/>
+                              <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                         <mx:HBox width="33%" horizontalGap="0">
+                              <mx:Label text="Milestone date:" fontWeight="bold"/>
+                              <mx:Label id="contestMilestoneTxt" text="{NONE_MESSAGE}"/>
+                         </mx:HBox>
+                         <mx:HBox width="34%" horizontalGap="0">
+                              <mx:Label text="End date:" fontWeight="bold"/>
+                              <mx:Label id="contestEndTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                     </mx:HBox>
+            </mx:VBox>
+            <mx:HRule width="100%" visible="{showSummary}"
+                      includeInLayout="{showSummary}"/>
             <mx:Spacer height="5"/>
             <pages:ContestSelection id="contestSelect"/>
             <pages:OverView id="overView"/>
@@ -1981,11 +2263,11 @@
                    labelPlacement="{ButtonLabelPlacement.RIGHT}"
                    click="cancelBtn()"/>
         <mx:HBox horizontalAlign="center" width="100%" id="activateBtnPanel" visible="false" includeInLayout="false">
-		    <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
-		    <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-		    <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
-	    </mx:HBox>    
-               
+            <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+            <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+            <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
+        </mx:HBox>
+
         <mx:Spacer width="90%"/>
         <!-- BUGR-1643 -->
         <mx:Button id="save"

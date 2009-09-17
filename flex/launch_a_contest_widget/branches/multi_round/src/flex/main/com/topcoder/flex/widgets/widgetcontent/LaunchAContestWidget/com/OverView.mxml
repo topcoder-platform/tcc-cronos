@@ -4,14 +4,20 @@
     Copyright (c) 2009, TopCoder, Inc. All rights reserved.
 -->
 <!--
+    This mxml component presents the overview page for the launch contest widget.
+
     Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
         - Updated to use the type name instead of id for contest sub type.
         - For invoiced contest, even admin can not edit the contest fee.
         - For invoiced contest, contest fee is loaded from webservice.
-        
-    
-    @author TCSASSEMBLER
-    @version 1.0.1
+
+    Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Project name title is hidden if the summary is shown since it's already there
+        - Added radiobuttons to select contest format for studio contests
+        - Added milestone prize fields for studio multi-round contests.
+
+    @author TCSDEVELOPER
+    @version 1.0.2
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -44,6 +50,7 @@
     <!-- BUGR-1737 -->
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MilestonePrizeData;
             import mx.rpc.AbstractOperation;
             import mx.effects.easing.Back;
             import mx.collections.ArrayCollection;
@@ -65,6 +72,16 @@
             
             //private static var s_inputsMap:Object={1: "firstPlace", 2: "secondPlace", 3: "thirdPlace", 4: "fourthPlace", 5: "fifthPlace"};
             //private static var ns_inputsMap:Object={1: "ns_firstPlace", 2: "ns_secondPlace"};
+
+            /**
+             * A static constant Collection indication possible number of milestone prizes
+             *
+             * @since 1.0.2
+             */
+            private static const numMilestonePrizes:ArrayCollection=
+                new ArrayCollection([{label: "0", data: 0}, {label: "1", data: 1},
+                                    {label: "2", data: 2}, {label: "3", data: 3},
+                                    {label: "4", data: 4}, {label: "5", data: 5}]);
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -105,6 +122,8 @@
             private var showExampleTwo:Boolean=false;
             
             /**
+             * This method initializes the corresponding data necessary to show this page
+             *
              * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
              * 
              * Updated for Version 1.0.1
@@ -114,7 +133,7 @@
                 for each (var inptName:String in s_inputs) {
                     this[inptName].text="";
                 }
-               	//
+                   //
                 // For now contest types need to be loaded only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
@@ -125,6 +144,10 @@
                 }
 
                 if (mainWidget.studioContestType) {
+                    // sets multi round contest flag
+                    if (mainWidget.competition && mainWidget.competition.contestData) {
+                        mainWidget.multiRoundContest = mainWidget.competition.contestData.multiRound;
+                    }
                     // For studio contest it is loaded inside handler for requestContestTypes.
                     requestContestTypes.send();
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
@@ -146,28 +169,41 @@
                 }
             }
 
-            //
-            // Set the prizes for studio contests.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
+            /**
+             * This method set the prizes for studio contests.
+             *
+             * Note: milestone prizes were added for multi-round contests
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
             private function s_setPrizes():void {
-                if (mainWidget && mainWidget.competition && mainWidget.competition.contestData.prizes) {
-                    for (var i:int=0; i < mainWidget.competition.contestData.prizes.length; i++) {
-                        var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
-                        var p:int=prize.place as int;
-                        if (p <= 5) {
-                            var input:TextInput=this[s_inputs[p - 1]] as TextInput;
-                            input.text=prize.amount.toString();
+                if (mainWidget && mainWidget.competition && mainWidget.competition.contestData) {
+                    if (mainWidget.competition.contestData.prizes) {
+                        for (var i:int=0; i < mainWidget.competition.contestData.prizes.length; i++) {
+                            var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
+                            var p:int=prize.place as int;
+                            if (p <= 5) {
+                                var input:TextInput=this[s_inputs[p - 1]] as TextInput;
+                                input.text=prize.amount.toString();
+                            }
+                        }
+                    }
+
+                    if (mainWidget.competition.contestData.contestId > 0) {
+                        adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
+                    }
+
+                    // set milestone prizes
+                    if (mainWidget.competition.contestData.milestonePrizeData) {
+                        if (mainWidget.competition.contestData.milestonePrizeData.amount) {
+                            milestonePrizeAmonutTextInput.text = mainWidget.competition.contestData.milestonePrizeData.amount.toString();
+                        }
+                        if (mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions) {
+                            numMilestonePrizesComboBox.selectedIndex = mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions;
                         }
                     }
                 }
-                
-                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0) {
-                    adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
-                    
-                }
-                
-                s_updateAmount();
+                s_updateAmount(true);
             }
 
             //
@@ -239,10 +275,13 @@
                 return true;
             }
 
-            //
-            // Update competition and review data for studio contests.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
+            /**
+             * This method update competition and review data for studio contests.
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * @return true always
+             */
             private function s_updateResult():Boolean {
                 mainWidget.competition.contestData.contestTypeId=Number(studioType.selectedValue);
 
@@ -271,6 +310,22 @@
 		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 
+                // sets multi round specific information
+                mainWidget.competition.contestData.multiRound = mainWidget.multiRoundContest;
+                if (mainWidget.multiRoundContest) {
+                    if (mainWidget.competition.contestData.milestonePrizeData == null) {
+                        mainWidget.competition.contestData.milestonePrizeData = new MilestonePrizeData();
+                    }
+
+                    mainWidget.competition.contestData.milestonePrizeData.amount = new Number(milestonePrizeAmonutTextInput.text);
+                    mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions = new Number(numMilestonePrizesComboBox.selectedItem.data);
+                } else {
+                    if (mainWidget.competition.contestData.milestonePrizeData != null &&
+                        mainWidget.competition.contestData.milestonePrizeData.id == -1) {
+                        mainWidget.competition.contestData.milestonePrizeData=null;
+                    }
+                }
+
                 // assign values to review screen.
                 /*mainWidget.review.cstTypeStep2=studioType.selection.label;
                 mainWidget.review.firstPrize=firstPlace.text;
@@ -280,6 +335,9 @@
                 mainWidget.review.fifthPrize=fifthPlace.text;
                 mainWidget.review.adminFee=adminf.text;
                 mainWidget.review.contestTotal=cntstTtl.text;*/
+
+                // update summary box
+                mainWidget.updateSummary();
 
                 return true;
             }
@@ -339,6 +397,8 @@
              * 
              * Updated for Version 1.0.1
              *    - for contest sub type use type name instead of id
+             *
+             * Note: added amount update
              */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
@@ -355,15 +415,31 @@
                     showExampleOne=false;
                     showExampleTwo=false;
                 }
-                
+
+                s_updateAmount(true);
+
                 dispatchEvent(new Event("curContestTypeChanged"));
             }
 
-            //
-            // Update amount for studio contests.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private function s_updateAmount():void {
+            /**
+             * This method updates contest format when the corresponding radiobutton is selected
+             *
+             * @param multi the flag to set
+             *
+             * @since 1.0.2
+             */
+            private function contestFormatSelect(multi:Boolean):void {
+                mainWidget.multiRoundContest = multi;
+            }
+
+            /**
+             * This method updates amount for studio contests.
+             *
+             * Note: added summary update
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            private function s_updateAmount(updateSummary:Boolean):void {
                 var sum:int=0;
                 for each (var name:String in s_inputs) {
 
@@ -378,15 +454,24 @@
                 }
 
                 if (sum > 0) {
-                	if(isNaN(Number(adminf.text))) { // BUGR-1737
-                		adminf.text="";	
-                	}
+                    if(isNaN(Number(adminf.text))) { // BUGR-1737
+                        adminf.text="";
+                    }
                     // adminf.text=new Number(sum * 0.2).toFixed(2); BUGR-1737
                     cntstTtl.text= (sum + Number(adminf.text)).toFixed(2); // BUGR-1737
                 } else {
                     // adminf.text=""; BUGR-1737
                     cntstTtl.text="";
                 }
+
+                if (updateSummary) {
+                    if(!isNaN(Number(adminf.text)) && mainWidget.competition && mainWidget.competition.contestData) {
+                        mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+                    }
+
+                    // update summary box
+                    mainWidget.updateSummary();
+                   }
             }
 
             public function ns_validateFields():Boolean { // BUGR-1067
@@ -402,8 +487,8 @@
                     return false;
                 }
 
-				if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) < 0) { // BUGR-1737
-					Helper.showAlertMessage("Contest Fee not set");
+                if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) < 0) { // BUGR-1737
+                    Helper.showAlertMessage("Contest Fee not set");
                     ns_reviewCost.setFocus();
                     return false;
 				}
@@ -420,6 +505,13 @@
                 return mainWidget.studioContestType ? s_validateFields() : ns_validateFields();
             }
 
+            /**
+             * This method validates fields for studio contests and sets the corresponding data in contest data object
+             *
+             * @return true if valid, false otherwise
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
             public function s_validateFields():Boolean { // BUGR-1067
                 if (studioType.selection == null) {
                     Helper.showAlertMessage("Contest type not selected");
@@ -482,6 +574,26 @@
                     Helper.showAlertMessage("Decreasing the total prize amount is not permitted at this time. If you would like to decrease the overall prize amounts please contact directassist@topcoder.com." + "Your total prize amount must be at least equal to $" + formatter.format(mainWidget.getPaidContestFee() / 0.2), 160);
                     return false;
                 }
+
+                // validate multi round contest specific fields
+                if (mainWidget.multiRoundContest) {
+                    // if number of milestone prizes is greater than zero, validate the amount
+                    if (numMilestonePrizesComboBox.selectedItem.data > 0) {
+                        var valid:Boolean = true;
+                        if (isNaN(Number(milestonePrizeAmonutTextInput.text)) || milestonePrizeAmonutTextInput.text == "") {
+                            Helper.showAlertMessage("Please enter a valid, non empty milestone prize amount.");
+                            valid = false;
+                        } else if (Number(milestonePrizeAmonutTextInput.text) <= 0) {
+                            Helper.showAlertMessage("Milestone prize amount should be greater than zero.");
+                            valid = false;
+                        }
+                        if (!valid) {
+                            milestonePrizeAmonutTextInput.setFocus();
+                            return false;
+                        }
+                    }
+                }
+
                 // check if we need step 8
                 (mainWidget.step8box.parent as HBox).visible=diff > 0;
                 (mainWidget.step8box.parent as HBox).includeInLayout=diff > 0;
@@ -516,8 +628,15 @@
                 }
             }
 
-            // since BUGR-1737
-            // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+            /**
+             * This method loads contst fees
+             *
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+             *
+             * @param e the Result Event
+             *
+             * @since BUGR-1737
+             */
             private function loadContestFees(e:ResultEvent):void {
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
@@ -526,7 +645,7 @@
                         ns_updateAmount();       					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                         adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
-                        s_updateAmount();
+                        s_updateAmount(true);
                     }
                 }
             }
@@ -707,8 +826,8 @@
                             ns_updateAmount();       					
                         } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                             adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
-                            s_updateAmount();
-                            
+                            s_updateAmount(true);
+
                         }
                     }
                 }
@@ -759,8 +878,10 @@
                            click="this.mainWidget.previewContest()"/>
                 <!-- BUGR-1501 -->
             </mx:HBox>
+            <!-- Hide project name if the summary is shown since it's already there -->
             <mx:HBox horizontalAlign="right"
-                     width="100%">
+                     width="100%" visible="{!mainWidget.showSummary}"
+                     includeInLayout="{!mainWidget.showSummary}">
                 <mx:Label text="Project: {mainWidget.tcDirectProjectName}"
                           styleName="projectTitle"
                           width="80%"/>
@@ -777,6 +898,20 @@
                 <mx:HBox id="studioTypeBox"
                          horizontalGap="25"
                          styleName="smallBlackText">
+                </mx:HBox>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <!-- New contest format radiobuttons -->
+            <mx:VBox width="100%"
+                     visible="{mainWidget.studioContestType}"
+                     includeInLayout="{mainWidget.studioContestType}">
+                <mx:Label text="Do you want to run a single-round or multi-round contest?"
+                          styleName="boldBlackText"/>
+                <mx:HBox horizontalGap="25"
+                         styleName="smallBlackText">
+                    <mx:RadioButtonGroup id="ContestFormatRadioGroup"/>
+                    <mx:RadioButton label="Single-Round - Submissions and Awarding is in single step." groupName="ContestFormatRadioGroup" selected="{!mainWidget.multiRoundContest}" click="contestFormatSelect(false)"/>
+                    <mx:RadioButton label="Multi-Round - Contest will be run in two rounds." groupName="ContestFormatRadioGroup" selected="{mainWidget.multiRoundContest}" click="contestFormatSelect(true)"/>
                 </mx:HBox>
             </mx:VBox>
             <mx:Spacer height="10"/>
@@ -1015,17 +1150,17 @@
                         <mx:TextInput id="firstPlace"
                                       width="120"
                                       text=""
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="secondPlace"
                                       width="120"
                                       text=""
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="thirdPlace"
                                       width="120"
                                       text=""
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       maxChars="4"/>
                     </mx:VBox>
                 </mx:HBox>
@@ -1051,12 +1186,12 @@
                         <mx:TextInput id="fourthPlace"
                                       width="120"
                                       text=""
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="fifthPlace"
                                       width="120"
                                       text=""
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       maxChars="4"/>
                     </mx:VBox>
                 </mx:HBox>
@@ -1081,7 +1216,7 @@
                         <mx:TextInput id="adminf"
                                       text=""
                                       width="55"
-                                      change="s_updateAmount()"
+                                      change="s_updateAmount(false)"
                                       editable="{mainWidget &amp;&amp; mainWidget.isAdmin}"/> <!-- BUGR-1737 -->
                         <mx:TextInput id="cntstTtl"
                                       text=""
@@ -1157,6 +1292,23 @@
                     </mx:VBox>
                 </mx:HBox>
             </mx:HBox>
+            <mx:Spacer height="10"/>
+            <!-- New milestone prizes information -->
+            <mx:VBox width="100%"
+                     verticalGap="0" visible="{mainWidget.multiRoundContest}"
+                     includeInLayout="{mainWidget.multiRoundContest}">
+                <mx:Label text="Milestone Prizes:"
+                          styleName="subsectionTitle"/>
+                <mx:HBox width="100%"
+                         verticalGap="0">
+                    <mx:Label text="Pay $"/>
+                    <mx:TextInput id="milestonePrizeAmonutTextInput"/>
+                    <mx:Label text="for each submission up to"/>
+                    <mx:ComboBox id="numMilestonePrizesComboBox" editable="false" dataProvider="{numMilestonePrizes}" selectedIndex="0"></mx:ComboBox>
+                    <mx:Label text="submissions."/>
+                </mx:HBox>
+                <mx:Label text="Note: Typical bonus prizes are $50, $75 or $100."/>
+            </mx:VBox>
         </mx:VBox>
     </mx:VBox>
 </mx:VBox>
