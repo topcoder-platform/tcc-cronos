@@ -157,6 +157,12 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * ContestData and back were updated to support new Contest fields. The same for
  * conversion of Submission to SubmissionData.
  * </p>
+ *
+ * <p>
+ * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added support for new/updated attributes
+ * in ContestData, MilestonePrizeData and ContestMultiRoundInformationData.
+ * </p>
+ *
  * <p>
  * Code example:
  * </p>
@@ -174,6 +180,7 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * contestData.setLaunchDateAndTime(getXMLGregorianCalendar(new Date()));
  * ContestSpecificationsData specData = new ContestSpecificationsData();
  * contestData.setSpecifications(specData);
+ * contestData.setMultiRound(true);
  * MilestonePrizeData prizeData = new MilestonePrizeData();
  * contestData.setMilestonePrizeData(prizeData);
  * ContestMultiRoundInformationData infoData = new ContestMultiRoundInformationData();
@@ -221,7 +228,7 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * </p>
  *
  * @author fabrizyo, saarixx, TCSDEVELOPER, TCSASSEMBLER
- * @version 1.3
+ * @version 1.4
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -1473,6 +1480,9 @@ public class StudioServiceBean implements StudioService {
         }
         result.setMedia(media);
 
+        // added in v1.4
+        result.setMultiRound(data.isMultiRound());
+
         // changed in v1.3
         if (data.getSpecifications() != null) {
             result.setSpecifications(createContestSpecifications(data.getSpecifications()));
@@ -1480,6 +1490,7 @@ public class StudioServiceBean implements StudioService {
         if (data.getGeneralInfo() != null) {
             result.setGeneralInfo(createContestGeneralInfo(data.getGeneralInfo()));
         }
+
         if (data.getMilestonePrizeData() != null) {
             result.setMilestonePrize(createMilestonePrize(data.getMilestonePrizeData()));
         }
@@ -1535,19 +1546,35 @@ public class StudioServiceBean implements StudioService {
     /**
      * Create new MilestonePrize object from MilestonePrizeData object.
      *
+     * Note: added support for new attributes in v1.4.
+     *
      * @param data the MilestonePrizeData having the properties to create new
      *        MilestonePrize.
      * @return the newly MilestonePrize.
+     * @throws ContestManagementException if an error occurs while getting the prize type
      * @since 1.3
      */
-    private static MilestonePrize createMilestonePrize(MilestonePrizeData data) {
+    private MilestonePrize createMilestonePrize(MilestonePrizeData data) throws ContestManagementException {
         MilestonePrize prize = new MilestonePrize();
-        if (data.getAmount() != null) {
+
+        prize.setMilestonePrizeId(data.getId());
+        if (data.getAmount() != null && data.getAmount().isNaN()) {
+            prize.setAmount(null);
+        } else {
             prize.setAmount(data.getAmount());
         }
-        if (data.getNumberOfSubmissions() != null) {
-            prize.setNumberOfSubmissions(data.getNumberOfSubmissions());
+
+        prize.setNumberOfSubmissions(data.getNumberOfSubmissions());
+
+        if (data.getCreateDate() != null) {
+            prize.setCreateDate(getDate(data.getCreateDate()));
+        } else {
+            prize.setCreateDate(new Date());
         }
+
+        PrizeType type = contestManager.getPrizeType(PrizeType.MILESTONE);
+        prize.setType(type);
+
         return prize;
     }
 
@@ -1573,15 +1600,18 @@ public class StudioServiceBean implements StudioService {
      * Create new ContestMultiRoundInformation object from
      * ContestMultiRoundInformationData object.
      *
+     * Note: added support for new attributes in v1.4.
+     *
      * @param data the ContestMultiRoundInformationData having the properties to
      *        create new ContestMultiRoundInformation.
      * @return the newly ContestMultiRoundInformation.
      * @since 1.3
      */
-    private static ContestMultiRoundInformation createContestMultiRoundInformation(
+    private ContestMultiRoundInformation createContestMultiRoundInformation(
             ContestMultiRoundInformationData data) {
         ContestMultiRoundInformation info = new ContestMultiRoundInformation();
-        info.setMilestoneDate(data.getMilestoneDate());
+        info.setContestMultiRoundInformationId(data.getId());
+        info.setMilestoneDate(getDate(data.getMilestoneDate()));
         info.setRoundOneIntroduction(data.getRoundOneIntroduction());
         info.setRoundTwoIntroduction(data.getRoundTwoIntroduction());
         info.setSubmittersLockedBetweenRounds(data.getSubmittersLockedBetweenRounds());
@@ -1836,6 +1866,10 @@ public class StudioServiceBean implements StudioService {
 
         contestData.setMedia(mediums);
 
+        // change in v1.4
+        if (contest.isMultiRound() != null) {
+            contestData.setMultiRound(contest.isMultiRound());
+        }
         // change in v1.3
         if (contest.getGeneralInfo() != null) {
             contestData.setGeneralInfo(createContestGeneralInfoData(contest.getGeneralInfo()));
@@ -1890,15 +1924,19 @@ public class StudioServiceBean implements StudioService {
     /**
      * Create new MilestonePrizeData object from MilestonePrize object.
      *
+     * Note: added support for new attributes in v1.4.
+     *
      * @param prize the MilestonePrize having the properties to create new
      *        MilestonePrize.
      * @return the newly MilestonePrizeData.
      * @since 1.3
      */
-    private static MilestonePrizeData createMilestonePrizeData(MilestonePrize prize) {
+    private MilestonePrizeData createMilestonePrizeData(MilestonePrize prize) {
         MilestonePrizeData data = new MilestonePrizeData();
+        data.setId(prize.getMilestonePrizeId());
         data.setAmount(prize.getAmount());
         data.setNumberOfSubmissions(prize.getNumberOfSubmissions());
+        data.setCreateDate(getXMLGregorianCalendar(prize.getCreateDate()));
         return data;
     }
 
@@ -1924,15 +1962,18 @@ public class StudioServiceBean implements StudioService {
      * Create new ContestMultiRoundInformationData object from
      * ContestMultiRoundInformation object.
      *
+     * Note: added support for new attributes in v1.4.
+     *
      * @param info the ContestMultiRoundInformation having the properties to
      *        create new ContestMultiRoundInformationData.
      * @return the newly ContestMultiRoundInformationData.
      * @since 1.3
      */
-    private static ContestMultiRoundInformationData createContestMultiRoundInformationData(
+    private ContestMultiRoundInformationData createContestMultiRoundInformationData(
             ContestMultiRoundInformation info) {
         ContestMultiRoundInformationData data = new ContestMultiRoundInformationData();
-        data.setMilestoneDate(info.getMilestoneDate());
+        data.setId(info.getContestMultiRoundInformationId());
+        data.setMilestoneDate(getXMLGregorianCalendar(info.getMilestoneDate()));
         data.setRoundOneIntroduction(info.getRoundOneIntroduction());
         data.setRoundTwoIntroduction(info.getRoundTwoIntroduction());
         data.setSubmittersLockedBetweenRounds(info.isSubmittersLockedBetweenRounds());
@@ -2827,9 +2868,9 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
-        logEnter("getSimpleProjectContestData");
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
+    {
+    	logEnter("getSimpleProjectContestData");
 
         try {
 
@@ -2869,9 +2910,9 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException {
-        logEnter("getSimpleProjectContestData(pid)");
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException
+    {
+    	logEnter("getSimpleProjectContestData(pid)");
 
         try {
 

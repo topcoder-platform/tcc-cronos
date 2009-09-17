@@ -3,14 +3,15 @@
  */
 package com.topcoder.service.studio;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -31,11 +32,17 @@ import java.util.List;
  * </p>
  *
  * <p>
+ * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added multiRound
+ * flag field with corresponding getter and setter. 'XmlType' was also reorganized.
+ * Default serialVersionUID was also added.
+ * </p>
+ *
+ * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
  *
  * @author fabrizyo, TCSDEVELOPER, TCSASSEMBLER
- * @version 1.3
+ * @version 1.4
  * @since 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -47,9 +54,16 @@ import java.util.List;
         "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection", "prizeDescription",
         "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
         "requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants",
-        "payments", "tcDirectProjectName", "billingProject", "generalInfo", "specifications", "multiRoundData",
-        "milestonePrizeData", "nonWinningSubmissionsPurchased" })
+        "payments", "tcDirectProjectName", "billingProject", "multiRound", "milestonePrizeData", "multiRoundData",
+        "generalInfo", "specifications", "nonWinningSubmissionsPurchased"})
 public class ContestData implements Serializable {
+    /**
+     * Default serial version id.
+     *
+     * @since 1.4
+     */
+    private static final long serialVersionUID = 6506612111714972592L;
+
     /**
      * <p>
      * Represents the contest Id.
@@ -109,6 +123,15 @@ public class ContestData implements Serializable {
      *
      */
     private long billingProject;
+
+    /**
+     * <p>
+     * Represents multi round format flag
+     * </p>
+     *
+     * @since 1.4
+     */
+    private boolean multiRound;
 
     /**
      * <p>
@@ -313,23 +336,28 @@ public class ContestData implements Serializable {
      * @since 1.3
      */
     private ContestGeneralInfoData generalInfo;
+
     /**
      * The contest specifications data. Can be any value. Has getter and setter.
      *
      * @since 1.3
      */
     private ContestSpecificationsData specifications;
+
     /**
      * The contest multi round data. Can be any value. Has getter and setter.
      *
      * @since 1.3
      */
+    @XmlElement(nillable=true)
     private ContestMultiRoundInformationData multiRoundData;
+
     /**
      * The milestone prize data. Can be any value. Has getter and setter.
      *
      * @since 1.3
      */
+    @XmlElement(nillable=true)
     private MilestonePrizeData milestonePrizeData;
 
     /**
@@ -1154,11 +1182,11 @@ public class ContestData implements Serializable {
         this.tcDirectProjectName = tcDirectProjectName;
     }
 
-	 /**
+     /**
      * <p>
      * Gets the tc direct project name.
      * </p>
-     *  
+     *
      * @return the tc direct project name.
      * @since Release 5 Assembly
      */
@@ -1170,12 +1198,44 @@ public class ContestData implements Serializable {
      * <p>
      * Sets the tc direct project name.
      * </p>
-     * 
+     *
      * @param billingProject the billing project .
      * @since Release 5 Assembly
      */
     public void setBillingProject(long billingProject) {
         this.billingProject = billingProject;
+    }
+
+     /**
+     * Gets the value of the multi round flag
+     *
+     * @return true if the contest is a multi round format, false otherwise.
+     *
+     * @since 1.4
+     */
+    public boolean isMultiRound() {
+        return multiRound;
+    }
+
+     /**
+     * Gets the value of the multi round flag
+     *
+     * @return true if the contest is a multi round format, false otherwise.
+     * @since 1.4
+     */
+    public boolean getMultiRound() {
+        return multiRound;
+    }
+
+    /**
+     * Sets the value of the multi round flag
+     *
+     * @param multiRound the new value for the multi round flag
+     *
+     * @since 1.4
+     */
+    public void setMultiRound(boolean multiRound) {
+        this.multiRound = multiRound;
     }
 
     /**

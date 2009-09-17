@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -16,16 +17,48 @@ import javax.xml.bind.annotation.XmlType;
  * present in the setters. It's the related to the equivalent MilestonePrize
  * entity.
  * </p>
+ *
+ * <p>
+ * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added id and createDate 
+ * attributes with corresponding getters and setters. 'XmlType' was also updated to include these new fields.
+ * Default serialVersionUID was also added.
+ * </p>
+ *
  * <p>
  * This class is not thread safe because it's highly mutable.
  * </p>
  *
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3
+ * @version 1.4
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "milestonePrizeData", propOrder = { "amount", "numberOfSubmissions" })
+@XmlType(name = "milestonePrizeData", propOrder = { "id", "createDate", "amount", "numberOfSubmissions" })
 public class MilestonePrizeData implements Serializable {
+    /**
+     * Default serial version id.
+     *
+     * @since 1.4
+     */
+    private static final long serialVersionUID = 1704571622645031121L;
+
+    /**
+     * <p>
+     * Represents the milestone prize data Id.
+     * </p>
+     *
+     * @since 1.4
+     */
+    private long id = -1;
+
+    /**
+     * <p>
+     * Represents the milestone prize data creation date.
+     * </p>
+     *
+     * @since 1.4
+     */
+    private XMLGregorianCalendar createDate;
+
     /**
      * The amount. Can be any value. Has getter and setter.
      */
@@ -41,6 +74,46 @@ public class MilestonePrizeData implements Serializable {
      *
      */
     public MilestonePrizeData() {
+    }
+
+    /**
+     * Gets the milestone prize data id
+     *
+     * @return the value of the milestone prize data id
+     * @since 1.4
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the milestone prize data id
+     *
+     * @param id the value of the milestone prize data id to set
+     * @since 1.4
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the milestone prize data creation date
+     *
+     * @return the value of the milestone prize creation date
+     * @since 1.4
+     */
+    public XMLGregorianCalendar getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * Sets the milestone prize data creation date
+     *
+     * @param createDate the value of the milestone prize data creation date to set
+     * @since 1.4
+     */
+    public void setCreateDate(XMLGregorianCalendar createDate) {
+        this.createDate = createDate;
     }
 
     /**

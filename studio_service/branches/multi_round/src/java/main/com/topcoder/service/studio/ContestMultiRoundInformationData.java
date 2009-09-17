@@ -4,11 +4,11 @@
 package com.topcoder.service.studio;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -17,21 +17,46 @@ import javax.xml.bind.annotation.XmlType;
  * present in the setters. It's the related to the equivalent
  * ContestMultiRoundInformation entity.
  * </p>
+ *
+ * <p>
+ * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added id attribute 
+ * with corresponding getter and setter. Changed milestoneDate type to XMLGregorianCalendar.
+ * 'XmlType' was also updated to include this new field.
+ * Default serialVersionUID was also added.
+ * </p>
+ *
  * <p>
  * This class is not thread safe because it's highly mutable.
  * </p>
  *
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3
+ * @version 1.4
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contestMultiRoundInformationData", propOrder = { "milestoneDate",
+@XmlType(name = "contestMultiRoundInformationData", propOrder = { "id", "milestoneDate",
         "submittersLockedBetweenRounds", "roundOneIntroduction", "roundTwoIntroduction" })
 public class ContestMultiRoundInformationData implements Serializable {
     /**
+     * Default serial version id.
+     *
+     * @since 1.4
+     */
+    private static final long serialVersionUID = 3075278936505863275L;
+
+    /**
+     * <p>
+     * Represents the contest multi round information data Id.
+     * </p>
+     *
+     * @since 1.4
+     */
+    private long id = -1;
+
+    /**
      * The milestone date. Can be any value. Has getter and setter.
      */
-    private Date milestoneDate;
+    private XMLGregorianCalendar milestoneDate;
+    
     /**
      * The flag indicating whether submitters are locked between rounds. Can be
      * any value. Has getter and setter.
@@ -52,13 +77,33 @@ public class ContestMultiRoundInformationData implements Serializable {
      */
     public ContestMultiRoundInformationData() {
     }
+    
+    /**
+     * Gets the contest multi round information data id
+     *
+     * @return the value of the contest multi round information data id
+     * @since 1.4
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the contest multi round information data id
+     *
+     * @param id the value of the contest multi round information data id to set
+     * @since 1.4
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
     /**
      * Gets the value of the milestone date attribute.
      *
      * @return the value of the milestone date attribute
      */
-    public Date getMilestoneDate() {
+    public XMLGregorianCalendar getMilestoneDate() {
         return this.milestoneDate;
     }
 
@@ -67,7 +112,7 @@ public class ContestMultiRoundInformationData implements Serializable {
      *
      * @param milestoneDate the new value for the milestone date attribute
      */
-    public void setMilestoneDate(Date milestoneDate) {
+    public void setMilestoneDate(XMLGregorianCalendar milestoneDate) {
         this.milestoneDate = milestoneDate;
     }
 
