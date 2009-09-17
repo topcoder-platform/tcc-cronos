@@ -13,21 +13,48 @@ import com.topcoder.service.studio.contest.Helper;
  * </p>
  *
  * <p>
- * Currently two possible types are CONTEST and BONUS.
+ * Currently three possible types are CONTEST and CLIENT_SELECTION AND MILESTONE.
+ * </p>
+ *
+ * <p>
+ * Changes in v1.1 (Studio Multi-Rounds Assembly - Launch Contest): Added id attribute
+ * with corresponding getter and setter. Changed milestoneDate type to XMLGregorianCalendar.
+ * 'XmlType' was also updated to include this new field.
  * </p>
  *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag
- * @version 1.0
+ * @author tushak, cyberjag, TCSDEVELOPER
+ * @version 1.1
  */
 public class PrizeType implements Serializable {
     /**
      * Generated serial version id.
      */
-    private static final long serialVersionUID = -4220030190709533489L;
+    private static final long serialVersionUID = 8305610240926339L;
+
+    /**
+     * Constant describing CONTEST prize type.
+     *
+     * @since 1.1
+     */
+    public static final long CONTEST = 1;
+
+    /**
+     * Constant describing CLIENT_SELECTION prize type.
+     *
+     * @since 1.1
+     */
+    public static final long CLIENT_SELECTION = 2;
+
+    /**
+     * Constant describing MILESTONE prize type.
+     *
+     * @since 1.1
+     */
+    public static final long MILESTONE = 3;
 
     /**
      * Represents the entity id.
