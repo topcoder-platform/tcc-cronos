@@ -26,7 +26,7 @@ import com.topcoder.service.studio.contest.Helper;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag, TCSDEVELOPER
+ * @author tushak, cyberjag, pulky
  * @version 1.1
  */
 public class PrizeType implements Serializable {
