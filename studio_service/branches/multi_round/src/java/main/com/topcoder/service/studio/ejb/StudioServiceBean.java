@@ -227,7 +227,7 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * this stateless bean is thread safe
  * </p>
  *
- * @author fabrizyo, saarixx, TCSDEVELOPER, TCSASSEMBLER
+ * @author fabrizyo, saarixx, pulky
  * @version 1.4
  * @since 1.0
  */

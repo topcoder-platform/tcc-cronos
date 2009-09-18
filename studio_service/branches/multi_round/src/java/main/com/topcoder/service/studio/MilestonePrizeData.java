@@ -28,7 +28,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * This class is not thread safe because it's highly mutable.
  * </p>
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author pulky
  * @version 1.4
  */
 @XmlAccessorType(XmlAccessType.FIELD)
