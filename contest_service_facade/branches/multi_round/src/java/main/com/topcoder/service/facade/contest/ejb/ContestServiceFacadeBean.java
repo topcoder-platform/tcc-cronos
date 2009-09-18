@@ -70,6 +70,7 @@ import com.topcoder.service.specreview.UpdatedSpecSectionData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestMultiRoundInformationData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
@@ -198,7 +199,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * -----
  *
  * @author snow01, TCS Deveoper, TCS Designer
- * @version 1.1
+ * <p>
+ * Changes in v1.2 (Studio Multi-Rounds Assembly - Launch Contest): Added default milestone date when contest is
+ * created.
+ * </p>
+ * 
+ * @author snow01, pulky
+ * @version 1.2
  */
 @Stateless
 @WebService
@@ -920,6 +927,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } else {
             winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
                     (60L * 60 * 1000 * contestData.getDurationInHours())));
+        }
+
+        if (contestData.isMultiRound()) {
+            if (contestData.getMultiRoundData() == null) {
+            	ContestMultiRoundInformationData multiRoundData = new ContestMultiRoundInformationData();
+            	multiRoundData.setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+            	    endDate.getTime())/2)));
+            	
+            	contestData.setMultiRoundData(multiRoundData);
+            } else if (contestData.getMultiRoundData().getMilestoneDate() == null) {
+            	contestData.getMultiRoundData().setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+            	    endDate.getTime())/2)));
+            }
         }
 
         contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
