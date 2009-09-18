@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the submission viewer app.
+
+     @author TCSDEVELOPER
+     udated for: Cockpit Submission Viewer Widget Enhancement Part 1.
+-->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml"
+                        layout="vertical"
+                        xmlns:flexlib="http://code.google.com/p/flexlib/"
+                        height="600"
+                        width="1000"
+                        creationComplete="init()"
+                        styleName="bgr"
+                        showStatusBar="false"
+                        title="{TITLE}"
+                        titleIcon="{appIcon}">
+    <mx:Style source="com/topcoder/air/submissionviewer/Style.css"/>
+
+    <mx:Image source="com/topcoder/air/submissionviewer/assets/topcoder.png"/>
+    <flexlib:SuperTabNavigator id="nav"
+                               width="100%"
+                               height="100%"
+                               backgroundColor="white"
+                               backgroundAlpha="0"
+                               closePolicy="{SuperTab.CLOSE_ROLLOVER}"/>
+
+    <mx:Script>
+
+        <![CDATA[
+            import mx.events.IndexChangedEvent;
+            import mx.events.FlexEvent;
+            import mx.utils.Base64Decoder;
+            import mx.controls.Alert;
+            import flexlib.controls.tabBarClasses.SuperTab;
+            import flexlib.controls.SuperTabBar;
+            import com.topcoder.air.submissionviewer.Tab;
+            import mx.containers.Panel;
+
+            /**
+             * Application Icon.
+             */
+            [Bindable]
+            [Embed(source="com/topcoder/air/submissionviewer/assets/titleIcon.png")]
+            private var appIcon:Class;
+
+            /**
+             * Title of the application.
+             */
+            private const TITLE:String="TopCoder Submission Viewer";
+
+            /**
+             * Adds / refreshes the tab with name 'title' with the given location url.
+             *
+             * @param location url
+             * @param title title of the tab.
+             */
+            public function addTab(location:String, title:String):void {
+                if (!location || location == "") {
+                    Alert.show("Location should not be empty");
+                    return;
+                }
+                if (!title || title == "") {
+                    Alert.show("Title should not be empty");
+                    return;
+                }
+
+                // go over all tabs and identify if title is already there...
+                var children:Array=nav.getChildren();
+                var i:int=0;
+                for each (var tab:Object in children) {
+                    if (tab && tab.title && tab.title == title) {
+                        nav.selectedIndex=i;
+                        tab.location="about:blank";
+                        tab.location=location;
+                        tab.title=title;
+                        nav.dispatchEvent(new IndexChangedEvent(IndexChangedEvent.CHANGE));
+                        return;
+                    }
+
+                    i++;
+                }
+
+                var newTab:Tab=new Tab();
+
+                newTab.location=location;
+                newTab.title=title;
+                nav.addChild(newTab);
+
+                nav.selectedIndex=nav.numChildren - 1;
+                nav.dispatchEvent(new IndexChangedEvent(IndexChangedEvent.CHANGE));
+            }
+
+            /**
+             * Function to call on app initialization
+             */
+            private function init():void {
+                NativeApplication.nativeApplication.addEventListener(BrowserInvokeEvent.BROWSER_INVOKE, handleInvokeEvent);
+                nav.addEventListener(IndexChangedEvent.CHANGE, handleCurrentTabChange);
+            }
+
+            /**
+             * Decodes the given string from base 64.
+             *
+             * @param s string to decode.
+             * @retrun decoded string.
+             */
+            private function decodeBase64String(s:String):String {
+                var dec:Base64Decoder=new Base64Decoder();
+                dec.decode(s);
+                return dec.flush().toString();
+            }
+
+            /**
+             * Event handler for native application invoke.
+             *
+             * @param e browser invoke event.
+             */
+            private function handleInvokeEvent(e:BrowserInvokeEvent):void {
+                if (e.arguments && e.arguments.length > 0) {
+                    switch (e.arguments[0]) {
+                        case "addTab":
+                            if (e.arguments.length != 3)
+                                break;
+                            addTab(decodeBase64String(e.arguments[1]), decodeBase64String(e.arguments[2]));
+                    }
+                }
+            }
+
+            /**
+             * Event handler for current tab change.
+             *
+             * @param e index change event.
+             */
+            private function handleCurrentTabChange(e:IndexChangedEvent):void {
+                var curTab:Tab=((e.currentTarget as SuperTabNavigator).selectedChild as Tab);
+                title=TITLE + " - " + curTab.title;
+            }
+        ]]>
+    </mx:Script>
+
+</mx:WindowedApplication>
