@@ -16,7 +16,7 @@
         - Added radiobuttons to select contest format for studio contests
         - Added milestone prize fields for studio multi-round contests.
 
-    @author TCSDEVELOPER
+    @author pulky
     @version 1.0.2
     @since 1.0
 -->
@@ -189,9 +189,10 @@
                         }
                     }
 
-                    if (mainWidget.competition.contestData.contestId > 0) {
-                        adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
-                    }
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0) {
+                    adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
+                    
+                }
 
                     // set milestone prizes
                     if (mainWidget.competition.contestData.milestonePrizeData) {
@@ -458,6 +459,12 @@
                         adminf.text="";
                     }
                     // adminf.text=new Number(sum * 0.2).toFixed(2); BUGR-1737
+
+                    if (mainWidget.multiRoundContest) {
+                        sum += new Number(milestonePrizeAmonutTextInput.text) * 
+                            new Number(numMilestonePrizesComboBox.selectedItem.data);
+                    }                
+                    
                     cntstTtl.text= (sum + Number(adminf.text)).toFixed(2); // BUGR-1737
                 } else {
                     // adminf.text=""; BUGR-1737
@@ -829,7 +836,11 @@
                             s_updateAmount(true);
 
                         }
+                    } else {
+                         requestContestFees.send();
                     }
+                } else {
+                    requestContestFees.send();
                 }
             }
 
@@ -910,8 +921,15 @@
                 <mx:HBox horizontalGap="25"
                          styleName="smallBlackText">
                     <mx:RadioButtonGroup id="ContestFormatRadioGroup"/>
-                    <mx:RadioButton label="Single-Round - Submissions and Awarding is in single step." groupName="ContestFormatRadioGroup" selected="{!mainWidget.multiRoundContest}" click="contestFormatSelect(false)"/>
-                    <mx:RadioButton label="Multi-Round - Contest will be run in two rounds." groupName="ContestFormatRadioGroup" selected="{mainWidget.multiRoundContest}" click="contestFormatSelect(true)"/>
+		            <mx:VBox verticalGap="0">
+                        <mx:RadioButton label="Single-Round" groupName="ContestFormatRadioGroup" selected="{!mainWidget.multiRoundContest}" click="contestFormatSelect(false)"/>
+                        <mx:Label text="Submissions and Awarding is in single step."/>
+                    </mx:VBox>
+                    <mx:VBox verticalGap="0">
+                        <mx:RadioButton label="Multi-Round" groupName="ContestFormatRadioGroup" selected="{mainWidget.multiRoundContest}" click="contestFormatSelect(true)"/>
+                        <mx:Label text="Contest will be run in two rounds. You will view submissions "/>
+                        <mx:Label text="and award milestone prizes at a midpoint date."/>
+                    </mx:VBox>
                 </mx:HBox>
             </mx:VBox>
             <mx:Spacer height="10"/>
@@ -1302,9 +1320,9 @@
                 <mx:HBox width="100%"
                          verticalGap="0">
                     <mx:Label text="Pay $"/>
-                    <mx:TextInput id="milestonePrizeAmonutTextInput"/>
+                    <mx:TextInput id="milestonePrizeAmonutTextInput" change="s_updateAmount(false)"/>
                     <mx:Label text="for each submission up to"/>
-                    <mx:ComboBox id="numMilestonePrizesComboBox" editable="false" dataProvider="{numMilestonePrizes}" selectedIndex="0"></mx:ComboBox>
+                    <mx:ComboBox id="numMilestonePrizesComboBox" editable="false" dataProvider="{numMilestonePrizes}" change="s_updateAmount(false)" selectedIndex="0"></mx:ComboBox>
                     <mx:Label text="submissions."/>
                 </mx:HBox>
                 <mx:Label text="Note: Typical bonus prizes are $50, $75 or $100."/>

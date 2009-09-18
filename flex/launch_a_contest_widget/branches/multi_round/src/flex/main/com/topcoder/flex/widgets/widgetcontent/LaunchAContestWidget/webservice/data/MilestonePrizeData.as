@@ -6,7 +6,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     /**
      * A DTO class for milestone prize data.
      *
-     * @author TCSDEVELOPER
+     * @author pulky
      * @version 1.0
      * @since 1.0 (Studio Multi-Rounds Assembly - Launch Contest)
      */

@@ -25,7 +25,7 @@
         - New multi contest and show summary flags attributes were added.
 
 
-    @author TCSDEVELOPER
+    @author pulky
     @version 1.0.3
     @since 1.0
 -->
@@ -619,7 +619,18 @@
             public function openOverViewPage():void {
                 this.overView.initData();
                 this.currentState="OverViewState";
-                save.visible=!isReadOnlyMode;
+                setReadOnlyMode();
+
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                goNext.includeInLayout=goNext.visible=true;
+                goNext.label = "NEXT";
+                
+                setReadOnlyMode();
+                    
                 //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT; // BUGR-1134
                 back.visible=true;
 
@@ -633,8 +644,28 @@
              */ 
             public function openReviewPage():void {
                 this.currentState="ReviewState";
+                
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                if (!isNextAllowed()) {
+                    goNext.includeInLayout=goNext.visible=false;
+                } else {
+                    goNext.includeInLayout=goNext.visible=true;
+                    
+                    if (isInvoicedContest) {
+                        goNext.label="ACTIVATE";
+                    } else {
+                        goNext.label = "NEXT";
+                    }
+                }
+                
+                setReadOnlyMode();
+                
                 this.review.setAllValues();
-                save.visible=true;
+
                 //TODO-HEIGHT-this.height=REVIEW_HEIGHT;
                 back.visible=true;
 
@@ -780,6 +811,7 @@
                     case 1:
 
                         this.currentState="ContestSelectionState";
+                        setReadOnlyMode();
                         //TODO-HEIGHT-this.height=CONTEST_SELECTION_HEIGHT;
                         back.visible=false;
                         
@@ -805,6 +837,7 @@
                         
                         if (ret == 0) {
                             this.currentState="OverViewState";
+                            setReadOnlyMode();
                             save.includeInLayout=save.visible=false;
                             if (save.visible) {
                                 save.label=getSaveLabel();
@@ -826,6 +859,7 @@
                     case 3:
 
                         this.currentState = "DetailsState";
+			setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -852,6 +886,7 @@
 
                        specf.requestFileTypes.send();
                        this.currentState = "SpecificationsState";
+                       setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -868,6 +903,7 @@
                     case 5:
 
                         this.currentState = "AttachFilesState";
+			setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -889,6 +925,7 @@
                        sched.requestSchedule.send();
     
                        this.currentState = "ScheduleState";
+                       setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -904,6 +941,7 @@
                     case 7:
 
                        this.currentState = "ReviewState";
+		       setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -932,6 +970,7 @@
                     case 8:
 
                         this.currentState = "ActivateState";
+                        setReadOnlyMode();
                         save.visible = false;
                         //TODO-HEIGHT-this.height = ACTIVATE_HEIGHT;
                         
@@ -979,6 +1018,7 @@
                        return;
                      }*/
                     this.currentState="OverViewState";
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=false;
                     
                     goNext.includeInLayout=goNext.visible=true;
@@ -998,6 +1038,7 @@
                     }
 
                     this.currentState="DetailsState";
+                    setReadOnlyMode();
 
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1047,6 +1088,7 @@
                     // BUGR-1067
                     if (!studioContestType) {
                         this.currentState="AttachFilesState";
+                        setReadOnlyMode();
                         //TODO-HEIGHT-this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                         setPreviousStep(step3box);
                         setCurStep(step4box);
@@ -1057,6 +1099,7 @@
 
                     specf.requestFileTypes.send();
                     this.currentState="SpecificationsState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1076,6 +1119,7 @@
                     }
 
                     this.currentState="AttachFilesState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1094,6 +1138,7 @@
                     sched.requestSchedule.send();
 
                     this.currentState="ScheduleState";
+                    setReadOnlyMode();
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1129,6 +1174,7 @@
                     }
                     
                     this.currentState="ReviewState";
+                    setReadOnlyMode();
                     //BUGR-1792
                     /*if (!this.studioContestType)
                         goNext.visible = false;
@@ -1156,6 +1202,7 @@
                     if (isInvoicedContest) {
                         // for invoiced contest directly lead to purchase confirmation screen.
                         this.currentState="ActivateState";
+                        setReadOnlyMode();
                         save.visible=false;
                         setPreviousStep(step7box);
                         setCurStep(step8box);
@@ -1171,6 +1218,7 @@
                         activate.goToNext();
                     } else {
                         this.currentState="ActivateState";
+                        setReadOnlyMode();
                         save.visible=false;
                         setPreviousStep(step7box);
                         setCurStep(step8box);
@@ -1243,7 +1291,7 @@
                     setButton(index);
                     if (index <= 0) {
                         this.currentState = "ReviewState";
-                        
+                        setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -1267,6 +1315,7 @@
                     }
                 } else if (this.currentState == "ReviewState") {
                     this.currentState="ScheduleState";
+                    setReadOnlyMode();
                     //TODO-HEIGHT-this.height=SCHEDULE_HEIGHT; // BUGR-1134
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
@@ -1281,7 +1330,7 @@
                     setNextStep(step7box); // BUGR-1141
                 } else if (this.currentState == "ScheduleState") {
                     this.currentState="AttachFilesState";
-                    
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1302,6 +1351,7 @@
                         details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
                         details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
                         this.currentState="DetailsState";
+                        setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -1327,6 +1377,7 @@
                     goNext.label = "NEXT";
                     
                     this.currentState="SpecificationsState";
+                    setReadOnlyMode();
                     //TODO-HEIGHT-this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setCurStep(step4box);
                     setNextStep(step5box); // BUGR-1141
@@ -1334,6 +1385,7 @@
                     details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
                     details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                     this.currentState="DetailsState";
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1347,7 +1399,7 @@
                     setNextStep(step4box); // BUGR-1141
                 } else if (this.currentState == "DetailsState") {
                     this.currentState="OverViewState";
-                    
+                    setReadOnlyMode();
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1361,7 +1413,7 @@
                     setNextStep(step3box); // BUGR-1141
                 } else if (this.currentState == "OverViewState") {
                     this.currentState="ContestSelectionState";
-                    
+                    setReadOnlyMode();    
                     save.includeInLayout=save.visible=false;
                     if (save.visible) {
                         save.label=getSaveLabel();
@@ -1545,7 +1597,27 @@
                 sched.initData();
                 review.setAllValues();
                 activate.initData();
-                save.visible=false;
+                
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                if (this.currentState == "ReviewState") {
+                    if (!isNextAllowed()) {
+                        goNext.includeInLayout=goNext.visible=false;
+                    } else {
+                        goNext.includeInLayout=goNext.visible=true;
+                        
+                        if (isInvoicedContest) {
+                            goNext.label="ACTIVATE";
+                        } else {
+                            goNext.label = "NEXT";
+                        }
+                    }
+                }
+                
+                setReadOnlyMode();
             }
 
             private function handleError(e:FaultEvent):void {
@@ -1611,7 +1683,7 @@
                 } else if (this.currentState == "ScheduleState") {
                     setGoodHeight(this.sched);
                 } else if (this.currentState == "ReviewState") {
-                    setGoodHeight(this.review);
+                    setGoodHeight(this.review,80);
                 } else if (this.currentState == "ActivateState") {
                     setGoodHeight(this.activate);
                 }
@@ -1624,7 +1696,7 @@
              *
              * @param obj the box to update
              */
-            private function setGoodHeight(obj:Box):void {
+            private function setGoodHeight(obj:Box, addOnHeight:Number=0):void {
                 var footerHeight:Number=100;
                 var minHeight:Number=600;
                 
@@ -1634,7 +1706,7 @@
                 }
 
                 // adds summaryBox height only if it's shown.
-                this.height=mh+footerHeight+(showSummary ? summaryBox.height : 0);
+                this.height=mh+footerHeight+addOnHeight+(showSummary ? summaryBox.height : 0);
             }
             
             /**
@@ -1676,7 +1748,23 @@
                     return false;
                 }
                 
+                trace("Is Next Allowed: " + isPaidContest() + ", " + getExtraContestFee() + ", " + isReadOnlyMode);
+                
                 return true;
+            }
+            
+            private function setReadOnlyMode():void {
+                if (isReadOnlyMode && currentState != "ReviewState") {
+                    mainPanel.mouseEnabled=false;
+                    mainPanel.mouseChildren=false;
+                    mainPanel.tabEnabled=false;
+                    mainPanel.tabChildren=false;
+                } else {
+                    mainPanel.mouseEnabled=true;
+                    mainPanel.mouseChildren=true;
+                    mainPanel.tabEnabled=true;
+                    mainPanel.tabChildren=true;
+                }
             }
         ]]>
     </mx:Script>
@@ -1896,6 +1984,7 @@
     <!--<pages:InitialWidget id="initialWdt" />-->
     <mx:HBox id="launchWdt"
              width="100%"
+             height="100%"
              horizontalGap="0"
              paddingLeft="10">
         <mx:VBox width="210"
@@ -2160,56 +2249,60 @@
             <!-- New summary box - since 1.0.3 -->
             <mx:HRule width="100%" visible="{showSummary}"
                       includeInLayout="{showSummary}"/>
-            <mx:VBox width="100%"
+            <mx:HBox width="100%"
                      height="60"
                      verticalGap="0"
+                     horizontalGap="0"
                      paddingRight="8"
                      paddingLeft="20"
                      id="summaryBox"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
                       visible="{showSummary}"
                       includeInLayout="{showSummary}">
-                     <mx:HBox width="100%">
-                         <mx:HBox width="33%" horizontalGap="0">
+                     <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
                               <mx:Label text="Project:" fontWeight="bold"/>
                               <mx:Label text="{tcDirectProjectName}"/>
                          </mx:HBox>
-                         <mx:HBox width="33%" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
+                              <mx:Label text="Contest Fee:" fontWeight="bold"/>
+                              <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
                          </mx:HBox>
-                         <mx:HBox width="34%" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
+                              <mx:Label text="Start date:" fontWeight="bold"/>
+                              <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                     </mx:VBox>
+                     <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
                               <mx:Label text="Contest Type:" fontWeight="bold"/>
                               <mx:Label text="{competitionType}"/>
                               <mx:Label text="({overView.studioType.selection.label})"/>
                          </mx:HBox>
-                     </mx:HBox>
-                     <mx:HBox width="100%">
-                         <mx:HBox width="33%" horizontalGap="0">
-                              <mx:Label text="Contest Fee:" fontWeight="bold"/>
-                              <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                         <mx:HBox width="33%" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
                               <mx:Label text="Prizes:" fontWeight="bold"/>
                               <mx:Label id="contestPrizesTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
                          </mx:HBox>
-                         <mx:HBox width="34%" horizontalGap="0">
-                              <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
-                              <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                     </mx:HBox>
-                     <mx:HBox width="100%">
-                         <mx:HBox width="33%" horizontalGap="0">
-                              <mx:Label text="Start date:" fontWeight="bold"/>
-                              <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                         <mx:HBox width="33%" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
                               <mx:Label text="Milestone date:" fontWeight="bold"/>
                               <mx:Label id="contestMilestoneTxt" text="{NONE_MESSAGE}"/>
                          </mx:HBox>
-                         <mx:HBox width="34%" horizontalGap="0">
+                     </mx:VBox>
+                     <mx:VBox width="34%" verticalGap="0" horizontalGap="0">
+                         <mx:HBox verticalGap="0">
+                              <mx:Label text="Status:" fontWeight="bold"/>
+                         </mx:HBox>
+                         <mx:HBox verticalGap="0">
+                              <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
+                              <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                         </mx:HBox>
+                         <mx:HBox verticalGap="0">
                               <mx:Label text="End date:" fontWeight="bold"/>
                               <mx:Label id="contestEndTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
                          </mx:HBox>
-                     </mx:HBox>
-            </mx:VBox>
+                     </mx:VBox>
+            </mx:HBox>
             <mx:HRule width="100%" visible="{showSummary}"
                       includeInLayout="{showSummary}"/>
             <mx:Spacer height="5"/>

@@ -10,7 +10,7 @@
         - Project name title is hidden if the summary is shown since it's already there
         - Added milestone date fields for studio multi-round contests.
 
-    @author TCSDEVELOPER
+    @author pulky
     @version 1.0.1
     @since 1.0
 -->

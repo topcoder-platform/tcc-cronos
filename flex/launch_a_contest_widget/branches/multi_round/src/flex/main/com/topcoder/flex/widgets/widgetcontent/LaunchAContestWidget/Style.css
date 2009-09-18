@@ -236,20 +236,20 @@
  * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
  */
 .tabBtnClose {
-	skin: Embed("../assets/tab-close.png");
-	up-skin: Embed("../assets/tab-close.png");
-	over-skin: Embed("../assets/tab-close-hover.png");
-	down-skin: Embed("../assets/tab-close.png");
+    skin: Embed("../assets/tab-open.png");
+	up-skin: Embed("../assets/tab-open.png");
+	over-skin: Embed("../assets/tab-open-hover.png");
+	down-skin: Embed("../assets/tab-open.png");
 }
 
 /**
  * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
  */
 .tabBtnOpen {
-	skin: Embed("../assets/tab-open.png");
-	up-skin: Embed("../assets/tab-open.png");
-	over-skin: Embed("../assets/tab-open-hover.png");
-	down-skin: Embed("../assets/tab-open.png");
+    skin: Embed("../assets/tab-close.png");
+	up-skin: Embed("../assets/tab-close.png");
+	over-skin: Embed("../assets/tab-close-hover.png");
+	down-skin: Embed("../assets/tab-close.png");
 }
 
 /**

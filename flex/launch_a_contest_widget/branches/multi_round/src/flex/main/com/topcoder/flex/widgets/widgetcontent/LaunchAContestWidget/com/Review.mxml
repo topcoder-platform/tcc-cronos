@@ -10,14 +10,14 @@
     - Inline Review Feature has been introduced.
     - As per the requirement the layout of the page has been updated.
     - Now sections are in accordion like panels.
-    
+
     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - based on the backend data now reviewer and writer are correctly handled.
 
     Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
         - Added multi round specific fields to the corresponding review sections.
 
-    @author TCSDEVELOPER
+    @author pulky
     @version 1.0.2
     @since 1.0
 -->
@@ -483,6 +483,11 @@
                 
                 if (mainWidget && mainWidget.specReviews) {
                     updateReviews=mainWidget.specReviews;
+                } else if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
+                   reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
+                   reviewWorkflowButton.label="Submit for Spec Review";
+                   specUserRoleType=WRITER;
+                   isReadyForReview=false;
                 }
             }
             
@@ -530,13 +535,13 @@
                     showReviewButton('contestSchedule');
                     
                     // if current user has write permission, then show the Resubmit for Review button.
-                    if (!mainWidget.isReadOnlyMode) {
+                    if (!mainWidget.isReadOnlyMode && mainWidget.isPaidContest()) {
                        reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
                        reviewWorkflowButton.label="Resubmit Review";
                        isReadyForReview=true;
                        specUserRoleType=WRITER;
                     } else {
-                        if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId) {
+                        if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId && mainWidget.isPaidContest()) {
                             reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
                             reviewWorkflowButton.label="I'm Done Reviewing";
                             isReadyForReview=true;
@@ -563,7 +568,7 @@
                     hideReviewButton('contestSchedule');
                     
                     // if current user has write permission, then show the Ready for Review button.
-                    if (!mainWidget.isReadOnlyMode) {
+                    if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
                        reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
                        reviewWorkflowButton.label="Submit for Spec Review";
                        specUserRoleType=WRITER;
@@ -782,7 +787,7 @@
                 //
                 // build the review popup data.
                 //
-                if (specUserRoleType!="WRITER") {
+                if (specUserRoleType!="REVIEWER") {
                     passFailRadioContainer.visible=false;
                     passFailRadioContainer.includeInLayout=false;    
                 } else if (specUserRoleType == "REVIEWER") {
@@ -801,6 +806,9 @@
                 
                 oldConversationBox.removeAllChildren();
                 
+                passRadio.selected=false;
+                failRadio.selected=false;
+                
                 // set pass/fail button correctly.
                 if (currentReviewData.reviewStatus == ReviewStatus.PASSED) {
                     passRadio.selected=true;
@@ -818,19 +826,21 @@
                     }
                     
                     var cbox:HBox=new HBox();
-                    var chdr:Label=new Label();
-                    chdr.width=140;
-                    chdr.percentHeight=100;
+                    cbox.percentHeight=100;
+                    cbox.percentWidth=100;
+                    //var chdr:Text=new Text();
+                    //chdr.width=140;
+                    //chdr.percentHeight=100;
                     var formattedDate:String=cd.time.month + " " + cd.time.date + ", " + cd.time.fullYear + " " + cd.time.hours + ":" + cd.time.minutes;
-                    chdr.text="[" + cd.user + "] " + formattedDate + " - ";
-                    chdr.styleName=stylePrefix + "ConversationHeader";
-                    cbox.addChild(chdr);
+                    //chdr.text="[" + cd.user + "] " + formattedDate + " - ";
+                    //chdr.styleName=stylePrefix + "ConversationHeader";
+                    //cbox.addChild(chdr);
                     
-                    var cmsg:Label=new Label();
+                    var cmsg:Text=new Text();
                     cmsg.percentWidth=100;
                     cmsg.percentHeight=100;
                     
-                    cmsg.text=cd.message;
+                    cmsg.htmlText="<i>[" + cd.user + "] " + formattedDate + "</i> - " + cd.message;
                     cmsg.styleName=stylePrefix + "ConversationMsg";
                     cbox.addChild(cmsg);
                     
@@ -979,7 +989,8 @@
                 if (specUserRoleType == "WRITER") {
                     if (isReadyForReview) {
                         var resubmitForReview:AbstractOperation=mainWidget._csws.getOperation("resubmitForReview");
-                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
+                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                                               mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
                         mainWidget.showLoadingProgress();
                     } else {
                         var markReadyForReview:AbstractOperation=mainWidget._csws.getOperation("markReadyForReview");
@@ -989,7 +1000,8 @@
                     }
                 } else if (specUserRoleType == "REVIEWER") {
                     var markReviewDone:AbstractOperation=mainWidget._csws.getOperation("markReviewDone");
-                    markReadyForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio");
+                    markReviewDone.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                                        mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.tcDirectProjectId);
                     mainWidget.showLoadingProgress();
                 }
             }
@@ -1694,6 +1706,7 @@
 
             </mx:VBox>
         </mx:VBox>
+        <mx:Spacer height="100"/>
     </mx:VBox>
     <mx:Canvas id="reviewPopupContainer">
         <mx:TitleWindow includeInLayout="false"
@@ -1717,6 +1730,7 @@
             </mx:filters>
             <mx:VBox width="274"
                      height="260"
+                     id="reviewPopupInnerBox"
                      horizontalScrollPolicy="off"
                      verticalScrollPolicy="off">
                 <mx:HBox horizontalAlign="center"
@@ -1733,8 +1747,9 @@
                                     groupName="passFailRadioGroup"/>
                 </mx:HBox>
                 <mx:Label text="Comments:"
+                          id="reviewCommentLbl"
                           fontWeight="bold"/>
-                <mx:VBox height="100%"
+                <mx:VBox height="{reviewPopupInnerBox.height - reviewCommentLbl.height - (passFailRadioContainer.visible ? passFailRadioContainer.height : 0) - (reviewModalButtonBar.visible ? reviewModalButtonBar.height : 0) - 15}"
                          width="274"
                          borderStyle="solid"
                          paddingLeft="2"
@@ -1748,7 +1763,7 @@
                          id="commentsBox">
 
                     <mx:VBox id="oldConversationBox"
-                             height="100%"
+                             height="{commentsBox.height - 35 - 5}"
                              width="270"
                              verticalScrollPolicy="auto"
                              horizontalScrollPolicy="off">

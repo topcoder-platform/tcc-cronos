@@ -394,7 +394,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                         (container.contents as LaunchWidget).isReadOnlyMode=false;
                     }
                     
-                    if ((container.contents as LaunchWidget).isReadOnlyMode) {
+                    isReviewScreen=(map["screen"]=="Review");
+                    
+                    if ((container.contents as LaunchWidget).isReadOnlyMode && !isReviewScreen) {
                         (container.contents as LaunchWidget).mainPanel.mouseEnabled=false;
                         (container.contents as LaunchWidget).mainPanel.mouseChildren=false;
                         (container.contents as LaunchWidget).mainPanel.tabEnabled=false;
@@ -405,8 +407,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                         (container.contents as LaunchWidget).mainPanel.tabEnabled=true;
                         (container.contents as LaunchWidget).mainPanel.tabChildren=true;
                     }
-
-                    isReviewScreen=(map["screen"]=="Review");
                     
                     (container.contents as LaunchWidget).contestSelect.initData();
                 }
@@ -868,6 +868,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (e && e.result) {
                 this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
+                this.contestid=this.softwareCompetition.projectHeader.id.toFixed(0);
                 
 		// set prize and admin fee from properties
 		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
@@ -976,6 +977,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             if (e && e.result) {
                 this.competition=ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
                 trace("createContestHandler:: this.competition: " + this.competition);
+                this.contestid=this.competition.contestData.contestId.toFixed(0);
+                
 
                 //var type:CompetionType = new CompetionType();
                 var competitionType:String="STUDIO";
@@ -1122,7 +1125,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         public function isPaidContest():Boolean {
             if (this.competitionType == "STUDIO") {
-                if (!competition.contestData.payments 
+                if (!competition || !competition.contestData || !competition.contestData.payments 
                          || competition.contestData.payments.length <= 0) {
                     return false;
                 }

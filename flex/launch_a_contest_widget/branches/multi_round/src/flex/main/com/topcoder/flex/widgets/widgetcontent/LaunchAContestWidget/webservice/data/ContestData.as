@@ -14,7 +14,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
      * Version 1.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
      *    - Added multiRound, milestonePrizeData and multiRoundData attributes
      *
-     * @author TCSDEVELOPER
+     * @author pulky
      * @version 1.1
      * @since 1.0
      */
