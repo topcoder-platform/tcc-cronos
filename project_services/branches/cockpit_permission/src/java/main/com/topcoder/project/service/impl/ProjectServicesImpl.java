@@ -1658,17 +1658,19 @@ public class ProjectServicesImpl implements ProjectServices {
 			long screenTemplateId = 0L;
 		    long reviewTemplateId = 0L;
 			long projectTypeId = projectHeader.getProjectCategory().getId();
-			if (projectTypeId == 1 || projectTypeId == 2 || projectTypeId == 6 || projectTypeId == 7 || projectTypeId ==10)
-			{
-				screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
-				reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
-			}
-			else
-			{	
-				//TODO since now assembly/concept/etc are belong to spec in admin, so try again with 6
+			
+            try
+            {
+                screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
+                reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+            }
+            catch (Exception e)
+            {
+                //TODO default to user spec (6) for now
+                Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
 				screenTemplateId = projectManager.getScorecardId(6, 1);
 				reviewTemplateId = projectManager.getScorecardId(6, 2);
-			}
+            }
 			
         
             for (Phase p : newProjectPhases.getAllPhases()) {
