@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.resource.persistence" />
     <property name="packagedir" value="com/topcoder/management/resource/persistence" />
     <property name="distfilename" value="resource_management_persistence" />
-    <property name="component_version" value="1.2.1" />
+    <property name="component_version" value="1.2.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
