@@ -57,11 +57,11 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <p>
  *
  * <p>
- * <i>Version 1.2.2 (Configurable Contest Terms Release Assembly v2.0) Changes:</i> Audit information was added to 
- * when a resource is added, deleted or changes its user or role.  
+ * <i>Version 1.2.2 (Configurable Contest Terms Release Assembly v2.0) Changes:</i> Audit information was added to
+ * when a resource is added, deleted or changes its user or role.
  * </p>
  * <p>
- * 
+ *
  * <b>Thread Safety</b> : This class is immutable and thread-safe in the sense that multiple threads can not
  * corrupt its internal data structures. However, the results if used from multiple threads can be
  * unpredictable as the database is changed from different threads. This can equally well occur when the
@@ -80,7 +80,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @since 1.1
  */
 public abstract class AbstractResourcePersistence implements ResourcePersistence {
-	/**
+    /**
      * <p>
      * Represents the sql to get the external properties.
      * </p>
@@ -363,43 +363,43 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Represents the external reference id property key for resource property map. 
+     * Represents the external reference id property key for resource property map.
      * </p>
-     * 
+     *
      * @since 1.2.2
      */
     private static final String EXTERNAL_REFERENCE_ID_PROPERTY_KEY = "External Reference ID";
 
     /**
      * <p>
-     * Represents the project user audit creation type 
+     * Represents the project user audit creation type
      * </p>
-     * 
+     *
      * @since 1.2.2
      */
-	private static final int PROJECT_USER_AUDIT_CREATE_TYPE = 1;
+    private static final int PROJECT_USER_AUDIT_CREATE_TYPE = 1;
 
-	/**
+    /**
      * <p>
-     * Represents the project user audit deletion type 
+     * Represents the project user audit deletion type
      * </p>
-     * 
+     *
      * @since 1.2.2
      */
-	private static final int PROJECT_USER_AUDIT_DELETE_TYPE = 2;
+    private static final int PROJECT_USER_AUDIT_DELETE_TYPE = 2;
 
-	/**
+    /**
      * <p>
-     * Represents the SQL for inserting project user audit records 
+     * Represents the SQL for inserting project user audit records
      * </p>
-     * 
+     *
      * @since 1.2.2
      */
-	private static final String SQL_INSERT_PROJECT_USER_AUDIT = 
-    	"INSERT INTO project_user_audit (project_user_audit_id, project_id, resource_user_id, " +
-    	" resource_role_id, audit_action_type_id, action_date, action_user_id) " +
-    	" VALUES (PROJECT_USER_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
-    
+    private static final String SQL_INSERT_PROJECT_USER_AUDIT =
+        "INSERT INTO project_user_audit (project_user_audit_id, project_id, resource_user_id, " +
+        " resource_role_id, audit_action_type_id, action_date, action_user_id) " +
+        " VALUES (PROJECT_USER_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
+
     /**
      * <p>
      * The name of the connection producer to use when a connection to the database is retrieved from the
@@ -501,8 +501,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
                 }
             }
 
-        	auditProjectUser(connection, resource, PROJECT_USER_AUDIT_CREATE_TYPE, null, null); // create
-            
+            auditProjectUser(connection, resource, PROJECT_USER_AUDIT_CREATE_TYPE, null, null); // create
+
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             throw new ResourcePersistenceException("Unable to insert resource.", e);
@@ -660,7 +660,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             deleteResource(connection, SQL_DELETE_RESOURCE, resource.getId());
 
             // audit deletion
-        	auditProjectUser(connection, resource, PROJECT_USER_AUDIT_DELETE_TYPE, null, null); // delete
+            auditProjectUser(connection, resource, PROJECT_USER_AUDIT_DELETE_TYPE, null, null); // delete
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             throw new ResourcePersistenceException("Fail to delete resource", e);
@@ -724,7 +724,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         try {
             // get old resource role to save audit information in case it changed.
             Long oldResourceRoleId = getResourceRoleId(connection, resource.getId());
-            
+
             if (oldResourceRoleId != null && oldResourceRoleId == resource.getResourceRole().getId()) {
                 // if it's the same role, don't consider it for the audit
                 oldResourceRoleId = null;
@@ -780,7 +780,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             Map previousProperties =
                 selectExternalProperties(connection, new Resource(resource.getId())).getAllProperties();
 
-            // keep old user id to save audit information in case it changed.  
+            // keep old user id to save audit information in case it changed.
             Long oldResourceUserId = null;
 
             for (Iterator iter = resource.getAllProperties().entrySet().iterator(); iter.hasNext();) {
@@ -807,15 +807,15 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
                     // check if external reference id changed (user id) and save it to later generate audit
                     if (key.equals(EXTERNAL_REFERENCE_ID_PROPERTY_KEY)) {
-                		try {
-                			oldResourceUserId = 
-                			    Long.parseLong(previousProperties.get(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
-                		} catch (NumberFormatException e1) {
-                	        throw new ResourcePersistenceException("Audit information can't be saved " +
-                	        	"since resource's external reference id is invalid");
-                		}
+                        try {
+                            oldResourceUserId =
+                                Long.parseLong(previousProperties.get(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
+                        } catch (NumberFormatException e1) {
+                            throw new ResourcePersistenceException("Audit information can't be saved " +
+                                "since resource's external reference id is invalid");
+                        }
                     }
-                    
+
                     Integer resourceInfoTypeId = getResourceInfoTypeId(connection, key);
                     if (resourceInfoTypeId != null) {
                         updateResourceInfo(connection, resource.getId(), resourceInfoTypeId.intValue(), value);
@@ -837,9 +837,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             // audit update with delete / create audit records
             if (oldResourceUserId != null || oldResourceRoleId != null) {
-            	auditProjectUser(connection, resource, PROJECT_USER_AUDIT_DELETE_TYPE, oldResourceUserId, 
-            		oldResourceRoleId); // delete
-            	auditProjectUser(connection, resource, PROJECT_USER_AUDIT_CREATE_TYPE, null, null); // create
+                auditProjectUser(connection, resource, PROJECT_USER_AUDIT_DELETE_TYPE, oldResourceUserId,
+                    oldResourceRoleId); // delete
+                auditProjectUser(connection, resource, PROJECT_USER_AUDIT_CREATE_TYPE, null, null); // create
             }
 
         } catch (SQLException e) {
@@ -2383,8 +2383,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param resourceId the resource id being queried
      * @return the resource role id if it exists or null otherwise
      * @throws ResourcePersistenceException if an error occurs in the underlying layer.
-	 * 
-	 * @since 1.2.2
+     *
+     * @since 1.2.2
      */
     private Long getResourceRoleId(Connection connection, long resourceId) throws ResourcePersistenceException {
         ResultSet rs = null;
@@ -2409,61 +2409,61 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-     * This method will audit project user information. This information is generated when a resource is added, 
+     * This method will audit project user information. This information is generated when a resource is added,
      * deleted or changes its user or role.
-     * 
+     *
      * @param connection the connection to database
-	 * @param resource the resource being audited
-	 * @param auditType the audit type. Can be PROJECT_USER_AUDIT_CREATE_TYPE or PROJECT_USER_AUDIT_DELETE_TYPE.
-	 * @param userId the resource user id. This value overrides the value inside resource if present.
-	 * @param resourceRoleId the resource role id. This value overrides the value inside resource if present.
-	 * 
-	 * @throws ResourcePersistenceException if validation error occurs or any error occurs in the underlying layer
-	 * 
-	 * @since 1.2.2
-	 */
-	private void auditProjectUser(Connection connection, Resource resource, int auditType, Long userId, 
-	    Long resourceRoleId) throws ResourcePersistenceException {
+     * @param resource the resource being audited
+     * @param auditType the audit type. Can be PROJECT_USER_AUDIT_CREATE_TYPE or PROJECT_USER_AUDIT_DELETE_TYPE.
+     * @param userId the resource user id. This value overrides the value inside resource if present.
+     * @param resourceRoleId the resource role id. This value overrides the value inside resource if present.
+     *
+     * @throws ResourcePersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.2.2
+     */
+    private void auditProjectUser(Connection connection, Resource resource, int auditType, Long userId,
+        Long resourceRoleId) throws ResourcePersistenceException {
 
-		// decide which user id to use
-	    if (userId == null && !resource.hasProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY)) {
-	        throw new ResourcePersistenceException("Audit information was not successfully saved " +
-	        	"since resource doesn't have external reference id");
-	    }
+        // decide which user id to use
+        if (userId == null && !resource.hasProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY)) {
+            throw new ResourcePersistenceException("Audit information was not successfully saved " +
+                "since resource doesn't have external reference id");
+        }
 
-		long resourceUserId;
-		if (userId != null) {
-		    resourceUserId = userId;
-		} else {
-    		try {
-    			resourceUserId = Long.parseLong(resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
-    		} catch (NumberFormatException e1) {
-    	        throw new ResourcePersistenceException("Audit information was not successfully saved " +
-    	        	"since resource's external reference id is invalid");
-    		}
-    	}
+        long resourceUserId;
+        if (userId != null) {
+            resourceUserId = userId;
+        } else {
+            try {
+                resourceUserId = Long.parseLong(resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
+            } catch (NumberFormatException e1) {
+                throw new ResourcePersistenceException("Audit information was not successfully saved " +
+                    "since resource's external reference id is invalid");
+            }
+        }
 
-		// save audit information
-		PreparedStatement statement = null;
-		try {
-		    statement = connection.prepareStatement(SQL_INSERT_PROJECT_USER_AUDIT);
+        // save audit information
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(SQL_INSERT_PROJECT_USER_AUDIT);
 
-			int index = 1;
-		    statement.setLong(index++, resource.getProject());
-		    statement.setLong(index++, resourceUserId);
-		    statement.setLong(index++, (resourceRoleId != null) ? resourceRoleId : resource.getResourceRole().getId());
-		    statement.setInt(index++, auditType);
-		    statement.setTimestamp(index++, Util.dateToTimestamp(resource.getCreationTimestamp()));
-		    statement.setLong(index++, Long.parseLong(resource.getCreationUser()));
-		    
-		    if (statement.executeUpdate() != 1) {
-		        throw new ResourcePersistenceException("Audit information was not successfully saved.");
-		    }
+            int index = 1;
+            statement.setLong(index++, resource.getProject());
+            statement.setLong(index++, resourceUserId);
+            statement.setLong(index++, (resourceRoleId != null) ? resourceRoleId : resource.getResourceRole().getId());
+            statement.setInt(index++, auditType);
+            statement.setTimestamp(index++, Util.dateToTimestamp(resource.getCreationTimestamp()));
+            statement.setLong(index++, Long.parseLong(resource.getCreationUser()));
+
+            if (statement.executeUpdate() != 1) {
+                throw new ResourcePersistenceException("Audit information was not successfully saved.");
+            }
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             throw new ResourcePersistenceException("Unable to insert project_user_audit.", e);
-		} finally {
-		    Util.closeStatement(statement);
-		}
-	}
+        } finally {
+            Util.closeStatement(statement);
+        }
+    }
 }
