@@ -4,15 +4,14 @@
 -->
 
 <!--
-    This mxml component presents the review page for the launch contest widget.
-
     Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
     - Inline Review Feature has been introduced.
     - As per the requirement the layout of the page has been updated.
     - Now sections are in accordion like panels.
-
+    
     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - based on the backend data now reviewer and writer are correctly handled.
+    @author snow01
 
     Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
         - Added multi round specific fields to the corresponding review sections.
@@ -825,9 +824,9 @@
                         stylePrefix="reviewer";
                     }
                     
-                    var cbox:HBox=new HBox();
-                    cbox.percentHeight=100;
-                    cbox.percentWidth=100;
+                    //var cbox:HBox=new HBox();
+                    //cbox.percentHeight=100;
+                    //cbox.percentWidth=100;
                     //var chdr:Text=new Text();
                     //chdr.width=140;
                     //chdr.percentHeight=100;
@@ -838,14 +837,21 @@
                     
                     var cmsg:Text=new Text();
                     cmsg.percentWidth=100;
-                    cmsg.percentHeight=100;
+                    //cmsg.percentHeight=100;
                     
-                    cmsg.htmlText="<i>[" + cd.user + "] " + formattedDate + "</i> - " + cd.message;
+                    cmsg.htmlText="<i>{" + cd.user + "} " + formattedDate + "</i> - " + cd.message;
                     cmsg.styleName=stylePrefix + "ConversationMsg";
-                    cbox.addChild(cmsg);
+                    //cbox.addChild(cmsg);
                     
-                    oldConversationBox.addChild(cbox);
+                    oldConversationBox.addChild(cmsg);
+
+		    //cbox.percentHeight=100;
+		    //cbox.percentWidth=100;
+		    //cmsg.percentWidth=100;
+		    //cmsg.percentHeight=100;
                 }
+
+		oldConversationBox.validateNow();
                 
                 var reviewStatusBtn:Button=this[sectionId + "_reviewStatusBtn"] as Button;
                 var x:Number=reviewStatusBtn.x;
@@ -1720,6 +1726,7 @@
                         borderStyle="none"
                         borderThickness="3"
                         headerHeight="0"
+			verticalGap="0"
                         horizontalScrollPolicy="off"
                         verticalScrollPolicy="off"
                         xmlns:filters="flash.filters.*">
@@ -1749,7 +1756,7 @@
                 <mx:Label text="Comments:"
                           id="reviewCommentLbl"
                           fontWeight="bold"/>
-                <mx:VBox height="{reviewPopupInnerBox.height - reviewCommentLbl.height - (passFailRadioContainer.visible ? passFailRadioContainer.height : 0) - (reviewModalButtonBar.visible ? reviewModalButtonBar.height : 0) - 15}"
+                <mx:VBox height="{reviewPopupInnerBox.height - reviewCommentLbl.height - (passFailRadioContainer.visible ? passFailRadioContainer.height : 0) - (reviewModalButtonBar.visible ? reviewModalButtonBar.height : 0) - 20}"
                          width="274"
                          borderStyle="solid"
                          paddingLeft="2"
@@ -1762,15 +1769,22 @@
                          verticalScrollPolicy="off"
                          id="commentsBox">
 
-                    <mx:VBox id="oldConversationBox"
-                             height="{commentsBox.height - 35 - 5}"
+			
+                    <mx:VBox id="oldConversationBoxCntr"
+                             height="{commentsBox.height - 37}"
                              width="270"
                              verticalScrollPolicy="auto"
                              horizontalScrollPolicy="off">
+			<mx:VBox id="oldConversationBox"
+				height="100%"
+				width="100%"
+				verticalScrollPolicy="off"
+				horizontalScrollPolicy="off">
+			</mx:VBox>
 
                     </mx:VBox>
                     <mx:TextArea id="commentInputArea"
-                                 height="35"
+                                 height="25"
                                  width="268"
                                  verticalScrollPolicy="auto"
                                  horizontalScrollPolicy="off">
