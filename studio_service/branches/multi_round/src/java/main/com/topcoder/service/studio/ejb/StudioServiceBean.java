@@ -658,6 +658,13 @@ public class StudioServiceBean implements StudioService {
     @Resource(name = "contestPropertyBillingProjectId")
     private long contestPropertyBillingProjectId;
 
+    /**
+     * Represents the id for the Contest property "Viewable Submissions".
+     *
+     */
+    @Resource(name = "contestPropertyViewableSubmissionsId")
+    private long contestPropertyViewableSubmissionsId;
+
 
     /**
      * Represents the id for the Contest property "Contest Administration Fee ".
@@ -1448,6 +1455,9 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyPrizeDescriptionId, defaultContestPrizeDescriptionText);
 
         addContestConfig(result, contestPropertyBillingProjectId, String.valueOf(data.getBillingProject()));
+
+        // default viewable submissions to true
+        addContestConfig(result, contestPropertyViewableSubmissionsId, "true");
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
