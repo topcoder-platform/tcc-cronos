@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+	<class name="ContestPayment" table="contest_payment" lazy="true">
+		<comment> This table describes contest payment. It contain payments
+			status and price.Changes since BUGR-1363: contest can have multiple payments if contest fee changed, so adding id and sequence.</comment>
+		<id name="contestPaymentId" column="contest_payment_id" type="long" unsaved-value="-1"> <!-- since BUGR-1363 -->
+			<generator class="sequence">
+				<param name="sequence">CONTEST_PAYMENT_SEQ</param>
+			</generator>
+		</id>
+		<property name="contestId" column="contest_id" type="long" not-null="true" unique="false"/>
+		<many-to-one name="status" column="payment_status_id" class="com.topcoder.service.studio.submission.PaymentStatus" fetch="select" unique="false" update="true" insert="true" optimistic-lock="true" not-found="exception" embed-xml="true" /> 
+		<property name="price" not-null="true" unique="false" optimistic-lock="true" lazy="false" generated="never" /> 
+		<property name="payPalOrderId" column="paypal_order_id" not-null="true" unique="false" optimistic-lock="true" lazy="false" generated="never" /> 
+		<property name="createDate" column="create_date" not-null="true" generated="insert" unique="false" optimistic-lock="true" lazy="false" /> 
+		 <!--  since BUGR-1076  --> 
+		<property name="paymentReferenceId" column="sale_reference_id" not-null="false" unique="false" optimistic-lock="true" lazy="false" generated="never" /> 
+		<many-to-one name="paymentType" column="sale_type_id" class="com.topcoder.service.studio.PaymentType" fetch="select" unique="false" update="true" insert="true" optimistic-lock="true" not-found="exception" embed-xml="true" /> 
+	</class>
+</hibernate-mapping>
