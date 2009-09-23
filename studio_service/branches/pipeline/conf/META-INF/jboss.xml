@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>StudioServiceBean</ejb-name>
+            <jndi-name>StudioServiceBean/remote</jndi-name>
+        </session>
+    </enterprise-beans>
+    <security-domain>java:/jaas/JBossLoginModule</security-domain>
+</jboss>
