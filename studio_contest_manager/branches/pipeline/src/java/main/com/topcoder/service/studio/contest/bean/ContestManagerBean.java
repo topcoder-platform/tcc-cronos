@@ -7,17 +7,18 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -34,6 +35,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
+import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -46,6 +48,8 @@ import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestConfigurationException;
+import com.topcoder.service.studio.contest.SimplePipelineData;
+
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
@@ -115,6 +119,10 @@ import com.topcoder.util.log.LogManager;
  * <p>
  * 1.3 change: One method <code>getUserContests(String)</code> is added. the
  * parameter of getConfig is changed from long to Identifier.
+ * </p>
+ * <p>
+ * Version 1.3.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
  *
  * <p>
@@ -4983,6 +4991,244 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     "There are errors while getting the user contests.");
         } finally {
             logExit("getUserContests()");
+        }
+    }
+
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.1.1
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
+            boolean overdueContests) throws ContestManagementException {
+        try {
+            logEnter("getSimplePipelineData()");
+
+            EntityManager em = getEntityManager();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("select NVL(pipe.id, -1) as id,  ");
+            sb.append("     c.contest_id, ");
+            sb.append("     c.name as cname, ");
+            sb.append("     '1.0' as cversion, ");
+            sb.append("     p.project_id as project_id, ");
+            sb.append("     p.name as pname, ");
+            sb.append("     (select contest_type_desc  ");
+            sb.append("         from contest_type_lu  ");
+            sb.append("         where contest_type_id = c.contest_type_id) as contest_type_desc, ");
+            sb.append("     cast('STUDIO' as VARCHAR(254)) as category, ");
+            sb.append("     (select name  ");
+            sb.append("         from contest_detailed_status_lu as ds  ");
+            sb.append("         where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, ");
+            sb.append("     c.start_time, ");
+            sb.append("     c.end_time as end_time, ");
+            sb.append("     c.start_time as duration_start_time, ");
+            sb.append("     c.end_time as duration_end_time, ");
+            sb.append("     cast(NULL as DATETIME YEAR TO FRACTION) as creation_time, ");
+            sb.append("     cast(NULL as DATETIME YEAR TO FRACTION) as modification_time, ");
+            sb.append("  ");
+            sb.append("     NVL((select unique cl.name ");
+            sb.append("     from contest_payment as cp ");
+            sb.append("     left outer join tt_project as ttp  ");
+            sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("     left outer join tt_client_project cpx ");
+            sb.append("     on ttp.project_id = cpx.project_id   ");
+            sb.append("     left outer join tt_client as cl ");
+            sb.append("     on cpx.client_id = cl.client_id ");
+            sb.append("     where cp.contest_id = c.contest_id), 'One Off') as client_name, ");
+            sb.append("  ");
+            sb.append("     NVL(pipe.review_payment,0) as review_payment, ");
+            sb.append("     NVL(pipe.specification_review_payment,0) as specification_review_payment, ");
+            sb.append("  ");
+            sb.append("     (select sum(amount) ");
+            sb.append("         from contest_prize_xref as cp ");
+            sb.append("         join prize as p ");
+            sb.append("         on cp.prize_id = p.prize_id ");
+            sb.append("         and cp.contest_id = c.contest_id ");
+            sb.append("         and p.prize_type_id = 1 ");
+            sb.append("         and p.place >= 1 and p.place <= 5) as tot_prize, ");
+            sb.append("  ");
+            sb.append("     (select cast(cc.property_value as DECIMAL(10,2)) ");
+            sb.append("         from contest_config as cc ");
+            sb.append("         where cc.property_id = 24 ");
+            sb.append("         and cc.contest_id = c.contest_id) as dr, ");
+            sb.append("  ");
+            sb.append("     (select cast(cc.property_value as DECIMAL(10,2)) ");
+            sb.append("         from contest_config as cc ");
+            sb.append("         where cc.property_id = 25 ");
+            sb.append("         and cc.contest_id = c.contest_id) as contest_fee, ");
+            sb.append("  ");
+            sb.append("     (select cc.property_value ");
+            sb.append("         from contest_config as cc ");
+            sb.append("         where cc.property_id = 1 ");
+            sb.append("         and cc.contest_id = c.contest_id) as short_desc, ");
+            sb.append("     (select cc.property_value ");
+            sb.append("         from contest_config as cc ");
+            sb.append("         where cc.property_id = 13 ");
+            sb.append("         and cc.contest_id = c.contest_id) as long_desc, ");
+            sb.append("     (select cc.property_value ");
+            sb.append("         from contest_config as cc ");
+            sb.append("         where cc.property_id = 21 ");
+            sb.append("         and cc.contest_id = c.contest_id) as eligibility, ");
+            sb.append("  ");
+            // use contest creator as manager for now
+    /*        sb.append("     NVL((select res.resource_name ");
+            sb.append("         from studio_competition_pipeline_resources as pipe_res ");
+            sb.append("         join resource as res ");
+            sb.append("         on pipe_res.resource_id = res.resource_id ");
+            sb.append("         and pipe_res.studio_competition_pipeline_info_id = pipe.id ");
+            sb.append("         join resource_role_lu as res_role ");
+            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
+            sb.append("         and res_role.name = 'Manager'),'') as manager, ");   */
+            sb.append("         (select u.handle from contest cc, user u ");
+            sb.append("         where cc.create_user_id = u.user_id ");
+            sb.append("         and cc.contest_id = c.contest_id) as manager, ");
+            sb.append("  ");
+            sb.append("     NVL((select u.handle from spec_review sr, spec_review_reviewer_xref srr, user u ");
+            sb.append("     where sr.spec_review_id = srr.spec_review_id and srr.review_user_id = u.user_id ");
+            sb.append("  and sr.contest_id = c.contest_id) , 'Reviewer') as reviewer, ");
+            sb.append("  ");
+            sb.append("     NVL((select res.resource_name ");
+            sb.append("         from studio_competition_pipeline_resources as pipe_res ");
+            sb.append("         join resource as res ");
+            sb.append("         on pipe_res.resource_id = res.resource_id ");
+            sb.append("         and pipe_res.studio_competition_pipeline_info_id = pipe.id ");
+            sb.append("         join resource_role_lu as res_role ");
+            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
+            sb.append("         and res_role.name = 'Architect'),'') as architect, ");
+            sb.append("  ");
+            sb.append("     NVL((select res.resource_name ");
+            sb.append("         from studio_competition_pipeline_resources as pipe_res ");
+            sb.append("         join resource as res ");
+            sb.append("         on pipe_res.resource_id = res.resource_id ");
+            sb.append("         and pipe_res.studio_competition_pipeline_info_id = pipe.id ");
+            sb.append("         join resource_role_lu as res_role ");
+            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
+            sb.append("         and res_role.name = 'Salesperson'),'') as sales_person, ");
+            sb.append("      ");
+            sb.append("  ");
+            sb.append("     NVL(pipe.client_approval,0) as client_approval, ");
+            sb.append("     NVL(pipe.pricing_approval, 0) as pricing_approval, ");
+            sb.append("     NVL(pipe.has_wiki_specification, 0) as has_wiki_specification, ");
+            sb.append("     NVL(pipe.passed_spec_review, 0) as passed_spec_review, ");
+            sb.append("     NVL(pipe.has_dependent_competitions, 0) as has_dependent_competitions, ");
+            sb.append("     NVL(pipe.was_reposted, 0) as was_reposted, ");
+            sb.append("     NVL(pipe.notes, '') as notes, ");
+            sb.append("     (select name  ");
+            sb.append("         from permission_type  ");
+            sb.append("         where permission_type_id= NVL( (select max( permission_type_id)  ");
+            sb.append("                         from user_permission_grant as upg   ");
+            sb.append("                         where resource_id=p.project_id ");
+            sb.append("                         and upg.user_id = :userId), ");
+            sb.append("                         case when exists (select u.user_id ");
+            sb.append("                                         from user as u ");
+            sb.append("                                         join user_role_xref as uref ");
+            sb.append("                                         on u.user_id = :userId ");
+            sb.append("                                         and u.user_id = uref.login_id ");
+            sb.append("                                         join security_roles as sr ");
+            sb.append("                                         on uref.role_id = sr.role_id ");
+            sb
+                    .append("                                         and sr.description in ('Cockpit Administrator','Admin Super Role')) ");
+            sb.append("                         then 3 else 0 end)) as pperm, ");
+            sb.append("     (select name  ");
+            sb.append("         from permission_type  ");
+            sb.append("         where permission_type_id = NVL( (select max( permission_type_id)  ");
+            sb.append("                         from user_permission_grant as upg   ");
+            sb.append("                         where resource_id=c.contest_id   ");
+            sb.append("                         and is_studio=1 ");
+            sb.append("                         and upg.user_id = :userId),0)) as cperm   ");
+            sb.append(" from contest as c ");
+            sb.append(" join tc_direct_project as p ");
+            sb.append(" on c.tc_direct_project_id = p.project_id ");
+            sb.append(" left outer join studio_competition_pipeline_info as pipe ");
+            sb.append(" on pipe.contest_id = c.contest_id ");
+            sb.append(" where (exists (select u.user_id ");
+            sb.append("                 from user as u ");
+            sb.append("                 join user_role_xref as uref ");
+            sb.append("                 on u.user_id = :userId ");
+            sb.append("                 and u.user_id = uref.login_id ");
+            sb.append("                 join security_roles as sr ");
+            sb.append("                 on uref.role_id = sr.role_id ");
+            sb
+                    .append("                 and sr.description in ('Cockpit Administrator','Admin Super Role','TC Staff')) ");
+            sb.append(" OR ");
+            sb.append(" NVL( (select max( permission_type_id)  ");
+            sb.append("         from user_permission_grant as upg   ");
+            sb.append("         where resource_id=p.project_id  ");
+            sb.append("         and upg.user_id = :userId),0) > 0 ");
+            sb.append(" OR ");
+            sb.append(" NVL( (select max( permission_type_id)  ");
+            sb.append("         from user_permission_grant as upg   ");
+            sb.append("         where resource_id=c.contest_id   ");
+            sb.append("         and is_studio=1 ");
+            sb.append("         and upg.user_id = :userId),0) > 0 ");
+            sb.append(" OR ");
+            sb.append(" exists (select cp.contest_id ");
+            sb.append("         from contest_payment as cp ");
+            sb.append("         join tt_project as ttp ");
+            sb.append("         on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("         and cp.sale_type_id = 2 ");
+            sb.append("         and cp.contest_id = c.contest_id ");
+            sb.append("         join tt_user_account as ua ");
+            sb.append("         on ttp.company_id = ua.company_id ");
+            sb.append("         and ua.user_name = (select handle from user where user_id = :userId)) ");
+            sb.append(" ) ");
+            sb.append(" AND ");
+            sb.append(" ( ");
+            sb
+                    .append(" (c.start_time >= to_date(:startDate,'%Y-%m-%d') AND c.start_time <= to_date(:endDate,'%Y-%m-%d')) ");
+            sb.append(" OR ");
+            sb
+                    .append(" (c.end_time >= to_date(:startDate,'%Y-%m-%d') AND c.end_time <= to_date(:endDate,'%Y-%m-%d')) ");
+            sb.append(" ) ");
+            sb.append("  ");
+
+            if (!overdueContests) {
+                sb.append(" AND c.start_time >= TODAY");
+            }
+
+            sb.append(" order by c.start_time ");
+
+            Query query = em.createNativeQuery(sb.toString(), "SimplePipelineDataResults");
+
+            query.setParameter("userId", userId);
+
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            query.setParameter("startDate", formatter.format(startDate));
+            query.setParameter("endDate", formatter.format(endDate));
+
+            List list = query.getResultList();
+            List<SimplePipelineData> result = new ArrayList<SimplePipelineData>();
+
+            for (int i = 0; i < list.size(); i++) {
+                SimplePipelineData data = (SimplePipelineData) list.get(i);
+                if (data != null && (data.getCperm() != null || data.getPperm() != null)) {
+                    result.add(data);
+                }
+            }
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the pipeline data.");
+        } finally {
+            logExit("getSimplePipelineData()");
         }
     }
 }

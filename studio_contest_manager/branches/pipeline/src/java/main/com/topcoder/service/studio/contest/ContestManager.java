@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.studio.contest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,10 @@ import com.topcoder.service.studio.PaymentType;
  * All the methods that does CRUD on permission have been commented for Cockpit
  * Project Admin Release Assembly v1.0.
  * </p>
+* <p>
+ * Version 1.3.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It's up to concrete implementations.
@@ -61,7 +66,7 @@ import com.topcoder.service.studio.PaymentType;
  * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
  * @author AleaActaEst, BeBetter
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3
+ * @version 1.3.1
  * @since 1.0
  */
 public interface ContestManager {
@@ -1154,4 +1159,23 @@ public interface ContestManager {
      * @since 1.3
      */
     public List<Contest> getUserContests(String username) throws ContestManagementException;
+
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.1.1
+     */
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
+            boolean overdueContests) throws ContestManagementException;
 }
