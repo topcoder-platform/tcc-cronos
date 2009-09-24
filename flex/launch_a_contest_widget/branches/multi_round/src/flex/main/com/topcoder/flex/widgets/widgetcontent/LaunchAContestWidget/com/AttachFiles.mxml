@@ -566,7 +566,6 @@
             <mx:Spacer height="5"/>
             <mx:VBox>
                 <mx:Button id="upload" buttonMode="true" label="UPLOAD FILE" click="uploadFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-                <mx:Text text="You may add more files after uploading." color="0x888888"/>
             </mx:VBox>
         </mx:VBox>
 
