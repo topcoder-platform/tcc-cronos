@@ -11,6 +11,7 @@ import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 
+import com.topcoder.service.pipeline.CommonPipelineData;
 import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
@@ -28,6 +29,7 @@ import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.StudioService;
+import com.topcoder.service.studio.contest.ContestManagementException;
 
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Level;
@@ -40,6 +42,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -61,6 +65,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.jboss.util.collection.CollectionsUtil;
+
 /**
  * <p>
  * This is an implementation of <code>ContestPipelineService</code> web service in form of stateless session EJB.
@@ -73,11 +79,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * </p>
  * 
  * <p>
+ * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve CommonPipelineData for given date range.
+ * </p>
+ * 
+ * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
  * 
- * @author waits, snow01
- * @version 1.0
+ * @author waits, snow01, TCSASSEMBLER
+ * @version 1.0.1
  * @since Pipeline Conversion Service v1.0
  */
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
@@ -85,6 +96,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ContestPipelineServiceBean implements ContestPipelineServiceRemote, ContestPipelineServiceLocal {
+    private static final long MILLIS_PER_HOUR = 1000 * 60 * 60;
+    
     /** Private constant specifying project type info's version id key. */
     private static final String PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY = "External Reference ID";
 
@@ -1106,6 +1119,145 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                 logger.log(Level.ERROR, "INNER: " + e.getMessage());
                 e = e.getCause();
             }
+        }
+    }
+    
+    /**
+     * Gets the list of common pipeline data within between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.0.1
+     */
+    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws ContestPipelineServiceException {
+        logger.log(Level.DEBUG, "Enter getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests) method.");
+        logger.log(Level.DEBUG, "with parameter startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
+        ExceptionUtils.checkNull(startDate, null, null, "The startDate is null.");
+        ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
+
+        long startTime = System.currentTimeMillis();
+        Set<CommonPipelineData> ret = new TreeSet<CommonPipelineData>();
+
+        try {
+            
+            List<com.topcoder.service.studio.contest.SimplePipelineData> studioPipelineDatas = this.studioService.getSimplePipelineData(startDate, endDate, overdueContests);
+            if (studioPipelineDatas != null) {
+
+                for (com.topcoder.service.studio.contest.SimplePipelineData p : studioPipelineDatas) {
+                    CommonPipelineData cp = new CommonPipelineData();
+                    cp.setCname(p.getCname());
+                    cp.setContestId(p.getContestId());
+                    cp.setPname(p.getPname());
+                    cp.setSname(p.getSname());
+                    cp.setContestType(p.getContestType());
+                    cp.setPipelineInfoId(p.getPipelineInfoId());
+                    cp.setProjectId(p.getProjectId());
+                    cp.setCversion(p.getCversion());
+                    cp.setContestCategory(p.getContestCategory());
+                    cp.setCreateTime(p.getCreateTime());
+                    cp.setModifyTime(p.getModifyTime());
+                    cp.setClientName(p.getClientName());
+                    cp.setReviewPayment(p.getReviewPayment());
+                    cp.setSpecReviewPayment(p.getSpecReviewPayment());
+                    cp.setTotalPrize(p.getTotalPrize());
+                    cp.setDr(p.getDr());
+                    cp.setContestFee(p.getContestFee());
+                    cp.setShortDesc(p.getShortDesc());
+                    cp.setLongDesc(p.getLongDesc());
+                    cp.setEligibility(p.getEligibility());
+                    cp.setManager(p.getManager());
+                    cp.setReviewer(p.getReviewer());
+                    cp.setArchitect(p.getArchitect());
+                    cp.setSalesPerson(p.getSalesPerson());
+                    cp.setClientApproval(p.getClientApproval());
+                    cp.setPricingApproval(p.getPricingApproval());
+                    cp.setHasWikiSpecification(p.getHasWikiSpecification());
+                    cp.setPassedSpecReview(p.getPassedSpecReview());
+                    cp.setHasDependentCompetitions(p.getHasDependentCompetitions());
+                    cp.setWasReposted(p.getWasReposted());
+                    cp.setNotes(p.getNotes());
+                    cp.setCperm(p.getCperm());
+                    cp.setPperm(p.getPperm());
+                    cp.setDurationInHrs((p.getDurationEndTime().getTime() - p.getDurationStartTime().getTime())
+                            / MILLIS_PER_HOUR);
+                    cp.setStartDate(getXMLGregorianCalendar(p.getStartDate()));
+                    cp.setEndDate(getXMLGregorianCalendar(p.getEndDate()));
+                    cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
+                    cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
+
+                    ret.add(cp);
+                }
+            }
+            
+            List<com.topcoder.management.project.SimplePipelineData> swPipelineDatas = this.projectServices.getSimplePipelineData(startDate, endDate, overdueContests);
+            if (swPipelineDatas != null) {
+
+                for (com.topcoder.management.project.SimplePipelineData p : swPipelineDatas) {
+                    CommonPipelineData cp = new CommonPipelineData();
+                    cp.setCname(p.getCname());
+                    cp.setContestId(p.getContestId());
+                    cp.setPname(p.getPname());
+                    cp.setSname(p.getSname());
+                    cp.setContestType(p.getContestType());
+                    cp.setPipelineInfoId(p.getPipelineInfoId());
+                    cp.setProjectId(p.getProjectId());
+                    cp.setCversion(p.getCversion());
+                    cp.setContestCategory(p.getContestCategory());
+                    cp.setCreateTime(p.getCreateTime());
+                    cp.setModifyTime(p.getModifyTime());
+                    cp.setClientName(p.getClientName());
+                    cp.setReviewPayment(p.getReviewPayment());
+                    cp.setSpecReviewPayment(p.getSpecReviewPayment());
+                    cp.setTotalPrize(p.getTotalPrize());
+                    cp.setDr(p.getDr());
+                    cp.setContestFee(p.getContestFee());
+                    cp.setShortDesc(p.getShortDesc());
+                    cp.setLongDesc(p.getLongDesc());
+                    cp.setEligibility(p.getEligibility());
+                    cp.setManager(p.getManager());
+                    cp.setReviewer(p.getReviewer());
+                    cp.setArchitect(p.getArchitect());
+                    cp.setSalesPerson(p.getSalesPerson());
+                    cp.setClientApproval(p.getClientApproval());
+                    cp.setPricingApproval(p.getPricingApproval());
+                    cp.setHasWikiSpecification(p.getHasWikiSpecification());
+                    cp.setPassedSpecReview(p.getPassedSpecReview());
+                    cp.setHasDependentCompetitions(p.getHasDependentCompetitions());
+                    cp.setWasReposted(p.getWasReposted());
+                    cp.setNotes(p.getNotes());
+                    cp.setCperm(p.getCperm());
+                    cp.setPperm(p.getPperm());
+                    cp.setDurationInHrs((p.getDurationEndTime().getTime() - p.getDurationStartTime().getTime())
+                            / MILLIS_PER_HOUR);
+                    cp.setStartDate(getXMLGregorianCalendar(p.getStartDate()));
+                    cp.setEndDate(getXMLGregorianCalendar(p.getEndDate()));
+                    cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
+                    cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
+
+                    ret.add(cp);
+                }
+            }
+            
+            logDebug("The results are:" + ret.size());
+
+            long endTime = System.currentTimeMillis();
+            logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
+
+            List<CommonPipelineData> r = new ArrayList<CommonPipelineData>();
+            r.addAll(ret);
+            return r;
+        } catch (com.topcoder.service.studio.PersistenceException e) {
+            throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data for studio.");
+        } finally {
+            logExit("getCommonPipelineData");
         }
     }
 }
