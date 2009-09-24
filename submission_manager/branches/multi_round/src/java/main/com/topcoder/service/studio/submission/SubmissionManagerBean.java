@@ -905,17 +905,6 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
         Submission submission = getActiveSubmission(entityManager,
                 submissionId, methodName);
 
-        /*
-         * @since 1.2 Fix the bug for addPrizeToSubmission would not throw the
-         * exception, when the rank is not set or not equal to the place in
-         * prize
-         */
-        if ((submission.getRank() == null) ||
-                (submission.getRank().intValue() != prize.getPlace().intValue())) {
-            throw logException(new IllegalArgumentException(
-                    "The rank is not set or not equals to pize place"),
-                methodName);
-        }
 
         if (!submission.getPrizes().contains(prize)) {
             submission.getPrizes().add(prize);
