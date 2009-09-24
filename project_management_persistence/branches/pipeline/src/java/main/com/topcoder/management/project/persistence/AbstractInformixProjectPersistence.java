@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
+import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
@@ -91,6 +93,10 @@ import com.topcoder.util.log.Log;
  * 
  * Version 1.1.1 (Spec Reviews Finishing Touch v1.0) Change Notes:
  *  - Changed the way now spec status is queried.
+ * <p>
+ * Version 1.1.2 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
+ * </p>
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -102,7 +108,7 @@ import com.topcoder.util.log.Log;
  * otherwise, show 'status' from db.  
  *
  * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
- * @version 1.1.1
+ * @version 1.1.2
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
@@ -826,6 +832,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "VALUES (?, ?, (select NVL(max(ps.version), 0)  + 1 from project_spec as ps where ps.project_id = ?), " 
             + "?, ?, ?, ?, "
             + "?, CURRENT, ?, CURRENT)";
+    
+    /**
+     * Represents the column types mapping for retrieving simple pipeline data.
+     * @since 1.1.1
+     */
+    private static final DataType[] QUERY_SIMPLE_PIPELINE_DATA_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+            Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE,
+            Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
+            Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE};
 
 	/**
 	 * 'Active' status name
@@ -3581,5 +3601,289 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			}
         }
         
+    }
+    
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws PersistenceException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
+            boolean overdueContests) throws PersistenceException {
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+            
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            
+            StringBuffer sb = new StringBuffer();
+            
+            sb.append(" select NVL(pipe.id,-1) as id,  ");
+            sb.append("     c.project_id as contest_id, ");
+            sb.append("     (select value from project_info where project_info_type_id = 6 and project_id = c.project_id) as cname, ");
+            sb.append("     (select value from project_info where project_info_type_id = 7 and project_id = c.project_id) as cversion, ");
+            sb.append("     p.project_id as project_id, ");
+            sb.append("     p.name as pname, ");
+            sb.append("     ptl.name as contest_type_desc, ");
+            sb.append("     pcl.name as category, ");
+            sb.append("     psl.name as sname, ");
+            sb.append("     (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) as start_time, ");
+            sb.append("     (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) as end_time, ");
+            sb.append("     (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id and ph.phase_type_id=2) as duration_start_time, ");
+            sb.append("     (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id and ph.phase_type_id=2) as duration_end_time, ");
+            sb.append("     c.create_date as creation_time, ");
+            sb.append("     c.modify_date as modification_time, ");
+            sb.append("  ");
+            sb.append("     NVL((select unique cl.name ");
+            sb.append("     from contest_sale as cp ");
+            sb.append("     left outer join tt_project as ttp  ");
+            sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("     left outer join tt_client_project cpx ");
+            sb.append("     on ttp.project_id = cpx.project_id   ");
+            sb.append("     left outer join tt_client as cl ");
+            sb.append("     on cpx.client_id = cl.client_id ");
+            sb.append("     where cp.contest_id = c.project_id), 'One Off') as client_name, ");
+            sb.append("  ");
+            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 33 and project_id = c.project_id) as review_payment, ");
+            sb.append("  ");
+            sb.append("     NVL(pipe.specification_review_payment,0) as specification_review_payment, ");
+            sb.append("  ");
+            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 16 and project_id = c.project_id) as tot_prize, ");
+            sb.append("  ");
+            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 30 and project_id = c.project_id) as dr, ");
+            sb.append("  ");
+            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
+            sb.append("  ");
+            sb.append("     ccat.short_desc as short_desc, ");
+            sb.append("  ");
+            sb.append("     ccat.description as long_desc, ");
+            sb.append("  ");
+            sb.append("     (select value from project_info where project_info_type_id = 14 and project_id = c.project_id) as eligibility, ");
+            sb.append("  ");
+            sb.append("     (select max(ri.value) ");
+            sb.append("     from resource as res ");
+            sb.append("     join resource_role_lu as res_role ");
+            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
+            sb.append("         and res.project_id = c.project_id ");
+            sb.append("         and res_role.name = 'Manager' ");
+            sb.append("     join resource_info ri ");
+            sb.append("          on (res.resource_id = ri.resource_id and ri.resource_info_type_id = 2) ");   // get handle
+            sb.append("      where res.project_id = c.project_id and ri.value != 'Applications' and ri.value != 'Components') ");
+            sb.append("                 as manager, ");
+            sb.append("  ");
+            sb.append("     NVL((select u.handle from spec_review sr, spec_review_reviewer_xref srr, user u ");
+            sb.append("     where sr.spec_review_id = srr.spec_review_id and srr.review_user_id = u.user_id ");
+            sb.append("  and sr.contest_id = c.project_id) , 'Reviewer') as reviewer, ");
+            sb.append("  ");
+            sb.append("         ('Architect') as architect, ");
+            sb.append("  ");
+            sb.append("         ('Salesperson') as sales_person, ");
+            sb.append("      ");
+            sb.append("     NVL(pipe.client_approval,0) as client_approval, ");
+            sb.append("     NVL(pipe.pricing_approval,0) as pricing_approval, ");
+            sb.append("     NVL(pipe.has_wiki_specification,0) as has_wiki_specification, ");
+            sb.append("     NVL(pipe.passed_spec_review,0) as passed_spec_review, ");
+            sb.append("     NVL(pipe.has_dependent_competitions,0) as has_dependent_competitions, ");
+            sb.append("     NVL(pipe.was_reposted,0) as was_reposted, ");
+            sb.append("     NVL(pipe.notes,'') as notes, ");
+            sb.append("     (select name  ");
+            sb.append("         from permission_type  ");
+            sb.append("         where permission_type_id= NVL( (select max( permission_type_id)  ");
+            sb.append("                         from user_permission_grant as upg   ");
+            sb.append("                         where resource_id=p.project_id ");
+            sb.append("                         and upg.user_id = ").append(userId).append("), ");
+            sb.append("             case when exists (select u.user_id ");
+            sb.append("                     from user as u ");
+            sb.append("                     join user_role_xref as uref ");
+            sb.append("                     on u.user_id = ").append(userId).append(" ");
+            sb.append("                     and u.user_id = uref.login_id ");
+            sb.append("                     join security_roles as sr ");
+            sb.append("                     on uref.role_id = sr.role_id ");
+            sb.append("                     and sr.description in ('Cockpit Administrator','Admin Super Role')) then 3 else 0 end)) as pperm, ");
+            sb.append("     (select name  ");
+            sb.append("         from permission_type  ");
+            sb.append("         where permission_type_id = NVL( (select max( permission_type_id)  ");
+            sb.append("                         from user_permission_grant as upg   ");
+            sb.append("                         where resource_id=c.project_id   ");
+            sb.append("                         and is_studio=0 ");
+            sb.append("                         and upg.user_id = ").append(userId).append("),0)) as cperm   ");
+            sb.append(" from project as c ");
+            sb.append(" join project_info as piccat ");
+            sb.append("     on c.project_id = piccat.project_id ");
+            sb.append("     and piccat.project_info_type_id = 2 ");
+            sb.append(" join comp_catalog as ccat ");
+            sb.append("     on piccat.value = ccat.component_id ");
+            sb.append(" join project_category_lu as pcl ");
+            sb.append("     on c.project_category_id = pcl.project_category_id ");
+            sb.append(" join project_type_lu as ptl ");
+            sb.append("     on pcl.project_type_id = ptl.project_type_id ");
+            sb.append(" join project_status_lu as psl ");
+            sb.append("     on c.project_status_id = psl.project_status_id ");
+            sb.append(" join tc_direct_project as p ");
+            sb.append("     on c.tc_direct_project_id = p.project_id ");
+            sb.append(" left outer join software_competition_pipeline_info as pipe ");
+            sb.append("     on pipe.competition_id = c.project_id ");
+            sb.append("     and pipe.component_id = ccat.component_id ");
+            sb.append("  ");
+            sb.append(" where (exists (select u.user_id ");
+            sb.append("     from user as u ");
+            sb.append("     join user_role_xref as uref ");
+            sb.append("     on u.user_id = ").append(userId).append(" ");
+            sb.append("     and u.user_id = uref.login_id ");
+            sb.append("     join security_roles as sr ");
+            sb.append("     on uref.role_id = sr.role_id ");
+            sb.append("     and sr.description in ('Cockpit Administrator','Admin Super Role','TC Staff')) ");
+            sb.append(" OR ");
+            sb.append(" NVL( (select max( permission_type_id)  ");
+            sb.append("     from user_permission_grant as upg   ");
+            sb.append("     where resource_id=p.project_id  ");
+            sb.append("     and upg.user_id = ").append(userId).append("),0) > 0 ");
+            sb.append(" OR ");
+            sb.append(" NVL( (select max( permission_type_id)  ");
+            sb.append("     from user_permission_grant as upg   ");
+            sb.append("     where resource_id=c.project_id   ");
+            sb.append("     and is_studio=0 ");
+            sb.append("     and upg.user_id = ").append(userId).append("),0) > 0 ");
+            sb.append(" OR ");
+            sb.append(" exists (select cp.contest_id ");
+            sb.append("     from contest_sale as cp ");
+            sb.append("     join tt_project as ttp ");
+            sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("     and cp.sale_type_id = 2 ");
+            sb.append("     and cp.contest_id = c.project_id ");
+            sb.append("     join tt_user_account as ua ");
+            sb.append("     on ttp.company_id = ua.company_id ");
+            sb.append("     and ua.user_name = (select handle from user where user_id = ").append(userId).append(")) ");
+            sb.append(" ) ");
+            sb.append(" AND ");
+            sb.append(" ( ");
+            sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) >= to_date('")
+                    .append(formatter.format(startDate))
+                    .append("','%Y-%m-%d') AND (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) <= to_date('")
+                    .append(formatter.format(endDate))
+                    .append("','%Y-%m-%d')) ");
+            sb.append(" OR ");
+            sb.append(" ((select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) >= to_date('")
+                    .append(formatter.format(startDate))
+                    .append("','%Y-%m-%d') AND (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) <= to_date('")
+                    .append(formatter.format(endDate))
+                    .append("','%Y-%m-%d')) ");
+            sb.append(" ) ");
+            if (!overdueContests) {
+                sb.append(" AND start_time >= TODAY  ");
+            }
+
+            sb.append(" order by start_time ");
+
+            Object[][] rows = Helper.doQuery(conn, sb.toString(), new Object[] {},
+                    QUERY_SIMPLE_PIPELINE_DATA_COLUMN_TYPES);
+
+            List<SimplePipelineData> result = new ArrayList<SimplePipelineData>();
+
+            for (int i = 0; i < rows.length; i++) {
+
+                SimplePipelineData c = new SimplePipelineData();
+                Object[] os = rows[i];
+
+                if (os[0] != null)
+                    c.setPipelineInfoId((Long) os[0]);
+                if (os[1] != null)
+                    c.setContestId((Long) os[1]);
+                if (os[2] != null)
+                    c.setCname(os[2].toString());
+                if (os[3] != null)
+                    c.setCversion(os[3].toString());
+                if (os[4] != null)
+                    c.setProjectId((Long) os[4]);
+                if (os[5] != null)
+                    c.setPname(os[5].toString());
+                if (os[6] != null)
+                    c.setContestType(os[6].toString());
+                if (os[7] != null)
+                    c.setContestCategory(os[7].toString());
+                if (os[8] != null)
+                    c.setSname(os[8].toString());
+                if (os[9] != null)
+                    c.setStartDate((Date)os[9]);
+                if (os[10] != null)
+                    c.setEndDate((Date)os[10]);
+                if (os[11] != null)
+                    c.setDurationStartTime((Date)os[11]);
+                if (os[12] != null)
+                    c.setDurationEndTime((Date)os[12]);
+                if (os[13] != null)
+                    c.setCreateTime((Date)os[13]);
+                if (os[14] != null)
+                    c.setModifyTime((Date)os[14]);
+                if (os[15] != null)
+                    c.setClientName(os[15].toString());
+                if (os[16] != null)
+                    c.setReviewPayment((Double)os[16]);
+                if (os[17] != null)
+                    c.setSpecReviewPayment((Double)os[17]);
+                if (os[18] != null)
+                    c.setTotalPrize((Double)os[18]);
+                if (os[19] != null)
+                    c.setDr((Double)os[19]);
+                if (os[20] != null)
+                    c.setContestFee((Double)os[20]);
+                if (os[21] != null)
+                    c.setShortDesc(os[21].toString());
+                if (os[22] != null)
+                    c.setLongDesc(os[22].toString());
+                if (os[23] != null)
+                    c.setEligibility(os[23].toString());
+                if (os[24] != null)
+                    c.setManager(os[24].toString());
+                if (os[25] != null)
+                    c.setReviewer(os[25].toString());
+                if (os[26] != null)
+                    c.setArchitect(os[26].toString());
+                if (os[27] != null)
+                    c.setSalesPerson(os[27].toString());
+                if (os[28] != null)
+                    c.setClientApproval((Long)os[28] == 1 ? true : false);
+                if (os[29] != null)
+                    c.setPricingApproval((Long)os[29] == 1 ? true : false);
+                if (os[30] != null)
+                    c.setHasWikiSpecification((Long)os[30] == 1 ? true : false);
+                if (os[31] != null)
+                    c.setPassedSpecReview((Long)os[31] == 1 ? true : false);
+                if (os[32] != null)
+                    c.setHasDependentCompetitions((Long)os[32] == 1 ? true : false);
+                if (os[33] != null)
+                    c.setWasReposted((Long)os[33] == 1 ? true : false);
+                if (os[34] != null)
+                    c.setNotes(os[34].toString());
+                if (os[35] != null)
+                    c.setPperm(os[35].toString());
+                if (os[36] != null)
+                    c.setCperm(os[36].toString());
+                
+                result.add(c);
+            }
+
+            closeConnection(conn);
+            return result;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to retrieving simple pipeline data.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
     }
 }
