@@ -3,6 +3,8 @@
  */
 package com.topcoder.service.project;
 
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.Status;
 import com.topcoder.catalog.service.AssetDTO;
 
 import com.topcoder.management.project.Project;
@@ -36,7 +38,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "softwareCompetition", propOrder =  {
-    "id", "assetDTO", "projectHeader", "projectHeaderReason", "projectPhases", "projectResources", "projectData", "type", "adminFee"}
+    "id", "assetDTO", "projectHeader", "projectHeaderReason",
+    "projectPhases", "projectResources", "projectData", "type", "adminFee",
+    "clientApproval", "clientName", "reviewPayment", "specificationReviewPayment", "contestFee", "status",
+    "category", "confidence", "pricingApproval", "hasWikiSpecification", "passedSpecReview", "hasDependentCompetitions",
+    "wasReposted", "notes"}
 )
 public class SoftwareCompetition extends Competition {
     /**
@@ -95,8 +101,80 @@ public class SoftwareCompetition extends Competition {
      */
     private CompetionType type;
 
+    /**
+     * <p>The admin fee.</p>
+     */
+    private Double adminFee;
 
-	private Double adminFee;
+    /**
+     * <p>Represents the flag for client approval.</p>
+     */
+    private boolean clientApproval;
+
+    /**
+     * <p>Represents the name of the client.</p>
+     */
+    private String clientName;
+
+    /**
+     * <p>Represents the review payment.</p>
+    */
+    private double reviewPayment;
+
+    /**
+     * <p>Represents the specification review payment.</p>
+    */
+    private double specificationReviewPayment;
+
+    /**
+     * <p>Represents the contest fee.</p>
+    */
+    private double contestFee;
+
+    /**
+     * <p>Represents the status.</p>
+    */
+    private Status status;
+
+    /**
+     * <p>Represents the category.</p>
+    */
+    private Category category;
+
+    /**
+     * <p>Represents the confidence.</p>
+    */
+    private int confidence;
+
+    /**
+     * <p>Represents the pricing approval flag.</p>
+    */
+    private boolean pricingApproval;
+
+    /**
+     * <p>Represents has wiki specification flag.</p>
+    */
+    private boolean hasWikiSpecification;
+
+    /**
+     * <p>Represents the passed specification review flag.</p>
+    */
+    private boolean passedSpecReview;
+
+    /**
+     * <p>Represents the has dependent competition flag.</p>
+    */
+    private boolean hasDependentCompetitions;
+
+    /**
+     * <p>Represents the was reposted flag.</p>
+    */
+    private boolean wasReposted;
+
+    /**
+     * <p>Represents the notes.</p>
+    */
+    private String notes;
 
     /**
      * <p>
@@ -241,6 +319,38 @@ public class SoftwareCompetition extends Competition {
     }
 
     /**
+	 * Returns the value of status.
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * Set the value to  status field.
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * Returns the value of category.
+	 * @return the category
+	 */
+	public Category getCategory() {
+		return category;
+	}
+
+	/**
+	 * Set the value to  category field.
+	 * @param category the category to set
+	 */
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	/**
      * <p>
      * Returns the digital run points for the competition.
      * </p>
@@ -460,5 +570,141 @@ public class SoftwareCompetition extends Competition {
     @Override
     public void setType(CompetionType type) {
         this.type = type;
+    }
+
+    /**
+     * <p>
+     * Gets the client approval flag.
+     * </p>
+     * @param true if it is client approval competition
+     */
+    @Override
+    public boolean getClientApproval() {
+        return this.clientApproval;
+    }
+
+    @Override
+    public String getClientName() {
+        return clientName;
+    }
+
+    @Override
+    public int getConfidence() {
+        return this.confidence;
+    }
+
+    @Override
+    public double getContestFee() {
+        return this.contestFee;
+    }
+
+    @Override
+    public boolean getHasDependentCompetitions() {
+        return hasDependentCompetitions;
+    }
+
+    @Override
+    public boolean getHasWikiSpecification() {
+        return hasWikiSpecification;
+    }
+
+    @Override
+    public String getNotes() {
+        return notes;
+    }
+
+    @Override
+    public boolean getPassedSpecReview() {
+        return passedSpecReview;
+    }
+
+    @Override
+    public boolean getPricingApproval() {
+        return this.pricingApproval;
+    }
+
+    @Override
+    public Resource[] getResources() {
+        return projectResources;
+    }
+
+    @Override
+    public double getReviewPayment() {
+        return this.reviewPayment;
+    }
+
+    @Override
+    public double getSpecificationReviewPayment() {
+        return this.specificationReviewPayment;
+    }
+
+    @Override
+    public boolean getWasReposted() {
+        return this.wasReposted;
+    }
+
+    @Override
+    public void setClientApproval(boolean clientApproval) {
+        this.clientApproval = clientApproval;
+    }
+
+    @Override
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    @Override
+    public void setConfidence(int confidence) {
+        this.confidence = confidence;
+    }
+
+    @Override
+    public void setContestFee(double contestFee) {
+        this.contestFee = contestFee;
+    }
+
+    @Override
+    public void setHasDependentCompetitions(boolean hasDependentCompetitions) {
+        this.hasDependentCompetitions = hasDependentCompetitions;
+    }
+
+    @Override
+    public void setHasWikiSpecification(boolean hasWikiSpecification) {
+        this.hasWikiSpecification = hasWikiSpecification;
+    }
+
+    @Override
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public void setPassedSpecReview(boolean passedSpecReview) {
+        this.passedSpecReview = passedSpecReview;
+    }
+
+    @Override
+    public void setPricingApproval(boolean pricingApproval) {
+    	this.pricingApproval = pricingApproval;
+    }
+
+    @Override
+    public void setResources(Resource[] resources) {
+        this.projectResources = resources;
+    }
+
+    @Override
+    public void setReviewPayment(double reviewPayment) {
+        this.reviewPayment = reviewPayment;
+    }
+
+    @Override
+    public void setSpecificationReviewPayment(double specificationReviewPayment) {
+        this.specificationReviewPayment = specificationReviewPayment;
+    }
+
+    @Override
+    public void setWasReposted(boolean wasReposted) {
+    	this.wasReposted = wasReposted;
     }
 }
