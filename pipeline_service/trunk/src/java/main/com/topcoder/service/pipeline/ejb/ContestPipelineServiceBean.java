@@ -1144,7 +1144,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
 
         long startTime = System.currentTimeMillis();
-        Set<CommonPipelineData> ret = new TreeSet<CommonPipelineData>();
+        List<CommonPipelineData> ret = new ArrayList<CommonPipelineData>();
 
         try {
             
@@ -1251,9 +1251,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             long endTime = System.currentTimeMillis();
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
 
-            List<CommonPipelineData> r = new ArrayList<CommonPipelineData>();
-            r.addAll(ret);
-            return r;
+            return ret;
         } catch (com.topcoder.service.studio.PersistenceException e) {
             throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data for studio.");
         } finally {
