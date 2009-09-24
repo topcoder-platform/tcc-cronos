@@ -1,12 +1,14 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.ejb;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
@@ -99,6 +101,11 @@ import javax.ejb.TransactionAttributeType;
  * <p>
  * Updated for Cockpit Project Admin Release Assembly v1.0: new methods added to support retrieval of project and their permissions.
  * </p>
+ * 
+ * <p>
+ * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
@@ -106,7 +113,7 @@ import javax.ejb.TransactionAttributeType;
  * </p>
  *
  * @author fabrizyo, znyyddf, TCSASSEMBLER
- * @version 1.1
+ * @version 1.1.1
  * @since 1.1
  */
 @RunAs("Cockpit Administrator")
@@ -932,6 +939,70 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
             return contests;
 
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
+    /**
+     * Gets the list of simple pipeline data in between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#getSimplePipelineData(startDate,endDate,overdueContests) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            return getProjectServices().getSimplePipelineData(userId, startDate, endDate, overdueContests);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate, boolean overdueContests)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#getSimplePipelineData(userId, startDate,endDate,overdueContests) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getSimplePipelineData(userId, startDate, endDate, overdueContests);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;

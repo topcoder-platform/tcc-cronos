@@ -1,10 +1,11 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.cronos.onlinereview.external.ProjectRetrieval;
@@ -17,6 +18,7 @@ import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
+import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
@@ -152,13 +154,18 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
+ * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, TCSASSEMBLER
  * @author fabrizyo, znyyddf
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -1853,6 +1860,78 @@ public class ProjectServicesImpl implements ProjectServices {
         } 
 
         log(Level.INFO, "Exits ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
+        return ret;
+    }
+    
+    /**
+     * Gets the list of simple pipeline data in between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate,
+            boolean overdueContests) throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#getSimplePipelineData method.");
+
+        List<SimplePipelineData> ret = null;
+        try {
+            logDebug("Starts calling ProjectManager#getSimplePipelineData method.");
+
+            ret = projectManager.getSimplePipelineData(-1, startDate, endDate, overdueContests);
+
+            logDebug("Finished calling ProjectManager#getSimplePipelineData method.");
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "ProjectServicesException occurred in ProjectServicesImpl#getSimplePipelineData method.");
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager.", ex);
+        }
+
+        log(Level.INFO, "Exits ProjectServicesImpl#getSimplePipelineData method.");
+        return ret;
+    }
+    
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
+            boolean overdueContests) throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#getSimplePipelineData method.");
+
+        List<SimplePipelineData> ret = null;
+        try {
+            logDebug("Starts calling ProjectManager#getSimplePipelineData method.");
+
+            ret = projectManager.getSimplePipelineData(userId, startDate, endDate, overdueContests);
+
+            logDebug("Finished calling ProjectManager#getSimplePipelineData method.");
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "ProjectServicesException occurred in ProjectServicesImpl#getSimplePipelineData method.");
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager.", ex);
+        }
+
+        log(Level.INFO, "Exits ProjectServicesImpl#getSimplePipelineData method.");
         return ret;
     }
 }

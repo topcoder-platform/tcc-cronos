@@ -1,13 +1,15 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.search.builder.filter.Filter;
@@ -48,13 +50,18 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  * </p>
  *
  * <p>
+ * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, TCSASSEMBLER
  * @author fabrizyo, znyyddf
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
 public interface ProjectServices {
@@ -433,4 +440,40 @@ public interface ProjectServices {
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser) throws ProjectServicesException;
+    
+    /**
+     * Gets the list of simple pipeline data in between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws ProjectServicesException;
+    
+    /**
+     * Gets the list of simple pipeline data for specified user id and between specified start and end date.
+     * 
+     * @param userId
+     *            the user id.
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ProjectServicesException
+     *             if error during retrieval from database.
+     * @since 1.1.1             
+     */
+    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate, boolean overdueContests)
+            throws ProjectServicesException;
 }
