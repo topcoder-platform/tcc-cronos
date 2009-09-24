@@ -41,6 +41,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestGeneralInfoData;
@@ -86,6 +87,7 @@ import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
+import com.topcoder.service.studio.contest.SimplePipelineData;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
@@ -4707,5 +4709,38 @@ public class StudioServiceBean implements StudioService {
             handlePersistenceError("SubmissionManagementException reports error.", e);
         }
         logExit("setSubmissionMilestonePrize(submissionId, milestonePrizeId)");
+    }
+
+     /**
+     * Gets the list of simple pipeline data within between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.0.1
+     */
+    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws PersistenceException {
+        logEnter("getSimplePipelineData");
+
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            logInfo("User " + p.getUserId() + " is non-admin.");
+            List<SimplePipelineData> pipelineDatas = contestManager.getSimplePipelineData(p.getUserId(), startDate, endDate, overdueContests);
+
+            logExit("getSimplePipelineData", pipelineDatas.size());
+            return pipelineDatas;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getSimplePipelineData.", e);
+        }
+
+        return null;
     }
 }

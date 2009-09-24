@@ -3,16 +3,19 @@
  */
 package com.topcoder.service.studio;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.SimplePipelineData;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
@@ -50,12 +53,17 @@ import com.topcoder.service.studio.submission.Submission;
  * </p>
  *
  * <p>
- * All the methods that does CRUD on permission have been commented for Cockpit
- * Project Admin Release Assembly v1.0.
+ * All the methods that does CRUD on permission have been commented for Cockpit Project Admin Release Assembly v1.0.
+ * </p>
+ * 
+ * <p>
+ * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
  *
  * @author fabrizyo, TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0
+ * @version 1.0.1
+ * @since 1.0
  */
 // @WebService
 @Remote
@@ -808,4 +816,21 @@ public interface StudioService {
      */
     public void setSubmissionMilestonePrize(long submissionId, long milestonePrizeId)
         throws PersistenceException;
+
+    /**
+     * Gets the list of simple pipeline data within between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.0.1
+     */
+    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws PersistenceException;
 }
