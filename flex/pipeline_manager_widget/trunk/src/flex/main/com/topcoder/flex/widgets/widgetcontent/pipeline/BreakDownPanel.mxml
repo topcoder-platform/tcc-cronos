@@ -50,8 +50,8 @@
 	
 	<mx:HBox width="100%" height="45" id="content">
 		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" id="title" />
-		<mx:Spacer width="100%" />
-		<mx:Button label="Back" styleName="btn" click="model.goBack()" />
+		<!--<mx:Spacer width="100%" />
+		<mx:Button label="Back" styleName="btn" click="model.goBack()" />-->
 	</mx:HBox>
 	<mx:DataGrid id="grid" width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"
 			verticalGridLines="false" rowCount="{_list.length}" resizableColumns="false" rowHeight="30"

@@ -43,8 +43,8 @@
                     removeChildAt(1);
                 }
                 var filter:FilterCriteria=model.filter;
-                if (filter.type && filter.type != model.type[0]) {
-                    createFilterLabel("Type", filter.type, removeType);
+                if (filter.type && filter.type != model.typeValues[0]) {
+                    createFilterLabel("Type", filter.typeLabel, removeType);
                 }
                 if (filter.confidence && filter.confidence.length > 0 && !(filter.co[0] == 1 && filter.co[1] == 1 && filter.co[2] == 1) && !(filter.co[0] == 0 && filter.co[1] == 0 && filter.co[2] == 0)) {
                     var word:String="Contests with confidence that is ";
@@ -197,7 +197,8 @@
             }
             
             public function removeType(event:MouseEvent):void {
-                model.filter.type=model.type[0];
+                model.filter.type=model.typeValues[0];
+                model.filter.typeLabel=model.typeLabels[0];
                 model.filterDetail();
             }
             

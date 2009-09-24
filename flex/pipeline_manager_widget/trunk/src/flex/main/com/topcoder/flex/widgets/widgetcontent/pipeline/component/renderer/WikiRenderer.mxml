@@ -28,12 +28,12 @@
                 super.data=value;
                 if (data is Detail) {
                     detail=data as Detail;
-                    wiki.visible=(detail.wiki.length > 0);
+                    //wiki.visible=(detail.wiki.length > 0);
                 }
             }
             
             public function openWiki():void {
-                navigateToURL(new URLRequest(detail.wiki), "_blank");
+                //navigateToURL(new URLRequest(detail.wiki), "_blank");
             }
         ]]>
     </mx:Script>

@@ -22,6 +22,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         
         public var type:String;
         
+        public var typeLabel:String;
+        
         public var start:Date;
         
         public var end:Date;

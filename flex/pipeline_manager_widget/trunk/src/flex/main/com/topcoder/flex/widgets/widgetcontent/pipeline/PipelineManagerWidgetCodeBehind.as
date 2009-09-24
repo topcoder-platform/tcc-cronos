@@ -93,6 +93,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
         public function PipelineManagerWidgetCodeBehind() {
             super();
             model = Model.getInstance(this.uid);
+            model.widgetFramework=this.widgetFramework;
         }
         
         /**
@@ -376,15 +377,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
             this.pws.clearHeaders();
             this.pws.addHeader(getHeader(username, password));
             
-            var getContests:AbstractOperation=this.pws.getOperation("getContestsByDate");
-            
-            var criteria:DateSearchCriteria = new DateSearchCriteria();
-            criteria.startDate=startDate;
-            criteria.endDate=endDate;
-            criteria.overdueContests=overdue;
-            var ns:Namespace=new Namespace("tns", "http://ejb.pipeline.service.topcoder.com/");
-            criteria.xsiType=new QName(ns,"dateSearchCriteria");
-            getContests.send(criteria);
+            var getCommonPipelineData:AbstractOperation=this.pws.getOperation("getCommonPipelineData");
+            getCommonPipelineData.send(startDate, endDate, overdue);
         }
         
         /**

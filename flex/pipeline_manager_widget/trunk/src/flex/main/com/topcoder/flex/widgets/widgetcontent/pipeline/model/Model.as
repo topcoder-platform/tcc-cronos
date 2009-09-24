@@ -2,6 +2,7 @@
  * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
+    import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.util.date.DateUtil;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.PipelineManagerWidget;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.NewDateRenderer;
@@ -78,6 +79,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             }
         }
         
+        public var widgetFramework:IWidgetFramework;
+        
         /**
          * The parent widget ui id.
          */ 
@@ -125,9 +128,14 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
         public var winMin:Class;
         
         /**
-         * The contest types in left hand navigation bar.
+         * The contest type labels in left hand navigation bar.
          */
-        public var type:Array=["All Contests", "ARCHITECTURE", "ASSEMBLY", "COMPONENT_DESIGN", "COMPONENT_DEVELOPMENT", "CONCEPTUALIZATION", "RIA_BUILD", "RIA_COMPONENT", "SPECIFICATION", "STUDIO", "TEST_SCENARIOS", "TEST_SUITES", "UI PROTOTYPE"];
+        public var typeLabels:Array=["All Contests", "Studio", "Software Conceptualization", "Software Specification", "Architecture", "Component Design", "Component Development", "RIA Component", "RIA Build", "UI Prototype", "Software Assembly", "Test Suites", "Test Scenarios"];
+        
+        /**
+         * The contest type values for left hand navigation bar.
+         */
+        public var typeValues:Array=["All Contests", "STUDIO", "CONCEPTUALIZATION", "SPECIFICATION", "ARCHITECTURE", "DESIGN", "DEVELOPMENT", "RIACOMPONENT", "RIABUILD", "UIPROTOTYPE", "ASSEMBLY", "TESTSUITES", "TESTSCENARIOS"];
         
         /**
          * The contest group.
@@ -192,132 +200,54 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             for each(var o:XML in contests.children()) {
                 
                 var p:Detail=new Detail();
-                p.contestId=o.id ? o.id[0] : 0;
-                p.type=o.type ? o.type[0] : "";
+                p.widgetFramework=widgetFramework;
+                p.pipelineInfoId=o.pipelineInfoId ? o.pipelineInfoId[0] : 0;
+                p.contestId=o.contestId ? o.contestId[0] : 0;
+                p.name=o.cname ? o.cname[0] : "";
+                p.version=o.cversion ? o.cversion[0] : "";
+                p.projectId=o.projectId ? o.projectId[0] : 0;
+                p.project=o.pname ? o.pname[0] : "";
+                
+                p.type=o.contestType ? o.contestType[0] : "";
+                p.category=o.contestCategory ? o.contestCategory[0] : "";
+                p.status=o.sname ? o.sname[0] : "";
+                
                 p.client=o.clientName[0];
-                p.confidence=o.confidence[0];
-                p.spec=o.specificationReviewPayment[0];
-                p.review=o.reviewPayment[0];
-                p.fee=o.contestFee[0];
-                p.notes=o.notes[0];
-                p.aclient=o.clientApproval[0];
-                p.apricing=o.pricingApproval[0];
-                p.vspec=o.passedSpecReview[0];
-                p.dependent=o.hasDependentCompetitions[0];
-                p.repost=o.wasReposted[0];
                 
-                p.status="Posted";
+                p.date=o.startDate ? DateUtil.parseFromString(o.startDate[0]) : null;
                 
-                TCLog.instance.debug("TYPE --> " + p.type);
-                TCLog.instance.debug("client --> " + p.client);
-                TCLog.instance.debug("confidence --> " + p.confidence);
-                TCLog.instance.debug("spec --> " + p.spec);
-                TCLog.instance.debug("review --> " + p.review);
-                TCLog.instance.debug("aclient --> " + p.aclient);
+                p.duration=o.durationInHrs ? o.durationInHrs[0] : 0;
                 
-                if (p.type && p.type == "STUDIO") {
-                    if (o.prizes) {
-                        for each (var prize:Object in o.prizes) {
-                            if (prize.place[0] == 1) {
-                                p.prize=prize.amount[0];
-                            }
-                            if (prize.place[0] == 2) {
-                                p.seprize=prize.amount[0];
-                            }
-                        }
-                    }
-                    
-                    p.date=DateUtil.parseFromString(o.startTime[0]);
-                    p.name=o.contestData[0].name[0];
-                    p.project=o.contestData[0].tcDirectProjectId[0];
-                    p.duration=o.durationInHours[0];
-                    p.dr=o.drPoints[0];
-                    
-                    p.eligibity=o.eligibility[0];
-                    p.short=o.shortSummary[0];
-                    p.desc=o.contestData[0].contestDescriptionAndRequirements[0];
-                    
-                    // note following info is not available for studio.
-                    //    wiki
-                    //    version
-                    //    added
-                    //    changed
-                    //    long
-                    //    keywords   
-                    p.wiki="http://www.topcoder.com"; // not available so hard-code it for now.
-                    p.version="1.0";
-                    p.added=p.date;
-                    p.changed=null;
-                    p.long=p.desc;
-                    p.keywords="";
-                    p.status="Posted";
-                    p.category="STUDIO";
-                } else {
-                    
-                    p.name=o.assetDTO[0].name[0];
-                    p.version=o.assetDTO[0].versionText[0];
-                    p.short=o.assetDTO[0].shortDescription[0];
-                    p.desc=o.assetDTO[0].detailedDescription[0];
-                    p.category=o.projectHeader[0].projectCategory[0].name[0];
-                    p.type=p.category.toUpperCase();
-                    var status:String=o.projectHeader[0].projectStatus[0].name[0];
-                    if (status == "Active") {
-                        p.status="Posted";
-                    }
-                    
-                    p.date=DateUtil.parseFromString(o.assetDTO[0].productionDate[0]);
-                    
-                    p.project=o.projectHeader[0].tcDirectProjectId[0];
-                    p.duration=o.durationInHours[0];
-                    
-                    for each (var e:Object in o.projectHeader[0].properties[0].entry) {
-                        if (e.key[0] == "Payments") {
-                            p.reviewer=e.value[0];
-                            p.prize=e.value[0];
-                            p.seprize=p.prize / 2;
-                        }
-                        if (e.key[0] == "Eligibility") {
-                            p.eligibity=e.value[0];
-                        }
-                        if (e.key[0] == "DR points") {
-                            p.dr=e.value[0];
-                        }
-                    }
-                    
-                    // note following info is not available for studio.
-                    //    wiki
-                    //    changed
-                    p.wiki="http://www.topcoder.com"; // not available so hard-code it for now.
-                    p.added=p.date;
-                    p.changed=null;
-                    p.long=p.desc;
-                    p.keywords="";
-                    
-                    TCLog.instance.debug("p.name: " + p.name);
-                    TCLog.instance.debug("p.version: " + p.version);
-                    TCLog.instance.debug("p.short: " + p.short);
-                    TCLog.instance.debug("p.desc: " + p.desc);
-                    TCLog.instance.debug("p.category: " + p.category);
-                    TCLog.instance.debug("p.status: " + p.status);
-                    TCLog.instance.debug("p.date: " + p.date);
-                }
+                p.prize=o.totalPrize ? o.totalPrize[0] : 0;
+                p.dr=o.dr ? o.dr[0] : 0;
+                p.fee=o.contestFee ? o.contestFee[0] : 0;
+                p.review=o.reviewPayment ? o.reviewPayment[0] : 0;
+                p.spec=o.specReviewPayment ? o.specReviewPayment[0] : 0;
                 
-                if (o.resources) {
-                    for each (var resource:Object in o.resources) {
-                        if (resource.resourceRole[0].name[0] == "Reviewer") {
-                            p.reviewer=resource.name[0];
-                        }
-                        if (resource.resourceRole[0].name[0] == "Manager") {
-                            p.manager=resource.name[0];
-                        }
-                        if (resource.resourceRole[0].name[0] == "Architect") {
-                            p.arch=resource.name[0];
-                        }
-                        if (resource.resourceRole[0].name[0] == "Salesperson") {
-                            p.specer=resource.name[0];
-                        }
-                    }
-                }
+                p.aclient=o.clientApproval ? o.clientApproval[0] : false;
+                p.apricing=o.pricingApproval ? o.pricingApproval[0] : false;
+                p.vspec=o.passedSpecReview ? o.passedSpecReview[0] : false;
+                p.dependent=o.hasDependentCompetitions ? o.hasDependentCompetitions[0] : false;
+                p.repost=o.wasReposted ? o.wasReposted[0] : false;
+                p.hasWikiSpec=o.hasWikiSpecification ? o.hasWikiSpecification[0] : false;
+                
+                p.notes=o.notes ? o.notes[0] : "";
+                
+                p.eligibity=o.eligibility ? o.eligibility[0] : "";
+                p.short=o.shortDesc ? o.shortDesc[0] : "";
+                p.desc=o.longDesc ? o.longDesc[0] : "";
+                p.long=p.desc;
+                
+                p.added=o.createTime ? DateUtil.parseFromString(o.createTime[0]) : null;
+                p.changed=o.modifyTime ? DateUtil.parseFromString(o.modifyTime[0]) : null;
+                
+                p.pperm=o.pperm ? o.pperm[0] : "";
+                p.cperm=o.cperm ? o.cperm[0] : "";
+                
+                p.reviewer=o.reviewer ? o.reviewer[0] : "";
+                p.manager=o.manager ? o.manager[0] : "";
+                p.arch=o.architect ? o.architect[0] : "";
+                p.specer=o.salesPerson ? o.salesPerson[0] : "";
                 
                 p.uid=uid;
                 
@@ -334,26 +264,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     clientList.push(p.client);
                 }
                 
-                // add confidence
-                var confFound:Boolean=false;
-                for each (var conf:String in confidenceList) {
-                    if (conf == p.confidence) {
-                        confFound=true;
-                        break;
-                    }
-                }
-                
-                if (!confFound) {
-                    confidenceList.push(p.confidence);
-                }
-                
                 list.addItem(p);
                 
                 // store the details by contest id.
                 detailsByContestId[p.contestId]=p;
             }
             
-            cate=type[0];
+            cate=typeValues[0];
             filterDetail();
             TCLog.instance.timeStampLog("Calculate Data", this.uid);
         }
@@ -366,21 +283,39 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 filter.startAdd=null;
                 filter.endAdd=null;
             }
+            
+            trace("Before applying filter: " + (list ? list.length : -1));
 
-             if (!list) {
-                return;
+            if (!list) {
+                isNoResult=true;
+            } else {
+                list.filterFunction=doFilter;
+                list.refresh();
+                
+                trace("After applying filter: " + list.length);
+                
+                if (list.length <= 0) {
+                    isNoResult=true;
+                    widget.showHideNoResultPanel(true);
+                } else {
+                    //var previousNoResult:Boolean=isNoResult;
+                    //isNoResult=false;
+                
+                    if (mode == "MAIN") {
+                        updateSummary();
+                    } else if (mode == "BREAK") {
+                        updateBreak();
+                    } else if (mode == "PRICE" || mode == "DATE") {
+                        updateHistory();
+                    }
+                    
+                    //if (previousNoResult) {
+                    //    widget.showHideNoResultPanel(false);
+                    //}
+                }
             }
-
-            list.filterFunction=doFilter;
-            list.refresh();
-            if (mode == "MAIN") {
-                updateSummary();
-            } else if (mode == "BREAK") {
-                updateBreak();
-            } else if (mode == "PRICE" || mode == "DATE") {
-                updateHistory();
-            }
-            if (filter.type == type[0]) {
+            
+            if (filter.type == typeValues[0]) {
                 dispatchEvent(new Event("clearType"));
             }
             dispatchEvent(new Event("updated"));
@@ -399,8 +334,10 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
         public function doFilter(obj:Object):Boolean {
             var detail:Detail=obj as Detail;
             if (detail) {
-                if (filter.type && filter.type != type[0]) {
-                    if (filter.type != detail.type) {
+                trace("Filter.type: " + filter.type);
+                trace("detail.type: " + detail.category);
+                if (filter.type && filter.type != typeValues[0]) {
+                    if (filter.type && detail.category && filter.type.toLocaleLowerCase() != detail.category.toLocaleLowerCase()) {
                         return false;
                     }
                 }
@@ -425,7 +362,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     }
                 }
                 var i:int=0;
-                if (filter.confidence && filter.confidence.length > 0) {
+                /*if (filter.confidence && filter.confidence.length > 0) {
                     var result:Boolean=false;
                     
                     for (; i < filter.co.length; i++) {
@@ -452,7 +389,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     if (!result) {
                         return false;
                     }
-                }
+                }*/
                 if (filter.excludeClients.length > 0) {
                     for each (var client:String in filter.excludeClients) {
                         if (client == detail.client) {
@@ -519,7 +456,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 if (!checkBooleanValue(filter.repost, detail, "repost")) {
                     return false;
                 }
-                if (filter.ws != null && filter.ws.length > 0) {
+                /*if (filter.ws != null && filter.ws.length > 0) {
                     switch (filter.ws) {
                         case "N/A":
                             return true;
@@ -528,7 +465,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                         case "NO":
                             return !(detail.wiki && detail.wiki.length > 0);
                     }
-                }
+                }*/
                 return true;
                 
             }
@@ -556,6 +493,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          * The current ui mode.
          */ 
         public var mode:String;
+        
+        /**
+         * Represents if there are no results on search or filter.
+         */ 
+        public var isNoResult:Boolean=false;
         
         /**
          * The last ui mode.
@@ -710,6 +652,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     }
                 }
             }
+            
+            if (!tmp || tmp.length <= 0) {
+                widget.showHideNoResultPanel(true);
+            } else {
+                widget.showHideNoResultPanel(false);
+            }
+            
             breakList=tmp;
         }
         
@@ -770,7 +719,15 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     changeHistoryList.addItem(cd);
                 }    
                 
+                if (!changeHistoryList || changeHistoryList.length <= 0) {
+                    widget.showHideNoResultPanel(true);
+                } else {
+                    widget.showHideNoResultPanel(false);
+                }
+                
                 this.dateList=changeHistoryList;
+            } else {
+                widget.showHideNoResultPanel(true);
             }
         }
         
@@ -832,7 +789,15 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     changeHistoryList.addItem(cd);
                 }    
                 
+                if (!changeHistoryList || changeHistoryList.length <= 0) {
+                    widget.showHideNoResultPanel(true);
+                } else {
+                    widget.showHideNoResultPanel(false);
+                }
+                
                 this.priceList=changeHistoryList;
+            } else {
+                widget.showHideNoResultPanel(true);
             }
         }
         
@@ -840,6 +805,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          * Updates the summary view. 
          */
         public function updateSummary():void {
+            if (!list || list.length <= 0) {
+                widget.showHideNoResultPanel(true);
+            } else {
+                widget.showHideNoResultPanel(false);
+            }
             var tmps:ArrayCollection=new ArrayCollection();
             var tmp:Dictionary=new Dictionary();
             var tmp4:Dictionary=new Dictionary();
@@ -855,7 +825,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 }
                 var week:Summary=tmp[monday.time] as Summary;
                 week.fee+=detail.fee;
-                week.cost+=detail.dr + detail.prize + detail.seprize + detail.review + detail.spec;
+                week.cost+=detail.dr + detail.prize + /*detail.seprize + */detail.review + detail.spec;
                 week.actualA+=(detail.status == "Posted") ? 1 : 0;
                 week.actualB++;
                 week.isTotal=false;
@@ -907,7 +877,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
         private function getFilterParams():String {
             var params:ArrayCollection=new ArrayCollection();
             
-            if (filter.type && filter.type != type[0]) {
+            if (filter.type && filter.type != typeValues[0]) {
                 params.addItem("type="+filter.type);
             }
             if (filter.start) {

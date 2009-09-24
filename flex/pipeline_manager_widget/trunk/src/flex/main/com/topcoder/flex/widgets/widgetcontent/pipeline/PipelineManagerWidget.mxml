@@ -66,6 +66,7 @@
                 model.addEventListener("modeChange", handleModeChange);
                 
                 model.widget=this;
+                model.widgetFramework=this.widgetFramework;
                 
                 initWebServices();
                 getDataService();
@@ -93,7 +94,8 @@
             private function handleSelect():void {
                 if (list.selectedItem || (model.list && list.selectedIndex >= 0 && list.selectedIndex < 5)) {
                     if (model.mode == "MAIN") {
-                        model.filter.type=model.type[list.selectedIndex];
+                        model.filter.type=model.typeValues[list.selectedIndex];
+                        model.filter.typeLabel=model.typeLabels[list.selectedIndex];
                         model.filterDetail();
                     } else if (model.mode == "BREAK") {
                         model.breakIdx=list.selectedIndex;
@@ -131,25 +133,86 @@
                 }
             }
             
+            public function showHideNoResultPanel(show:Boolean):void {
+                if (show) {
+                    switch (model.mode) {
+                        case "MAIN":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.typeLabels;
+                            backBtn.visible=false;
+                            break;
+                        case "BREAK":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.breakCate;
+                            backBtn.visible=true;
+                            break;
+                        case "DATE":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.hist;
+                            backBtn.visible=true;
+                            break;
+                        case "PRICE":
+                            stack.selectedIndex=4;
+                            backBtn.visible=true;
+                            list.dataProvider=model.hist;
+                            list.selectedIndex=1;
+                            doFadeOut("TOP");
+                            return;
+                    }
+                } else {
+                    switch (model.mode) {
+                        case "MAIN":
+                            stack.selectedIndex=0;
+                            list.dataProvider=model.typeLabels;
+                            backBtn.visible=false;
+                            break;
+                        case "BREAK":
+                            stack.selectedIndex=1;
+                            list.dataProvider=model.breakCate;
+                            backBtn.visible=true;
+                            break;
+                        case "DATE":
+                            stack.selectedIndex=2;
+                            list.dataProvider=model.hist;
+                            backBtn.visible=true;
+                            break;
+                        case "PRICE":
+                            stack.selectedIndex=3;
+                            backBtn.visible=true;
+                            list.dataProvider=model.hist;
+                            list.selectedIndex=1;
+                            doFadeOut("TOP");
+                            return;
+                    }
+                    
+                    list.selectedIndex=0;
+                }
+            }
+            
             /**
              * Handles mode change.
              */
             private function handleModeChange(event:Event):void {
+                
                 switch (model.mode) {
                     case "MAIN":
                         stack.selectedIndex=0;
-                        list.dataProvider=model.type;
+                        list.dataProvider=model.typeLabels;
+                        backBtn.visible=false;
                         break;
                     case "BREAK":
                         stack.selectedIndex=1;
                         list.dataProvider=model.breakCate;
+                        backBtn.visible=true;
                         break;
                     case "DATE":
                         stack.selectedIndex=2;
                         list.dataProvider=model.hist;
+                        backBtn.visible=true;
                         break;
                     case "PRICE":
                         stack.selectedIndex=3;
+                        backBtn.visible=true;
                         list.dataProvider=model.hist;
                         list.selectedIndex=1;
                         doFadeOut("TOP");
@@ -439,10 +502,10 @@
     <mx:WebService id="PipelineServiceFacadeBean"
                    wsdl="{pipelineServiceFacadeWsdl}"
                    useProxy="false">
-        <mx:operation name="getContestsByDate"
+        <mx:operation name="getCommonPipelineData"
                       resultFormat="e4x"
                       result="handleContestsLoad(event);"
-                      fault="showWebserviceError('getContestsByDate', event);">
+                      fault="showWebserviceError('getCommonPipelineData', event);">
         </mx:operation>
 
         <mx:operation name="getContestDateChangeHistories"
@@ -511,8 +574,8 @@
                      paddingLeft="0"
                      paddingRight="0"
                      borderStyle="none"
-                     rowCount="9"
-                     dataProvider="{model.type}"
+                     rowCount="13"
+                     dataProvider="{model.typeLabels}"
                      labelField="name"
                      wordWrap="true"
                      allowMultipleSelection="false"
@@ -551,6 +614,14 @@
                        styleName="arrowBtnStyle"
                        selected="true"
                        click="openCloseLeft()"/>
+            <mx:Spacer width="5"/>
+            <mx:Button id="backBtn"
+                       label="BACK"
+                       styleName="greyBtn"
+                       click="model.goBack()"
+                       width="86"
+                       height="24"
+                       visible="false"/>
             <mx:Spacer width="100%"/>
             <mx:Button label="ADD NEW CONTEST"
                        styleName="greyBtn"
@@ -566,14 +637,17 @@
                  paddingTop="0"
                  paddingBottom="0"
                  paddingLeft="20"
-                 paddingRight="0">
+                 paddingRight="0"
+                 clipContent="false">
             <mx:Label text="View contests in this date range:"
                       styleName="listStyle"/>
             <tccomp:DatePicker id="start"
+                               chooser="{startDateChooser}"
                                date="{model.filter.start ? model.filter.start : model.startDate}"/>
             <mx:Label text="to"
                       styleName="listStyle"/>
             <tccomp:DatePicker id="end"
+                               chooser="{endDateChooser}"
                                date="{model.filter.end ? model.filter.end : model.endDate}"/>
             <mx:CheckBox id="overdueCheckBox"
                          label="Include Overdue"
@@ -631,7 +705,21 @@
                                puid="{uid}"
                                horizontalScrollPolicy="off"
                                verticalScrollPolicy="off"/>
+                <tc:NoResultPanel width="100%"
+                                  height="100%"
+                                  minWidth="650"
+                                  puid="{uid}"
+                                  horizontalScrollPolicy="off"
+                                  verticalScrollPolicy="off"/>           
             </mx:ViewStack>
         </mx:VBox>
     </mx:VBox>
+    <mx:Canvas includeInLayout="false">
+        <mx:DateChooser id="startDateChooser"
+                    includeInLayout="false"
+                    visible="false"/>
+        <mx:DateChooser id="endDateChooser"
+                    includeInLayout="false"
+                    visible="false"/>
+    </mx:Canvas>
 </tc:PipelineManagerWidgetCodeBehind>

@@ -3,6 +3,8 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
     
+    import com.topcoder.flex.model.IWidgetFramework;
+    
     /**
      * <p>
      * This is the data class that defines info related to pipeline details.
@@ -17,11 +19,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
     public class Detail {
         public var uid:String;
         
+        public var pipelineInfoId:Number;
+        
         public var contestId:Number;
         
         public var name:String;
         
-        public var client:String;
+        public var projectId:Number;
         
         public var project:String;
         
@@ -29,15 +33,15 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         
         public var category:String;
         
-        public var date:Date;
+        public var status:String;
         
-        public var confidence:String
+        public var client:String;
+        
+        public var date:Date;
         
         public var duration:int;
         
         public var prize:int;
-        
-        public var seprize:int;
         
         public var dr:int;
         
@@ -46,8 +50,6 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         public var review:int;
         
         public var spec:int;
-        
-        public var status:String;
         
         public var manager:String
         
@@ -63,15 +65,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         
         public var apricing:Boolean;
         
-        public var wiki:String;
-        
         public var vspec:Boolean;
         
         public var dependent:Boolean;
         
         public var repost:Boolean;
         
-        public var keywords:String;
+        public var hasWikiSpec:Boolean;
         
         public var desc:String;
         
@@ -86,6 +86,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         public var added:Date;
         
         public var changed:Date;
+        
+        public var pperm:String;
+        
+        public var cperm:String;
+        
+        public var widgetFramework:IWidgetFramework;
         
         public function Detail() {
             super();

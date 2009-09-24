@@ -148,6 +148,8 @@
 	</mx:HBox>
 	<!--<mx:HBox width="100%" height="30" backgroundColor="red" id="test" />-->
 	<mx:Repeater dataProvider="{model.weekList}" id="rpt">
-		<tccomp:WeekPanel week="{rpt.currentItem}" width="100%" puid="{_puid}" horizontalScrollPolicy="auto"/>
+	    <mx:HBox width="{content.width}" horizontalScrollPolicy="auto" verticalScrollPolicy="off" height="100%">
+		    <tccomp:WeekPanel week="{rpt.currentItem}" width="100%" puid="{_puid}"/>
+		</mx:HBox>
 	</mx:Repeater>
 </mx:VBox>

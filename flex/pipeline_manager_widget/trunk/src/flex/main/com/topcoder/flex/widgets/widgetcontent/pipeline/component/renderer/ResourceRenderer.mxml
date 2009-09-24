@@ -44,8 +44,12 @@
             }
             
             public function truncate(input:String):String {
-                var i:int=input.indexOf(", ");
-                return input.substr(0, i);
+                var i:int=input.indexOf(",");
+                if (i >= 0) {
+                    return input.substr(0, i);
+                } else {
+                    return input;
+                }
             }
             
             public function filterResource(item:String):void {

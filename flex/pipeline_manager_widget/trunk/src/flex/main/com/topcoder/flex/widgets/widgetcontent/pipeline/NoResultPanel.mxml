@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is no result panel for the widget
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*">
+	<mx:Script>
+		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.BreakDown;
+			import mx.collections.ArrayCollection;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+			
+			/**
+			  * Reference to the data model class for this widget.
+			  */ 
+			[Bindable]
+			private var model:Model;
+			
+			/**
+			  * This is the parent widget unique id.
+			  */ 
+			[Bindable]
+			private var _puid:String;
+			
+			/**
+			  * Sets the parent widget unique id.
+			  */
+			public function set puid(value:String):void {
+				this._puid = value;
+				model = Model.getInstance(value);
+			}
+			
+		]]>
+	</mx:Script>
+	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
+	<tccomp:FilterShower width="100%" puid="{_puid}" />
+	<mx:Spacer width="100%" height="20" />
+	
+	<mx:HBox width="100%" height="45" id="content">
+	    <mx:Text fontSize="14" color="#ff0404" text="Your search did not return any results. Please try using a less restrictive filter."/>
+	</mx:HBox>
+</mx:VBox>

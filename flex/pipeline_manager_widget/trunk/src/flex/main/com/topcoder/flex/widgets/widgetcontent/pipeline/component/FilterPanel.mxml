@@ -37,12 +37,16 @@
                 
                 shower.includeInLayout=open;
                 shower.visible=open;
+                resetShower();
+            }
+            
+            private function resetShower():void {
                 if (open) {
                     // Reset
-                    eq.selected=false;
-                    lesser.selected=false;
-                    great.selected=false;
-                    combo1.selectedIndex=0;
+                    //eq.selected=false;
+                    //lesser.selected=false;
+                    //great.selected=false;
+                    //combo1.selectedIndex=0;
                     clientList.selectedItem=null;
                     combo2.selectedIndex=0;
                     less.text="";
@@ -53,7 +57,7 @@
                     review.selectedValue="N/A";
                     dependent.selectedValue="N/A";
                     repost.selectedValue="N/A";
-                }
+                }    
             }
             
             private function closeShower():void {
@@ -71,7 +75,7 @@
                 lb1.text="(Hold down \"Control\" to select more than one)";
             }
             
-            private function filterConfidence():void {
+            /*private function filterConfidence():void {
                 
                 if (!eq.selected && !lesser.selected && !great.selected) {
                     model.filter.co[0]=1;
@@ -88,25 +92,27 @@
                 model.filter.confidence=combo1.selectedItem as String;
                 closeShower();
                 model.filterDetail();
-            }
+            }*/
             
             private function filterClient():void {
                 
                 model.filter.excludeClients=clientList.selectedItems;
-                closeShower();
+                resetShower();
+                //closeShower();
                 model.filterDetail();
             }
             
             private function filterField():void {
                 
                 var field:String=model.itemList[combo2.selectedIndex];
+                
                 if (less.text.length == 0 && more.text.length == 0) {
                     return;
                 }
                 for each (var nf:NumbericFilter in model.filter.numFilter) {
                     if (nf.field == field) {
                         nf.setFilter(field, less.text, more.text);
-                        closeShower();
+                        //closeShower();
                         model.filterDetail();
                         return;
                     }
@@ -114,7 +120,8 @@
                 var nf2:NumbericFilter=new NumbericFilter();
                 nf2.setFilter(field, less.text, more.text);
                 model.filter.numFilter.push(nf2);
-                closeShower();
+                resetShower();
+                //closeShower();
                 model.filterDetail();
                 return;
             }
@@ -127,7 +134,8 @@
                 model.filter.psr=review.selectedValue as String;
                 model.filter.dc=dependent.selectedValue as String;
                 model.filter.repost=repost.selectedValue as String;
-                closeShower();
+                resetShower();
+                //closeShower();
                 model.filterDetail();
             }
         ]]>
@@ -150,7 +158,7 @@
                   source="{model.winMax}"
                   buttonMode="true"
                   useHandCursor="true"/>
-        <mx:Label text="Custom additional filters"
+        <mx:Label text="Custom Filters"
                   id="lb"
                   styleName="nameLabel"/>
         <mx:Spacer width="100%"/>
@@ -161,7 +169,7 @@
              includeInLayout="false"
              visible="false"
              verticalGap="0">
-        <mx:HBox width="100%"
+        <!--<mx:HBox width="100%"
                  height="70"
                  backgroundColor="#e3e3e3"
                  borderStyle="solid"
@@ -205,7 +213,7 @@
             <mx:Button styleName="greyBtn"
                        label="UPDATE"
                        click="filterConfidence()"/>
-        </mx:HBox>
+        </mx:HBox>-->
         <mx:HBox width="100%"
                  height="102"
                  backgroundColor="#fafafa"
@@ -235,15 +243,16 @@
                      borderColor="#828790"
                      styleName="listStyle"
                      fontSize="14"
-                     dataProvider="{model.clientList}"/>
+                     dataProvider="{model.clientList}"
+                     change="filterClient()"/>
             <mx:Label id="lb1"
                       color="#afafaf"
                       styleName="listStyle"
                       fontSize="14"/>
-            <mx:Spacer width="100%"/>
+            <!--<mx:Spacer width="100%"/>
             <mx:Button styleName="greyBtn"
                        label="UPDATE"
-                       click="filterClient()"/>
+                       click="filterClient()"/>-->
         </mx:HBox>
         <mx:HBox width="100%"
                  height="74"
@@ -483,16 +492,16 @@
                     </mx:GridItem>
                 </mx:GridRow>
             </mx:Grid>
-            <mx:Spacer width="100%"/>
+            <!--<mx:Spacer width="100%"/>
             <mx:Button styleName="greyBtn"
                        label="UPDATE"
-                       click="filterBoolean()"/>
+                       click="filterBoolean()"/>-->
         </mx:HBox>
     </mx:VBox>
-    <mx:RadioButtonGroup id="client"/>
-    <mx:RadioButtonGroup id="pricing"/>
-    <mx:RadioButtonGroup id="wiki"/>
-    <mx:RadioButtonGroup id="review"/>
-    <mx:RadioButtonGroup id="dependent"/>
-    <mx:RadioButtonGroup id="repost"/>
+    <mx:RadioButtonGroup id="client" change="filterBoolean()"/>
+    <mx:RadioButtonGroup id="pricing" change="filterBoolean()"/>
+    <mx:RadioButtonGroup id="wiki" change="filterBoolean()"/>
+    <mx:RadioButtonGroup id="review" change="filterBoolean()"/>
+    <mx:RadioButtonGroup id="dependent" change="filterBoolean()"/>
+    <mx:RadioButtonGroup id="repost" change="filterBoolean()"/>
 </mx:VBox>

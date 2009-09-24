@@ -15,12 +15,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer {
      */
     public class ConfidenceRenderer extends RendererBase {
         override protected function renderLabel():void {
-            this.content.text=detail.confidence;
+            //this.content.text=detail.confidence;
         }
         
         override protected function doFilter():void {
             if (model) {
-                model.filter.confidence=detail.confidence;
+                //model.filter.confidence=detail.confidence;
                 model.filter.co=[1, 0, 0];
                 model.filterDetail();
             }
