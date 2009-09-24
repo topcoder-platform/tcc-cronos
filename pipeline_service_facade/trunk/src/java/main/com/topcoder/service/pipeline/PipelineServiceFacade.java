@@ -7,7 +7,9 @@ import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
+import com.topcoder.service.studio.contest.ContestManagementException;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.TransactionAttribute;
@@ -25,9 +27,14 @@ import javax.jws.WebService;
  * method to retrieve change histories for array of contest ids and their types.
  * </p>
  * 
+ * <p>
+ * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve CommonPipelineData for given date range.
+ * </p>
+ * 
  * @author snow01
  * @since Pipeline Conversion Service Layer Assembly 2 v1.0
- * @version 1.0
+ * @version 1.0.1
  */
 @WebService(name = "PipelineServiceFacade")
 public interface PipelineServiceFacade {
@@ -125,5 +132,22 @@ public interface PipelineServiceFacade {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestPrizeChangeHistories(long[] contestIds, String[] competitionTypes)
+            throws ContestPipelineServiceException;
+    
+    /**
+     * Gets the list of common pipeline data within between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.0.1
+     */
+    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException;
 }

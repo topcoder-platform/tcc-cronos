@@ -5,12 +5,14 @@ package com.topcoder.service.pipeline.ejb;
 
 import com.topcoder.service.pipeline.ContestPipelineService;
 
+import com.topcoder.service.pipeline.CommonPipelineData;
 import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
+import com.topcoder.service.studio.contest.ContestManagementException;
 
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Level;
@@ -20,6 +22,7 @@ import com.topcoder.util.log.LogManager;
 import org.jboss.ws.annotation.EndpointConfig;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -47,11 +50,16 @@ import javax.jws.WebService;
  * </p>
  * 
  * <p>
+ * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
+ *  - Introduced method to retrieve CommonPipelineData for given date range.
+ * </p>
+ * 
+ * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
  * 
  * @author snow01
- * @version 1.0
+ * @version 1.0.1
  * @since Pipeline Conversion Cockpit Integration Assembly 2 v1.0
  */
 @WebService
@@ -282,6 +290,34 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
             return this.pipelineService.getContests(criteria);
         } finally {
             logExit("getContests");
+        }
+    }
+
+    /**
+     * Gets the list of common pipeline data within between specified start and end date.
+     * 
+     * @param startDate
+     *            the start of date range within which pipeline data for contests need to be fetched.
+     * @param endDate
+     *            the end of date range within which pipeline data for contests need to be fetched.
+     * @param overdueContests
+     *            whether to include overdue contests or not.
+     * @return the list of simple pipeline data for specified user id and between specified start and end date.
+     * @throws ContestManagementException
+     *             if error during retrieval from database.
+     * @since 1.0.1
+     */
+    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
+            throws ContestPipelineServiceException {
+        logger.log(Level.DEBUG, "Enter getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests method.");
+        logger.log(Level.DEBUG, "with parameter startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
+        ExceptionUtils.checkNull(startDate, null, null, "The startDate is null.");
+        ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
+
+        try {
+            return this.pipelineService.getCommonPipelineData(startDate, endDate, overdueContests);
+        } finally {
+            logExit("getCommonPipelineData");
         }
     }
 
