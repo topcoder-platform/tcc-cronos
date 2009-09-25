@@ -36,7 +36,7 @@
                   value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
 
       <!-- Show SQL for dev purpose -->
-      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.show_sql" value="false"/>
            
     </properties>
   </persistence-unit>
