@@ -9,7 +9,7 @@
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect"/>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver"/>
             <!-- JBoss settings -->
             <property name="hibernate.transaction.factory_class"
