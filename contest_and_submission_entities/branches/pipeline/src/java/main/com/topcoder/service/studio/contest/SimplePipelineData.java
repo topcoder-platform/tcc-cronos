@@ -79,9 +79,9 @@ public class SimplePipelineData {
     private static final long serialVersionUID = 1L;
 
     /** Represents the pipeline info id. */
-    @Id
     private Long pipelineInfoId;
 
+    @Id
     /** Represents the contest id. */
     private Long contestId;
 
