@@ -75,7 +75,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @author mittu
  * @author AleaActaEst
  * @author George1
- * @author TCSDEVELOPER
+ * @author pulky
  * @version 1.2.2
  * @since 1.1
  */
@@ -2453,8 +2453,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setLong(index++, resourceUserId);
             statement.setLong(index++, (resourceRoleId != null) ? resourceRoleId : resource.getResourceRole().getId());
             statement.setInt(index++, auditType);
-            statement.setTimestamp(index++, Util.dateToTimestamp(resource.getCreationTimestamp()));
-            statement.setLong(index++, Long.parseLong(resource.getCreationUser()));
+            statement.setTimestamp(index++, Util.dateToTimestamp(resource.getModificationTimestamp()));
+            statement.setLong(index++, Long.parseLong(resource.getModificationUser()));
 
             if (statement.executeUpdate() != 1) {
                 throw new ResourcePersistenceException("Audit information was not successfully saved.");
