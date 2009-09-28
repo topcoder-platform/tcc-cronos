@@ -130,7 +130,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
         /**
          * The contest type labels in left hand navigation bar.
          */
-        public var typeLabels:Array=["All Contests", "Studio", "Software Conceptualization", "Software Specification", "Architecture", "Component Design", "Component Development", "RIA Component", "RIA Build", "UI Prototype", "Software Assembly", "Test Suites", "Test Scenarios"];
+        public var typeLabels:Array=["All Contests", "Studio", "Conceptualization", "Software Specification", "Architecture", "Component Design", "Component Development", "RIA Component", "RIA Build", "UI Prototype", "Software Assembly", "Test Suites", "Test Scenarios"];
         
         /**
          * The contest type values for left hand navigation bar.

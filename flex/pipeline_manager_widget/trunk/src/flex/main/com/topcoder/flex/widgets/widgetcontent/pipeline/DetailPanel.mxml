@@ -143,8 +143,6 @@
 	<mx:HBox width="100%" height="45">
 		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Pipeline Details" />
 		<mx:Spacer width="100%" />
-		<mx:Button label="Expand All" styleName="btn" click="expandAll()" />
-		<mx:Button label="Collapse All" styleName="btn" click="CollapseAll()" />
 	</mx:HBox>
 	<!--<mx:HBox width="100%" height="30" backgroundColor="red" id="test" />-->
 	<mx:Repeater dataProvider="{model.weekList}" id="rpt">
