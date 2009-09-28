@@ -167,6 +167,11 @@ public class Submission implements Serializable {
     private Integer artifactCount;
 
     /**
+     * indicate whether this submission awarded milestone
+     */
+    private boolean awardMilestonePrize;
+
+    /**
      * Default constructor.
      */
     public Submission() {
@@ -674,4 +679,30 @@ public class Submission implements Serializable {
     public void setArtifactCount(Integer artifactCount) {
         this.artifactCount = artifactCount;
     }
+
+    /**
+     * <p>
+     * Gets the AwardMilestonePrize for this submission.
+     * </p>
+     *
+     * @return the artifactCount
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public boolean getAwardMilestonePrize() {
+        return this.awardMilestonePrize;
+    }
+
+
+    /**
+     * <p>
+     * Sets the AwardMilestonePrize for this submission.
+     * </p>
+     *
+     * @return the awardMilestonePrize
+     */
+    public void setAwardMilestonePrize(boolean awardMilestonePrize) {
+        this.awardMilestonePrize = awardMilestonePrize;
+    }
+
+
 }
