@@ -3791,6 +3791,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[][] rows = Helper.doQuery(conn, sb.toString(), new Object[] {},
                     QUERY_SIMPLE_PIPELINE_DATA_COLUMN_TYPES);
 
+            SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
             List<SimplePipelineData> result = new ArrayList<SimplePipelineData>();
 
             for (int i = 0; i < rows.length; i++) {
@@ -3817,17 +3819,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 if (os[8] != null)
                     c.setSname(os[8].toString());
                 if (os[9] != null)
-                    c.setStartDate((Date)os[9]);
+                    c.setStartDate(myFmt.parse(os[9].toString()));
                 if (os[10] != null)
-                    c.setEndDate((Date)os[10]);
+                    c.setEndDate(myFmt.parse(os[10].toString()));
                 if (os[11] != null)
-                    c.setDurationStartTime((Date)os[11]);
+                    c.setDurationStartTime(myFmt.parse(os[11].toString()));
                 if (os[12] != null)
-                    c.setDurationEndTime((Date)os[12]);
+                    c.setDurationEndTime(myFmt.parse(os[12].toString()));
                 if (os[13] != null)
-                    c.setCreateTime((Date)os[13]);
+                    c.setCreateTime(myFmt.parse(os[13].toString()));
                 if (os[14] != null)
-                    c.setModifyTime((Date)os[14]);
+                    c.setModifyTime(myFmt.parse(os[14].toString()));
                 if (os[15] != null)
                     c.setClientName(os[15].toString());
                 if (os[16] != null)
@@ -3891,5 +3893,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             throw e;
         }
+        catch (ParseException e) {
+			getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to retrieving simple pipeline data.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw new PersistenceException("Fails to retrieving simple pipeline data.", e);
+		}
     }
 }
