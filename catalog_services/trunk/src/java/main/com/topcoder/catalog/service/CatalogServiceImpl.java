@@ -957,7 +957,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     	System.out.println("ROOTDIR = " + uploadedFilesRootDir);
     	Component component = version.getComponent(); 
     	Long lngComponent = component.getId();
-    	Long lngVersion = version.getVersion();
+    	Long lngVersion = version.getId();
     	Map<Long, String> docTypesMap = getAllDocumentTypes();
     	List<CompDocumentation> result = new ArrayList<CompDocumentation>();
     	
