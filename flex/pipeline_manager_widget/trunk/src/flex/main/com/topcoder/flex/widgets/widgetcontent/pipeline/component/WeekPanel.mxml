@@ -109,7 +109,7 @@
 							createItem(new ContestNameRenderer(), row, contest);
 							createItem(new StatusRenderer(), row, contest);
 							createItem(new ResourceRenderer(), row, contest);
-							createItemByField("notes", row, contest);
+							//createItemByField("notes", row, contest);
 							createItem(new AddedRenderer(), row, contest);
 							createItem(new ChangeRenderer(), row, contest);
 						} else {
@@ -125,7 +125,7 @@
 							updateItem(10, row, contest);
 							updateItem(12, row, contest);
 							updateItem(13, row, contest);
-							updateLabel(14, row, contest.notes);
+						//	updateLabel(14, row, contest.notes);
 							updateItem(15, row, contest);
 							updateItem(16, row, contest);
 						}
@@ -345,6 +345,9 @@
              paddingBottom="0"
              paddingLeft="20"
              paddingRight="0"
+             click="handleClick()"
+             buttonMode="true"
+             useHandCursor="true"
              verticalScrollPolicy="off"
              horizontalScrollPolicy="off">
         <mx:Image width="16"
@@ -446,12 +449,12 @@
                               text="Resources"
                               styleName="headerStyle2"/>
                 </mx:GridItem>
-                <mx:GridItem click="sort(14)"
+           <!--     <mx:GridItem click="sort(14)"
                              paddingRight="20">
                     <mx:Label width="100%"
                               text="Notes"
                               styleName="headerStyle2"/>
-                </mx:GridItem>
+                </mx:GridItem>-->
                 <mx:GridItem click="sort(15)"
                              paddingRight="20">
                     <mx:Label width="100%"
