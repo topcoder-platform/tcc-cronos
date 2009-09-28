@@ -68,10 +68,10 @@ public class CommonPipelineData implements Comparable<CommonPipelineData>{
     private String contestCategory;
 
     /** The create time. */
-    private Date createTime;
+    private XMLGregorianCalendar createTime;
 
     /** The modify time. */
-    private Date modifyTime;
+    private XMLGregorianCalendar modifyTime;
 
     /** The client name. */
     private String clientName;
@@ -319,7 +319,7 @@ public class CommonPipelineData implements Comparable<CommonPipelineData>{
      * 
      * @return the creates the time
      */
-    public Date getCreateTime() {
+    public XMLGregorianCalendar getCreateTime() {
         return this.createTime;
     }
 
@@ -329,7 +329,7 @@ public class CommonPipelineData implements Comparable<CommonPipelineData>{
      * @param createTime
      *            the new creates the time
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(XMLGregorianCalendar createTime) {
         this.createTime = createTime;
     }
 
@@ -338,7 +338,7 @@ public class CommonPipelineData implements Comparable<CommonPipelineData>{
      * 
      * @return the modify time
      */
-    public Date getModifyTime() {
+    public XMLGregorianCalendar getModifyTime() {
         return this.modifyTime;
     }
 
@@ -348,7 +348,7 @@ public class CommonPipelineData implements Comparable<CommonPipelineData>{
      * @param modifyTime
      *            the new modify time
      */
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(XMLGregorianCalendar modifyTime) {
         this.modifyTime = modifyTime;
     }
 

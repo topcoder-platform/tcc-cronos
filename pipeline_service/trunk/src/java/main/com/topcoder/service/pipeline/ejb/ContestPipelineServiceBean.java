@@ -1162,8 +1162,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setProjectId(p.getProjectId());
                     cp.setCversion(p.getCversion());
                     cp.setContestCategory(p.getContestCategory());
-                    cp.setCreateTime(p.getCreateTime());
-                    cp.setModifyTime(p.getModifyTime());
+                    cp.setCreateTime(getXMLGregorianCalendar(p.getCreateTime()));
+                    cp.setModifyTime(getXMLGregorianCalendar(p.getModifyTime()));
                     cp.setClientName(p.getClientName());
                     cp.setReviewPayment(p.getReviewPayment());
                     cp.setSpecReviewPayment(p.getSpecReviewPayment());
@@ -1211,8 +1211,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setProjectId(p.getProjectId());
                     cp.setCversion(p.getCversion());
                     cp.setContestCategory(p.getContestCategory());
-                    cp.setCreateTime(p.getCreateTime());
-                    cp.setModifyTime(p.getModifyTime());
+                    cp.setCreateTime(getXMLGregorianCalendar(p.getCreateTime()));
+                    cp.setModifyTime(getXMLGregorianCalendar(p.getModifyTime()));
                     cp.setClientName(p.getClientName());
                     cp.setReviewPayment(p.getReviewPayment());
                     cp.setSpecReviewPayment(p.getSpecReviewPayment());
