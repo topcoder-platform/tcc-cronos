@@ -180,9 +180,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
         logger
                 .log(
                         Level.DEBUG,
-                        "Enter getContestPrizeChangeHistories(long[] contestIds, CompetitionType[] competitionTypes, CompetitionChangeType changeType) method");
-        logger.log(Level.DEBUG, "The parameters[contestIds =" + Arrays.toString(contestIds) + ", competitionTypes = "
-                + Arrays.toString(competitionTypes) + "].");
+                        "Enter getContestPrizeChangeHistories() method");
 
         try {
             return this.pipelineService.getContestPrizeChangeHistories(contestIds, competitionTypes);
