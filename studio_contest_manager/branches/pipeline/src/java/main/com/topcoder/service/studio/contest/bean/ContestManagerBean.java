@@ -5168,12 +5168,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append(" OR ");
             sb.append(" NVL( (select max( permission_type_id)  ");
             sb.append("         from user_permission_grant as upg   ");
-            sb.append("         where resource_id=p.project_id  ");
+            sb.append("         where resource_id=p.project_id and permission_type_id >= 2 ");
             sb.append("         and upg.user_id = :userId),0) > 0 ");
             sb.append(" OR ");
             sb.append(" NVL( (select max( permission_type_id)  ");
             sb.append("         from user_permission_grant as upg   ");
-            sb.append("         where resource_id=c.contest_id   ");
+            sb.append("         where resource_id=c.contest_id  and permission_type_id >= 5 ");
             sb.append("         and is_studio=1 ");
             sb.append("         and upg.user_id = :userId),0) > 0 ");
             sb.append(" OR ");
@@ -5217,7 +5217,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             for (int i = 0; i < list.size(); i++) {
                 SimplePipelineData data = (SimplePipelineData) list.get(i);
-                if (data != null && (data.getCperm() != null || data.getPperm() != null)) {
+                // double check to make sure 'read' will not return
+                if (data != null && ((data.getCperm() != null && !data.getCperm().equalsIgnoreCase("contest_read")) 
+                                       || (data.getPperm() != null  && !data.getPperm().equalsIgnoreCase("project_read")))) {
                     result.add(data);
                 }
             }
