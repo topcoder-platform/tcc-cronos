@@ -33,7 +33,7 @@
       <property name="jboss.entity.manager.factory.jndi.name" value="java:/HibernateProjectFactory"/>           
 
       <!-- Show SQL for dev purpose -->
-      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.show_sql" value="false"/>
     </properties>
   </persistence-unit>
 </persistence>
