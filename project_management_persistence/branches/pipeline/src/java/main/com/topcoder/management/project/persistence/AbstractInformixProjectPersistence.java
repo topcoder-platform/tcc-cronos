@@ -3749,12 +3749,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" OR ");
             sb.append(" NVL( (select max( permission_type_id)  ");
             sb.append("     from user_permission_grant as upg   ");
-            sb.append("     where resource_id=p.project_id  ");
+            sb.append("     where resource_id=p.project_id and permission_type_id >= 2 ");
             sb.append("     and upg.user_id = ").append(userId).append("),0) > 0 ");
             sb.append(" OR ");
             sb.append(" NVL( (select max( permission_type_id)  ");
             sb.append("     from user_permission_grant as upg   ");
-            sb.append("     where resource_id=c.project_id   ");
+            sb.append("     where resource_id=c.project_id and permission_type_id >= 5  ");
             sb.append("     and is_studio=0 ");
             sb.append("     and upg.user_id = ").append(userId).append("),0) > 0 ");
             sb.append(" OR ");
@@ -3872,8 +3872,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     c.setPperm(os[35].toString());
                 if (os[36] != null)
                     c.setCperm(os[36].toString());
+
+                // double check to make sure 'read' will not return
+                if ((c.getCperm() != null && !c.getCperm().equalsIgnoreCase("contest_read")) 
+                                       || (c.getPperm() != null  && !c.getPperm().equalsIgnoreCase("project_read"))) {
+                    result.add(c);
+                }
                 
-                result.add(c);
+                
             }
 
             closeConnection(conn);
