@@ -685,6 +685,10 @@
                     if (!sched.validateFields())
                         return;
                 }
+                else if (this.currentState == "OverViewState") {
+                    if (!overView.validateFields())
+                        return;
+                }
                 saveAsDraft();
             }
 

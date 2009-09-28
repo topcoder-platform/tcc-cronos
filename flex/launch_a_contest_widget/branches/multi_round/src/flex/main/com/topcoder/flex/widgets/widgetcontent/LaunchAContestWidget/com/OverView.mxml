@@ -59,6 +59,7 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import mx.containers.Panel;
+            import mx.utils.StringUtil;
             import mx.events.FlexEvent;
             import com.topcoder.flex.Helper;
             import mx.events.ItemClickEvent;
@@ -365,7 +366,11 @@
                 }
 
                 mainWidget.softwareCompetition.prizes=prizes;
-                mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
+                ns_contestf.text=StringUtil.trim(ns_contestf.text);
+                if (!isNaN(Number(ns_contestf.text)))
+                {
+                    mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
+                }
                 
                 // set dynamic properties before save.
                 var pns:Array=new Array();
