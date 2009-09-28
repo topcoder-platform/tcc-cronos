@@ -2447,6 +2447,8 @@ public class StudioServiceBean implements StudioService {
                         + submissionSiteFilePath);
             }
 
+            sd.setAwardMilestonePrize(s.getAwardMilestonePrize());
+
             result.add(sd);
         }
 
@@ -2475,6 +2477,7 @@ public class StudioServiceBean implements StudioService {
 
         // Added: TCCC-1219
         submission.setUserRank(submissionData.getUserRank());
+        submission.setAwardMilestonePrize(submissionData.getAwardMilestonePrize());
 
         return submission;
     }

@@ -32,7 +32,7 @@ import java.io.Serializable;
 @XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
         "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
         "removed", "feedbackText", "feedbackThumb", "submissionUrl", "artifactCount", "userRank",
-        "submissionType" })
+        "submissionType", "awardMilestonePrize" })
 public class SubmissionData implements Serializable {
     /**
      * Default serial version id.
@@ -175,6 +175,11 @@ public class SubmissionData implements Serializable {
      * @since TCCC-1219
      */
     private int userRank;
+
+    /**
+     * indicate whether this submission awarded milestone
+     */
+    private boolean awardMilestonePrize;
 
     /**
      * <p>
@@ -584,5 +589,29 @@ public class SubmissionData implements Serializable {
      */
     public void setSubmissionType(String submissionType) {
         this.submissionType = submissionType;
+    }
+
+    /**
+     * <p>
+     * Gets the AwardMilestonePrize for this submission.
+     * </p>
+     *
+     * @return the artifactCount
+     * @since Complex Submission Viewer Assembly - Part 2
+     */
+    public boolean getAwardMilestonePrize() {
+        return this.awardMilestonePrize;
+    }
+
+
+    /**
+     * <p>
+     * Sets the AwardMilestonePrize for this submission.
+     * </p>
+     *
+     * @return the awardMilestonePrize
+     */
+    public void setAwardMilestonePrize(boolean awardMilestonePrize) {
+        this.awardMilestonePrize = awardMilestonePrize;
     }
 }
