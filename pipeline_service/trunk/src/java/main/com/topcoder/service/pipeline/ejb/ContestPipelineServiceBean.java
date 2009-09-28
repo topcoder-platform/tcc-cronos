@@ -259,9 +259,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         logger
                 .log(
                         Level.DEBUG,
-                        "Enter getContestPrizeChangeHistories(long[] contestIds, CompetitionType[] competitionTypes, CompetitionChangeType changeType) method");
-        logger.log(Level.DEBUG, "The parameters[contestIds =" + Arrays.toString(contestIds) + ", competitionTypes = "
-                + Arrays.toString(competitionTypes) + "].");
+                        "Enter getContestPrizeChangeHistories()");
+        /**logger.log(Level.DEBUG, "The parameters[contestIds =" + Arrays.toString(contestIds) + ", competitionTypes = "
+                + Arrays.toString(competitionTypes) + "].");*/
 
         try {
             return getContestChangeHistories(contestIds, competitionTypes, CompetitionChangeType.PRIZE);
@@ -431,7 +431,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 			    r.setContestId(contestId);
 			}
             
-            logDebug("The results are:" + Arrays.deepToString(results.toArray(new CompetitionChangeHistory[0])));
+            logDebug("The results are:" + results.size());
 
             return results;
         } catch (PersistenceException pe) {
@@ -484,7 +484,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         try {
             ret.addAll(getSoftwareContests(criteria.getWhereClause(CompetitionType.SOFTWARE)));
             ret.addAll(getStudioContests(criteria.getWhereClause(CompetitionType.STUDIO)));
-            logDebug("The results are:" + Arrays.deepToString(ret.toArray(new Competition[0])));
+            logDebug("The results are:" + ret.size());
 
             long endTime = System.currentTimeMillis();
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
