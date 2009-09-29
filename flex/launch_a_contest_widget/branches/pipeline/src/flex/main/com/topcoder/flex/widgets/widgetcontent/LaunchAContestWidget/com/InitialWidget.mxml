@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+    <mx:Script>
+        <![CDATA[
+            import mx.effects.effectClasses.HideShowEffectTargetFilter;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+        	import mx.collections.IList;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+        	import mx.rpc.events.FaultEvent;
+        	import mx.rpc.events.ResultEvent;
+        	import mx.rpc.soap.WebService;
+    		import mx.collections.ArrayCollection;
+    		import mx.collections.SortField;
+    		import mx.collections.Sort;
+    		import mx.utils.ObjectUtil;
+    		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            
+            import mx.collections.SortField;
+            import mx.collections.Sort;           
+        	import mx.utils.ObjectUtil;
+        	import com.topcoder.flex.Helper;
+        	
+        	import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
+            
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection = new ArrayCollection(
+                [ {label:"Please select an existing project", data:-1,desc:""}]);
+            
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+
+            // TCCC-1023
+            public function init():void{
+                var getAllProjectsOp:AbstractOperation = mainWidget._pws.getOperation("getAllProjects");
+                //getAllProjectsOp.decoder.typeRegistry = mainWidget._launchContestSchemaTypeRegistry;
+                getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+                getAllProjectsOp.send();
+                
+                mainWidget.showLoadingProgress();
+                
+                selectContests.dataProvider = contestsData;
+                
+                getClientProjectsByUser();
+            }
+            
+            // TCCC-1023
+            private function getAllProjectsHandler(e:ResultEvent):void{
+                trace("getAllProjectsHandler: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
+                
+            	if(e && e.result){
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
+            	    trace("getAllProjectsHandler:: Projects: " + projects);
+            	    
+            		if(!projects.sort)
+        			{
+            			var sort:Sort = new Sort();   
+    	                sort.compareFunction = compareName;
+    	                projects.sort = sort;
+	                }
+	                
+        			projects.refresh();
+            		
+        			for each (var prj:ProjectData in projects){
+        				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+        			}
+        		}
+            }
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
+            }
+            
+            private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="";
+			    item.data="";
+			    mainWidget.clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+                    getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+                    getClientProjectsByUserOp.send();
+                    
+                    mainWidget.showLoadingProgress();
+                }
+			}
+			
+			private function getClientProjectsHandler(e:ResultEvent):void {
+			    mainWidget.hideLoadingProgress();
+			    
+			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+            	if(e && e.result)
+            	{
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+            	    trace("getClientProjectsHandler:: projects: " + projects);
+            	    
+            	    if (projects && projects.length > 0) {
+            	        for (var i:int = 0; i < projects.length; i++) {
+            	            var project:ClientProject = projects[i] as ClientProject;
+            	            var name:String = project.name;
+                            var poNumber:String = project.pOBoxNumber;
+            	            
+            	            trace("Adding client project name: " + name);
+            	            // add client project name
+                	        var item:Object = new Object();
+    			            item.label= name;
+    			            item.data = poNumber;
+                	        mainWidget.clientProjectNames.addItem(item);
+            	        }
+            	    }
+            	    
+            	    // assign client project names here.
+            	    //mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
+            	}
+			}
+            
+            private function createContestAndContinue(id:Number):void
+            {
+    			mainWidget.competition = new StudioCompetition();
+            	mainWidget.competition.competitionId = -1;
+            	mainWidget.competition.id = -1;
+            	mainWidget.competition.adminFee = 20;
+            	mainWidget.competition.eligibility = "some text";
+            	
+            	mainWidget.competition.contestData = new ContestData();
+            	mainWidget.competition.contestData.contestAdministrationFee = 20;
+            	mainWidget.competition.creatorUserId = 3;
+            	mainWidget.competition.drPoints = 100;
+            	mainWidget.competition.contestData.drPoints = 100;
+	            
+	            // dont set project id
+            	//mainWidget.competition.contestData.projectId = id;
+            	mainWidget.competition.contestData.tcDirectProjectId = id;
+            	mainWidget.competition.contestData.contestId = -1;
+            	mainWidget.competition.contestData.creatorUserId = 3;
+            	mainWidget.competition.contestData.statusId = 5;
+            	mainWidget.competition.contestData.forumId = -1;
+            	mainWidget.competition.contestData.forumPostCount = 0;
+            	mainWidget.competition.contestData.requiresPreviewImage = true;
+            	mainWidget.competition.contestData.requiresPreviewFile = false;
+            	mainWidget.competition.contestData.maximumSubmissions = 3; 
+            	mainWidget.competition.contestData.submissionCount = 0;
+            	mainWidget.competition.contestData.contestChannelId = 2;
+            	mainWidget.competition.contestData.eligibility = "some text";
+	            mainWidget.competition.contestData.media = new Array();
+            	
+            	mainWidget.competition.contestData.numberOfRegistrants = 0;
+            	//var type:CompetionType = new CompetionType();
+				//CompetitionType fixed to be studio
+				var competionType:String = "STUDIO";
+				mainWidget.competition.type = competionType;
+	
+            	//mainWidget.competition.contestData.name = prjInput.text;
+            	
+            	mainWidget.startLaunchProcess();
+            }
+            
+            private function goToContestSelection():void{
+                if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
+                    Helper.showAlertMessage("New Project or Existing Project must have a value.");
+                    return;
+                } else {
+                    //load the contest if it's existing
+                    
+                    /*if (selectContests.selectedItem.data !=-1)
+                    {
+                    	loadContest(selectContests.selectedItem.data);
+                    } 
+                    else*/  
+                    if(selectContests.selectedItem != null && selectContests.selectedItem.data !=-1)
+                    {
+                    	mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+                    	createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
+                    }
+                    else
+                    {
+                        // TCCC-1023
+                        var createProjectOp:AbstractOperation = mainWidget._pws.getOperation("createProject");
+                        createProjectOp.addEventListener("result", createProjectHandler);
+                        
+                        var projectData:ProjectData = new ProjectData();
+                        projectData.name=prjInput.text;
+                        projectData.description=introInput.text;
+                        
+                        createProjectOp.send(projectData);
+                        
+                        mainWidget.showLoadingProgress();
+                    }
+                }
+            }
+            
+            // TCCC-1023
+            private function createProjectHandler(e:ResultEvent):void
+            {
+                mainWidget.hideLoadingProgress();
+                trace("createProjectHandler: " + e + ", " + e.result);
+            	if(e && e.result)
+            	{
+            	    var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
+            	    trace("createProjectHandler:: Project Data: " + projectData);
+            	    
+            	    //var projectData:ProjectData=e.result as ProjectData;
+            		mainWidget.tcDirectProjectId=projectData.projectId.toString();
+            		createContestAndContinue(projectData.projectId);
+            	}
+            }
+            
+            private function loadContest(contestId:int):void {
+           		var getContestOp:AbstractOperation = mainWidget._csws.getOperation("getContest");
+                getContestOp.addEventListener("result", loadContestHandler);
+                getContestOp.send(new Number(contestId));
+                mainWidget.showLoadingProgress();
+            }
+            
+            // TCCC-1023
+            private function loadContestHandler(e:ResultEvent):void{
+                trace("loadContestHandler: " + e + ", " + e.result);
+                mainWidget.hideLoadingProgress();
+                
+            	if (e && e.result) {
+            	    mainWidget.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+            	    trace("loadContestHandler:: mainWidget.competition: " + mainWidget.competition);
+            	    
+                	//var type:CompetionType = new CompetionType();
+                	
+                	//CompetitionType fixed to be studio
+                	var competitionType:String = "STUDIO";
+                	mainWidget.competition.type = competitionType;
+                	mainWidget.startLaunchProcess();
+            	}
+            }
+        
+        
+        private function selectchange():void
+        {
+        	if(selectContests.selectedItem != null)
+               {
+                   introInput.text=selectContests.selectedItem.desc;
+            }
+        }
+        
+        
+          ]]>
+    </mx:Script>
+
+    <mx:VBox id="initWdt" width="100%" height="100%" styleName="boxStyle" >
+        <mx:Label text="Projects" styleName="header" />
+        <mx:Text width="100%" styleName="content" >
+            <mx:text>
+		A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
+            </mx:text>
+        </mx:Text>
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="42"/>
+            <mx:Label text="New Project Name:" styleName="TextSyle" width="109"/>
+            <mx:TextInput id="prjInput" styleName="TextSyle" width="308"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Label text="----------- or ------------"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Existing Project:" styleName="TextSyle" />
+            <mx:ComboBox id="selectContests" styleName="TextSyle" width="309" change="selectchange()"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Project Description" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="32"/>
+            <mx:Text styleName="TextSyle" text="Brief description of the overall project:" height="37" width="117"/>
+            <mx:TextArea styleName="TextSyle" id="introInput" width="312" height="80"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Button label="save and continue" styleName="RedButton" click="goToContestSelection()" buttonMode="true"/>
+        </mx:HBox>
+    </mx:VBox>
+</mx:Canvas>
