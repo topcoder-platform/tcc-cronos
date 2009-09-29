@@ -27,7 +27,9 @@
             private var _puid:String;
             
             public function set puid(value:String):void {
+                _puid=value;
                 model=Model.getInstance(value);
+                trace("PUID for FilterPanel:"+value);
             }
             
             private function handleClick():void {
@@ -37,7 +39,21 @@
                 
                 shower.includeInLayout=open;
                 shower.visible=open;
-                resetShower();
+                updateView();
+            }
+
+            public function updateView():void {
+                trace("Updating FilterPanelView:"+this._puid);
+                if (!open) return;
+                clientList.selectedItems=model.filter.excludeClients;
+                
+                // we do not select anything on numeric filter - as it has multiple values.
+                combo2.selectedIndex=0;
+                less.text="";
+                more.text="";
+
+
+		shower.validateNow();
             }
             
             private function resetShower():void {
@@ -91,8 +107,7 @@
             private function filterClient():void {
                 
                 model.filter.excludeClients=clientList.selectedItems;
-                resetShower();
-                //closeShower();
+                //updateView();
                 model.filterDetail();
             }
             
@@ -106,7 +121,7 @@
                 for each (var nf:NumbericFilter in model.filter.numFilter) {
                     if (nf.field == field) {
                         nf.setFilter(field, less.text, more.text);
-                        //closeShower();
+                        //updateView();
                         model.filterDetail();
                         return;
                     }
@@ -114,16 +129,15 @@
                 var nf2:NumbericFilter=new NumbericFilter();
                 nf2.setFilter(field, less.text, more.text);
                 model.filter.numFilter.push(nf2);
-                resetShower();
-                //closeShower();
+                //updateView();
                 model.filterDetail();
                 return;
             }
             
             private function filterBoolean():void {
                 
-                resetShower();
-                //closeShower();
+
+                //updateView();
                 model.filterDetail();
             }
         ]]>

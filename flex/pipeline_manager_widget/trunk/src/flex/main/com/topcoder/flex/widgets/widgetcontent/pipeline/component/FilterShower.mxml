@@ -20,10 +20,13 @@
             import mx.containers.HBox;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.FilterCriteria;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.FilterPanel;
             
             private var model:Model;
             
             private var _puid:String;
+
+            public var filterPanel:FilterPanel;
             
             public function set puid(value:String):void {
                 _puid=value;
@@ -114,62 +117,74 @@
             
             private function removeProject(event:MouseEvent):void {
                 model.filter.project=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeResource(event:MouseEvent):void {
                 model.filter.resourceItem=null;
                 model.filter.resourceName=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeClient(event:MouseEvent):void {
                 model.filter.client=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeCategory(event:MouseEvent):void {
                 model.filter.category=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeStatus(event:MouseEvent):void {
                 model.filter.status=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeName(event:MouseEvent):void {
                 model.filter.name=null;
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeCA(event:MouseEvent):void {
                 model.filter.ca="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removePA(event:MouseEvent):void {
                 model.filter.pa="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removePSR(event:MouseEvent):void {
                 model.filter.psr="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeDC(event:MouseEvent):void {
                 model.filter.dc="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeREPOST(event:MouseEvent):void {
                 model.filter.repost="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             private function removeWS(event:MouseEvent):void {
                 model.filter.ws="N/A";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
@@ -199,16 +214,19 @@
             public function removeType(event:MouseEvent):void {
                 model.filter.type=model.typeValues[0];
                 model.filter.typeLabel=model.typeLabels[0];
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             public function removeConfidence(event:MouseEvent):void {
                 model.filter.confidence="";
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
             public function removeClients(event:MouseEvent):void {
                 model.filter.excludeClients=[];
+		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
             
@@ -220,6 +238,7 @@
                         var nf:NumbericFilter=model.filter.numFilter[j] as NumbericFilter;
                         if (model.itemList.indexOf(nf.field) == model.fieldList.indexOf(f)) {
                             model.filter.numFilter.splice(j, 1);
+			    if (filterPanel) filterPanel.updateView();
                             model.filterDetail();
                         }
                     }

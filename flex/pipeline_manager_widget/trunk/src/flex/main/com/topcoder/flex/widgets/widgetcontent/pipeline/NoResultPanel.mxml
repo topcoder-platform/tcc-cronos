@@ -37,12 +37,13 @@
 			public function set puid(value:String):void {
 				this._puid = value;
 				model = Model.getInstance(value);
+                                trace("PUID in NoResultPanel:"+this._puid);
 			}
 			
 		]]>
 	</mx:Script>
 	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
-	<tccomp:FilterShower width="100%" puid="{_puid}" />
+	<tccomp:FilterShower width="100%" puid="{_puid}" filterPanel="{filter}"/>
 	<mx:Spacer width="100%" height="20" />
 	
 	<mx:HBox width="100%" height="45" id="content">
