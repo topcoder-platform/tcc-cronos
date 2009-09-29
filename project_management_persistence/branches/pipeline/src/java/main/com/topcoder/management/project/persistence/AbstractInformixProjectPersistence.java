@@ -97,6 +97,12 @@ import com.topcoder.util.log.Log;
  * Version 1.1.2 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.1.3 (Cockpit Release Assembly 6) Change Notes:
+ *  - Defined project property for confidentiality type.
+ *  - Defined values for confidentiality types.
+ *  - Depending on the confidentiality type now the project role terms are stored in different ways.
+ * </p>
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -107,8 +113,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, TCSASSEMBLER
- * @version 1.1.2
+ * @author tuenm, urtks, bendlund, fuyun, snow01
+ * @version 1.1.3
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
@@ -159,23 +165,47 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 	/**
      * <p>
-     * Represents the default value for submitter_terms_id.  This value will be
-     * overridden by 'submitter_terms_id' configuration parameter if it
+     * Represents the default value for public confidentiality submitter_terms_id.  This value will be
+     * overridden by 'public_submitter_terms_id' configuration parameter if it
      * exist.
      * </p>
      * 
+     * @since 1.1.2
      */
-    public static final int SUBMITTERE_TERMS_ID = 20703;
+    public static final long PUBLIC_SUBMITTERE_TERMS_ID = 20703;
 	
 	/**
      * <p>
-     * Represents the default value for  reviewer_terms_id.  This value will be
-     * overridden by 'reviewer_terms_id' configuration parameter if it
+     * Represents the default value for public confidentiality reviewer_terms_id.  This value will be
+     * overridden by 'public_reviewer_terms_id' configuration parameter if it
      * exist.
      * </p>
      * 
+     * @since 1.1.2
      */
-    public static final int REVIEWER_TERMS_ID = 20704;
+    public static final long PUBLIC_REVIEWER_TERMS_ID = 20704;
+    
+    /**
+     * <p>
+     * Represents the default value for standard cca confidentiality submitter_terms_id.  This value will be
+     * overridden by 'standard_cca_submitter_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long STANDARD_CCA_SUBMITTERE_TERMS_ID = 20713;
+    
+    /**
+     * <p>
+     * Represents the default value for standard cca confidentiality reviewer_terms_id.  This value will be
+     * overridden by 'standard_cca_reviewer_terms_id' configuration parameter if it
+     * exist.
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long STANDARD_CCA_REVIEWER_TERMS_ID = 20713;
 
 
 	/**
@@ -301,18 +331,52 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * configuration.
      */
     private static final String PROJECT_SPEC_ID_SEQUENCE_NAME_PARAMETER = "ProjectSpecIdSequenceName";
+    
+    /**
+     * Represents the project info property for Confidentiality Type.
+     * 
+     * @sine 1.1.2
+     */
+    private static final String PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY = "Confidentiality Type";
+    
+    /**
+     * Represents the public confidentiality type value.
+     * 
+     * @sine 1.1.2
+     */
+    private static final String CONFIDENTIALITY_TYPE_PUBLIC = "public";
+    
+	/**
+     * Represents the name of public_submitter_terms_id parameter in
+     * configuration.
+     * 
+     * Updated for Version 1.1.2
+     */
+    private static final String PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER = "public_submitter_terms_id";
+    
+    /**
+     * Represents the name of public_reviewer_terms_id parameter in
+     * configuration.
+     * 
+     * Updated for Version 1.1.2
+     */
+    private static final String PUBLIC_REVIEWER_TERMS_ID_PARAMETER = "public_reviewer_terms_id";
 
 	/**
-     * Represents the name of submitter_terms_id parameter in
+     * Represents the name of standard_cca_reviewer_terms_id parameter in
      * configuration.
+     * 
+     * @since 1.1.2
      */
-    private static final String SUBMITTERE_TERMS_ID_PARAMETER = "submitter_terms_id";
-
-	/**
-     * Represents the name of reviewer_terms_id parameter in
+    private static final String STANDARD_CCA_REVIEWER_TERMS_ID_PARAMETER = "standard_cca_reviewer_terms_id";
+    
+    /**
+     * Represents the name of standard_cca_submitter_terms_id parameter in
      * configuration.
+     * 
+     * @since 1.1.2
      */
-    private static final String REVIEWER_TERMS_ID_PARAMETER = "reviewer_terms_id";
+    private static final String STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER = "standard_cca_submitter_terms_id";
 
 	/**
      * Represents the name of submitter_role_id parameter in
@@ -1613,6 +1677,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *      - added creation of project spec.
      * </p>
      * 
+     * <p>
+     * Updated for Version 1.1.2 -- from project property we determine whether standardCCA is required or not.
+     * </p>
+     * 
      * @param projectId The new generated project id
      * @param project The project instance to be created in the database.
      * @param operator The creation user of this project.
@@ -1644,13 +1712,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
         createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
-
-		// generate new project role terms of use associations for the recently created project.
-        generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), conn);
-
+        
+        Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
+        
         // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
-                .getAllProperties(), conn);
+                .getAllProperties(), conn, nameIdMap);
+        
+        // get the standard cca value from project property. 
+        String value = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY));
+
+        boolean standardCCA=false;
+        if (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC)) {
+            standardCCA=true;
+        }
+
+		// generate new project role terms of use associations for the recently created project.
+        generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // create the project properties
         createProjectProperties(projectId, idValueMap, operator, conn);
@@ -1761,9 +1839,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
 
-        // get the property id - property value map from the new project object.
+
+        Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
+        
+        // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
-                .getAllProperties(), conn);
+                .getAllProperties(), conn, nameIdMap);
+        
+        // get the standard cca value from project property. 
+        String value = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY));
+
+        boolean standardCCA=false;
+        if (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC)) {
+            standardCCA=true;
+        }
+
+		// update project role terms of use associations for the recently created project.
+        updateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // update the project properties
         updateProjectProperties(projectId, idValueMap, operator, conn);
@@ -1830,18 +1922,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * Makes a property id-property value(String) map from property
      * name-property value map.
+     * 
+     * Refactored for 1.1.2
+     * 
      * @param nameValueMap the property name-property value map
      * @param conn the database connection
+     * @param nameIdMap property name to propery id map.
      * @return a property id-property value map
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
     private Map makePropertyIdPropertyValueMap(Map nameValueMap, Connection conn)
         throws PersistenceException {
+        return makePropertyIdPropertyValueMap(nameValueMap, conn, null);
+    }
+
+    /**
+     * Makes a property id-property value(String) map from property
+     * name-property value map.
+     * 
+     * Refactored for 1.1.2
+     * 
+     * @param nameValueMap the property name-property value map
+     * @param conn the database connection
+     * @param nameIdMap property name to propery id map.
+     * @return a property id-property value map
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Map makePropertyIdPropertyValueMap(Map nameValueMap, Connection conn, Map nameIdMap)
+        throws PersistenceException {
         Map idValueMap = new HashMap();
 
-        // get the property name-property id map
-        Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
+        // get the property name-property id map if not passed already.
+        if (nameIdMap == null) {
+            nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
+        }
 
         // enumerate each property
         for (Iterator it = nameValueMap.entrySet().iterator(); it.hasNext();) {
@@ -3481,30 +3597,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 	/**
      * Private helper method to generate default Project Role Terms of Use associations for a given project.
+     * 
+     * Updated for version 1.1.2
      *
      * @param projectId the project id for the associations
      * @param projectCategoryId the project category id of the provided project id
+     * @param conn the database connection
+     * @param standardCCA whether standardCCA is chosen or normal/public.
+     * 
      * @throws ConfigManagerException if Configuration Manager fails to retrieve the configurations
      * @throws PersistenceException if any errors occur during EJB lookup
      */
-    private void generateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId, Connection conn)
-            throws PersistenceException  {
+    private void generateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId,  boolean standardCCA, Connection conn
+           ) throws PersistenceException {
 
+        try {
 
-		try
-		{
-			
-		
-			// get the instance of ConfigManager
-			ConfigManager cm = ConfigManager.getInstance();
+            // get the instance of ConfigManager
+            ConfigManager cm = ConfigManager.getInstance();
 
-
-			long submitterTermsId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, SUBMITTERE_TERMS_ID_PARAMETER, getLogger(),  Integer.toString(SUBMITTERE_TERMS_ID)));
-			int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
-			long reviewerTermsId = Long.parseLong(Helper.getConfigurationParameterValue(
-													cm, namespace, REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long.toString(REVIEWER_TERMS_ID)));
+            long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
+                    standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER : PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER,
+                    getLogger(), Long.toString(standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID
+                            : PUBLIC_SUBMITTERE_TERMS_ID)));
+            int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+            long reviewerTermsId = Long
+                    .parseLong(Helper
+                            .getConfigurationParameterValue(cm, namespace,
+                                    standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID_PARAMETER
+                                            : PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
+                                            .toString(standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID
+                                                    : PUBLIC_REVIEWER_TERMS_ID)));
 
 			createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
 
@@ -3546,6 +3670,84 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			throw new PersistenceException(e.getMessage());
 		}
     }
+
+
+    /**
+     * Private helper method to generate default Project Role Terms of Use associations for a given project.
+     * 
+     * Updated for version 1.1.2
+     *
+     * @param projectId the project id for the associations
+     * @param projectCategoryId the project category id of the provided project id
+     * @param conn the database connection
+     * @param standardCCA whether standardCCA is chosen or normal/public.
+     * 
+     * @throws ConfigManagerException if Configuration Manager fails to retrieve the configurations
+     * @throws PersistenceException if any errors occur during EJB lookup
+     */
+    private void updateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId, boolean standardCCA, Connection conn
+            ) throws PersistenceException {
+
+        try {
+
+            // get the instance of ConfigManager
+            ConfigManager cm = ConfigManager.getInstance();
+
+            long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
+                    standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER : PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER,
+                    getLogger(), Long.toString(standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID
+                            : PUBLIC_SUBMITTERE_TERMS_ID)));
+            int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+            long reviewerTermsId = Long
+                    .parseLong(Helper
+                            .getConfigurationParameterValue(cm, namespace,
+                                    standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID_PARAMETER
+                                            : PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
+                                            .toString(standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID
+                                                    : PUBLIC_REVIEWER_TERMS_ID)));
+
+			updateProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+
+			if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
+				int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
+				int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
+				int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
+
+				// if it's a development project there are several reviewer roles
+				updateProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
+				updateProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
+				updateProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+			} else {
+				int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
+
+				// if it's not development there is a single reviewer role
+				updateProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
+			}
+
+			// also add terms for the rest of the reviewer roles
+			int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
+			int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
+			int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+													cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
+
+			updateProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
+			updateProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
+			updateProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+
+		}
+		catch (ConfigurationException e)
+		{
+			throw new PersistenceException(e.getMessage());
+		}
+    }
+
 
 
 	/**
@@ -3602,6 +3804,63 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
         
     }
+
+
+    /**
+     * This method will update a project role terms of use association in case term changes
+     *
+     * @param projectId the project id to associate
+     * @param resourceRoleId the role id to associate
+     * @param termsOfUseId the terms of use id to associate
+     * @param dataSource the datasource.
+     * @throws PersistenceException if any error occurs
+     */
+    public void updateProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
+            throws PersistenceException {
+
+        PreparedStatement ps = null;
+
+		try
+		{
+			
+
+			StringBuffer query = new StringBuffer(1024);
+			query.append("UPDATE project_role_terms_of_use_xref set terms_of_use_id =  ? ");
+			query.append(" WHERE project_id = ? AND resource_role_id = ?");
+
+			ps = conn.prepareStatement(query.toString());
+            ps.setLong(1, termsOfUseId);
+			ps.setLong(2, projectId);
+			ps.setInt(3, resourceRoleId);
+			
+
+			int rc = ps.executeUpdate();
+			if (rc != 1) {
+				throw(new PersistenceException("Wrong number of rows updated in " +
+						"'project_role_terms_of_use_xref'. Updated " + rc + ", " +
+						"should have updated 1."));
+			}
+		}
+		catch (SQLException e)
+		{
+			throw(new PersistenceException(e.getMessage()));
+		}
+         finally {
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch (Exception ee)
+				{
+				}
+				
+			}
+        }
+        
+    }
+    
     
     /**
      * Gets the list of simple pipeline data for specified user id and between specified start and end date.
