@@ -481,13 +481,18 @@
                             continue;
                         }
 
+                        
                         if (t.catalogName) {
                             // it is the root category.
                             // add this catalog name to list of catalog names.
                             var o:Object=new Object();
                             o.label=t.name;
                             o.data=t;
-                            _catalogs.addItem(o);
+
+                            // we only show catalog for dev/design, and dont show Application
+                            if (t.name != APPLICATION_DESCR) {
+                                _catalogs.addItem(o);
+                            }
                             
                             //
                             // Stores the reference of application catalog to the variable 'applicationCatalog'
