@@ -236,7 +236,15 @@
                 if (mainWidget && mainWidget.competitionType != null && contestType != null) {
                     for (var i:int=0; i < contestType.numRadioButtons; i++) {
                         var bt:RadioButton=contestType.getRadioButtonAt(i);
-                        if (bt.enabled && bt.value == mainWidget.competitionType) {
+                        
+                        // TCCC-1441: use category id mapping to select contest types.
+                        if (bt.enabled && ((mainWidget.studioContestType && bt.value == mainWidget.competitionType)
+                            || (!mainWidget.studioContestType
+                                && mainWidget.softwareCompetition
+                                && mainWidget.softwareCompetition.projectHeader
+                                && mainWidget.softwareCompetition.projectHeader.projectCategory 
+                                && SoftwareCompetitionUtils.instance().getProjectCategoryId(bt.value.toString()) == 
+                                       mainWidget.softwareCompetition.projectHeader.projectCategory.id))) {
                             bt.selected=true;
                             break;
                         }
@@ -249,6 +257,8 @@
                             if (p.data == mainWidget.tcDirectProjectId) {
                                 // select the project.
                                 selectContests.selectedItem=p;
+                                mainWidget.tcDirectProjectName=p.label;
+                                break;
                             }
                         }
                     }
@@ -499,6 +509,7 @@
                             // select the project.
                             selectContests.selectedItem=p;
                             selectContests.selectedIndex = index;
+                            mainWidget.tcDirectProjectName=p.label;
                             break;
                         }
                         index++;

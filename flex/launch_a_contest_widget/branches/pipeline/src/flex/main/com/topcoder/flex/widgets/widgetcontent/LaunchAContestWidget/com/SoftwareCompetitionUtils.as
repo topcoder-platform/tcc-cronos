@@ -9,16 +9,20 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.phases.SoftwarePhaseType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.phases.SoftwareProjectPhases;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectStatus;
-
+    
     import flash.utils.Dictionary;
-
+    
     import mx.collections.ArrayCollection;
 
     /**
      * A constant and utility class that contains various constants and utility required for software competition based operations.
+     * 
+     * Version 1.0.1 (Cockpit Release Assembly 6) Change Notes:
+     *    - introduced project info key for Confidentiality Type.
+     *    - provided method to save/retrieve Confidentiality Type property.
      *
-     * @author TCSDEVELOPER
-     *
+     * @author snow01
+     * @version 1.0.1
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     public class SoftwareCompetitionUtils {
@@ -302,6 +306,27 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         public static var PROJECT_INFO_TYPE_ADMIN_FEE_KEY:String="Admin Fee";
         
         public static var PROJECT_INFO_TYPE_REVIEW_COST_KEY:String="Review Cost";
+        
+        /**
+         * Confidentiality Type project property
+         * 
+         * @since 1.0.1
+         */ 
+        public static var PROJECT_INFO_TYPE_CONFIDENTIALITY_TYPE_KEY:String="Confidentiality Type";
+        
+        /**
+         * Public Confidentiality Type.
+         * 
+         * @since 1.0.1
+         */
+        public static var CONFIDENTIALITY_TYPE_PUBLIC:String="public";
+        
+        /**
+         * Standard CCA Confidentiality Type value.
+         * 
+         * @since 1.0.1
+         */
+        public static var CONFIDENTIALITY_TYPE_CCA:String="standard_cca";
         
         /**
          * Represents the billing project for the project.
@@ -632,6 +657,49 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             }
             
             return "0";
+        }
+        
+        /**
+         * Adds the confidentiality type property to project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @param type the confidentiality type.
+         * 
+         * @since 1.0.1
+         */
+        public function addConfidentialityTypeProp(softwareCompetition:SoftwareCompetition, type:String):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_CONFIDENTIALITY_TYPE_KEY) {
+                    e.value=type;
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
+
+            entry.key=PROJECT_INFO_TYPE_CONFIDENTIALITY_TYPE_KEY;
+            entry.value=type;
+
+            softwareCompetition.projectHeader.properties.push(entry);
+        }
+        
+        /**
+         * Gets the confidentiality type property from project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return the confidentiality type value.
+         * 
+         * @since 1.0.1
+         */
+        public function getConfidentialityTypeProp(softwareCompetition:SoftwareCompetition):String {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_CONFIDENTIALITY_TYPE_KEY) {
+                    return e.value;
+                }
+            }
+            
+            // default to Public.
+            return CONFIDENTIALITY_TYPE_PUBLIC;
         }
     }
 }

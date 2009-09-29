@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
+ * Copyright (c) 2008-2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.Helper;
@@ -53,8 +53,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      *    - changed the type of specReviews to SpecReview from ArrayCollection.
      *    - corresponding update in webservice handler method.
      * 
-     * @author TCSDEVELOPER, TCSASSEMBLER
-     * @version 1.0.2
+     * Version 1.0.3 (Cockpit Release Assembly 6) Change Notes:
+     *    - introduced new boolean property 'enforceCCA' to capture whether CCA is enforced or not.
+     *    - the property is preserved to contest properties during contest save.
+     *    - during edit the property is read from contest properties. 
+     * 
+     * @author snow01
+     * @version 1.0.3
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -217,6 +222,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         [Bindable] 
         private var _invoicedProjectData:Object=null;
+        
+        /**
+         * Captures whether enforce cca is on or not.
+         * 
+         * @since 1.0.3
+         */ 
+        [Bindable]
+        public var enforcedCCA:Boolean=false;
         
         /**
         * @since BUGR-1737
@@ -651,7 +664,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).contestSelect.selectBillingProject(c.contestData.billingProject);
 
                 (container.contents as LaunchWidget).tcDirectProjectId = c.contestData.tcDirectProjectId.toString();
-                (container.contents as LaunchWidget).tcDirectProjectName = c.contestData.tcDirectProjectName;
+                //(container.contents as LaunchWidget).tcDirectProjectName = c.contestData.tcDirectProjectName;
                 
                 (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
             }
@@ -659,6 +672,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         /**
          * Handler for s/w competition retrieval.
+         * 
+         * Updated for 1.0.3 to set the enforceCCA property during edit.
+         * 
          * @since Cockpit Release Assembly 1 v1.0 [BUGR-1847]
          */
         private function getSoftwareContestHandler(e:ResultEvent):void {
@@ -678,8 +694,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	        }
 
                 (container.contents as LaunchWidget).tcDirectProjectId = c.projectHeader.tcDirectProjectId.toString();
-                (container.contents as LaunchWidget).tcDirectProjectName = c.projectHeader.tcDirectProjectName;
+                //(container.contents as LaunchWidget).tcDirectProjectName = c.projectHeader.tcDirectProjectName;
                 (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
+                (container.contents as LaunchWidget).enforcedCCA=!(SoftwareCompetitionUtils.instance().getConfidentialityTypeProp(c)==SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_PUBLIC);
             }
         }
 
@@ -832,6 +849,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
          * Updated for Cockpit Release Assembly 3
          *    - Add the billing project property.
+         * 
+         * Updated for Version 1.0.3
+         *    - on save Confidentiality type property is saved.
          */ 
 	    private function prepareSoftwareContest():void {
 		    // set dynamic properties before save.
@@ -844,6 +864,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	    // we need a reason for update
     	    this.softwareCompetition.projectHeaderReason = "user update";
             this.softwareCompetition.projectHeader.tcDirectProjectName=tcDirectProjectName;
+       
+            if (enforcedCCA) {
+                SoftwareCompetitionUtils.instance().addConfidentialityTypeProp(this.softwareCompetition, SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_CCA);
+            } else {
+                SoftwareCompetitionUtils.instance().addConfidentialityTypeProp(this.softwareCompetition, SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_PUBLIC);
+            }
 
 	        SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
             SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
@@ -870,12 +896,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
                 this.contestid=this.softwareCompetition.projectHeader.id.toFixed(0);
                 
-		// set prize and admin fee from properties
-		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
-		this.softwareCompetition.prizes[0] = new PrizeData();
-		this.softwareCompetition.prizes[1] = new PrizeData();
-		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
-		PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+                // set prize and admin fee from properties
+                this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
+                this.softwareCompetition.prizes[0] = new PrizeData();
+                this.softwareCompetition.prizes[1] = new PrizeData();
+                PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+                PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
 
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
@@ -891,20 +917,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         private function updateSoftwareContest():void {
 
-            // set dynamic properties before save.
-            var prizes:Array=new Array();
-            for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
-                var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
-                prizes.push(p);
-            }
+            prepareSoftwareContest();
 
-	    // we need a reason for update
-	    this.softwareCompetition.projectHeaderReason = "user update";
-
-	        SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
-            SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
-            SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
-            SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
+            
+            // we need a reason for update
+            this.softwareCompetition.projectHeaderReason = "user update";
             
             var updateContestOp:AbstractOperation=_csws.getOperation("updateSoftwareContest");
             

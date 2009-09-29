@@ -16,8 +16,12 @@
         - Added radiobuttons to select contest format for studio contests
         - Added milestone prize fields for studio multi-round contests.
 
-    @author pulky
-    @version 1.0.2
+    Version 1.0.3 (Cockpit Release Assembly 6 v1.0) Change Notes:
+        - Introduced "Contest Privacy" section.
+        - Added Enforce CCA checkbox.
+    
+    @author pulky, snow01
+    @version 1.0.3
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -1127,6 +1131,29 @@
                               includeInLayout="{isPresentXml('maxExposure')}"/>
                 </mx:HBox>
 
+            </mx:VBox>
+            
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0"
+                     visible="{!mainWidget.studioContestType}"
+                     includeInLayout="{!mainWidget.studioContestType}">
+                <mx:Label text="Contest Privacy:"
+                          styleName="subsectionTitle"/>
+                <mx:HBox width="100%"
+                    height="100%">
+                    <mx:CheckBox
+                        id="enforceCCAChkBox" 
+                        label="Enforce CCA"
+                        labelPlacement="right"
+                        change="{mainWidget.enforcedCCA=enforceCCAChkBox.selected}"
+                        selected="{mainWidget.enforcedCCA}">
+                    </mx:CheckBox>
+                    <mx:LinkButton label="What's this?"
+                                   click="Helper.showAlertMessage('What is this for Enforce CCA')"/>
+                    
+                </mx:HBox>
             </mx:VBox>
 
 
