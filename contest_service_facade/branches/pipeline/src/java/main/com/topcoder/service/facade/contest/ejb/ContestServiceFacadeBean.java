@@ -203,9 +203,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * Changes in v1.2 (Studio Multi-Rounds Assembly - Launch Contest): Added default milestone date when contest is
  * created.
  * </p>
+ * <p>
+ * Changes in v1.2.1 updated to set creator user as Observer
+ * created.
+ * </p>
  * 
  * @author snow01, pulky
- * @version 1.2
+ * @version 1.2.1
  */
 @Stateless
 @WebService
@@ -355,6 +359,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_ROLE_MANAGER_DESC = "Manger";
+
+
+    /**
+     * Private constant specifying resource role manager id
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final long RESOURCE_ROLE_OBSERVER_ID = 12;
+
+    /**
+     * Private constant specifying resource role manager name
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_ROLE_OBSERVER_NAME = "Observer";
+
+    /**
+     * Private constant specifying resource role manager desc
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_ROLE_OBSERVER_DESC = "Observer";
 
     /**
      * Private constant specifying resource ext ref id
@@ -3550,11 +3576,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 resources[0] = new com.topcoder.management.resource.Resource();
                 resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
 
-                ResourceRole role = new ResourceRole();
-                role.setId(RESOURCE_ROLE_MANAGER_ID);
-                role.setName(RESOURCE_ROLE_MANAGER_NAME);
-                role.setDescription(RESOURCE_ROLE_MANAGER_DESC);
-                resources[0].setResourceRole(role);
+                ResourceRole manager_role = new ResourceRole();
+                manager_role.setId(RESOURCE_ROLE_MANAGER_ID);
+                manager_role.setName(RESOURCE_ROLE_MANAGER_NAME);
+                manager_role.setDescription(RESOURCE_ROLE_MANAGER_DESC);
+
+                ResourceRole observer_role = new ResourceRole();
+                observer_role.setId(RESOURCE_ROLE_OBSERVER_ID);
+                observer_role.setName(RESOURCE_ROLE_OBSERVER_NAME);
+                observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
+
+                // creator will be Observer
+                resources[0].setResourceRole(observer_role);
                 resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
                     String.valueOf(p.getUserId()));
                 resources[0].setProperty(RESOURCE_INFO_HANDLE,
@@ -3570,7 +3603,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                         resources[1] = new com.topcoder.management.resource.Resource();
                         resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-                        resources[1].setResourceRole(role);
+                        resources[1].setResourceRole(manager_role);
                         resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
                         resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
                         resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
@@ -3579,7 +3612,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     else {
                         resources[1] = new com.topcoder.management.resource.Resource();
                         resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-                        resources[1].setResourceRole(role);
+                        resources[1].setResourceRole(manager_role);
                         resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
                         resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
                         resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
@@ -3724,6 +3757,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         contest.getProjectPhases(),
                         contest.getProjectResources(),
                         String.valueOf(p.getUserId()));
+
+                // TCCC-1438 - it's better to refetch from backend.
+		projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
 
                 contest.setProjectHeader(projectData.getProjectHeader());
                 contest.setProjectPhases(projectData);
