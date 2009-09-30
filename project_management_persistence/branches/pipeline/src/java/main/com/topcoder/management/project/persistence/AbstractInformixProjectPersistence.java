@@ -4028,6 +4028,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     and ua.user_name = (select handle from user where user_id = ").append(userId).append(")) ");
             sb.append(" ) ");
             sb.append(" AND ");
+            // not show inactive or deleted
+            sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
+            sb.append(" AND ");
             sb.append(" ( ");
             sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) >= to_date('")
                     .append(formatter.format(startDate))
