@@ -4032,21 +4032,28 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
             sb.append(" AND ");
             sb.append(" ( ");
-            sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) >= to_date('")
+            sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
                     .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) <= to_date('")
+                    .append("','%Y-%m-%d') AND to_date('")
                     .append(formatter.format(endDate))
                     .append("','%Y-%m-%d')) ");
             sb.append(" OR ");
-            sb.append(" ((select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) >= to_date('")
+            sb.append(" ((select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
                     .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) <= to_date('")
+                    .append("','%Y-%m-%d') AND to_date('")
                     .append(formatter.format(endDate))
                     .append("','%Y-%m-%d')) ");
+            sb.append(" OR ");
+            sb.append("(to_date('").append(formatter.format(startDate)).append("','%Y-%m-%d') BETWEEN (select max(nvl(actual_start_time, scheduled_start_time))         from    project_phase ph where ph.project_id=c.project_id)  AND ");
+            sb.append(" (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id)) ");
+            sb.append(" OR ");
+            sb.append("(to_date('").append(formatter.format(endDate)).append("','%Y-%m-%d') BETWEEN (select max(nvl(actual_start_time, scheduled_start_time)) from                 project_phase ph where ph.project_id=c.project_id)  AND ");
+            sb.append(" (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id)) ");
             sb.append(" ) ");
-            if (!overdueContests) {
+    //TOFIX
+   /*         if (!overdueContests) {
                 sb.append(" AND start_time >= TODAY  ");
-            }
+            }*/
 
             sb.append(" order by start_time ");
 
