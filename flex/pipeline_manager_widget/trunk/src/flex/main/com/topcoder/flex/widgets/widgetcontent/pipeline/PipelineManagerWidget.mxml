@@ -651,7 +651,7 @@
                                date="{model.filter.end ? model.filter.end : model.endDate}"/>
             <mx:CheckBox id="overdueCheckBox"
                          label="Include Overdue"
-                         selected="true"/>
+                         selected="false"/>
             <mx:Spacer width="100%"/>
             <mx:Button label="UPDATE"
                        styleName="greyBtn"
