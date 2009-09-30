@@ -5188,6 +5188,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("         and ua.user_name = (select handle from user where user_id = :userId)) ");
             sb.append(" ) ");
             sb.append(" AND ");
+            // not show inactive or cancelled or terminated
+            sb.append(" (c.contest_detailed_status_id != 3 AND c.contest_detailed_status_id != 16 AND c.contest_detailed_status_id != 17)  ");
+            sb.append(" AND (c.deleted is null or c.deleted = 0) ");
+            sb.append(" AND ");
             sb.append(" ( ");
             sb
                     .append(" (c.start_time >= to_date(:startDate,'%Y-%m-%d') AND c.start_time <= to_date(:endDate,'%Y-%m-%d')) ");
