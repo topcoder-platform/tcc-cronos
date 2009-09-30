@@ -64,6 +64,9 @@
              paddingBottom="0"
              paddingLeft="20"
              paddingRight="0"
+             click="handleClick()"
+             buttonMode="true"
+             useHandCursor="true"
              verticalScrollPolicy="off"
              horizontalScrollPolicy="off">
         <mx:Image width="16"
