@@ -68,6 +68,10 @@
             import com.topcoder.flex.Helper;
             import mx.events.ItemClickEvent;
             import mx.formatters.NumberFormatter;
+            import mx.controls.Alert;
+            import mx.managers.PopUpManager;
+            import mx.utils.StringUtil;
+            import mx.core.Application;
             import mx.controls.ButtonLabelPlacement; // BUGR-1501		
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
             
@@ -857,6 +861,9 @@
                 navigateToURL(new URLRequest(url), "_blank");
             }
 
+
+           
+
             // BUGR-1067
             private function ns_updateAmount():void {
                 var firstPlace:Number=Number(ns_firstPlace.text);
@@ -1150,10 +1157,13 @@
                         change="{mainWidget.enforcedCCA=enforceCCAChkBox.selected}"
                         selected="{mainWidget.enforcedCCA}">
                     </mx:CheckBox>
-                    <mx:LinkButton label="What's this?"
-                                   click="Helper.showAlertMessage('What is this for Enforce CCA')"/>
-                    
                 </mx:HBox>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         styleName="smallBlackText">
+                    <mx:htmlText><![CDATA[If this option is selected, competitors will be required to download, sign and submit a <a href="http://www.topcoder.com/tc?module=Terms&tuid=20713" target="_blank"><u>Confidentiality Agreement</u></a> to the TopCoder legal department prior to gaining access to information in the contest forum.  Please note that they <b>will</b> see information that is on the public contest page.  This includes any information you enter into the "3 - Details" step as well as any file attachments you upload in "4 - Attach Files".  Please upload all private contest information into your contest forum.  Competitors gain access to the contest forum only after submitting a signed <a href="http://www.topcoder.com/tc?module=Terms&tuid=20713" target="_blank"><u>Confidentiality Agreement</u></a>.]]>
+                    </mx:htmlText>
+                </mx:Text>
             </mx:VBox>
 
 
