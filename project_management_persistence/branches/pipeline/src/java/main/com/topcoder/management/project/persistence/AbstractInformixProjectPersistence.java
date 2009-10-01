@@ -37,6 +37,8 @@ import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
+import com.topcoder.management.project.SimpleProjectPermissionData;
+import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
 import com.topcoder.management.project.SimpleProjectPermissionData;
@@ -103,6 +105,11 @@ import com.topcoder.util.log.Log;
  *  - Defined values for confidentiality types.
  *  - Depending on the confidentiality type now the project role terms are stored in different ways.
  * </p>
+ * <p>
+ * Version 1.2 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -113,12 +120,20 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01
- * @version 1.1.3
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky
+ * @version 1.2
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
-			.getLog(AbstractInformixProjectPersistence.class.getName());
+
+    /**
+     * private constant representing the active status id for a project
+     *
+     * @since 1.2
+     */
+    private static final String ACTIVE_PROJECT_STATUS_ID = "1";
+
+    private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
+            .getLog(AbstractInformixProjectPersistence.class.getName());
 
 	/**
      * <p>
@@ -4178,5 +4193,71 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             throw new PersistenceException("Fails to retrieving simple pipeline data.", e);
 		}
+    }
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws PersistenceException if any error occurs during retrieval of information.
+     *
+     * @since 1.2
+     */
+    public List<SoftwareCapacityData> getCapacity(int contestType) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getCapacity(" + contestType + ") method."));
+
+        Connection conn = null;
+
+        StringBuffer queryBuffer = new StringBuffer();
+
+        queryBuffer.append(" select");
+        queryBuffer.append(" (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
+        queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) as start_date,");
+        queryBuffer.append(" count(*)");
+        queryBuffer.append(" from project p, contest_sale c");
+        queryBuffer.append(" where p.project_category_id = ").append(contestType);
+        queryBuffer.append(" and p.project_status_id = ").append(ACTIVE_PROJECT_STATUS_ID);
+        queryBuffer.append(" and p.project_id = c.contest_id");
+        queryBuffer.append(" and (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
+        queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) > date(current)");
+        queryBuffer.append(" group by 1");
+        queryBuffer.append(" order by 1");
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                    queryBuffer.toString(), new Object[] {},
+                    new DataType[] { Helper.DATE_TYPE, Helper.LONG_TYPE } );
+
+            List<SoftwareCapacityData> capacityList = new ArrayList<SoftwareCapacityData>(rows.length);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Found "+rows.length + " records"));
+
+            for(int i=0;i<rows.length;i++)
+            {
+                Object[] os = rows[i];
+                capacityList.add(new SoftwareCapacityData(((Date) os[0]), ((Long)(os[1])).intValue()));
+            }
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getCapacity method."));
+            return capacityList;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null,
+                            "Fails to retrieving capacity information ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
     }
 }
