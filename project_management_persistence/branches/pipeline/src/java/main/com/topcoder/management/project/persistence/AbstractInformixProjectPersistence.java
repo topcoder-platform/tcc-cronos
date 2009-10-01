@@ -4029,7 +4029,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
             sb.append("             union  ");
             sb.append("             SELECT distinct project_id FROM tt_project_manager ttm, tt_user_account u  ");
-			 sb.append("                 WHERE ttw.user_account_id = u.user_account_id and ");
+			 sb.append("                 WHERE ttm.user_account_id = u.user_account_id and ");
             sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
             sb.append("        ) )  ");
             sb.append(" ) ");
