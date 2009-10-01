@@ -58,15 +58,20 @@ import com.topcoder.service.studio.PaymentType;
  * Version 1.3.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+  * <p>
+ * Version 1.3.2 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It's up to concrete implementations.
  * </p>
  *
- * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
+ * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3.1
+ * @version 1.3.2
  * @since 1.0
  */
 public interface ContestManager {
@@ -1178,4 +1183,18 @@ public interface ContestManager {
      */
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
             boolean overdueContests) throws ContestManagementException;
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws ContestManagementException if any error occurs during retrieval of information.
+     *
+     * @since 1.2
+     */
+    public List<StudioCapacityData> getCapacity(int contestType) throws ContestManagementException;
 }

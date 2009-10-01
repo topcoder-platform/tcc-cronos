@@ -71,6 +71,7 @@ import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
+import com.topcoder.service.studio.contest.StudioCapacityData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.contest.ContestConfig.Identifier;
@@ -99,7 +100,7 @@ import com.topcoder.util.log.LogManager;
  * @Stateless <br/> 2.
  * @TransactionManagement(TransactionManagementType.CONTAINER)<br/> 3.
  * @DeclareRoles("Administrator")<br/>
- *                                </p>
+ * </p>
  *
  * <p>
  * And all public methods in this bean should have the following annotations:<br/>
@@ -109,7 +110,7 @@ import com.topcoder.util.log.LogManager;
  * @TransactionAttribute(TransactionAttributeType.REQUIRED) -- indicating the
  *                                                          transaction is
  *                                                          required.
- *                                                          </p>
+ * </p>
  *
  * <p>
  * 1.1 change: 2 new methods <code>searchContests(Filter)</code> and
@@ -245,6 +246,11 @@ import com.topcoder.util.log.LogManager;
  * </p>
  *
  * <p>
+ * <p>
+ * Version 1.3.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  * <strong>Thread safety:</strong> The variables in this class are initialized
  * once in the initialize method after the bean is instantiated by EJB
  * container. They would be never be changed afterwards. So they won't affect
@@ -253,9 +259,9 @@ import com.topcoder.util.log.LogManager;
  * </p>
  *
  * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
+ * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @author saarixx, TCSDEVELOPER
- * @version 1.3
+ * @version 1.3.1
  * @since 1.0
  */
 @Stateless
@@ -284,6 +290,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @Resource(name = "submitter_role_id")
     private long submitter_role_id;
+
+    /**
+     * private constant representing the scheduled status id for a contest
+     *
+     * @since 1.2
+     */
+    private static final String SCHEDULED_STATUS_ID = "9";
 
 
 
@@ -5244,5 +5257,56 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         } finally {
             logExit("getSimplePipelineData()");
         }
+    }
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws ContestManagementException if any error occurs during retrieval of information.
+     *
+     * @since 1.2
+     */
+    @SuppressWarnings("unchecked")
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<StudioCapacityData> getCapacity(int contestType) throws ContestManagementException {
+
+        try {
+            logEnter("getCapacity(" + contestType + ")");
+
+            EntityManager em = getEntityManager();
+
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append(" select date(start_time), count(*)");
+            queryBuffer.append(" from contest");
+            queryBuffer.append(" where date(start_time) > date(current)");
+            queryBuffer.append(" and contest_detailed_status_id == ").append(SCHEDULED_STATUS_ID);
+            queryBuffer.append(" and contest_type_id = ").append(contestType);
+            queryBuffer.append(" group by 1");
+            queryBuffer.append(" order by 1");
+
+            Query query = em.createNativeQuery(queryBuffer.toString());
+            List list = query.getResultList();
+
+            List<StudioCapacityData> capacityList = new ArrayList<StudioCapacityData>(list.size());
+            for (int i = 0; i < list.size(); i++) {
+                Object[] os = (Object[]) list.get(i);
+
+                capacityList.add(new StudioCapacityData(((Date) os[0]), ((BigDecimal)(os[1])).intValue()));
+            }
+
+            return capacityList;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        } finally {
+            logExit("getCapacity()");
+        }
+
     }
 }
