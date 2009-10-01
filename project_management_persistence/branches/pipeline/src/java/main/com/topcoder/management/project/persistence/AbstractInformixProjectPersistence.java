@@ -3932,7 +3932,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("  ");
             sb.append("     (select value from project_info where project_info_type_id = 14 and project_id = c.project_id) as eligibility, ");
             sb.append("  ");
-            sb.append("     (select max(ri.value) ");
+         /*   sb.append("     (select max(ri.value) ");
             sb.append("     from resource as res ");
             sb.append("     join resource_role_lu as res_role ");
             sb.append("         on res.resource_role_id = res_role.resource_role_id ");
@@ -3942,7 +3942,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("          on (res.resource_id = ri.resource_id and ri.resource_info_type_id = 2) ");   // get handle
             sb.append("      where res.project_id = c.project_id and ri.value != 'Applications' and ri.value != 'Components') ");
             sb.append("                 as manager, ");
-            sb.append("  ");
+            sb.append("  "); */
+            // for now use creator as manager
+            sb.append("         (select u.handle from project pp, user u ");
+            sb.append("         where pp.create_user = u.user_id ");
+            sb.append("         and pp.project_id = c.project_id) as manager, ");
+            sb.append("  "); 
             sb.append("     NVL((select u.handle from spec_review sr, spec_review_reviewer_xref srr, user u ");
             sb.append("     where sr.spec_review_id = srr.spec_review_id and srr.review_user_id = u.user_id ");
             sb.append("  and sr.contest_id = c.project_id) , 'Reviewer') as reviewer, ");
