@@ -3,15 +3,44 @@
  */
 package com.topcoder.service.pipeline.ejb;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
-
+import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 
 import com.topcoder.service.pipeline.CommonPipelineData;
+import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
@@ -30,42 +59,13 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.contest.ContestManagementException;
-
+import com.topcoder.service.studio.contest.StudioCapacityData;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
-
-import javax.ejb.EJB;
-import javax.ejb.SessionContext;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.jboss.util.collection.CollectionsUtil;
 
 /**
  * <p>
@@ -82,15 +82,22 @@ import org.jboss.util.collection.CollectionsUtil;
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ * - added service that retrieves a list of dates that have full capacity starting from tomorrow for a given contest
+ *   type (for software or studio contests)
+ * - added configuration retrieval for capacity processing
+ * </p>
  * 
  * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
- * 
- * @author waits, snow01, TCSASSEMBLER
- * @version 1.0.1
+ *
+ * @author waits, snow01, pulky
+ * @version 1.1
  * @since Pipeline Conversion Service v1.0
  */
+@SuppressWarnings("unchecked")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -106,6 +113,78 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /** Base SQL Query to fetch the software change history. */
     private static final String GET_SOFTWARE_CHANGE_HISTORY_QUERY = "SELECT ch FROM SoftwareCompetitionChangeHistory ch where ch.pipelineInfo.componentId=:contestId AND ch.changeType=:changeType";
+
+    /**
+     * private constant representing studio capacity default value
+     *
+     * @since 1.1
+     */
+    private static final int STUDIO_CAPACITY_DEFAULT_VALUE = 10;
+
+    /**
+     * private constant representing software capacity default value
+     *
+     * @since 1.1
+     */
+    private static final int SOFTWARE_CAPACITY_DEFAULT_VALUE = 10;
+
+    /**
+     * private constant representing software property prefix
+     *
+     * @since 1.1
+     */
+    private static final String SOFTWARE_PROP_PREFIX = "Software";
+
+    /**
+     * private constant representing studio property prefix
+     *
+     * @since 1.1
+     */
+    private static final String STUDIO_PROP_PREFIX = "Studio";
+
+
+    /**
+     * private constant representing days capacity property name
+     *
+     * @since 1.1
+     */
+    private static final String DAYS_CAPACITY_PROP_SUFFIX = "DaysCapacity";
+
+    /**
+     * private constant representing configuration management namespace for this class
+     *
+     * @since 1.1
+     */
+    private static final String CONTEST_PIPELINE_SERVICE_BEAN_NAMESPACE =
+        "com.topcoder.service.pipeline.ejb.ContestPipelineServiceBean";
+
+    /**
+     * private constant with string representation of the days of a week
+     *
+     * @since 1.1
+     */
+    private static final String[] daysPropNames = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+        "Friday", "Saturday"};
+
+    /**
+     * private static attribute representing configured software days capacity
+     *
+     * The key to the first map is the day of the week and the second map is the contest type, while the value is
+     * the configured capacity for that day of the week and contest type id
+     *
+     * @since 1.1
+     */
+    private static Map<String, Map<Integer,Integer>> softwareDaysCapacity;
+
+    /**
+     * private static attribute representing configured studio days capacity
+     *
+     * The key to the first map is the day of the week and the second map is the contest type, while the value is
+     * the configured capacity for that day of the week and contest type id
+     *
+     * @since 1.1
+     */
+    private static Map<String, Map<Integer,Integer>> studioDaysCapacity;
 
     /**
      * <p>
@@ -199,8 +278,25 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             logger = LogManager.getLog(logName);
         }
 
+         initCapacity();
+
         // first record in logger
         logExit("init");
+    }
+
+    /**
+     * This method initializes capacity configurations
+     *
+     * Capacity configurations will be loaded using configuration manager. 
+     *
+     * @since 1.1
+     */
+    private void initCapacity() {
+        // Obtaining the instance of Configuration Manager
+        ConfigManager cfgMgr = ConfigManager.getInstance();
+
+        softwareDaysCapacity = getDaysCapacityConfiguration(cfgMgr, SOFTWARE_PROP_PREFIX);
+        studioDaysCapacity = getDaysCapacityConfiguration(cfgMgr, STUDIO_PROP_PREFIX);
     }
 
     /**
@@ -496,6 +592,57 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             throw wrapContestPipelineServiceException(re, "Fail to retrieve the contests.");
         } finally {
             logExit("getContests");
+        }
+    }
+
+
+    /**
+     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software
+     * or studio contests). If there are no capacity constraints, return null.
+     *
+     * This method will get capacity information from the corresponding project / studio services layer and will
+     * evaluate capacity according to the configured values.
+     *
+     * @param contestType the contest type
+     * @param isStudio true of it is a studio competition, false otherwise
+     * @return the list of dates that have full capacity.
+     * @throws ContestPipelineServiceException if any error occurs during retrieval of information.
+     *
+     * @since 1.1
+     */
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio)
+        throws ContestPipelineServiceException {
+
+        // this will make access easier and faster
+        int[] capacity = new int[7];
+        for (int i = 0; i < 7; i++) {
+            capacity[i] = getCapacityForDay(daysPropNames[i], contestType, isStudio);
+        }
+
+        try {
+            List<XMLGregorianCalendar> fullCapacityList = new ArrayList<XMLGregorianCalendar>();
+
+            // get capacity data from underlying services
+            List<CapacityData> capacityDataList;
+            if (isStudio) {
+                capacityDataList = convertStudioCapacityDataToCapacityData(studioService.getCapacity(contestType));
+            } else {
+                capacityDataList = convertSoftwareCapacityDataToCapacityData(projectServices.getCapacity(contestType));
+            }
+
+            // use configuration to check full capacity
+            for (CapacityData capacityData : capacityDataList) {
+                Calendar cal = new GregorianCalendar();
+                cal.setTime(capacityData.getDate());
+                if (capacity[cal.get(Calendar.DAY_OF_WEEK) - 1] <= capacityData.getNumScheduledContests()) {
+                    fullCapacityList.add(getXMLGregorianCalendar(capacityData.getDate()));
+                }
+            }
+
+            return fullCapacityList.size() > 0 ? fullCapacityList : null;
+        } catch (Exception e) {
+            throw wrapContestPipelineServiceException(e, "An error occured while calculating full capacity dates");
         }
     }
 
@@ -1257,5 +1404,128 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         } finally {
             logExit("getCommonPipelineData");
         }
+    }
+
+   /**
+     * Private helper method that gets the configured capacity for a particular day, taking into consideration
+     * the studio/software contest type.
+     *
+     * If there configuration can't be found, the default is returned.
+     *
+     * @param day the string representation of the day being inquired
+     * @param contestType the contest type
+     * @param isStudio true for studio competitions, false otherwise
+     *
+     * @return the configured capacity (or default) as corresponds
+     *
+     * @since 1.1
+     */
+    private int getCapacityForDay(String day, int contestType, boolean isStudio) {
+        ExceptionUtils.checkNull(day, null, null, "day is null");
+
+        Map<Integer,Integer> dayCapacity;
+        int capacity;
+
+        if (isStudio) {
+            dayCapacity = studioDaysCapacity.get(day);
+            capacity = STUDIO_CAPACITY_DEFAULT_VALUE;
+        } else {
+            dayCapacity = softwareDaysCapacity.get(day);
+            capacity = SOFTWARE_CAPACITY_DEFAULT_VALUE;
+        }
+
+        if (dayCapacity != null) {
+            if (dayCapacity.containsKey(contestType)) {
+                capacity = dayCapacity.get(contestType);
+            }
+        }
+
+        return capacity;
+    }
+
+    /**
+     * Private helper method that converts a list of software capacity data objects into a list of capacity data
+     * objects.
+     *
+     * @param capacity the list of software capacity data objects
+     * @return the converted list of capacity data objects or an empty list if the argument is null
+     *
+     * @since 1.1
+     */
+    private List<CapacityData> convertSoftwareCapacityDataToCapacityData(List<SoftwareCapacityData> capacity) {
+        List<CapacityData> capacityData = new ArrayList<CapacityData>();
+
+        if (capacity != null) {
+            for (SoftwareCapacityData softwareCapacitydata : capacity) {
+                capacityData.add(new CapacityData(softwareCapacitydata.getDate(),
+                        softwareCapacitydata.getNumScheduledContests()));
+            }
+        }
+
+        return capacityData;
+    }
+
+    /**
+     * Private helper method that converts a list of studio capacity data objects into a list of capacity data objects.
+     *
+     * @param capacity the list of studio capacity data objects
+     * @return the converted list of capacity data objects or an empty list if the argument is null
+     *
+     * @since 1.1
+     */
+    private List<CapacityData> convertStudioCapacityDataToCapacityData(List<StudioCapacityData> capacity) {
+        List<CapacityData> capacityData = new ArrayList<CapacityData>();
+
+        if (capacity != null) {
+            for (StudioCapacityData studioCapacitydata : capacity) {
+                capacityData.add(new CapacityData(studioCapacitydata.getDate(),
+                    studioCapacitydata.getNumScheduledContests()));
+            }
+        }
+
+        return capacityData;
+    }
+
+    /**
+     * Private helper method that retrieves the capacity configuration for a given competition type
+     *
+     * @param cfgMgr the configuration manager instance used to retrieve the configurations
+     * @param type the competition type property prefix
+     * @return a <code>Map<String, Map<Integer, Integer>></code> where the key to the first map is the day of the
+     *     week and the second map is the contest type, while the value is the configured capacity for that day of
+     *     the week and contest type id.
+     *
+     * @since 1.1
+     */
+    private Map<String, Map<Integer, Integer>> getDaysCapacityConfiguration(ConfigManager cfgMgr, String type) {
+
+        Map<String, Map<Integer, Integer>> daysCapacity =
+            new HashMap<String, Map<Integer,Integer>>(daysPropNames.length);
+
+        try {
+			// iterate days
+			for (String dayProp : daysPropNames) {
+			    Map<Integer,Integer> capacityMap = new HashMap<Integer,Integer>();
+
+			    Property propDaysCapacity = cfgMgr.getPropertyObject(CONTEST_PIPELINE_SERVICE_BEAN_NAMESPACE,
+			        type + DAYS_CAPACITY_PROP_SUFFIX + "." + dayProp);
+			    Enumeration daysProps = propDaysCapacity.propertyNames();
+
+			    // iterate contest types
+			    while (daysProps.hasMoreElements()) {
+			        String typePropName = (String) daysProps.nextElement();
+			        Integer capacity = Integer.parseInt(propDaysCapacity.getValue(typePropName));
+			        Integer typeId = Integer.parseInt(typePropName);
+
+			        capacityMap.put(typeId, capacity);
+			    }
+
+			    daysCapacity.put(dayProp, capacityMap);
+			}
+		} catch (Exception e) {
+			logException(e, "An error occurred while loading capacity configuration, using defaults");
+		}
+
+        return daysCapacity;
     }
 }
