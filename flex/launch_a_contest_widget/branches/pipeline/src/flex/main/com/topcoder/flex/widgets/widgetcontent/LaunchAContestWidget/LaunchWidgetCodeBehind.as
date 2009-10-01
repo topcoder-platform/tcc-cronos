@@ -57,9 +57,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      *    - introduced new boolean property 'enforceCCA' to capture whether CCA is enforced or not.
      *    - the property is preserved to contest properties during contest save.
      *    - during edit the property is read from contest properties. 
+     *
+     * Version 1.0.4 (Cockpit Release Assembly 4 v1.0) Change Notes:
+     *    - Introduced methods to check whether the contest is a paid contest or not.
+     *    - henceforth updated for BUGR-1983
+     *
+     * Version 1.0.5 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
+     *    - Added web service support for pipeline service facade bean
+     *
      * 
-     * @author snow01
-     * @version 1.0.3
+     * @author snow01, pulky
+     * @version 1.0.5
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -80,7 +88,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         // Contest Service Facade.
         public var _csws:WebService;
-        
+
+        /**
+         * Pipeline Service Facade web service
+         *
+         * @since 1.0.2
+         */
+        public var _psws:WebService;
+
         // schema type registry.
         public var _launchContestSchemaTypeRegistry:SchemaTypeRegistry;
         
@@ -360,9 +375,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         /**
-         * Updated for Cockpit Launch Contest - Inline Spec Reviews - Part 1
-         *    To support opening of Review screen on click on ReviewStatus link from My Project widget.
-         */ 
+         * Reloads the widget data.
+         *
+         * <p>
+         * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+         *    - updated to consider read only mode indicator from my project widget.
+         *    - in read only mode, we disable mouse/tab actions on the main panel.
+         * </p>
+         *
+         * @param isEmptyStart true if it is new contest start else if edit contest start then false.
+         * @param map the various key-value parameters that usually gets passed during edit from another widget (My Project Widget)
+         */
         private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
             trace("IN RELOAD OF LAUNCH WIDGET:: START");
             if (!container.contents.isMaximized()) {

@@ -19,9 +19,15 @@
     Version 1.0.3 (Cockpit Release Assembly 6 v1.0) Change Notes:
         - Introduced "Contest Privacy" section.
         - Added Enforce CCA checkbox.
+
+    Version 1.0.4 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
+        - Changed the way restricted dates are handled for start date (pipeline web service is now used)
+
+    @author pulky
+
     
     @author pulky, snow01
-    @version 1.0.3
+    @version 1.0.4
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -107,8 +113,8 @@
              * Updated for Version 1.0.1
              */ 
             [Bindable]
-            private var curContestType:String;
-            
+            private var curContestType:int;
+
             //
             // Updated for Cockpit Release Assembly 1 v1.0
             //    - To avoid binding can not detect error.
@@ -412,12 +418,15 @@
              * Updated for Version 1.0.1
              *    - for contest sub type use type name instead of id
              *
+             * Note: this method calls pipeline webservice in order to recalculate forbidden start dates
+             *
              * Note: added amount update
+             * @param event the item click event
              */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
-                curContestType=typeName.text;
-                
+                curContestType=Number(studioType.selectedValue);
+
                 if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                     adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
                 }
@@ -425,6 +434,10 @@
                 if (mainWidget.studioContestType) {
                     showExampleOne=isPresentXml('example1');
                     showExampleTwo=isPresentXml('example2');
+
+                    // recalculate start date forbidden dates
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(curContestType, true);
                 } else {
                     showExampleOne=false;
                     showExampleTwo=false;
@@ -760,7 +773,12 @@
                         selectedLabel=root.childNodes[0].attributes.description;
                     }
                     
-                    curContestType=selectedLabel;
+                     curContestType=Number(selectedValue);
+
+                    // recalculate start date forbidden dates
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(curContestType, true);
+
                     
                     
                 }

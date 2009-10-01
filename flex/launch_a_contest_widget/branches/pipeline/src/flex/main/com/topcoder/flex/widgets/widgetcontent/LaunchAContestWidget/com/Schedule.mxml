@@ -9,9 +9,14 @@
     Version 1.0.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
         - Project name title is hidden if the summary is shown since it's already there
         - Added milestone date fields for studio multi-round contests.
+   
+    Version 1.0.2 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
+        - Removed pre calculated start date
+        - Removed restriction for start date to begin 14 days from now
+        - Changed the way restricted dates are handled for start date (pipeline web service is now used)
 
     @author pulky
-    @version 1.0.1
+    @version 1.0.2
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -553,9 +558,8 @@
                 <mx:DateField id="dfStart"
                               yearNavigationEnabled="true"
                               width="116"
-                              disabledRanges="{[ {rangeEnd: rangeStartDate} ]}"
-                              change="startDateChanged()"
-                              open="startDateOpen()"/>
+                              disabledRanges="{mainWidget.capacityFullDates}"
+                              change="startDateChanged()"/>
                 <mx:Spacer width="10"/>
 
             </mx:HBox>
