@@ -4023,9 +4023,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
             sb.append("     and cp.sale_type_id = 2 ");
             sb.append("     and cp.contest_id = c.project_id ");
-            sb.append("     join tt_user_account as ua ");
-            sb.append("     on ttp.company_id = ua.company_id ");
-            sb.append("     and ua.user_name = (select handle from user where user_id = ").append(userId).append(")) ");
+             sb.append("        and ttp.project_id in ( ");
+            sb.append("             SELECT distinct project_id FROM tt_project_worker ttw, tt_user_account u  ");
+            sb.append("                 WHERE ttw.user_account_id = u.user_account_id and ");
+            sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
+            sb.append("             union  ");
+            sb.append("             SELECT distinct project_id FROM tt_project_manager ttm, tt_user_account u  ");
+			 sb.append("                 WHERE ttw.user_account_id = u.user_account_id and ");
+            sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
+            sb.append("        ) )  ");
             sb.append(" ) ");
             sb.append(" AND ");
             // not show inactive or deleted
@@ -4144,11 +4150,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 if (os[36] != null)
                     c.setCperm(os[36].toString());
 
-                // double check to make sure 'read' will not return
-                if ((c.getCperm() != null && !c.getCperm().equalsIgnoreCase("contest_read")) 
-                                       || (c.getPperm() != null  && !c.getPperm().equalsIgnoreCase("project_read"))) {
-                    result.add(c);
-                }
+                
+                result.add(c);
+                
                 
                 
             }
