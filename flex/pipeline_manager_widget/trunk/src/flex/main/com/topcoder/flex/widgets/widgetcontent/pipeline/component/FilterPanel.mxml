@@ -32,7 +32,7 @@
                 trace("PUID for FilterPanel:"+value);
             }
             
-            private function handleClick():void {
+            private function handleClick(event:Event):void {
                 
                 open=!open;
                 winCtrlBut.source=(open) ? model.winMin : model.winMax;
@@ -40,6 +40,8 @@
                 shower.includeInLayout=open;
                 shower.visible=open;
                 updateView();
+
+                event.stopImmediatePropagation();
             }
 
             public function updateView():void {
@@ -151,7 +153,7 @@
              paddingBottom="0"
              paddingLeft="20"
              paddingRight="0"
-             click="handleClick()"
+             click="handleClick(event)"
              buttonMode="true"
              useHandCursor="true"
              verticalScrollPolicy="off"
@@ -159,7 +161,7 @@
         <mx:Image width="16"
                   height="16"
                   id="winCtrlBut"
-                  click="handleClick()"
+                  click="handleClick(event)"
                   source="{model.winMax}"
                   buttonMode="true"
                   useHandCursor="true"/>

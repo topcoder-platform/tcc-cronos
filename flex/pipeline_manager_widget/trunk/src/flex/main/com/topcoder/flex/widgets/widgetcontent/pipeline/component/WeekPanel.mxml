@@ -55,10 +55,12 @@
                 model=Model.getInstance(value);
             }
             
-            private function handleClick():void {
+            private function handleClick(event:Event):void {
                 open=!open;
                 winCtrlBut.source=(open) ? model.winMin : model.winMax;
                 shower.includeInLayout=shower.visible=open;
+
+                event.stopImmediatePropagation();
             }
             
             private function init():void {
@@ -345,7 +347,7 @@
              paddingBottom="0"
              paddingLeft="20"
              paddingRight="0"
-             click="handleClick()"
+             click="handleClick(event)"
              buttonMode="true"
              useHandCursor="true"
              verticalScrollPolicy="off"
@@ -353,7 +355,7 @@
         <mx:Image width="16"
                   height="16"
                   id="winCtrlBut"
-                  click="handleClick()"
+                  click="handleClick(event)"
                   source="{model.winMax}"
                   buttonMode="true"
                   useHandCursor="true"/>
