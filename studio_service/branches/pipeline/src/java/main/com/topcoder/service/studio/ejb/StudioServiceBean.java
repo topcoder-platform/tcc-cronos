@@ -91,6 +91,7 @@ import com.topcoder.service.studio.contest.SimplePipelineData;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
+import com.topcoder.service.studio.contest.StudioCapacityData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.submission.ContestResult;
@@ -163,6 +164,11 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * <p>
  * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added support for new/updated attributes
  * in ContestData, MilestonePrizeData and ContestMultiRoundInformationData.
+ * </p>
+ * <p>
+ * Version 1.4.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
  * </p>
  *
  * <p>
@@ -4739,6 +4745,32 @@ public class StudioServiceBean implements StudioService {
 
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while getSimplePipelineData.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws PersistenceException if any error occurs during retrieval of information.
+     *
+     * @since 1.3.1
+     */
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<StudioCapacityData> getCapacity(int contestType) throws PersistenceException {
+        logEnter("getCapacity(" + contestType + ")");
+
+        try {
+            logExit("getCapacity()");
+            return contestManager.getCapacity(contestType);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting capacity.", e);
         }
 
         return null;

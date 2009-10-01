@@ -18,6 +18,7 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimplePipelineData;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.StudioCapacityData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.submission.Submission;
@@ -60,10 +61,14 @@ import com.topcoder.service.studio.submission.Submission;
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  *
- * @author fabrizyo, TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0.1
- * @since 1.0
+ * @author fabrizyo, pulky
+ * @version 1.1
  */
 // @WebService
 @Remote
@@ -833,4 +838,18 @@ public interface StudioService {
      */
     public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws PersistenceException;
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws PersistenceException if any error occurs during retrieval of information.
+     *
+     * @since 1.1
+     */
+    public List<StudioCapacityData> getCapacity(int contestType) throws PersistenceException;
 }
