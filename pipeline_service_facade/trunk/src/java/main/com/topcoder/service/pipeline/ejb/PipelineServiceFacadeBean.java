@@ -3,24 +3,6 @@
  */
 package com.topcoder.service.pipeline.ejb;
 
-import com.topcoder.service.pipeline.ContestPipelineService;
-
-import com.topcoder.service.pipeline.CommonPipelineData;
-import com.topcoder.service.pipeline.CompetitionType;
-import com.topcoder.service.pipeline.ContestPipelineServiceException;
-import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
-import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
-import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
-import com.topcoder.service.project.Competition;
-import com.topcoder.service.studio.contest.ContestManagementException;
-
-import com.topcoder.util.errorhandling.ExceptionUtils;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
-
-import org.jboss.ws.annotation.EndpointConfig;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +20,23 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
 import javax.jws.WebService;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.jboss.ws.annotation.EndpointConfig;
+
+import com.topcoder.service.pipeline.CompetitionType;
+import com.topcoder.service.pipeline.ContestPipelineService;
+import com.topcoder.service.pipeline.ContestPipelineServiceException;
+import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
+import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
+import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
+import com.topcoder.service.project.Competition;
+import com.topcoder.service.pipeline.CommonPipelineData;
+
+import com.topcoder.util.errorhandling.ExceptionUtils;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -53,13 +52,18 @@ import javax.jws.WebService;
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ * - added service that retrieves a list of dates that have full capacity starting from tomorrow for a given contest
+ *   type (for software or studio contests)
+ * </p>
  * 
  * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
- * 
- * @author snow01
- * @version 1.0.1
+ *
+ * @author snow01, pulky
+ * @version 1.1
  * @since Pipeline Conversion Cockpit Integration Assembly 2 v1.0
  */
 @WebService
@@ -316,6 +320,33 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
             return this.pipelineService.getCommonPipelineData(startDate, endDate, overdueContests);
         } finally {
             logExit("getCommonPipelineData");
+        }
+    }
+
+     /**
+     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software 
+     * or studio contests)
+     * This method delegates to Pipeline Service layer.
+     *
+     * @param contestType the contest type
+     * @param isStudio true of it is a studio competition, false otherwise
+     *
+     * @return the list of dates that have full capacity.
+     *
+     * @throws ContestPipelineServiceException if any error occurs during retrieval of information.
+     *
+     * @since 1.1
+     */
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio) 
+        throws ContestPipelineServiceException {
+        logger.log(Level.DEBUG, "Enter getCapacityFullDates(int contestType, boolean isStudio) method.");
+        logger.log(Level.DEBUG, "with parameter contestType: " + contestType);
+        logger.log(Level.DEBUG, "with parameter isStudio: " + isStudio);
+        try {
+            return this.pipelineService.getCapacityFullDates(contestType, isStudio);
+        } finally {
+            logExit("getCapacityFullDates");
         }
     }
 

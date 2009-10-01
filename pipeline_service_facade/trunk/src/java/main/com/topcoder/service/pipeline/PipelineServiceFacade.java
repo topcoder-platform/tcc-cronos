@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.jws.WebService;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -31,10 +32,15 @@ import javax.jws.WebService;
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
  * </p>
- * 
- * @author snow01
+ * <p>
+ * Version 1.1 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ * - added service that retrieves a list of dates that have full capacity starting from tomorrow for a given contest
+ *   type (for software or studio contests)
+ * </p>
+ *
+ * @author snow01, pulky
  * @since Pipeline Conversion Service Layer Assembly 2 v1.0
- * @version 1.0.1
+ * @version 1.1
  */
 @WebService(name = "PipelineServiceFacade")
 public interface PipelineServiceFacade {
@@ -150,4 +156,23 @@ public interface PipelineServiceFacade {
      */
     public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException;
+
+    /**
+     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software 
+     * or studio contests)
+     * This method delegates to Pipeline Service layer.
+     *
+     * @param contestType the contest type
+     * @param isStudio true of it is a studio competition, false otherwise
+     *
+     * @return the list of dates that have full capacity.
+     *
+     * @throws ContestPipelineServiceException if any error occurs during retrieval of information.
+     *
+     * @since 1.1
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio) 
+        throws ContestPipelineServiceException;
+
 }
