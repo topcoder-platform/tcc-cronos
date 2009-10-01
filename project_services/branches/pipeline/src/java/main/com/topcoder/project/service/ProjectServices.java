@@ -11,6 +11,8 @@ import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
+import com.topcoder.management.project.SimpleProjectPermissionData;
+import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.management.project.SimpleProjectPermissionData;
@@ -53,15 +55,20 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.2 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  *
  * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
- * @author argolite, moonli, TCSASSEMBLER
+ * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf
- * @version 1.1.1
+ * @version 1.2
  * @since 1.0
  */
 public interface ProjectServices {
@@ -476,4 +483,20 @@ public interface ProjectServices {
      */
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate, boolean overdueContests)
             throws ProjectServicesException;
+
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     *
+     * @since 1.2
+     */
+    public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException;
+
 }

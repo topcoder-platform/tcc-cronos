@@ -20,6 +20,8 @@ import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
+import com.topcoder.management.project.SimpleProjectPermissionData;
+import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
@@ -28,6 +30,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
+import com.topcoder.management.team.TeamPersistenceException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.template.PhaseTemplate;
@@ -157,15 +160,20 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.2 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
+ *       tomorrow for a given contest type
+ * </p>
  *
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
- * @author argolite, moonli, TCSASSEMBLER
+ * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf
- * @version 1.1.1
+ * @version 1.2
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -1933,5 +1941,32 @@ public class ProjectServicesImpl implements ProjectServices {
 
         log(Level.INFO, "Exits ProjectServicesImpl#getSimplePipelineData method.");
         return ret;
+    }
+
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * from tomorrow.
+     *
+     * @param contestType the contest type
+     *
+     * @return the list of capacity data
+     *
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     *
+     * @since 1.2
+     */
+    public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getCapacity(" + contestType + ") method.";
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            return projectManager.getCapacity(contestType);
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "ProjectServicesException occurred in " + method + " method.");
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
     }
 }

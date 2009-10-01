@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
+import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.management.project.SimpleProjectPermissionData;
@@ -106,15 +107,20 @@ import javax.ejb.TransactionAttributeType;
  * Version 1.1.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
  * </p>
+ * <p>
+ * Version 1.2 (Cockpit Pipeline Release Assembly 2 - Capacity) changelog:
+ *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from 
+ *       tomorrow for a given contest type
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
  * required to be thread safe.
  * </p>
  *
- * @author fabrizyo, znyyddf, TCSASSEMBLER
- * @version 1.1.1
- * @since 1.1
+ * @author fabrizyo, znyyddf, pulky
+ * @version 1.2
+ * @since 1.0
  */
 @RunAs("Cockpit Administrator")
 @RolesAllowed("Cockpit User")
@@ -1009,5 +1015,32 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
+    }
+
+    /**
+     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting 
+     * from tomorrow.
+     * 
+     * @param contestType the contest type
+     * 
+     * @return the list of capacity data
+     * 
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     * 
+     * @since 1.2
+     */
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getCapacity(" + contestType + ") method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return getProjectServices().getCapacity(contestType);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }        
     }
 }
