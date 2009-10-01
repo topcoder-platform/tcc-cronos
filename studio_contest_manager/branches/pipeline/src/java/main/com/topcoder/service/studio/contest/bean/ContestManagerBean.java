@@ -5183,9 +5183,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("         on cp.sale_reference_id = ttp.po_box_number ");
             sb.append("         and cp.sale_type_id = 2 ");
             sb.append("         and cp.contest_id = c.contest_id ");
-            sb.append("         join tt_user_account as ua ");
-            sb.append("         on ttp.company_id = ua.company_id ");
-            sb.append("         and ua.user_name = (select handle from user where user_id = :userId)) ");
+            sb.append("        and ttp.project_id in ( ");
+            sb.append("             SELECT distinct project_id FROM tt_project_worker ttw, tt_user_account u  ");
+            sb.append("                 WHERE ttw.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId) ");
+            sb.append("             union  ");
+            sb.append("             SELECT distinct project_id FROM tt_project_manager ttm, tt_user_account u  ");
+			sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
+            sb.append("        ) )  ");
             sb.append(" ) ");
             sb.append(" AND ");
             // not show inactive or cancelled or terminated
@@ -5227,9 +5231,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             for (int i = 0; i < list.size(); i++) {
                 SimplePipelineData data = (SimplePipelineData) list.get(i);
-                // double check to make sure 'read' will not return
-                if (data != null && ((data.getCperm() != null && !data.getCperm().equalsIgnoreCase("contest_read")) 
-                                       || (data.getPperm() != null  && !data.getPperm().equalsIgnoreCase("project_read")))) {
+                if (data != null) {
                     result.add(data);
                 }
             }
