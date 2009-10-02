@@ -229,7 +229,7 @@
                 var docVBox:VBox=new VBox();
                 docVBox.percentWidth=100;
                 if(existing) {
-                    docVBox.id=doc.documentId.toString();
+                    docVBox.id=doc.id.toString();
                 }
                 docVBox.data=doc;
 
