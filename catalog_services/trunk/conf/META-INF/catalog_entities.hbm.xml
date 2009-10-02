@@ -121,11 +121,10 @@
             <key column="comp_vers_id" not-null="true"/>
             <many-to-many column="child_comp_vers_id" class="CompVersion"/>
         </idbag>
-        
-    <bag name="documentation" cascade="all" lazy="false">
-      <key column="comp_vers_id" />
-      <one-to-many class="CompDocumentation" />
-    </bag>
+    	<set  name="documentation" cascade="all" inverse="true" lazy="false">
+          	<key column="comp_vers_id" />
+          	<one-to-many class="CompDocumentation" />
+    	</set >
     </class>
     <class name="CompVersionDates" table="comp_version_dates">
         <id name="id" column="comp_version_dates_id">
