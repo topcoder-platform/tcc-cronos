@@ -254,16 +254,15 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // save the asset entity finally
         persistEntity(em, entityComponent);
         
-        
-		populateVersionDocumentation(asset, em, compVersion); // BUGR-1600.2
+		
+	// save version
+        persistEntity(em, compVersion);
+
+        populateVersionDocumentation(asset, em, compVersion); // BUGR-1600.2
 		for(CompDocumentation doc : compVersion.getDocumentation()) { // BUGR-1600.2
 			mergeEntity(em, doc);
 		}
-		
-		// save version
-        persistEntity(em, compVersion);
 
-		 
 
         // populate with ids of just stored entities
         asset.setId(entityComponent.getId());
@@ -865,6 +864,10 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 		{
 
 			for(CompDocumentation existingDoc: compVersion.getDocumentation()) {
+
+                		// just make sure, as in facade we set to null
+                		existingDoc.setCompVersion(compVersion); 
+
 				boolean found = false;
 				for(CompDocumentation newDoc : docs) {
 					if(existingDoc.getDocumentName().equals(newDoc.getDocumentName()) &&
