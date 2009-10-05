@@ -288,8 +288,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since Module Contest Service Software Contest Sales Assembly
      */
     private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
-    private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
-
+    
     /**
      * Private constant specifying project type info's component id key.
      *
@@ -451,6 +450,53 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying administrator role.
      */
     private static final String TC_STAFF_ROLE = "TC Staff";
+
+    /**
+     * Private constant specifying cost for first place.
+     *
+     * @since 1.0.3
+     */
+	private static final String FIRST_PLACE_COST_PROJECT_INFO_TYPE = "First Place Cost";
+	
+	/**
+     * Private constant specifying cost for second place.
+     *
+     * @since 1.0.3
+     */
+	private static final String SECOND_PLACE_COST_PROJECT_INFO_TYPE = "Second Place Cost";
+	
+	/**
+     * Private constant specifying cost for reliability bonus.
+     *
+     * @since 1.0.3
+     */
+	private static final String RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE = "Reliability Bonus Cost";
+	
+	/**
+     * Private constant specifying cost for milestone bonus
+     *
+     * @since 1.0.3
+     */
+	private static final String MILESTONE_BONUS_COST_PROJECT_INFO_TYPE = "Milestone Bonus Cost";
+	
+	/**
+     * Private constant specifying cost for admin fee.
+     */
+	private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
+	
+	/**
+     * Private constant specifying cost for review cost.
+     *
+     * @since 1.0.3
+     */
+	private static final String REVIEW_COST_PROJECT_INFO_TYPE = "Review Cost";
+	
+	/**
+     * Private constant specifying cost for dr point cost.
+     *
+     * @since 1.0.3
+     */
+	private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
 
 
     /**
@@ -2664,6 +2710,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Updated for Cockpit Release Assembly for Receipts - Added code snippet to
      * send email receipts on successful purchase.
      * </p>
+     * 
+     * <p>
+     * Updated for Version 1.0.3
+     *      - For software contest, payment is made for the sum of various costs.
+     *      - While doing so, only the increased amount is paid (if earlier payments were made).
+     * </p>
      *
      * @param competition
      *            data that recognizes a contest.
@@ -2690,11 +2742,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         try {
             long contestId = competition.getProjectHeader().getId();
+        	double pastPayment=0;
 
             SoftwareCompetition tobeUpdatedCompetition = null;
 
             if (contestId > 0) { // BUGR-1682
                 tobeUpdatedCompetition = this.getSoftwareContestByProjectId(contestId); // BUGR-1682
+                
+                // calculate the past payment to calculate the differential cost.
+                List<ContestSaleData> sales = tobeUpdatedCompetition.getProjectData().getContestSales();
+                if (sales != null) {
+                    for (ContestSaleData sale : sales) {
+                        pastPayment += sale.getPrice();
+                    }
+                }
             }
 
             if (tobeUpdatedCompetition == null) {
@@ -2711,13 +2772,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             PaymentResult result = null;
 
-            // String payments = (String)
-            // contest.getProperty(PAYMENTS_PROJECT_INFO_TYPE);
-            // double fee = payments == null ? 0 : Double.parseDouble(payments)
-            // * 0.2;
-            String feestr = (String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE);
-            double fee = Double.parseDouble(feestr);
-
+			double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE)) 
+			    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
+			    + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
+			    + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
+			    + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
+			    + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
+			    + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
+				
+			fee = fee - pastPayment;
+			
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
