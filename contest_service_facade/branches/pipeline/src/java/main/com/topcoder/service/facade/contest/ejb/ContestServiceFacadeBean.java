@@ -447,6 +447,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private static final String EMAIL_FILE_TEMPLATE_SOURCE_KEY = "fileTemplateSource";
 
 
+     /**
+     * Private constant specifying administrator role.
+     */
+    private static final String TC_STAFF_ROLE = "TC Staff";
+
+
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -526,16 +532,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private ProjectDAO billingProjectDAO = null;
 
     /**
-     * <p>
-     * A <code>SessionContext</code> providing access to available session
-     * information. The bean instance is injected through external mechanism
-     * (ejb).
-     * </p>
-     */
-    @Resource
-    private SessionContext sessionContext;
-
-    /**
      * PayPal API UserName
      */
     @Resource(name = "payPalApiUserName")
@@ -594,6 +590,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     private UploadExternalServices uploadExternalServices = null;
+
+
+    /**
+     * <p>
+     * Represents the sessionContext of the ejb.
+     * </p>
+     */
+    @Resource
+    private SessionContext sessionContext;
 
     /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and
@@ -3586,8 +3591,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 observer_role.setName(RESOURCE_ROLE_OBSERVER_NAME);
                 observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
 
-                // creator will be Observer
-                resources[0].setResourceRole(observer_role);
+                boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
+                // tc staff add as manager, other as observer
+                if (tcstaff)
+                {
+                    resources[0].setResourceRole(manager_role);
+                }
+                else
+                {
+                    resources[0].setResourceRole(observer_role);
+                }
+
+
                 resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
                     String.valueOf(p.getUserId()));
                 resources[0].setProperty(RESOURCE_INFO_HANDLE,
