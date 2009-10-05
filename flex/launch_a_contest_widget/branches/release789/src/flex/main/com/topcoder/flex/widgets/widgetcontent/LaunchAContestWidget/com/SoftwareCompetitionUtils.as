@@ -17,12 +17,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
     /**
      * A constant and utility class that contains various constants and utility required for software competition based operations.
      * 
-     * Version 1.0.1 (Cockpit Release Assembly 6) Change Notes:
-     *    - introduced project info key for Confidentiality Type.
-     *    - provided method to save/retrieve Confidentiality Type property.
+     * Version 1.0.1 (Cockpit Software Contest Payments v1.0) Change Notes:
+     *    - Added consolidated methods to add / get / check cost properties.
+     *    - Added new cost property keys.
+     * 
+     * Version 1.0.2 (Cockpit Release Assembly 7 v1.0) Change Notes:
+     *    - Added methods to calculate various costs from formulae.
      *
      * @author snow01
-     * @version 1.0.1
+     * @version 1.0.2
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     public class SoftwareCompetitionUtils {
@@ -296,12 +299,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         private static var PROJECT_INFO_TYPE_ELIGIBILITY_KEY:String="Eligibility";
         private static var PROJECT_INFO_TYPE_ELIGIBILITY_VALUE:String="Open";
 
-        private static var PROJECT_INFO_TYPE_PAYMENT_KEY:String="Payments";
+        public static var PROJECT_INFO_TYPE_PAYMENT_KEY:String="Payments";
 
         private static var PROJECT_INFO_TYPE_DR_FLAG_KEY:String="Digital Run Flag";
         private static var PROJECT_INFO_TYPE_DR_FLAG_VALUE:String="On";
 
-        private static var PROJECT_INFO_TYPE_DR_POINTS_KEY:String="DR points";
+        public static var PROJECT_INFO_TYPE_DR_POINTS_KEY:String="DR points";
 
         public static var PROJECT_INFO_TYPE_ADMIN_FEE_KEY:String="Admin Fee";
         
@@ -334,6 +337,76 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @since Cockpit Release Assembly 3
          */ 
         public static var PROJECT_INFO_TYPE_BILLING_PROJECT_KEY:String="Billing Project";
+
+	/**
+         * Represents the first place cost for the project.
+         * 
+         * @since 1.0.1
+         */
+        public static var PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY:String = "First Place Cost";
+        
+        /**
+         * Represents the second place cost for the project.
+         * 
+         * @since 1.0.1
+         */
+        public static var PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY:String = "Second Place Cost";
+        
+        /**
+         * Represents the reliability bonus cost for the project.
+         * 
+         * @since 1.0.1
+         */
+        public static var PROJECT_INFO_TYPE_RELIABILITY_BONUS_COST_KEY:String = "Reliability Bonus Cost";
+        
+        /**
+         * Represents the milestone bonus cost for the project.
+         * 
+         * @since 1.0.1
+         */
+        public static var PROJECT_INFO_TYPE_MILESTONE_BONUS_COST_KEY:String = "Milestone Bonus Cost";
+        
+        /**
+         * Represents the cost level property key.
+         * 
+         * @since 1.0.1
+         */
+        public static var PROJECT_INFO_TYPE_COST_LEVEL_KEY:String = "Cost Level";
+        
+        /**
+         * Represents the cost level A (current maps to low).
+         * 
+         * @since 1.0.1
+         */
+        public static var COST_LEVEL_A:String = "A";
+        
+        /**
+         * Represents the cost level B (current maps to medium).
+         * 
+         * @since 1.0.1
+         */
+        public static var COST_LEVEL_B:String = "B";
+        
+        /**
+         * Represents the cost level C (current maps to high).
+         * 
+         * @since 1.0.1
+         */
+        public static var COST_LEVEL_C:String = "C";
+        
+        /**
+         * Standard submission count
+         * 
+         * @since 1.0.2
+         */ 
+        public static const STANDARD_SUBMISSION_COUNT:Number=3;
+        
+        /**
+         * Standard passed screening count
+         * 
+         * @since 1.0.2
+         */
+        public static const STANDARD_PASSED_SCREENING_COUNT:Number=3;
 
         // CONSTANTS ENDS HERE
 
@@ -700,6 +773,261 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             
             // default to Public.
             return CONFIDENTIALITY_TYPE_PUBLIC;
+        }
+
+	/**
+         * Adds the specified costName property cost to specified software competition.
+         * 
+         * @param softwareCompetition the software competition.
+         * @param cost the cost value.
+         * @param costName the cost property name.
+         * @since 1.0.1
+         */ 
+        public function addCostProp(softwareCompetition:SoftwareCompetition, cost:Number, costName:String):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == costName) {
+                    e.value=cost.toFixed(2);
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
+
+            entry.key=costName;
+            entry.value=cost.toFixed(2);
+
+            softwareCompetition.projectHeader.properties.push(entry);
+        }
+        
+        /**
+         * Gets whether the specified software competition has specified costName property.
+         * 
+         * @param softwareCompetition the software competition.
+         * @param costName the cost property name.
+         * @return whether the specified software competition has specified costName property.
+         * @since 1.0.1 
+         */ 
+        public function hasCostProp(softwareCompetition:SoftwareCompetition, costName:String):Boolean {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == costName) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        /**
+         * Gets the cost value from the specified software competition for specified costName property.
+         * 
+         * @param softwareCompetition the software competition.
+         * @param costName the cost property name.
+         * @return the cost value from the specified software competition for specified costName property.
+         * @since 1.0.1 
+         */ 
+        public function getCostProp(softwareCompetition:SoftwareCompetition, costName:String):Number {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == costName) {
+                    return new Number(e.value);
+                }
+            }
+            
+            return 0;
+        }
+
+	/**
+         * Adds the cost level property to project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @param cost level the billing project property.
+         * 
+         * @since 1.0.1
+         */
+        public function addCostLevelProp(softwareCompetition:SoftwareCompetition, costLevel:String):void {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_COST_LEVEL_KEY) {
+                    e.value=costLevel;
+                    return;
+                }
+            }
+            
+            var entry:MapEntry=new MapEntry();
+
+            entry.key=PROJECT_INFO_TYPE_COST_LEVEL_KEY;
+            entry.value=costLevel;
+
+            softwareCompetition.projectHeader.properties.push(entry);
+        }
+        
+        /**
+         * Gets the cost level property from project header of the specified competition
+         *
+         * @param softwareCompetition specified competition
+         * @return the cost level value.
+         * 
+         * @since 1.0.1
+         */
+        public function getCostLevelProp(softwareCompetition:SoftwareCompetition):String {
+            for each (var e:MapEntry in softwareCompetition.projectHeader.properties) {
+                if (e.key == PROJECT_INFO_TYPE_COST_LEVEL_KEY) {
+                    return e.value;
+                }
+            }
+            
+            // by default return B (that is medium).
+            return COST_LEVEL_B;
+        }
+        
+        /**
+         * Gets the end date for unclosed submission phase for specified competition.
+         * 
+         * @param softwareCompetition the software competition.
+         * @since 1.0.1
+         */
+        public function getUnclosedSubmissionPhaseEndDate(softwareCompetition:SoftwareCompetition):Date {
+            if (softwareCompetition.projectPhases && softwareCompetition.projectPhases.phases) {
+                for each (var p:SoftwarePhase in softwareCompetition.projectPhases.phases) {
+                    if (p.phaseType.name=="Submission" && p.phaseStatus.name != "Closed") {
+                        return p.scheduledEndDate;
+                    }     
+                }
+            }
+            
+            return null;
+        }
+        
+        /**
+         * Calculates the 2nd place prize from first place prize.
+         * 
+         * @param firstPlacePrize the first palce prize
+         * @return the calculated value of 2nd place prize.
+         * 
+         * @since 1.0.2
+         */
+        public function calculateSecondPlacePrize(firstPlacePrize:Number):Number {
+            var prize:Number=firstPlacePrize * 0.5;
+            return prize;
+        }
+        
+        /**
+         * Calculates the reliability prize from first place prize, 2nd place prize and for specified competition category.
+         * 
+         * @param firstPlacePrize the first palce prize
+         * @param secondPlacePrize the second place prize
+         * @param categoryId the software competition category id
+         * @return the calculated value of reliability prize.
+         * 
+         * @since 1.0.2
+         */
+        public function calculateReliabilityPrize(firstPlacePrize:Number, secondPlacePrize:Number, categoryId:Number, reliabilityBonusXML:XML):Number {
+            if (!reliabilityBonusXML) {
+                return 0;
+            }
+            
+            var bonusPercentage:String=reliabilityBonusXML.projectCategory.(@category == categoryId.toFixed(0)).reliabilityAbove.(@reliability == ".95")[0];
+            if (!bonusPercentage || bonusPercentage == "") {
+                bonusPercentage=reliabilityBonusXML.projectCategory.(@category == "0").reliabilityAbove.(@reliability == ".95")[0];
+            } 
+            
+            if (bonusPercentage && !isNaN(Number(bonusPercentage))) {
+                return (firstPlacePrize + secondPlacePrize) * Number(bonusPercentage);
+            } else {
+                return 0;
+            }
+        }
+        
+        /**
+         * Calculates the review prize from first place prize for specified competition category.
+         * 
+         * @param firstPlacePrize the first palce prize
+         * @param categoryId the software competition category id
+         * @return the calculated value of review prize.
+         * 
+         * @since 1.0.2
+         */
+        public function calculateReviewCost(firstPlacePrize:Number, categoryId:Number):Number {
+            if (categoryId == _projectCategoryIds['DEVELOPMENT'] 
+                    || categoryId == _projectCategoryIds['DESIGN']) {
+                // calculate as per component reviewer calculator.
+                return getComponentReviewCost(firstPlacePrize, STANDARD_SUBMISSION_COUNT, STANDARD_PASSED_SCREENING_COUNT);
+            } else if (categoryId == _projectCategoryIds['ASSEMBLY']) {
+                // calculate as per assembly reviewer calculator.
+                return getApplicationReviewCost(firstPlacePrize, STANDARD_SUBMISSION_COUNT, STANDARD_PASSED_SCREENING_COUNT) * 1.5;                                
+            } else if (categoryId == _projectCategoryIds['CONCEPTUALIZATION'] 
+                            || categoryId == _projectCategoryIds['SPECIFICATION']
+                            || categoryId == _projectCategoryIds['ARCHITECTURE']
+                            || categoryId == _projectCategoryIds['TESTSUITES']
+                            || categoryId == _projectCategoryIds['TESTSCENARIOS']
+                            || categoryId == _projectCategoryIds['RIACOMPONENT'] 
+                            || categoryId == _projectCategoryIds['RIABUILD']
+                            || categoryId == _projectCategoryIds['UIPROTOTYPE']) {
+                // calculate as per application reviewer calculator logic.
+                return getApplicationReviewCost(firstPlacePrize, STANDARD_SUBMISSION_COUNT, STANDARD_PASSED_SCREENING_COUNT);
+            } else {
+                return 0;
+            }
+            
+            return firstPlacePrize;
+        }
+        
+        /**
+         * Calculates the component review cost
+         * 
+         * @param firstPlacePrize the first place prize.
+         * @param submissionCount the count of submission.
+         * @param passedScreeningCount the passed screening count.
+         * @return the component review cost
+         * 
+         * @since 1.0.2
+         */
+        private function getComponentReviewCost(firstPlacePrize:Number, submissionCount:Number, passedScreeningCount:Number):Number {
+            var prizePurse:Number=1.5 * firstPlacePrize;
+            var initialPurse:Number=0.40 * prizePurse;
+            var incrementalPurse:Number=0.15 * prizePurse;
+            var screeningCost:Number=(0.86 * initialPurse + incrementalPurse * (submissionCount - 1)) * 0.10;
+            var reviewCost:Number=(0.86 * initialPurse + incrementalPurse * (passedScreeningCount - 1)) * 0.9 / 3.0;
+            var aggregationCost:Number=0.04 * initialPurse;
+            var finalReviewerCost:Number=0.10 * initialPurse;
+            
+            return screeningCost + 3 * reviewCost + aggregationCost + finalReviewerCost;
+        }
+        
+        /**
+         * Calculates the application review cost
+         * 
+         * @param firstPlacePrize the first place prize.
+         * @param submissionCount the count of submission.
+         * @param passedScreeningCount the passed screening count.
+         * @return the application review cost
+         * 
+         * @since 1.0.2
+         */
+        private function getApplicationReviewCost(firstPlacePrize:Number, submissionCount:Number, passedScreeningCount:Number):Number {
+            var standardPrize:Number = 750;
+            var calculatedBaseRate:Number=15 + (firstPlacePrize - standardPrize) * 0.01;
+            var actualBaseRate:Number=calculatedBaseRate;
+            var calculatedReviewCost:Number=26 * calculatedBaseRate;
+            
+            var screeningCost:Number=actualBaseRate * 0.5 * submissionCount;
+            var reviewCost:Number=(Math.max(0, submissionCount + 1 - passedScreeningCount) * 1.5 + 2 * passedScreeningCount) * actualBaseRate;
+            var aggregationCost:Number=2 * actualBaseRate * 0.25;
+            var finalReviewerCost:Number=2 * actualBaseRate * 0.75;
+            
+            return screeningCost + 3 * reviewCost + aggregationCost + finalReviewerCost;
+        }
+        
+        /**
+         * Calculates the dr point from first place prize, 2nd place prize, reliability prize.
+         * 
+         * @param firstPlacePrize the first palce prize
+         * @param secondPlacePrize the second place prize
+         * @param reliabilityPrize the reliability prize. 
+         * @return the calculated value of dr point
+         * 
+         * @since 1.0.2
+         */
+        public function calculateDRPoint(firstPlacePrize:Number, secondPlacePrize:Number, reliabilityPrize:Number):Number {
+            return (firstPlacePrize + secondPlacePrize + reliabilityPrize) * 0.20;
         }
     }
 }

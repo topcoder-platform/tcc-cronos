@@ -65,9 +65,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * Version 1.0.5 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
      *    - Added web service support for pipeline service facade bean
      *
+     * Version 1.0.6 (Cockpit Software Contest Payments v1.0) Change Notes:
+     *    - Removed redundant calls for property add.
+     *    - Used the new api for getting various costs.
+     * 
+     * Version 1.0.7 (Cockpit Release Assembly 7 v1.0) Change Notes:
+     *    - added field to represent whether to use manualPrizeSetting. 
+     *
      * 
      * @author snow01, pulky
-     * @version 1.0.5
+     * @version 1.0.7
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -245,6 +252,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         [Bindable]
         public var enforcedCCA:Boolean=false;
+
+	 
+        /**
+         * Represents whether to allow manual prize setting or not.
+         * 
+         * Default value is false - that is manual prize setting is not allowed.
+         * 
+         * @since 1.0.4 
+         */
+        [Bindable]
+        private var _manualPrizeSetting:Boolean=false;
         
         /**
         * @since BUGR-1737
@@ -875,6 +893,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * 
          * Updated for Version 1.0.3
          *    - on save Confidentiality type property is saved.
+         *    - Properties are getting inserted during Overview page, so not needed here.
          */ 
 	    private function prepareSoftwareContest():void {
 		    // set dynamic properties before save.
@@ -899,12 +918,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
 
-            SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, this.invoicedProjectId.toString());
+            //SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, this.invoicedProjectId.toString());
+	    SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
 
 	    }
 
         /**
          * Handler for software contest create.
+         * 
+         * Updated for 1.0.3
+         *    - getting first place and second place from project header properties.
          * 
          * @param e a <code>ResultEvent</code>
          *
@@ -919,12 +942,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
                 this.contestid=this.softwareCompetition.projectHeader.id.toFixed(0);
                 
-                // set prize and admin fee from properties
-                this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
-                this.softwareCompetition.prizes[0] = new PrizeData();
-                this.softwareCompetition.prizes[1] = new PrizeData();
-                PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
-                PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+		// set prize and admin fee from properties
+		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+		this.softwareCompetition.prizes[0] = new PrizeData();
+		this.softwareCompetition.prizes[1] = new PrizeData();
+		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
+		PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
 
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
@@ -935,6 +958,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         /**
          * Updates software contest.
+         * 
+         * Updated for Version 1.0.3
+         *    - Properties are getting inserted during Overview page, so not needed here.
          *
          * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
          */
@@ -971,11 +997,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
                 
 		// set prize and admin fee from properties
-		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getAdminFeeProp(this.softwareCompetition);
+		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
 		this.softwareCompetition.prizes[0] = new PrizeData();
 		this.softwareCompetition.prizes[1] = new PrizeData();
-		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
-		PrizeData(this.softwareCompetition.prizes[1]).amount = 0.5 * SoftwareCompetitionUtils.instance().getFirstPrize(this.softwareCompetition);
+		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
+		PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
 
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
@@ -1321,6 +1347,26 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         public function set invoicedProjectData(n:Object):void {
             this._invoicedProjectData=n;
+        }
+        
+        /**
+         * Gets whether manual prize setting is allowed or not.
+         * 
+         * @return true if manual prize setting is allowed else false.
+         * @since 1.0.4
+         */
+        public function get manualPrizeSetting():Boolean {
+            return this._manualPrizeSetting;
+        }
+        
+        /**
+         * Sets whether manual prize setting is allowed or not.
+         * 
+         * @param b whether manual prize setting is allowed or not.
+         * @since 1.0.4
+         */ 
+        public function set manualPrizeSetting(b:Boolean):void {
+            this._manualPrizeSetting=b;
         }
     }
 }

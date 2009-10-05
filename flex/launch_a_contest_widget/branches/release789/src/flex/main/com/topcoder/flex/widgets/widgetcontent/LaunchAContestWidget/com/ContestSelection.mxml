@@ -6,9 +6,13 @@
     Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
         - Added new section "Invoice Me".
         - Whether contest is invoiced or not is correctly set.
+       
+    Version 1.0.2 (Cockpit Release Assembly 7 v1.0) Change Notes:
+        - Gets manualPrizeSetting for ClientProject.
     
     @author TCSASSEMBLER
-    @version 1.0.1
+    @version 1.0.2
+    @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
            width="100%"
@@ -56,8 +60,9 @@
             private var contestsData:ArrayCollection=new ArrayCollection([{label: "Please select an existing project", data: -1, desc: ""}]);
 
             /**
-             * private function that handles contest selection
-             *
+             * Updated for Version 1.0.2
+             *  - set the project header values on contest selection change.
+             *  
              * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
              *
              * Note: this method calls pipeline webservice in order to recalculate forbidden start dates
@@ -90,6 +95,12 @@
                     } else {
                         if (mainWidget.softwareCompetition) {
                             mainWidget.softwareCompetition.type=competionType;
+                            mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
+                            mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                            mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
+                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
+                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
+                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
                             mainWidget.details.loadCategories(); // BUGR-1678
                         }
 
@@ -183,6 +194,9 @@
     	     * Updated for Version 1.0.1
     	     *    - the client projects are assigned to Billing Project combo box in ContestSelection page rather than activate page.
     	     * 
+    	     * Updated for Version 1.0.2
+    	     *    - gets manualPrizeSetting for the ClientProject.
+    	     * 
     	     * @param e the webservice result event.
     	     */ 
 	        private function getClientProjectsHandler(e:ResultEvent):void {
@@ -202,8 +216,9 @@
                             var poNumber:String = project.pOBoxNumber;
                             var clientId:Number = project.client.id;
                             var clientName:String = project.client.name;
+                            var manualPrizeSetting:Boolean = project.manualPrizeSetting;
             	            
-            	            trace("Adding client project name: " + name);
+            	            trace("Adding client project name: " + name + "," + manualPrizeSetting);
             	            // add client project name
                 	        var item:Object = new Object();
     			            item.label= name;
@@ -212,7 +227,8 @@
     			            item.data.projectName = name;
     			            item.data.projectId = id;
     			            item.data.clientId = clientId;
-    			            item.data.clientName = clientName;  
+    			            item.data.clientName = clientName;
+    			            item.data.manualPrizeSetting = manualPrizeSetting; 
     			            
                 	        mainWidget.clientProjectNames.addItem(item);
             	        }
@@ -540,16 +556,26 @@
                 }
             }
             
+            /**
+             * Sets billing project related properties.
+             * 
+             * Updated for Version 1.0.2
+             *    - manualPrizeSetting value is set corresponding to the selected billing project.
+             * 
+             * @param val billing project data object.
+             */ 
             private function setBillingProjectProperties(val:Object):void {
                 if (val == null || val.data == null) {
                     mainWidget.isInvoicedContest=false;
                     mainWidget.invoicedProjectId=0;
                     mainWidget.invoicedProjectData=null;
+                    mainWidget.manualPrizeSetting=false;
                     Model.instance.purchaseOrder=null;
                 } else {
                     mainWidget.isInvoicedContest=true;
                     mainWidget.invoicedProjectId=val.data.projectId;
                     mainWidget.invoicedProjectData=val.data;
+                    mainWidget.manualPrizeSetting=val.data.manualPrizeSetting;
                     Model.instance.purchaseOrder=mainWidget.invoicedProjectData;
                 }
                 

@@ -72,6 +72,16 @@
             public var ns_digitalRunS:String;
             public var ns_contestFeeS:String;
             public var ns_contestTotalS:String;
+            
+            /**
+             * Added for Cockpit Software Contest Payments v1.0
+             */
+            public var ns_reliabilityBonus:String;
+            
+            /**
+             * Added for Cockpit Software Contest Payments v1.0
+             */
+            public var ns_milestoneBonus:String;
 
             //step3 data
             public var contentTitleStr:String;
@@ -213,6 +223,9 @@
              *        - review data is read from persistent now.
              *
              * Note: multi-round specific information was added to the corresponding sections
+	     *
+	     * Updated for Cockpit Software Contest Payments v1.0
+             *        - added setting of reliability bonus and milestone bonus.
              */
             public function setAllValues():void {
                 var milestoneDateObj:Date;
@@ -284,6 +297,8 @@
                         ns_digitalRunS=mainWidget.overView.ns_dr.text;
                         ns_contestFeeS=mainWidget.overView.ns_contestf.text;
                         ns_contestTotalS=mainWidget.overView.ns_cntstTtl.text;
+                        ns_reliabilityBonus=mainWidget.overView.ns_reliabilityBonus.text;
+                        ns_milestoneBonus=mainWidget.overView.ns_milestoneBonus.text;
                     }
                     
                     if (mainWidget && mainWidget.details) {
@@ -382,6 +397,8 @@
                     ns_reviewCost.text=ns_reviewCostS;
                     ns_contestFee.text=ns_contestFeeS;
                     ns_Total.text=ns_contestTotalS;
+                    ns_reliabilityBonusTxt.text=ns_reliabilityBonus;
+                    ns_milestoneBonusTxt.text=ns_milestoneBonus;
                 }
 
                 // step 2
@@ -1284,6 +1301,21 @@
                                       fontWeight="bold"/>
                             <mx:Text id="ns_dr"
                                      width="120"/>
+                        </mx:HBox>
+                    </mx:VBox>
+                    <mx:VBox>
+                        <mx:HBox>
+                            <mx:Label text="Reliability Bonus:"
+                                      fontWeight="bold"/>
+                            <mx:Text id="ns_reliabilityBonusTxt"
+                                     width="54"/>
+                        </mx:HBox>
+                        <mx:HBox>
+                            <mx:Label text="Milestone Bonus:"
+                                      fontWeight="bold"/>
+                            <mx:Spacer width="7"/>
+                            <mx:Text id="ns_milestoneBonusTxt"
+                                     width="55"/>
                         </mx:HBox>
                     </mx:VBox>
                     <mx:VBox>
