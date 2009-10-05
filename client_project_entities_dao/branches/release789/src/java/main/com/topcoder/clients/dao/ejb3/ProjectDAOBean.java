@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -68,6 +66,12 @@ import com.topcoder.clients.model.ProjectContestFee;
  * </p>
  * 
  * <p>
+ * Version 1.1.1 (Cockpit Release Assembly 7 v1.0) Change Notes:
+ *  - Added fetch for is_manual_prize_setting value for project.
+ * </p> 
+ * 
+ * 
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext}) are set
  * after construction, but the container will not initialize the properties more
@@ -76,7 +80,7 @@ import com.topcoder.clients.model.ProjectContestFee;
  * </p>
  *
  * @author Mafy, snow01, TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -101,11 +105,13 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 	 * 
 	 * Updated for Cockpit Release Assembly for Receipts
 	 *     - now fetching client name too.
+	 *     
+	 * Updated for Version 1.1.1 - added fetch for is_manual_prize_setting property too.
 	 */
 	private static final String SELECT_PROJECT 	= "select p.project_id, p.name, p.po_box_number, p.description, "
 			  + " p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
 			  + " p.creation_date, p.creation_user, p.is_deleted, "
-			  + " cp.client_id, c.name as client_name "
+			  + " cp.client_id, c.name as client_name, p.is_manual_prize_setting "
 			  + " from project as p left join client_project as cp on p.project_id = cp.project_id left join client c "
               + "            on c.client_id = cp.client_id and (c.is_deleted = 0 or c.is_deleted is null) "
 			  + " where p.start_date <= current and current <= p.end_date ";
@@ -303,6 +309,11 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 	 *     - now setting client name too.
 	 * </p>
 	 * 
+	 * <p>
+	 * Updated for Version 1.1.1
+	 *     - Added fetch for is_manual_prize_setting.
+	 * </p>
+	 * 
 	 * @param query the specified query.
 	 * @return list of project.
 	 */
@@ -361,7 +372,12 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 			}
 			
 			if (os[13] != null) {
-                client.setName(os[13].toString());
+                           client.setName(os[13].toString());
+			}
+			
+			if (os[14] != null) {
+			    int manualPrizeSetting = Integer.parseInt(os[14].toString());
+			    c.setManualPrizeSetting(manualPrizeSetting == 0 ? false : true);
 			}
 
 			result.add(c);
