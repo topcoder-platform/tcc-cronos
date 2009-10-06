@@ -3922,14 +3922,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     c.modify_date as modification_time, ");
             sb.append("  ");
             sb.append("     NVL((select unique cl.name ");
-            sb.append("     from contest_sale as cp ");
+            sb.append("     from project_info as pi ");
             sb.append("     left outer join tt_project as ttp  ");
-            sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("     on pi.value::DECIMAL(10,2) = ttp.project_id ");
             sb.append("     left outer join tt_client_project cpx ");
             sb.append("     on ttp.project_id = cpx.project_id   ");
             sb.append("     left outer join tt_client as cl ");
             sb.append("     on cpx.client_id = cl.client_id ");
-            sb.append("     where cp.contest_id = c.project_id), 'One Off') as client_name, ");
+            sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), 'One Off') as client_name, ");
             sb.append("  ");
             sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 33 and project_id = c.project_id) as review_payment, ");
             sb.append("  ");
@@ -4218,7 +4218,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         queryBuffer.append(" select");
         queryBuffer.append(" (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
         queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) as start_date,");
-        queryBuffer.append(" count(*)");
+        queryBuffer.append(" p.project_id ");
         queryBuffer.append(" from project p, contest_sale c");
         queryBuffer.append(" where p.project_category_id = ").append(contestType);
         queryBuffer.append(" and p.project_status_id = ").append(ACTIVE_PROJECT_STATUS_ID);
