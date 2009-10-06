@@ -4218,7 +4218,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         queryBuffer.append(" select");
         queryBuffer.append(" (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
         queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) as start_date,");
-        queryBuffer.append(" p.project_id ");
+        queryBuffer.append(" count(*)");
         queryBuffer.append(" from project p, contest_sale c");
         queryBuffer.append(" where p.project_category_id = ").append(contestType);
         queryBuffer.append(" and p.project_status_id = ").append(ACTIVE_PROJECT_STATUS_ID);
