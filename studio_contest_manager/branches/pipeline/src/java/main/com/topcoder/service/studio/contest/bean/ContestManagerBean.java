@@ -5055,14 +5055,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("     cast(NULL as DATETIME YEAR TO FRACTION) as modification_time, ");
             sb.append("  ");
             sb.append("     NVL((select unique cl.name ");
-            sb.append("     from contest_payment as cp ");
+            sb.append("     from contest_config as cf  ");
             sb.append("     left outer join tt_project as ttp  ");
-            sb.append("     on cp.sale_reference_id = ttp.po_box_number ");
+            sb.append("     on CAST (cf.property_value as DECIMAL(10,2)) = ttp.project_id ");
             sb.append("     left outer join tt_client_project cpx ");
             sb.append("     on ttp.project_id = cpx.project_id   ");
             sb.append("     left outer join tt_client as cl ");
             sb.append("     on cpx.client_id = cl.client_id ");
-            sb.append("     where cp.contest_id = c.contest_id), 'One Off') as client_name, ");
+            sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), 'One Off') as client_name, ");
             sb.append("  ");
             sb.append("     NVL(pipe.review_payment,0) as review_payment, ");
             sb.append("     NVL(pipe.specification_review_payment,0) as specification_review_payment, ");
