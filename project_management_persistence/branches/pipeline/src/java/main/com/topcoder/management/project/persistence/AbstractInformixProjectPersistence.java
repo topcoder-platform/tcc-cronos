@@ -4218,14 +4218,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         queryBuffer.append(" select");
         queryBuffer.append(" (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
         queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) as start_date,");
-        queryBuffer.append(" count(*)");
+        queryBuffer.append(" p.project_id");
         queryBuffer.append(" from project p, contest_sale c");
         queryBuffer.append(" where p.project_category_id = ").append(contestType);
         queryBuffer.append(" and p.project_status_id = ").append(ACTIVE_PROJECT_STATUS_ID);
         queryBuffer.append(" and p.project_id = c.contest_id");
         queryBuffer.append(" and (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
         queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) > date(current)");
-        queryBuffer.append(" group by 1");
         queryBuffer.append(" order by 1");
 
         try {
@@ -4237,17 +4236,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     queryBuffer.toString(), new Object[] {},
                     new DataType[] { Helper.DATE_TYPE, Helper.LONG_TYPE } );
 
-            List<SoftwareCapacityData> capacityList = new ArrayList<SoftwareCapacityData>(rows.length);
+            List<SoftwareCapacityData> capacityList = new ArrayList<SoftwareCapacityData>();
             getLogger().log(Level.INFO, new LogMessage(null,null,"Found "+rows.length + " records"));
 
+            SoftwareCapacityData cap = null;
+            String previous = "";
             for(int i=0;i<rows.length;i++)
             {
                 Object[] os = rows[i];
-                capacityList.add(new SoftwareCapacityData(((Date) os[0]), ((Long)(os[1])).intValue()));
+
+                // new date
+                if (!previous.equals(os[0].toString()))
+                {
+
+                    previous = os[0].toString();
+                    cap = new SoftwareCapacityData();
+                    cap.setDate((Date) os[0]);
+                    cap.setNumScheduledContests(1);
+                    cap.getContests().add((((Long)(os[1])).intValue()));
+                    capacityList.add(cap);
+                    
+                }
+                else
+                {
+                    cap.setNumScheduledContests(cap.getNumScheduledContests() + 1);
+                    cap.getContests().add((((Long)(os[1])).intValue()));
+                }
+                
             }
 
             closeConnection(conn);
             getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getCapacity method."));
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Got "+capacityList.size() + " capacities"));
             return capacityList;
         } catch (PersistenceException e) {
             getLogger().log(
