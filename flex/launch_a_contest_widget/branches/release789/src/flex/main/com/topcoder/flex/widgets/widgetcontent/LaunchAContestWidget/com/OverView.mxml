@@ -145,7 +145,7 @@
              * Updated for Version 1.0.1
              */ 
             [Bindable]
-            private var curContestType:int;
+            private var curContestType:String;
             
             /**
              * Updated for Cockpit Release Assembly 1 v1.0
@@ -153,6 +153,13 @@
              * 
              * Updated the text for 1.0.4
              */
+            [Bindable]
+            private var curContestTypeId:int;
+            
+            //
+            // Updated for Cockpit Release Assembly 1 v1.0
+            //    - To avoid binding can not detect error.
+            //
             [Bindable]
             private var SW_PRIZE_AMOUNT_DESCRIPTION:String="Please select the prize structure for your contest by choosing one of the options below.";
             
@@ -452,9 +459,8 @@
                 }
 
                 mainWidget.competition.prizes=prizes;
-		mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
-		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
-		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+                mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+               
 
                 // sets multi round specific information
                 mainWidget.competition.contestData.multiRound = mainWidget.multiRoundContest;
@@ -465,12 +471,17 @@
 
                     mainWidget.competition.contestData.milestonePrizeData.amount = new Number(milestonePrizeAmonutTextInput.text);
                     mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions = new Number(numMilestonePrizesComboBox.selectedItem.data);
+
+                    sum = sum + mainWidget.competition.contestData.milestonePrizeData.amount * mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions
                 } else {
                     if (mainWidget.competition.contestData.milestonePrizeData != null &&
                         mainWidget.competition.contestData.milestonePrizeData.id == -1) {
                         mainWidget.competition.contestData.milestonePrizeData=null;
                     }
                 }
+
+                mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+                mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 
                 // assign values to review screen.
                 /*mainWidget.review.cstTypeStep2=studioType.selection.label;
@@ -588,7 +599,8 @@
              */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
-                curContestType=Number(studioType.selectedValue);
+                curContestType=typeName.text;
+	        curContestTypeId=Number(studioType.selectedValue);
 
                 if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                     adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
@@ -600,7 +612,7 @@
 
                     // recalculate start date forbidden dates
                     var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestType, true);
+                    getCapacityFullDatesOp.send(curContestTypeId, true);
                 } else {
                     showExampleOne=false;
                     showExampleTwo=false;
@@ -983,15 +995,13 @@
                         studioType.selectedValue=selectedValue;
                         selectedLabel=root.childNodes[0].attributes.description;
                     }
-                    
-                     curContestType=Number(selectedValue);
+                      
+                     curContestType=selectedLabel;
+		     curContestTypeId = Number(selectedValue);
 
                     // recalculate start date forbidden dates
                     var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestType, true);
-
-                    
-                    
+                    getCapacityFullDatesOp.send(curContestTypeId, true);
                 }
                 
                 //
@@ -1021,7 +1031,7 @@
                 var getContestFeesByProject:AbstractOperation=mainWidget._csws.getOperation("getContestFeesByProject");
                 getContestFeesByProject.addEventListener("result", handleGetContestFeesByProject);
                 getContestFeesByProject.send(mainWidget.invoicedProjectId);
-               // mainWidget.showLoadingProgress();
+                mainWidget.showLoadingProgress();
             }
             
             /**
@@ -1031,7 +1041,7 @@
              * @since 1.0.1
              */ 
             private function handleGetContestFeesByProject(e:ResultEvent):void {
-               // mainWidget.hideLoadingProgress();
+                mainWidget.hideLoadingProgress();
                 trace("E --> " + e);
                 if (e && e.result && contestFees) {
                     // convert e.result into contestFees.xml
@@ -1059,12 +1069,12 @@
                             s_updateAmount(true);
 
                         }
-                    } else {
+                    }/* else { // snow01: we do not need else block
                          requestContestFees.send();
-                    }
-                } else {
+                    }*/
+                } /*else { // snow01: we do not need else block
                     requestContestFees.send();
-                }
+                }*/
             }
 
             private function goToUrl(url:String):void {

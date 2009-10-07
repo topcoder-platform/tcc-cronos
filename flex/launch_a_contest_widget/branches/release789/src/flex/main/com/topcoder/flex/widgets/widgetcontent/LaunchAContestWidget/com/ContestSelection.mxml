@@ -271,6 +271,11 @@
                                 && SoftwareCompetitionUtils.instance().getProjectCategoryId(bt.value.toString()) == 
                                        mainWidget.softwareCompetition.projectHeader.projectCategory.id))) {
                             bt.selected=true;
+                            if (mainWidget.softwareCompetition)
+                            {
+                                mainWidget.softwareCompetition.type = bt.value.toString();
+                                mainWidget.competitionType = bt.value.toString();
+                            }
                             break;
                         }
                     }
@@ -287,6 +292,11 @@
                             }
                         }
                     }
+
+	                // recalculate start date forbidden dates
+	                /*var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
+	                var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+	                getCapacityFullDatesOp.send(currentContestType, false);*/
                 }
             }
             
