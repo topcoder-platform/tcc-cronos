@@ -309,7 +309,7 @@
                 mainWidget.competition.contestData.contestTypeId=Number(studioType.selectedValue);
 
                 var prizes:Array=new Array();
-		var sum:Number = 0;
+		        var sum:Number = 0;
                 mainWidget.competition.contestData.prizes=prizes;
                 for (var i:int=0; i < s_inputs.length; i++) {
                     var prizeData:PrizeData=new PrizeData();
@@ -321,7 +321,7 @@
                         break;
                     }
 
-		    sum = sum + amount;
+		            sum = sum + amount;
 
                     prizeData.place=i + 1;
                     prizeData.amount=amount;
@@ -329,9 +329,8 @@
                 }
 
                 mainWidget.competition.prizes=prizes;
-		mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
-		mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
-		mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+                mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+               
 
                 // sets multi round specific information
                 mainWidget.competition.contestData.multiRound = mainWidget.multiRoundContest;
@@ -342,12 +341,17 @@
 
                     mainWidget.competition.contestData.milestonePrizeData.amount = new Number(milestonePrizeAmonutTextInput.text);
                     mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions = new Number(numMilestonePrizesComboBox.selectedItem.data);
+
+                    sum = sum + mainWidget.competition.contestData.milestonePrizeData.amount * mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions
                 } else {
                     if (mainWidget.competition.contestData.milestonePrizeData != null &&
                         mainWidget.competition.contestData.milestonePrizeData.id == -1) {
                         mainWidget.competition.contestData.milestonePrizeData=null;
                     }
                 }
+
+                mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+                mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 
                 // assign values to review screen.
                 /*mainWidget.review.cstTypeStep2=studioType.selection.label;
