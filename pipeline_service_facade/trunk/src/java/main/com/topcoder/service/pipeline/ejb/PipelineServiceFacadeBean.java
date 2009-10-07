@@ -26,6 +26,7 @@ import org.jboss.ws.annotation.EndpointConfig;
 
 import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineService;
+import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
@@ -338,7 +339,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio) 
+    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
         throws ContestPipelineServiceException {
         logger.log(Level.DEBUG, "Enter getCapacityFullDates(int contestType, boolean isStudio) method.");
         logger.log(Level.DEBUG, "with parameter contestType: " + contestType);

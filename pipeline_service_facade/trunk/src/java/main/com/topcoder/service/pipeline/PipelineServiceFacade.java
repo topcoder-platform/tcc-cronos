@@ -4,6 +4,7 @@
 package com.topcoder.service.pipeline;
 
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
+import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
@@ -172,7 +173,7 @@ public interface PipelineServiceFacade {
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio) 
+    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
         throws ContestPipelineServiceException;
 
 }
