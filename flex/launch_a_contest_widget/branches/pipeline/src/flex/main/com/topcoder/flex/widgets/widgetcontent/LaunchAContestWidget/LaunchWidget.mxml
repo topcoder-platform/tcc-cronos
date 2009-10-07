@@ -56,6 +56,7 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CapacityData;
             import com.topcoder.flex.model.IWidgetFramework;
             import mx.rpc.soap.SOAPHeader;
             import mx.controls.Image;
@@ -151,6 +152,15 @@
              */
             [Bindable]
             public var capacityFullDates:Array;
+
+             /**
+             * An array representing the dates that are already at full capacity for the current contest type.
+             *
+             * @since 1.0.2
+             */
+            [Bindable]
+            public var capacityData:ArrayCollection = new ArrayCollection();
+
 
             //
             // Introduced to keep a map of step box to step number.
@@ -721,7 +731,6 @@
                     if (!overView.validateFields())
                         return;
                 }
-
 		// before continue, check start date is not taken
                 validateStartDate(continueSaveDraft);
             }
@@ -979,7 +988,7 @@
                     case 7:
 
                        this.currentState = "ReviewState";
-		       setReadOnlyMode();
+		                setReadOnlyMode();
                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
@@ -1051,7 +1060,7 @@
                         return;
                     }
                    // BUGR-1067
-		   //Currently only implement Studio constest type
+		            //Currently only implement Studio constest type
                    /*if (contestSelect.contestType.selectedValue != "STUDIO"){
                        return;
                      }*/
@@ -1238,22 +1247,11 @@
                     }
                     
                     if (isInvoicedContest) {
-                        // for invoiced contest directly lead to purchase confirmation screen.
-                        this.currentState="ActivateState";
-                        setReadOnlyMode();
-                        save.visible=false;
-                        setPreviousStep(step7box);
-                        setCurStep(step8box);
-                        setButton(3);
-                        
-                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
-                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+ 
+                        // before continue, check start date is not taken
+                        validateStartDate(continueActivateNext);
     
-                        activate.initData();
                         
-                        activate.stack.selectedIndex = 2;
-                        
-                        activate.goToNext();
                     } else {
                         this.currentState="ActivateState";
                         setReadOnlyMode();
@@ -1284,8 +1282,7 @@
              */
             private function validateStartDate(listener:Function):void {
                 var getCapacityFullDatesOp:AbstractOperation=_psws.getOperation("getCapacityFullDates");
-                getCapacityFullDatesOp.addEventListener("result", listener);
-                
+                getCapacityFullDatesOp.addEventListener("result", listener);              
                 if (isStudioContestType) {
                    getCapacityFullDatesOp.send(competition.contestData.contestTypeId, true);
                 } else {
@@ -1307,10 +1304,27 @@
                 var getCapacityFullDatesOp:AbstractOperation=_psws.getOperation("getCapacityFullDates");
                 getCapacityFullDatesOp.removeEventListener(ResultEvent.RESULT, continueActivateNext);
             
-                if (validateStartDateNotFull(event)) {            	
-	                save.visible=false;
-	                var index:int=activate.goToNext();
-	                setButton(index);
+                if (validateStartDateNotFull(event)) {   
+                    
+                     
+                     if (currentState == "ReviewState") {
+                            // for invoiced contest directly lead to purchase confirmation screen.
+                        this.currentState="ActivateState";
+                        setReadOnlyMode();
+                        save.visible=false;
+                        setPreviousStep(step7box);
+                        setCurStep(step8box);
+                        setButton(3);
+                        
+                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+          
+                         activate.initData();
+                         activate.stack.selectedIndex = 2;
+                     }
+
+                     var index:int=activate.goToNext(); 
+                     setButton(index); 
 	            } else {
                     Helper.showAlertMessage("You must change your start date since it's full.");	            	
 	            }
@@ -1343,26 +1357,36 @@
              */
             private function validateStartDateNotFull(event:ResultEvent):Boolean {
                 var start:String=null;
-
+                var contestId:Number;
+   
                 if (isStudioContestType) {
                 	start = competition.contestData.launchDateAndTime;
+                    contestId = competition.contestData.contestId;
                 } else {
                     start = softwareCompetition.assetDTO.productionDate;
+                    contestId = softwareCompetition.projectHeader.id;
                 }
-            	
+           	
                 var ok:Boolean=true;
-                if (start && event && event.result) {
-                    var capacityFullDatesStrCol:ArrayCollection =
-                        ObjectTranslatorUtils.translateCollection(event.result, String);
+                  if (start && event && event.result) {
 
                     var startDate:Date=DateUtil.parseFromString(start);
 
-                    for (var i:int = 0; i < capacityFullDatesStrCol.length && ok; i++) {
-                        var fullDate:Date=DateUtil.parseFromString(capacityFullDatesStrCol[i]);
+                    var capArray:ArrayCollection=new ArrayCollection;
+                    if (event.result is ArrayCollection)
+                        capArray=event.result as ArrayCollection;
+                    else
+                        capArray.addItem(event.result);
+
+                    for (var i:int = 0; i < capArray.length && ok; i++) {
+
+                        var fullDate:Date = DateUtil.parseFromString(capArray[i].date);
+                        var contests:ArrayCollection = capArray[i].contests;
 
                         if (fullDate.getFullYear() == startDate.getFullYear() &&
                             fullDate.getMonth() == startDate.getMonth() &&
-                            fullDate.getDay() == startDate.getDay()) {
+                            fullDate.getDay() == startDate.getDay() &&
+                            !contests.contains(contestId)) {
 
                             ok = false;
                         }
@@ -1913,15 +1937,25 @@
              * @since 1.0.2
              */
             private function handleGetCapacityFullDatesLoad(event:ResultEvent):void {
-                var capacityFullDatesCol = new ArrayCollection()
-
+                var capacityFullDatesCol = new ArrayCollection();
                 if (event && event.result) {
-                    var capacityFullDatesStrCol:ArrayCollection =
-                        ObjectTranslatorUtils.translateCollection(event.result, String);
 
-                    for (var i:int = 0; i < capacityFullDatesStrCol.length; i++) {
-                        capacityFullDatesCol.addItem(DateUtil.parseFromString(capacityFullDatesStrCol[i]));
-                    }
+                 var capArray:ArrayCollection=new ArrayCollection;
+                    if (event.result is ArrayCollection)
+                        capArray=event.result as ArrayCollection;
+                    else
+                        capArray.addItem(event.result);
+
+                            for (var i:int = 0; i < capArray.length; i++) {
+  
+                                var cap:CapacityData = new CapacityData();
+                                cap.date = DateUtil.parseFromString(capArray[i].date);
+                                cap.contests = capArray[i].contests;
+                                capacityData.addItem(cap);
+                                capacityFullDatesCol.addItem((cap.date));
+
+                           }
+
                 }
 
                 capacityFullDatesCol.addItem({rangeEnd: new Date()});

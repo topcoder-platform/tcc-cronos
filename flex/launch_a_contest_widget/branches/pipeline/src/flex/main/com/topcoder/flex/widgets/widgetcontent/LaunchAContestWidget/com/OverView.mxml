@@ -113,8 +113,11 @@
              * Updated for Version 1.0.1
              */ 
             [Bindable]
-            private var curContestType:int;
+            private var curContestType:String;
 
+            [Bindable]
+            private var curContestTypeId:int;
+            
             //
             // Updated for Cockpit Release Assembly 1 v1.0
             //    - To avoid binding can not detect error.
@@ -167,6 +170,10 @@
                     requestContestTypes.send();
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
+
+                    // recalculate start date forbidden dates
+                    /**var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(curContestType, true);   */                 
                 } else {
                     if (mainWidget.isInvoicedContest) {
                         getContestFeesByBillingProject();
@@ -418,14 +425,13 @@
              * Updated for Version 1.0.1
              *    - for contest sub type use type name instead of id
              *
-             * Note: this method calls pipeline webservice in order to recalculate forbidden start dates
-             *
              * Note: added amount update
              * @param event the item click event
              */
             private function handleSelect(event:ItemClickEvent):void {
                 typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
-                curContestType=Number(studioType.selectedValue);
+                curContestType=typeName.text;
+				curContestTypeId=Number(studioType.selectedValue);
 
                 if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                     adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
@@ -437,7 +443,7 @@
 
                     // recalculate start date forbidden dates
                     var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestType, true);
+                    getCapacityFullDatesOp.send(curContestTypeId, true);
                 } else {
                     showExampleOne=false;
                     showExampleTwo=false;
@@ -714,7 +720,7 @@
             [Bindable(event="curContestTypeChanged")]
             private function getCurrentContestTypeXml():XML {
                 if (mainWidget.studioContestType) {
-                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType)[0];
+                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestTypeId)[0];
                 } else {
                     return contestOverview.contestType.(@id == mainWidget.competitionType)[0];
                 }
@@ -739,7 +745,7 @@
                     // default id for Web Page Design
                     contestType="1";
                 }
-                
+           
                 var selectedValue:Number=-1;
                 var selectedLabel:String="";
 
@@ -772,15 +778,13 @@
                         studioType.selectedValue=selectedValue;
                         selectedLabel=root.childNodes[0].attributes.description;
                     }
-                    
-                     curContestType=Number(selectedValue);
+                      
+                     curContestType=selectedLabel;
+					 curContestTypeId = Number(selectedValue);
 
                     // recalculate start date forbidden dates
                     var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestType, true);
-
-                    
-                    
+                    getCapacityFullDatesOp.send(curContestTypeId, true);
                 }
                 
                 //
