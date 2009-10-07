@@ -5,6 +5,8 @@ package com.topcoder.service.studio.contest;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * <p>
@@ -35,6 +37,11 @@ public class StudioCapacityData implements Serializable {
      * Represents the number of scheduled contests
      */
     private int numScheduledContests;
+
+    /**
+     * Represents contest ids
+     */
+    private Set contests = new HashSet();
 
     /**
      * Default constructor.
@@ -88,5 +95,26 @@ public class StudioCapacityData implements Serializable {
      */
     public void setNumScheduledContests(int numScheduledContests) {
         this.numScheduledContests = numScheduledContests;
+    }
+
+    /**
+     * Returns contest ids.
+     *
+     * @return contest ids.
+     */
+    public Set getContests() {
+        return contests;
+    }
+
+    /**
+     * set contests
+     *
+     * @param contests the contests to set.
+     */
+    public void setContests(Set contests) {
+        if (contests != null)
+        {
+            this.contests = contests;
+        }
     }
 }

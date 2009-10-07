@@ -5281,22 +5281,39 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             StringBuffer queryBuffer = new StringBuffer();
-            queryBuffer.append(" select date(start_time), count(*)");
+            queryBuffer.append(" select date(start_time), contest_id");
             queryBuffer.append(" from contest");
             queryBuffer.append(" where date(start_time) > date(current)");
             queryBuffer.append(" and contest_detailed_status_id == ").append(SCHEDULED_STATUS_ID);
             queryBuffer.append(" and contest_type_id = ").append(contestType);
-            queryBuffer.append(" group by 1");
             queryBuffer.append(" order by 1");
 
             Query query = em.createNativeQuery(queryBuffer.toString());
             List list = query.getResultList();
 
-            List<StudioCapacityData> capacityList = new ArrayList<StudioCapacityData>(list.size());
+            StudioCapacityData cap = null;
+            String previous = "";
+            List<StudioCapacityData> capacityList = new ArrayList<StudioCapacityData>();
             for (int i = 0; i < list.size(); i++) {
-                Object[] os = (Object[]) list.get(i);
 
-                capacityList.add(new StudioCapacityData(((Date) os[0]), ((BigDecimal)(os[1])).intValue()));
+                Object[] os = (Object[]) list.get(i);
+                
+
+                // new date
+                if (!previous.equals(os[0].toString()))
+                {
+                    cap = new StudioCapacityData();
+                    cap.setDate((Date) os[0]);
+                    cap.setNumScheduledContests(1);
+                    cap.getContests().add((((BigDecimal)(os[1])).intValue()));
+                    capacityList.add(cap);
+                     previous = os[0].toString();
+                }
+                else
+                {
+                    cap.setNumScheduledContests(cap.getNumScheduledContests() + 1);
+                    cap.getContests().add((((BigDecimal)(os[1])).intValue()));
+                }
             }
 
             return capacityList;
