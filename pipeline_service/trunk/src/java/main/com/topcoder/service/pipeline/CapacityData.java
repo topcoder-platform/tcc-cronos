@@ -4,7 +4,14 @@
 package com.topcoder.service.pipeline;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -19,6 +26,8 @@ import java.util.Date;
  * @version 1.0 (Cockpit Pipeline Release Assembly 2 - Capacity)
  * @since 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "capacityData", propOrder = { "date", "numScheduledContests", "contests"})
 public class CapacityData implements Serializable {
 
     /**
@@ -29,12 +38,18 @@ public class CapacityData implements Serializable {
     /**
      * Represents the date
      */
-    private Date date;
+    private XMLGregorianCalendar date;
 
     /**
      * Represents the number of scheduled contests
      */
     private int numScheduledContests;
+
+
+     /**
+     * Represents contest ids
+     */
+    private List contests = new ArrayList();
 
     /**
      * Default constructor.
@@ -48,10 +63,25 @@ public class CapacityData implements Serializable {
      * @param date the date to set
      * @param numScheduledContests the number of scheduled contests to set
      */
-    public CapacityData(Date date, int numScheduledContests) {
+    public CapacityData(XMLGregorianCalendar date, int numScheduledContests) {
         super();
         this.date = date;
         this.numScheduledContests = numScheduledContests;
+    }
+
+
+     /**
+     * Constructor using fields
+     *
+     * @param date the date to set
+     * @param numScheduledContests the number of scheduled contests to set
+     * @param contests the contests in the date
+     */
+    public CapacityData(XMLGregorianCalendar date, int numScheduledContests, List contests) {
+        super();
+        this.date = date;
+        this.numScheduledContests = numScheduledContests;
+        this.contests = contests;
     }
 
     /**
@@ -59,7 +89,7 @@ public class CapacityData implements Serializable {
      *
      * @return the date.
      */
-    public Date getDate() {
+    public XMLGregorianCalendar getDate() {
         return date;
     }
 
@@ -68,7 +98,7 @@ public class CapacityData implements Serializable {
      *
      * @param date the date to set.
      */
-    public void setDate(Date date) {
+    public void setDate(XMLGregorianCalendar date) {
         this.date = date;
     }
 
@@ -88,5 +118,26 @@ public class CapacityData implements Serializable {
      */
     public void setNumScheduledContests(int numScheduledContests) {
         this.numScheduledContests = numScheduledContests;
+    }
+
+     /**
+     * Returns contest ids.
+     *
+     * @return contest ids.
+     */
+    public List getContests() {
+        return contests;
+    }
+
+    /**
+     * set contests
+     *
+     * @param contests the contests to set.
+     */
+    public void setContests(List contests) {
+        if (contests != null)
+        {
+            this.contests = contests;
+        }
     }
 }

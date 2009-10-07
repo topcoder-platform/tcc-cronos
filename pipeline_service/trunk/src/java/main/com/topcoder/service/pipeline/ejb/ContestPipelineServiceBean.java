@@ -611,7 +611,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio)
+    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio)
         throws ContestPipelineServiceException {
 
         // this will make access easier and faster
@@ -621,7 +621,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         }
 
         try {
-            List<XMLGregorianCalendar> fullCapacityList = new ArrayList<XMLGregorianCalendar>();
+            List<CapacityData> fullCapacityList = new ArrayList<CapacityData>();
 
             // get capacity data from underlying services
             List<CapacityData> capacityDataList;
@@ -634,9 +634,11 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             // use configuration to check full capacity
             for (CapacityData capacityData : capacityDataList) {
                 Calendar cal = new GregorianCalendar();
-                cal.setTime(capacityData.getDate());
+                cal.setTime(getDate(capacityData.getDate()));
+
                 if (capacity[cal.get(Calendar.DAY_OF_WEEK) - 1] <= capacityData.getNumScheduledContests()) {
-                    fullCapacityList.add(getXMLGregorianCalendar(capacityData.getDate()));
+                    fullCapacityList.add(capacityData);
+
                 }
             }
 
@@ -1457,8 +1459,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
         if (capacity != null) {
             for (SoftwareCapacityData softwareCapacitydata : capacity) {
-                capacityData.add(new CapacityData(softwareCapacitydata.getDate(),
-                        softwareCapacitydata.getNumScheduledContests()));
+                capacityData.add(new CapacityData(getXMLGregorianCalendar(softwareCapacitydata.getDate()),
+                        softwareCapacitydata.getNumScheduledContests(), new ArrayList(softwareCapacitydata.getContests())));
             }
         }
 
@@ -1478,8 +1480,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
         if (capacity != null) {
             for (StudioCapacityData studioCapacitydata : capacity) {
-                capacityData.add(new CapacityData(studioCapacitydata.getDate(),
-                    studioCapacitydata.getNumScheduledContests()));
+                capacityData.add(new CapacityData(getXMLGregorianCalendar(studioCapacitydata.getDate()),
+                    studioCapacitydata.getNumScheduledContests(), new ArrayList(studioCapacitydata.getContests())));
             }
         }
 

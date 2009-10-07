@@ -164,6 +164,6 @@ public interface ContestPipelineService {
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<XMLGregorianCalendar> getCapacityFullDates(int contestType, boolean isStudio) 
+    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
         throws ContestPipelineServiceException;
 }
