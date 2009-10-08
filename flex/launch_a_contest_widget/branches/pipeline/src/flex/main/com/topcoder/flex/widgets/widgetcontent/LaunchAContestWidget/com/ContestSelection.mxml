@@ -278,9 +278,9 @@
                     }
 
 	                // recalculate start date forbidden dates
-	                /*var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
+	                var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
 	                var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-	                getCapacityFullDatesOp.send(currentContestType, false);*/
+	                getCapacityFullDatesOp.send(currentContestType, false);
                 }
             }
             

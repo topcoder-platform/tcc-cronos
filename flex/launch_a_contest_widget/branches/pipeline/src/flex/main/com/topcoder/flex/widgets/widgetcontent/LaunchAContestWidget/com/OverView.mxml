@@ -172,8 +172,8 @@
                     s_setPrizes();
 
                     // recalculate start date forbidden dates
-                    /**var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestType, true);   */                 
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(curContestTypeId, true);                   
                 } else {
                     if (mainWidget.isInvoicedContest) {
                         getContestFeesByBillingProject();
