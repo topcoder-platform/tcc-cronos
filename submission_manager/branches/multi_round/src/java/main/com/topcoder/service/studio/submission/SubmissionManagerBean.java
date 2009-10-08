@@ -192,7 +192,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
      * Represents the description of deleted status.
      * </p>
      */
-    private static final String DELETED_STATUS = "deleted";
+    private static final String DELETED_STATUS = "Deleted";
 
     /**
      * Added in version 1.2.0
