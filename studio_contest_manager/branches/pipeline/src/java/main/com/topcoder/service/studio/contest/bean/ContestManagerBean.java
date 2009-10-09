@@ -5085,7 +5085,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("         where cc.property_id = 25 ");
             sb.append("         and cc.contest_id = c.contest_id) as contest_fee, ");
             sb.append("  ");
-            sb.append("     (select cc.property_value ");
+  // not used now, and cause performance issue
+ /*           sb.append("     (select cc.property_value ");
             sb.append("         from contest_config as cc ");
             sb.append("         where cc.property_id = 1 ");
             sb.append("         and cc.contest_id = c.contest_id) as short_desc, ");
@@ -5097,7 +5098,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("         from contest_config as cc ");
             sb.append("         where cc.property_id = 21 ");
             sb.append("         and cc.contest_id = c.contest_id) as eligibility, ");
-            sb.append("  ");
+            sb.append("  "); */
             // use contest creator as manager for now
     /*        sb.append("     NVL((select res.resource_name ");
             sb.append("         from studio_competition_pipeline_resources as pipe_res ");
