@@ -921,7 +921,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE,
             Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
             Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE};
@@ -3941,12 +3941,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("  ");
             sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
             sb.append("  ");
-            sb.append("     ccat.short_desc as short_desc, ");
+ // not used and cause performance issue
+/*            sb.append("     ccat.short_desc as short_desc, ");
             sb.append("  ");
             sb.append("     ccat.description as long_desc, ");
             sb.append("  ");
             sb.append("     (select value from project_info where project_info_type_id = 14 and project_id = c.project_id) as eligibility, ");
-            sb.append("  ");
+            sb.append("  "); */
          /*   sb.append("     (select max(ri.value) ");
             sb.append("     from resource as res ");
             sb.append("     join resource_role_lu as res_role ");
@@ -4137,38 +4138,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     c.setDr((Double)os[19]);
                 if (os[20] != null)
                     c.setContestFee((Double)os[20]);
-                if (os[21] != null)
+    /*            if (os[21] != null)
                     c.setShortDesc(os[21].toString());
                 if (os[22] != null)
                     c.setLongDesc(os[22].toString());
                 if (os[23] != null)
-                    c.setEligibility(os[23].toString());
+                    c.setEligibility(os[23].toString()); */
+                if (os[21] != null)
+                    c.setManager(os[21].toString());
+                if (os[22] != null)
+                    c.setReviewer(os[22].toString());
+                if (os[23] != null)
+                    c.setArchitect(os[23].toString());
                 if (os[24] != null)
-                    c.setManager(os[24].toString());
+                    c.setSalesPerson(os[24].toString());
                 if (os[25] != null)
-                    c.setReviewer(os[25].toString());
+                    c.setClientApproval((Long)os[25] == 1 ? true : false);
                 if (os[26] != null)
-                    c.setArchitect(os[26].toString());
+                    c.setPricingApproval((Long)os[26] == 1 ? true : false);
                 if (os[27] != null)
-                    c.setSalesPerson(os[27].toString());
+                    c.setHasWikiSpecification((Long)os[27] == 1 ? true : false);
                 if (os[28] != null)
-                    c.setClientApproval((Long)os[28] == 1 ? true : false);
+                    c.setPassedSpecReview((Long)os[28] == 1 ? true : false);
                 if (os[29] != null)
-                    c.setPricingApproval((Long)os[29] == 1 ? true : false);
+                    c.setHasDependentCompetitions((Long)os[29] == 1 ? true : false);
                 if (os[30] != null)
-                    c.setHasWikiSpecification((Long)os[30] == 1 ? true : false);
+                    c.setWasReposted((Long)os[30] == 1 ? true : false);
                 if (os[31] != null)
-                    c.setPassedSpecReview((Long)os[31] == 1 ? true : false);
+                    c.setNotes(os[31].toString());
                 if (os[32] != null)
-                    c.setHasDependentCompetitions((Long)os[32] == 1 ? true : false);
+                    c.setPperm(os[32].toString());
                 if (os[33] != null)
-                    c.setWasReposted((Long)os[33] == 1 ? true : false);
-                if (os[34] != null)
-                    c.setNotes(os[34].toString());
-                if (os[35] != null)
-                    c.setPperm(os[35].toString());
-                if (os[36] != null)
-                    c.setCperm(os[36].toString());
+                    c.setCperm(os[33].toString());
 
                 
                 result.add(c);
