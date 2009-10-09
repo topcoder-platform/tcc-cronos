@@ -52,11 +52,11 @@ import javax.persistence.SqlResultSetMapping;
         @FieldResult(name = "totalPrize", column = "tot_prize"),
         @FieldResult(name = "dr", column = "dr"),
         @FieldResult(name = "contestFee", column = "contest_fee"),
-        
+/*        
         @FieldResult(name = "shortDesc", column = "short_desc"),
         @FieldResult(name = "longDesc", column = "long_desc"),
         @FieldResult(name = "eligibility", column = "eligibility"),
-        
+*/        
         @FieldResult(name = "manager", column = "manager"),
         @FieldResult(name = "reviewer", column = "reviewer"),
         @FieldResult(name = "architect", column = "architect"),
@@ -143,13 +143,13 @@ public class SimplePipelineData {
     private Double contestFee;
 
     /** The short desc. */
-    private String shortDesc;
+//    private String shortDesc;
 
     /** The long desc. */
-    private String longDesc;
+//    private String longDesc;
 
     /** The eligibility. */
-    private String eligibility;
+//    private String eligibility;
 
     /** The manager. */
     private String manager;
@@ -559,58 +559,58 @@ public class SimplePipelineData {
      * Gets the short desc.
      * 
      * @return the short desc
-     */
+     
     public String getShortDesc() {
         return this.shortDesc;
-    }
+    }*/
 
     /**
      * Sets the short desc.
      * 
      * @param shortDesc
      *            the new short desc
-     */
+     
     public void setShortDesc(String shortDesc) {
         this.shortDesc = shortDesc;
-    }
+    }*/
 
     /**
      * Gets the long desc.
      * 
      * @return the long desc
-     */
+     
     public String getLongDesc() {
         return this.longDesc;
-    }
+    }*/
 
     /**
      * Sets the long desc.
      * 
      * @param longDesc
      *            the new long desc
-     */
+     
     public void setLongDesc(String longDesc) {
         this.longDesc = longDesc;
-    }
+    }*/
 
     /**
      * Gets the eligibility.
      * 
      * @return the eligibility
-     */
+     
     public String getEligibility() {
         return this.eligibility;
-    }
+    }*/
 
     /**
      * Sets the eligibility.
      * 
      * @param eligibility
      *            the new eligibility
-     */
+    
     public void setEligibility(String eligibility) {
         this.eligibility = eligibility;
-    }
+    } */
 
     /**
      * Gets the manager.
