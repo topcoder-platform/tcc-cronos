@@ -1319,9 +1319,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setTotalPrize(p.getTotalPrize());
                     cp.setDr(p.getDr());
                     cp.setContestFee(p.getContestFee());
-                    cp.setShortDesc(p.getShortDesc());
-                    cp.setLongDesc(p.getLongDesc());
-                    cp.setEligibility(p.getEligibility());
+                    cp.setShortDesc("");
+                    cp.setLongDesc("");
+                    cp.setEligibility("");
                     cp.setManager(p.getManager());
                     cp.setReviewer(p.getReviewer());
                     cp.setArchitect(p.getArchitect());
@@ -1368,9 +1368,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setTotalPrize(p.getTotalPrize());
                     cp.setDr(p.getDr());
                     cp.setContestFee(p.getContestFee());
-                    cp.setShortDesc(p.getShortDesc());
-                    cp.setLongDesc(p.getLongDesc());
-                    cp.setEligibility(p.getEligibility());
+                    cp.setShortDesc("");
+                    cp.setLongDesc("");
+                    cp.setEligibility("");
                     cp.setManager(p.getManager());
                     cp.setReviewer(p.getReviewer());
                     cp.setArchitect(p.getArchitect());
@@ -1402,8 +1402,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
             return ret;
         } catch (com.topcoder.service.studio.PersistenceException e) {
-            throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data for studio.");
-        } finally {
+            throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data.");
+        }
+          catch (Exception e) {
+            throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data.");
+        } 
+        finally {
             logExit("getCommonPipelineData");
         }
     }
