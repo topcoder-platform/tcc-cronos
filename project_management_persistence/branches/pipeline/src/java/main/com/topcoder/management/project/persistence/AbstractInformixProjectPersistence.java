@@ -924,7 +924,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE};
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
 	/**
 	 * 'Active' status name
@@ -3999,7 +3999,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("                         from user_permission_grant as upg   ");
             sb.append("                         where resource_id=c.project_id   ");
             sb.append("                         and is_studio=0 ");
-            sb.append("                         and upg.user_id = ").append(userId).append("),0)) as cperm   ");
+            sb.append("                         and upg.user_id = ").append(userId).append("),0)) as cperm,   ");
+            sb.append(" ( select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph ");
+			sb.append("    where ph.phase_status_id = 2 and ph.project_id=c.project_id)) as current_phase,  ");
+            sb.append("  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end  ");
+	        sb.append("     from contest_sale cs where c.project_id = cs.contest_id and upper(psl.name)='ACTIVE' ) as newstatus ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -4064,23 +4068,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     .append("','%Y-%m-%d') AND to_date('")
                     .append(formatter.format(endDate))
                     .append("','%Y-%m-%d')) ");
-            sb.append(" OR ");
-            sb.append(" ((select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
-                    .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND to_date('")
-                    .append(formatter.format(endDate))
-                    .append("','%Y-%m-%d')) ");
-            sb.append(" OR ");
-            sb.append("(to_date('").append(formatter.format(startDate)).append("','%Y-%m-%d') BETWEEN (select max(nvl(actual_start_time, scheduled_start_time))         from    project_phase ph where ph.project_id=c.project_id)  AND ");
-            sb.append(" (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id)) ");
-            sb.append(" OR ");
-            sb.append("(to_date('").append(formatter.format(endDate)).append("','%Y-%m-%d') BETWEEN (select max(nvl(actual_start_time, scheduled_start_time)) from                 project_phase ph where ph.project_id=c.project_id)  AND ");
-            sb.append(" (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=c.project_id)) ");
+
             sb.append(" ) ");
-    //TOFIX
-   /*         if (!overdueContests) {
-                sb.append(" AND start_time >= TODAY  ");
-            }*/
+
 
             sb.append(" order by start_time ");
 
@@ -4112,8 +4102,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     c.setContestType(os[6].toString());
                 if (os[7] != null)
                     c.setContestCategory(os[7].toString());
-                if (os[8] != null)
-                    c.setSname(os[8].toString());
+
+                
+
+          /*      if (os[8] != null)
+                    c.setSname(os[8].toString());  */
                 if (os[9] != null)
                     c.setStartDate(myFmt.parse(os[9].toString()));
                 if (os[10] != null)
@@ -4170,6 +4163,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     c.setPperm(os[32].toString());
                 if (os[33] != null)
                     c.setCperm(os[33].toString());
+
+                // try to use phase if not null
+				if (rows[i][34] != null)
+				{
+					c.setSname((String)rows[i][34]);
+				}
+				// else for active, use 'newstatus'
+				else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+					c.setSname((String)rows[i][35]);
+				}
+				// use status
+				else
+				{
+					c.setSname((String)rows[i][8]);
+				}
 
                 
                 result.add(c);
