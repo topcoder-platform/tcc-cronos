@@ -5213,21 +5213,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append(" ( ");
             sb
                     .append(" (c.start_time BETWEEN to_date(:startDate,'%Y-%m-%d') AND to_date(:endDate,'%Y-%m-%d')) ");
-            sb.append(" OR ");
-            sb
-                    .append(" (c.end_time BETWEEN to_date(:startDate,'%Y-%m-%d') AND  to_date(:endDate,'%Y-%m-%d')) ");
-            sb.append(" OR ");
-            sb
-                    .append(" (to_date(:startDate,'%Y-%m-%d') BETWEEN c.start_time  AND  c.end_time) ");
-            sb.append(" OR ");
-            sb
-                    .append(" (to_date(:endDate,'%Y-%m-%d') BETWEEN c.start_time  AND  c.end_time) ");
             sb.append(" ) ");
             sb.append("  ");
-
-            if (!overdueContests) {
-                sb.append(" AND c.start_time >= TODAY");
-            }
 
             sb.append(" order by c.start_time ");
 
