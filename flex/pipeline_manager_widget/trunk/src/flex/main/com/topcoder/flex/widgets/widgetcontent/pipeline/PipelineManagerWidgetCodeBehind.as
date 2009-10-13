@@ -357,11 +357,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
             
             // calculate the default start and end date.
             model.startDate = model.generateSundayTime(new Date());
-            model.endDate = new Date(model.startDate.time + 8 * 7 * 24 * 3600 * 1000);
+            model.endDate = new Date(model.startDate.time + 4 * 7 * 24 * 3600 * 1000);
             
             TCLog.instance.debug("Model.startDate: " + model.startDate);
             TCLog.instance.debug("Model.endDate: " + model.endDate);
-            loadContests(model.startDate, model.endDate, true);
+            loadContests(model.startDate, model.endDate, false);
         }
         
         /**
