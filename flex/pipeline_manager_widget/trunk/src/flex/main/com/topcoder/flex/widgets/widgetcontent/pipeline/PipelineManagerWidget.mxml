@@ -323,37 +323,7 @@
                 flipIn.play();
             }
             
-            /**
-             * Animation effect related
-             */
-            private function moveList(up:Boolean):void {
-                if (index > 0 && up) {
-                    index--;
-                    list.verticalScrollPosition=list.verticalScrollPosition - 1;
-                } else if (!up && index < list.dataProvider.length - 7) {
-                    
-                    index++;
-                    list.verticalScrollPosition=list.verticalScrollPosition + 1;
-                }
-                if (list.selectedIndex < index) {
-                    list.selectedIndex=index;
-                    handleSelect();
-                }
-                if (list.selectedIndex > index + 6) {
-                    list.selectedIndex=index + 6;
-                    handleSelect();
-                }
-                if (index == 0) {
-                    prevBtn.visible=false;
-                } else {
-                    prevBtn.visible=true
-                }
-                if (index >= model.list.length - 7) {
-                    nextBtn.visible=false;
-                } else {
-                    nextBtn.visible=true;
-                }
-            }
+           
             
             /**
              * Animation effect related
@@ -561,12 +531,6 @@
              horizontalAlign="center"
              horizontalScrollPolicy="off"
              verticalScrollPolicy="off">
-        <mx:Button id="prevBtn"
-                   label="Prev"
-                   click="moveList(true)"
-                   styleName="listStyle"
-                   visible="false"
-                   includeInLayout="false"/>
         <mx:TileList id="list"
                      width="152"
                      variableRowHeight="false"
@@ -574,7 +538,7 @@
                      paddingLeft="0"
                      paddingRight="0"
                      borderStyle="none"
-                     rowCount="13"
+                     rowCount="20"
                      dataProvider="{model.typeLabels}"
                      labelField="name"
                      wordWrap="true"
@@ -587,11 +551,7 @@
                      columnCount="1"
                      styleName="listStyle"
                      itemsChangeEffect="{myDTLE}"/>
-        <mx:Button id="nextBtn"
-                   label="Next"
-                   click="moveList(false)"
-                   styleName="listStyle"
-                   visible="{model &amp;&amp; model.list &amp;&amp; index &lt; model.list.length - 9}"/>
+  
     </mx:VBox>
     <mx:VBox id="proDetail"
              width="100%"
@@ -649,8 +609,10 @@
             <tccomp:DatePicker id="end"
                                chooser="{endDateChooser}"
                                date="{model.filter.end ? model.filter.end : model.endDate}"/>
+             <!-- exclude for now -->
             <mx:CheckBox id="overdueCheckBox"
                          label="Include Overdue"
+                         includeInLayout="false"
                          selected="false"/>
             <mx:Spacer width="100%"/>
             <mx:Button label="UPDATE"

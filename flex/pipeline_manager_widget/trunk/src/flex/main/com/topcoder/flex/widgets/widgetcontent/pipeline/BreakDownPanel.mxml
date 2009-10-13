@@ -18,6 +18,9 @@
 			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.BreakDown;
 			import mx.collections.ArrayCollection;
 			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+
 			[Bindable]
 			private var model:Model;
 			[Bindable]
@@ -39,8 +42,28 @@
 					_list.addItem(wk);
 				}
 				_list.addItem(total);
+
+                
+                var sort:Sort=new Sort();
+                sort.compareFunction=compareContests;
+                _list.sort = sort;
+                _list.refresh();   
 				title.text = model.breakCate[model.breakIdx];
 			}
+
+        /**
+         * sort client by contests 
+         *
+         */
+        private function compareContests(a:Object, b:Object, fields:Array=null):int {
+            var ca:BreakDown = a as BreakDown;
+            var cb:BreakDown = b as BreakDown;
+            if (a.contest > b.contest)
+              return -1;
+            if (a.contest < b.contest)
+              return 1;
+            else return 0;
+        }
 		]]>
 	</mx:Script>
 	<mx:Binding source="model.breakList" destination="brkList" />

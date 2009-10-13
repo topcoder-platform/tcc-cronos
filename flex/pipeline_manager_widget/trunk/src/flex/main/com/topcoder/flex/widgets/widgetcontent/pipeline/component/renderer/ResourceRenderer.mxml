@@ -33,12 +33,12 @@
                     detail=data as Detail;
                     lb1.text=truncate(detail.manager);
                     lb1.toolTip="Manager:" + detail.manager;
-                    lb2.text=truncate(detail.arch);
+                /*    lb2.text=truncate(detail.arch);
                     lb2.toolTip="Architects:" + detail.arch;
                     lb3.text=truncate(detail.reviewer);
                     lb3.toolTip="Reviewers:" + detail.reviewer;
                     lb4.text=truncate(detail.specer);
-                    lb4.toolTip="Salesperson:" + detail.specer;
+                    lb4.toolTip="Salesperson:" + detail.specer;  */
                     model=Model.getInstance(detail.uid);
                 }
             }
@@ -71,7 +71,7 @@
              buttonMode="true"
              useHandCursor="true"
              mouseChildren="false"/>
-    <mx:Text click="filterResource('arch')"
+  <!--  <mx:Text click="filterResource('arch')"
              styleName="listStyle"
              id="lb2"
              width="100%"
@@ -94,5 +94,5 @@
              textDecoration="underline"
              buttonMode="true"
              useHandCursor="true"
-             mouseChildren="false"/>
+             mouseChildren="false"/> -->
 </mx:VBox>

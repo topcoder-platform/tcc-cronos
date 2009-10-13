@@ -92,15 +92,7 @@
 			    gotoURL(url);
 			}
 			
-			/**
-			  * Opens the ICAL feed url in new window.
-			  * 
-			  * @since 1.0.1
-			  */  
-			private function openICALFeed():void {
-			    var url:String=model.createICalFeedURL();
-			    gotoURL(url);
-			}
+
 			
 			/**
 			  * Opens the specified url in new window.
@@ -123,7 +115,6 @@
 		<mx:Spacer width="100%" />
 		<mx:Button label="View Change History" styleName="btn" click="model.navigateToMode('DATE')" />
 		<mx:Button label="View Breakdown" styleName="btn" click="model.navigateToMode('BREAK')" />
-		<mx:Button label="iCalendar" styleName="btn" click="openICALFeed()"/>
 		<mx:Button label="Feed RSS/Atom Feed" styleName="btn" click="openRSSFeed()"/>
 	</mx:HBox>
 	<mx:DataGrid id="grid" width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"

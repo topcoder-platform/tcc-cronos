@@ -30,6 +30,9 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
     import mx.rpc.events.ResultEvent;
     import mx.utils.ObjectUtil;
     import mx.utils.XMLUtil;
+    import mx.collections.SortField;
+    import mx.collections.Sort;
+
     
     /**
      * <p>
@@ -172,6 +175,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
         * @since 1.0.1
         */
         private var rssFeedURL:String=Application.application.parameters.rssFeedURL;
+
+        /**
+        * host address, used for rss feed
+        * 
+        * @since 1.0.1
+        */
+        private var hostAddress:String=Application.application.parameters.hostAddress;
         
         /**
          * Holds the map of contestId to pipeline details.
@@ -581,9 +591,14 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     }
                     var p:Project=tmp[detail[role]] as Project;
                     p.scheduled++;
-                    p.posted+=(detail.status == "Posted") ? 1 : 0;
+                    p.posted+=(detail.status != "Draft" && detail.status != "Scheduled") ? 1 : 0;
                 }
                 this.pList=tmp2;
+
+                var sort:Sort=new Sort();
+                sort.compareFunction=comparePersonContests;
+                pList.sort = sort;
+                pList.refresh();  
             }
         }
         
@@ -826,7 +841,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 var week:Summary=tmp[monday.time] as Summary;
                 week.fee+=detail.fee;
                 week.cost+=detail.dr + detail.prize + /*detail.seprize + */detail.review + detail.spec;
-                week.actualA+=(detail.status == "Posted") ? 1 : 0;
+                week.actualA+=(detail.status != "Draft" && detail.status != "Scheduled") ? 1 : 0;
                 week.actualB++;
                 week.isTotal=false;
                 week.details.addItem(detail);
@@ -840,13 +855,47 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 var c:Client=tmp4[detail.client] as Client;
                 c.client=detail.client;
                 c.contests++;
-                c.launched=0;
+                c.launched+= (detail.status != "Draft" && detail.status != "Scheduled") ? 1 : 0;
                 
             }
             updateRole(role);
             weekList=tmps;
             cList=tmp2;
+
+            var sort:Sort=new Sort();
+            sort.compareFunction=compareClientContests;
+            cList.sort = sort;
+            cList.refresh();   
         }
+
+        /**
+         * sort client by contests
+         *
+         */
+        private function compareClientContests(a:Object, b:Object, fields:Array=null):int {
+            var ca:Client = a as Client;
+            var cb:Client = b as Client;
+            if (a.contests > b.contests)
+              return -1;
+            if (a.contests < b.contests)
+              return 1;
+            else return 0;
+        }
+
+        /**
+         * sort client by launched 
+         *
+         */
+        private function comparePersonContests(a:Object, b:Object, fields:Array=null):int {
+            var ca:Project = a as Project;
+            var cb:Project = b as Project;
+            if (a.posted > b.posted)
+              return -1;
+            if (a.posted < b.posted)
+              return 1;
+            else return 0;
+        }
+        
         
         /**
          * Creates and returns a new rss feed url that has filters applied.
@@ -855,18 +904,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          * @since 1.0.1
          */
         public function createRssFeedURL():String {
-            return rssFeedURL + "&" + getFilterParams();
+            //return rssFeedURL; // + "&" + getFilterParams();
+            var url:String = "http://" + hostAddress + "/tc?module=BasicRSS&t=new_report&c=rss_Pipeline&dsid=28";
+
+            return url;
         }
-        
-        /**
-         * Creates and returns a new ical feed url that has filters applied.
-         * 
-         * @return  a new ical feed url that has filters applied.
-         * @since 1.0.1
-         */
-        public function createICalFeedURL():String {
-            return icalFeedURL + "&" + getFilterParams();
-        }
+       
         
         /**
          * Returns the url param string from the filter criteria.
