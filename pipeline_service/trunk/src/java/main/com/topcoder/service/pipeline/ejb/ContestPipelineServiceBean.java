@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -1396,6 +1397,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             }
             
             logDebug("The results are:" + ret.size());
+
+            Collections.sort(ret);
 
             long endTime = System.currentTimeMillis();
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
