@@ -1248,7 +1248,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     		else
     		{
     		    var me:LaunchWidget = container.contents as LaunchWidget; 
-        		var result:Number = new Number(me.overView.ns_contestf.text) - getPaidContestFee(); 
+        		var result:Number = new Number(me.overView.ns_cntstTtl.text) - getPaidContestFee(); 
         		return new Number(result.toFixed(2));
     		}	
         }

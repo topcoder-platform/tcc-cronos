@@ -201,6 +201,14 @@
              * @since 1.0.3
              */
             private var highCostData:Dictionary=new Dictionary();
+
+	    /**
+	     * Stores the cost items for custom cost data.
+             * Initializes when user changes the values for manual prize setting.
+             *
+	     * @since 1.0.4
+	     */
+            private var custCostData:Dictionary=new Dictionary();
             
             /**
              * Represents the name of the current cost level.
@@ -211,6 +219,12 @@
             
             [Bindable]
             private var _showSWMilestonePrize=false;
+            
+            private var _firstReadFromPersistence:Boolean=true;
+            
+            private var _swContestTotalCostAsPersisted:Number=0;
+            
+            private var _currentSWFirstPlaceCustomPrize:String="0";
             
             /**
              * This method initializes the corresponding data necessary to show this page
@@ -246,6 +260,10 @@
                     requestContestTypes.send();
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
+
+		     // recalculate start date forbidden dates
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(curContestTypeId, true);      
                 } else {
                     // load reliability bonus xml.
                     requestReliabilityBonus.send();
@@ -334,12 +352,17 @@
                     if (level == SoftwareCompetitionUtils.COST_LEVEL_A) {
                         selCostData=lowCostData;
                         lowCost.selected=true;
-                    } if (level == SoftwareCompetitionUtils.COST_LEVEL_B) {
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_B) {
                         selCostData=midCostData;
                         mediumCost.selected=true;
-                    } if (level == SoftwareCompetitionUtils.COST_LEVEL_C) {
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_C) {
                         selCostData=highCostData;
                         highCost.selected=true;
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_M) {
+                        selCostData=custCostData;
+                        custCost.visible=custCost.includeInLayout=true;
+                        custCost.selected=true;
+                        ns_firstPlace.editable=true;
                     }
                     
                     currentCostLevel=level;
@@ -393,17 +416,31 @@
                             var adminFee:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
                                                     SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
                             selCostData["ContestFee"]=adminFee;
+                            ns_contestf.text=adminFee.toFixed(0);
                         }
                         
                         if (mainWidget.isEditMode && mainWidget.isPaidContest()) {
                             var dt:Date = SoftwareCompetitionUtils.instance().getUnclosedSubmissionPhaseEndDate(mainWidget.softwareCompetition);
                             var currentDt:Date = new Date();
-                            if (dt != null && dt.getTime() - 24 * 3600 * 1000 >= currentDt.getTime()) {
-                                if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_C) {
+                            if (dt != null) {
+                                if (dt.getTime() - 24 * 3600 * 1000 >= currentDt.getTime()) {
+                                    if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_C) {
+                                        lowCost.enabled=false;
+                                        mediumCost.enabled=false;
+                                    } else if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_B) {
+                                        lowCost.enabled=false;
+                                    } else if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_M) {
+                                        lowCost.enabled=false;
+                                        mediumCost.enabled=false;
+                                        highCost.enabled=false;
+                                    }
+                                } else {
+                                    // do not allow prize to be changed if less than 24 hrs for submission.
                                     lowCost.enabled=false;
                                     mediumCost.enabled=false;
-                                } else if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_B) {
                                     lowCost.enabled=false;
+                                    custCost.enabled=false;
+                                    ns_firstPlace.editable=false;
                                 }
                             } 
                         }
@@ -483,16 +520,6 @@
                 mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
                 mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
 
-                // assign values to review screen.
-                /*mainWidget.review.cstTypeStep2=studioType.selection.label;
-                mainWidget.review.firstPrize=firstPlace.text;
-                mainWidget.review.secondPrize=secondPlace.text;
-                mainWidget.review.thirdPrize=thirdPlace.text;
-                mainWidget.review.fourthPrize=fourthPlace.text;
-                mainWidget.review.fifthPrize=fifthPlace.text;
-                mainWidget.review.adminFee=adminf.text;
-                mainWidget.review.contestTotal=cntstTtl.text;*/
-
                 // update summary box
                 mainWidget.updateSummary();
 
@@ -532,16 +559,15 @@
                 }
                 
                 var selCostData:Dictionary=null;
-                var level:String=null;
-                if (lowCost.selected) {
+                var level:String=currentCostLevel;
+                if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
                     selCostData=lowCostData;
-                    level=SoftwareCompetitionUtils.COST_LEVEL_A;
-                } else if (mediumCost.selected) {
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_B) {
                     selCostData=midCostData;
-                    level=SoftwareCompetitionUtils.COST_LEVEL_B;
-                } else if (highCost.selected) {
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_C) {
                     selCostData=highCostData;
-                    level=SoftwareCompetitionUtils.COST_LEVEL_C;
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_M) {
+                    selCostData=custCostData;
                 }
                 
                 if (selCostData) {
@@ -691,6 +717,13 @@
                     ns_reviewCost.setFocus();
                     return false;
 				}
+                
+                if (mainWidget.isEditMode && mainWidget.isPaidContest() && Number(ns_cntstTtl.text) < _swContestTotalCostAsPersisted) {
+                    Helper.showAlertMessage("Can not decrease prize, can just increase!");
+                    ns_firstPlace.text=_currentSWFirstPlaceCustomPrize;
+                    return false;
+                }
+                
                 //
                 // Update competition and review data for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -856,15 +889,15 @@
                             midCostData);
                         loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high')[0] as XML, 
                             highCostData);
-                        
+
+			            ns_setPrizes();
+                        ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                         adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
 			            s_updateAmount(true);
                     }
                 }
-                
-                ns_setPrizes();
                 
                 // TODO: in case of invoiced contests there are various scenarios where the fee should be loaded from backend.
                 // and sometime from the getContest data.
@@ -878,7 +911,6 @@
                 //    - Changed the name to more generic 'overview data' rather than 'examples'
                 //
                 requestOverviewData.send();
-                ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
             }
             
             /**
@@ -1014,11 +1046,7 @@
                 // request contest fees after studio contest types has been loaded.
                 // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
                 //
-                //if (mainWidget.isInvoicedContest) {
-                //    getContestFeesByBillingProject();
-                //} else {
                 requestContestFees.send();
-                //}
             }
             
             /**
@@ -1059,22 +1087,17 @@
                             contestFees.contestType.(@id == contestType).contestFee[0]=contestFee;
                         }
                     }
-                    
-                    if (contestFees) {
-                        if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
-                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
-                            ns_updateAmount();       					
-                        } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                            adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
-                            s_updateAmount(true);
+                }
 
-                        }
-                    }/* else { // snow01: we do not need else block
-                         requestContestFees.send();
-                    }*/
-                } /*else { // snow01: we do not need else block
-                    requestContestFees.send();
-                }*/
+                if (contestFees) {
+                    if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
+                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
+                        ns_updateAmount();
+                    } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
+                        s_updateAmount(true);
+                    }
+                }
             }
 
             private function goToUrl(url:String):void {
@@ -1095,12 +1118,13 @@
                     return;
                 }
                 
-                trace("New contest fee: " + cf);
+                trace("New contest fee: " + cf + ",currentCostLevel:" + currentCostLevel);
                 
                 // store contest fee data in all cost levels.
                 lowCostData["ContestFee"]=cf;
                 midCostData["ContestFee"]=cf;
                 highCostData["ContestFee"]=cf;
+                custCostData["ContestFee"]=cf;
                 
                 trace("Low cost data: " + lowCostData);
                 trace("Mid cost data: " + midCostData);
@@ -1110,18 +1134,28 @@
                 lowCost.label="Low ($" + getTotalSWCost(lowCostData).toFixed(0) + ")";
                 mediumCost.label="Medium ($" + getTotalSWCost(midCostData).toFixed(0) + ")";
                 highCost.label="High ($" + getTotalSWCost(highCostData).toFixed(0) + ")";
+                if (custCost && custCost.visible) {
+                    custCost.label="Custom ($" + getTotalSWCost(custCostData).toFixed(0) + ")";
+                }
                 
                 var selCostData:Dictionary=null;
-                if (lowCost.selected) {
+                if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_A) {
                     selCostData=lowCostData;
-                } else if (mediumCost.selected) {
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_B) {
                     selCostData=midCostData;
-                } else if (highCost.selected) {
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_C) {
                     selCostData=highCostData;
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_M) {
+                    selCostData=custCostData;
                 }
                 
                 if (selCostData) {
                     ns_cntstTtl.text=getTotalSWCost(selCostData).toFixed(2);
+                    if (mainWidget.isEditMode && _firstReadFromPersistence) {
+                        _swContestTotalCostAsPersisted=new Number(ns_cntstTtl.text);
+                        _currentSWFirstPlaceCustomPrize=ns_firstPlace.text;
+                        _firstReadFromPersistence=false;
+                    }
                     showSoftwareCosts(selCostData);
                 }
             }
@@ -1163,6 +1197,9 @@
                 } else if (item == highCost) {
                     selCostData=highCostData;
                     currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_C;
+                } else if (custCost && custCost.visible && item == custCost) {
+                    selCostData=custCostData;
+                    currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
                 }
                 
                 if (selCostData) {
@@ -1234,28 +1271,39 @@
                     secondPlaceCost,
                     reliabilityBonus);
                 
-                var selCostData:Dictionary=null;
-                if (lowCost.selected) {
-                    selCostData=lowCostData;
-                } else if (mediumCost.selected) {
-                    selCostData=midCostData;
-                } else if (highCost.selected) {
-                    selCostData=highCostData;
-                }    
+                var selCostData:Dictionary=custCostData;
                    
                 var milestoneBonus:Number=0;
                 
-                if (_showSWMilestonePrize && selCostData) {
-                    milestoneBonus=selCostData["MilestoneBonus"] as Number;
+                if (_showSWMilestonePrize) {
+        		    if (selCostData && !isNaN(Number(selCostData["MilestoneBonus"]))) {
+	                    milestoneBonus=selCostData["MilestoneBonus"] as Number;
+		            } else {
+			            milestoneBonus=midCostData["MilestoneBonus"] as Number;
+		            }
                 }
                 
-                var contestFee:Number=0;
+                var contestFee:Number=new Number(ns_contestf.text);
                 
-                if (selCostData) {
-                    contestFee=selCostData["ContestFee"] as Number;
-                }
+                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee;
                 
-                ns_secondPlace.text=secondPlaceCost.toFixed(0);
+                currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
+                custCost.visible=custCost.includeInLayout=true;
+                custCost.selected=true;
+
+                selCostData["FirstPlace"]=firstPlaceCost;
+                selCostData["SecondPlace"]=secondPlaceCost;
+                selCostData["ReviewBoard"]=reviewBoardCost;
+                selCostData["ReliabilityBonus"]=reliabilityBonus;
+                selCostData["DR"]=drCost;
+                selCostData["MilestoneBonus"]=milestoneBonus;
+                
+                
+                selCostData["ContestFee"]=contestFee;
+
+                ns_updateAmount();
+                
+                /*ns_secondPlace.text=secondPlaceCost.toFixed(0);
                 ns_reviewCost.text=reviewBoardCost.toFixed(0);
                 ns_reliabilityBonus.text=reliabilityBonus.toFixed(0);
                 ns_dr.text=drCost.toFixed(0);
@@ -1264,10 +1312,8 @@
                     ns_milestoneBonus.text=milestoneBonus.toFixed(0);
                 }
                 
-                ns_contestf.text=contestFee.toFixed(0);
-                
                 var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee;
-                ns_cntstTtl.text=totalCost.toFixed(0);
+                ns_cntstTtl.text=totalCost.toFixed(0);*/
             }
             
             /**
@@ -1703,6 +1749,7 @@
                         <mx:RadioButton id="lowCost" label="Low" group="{costLevelRGrp}"/>
                         <mx:RadioButton id="mediumCost" label="Medium" group="{costLevelRGrp}" selected="true"/>
                         <mx:RadioButton id="highCost" label="High" group="{costLevelRGrp}"/>
+                        <mx:RadioButton id="custCost" label="Custom" group="{costLevelRGrp}" visible="false" includeInLayout="false"/>
                     </mx:HBox>   
                     <mx:HBox>
                         <mx:HBox>

@@ -1028,7 +1028,7 @@
                         setButton(1);
     
                         activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
-                        activate.contestTotal = isStudioContestType ? review.adminFee : review.ns_contestFeeS; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1682
                         
                         activate.initData();
 			            break;
@@ -1262,7 +1262,7 @@
                         setButton(1);
     
                         activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
-                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
     
                         activate.initData();
                     }
@@ -1319,7 +1319,7 @@
                         setButton(3);
                         
                         activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
-                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : review.ns_contestFeeS; // BUGR-1363, BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
           
                          activate.initData();
                          activate.stack.selectedIndex = 2;

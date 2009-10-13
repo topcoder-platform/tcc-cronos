@@ -393,7 +393,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @since 1.0.1
          */
         public static var COST_LEVEL_C:String = "C";
-        
+       
+
+        /**
+         * Represents the cost level M (current maps to manual).
+         *
+         * @since 1.0.1
+         */
+        public static var COST_LEVEL_M:String = "M";
+
         /**
          * Standard submission count
          * 
