@@ -2886,6 +2886,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
     {
     	logEnter("getSimpleProjectContestData");
@@ -2928,6 +2929,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException
     {
     	logEnter("getSimpleProjectContestData(pid)");
@@ -4731,6 +4733,7 @@ public class StudioServiceBean implements StudioService {
      *             if error during retrieval from database.
      * @since 1.0.1
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws PersistenceException {
         logEnter("getSimplePipelineData");
