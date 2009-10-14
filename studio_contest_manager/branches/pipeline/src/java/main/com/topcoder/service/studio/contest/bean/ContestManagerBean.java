@@ -3151,7 +3151,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED))
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData()
             throws ContestManagementException {
         try {
