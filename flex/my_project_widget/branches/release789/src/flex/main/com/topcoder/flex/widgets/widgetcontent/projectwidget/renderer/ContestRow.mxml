@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render contest row.
+     
+     Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+        - For read only, when a user selects the contest, it will go to launch a contest just like now, 
+        - but the user can only view the contest information and can not update any thing. 
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton.
+        
+     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - added icon for spec review status.
+        - removed the extra column. 
+
+     @author TCSDEVELOPER, TCSASSEMBLER
+     @since My Project Widget Overhaul
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         borderStyle="solid"
+         borderSides="bottom"
+         styleName="ContestRowStyle"
+         backgroundSize="100%"
+         mouseOver="mouseOverHandle()"
+         mouseOut="mouseOutHandle()">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+            import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.model.IWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+            import mx.formatters.DateFormatter;
+            import mx.collections.ArrayCollection;
+            import flash.utils.Dictionary;
+            import com.topcoder.flex.Helper;
+	    
+
+            /**
+             * Row number of this contest row.
+             */
+            private var _rowNum:int;
+
+            /**
+             * Contest for this contest row.
+             */
+            [Bindable]
+            private var contest:Contest;
+
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var parentWidget:ProjectWidget=null;
+
+            /**
+             * The base url for the link of contents;
+             */
+            private var contentDetailUrlBase:String="http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+
+
+	    private var softwareConetestORurl:String = "http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=";
+
+
+            /**
+             * The base url for the link of contents;
+             */
+            private var forumUrlBase:String="http://studio.topcoder.com/forums?module=ThreadList&forumID=";
+
+
+	     private static var STUDIO_TYPE:String = "Studio";
+
+            /**
+             * Sets the data for this contest row.
+             *
+             * @param value the contest data.
+             */
+            override public function set data(value:Object):void {
+                contest=value as Contest;
+                super.data=value;
+                startDate=contest.startDate;
+                endDate=contest.endDate;
+            }
+
+            /**
+             * Sets the row number of this contest row.
+             *
+             * @param temp row number.
+             */
+            public function set rowNum(temp:Number):void {
+                _rowNum=temp;
+                if ((_rowNum % 2) == 0) {
+                    var o:Object=getStyle("oddRowColor");
+                    this.setStyle("backgroundColor", getStyle("oddRowColor"))
+                } else {
+                    this.setStyle("backgroundColor", getStyle("evenRowColor"))
+                }
+            }
+
+            /**
+             * Gets the row number of this contest row.
+             *
+             * @return the row number.
+             */
+            public function get rowNum():Number {
+                return _rowNum;
+            }
+
+            /**
+             * Handles the set of status label.
+             */
+            public function handleStatus(input:String):String {
+                statusBtn.label=input;
+                switch (input.toLowerCase()) {
+                    case "active":
+                    case "terminated":
+                    case "completed":
+                    case "draft":
+                    case "scheduled":
+                    case "danger":
+                        return input.toLocaleLowerCase();
+                    default:
+                        return "standard";
+                }
+            }
+
+            /**
+             * Handles the set of link properties (when specified value > 0) for forum and submissions.
+             *
+             * @param input the input value.
+             * @param linkButton the reference to link button.
+             * @param clickHandler the reference to click handler that need to be called on link button click.
+             */
+            private function setLinkProperties(input:int, linkButton:Button, clickHandler:Function):String {
+                if (contest.type == STUDIO_TYPE) {
+                    if (input >= 0) {
+                        linkButton.styleName="rowContentBtn";
+                        linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                        linkButton.buttonMode=true;
+                        linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                        linkButton.setStyle("textAlign", "right");
+                    }
+                    
+                    if (input == 0 && linkButton == lblForumPosts) {
+                        return "no forum";
+                    }
+                    
+                    return "" + input;
+                } else {
+                    linkButton.styleName="rowContentBtn";
+                    linkButton.labelPlacement=ButtonLabelPlacement.LEFT;
+                    linkButton.buttonMode=true;
+                    linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                    linkButton.setStyle("textAlign", "right");
+                    return "" + input;
+                }
+            }
+
+            /**
+             * Handles the set of review status link properties.
+             * 
+             * Updated for Version 1.0.1
+             *    - style name is set as per the status.
+             *
+             * @param input the review status value.
+             * 
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+            private function getReviewStatusBtnStyle(status:String):String {
+                var styleName:String="";
+                if (status == "PASSED") {
+                    styleName="reviewPassedIcon";
+                } else if (status == "FAILED") {
+                    styleName="reviewFailedIcon";
+                } else {
+                    styleName="reviewNeededIcon";    
+                } 
+
+                return styleName;
+            }
+            
+            /**
+             * Shows the contest monitor widget for this contest row.
+             */
+            private function showStats():void {
+                if (contest.type == STUDIO_TYPE) {
+                    // restore widget to normal width if it's not already.
+                    if (parentWidget.isMaximized()) {
+                        parentWidget.restoreScreen();
+                    }
+                    
+                    // call method on widget to load the selected contest.
+                    var tabName:String=parentWidget.widgetFramework.getActiveTabName();
+                    var widgetName:String="Contest Monitor";
+                    openWidget(tabName, widgetName);
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            }
+
+            /**
+             * Shows the submission viewer widget for this contest row.
+             */
+            private function showSubmission(event:MouseEvent):void {
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.submissions > 0) {
+                        
+                        // restore widget to normal width if it's not already.
+                        if (parentWidget.isMaximized()) {
+                            parentWidget.restoreScreen();
+                        }
+                        
+                        var tabName:String=null;
+                        var widgetName:String=null;
+                        // open submission viewer widget and load the current contest.
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
+                        widgetName="Submission Viewer";
+                        openWidget(tabName, widgetName);
+                        
+                        // open contest monitor widget and load the current contest.
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
+                        widgetName="Contest Monitor";
+                        openWidget(tabName, widgetName);
+                    }
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            }
+
+            /**
+             * utility function that creates / opens the Submission Viewer or Contest Monitor widget.
+             *
+             * @param tabName the tab in which to open the widget.
+             * @param widgetName name of the widget to be opened.
+             */
+            private function openWidget(tabName:String, widgetName:String):void {
+                var widget:IWidget=parentWidget.widgetFramework.openWidget(tabName, widgetName);
+
+                var props:Dictionary=new Dictionary();
+                props["pid"]=parentWidget.model.currentProj.id;
+                props["toBeLoadedContestId"]=contest.id;
+                if (widget == null) {
+                    // properties (or attributes) of widget that need to be created new.
+                    var propertiesObj:Dictionary=new Dictionary();
+                    propertiesObj["tabName"]=tabName;
+                    propertiesObj["name"]=widgetName;
+                    propertiesObj["title"]=widgetName;
+                    propertiesObj["column"]="2";
+                    propertiesObj["minimized"]="true";
+                    propertiesObj["maximized"]="false";
+                    propertiesObj["allowclose"]="true";
+                    propertiesObj["rowspan"]=1
+
+                    if (widgetName == "Submission Viewer") {
+                        propertiesObj["row"]="1";
+                        propertiesObj["columnspan"]=5;
+                    } else if (widgetName == "Contest Monitor") {
+                        propertiesObj["row"]="2";
+                        propertiesObj["columnspan"]=4;
+                    }
+
+                    propertiesObj["widgetConfig"]=props;
+                    parentWidget.widgetFramework.addWidgetWithProperties(propertiesObj);
+                } else {
+                    props["reload"]=true;
+                    widget.setAttributes(props);
+                }
+            }
+
+            /**
+             * Handler for contest label click.
+             */
+            private function handleClick():void {
+                if (contest.type == "Studio") {
+                    navigateToURL(new URLRequest(contentDetailUrlBase + contest.id));
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            
+            }
+
+            /**
+             * Handler for forum link click.
+             */
+            private function openForum(event:MouseEvent):void {
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.forumId == null || contest.forumId == "-1") {
+                        return;
+                    }
+                    navigateToURL(new URLRequest(forumUrlBase + contest.forumId));
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            }
+
+            /**
+             * Row mouse over handler.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Show edit button for non studio contests also which are of type active or inactive.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
+             *
+             * Fix for [BUGR-2038]: if type is not studio, show edit button if
+             * status is 'draft' or 'scheduled' instead of status 'active'.
+             */
+            private function mouseOverHandle():void {
+                if ((contest.type.toLocaleLowerCase() == "studio" 
+                        && (contest.status.toLocaleLowerCase() == "draft" 
+                                || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
+		                        || contest.status.toLocaleLowerCase() == "scheduled")) 
+		            || (contest.type.toLocaleLowerCase() != "studio" 
+		                && (contest.status.toLocaleLowerCase() == "draft" 
+		                		|| contest.status.toLocaleLowerCase() == "scheduled"
+		                        || contest.status.toLocaleLowerCase() == "inactive"))) {
+
+        			    editBtn.visible=true;
+                }
+            }
+
+            /**
+             * Row mouse out handler.
+             */
+            private function mouseOutHandle():void {
+                editBtn.visible=false;
+            }
+
+            /**
+             * Handler for click on edit contest button.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Additionally pass contest type so that launch widget can distinguish between software and studio contests.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - launch widget should distinguish between read only and write allowed contests.
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
+             */
+            private function editContest():void {
+
+    	    	var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+    		var props:Dictionary=new Dictionary();
+    		props["contestType"]=contest.type;
+    		props["contestid"]=contest.id;
+    		props["projectid"]=contest.projId;
+    		props["projectName"]=contest.projName;
+    			
+    		var mode:String="READ";
+    			
+    		if(contest.permission=="contest_full" 
+    			    || contest.permission=="contest_write"
+        		    || (contest.permission==null && 
+        			        (parentWidget.model.currentProj.permission=="project_full" 
+        				        || parentWidget.model.currentProj.permission=="project_write"))) {
+                    mode="WRITE";				                
+                }
+                
+                props["mode"]=mode;
+   			
+    		widget.setAttributes(props);
+    		parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+
+            /**
+             * Setters for start date of the contest
+             *
+             * @param temp start date.
+             */
+            private function set startDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    lblStartDatePart1.text=dataStrArr[0];
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblStartDatePart2.text=timeStrArray[0] + " GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2);
+                }
+            }
+
+            /**
+             * Setters for end date of the contest.
+             *
+             * @param temp end date of the contest.
+             */
+            private function set endDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    lblEndDatePart1.text=dataStrArr[0];
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblEndDatePart2.text=timeStrArray[0] + " GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2);
+                }
+            }
+            
+            /**
+             * Handler for click on review status button.
+             * 
+             * Updated for Version 1.0.1
+             *    - pass the mode to Launch Widget.
+             *
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+            private function openReviewScreen(event:MouseEvent):void {
+                var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+                var props:Dictionary=new Dictionary();
+                props["contestType"]=contest.type;
+                props["contestid"]=contest.id;
+                props["projectid"]=contest.projId;
+                props["projectName"]=contest.projName;
+                props["screen"]="Review";
+                props["creator"]=contest.createUser;
+                
+                var mode:String="READ";
+    			
+    		    if(contest.permission=="contest_full" 
+    			    || contest.permission=="contest_write"
+        		    || (contest.permission==null && 
+        			        (parentWidget.model.currentProj.permission=="project_full" 
+        				        || parentWidget.model.currentProj.permission=="project_write"))) {
+                    mode="WRITE";				                
+                }
+                
+                props["mode"]=mode;
+                
+                widget.setAttributes(props);
+                parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%">
+        <mx:LinkButton buttonMode="true"
+                       useHandCursor="true"
+                       id="lblContextName"
+                       styleName="linkBtn"
+                       label="{contest.name}"
+                       click="handleClick()"/>
+        <mx:Button id="reviewStatusBtn"
+                   styleName="{getReviewStatusBtnStyle(contest.reviewStatus)}"
+                   width="20"
+                   height="20"
+                   visible="true"
+                   click="openReviewScreen(event)"/>
+        <mx:Spacer width="100%"/>
+        <mx:LinkButton width="10%"
+                       id="editBtn"
+                       styleName="editBtn"
+                       labelPlacement="top"
+                       click="editContest()"
+                       visible="false"/>
+    </mx:HBox>
+    <mx:HBox width="100%"
+             styleName="rowContent">
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblStartDatePart1"/>
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblStartDatePart2"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblEndDatePart1"/>
+            <mx:Text width="100%"
+                     styleName="rowContentLabel"
+                     id="lblEndDatePart2"/>
+        </mx:VBox>
+        <mx:Text width="100%"
+                 styleName="rowContentLabel"
+                 id="lblType"
+                 htmlText="{contest.type}"/>
+        <!--<mx:Text width="100%"
+             styleName="rowContentLabel"
+             id="lblStartDate"
+             text="{model.dateFormatter.format(contest.start)}"/>
+             <mx:Text width="100%"
+             styleName="rowContentLabel"
+             id="lblEndDate"
+             text="{model.dateFormatter.format(contest.end)}"/>-->
+        <mx:Text width="100%"
+                 styleName="rowContentLabel"
+                 id="lblRegistrants"
+                 htmlText="{contest.registrants}"/>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Button buttonMode="false"
+                       width="60"
+                       styleName="rowContentLink"
+                       id="lblSubmissions"
+                       label="{setLinkProperties(contest.submissions, lblSubmissions, showSubmission)}"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 verticalGap="0">
+            <mx:Button buttonMode="false"
+                       width="60"
+                       styleName="rowContentLink"
+                       id="lblForumPosts"
+                       label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
+        </mx:VBox>
+        <mx:VBox width="100%"
+                 styleName="bottomAlign">
+            <mx:LinkButton buttonMode="true"
+                           id="statusBtn"
+                           styleName="{handleStatus(contest.status)}"
+                           labelPlacement="bottom"
+                           click="showStats()"/>
+        </mx:VBox>
+    </mx:HBox>
+</mx:VBox>

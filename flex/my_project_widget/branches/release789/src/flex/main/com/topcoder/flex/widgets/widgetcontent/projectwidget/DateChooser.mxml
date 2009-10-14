@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render start & end date selector.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+                layout="vertical"
+                borderStyle="solid"
+                right="20"
+                width="398"
+                height="290"
+                showCloseButton="true"
+                close="closeMe()">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+            import mx.managers.PopUpManager;
+            import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var parentWidget:ProjectWidget=null;
+
+            /**
+             * From date string from the date chooser.
+             */
+            [Bindable]
+            public var fromDateStr:String="";
+
+            /**
+             * To date string from the date chooser.
+             */
+            [Bindable]
+            public var toDateStr:String="";
+
+            /**
+             * Handler for close of date choser.
+             */
+            private function closeMe():void {
+                parentWidget.model.showDateChooser=false;
+            }
+
+            /**
+             * Set the initial values for the date chooser.
+             *
+             * @param value true if to set otherwise false.
+             */
+            public function set init(value:Boolean):void {
+                if (value) {
+                    start.selectedDate=new Date();
+                    end.selectedDate=new Date();
+                }
+            }
+
+            /**
+             * Handler for set date click.
+             *
+             * @param notSet false if value is not set, else true.
+             */
+            public function setDate(notSet:Boolean=false):void {
+                if (notSet) {
+                    parentWidget.model.setDateFilter(null, null);
+                    fromDateStr="";
+                    toDateStr="";
+                    closeMe();
+                    return;
+                }
+                if (start.selectedDate > end.selectedDate) {
+                    Alert.show("Error: Start Date should be ahead of End Date.", "ERROR");
+                    return;
+                }
+                parentWidget.model.setDateFilter(start.selectedDate, end.selectedDate);
+                fromDateStr=start.selectedDate.getFullYear().toString() + '-' + (start.selectedDate.getMonth() + 1).toString() + '-' + start.selectedDate.getDate();
+                toDateStr=end.selectedDate.getFullYear().toString() + '-' + (end.selectedDate.getMonth() + 1).toString() + '-' + end.selectedDate.getDate();
+                closeMe();
+
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="parentWidget.model.showDateChooser"
+                destination="init"/>
+    <mx:VBox borderStyle="none"
+             width="100%"
+             height="100%"
+             verticalGap="0"
+             paddingTop="0"
+             paddingBottom="0">
+        <mx:HBox width="100%">
+            <mx:Label width="100%"
+                      text="START:"
+                      styleName="listStyle"/>
+            <mx:Label width="100%"
+                      text="END:"
+                      styleName="listStyle"/>
+        </mx:HBox>
+        <mx:HBox width="100%"
+                 height="100%"
+                 paddingTop="0"
+                 paddingBottom="0">
+            <mx:DateChooser id="start"
+                            allowMultipleSelection="false"/>
+            <mx:DateChooser id="end"
+                            allowMultipleSelection="false"/>
+        </mx:HBox>
+        <mx:HBox width="100%"
+                 paddingTop="2"
+                 paddingBottom="0"
+                 horizontalAlign="right">
+            <mx:Button label="Set Filter"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       styleName="arrowRightBtnStyle"
+                       buttonMode="true"
+                       click="setDate()"/>
+            <mx:Button label="Close"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       styleName="arrowRightBtnStyle"
+                       buttonMode="true"
+                       click="setDate(true)"/>
+        </mx:HBox>
+    </mx:VBox>
+</mx:TitleWindow>
