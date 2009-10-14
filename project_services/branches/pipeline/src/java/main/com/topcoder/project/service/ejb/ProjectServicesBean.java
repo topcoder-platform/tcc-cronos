@@ -967,6 +967,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      *             if error during retrieval from database.
      * @since 1.1.1             
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws ProjectServicesException {
         String method = "ProjectServicesBean#getSimplePipelineData(startDate,endDate,overdueContests) method.";
@@ -1001,6 +1002,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      *             if error during retrieval from database.
      * @since 1.1.1             
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate, boolean overdueContests)
             throws ProjectServicesException {
         String method = "ProjectServicesBean#getSimplePipelineData(userId, startDate,endDate,overdueContests) method.";
