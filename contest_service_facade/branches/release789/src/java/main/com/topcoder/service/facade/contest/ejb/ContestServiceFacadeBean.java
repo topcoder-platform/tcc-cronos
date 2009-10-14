@@ -4194,6 +4194,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestDataByPID(
         long pid) throws PersistenceException {
         logger.debug("getCommonProjectContestDataByPID (" + pid + ")");
@@ -4276,6 +4277,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestData()
         throws PersistenceException {
         logger.debug("getCommonProjectContestDataByContestData");
@@ -4363,6 +4365,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since BURG-1716
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public SoftwareCompetition getSoftwareContestByProjectId(long projectId)
         throws ContestServiceException {
         logger.debug("getSoftwareContestByProjectId (" + projectId + ")");
