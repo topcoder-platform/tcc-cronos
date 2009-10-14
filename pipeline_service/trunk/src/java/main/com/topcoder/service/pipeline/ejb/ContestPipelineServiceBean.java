@@ -1286,6 +1286,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *             if error during retrieval from database.
      * @since 1.0.1
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG, "Enter getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests) method.");
