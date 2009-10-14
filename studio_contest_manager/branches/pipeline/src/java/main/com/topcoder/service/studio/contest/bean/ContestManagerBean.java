@@ -3151,7 +3151,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED))
     public List<SimpleProjectContestData> getSimpleProjectContestData()
             throws ContestManagementException {
         try {
@@ -3254,7 +3254,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
 
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
             throws ContestManagementException {
         try {
@@ -3358,7 +3358,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(
             long createdUser) throws ContestManagementException {
         try {
@@ -5024,7 +5024,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1.1
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
             boolean overdueContests) throws ContestManagementException {
         try {
