@@ -28,6 +28,8 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
             import mx.utils.ObjectUtil;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectHeader;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
             import mx.collections.ArrayCollection;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
@@ -440,9 +442,15 @@
 
             // BUGR-1678
             public function isDesOrDevContestType():Boolean {
-                return mainWidget.softwareCompetition &&
-                    (mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
-                    mainWidget.softwareCompetition.type == "DESIGN");
+                return (mainWidget.softwareCompetition &&
+                            (mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
+                                        mainWidget.softwareCompetition.type == "DESIGN")) 
+                       ||
+                        (mainWidget.softwareCompetition.projectHeader 
+                              && mainWidget.softwareCompetition.projectHeader.projectCategory
+                              &&
+                                (mainWidget.softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DESIGN
+                                        || mainWidget.softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DEV));
             }
             //
             // handled for load of active categories from web-service.
