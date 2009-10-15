@@ -4184,16 +4184,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 // if active, and there is at least closed phase, treat as done
                 else if (rows[i][36] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
 				{
-                    String closed = (String)rows[i][36];
-                    // if last closed is final review, it is completed
-                    if (closed.equalsIgnoreCase(PROJECT_PHASE_FINAL_REVIEW))
-                    {
-                        c.setSname(PROJECT_STATUS_COMPLETED);
-                    }
-                    else
-                    {   // else, set failed for now
-					    c.setSname("Failed");
-                    }
+					c.setSname("Pending Completion");
 				}
 				// else for active, use 'newstatus'
 				else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
