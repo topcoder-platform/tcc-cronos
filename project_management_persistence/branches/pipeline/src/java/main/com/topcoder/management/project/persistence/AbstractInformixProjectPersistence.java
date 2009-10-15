@@ -924,12 +924,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
 	/**
 	 * 'Active' status name
 	 */
 	private static final String PROJECT_STATUS_ACTIVE = "Active";
+
+    /**
+	 * 'Completed' status name
+	 */
+	private static final String PROJECT_STATUS_COMPLETED = "Completed";
+
+    /**
+	 * 'final review' phase name
+	 */
+	private static final String PROJECT_PHASE_FINAL_REVIEW = "Final Review";
 
     /**
      * <p>
@@ -4003,7 +4013,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" ( select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph ");
 			sb.append("    where ph.phase_status_id = 2 and ph.project_id=c.project_id)) as current_phase,  ");
             sb.append("  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end  ");
-	        sb.append("     from contest_sale cs where c.project_id = cs.contest_id and upper(psl.name)='ACTIVE' ) as newstatus ");
+	        sb.append("     from contest_sale cs where c.project_id = cs.contest_id and upper(psl.name)='ACTIVE' ) as newstatus, ");
+            sb.append("  (select ptl.name from phase_type_lu ptl where phase_type_id = (select max(phase_type_id) from project_phase ph  ");
+	        sb.append("     where ph.phase_status_id = 3 and ph.project_id=c.project_id))  as close_phase ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -4168,6 +4180,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				if (rows[i][34] != null)
 				{
 					c.setSname((String)rows[i][34]);
+				}
+                // if active, and there is at least closed phase, treat as done
+                else if (rows[i][36] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				{
+                    String closed = (String)rows[i][36];
+                    // if last closed is final review, it is completed
+                    if (closed.equalsIgnoreCase(PROJECT_PHASE_FINAL_REVIEW))
+                    {
+                        c.setSname(PROJECT_STATUS_COMPLETED);
+                    }
+                    else
+                    {   // else, set failed for now
+					    c.setSname("Failed");
+                    }
 				}
 				// else for active, use 'newstatus'
 				else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
