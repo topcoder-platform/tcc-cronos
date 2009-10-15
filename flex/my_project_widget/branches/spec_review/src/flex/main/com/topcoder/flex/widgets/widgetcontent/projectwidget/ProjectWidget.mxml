@@ -70,6 +70,12 @@
              */
             [Bindable]
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+            
+            /**
+             * Project service facade url.
+             */ 
+            [Bindable]
+            private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
 
             /**
              * Index of the currently selected button (Details or Contests).
@@ -455,7 +461,7 @@
                     else
                         prjArray.addItem(e.result);
 
-                    model.proList=new ArrayCollection();
+                    //model.proList=new ArrayCollection();
                     for (var prjIdx:int=0; prjIdx < prjArray.length; ) {
                         var pname:String=prjArray[prjIdx].pname;
                         var pdesc:String=prjArray[prjIdx].description;
@@ -478,15 +484,24 @@
                         }
 
                         sortByName(contests);
-
                         
-                        var newp:Project=new Project(projectId.toString(),pname,pdesc,"",owner,contests);
-        			          newp.permission=prjArray[prjIdx].pperm;
-        			          prjIdx=i;
-                        model.proList.addItem(newp);
+                        var newp:Project=projectMap[projectId];
+                        if (newp) {
+                            newp.owner=owner;
+                            newp.permission=prjArray[prjIdx].pperm;
+                            
+                            for each (var cont:Contest in contests) {
+                                newp.addContest(cont);
+                            }
+                        }
+                        
+                        /*var newp:Project=new Project(projectId.toString(),pname,pdesc,"",owner,contests);
+        			    newp.permission=prjArray[prjIdx].pperm;*/
+        			    prjIdx=i;
+                        //model.proList.addItem(newp);
                     }
 
-                    sortByName(model.proList);
+                    //sortByName(model.proList);
 
                     //
                     // Updated for Version 1.0.1 [BUGR-2135]
@@ -528,31 +543,6 @@
                         showHideProjListPagination();
                     }
                 }
-            }
-
-            /**
-             * Sorts the given collection by name
-             *
-             * @param coll specified array collection to be sorted.
-             */
-            private function sortByName(coll:ArrayCollection):void {
-                //trace(">>>>>>>> sortByName start: " + new Date());
-                if (!coll.sort) {
-                    var sort:Sort=new Sort();
-                    sort.compareFunction=compareName;
-                    coll.sort=sort;
-                }
-
-                coll.refresh();
-                
-                //trace(">>>>>>>> sortByName end: " + new Date());
-            }
-
-            /**
-             * Callback function on sorting by name.
-             */
-            private function compareName(a:Object, b:Object, fields:Array=null):int {
-                return ObjectUtil.stringCompare(a.name, b.name, true);
             }
 
             /**
@@ -641,6 +631,14 @@
             <mx:request>
                 <arg0>{pid}</arg0>
             </mx:request>
+        </mx:operation>
+    </mx:WebService>
+    
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{projectServiceFacadeWsdl}">
+        <mx:operation name="getAllProjects"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('getAllProjects: ' + event.fault.faultString);">
         </mx:operation>
     </mx:WebService>
 
