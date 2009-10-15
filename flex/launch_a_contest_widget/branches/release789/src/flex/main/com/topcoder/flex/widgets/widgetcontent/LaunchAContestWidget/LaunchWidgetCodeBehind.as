@@ -72,9 +72,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * Version 1.0.7 (Cockpit Release Assembly 7 v1.0) Change Notes:
      *    - added field to represent whether to use manualPrizeSetting. 
      *
+     * Version 1.0.8 (Cockpit Release Assembly 8 v1.0) Change Notes:
+     *    
+     *
      * 
      * @author snow01, pulky
-     * @version 1.0.7
+     * @version 1.0.8
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {

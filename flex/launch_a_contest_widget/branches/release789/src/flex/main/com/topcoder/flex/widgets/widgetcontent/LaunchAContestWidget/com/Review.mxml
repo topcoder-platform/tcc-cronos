@@ -84,19 +84,10 @@
             public var ns_milestoneBonus:String;
 
             //step3 data
-            public var contentTitleStr:String;
             public var IntroductionStr:String;
             public var glsInputStr:String;
             // BUGR-1067
-            public var ns_componentNameStr:String;
-            public var ns_shortDescStr:String;
-            // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
-            //public var ns_detailedDescStr:String;
             public var ns_techListData:ArrayCollection;
-            
-            // commented for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
-            // we don't need comments input anymore.
-            //public var ns_commentsStr:String;
             
             // added for Cockpit Launch Contest - Update for Spec Creation v1.0
             public var ns_detailedRequirementsStr:String;
@@ -235,11 +226,6 @@
                     cstTypeStep1=mainWidget.competitionType;
                 }
                 
-                /*if (mainWidget && mainWidget.contestSelect) {
-                    // set values from contest selection screen.
-                    cstTypeStep1=mainWidget.contestSelect.contestType.selection.label;
-                } else*/
-                
                 if (mainWidget && mainWidget.studioContestType) {
                     if (mainWidget.overView) {
                         // assign values from overview screen.
@@ -257,7 +243,6 @@
                     
                     if (mainWidget && mainWidget.details) {
                         // assign values from details screen.
-                        contentTitleStr=mainWidget.details.ctInput.text;
                         IntroductionStr=mainWidget.details.introInput.text;
                         glsInputStr=mainWidget.details.glsInput.text;
                     }
@@ -303,8 +288,6 @@
                     
                     if (mainWidget && mainWidget.details) {
                         // assign values from details screen.
-                        ns_componentNameStr=mainWidget.details.ns_ctInput.text;
-                        ns_shortDescStr=mainWidget.details.ns_shortDesc.text;
                         ns_detailedRequirementsStr=mainWidget.details.ns_detailedRequirements.text;
                         ns_submissionDeliverablesStr=mainWidget.details.ns_submissionDeliverables.text;
                         ns_environmentSetupInstructionsStr=mainWidget.details.ns_environmentSetupInstructions.text;
@@ -408,16 +391,9 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget && mainWidget.studioContestType) {
-                    ctInput.htmlText=contentTitleStr; // BUGR-1279
                     introInput.htmlText=IntroductionStr; // BUGR-1279
                     glsInput.htmlText=glsInputStr; // BUGR-1279
                 } else {
-                    ns_componentName.text=ns_componentNameStr;
-                    ns_shortDesc.text=ns_shortDescStr;
-                    // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
-                    //ns_detailedDesc.text=ns_detailedDescStr;
-                    //ns_comments.text=ns_commentsStr;
-                    
                     // added for Cockpit Launch Contest - Update for Spec Creation v1.0
                     ns_detailedRequirements.text=ns_detailedRequirementsStr;
                     ns_submissionDeliverables.text=ns_submissionDeliverablesStr;
@@ -500,8 +476,10 @@
                 if (mainWidget && mainWidget.specReviews) {
                     updateReviews=mainWidget.specReviews;
                 } else if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
-                   reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
-                   reviewWorkflowButton.label="Submit for Spec Review";
+                   mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                   mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                   mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                   mainWidget.reviewWorkflowButton.label="Submit for Spec Review";
                    specUserRoleType=WRITER;
                    isReadyForReview=false;
                 }
@@ -552,19 +530,23 @@
                     
                     // if current user has write permission, then show the Resubmit for Review button.
                     if (!mainWidget.isReadOnlyMode && mainWidget.isPaidContest()) {
-                       reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
-                       reviewWorkflowButton.label="Resubmit Review";
+                       mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                       mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                       mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                       mainWidget.reviewWorkflowButton.label="Resubmit Review";
                        isReadyForReview=true;
                        specUserRoleType=WRITER;
                     } else {
                         if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId && mainWidget.isPaidContest()) {
-                            reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
-                            reviewWorkflowButton.label="I'm Done Reviewing";
+                            mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                            mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                            mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                            mainWidget.reviewWorkflowButton.label="I'm Done Reviewing";
                             isReadyForReview=true;
                             specUserRoleType=REVIEWER;
                         } else {
-                            reviewWorkflowButton.label="";
-                            reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=false;
+                            mainWidget.reviewWorkflowButton.label="";
+                            mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=false;
                             specUserRoleType=READER;
                         }
                     }
@@ -585,15 +567,17 @@
                     
                     // if current user has write permission, then show the Ready for Review button.
                     if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
-                       reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=true;
-                       reviewWorkflowButton.label="Submit for Spec Review";
+                       mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                       mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                       mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                       mainWidget.reviewWorkflowButton.label="Submit for Spec Review";
                        specUserRoleType=WRITER;
                        isReadyForReview=false;
                     } else {
                         // we do not show.
                         // if this would have been reviewer then there would have been a valid reviewStatus and control would not come here.
-                        reviewWorkflowButton.label="";
-                        reviewWorkflowButton.visible=reviewWorkflowButton.includeInLayout=false;
+                        mainWidget.reviewWorkflowButton.label="";
+                        mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=false;
                         specUserRoleType=READER;
                     }            
                 }
@@ -1008,11 +992,11 @@
              * 
              * @since 1.0.1
              */ 
-            private function doReviewWorkflow():void {
+            private function doReviewWorkflow(event:Event):void {
                 if (specUserRoleType == "WRITER") {
                     if (isReadyForReview) {
                         var resubmitForReview:AbstractOperation=mainWidget._csws.getOperation("resubmitForReview");
-                        resubmitForReview.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                        resubmitForReview.send(mainWidget.contestid, mainWidget.contestSelect.contestNameInput.text, 
                                                mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.specReviews.reviewerId);
                         mainWidget.showLoadingProgress();
                     } else {
@@ -1023,7 +1007,7 @@
                     }
                 } else if (specUserRoleType == "REVIEWER") {
                     var markReviewDone:AbstractOperation=mainWidget._csws.getOperation("markReviewDone");
-                    markReviewDone.send(mainWidget.contestid, mainWidget.competitionType.toLocaleLowerCase() == "studio" ? contentTitleStr : ns_componentNameStr, 
+                    markReviewDone.send(mainWidget.contestid, mainWidget.contestSelect.contestNameInput.text, 
                                         mainWidget.competitionType.toLocaleLowerCase() == "studio", mainWidget.tcDirectProjectId);
                     mainWidget.showLoadingProgress();
                 }
@@ -1040,7 +1024,7 @@
                 mainWidget.hideLoadingProgress();
                 if (e) {
                     isReadyForReview=true;
-                    reviewWorkflowButton.label="Resubmit for Review";
+                    mainWidget.reviewWorkflowButton.label="Resubmit for Review";
                     Helper.showAlertMessage("Successfully marked ready for review");
                 }
             }
@@ -1056,27 +1040,6 @@
     <mx:VBox width="100%"
              height="100%"
              id="mainContainer">
-        <mx:HBox horizontalAlign="right"
-                 width="100%"
-                 height="100%">
-            <mx:Label text="Review"
-                      styleName="sectionTitle"
-                      width="80%"/>
-            <mx:Spacer width="100"/>
-            <mx:Button styleName="arrowRightBtnStyle"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       label="PREVIEW CONTEST"
-                       click="this.mainWidget.previewContest()"/>
-                       
-            <mx:Button id="reviewWorkflowButton"
-                       styleName="arrowRightBtnStyle"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       label="PREVIEW CONTEST"
-                       click="doReviewWorkflow()"
-                       visible="false"
-                       includeInLayout="false"/>
-            <!-- BUGR-1501 -->
-        </mx:HBox>
         <mx:Label id="projectName"
                   text="Project:"
                   styleName="projectTitle"/>
@@ -1126,7 +1089,7 @@
                 <mx:Spacer width="10"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
-            <mx:HBox width="100%"
+            <mx:VBox width="100%"
                      height="100%"
                      id="contestSelection_content"
                      verticalScrollPolicy="off"
@@ -1134,11 +1097,29 @@
                      paddingLeft="10"
                      paddingRight="10"
                      paddingBottom="10">
-                <mx:Label text="Contest Type:"
-                          fontWeight="bold"/>
-                <mx:Text id="contestType_step1"
-                         text="Studio"/>
-            </mx:HBox>
+                <mx:HBox width="100%"
+                     height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
+                    <mx:Label text="Contest Type:"
+                              fontWeight="bold"/>
+                    <mx:Text id="contestType_step1"
+                             text="Studio"/>
+                </mx:HBox>
+                <mx:HBox width="100%"
+                     height="100%"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off">
+                    <mx:Label text="Contest Title:"
+                              fontWeight="bold"/>
+                    <mx:Text id="ctInput"
+                             width="500"
+                             height="100%"
+                             text="{mainWidget.contestSelect.contestNameInput.text}"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            
         </mx:VBox>
 
         <mx:Spacer height="5"/>
@@ -1393,17 +1374,6 @@
                          visible="{mainWidget.studioContestType}"
                          includeInLayout="{mainWidget.studioContestType}"
                          id="s_contestDetails_content">
-                    <mx:HBox width="100%"
-                        height="100%"
-                     verticalScrollPolicy="off"
-                     horizontalScrollPolicy="off">
-                        <mx:Label text="Content Title:"
-                                  fontWeight="bold"/>
-                        <mx:Text id="ctInput"
-                                 width="500"
-                                 height="100%"/>
-                    </mx:HBox>
-                    <mx:Spacer height="5"/>
                     <mx:Label text="Introduction:"
                               fontWeight="bold"/>
                     <mx:Text id="introInput"
@@ -1441,23 +1411,6 @@
                          visible="{!mainWidget.studioContestType}"
                          includeInLayout="{!mainWidget.studioContestType}"
                          id="ns_contestDetails_content">
-                    <mx:HBox width="100%"
-                        height="100%"
-                     verticalScrollPolicy="off"
-                     horizontalScrollPolicy="off">
-                        <mx:Label text="Component Name:"
-                                  fontWeight="bold"/>
-                        <mx:Text id="ns_componentName"
-                                 width="500"
-                                 height="100%"/>
-                    </mx:HBox>
-                    <mx:Spacer height="5"/>
-                    <mx:Label text="Short Description:"
-                              fontWeight="bold"/>
-                    <mx:Text id="ns_shortDesc"
-                             width="500"
-                             height="100%"/>
-                    <mx:Spacer height="5"/>
                     <mx:Label text="Detailed Requirements:"
                               fontWeight="bold"/>
                     <mx:Text id="ns_detailedRequirements"

@@ -351,3 +351,17 @@
 	font-style: normal;
 	color: #003399;
 }
+
+.helpPopupWindow {
+    border-skin: Embed("../assets/review-modal-window.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+.helpVideoIcon {
+	skin: Embed("../assets/video.png");
+	up-skin: Embed("../assets/video.png");
+	over-skin: Embed("../assets/video.png");
+	down-skin: Embed("../assets/video.png");
+}

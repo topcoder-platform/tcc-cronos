@@ -1365,19 +1365,6 @@
              height="100%">
         <mx:VBox width="100%">
 
-            <mx:HBox horizontalAlign="right"
-                     width="100%">
-                <mx:Label text="Contest Overview"
-                          styleName="sectionTitle"
-                          width="80%"/>
-                <!-- BUGR-1503 -->
-                <mx:Spacer width="100"/>
-                <mx:Button styleName="arrowRightBtnStyle"
-                           labelPlacement="{ButtonLabelPlacement.LEFT}"
-                           label="PREVIEW CONTEST"
-                           click="this.mainWidget.previewContest()"/>
-                <!-- BUGR-1501 -->
-            </mx:HBox>
             <!-- Hide project name if the summary is shown since it's already there -->
             <mx:HBox horizontalAlign="right"
                      width="100%" visible="{!mainWidget.showSummary}"
@@ -1391,7 +1378,7 @@
             <mx:VBox width="100%"
                      visible="{mainWidget.studioContestType}"
                      includeInLayout="{mainWidget.studioContestType}">
-                <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?"
+                <mx:Label text="What type of {mainWidget.contestSelect.selectContestTypes.selectedItem.data} contest do you want to run?"
                           styleName="boldBlackText"/>
                 <mx:RadioButtonGroup id="studioType"
                                      itemClick="handleSelect(event);"/>
@@ -1425,7 +1412,7 @@
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
             <mx:Label id="typeName"
-                      text="{mainWidget.contestSelect.contestType.selection.label}"
+                      text="{curContestType}"
                       styleName="subsectionTitle"/>
             <!-- BUGR-1503 -->
             <mx:Text width="100%"

@@ -22,8 +22,6 @@
        		public var mainWidget:LaunchWidget;
        	
 			[Bindable]
-			private var header:String = "Activate Your Contest";
-			[Bindable]
 			private var text1:String = "You are one step closer to getting your contest out there" +
 									   " to the entire TopCoder Studio community.";
 			[Bindable]
@@ -54,7 +52,7 @@
 				if (stack.selectedIndex == 0) {
 					return 0;
 				} else {
-					header = "Activate Your Contest";
+					mainWidget.header = "Activate Your Contest";
 					text1 = "You are one step closer to getting your contest out there" +
 							" to the entire TopCoder Studio community.";
 					text2 = "The TopCoder administration fee is a non-refundable charge. " +
@@ -71,7 +69,7 @@
 					var index:int = wf1.saveData();
 					if (index > 0 && index <= stack.numChildren) {
 						stack.selectedIndex = index - 1;
-						header = "Confirm Your Payment";
+						mainWidget.header = "Confirm Your Payment";
 						text1 = "You're almost done! Please confirm that the information below is correct.";
 						text2 = "";
 						return index;
@@ -117,7 +115,7 @@
                     var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
             	    trace("processCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
-                    header="Your Transaction was Approved!";
+                    mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
@@ -144,7 +142,7 @@
                     var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
             	    trace("processPOPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
-                    header="Your Transaction was Approved!";
+                    mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
@@ -171,7 +169,7 @@
                     var contestPaymentResult:SoftwareContestPaymentResult = ObjectTranslatorUtils.translate(e.result, SoftwareContestPaymentResult) as SoftwareContestPaymentResult; 
             	    trace("processSoftwareCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
-                    header="Your Transaction was Approved!";
+                    mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
@@ -198,7 +196,7 @@
                     var contestPaymentResult:SoftwareContestPaymentResult = ObjectTranslatorUtils.translate(e.result, SoftwareContestPaymentResult) as SoftwareContestPaymentResult; 
             	    trace("processSoftwarePOPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
-                    header="Your Transaction was Approved!";
+                    mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
@@ -227,7 +225,7 @@
                 this.mainArea.setStyle("backgroundColor", "0xffffff");
                 
                 tcImageLogo.visible=tcImageLogo.includeInLayout=true;
-                previewContestBtn.visible=previewContestBtn.includeInLayout=false;
+                mainWidget.previewContestBtn.visible=mainWidget.previewContestBtn.includeInLayout=false;
                 
                 this.mainArea.validateNow();
                 
@@ -239,7 +237,7 @@
                 
                 // change the app back to normal.
                 tcImageLogo.visible=tcImageLogo.includeInLayout=false;
-                previewContestBtn.visible=previewContestBtn.includeInLayout=true;
+                mainWidget.previewContestBtn.visible=mainWidget.previewContestBtn.includeInLayout=true;
                 
                 this.mainArea.setStyle("backgroundColor", oldColor ? oldColor : "");
             }
@@ -255,16 +253,6 @@
             <mx:Image source="@Embed(source='../../assets/direct-header.png')"/>
         </mx:HBox>
     	<mx:VBox width="100%" height="100%" styleName="boxStyle">
-    		<mx:HBox horizontalAlign="right" width="100%">
-    			<mx:Label text="{header}" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
-    			<mx:Spacer width="100" />	
-    		<mx:Button
-    		        id="previewContestBtn" 
-    		        styleName="arrowRightBtnStyle" 
-    		           labelPlacement="{ButtonLabelPlacement.LEFT}" 
-    			   label="PREVIEW CONTEST" 
-    			   click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
-    		</mx:HBox>
     		<mx:Text width="100%" htmlText="{text1}" styleName="content" />
     		<mx:Text width="100%" text="{text2}" styleName="content"/>
     		<mx:Grid width="100%" verticalGap="0">

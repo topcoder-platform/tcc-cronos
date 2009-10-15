@@ -38,12 +38,14 @@
             import mx.controls.Label;
             import mx.controls.Text;
             import mx.controls.Spacer;
+            
+            import flash.utils.ByteArray;
 
             import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
             import mx.controls.ButtonLabelPlacement; // BUGR-1505
 
-                import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -196,9 +198,11 @@
                 nameLabel.text="File Name:";
                 nameLabel.setStyle("fontWeight", "bold");
 
-                var nameText:Text=new Text();
+                var nameText:LinkButton=new LinkButton();
+                nameText.label=doc.fileName;
+                nameText.data=doc;
+                nameText.addEventListener(MouseEvent.CLICK, downloadUploadedDoc);
                 hbox2.addChild(nameText);
-                nameText.text=doc.fileName;
 
                 var hbox3:HBox=new HBox();
                 docVBox.addChild(hbox3);
@@ -240,12 +244,16 @@
                 hbox2.addChild(nameLabel);
                 nameLabel.text="File Name:";
                 nameLabel.setStyle("fontWeight", "bold");
-
-                var nameText:Text=new Text();
+                
+                var nameText:LinkButton=new LinkButton();
+                nameText.label=existing ? doc.url.substr(doc.url.lastIndexOf("/") + 1) : doc.uploadedFileName;
+                nameText.data=doc;
+                nameText.addEventListener(MouseEvent.CLICK, downloadCatalogDoc);
                 hbox2.addChild(nameText);
-                var x:String;
 
-                nameText.text = existing ? doc.url.substr(doc.url.lastIndexOf("/") + 1) : doc.uploadedFileName;
+                //var nameText:Text=new Text();
+                //hbox2.addChild(nameText);
+                var x:String;
 
                 var hbox3:HBox=new HBox();
                 docVBox.addChild(hbox3);
@@ -513,15 +521,34 @@
                     file=null;
                 }
             }
+            
+            private function outFile(fileName:String, data:ByteArray):void {
+               var fref:FileReference= new FileReference();
+               fref.save(data, fileName);
+            }
+            
+            private function downloadUploadedDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var doc:UploadedDocument=button.data as UploadedDocument;
+                    if (doc) {
+                        var fref:FileReference= new FileReference();
+                        fref.save(doc.file, doc.fileName);
+                    }
+                }
+            }
+            
+            private function downloadCatalogDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var doc:CompUploadedFile=button.data as CompUploadedFile;
+                    var fref:FileReference= new FileReference();
+                    fref.save(doc.fileData, doc.uploadedFileName);
+                }
+            }
         ]]>
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle" >
-    <mx:HBox horizontalAlign="right" width="100%">
-        <mx:Label text="Attach Files" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
-        <mx:Spacer width="100" />
-        <mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
-        <!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
-    </mx:HBox>
         <!-- Hide project name if the summary is shown since it's already there -->
         <mx:HBox horizontalAlign="right" width="100%" visible="{!mainWidget.showSummary}"
                      includeInLayout="{!mainWidget.showSummary}">

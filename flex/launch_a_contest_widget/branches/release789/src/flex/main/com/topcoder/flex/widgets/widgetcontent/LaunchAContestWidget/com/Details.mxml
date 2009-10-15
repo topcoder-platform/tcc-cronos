@@ -162,7 +162,6 @@
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget.studioContestType) {
-                    ctInput.htmlText="";
                     introInput.htmlText="";
                     glsInput.htmlText="";
                     
@@ -170,7 +169,6 @@
                         return;
                     }
 
-                    ctInput.text=this.mainWidget.competition.contestData.name; // BUGR-1379
                     introInput.htmlText=this.mainWidget.competition.contestData.shortSummary;
                     glsInput.htmlText=this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
 
@@ -183,19 +181,11 @@
                     }
 
                 } else {
-                    ns_ctInput.text="";
-                    ns_shortDesc.htmlText="";
-                    //ns_detailedDesc.htmlText="";
-                    //ns_comments.htmlText="";
                     ns_detailedRequirements.htmlText="";
                     ns_submissionDeliverables.htmlText="";
                     ns_environmentSetupInstructions.htmlText="";
                     ns_finalSubmissionGuidelines.htmlText="";
 
-                    ns_ctInput.text=this.mainWidget.softwareCompetition.assetDTO.name; // BUGR-1379
-                    ns_shortDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.shortDescription;
-                    //ns_detailedDesc.htmlText=this.mainWidget.softwareCompetition.assetDTO.detailedDescription;
-                    //ns_comments.htmlText=this.mainWidget.softwareCompetition.assetDTO.compComments;
                     if (this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
                         ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
                         ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
@@ -576,28 +566,6 @@
 
             // BUGR-1475 & BUGR-1067
             public function ns_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean { // BUGR-1067
-                if (ns_ctInput.text == "") {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
-                        return false;
-                    }
-                }
-
-                if (ns_shortDesc.text == "") {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please enter short description" + (showPageName ? " at Details Page" : ""));
-                        return false;
-                    }
-                }
-                
-                // Commented for Cockpit Launch Contest - Update for Spec Creation v1.0
-                /*if (ns_detailedDesc.text == "") {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please enter detailed description" + (showPageName ? " at Details Page" : ""));
-                        return false;
-                    }
-                }*/
-
                 // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
                 if (ns_detailedRequirements.text == "") {
                     if (showMsg) {
@@ -668,14 +636,7 @@
                     }
                 }
 
-                this.mainWidget.softwareCompetition.assetDTO.name=ns_ctInput.text; // BUGR-1379
-                this.mainWidget.softwareCompetition.assetDTO.shortDescription=ns_shortDesc.htmlText;
-                
-                // commented for Cockpit Launch Contest - Update for Spec Creation v1.0
-                //this.mainWidget.softwareCompetition.assetDTO.detailedDescription=ns_detailedDesc.htmlText;
-                //this.mainWidget.softwareCompetition.assetDTO.compComments=ns_comments.text;
-
-				   // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+		// added for Cockpit Launch Contest - Update for Spec Creation v1.0
                 if (!this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
                     this.mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
                 }
@@ -776,13 +737,6 @@
              * @return true if valid, false otherwise
              */
             public function s_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
-                if (ctInput.text == "") {
-                    if (showMsg) {
-                        Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
-                    }
-                    return false;
-                }
-
                 if (introInput.text == "") {
                     if (showMsg) {
                         Helper.showAlertMessage("Please enter introduction" + (showPageName ? " at Details Page" : ""));
@@ -825,7 +779,6 @@
                     return false;
                 }
 
-                this.mainWidget.competition.contestData.name=ctInput.text; // BUGR-1379
                 this.mainWidget.competition.contestData.shortSummary=introInput.htmlText; // BUGR-1379
                 this.mainWidget.competition.contestData.contestDescriptionAndRequirements=glsInput.htmlText; // BUGR-1379
 
@@ -844,29 +797,7 @@
                     }
                 }
 
-                /*this.mainWidget.review.contentTitleStr=ctInput.text;
-                this.mainWidget.review.IntroductionStr=introInput.text;
-                this.mainWidget.review.glsInputStr=glsInput.text;*/
-
                 return true;
-            }
-
-            private function showContentTitleHint(event:MouseEvent):void {
-                if (event.target.label == "[+ show hint]") {
-                    event.target.label="[- show hint]";
-                    contentTitleHint.height=ADDEDHEIGHT;
-                    contentTitleHint.text=titleHint;
-                    contentTitleHint.visible=true;
-                    mainWidget.height+=ADDEDHEIGHT;
-                    widgetHeight+=ADDEDHEIGHT;
-                } else {
-                    event.target.label="[+ show hint]";
-                    contentTitleHint.height=0;
-                    contentTitleHint.text="";
-                    contentTitleHint.visible=false;
-                    mainWidget.height-=ADDEDHEIGHT;
-                    widgetHeight-=ADDEDHEIGHT;
-                }
             }
 
             private function showIntroductionHint(event:MouseEvent):void {
@@ -929,7 +860,7 @@
                 // BUGR-1641
                 // The rich text editors in this view
                 var rtEditors:Array = [
-                    introInput, glsInput, ns_shortDesc, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
+                    introInput, glsInput, ns_detailedRequirements, ns_submissionDeliverables, ns_environmentSetupInstructions, ns_finalSubmissionGuidelines
                 ];
 
                 for each (var rtEditor:TCRichTextEditor in rtEditors) {
@@ -1112,17 +1043,6 @@
     <mx:VBox width="100%"
              styleName="boxStyle"
              id="detailsContainer">
-        <mx:HBox horizontalAlign="right"
-                 width="100%">
-            <mx:Label text="Contest Details"
-                      styleName="sectionTitle"
-                      width="80%"/>
-            <mx:Spacer width="100"/>
-             <mx:Button styleName="arrowRightBtnStyle"
-	               labelPlacement="{ButtonLabelPlacement.LEFT}"
-		       label="PREVIEW CONTEST"
-		       click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
-        </mx:HBox>
         <!-- Hide project name if the summary is shown since it's already there -->
         <mx:HBox horizontalAlign="right" width="100%" visible="{!mainWidget.showSummary}"
                      includeInLayout="{!mainWidget.showSummary}">
@@ -1138,27 +1058,6 @@
         <mx:Spacer height="5"/>
         <mx:VBox visible="{mainWidget.studioContestType}"
                  includeInLayout="{mainWidget.studioContestType}">
-
-            <mx:VBox width="100%"
-                     verticalGap="0">
-                <mx:HBox>
-                    <mx:Label text="Contest Title:"
-                              fontWeight="bold"/>
-                    <mx:TextInput id="ctInput"
-                                  width="308"
-                                  maxChars="100"/>
-                    <mx:LinkButton label="[+ show hint]"
-                                   click="showContentTitleHint(event)"/>
-                </mx:HBox>
-                <mx:Text id="contentTitleHint"
-                         color="0x888888"
-                         width="500"
-                         height="0"
-                         visible="false">
-                </mx:Text>
-            </mx:VBox>
-
-            <mx:Spacer height="5"/>
 
             <mx:VBox width="100%"
                      verticalGap="0">
@@ -1245,47 +1144,6 @@
         <!-- BUGR-1067 -->
         <mx:VBox visible="{!mainWidget.studioContestType}"
                  includeInLayout="{!mainWidget.studioContestType}">
-
-            <mx:VBox width="100%"
-                     verticalGap="0">
-                <mx:HBox>
-                    <mx:Label text="{mainWidget.studioContestType ? 'Component Name:' : 'Contest Name'}"
-                              fontWeight="bold"/>
-                    <mx:TextInput id="ns_ctInput"
-                                  width="292"/>
-                    <mx:LinkButton label="[+ show hint]"/>
-                </mx:HBox>
-                <mx:Text id="ns_componentNameHints"
-                         color="0x888888"
-                         width="500"
-                         height="0"
-                         visible="false">
-                </mx:Text>
-            </mx:VBox>
-
-            <mx:Spacer height="5"/>
-
-            <mx:VBox width="100%"
-                     verticalGap="0">
-                <mx:HBox>
-                    <mx:Label text="Short Description:"
-                              fontWeight="bold"/>
-                    <mx:Spacer width="295"/>
-                    <mx:LinkButton label="[+ show hint]"/>
-                </mx:HBox>
-                <mx:Text id="ns_shortDescHint"
-                         height="0"
-                         color="0x888888"
-                         width="500"
-                         visible="false">
-                </mx:Text>
-                <tc:TCRichTextEditor id="ns_shortDesc"
-                                     width="500"
-                                     height="150"
-                                     minHeight="150" />
-            </mx:VBox>
-
-            <mx:Spacer height="5"/>
 
             <mx:VBox width="100%"
                      verticalGap="0">

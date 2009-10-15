@@ -51,6 +51,9 @@
 
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.util.videoPopup.VideoPopupManager;
+            import com.topcoder.flex.widgets.setting.WidgetGlobalSettingManager;
+            import com.topcoder.flex.widgets.setting.WidgetGlobalSetting;
             import mx.events.CloseEvent;
             import mx.managers.PopUpManager;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
@@ -160,6 +163,9 @@
              */
             [Bindable]
             public var capacityData:ArrayCollection = new ArrayCollection();
+
+	    [Bindable]
+	    public var header:String = "Create Contest";
 
 
             //
@@ -673,7 +679,6 @@
                 
                 setReadOnlyMode();
                     
-                //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT; // BUGR-1134
                 back.visible=true;
 
                 setPreviousStep(step1box); // BUGR-1141
@@ -708,7 +713,6 @@
                 
                 this.review.setAllValues();
 
-                //TODO-HEIGHT-this.height=REVIEW_HEIGHT;
                 back.visible=true;
 
                 setPreviousStep(step6box);
@@ -717,7 +721,13 @@
 
             // BUGR-1445
             private function validateAndSaveAsDraft():void {
-                if (this.currentState == "DetailsState") {
+                if (this.currentState == "ContestSelectionState") {
+                    if (!contestSelect.validateFields())
+                        return;
+                } else if (this.currentState == "OverViewState") {
+                    if (!overView.validateFields())
+                        return;
+                } else if (this.currentState == "DetailsState") {
                     if (!details.validateFields())
                         return;
                 } else if (this.currentState == "SpecificationsState") {
@@ -727,10 +737,7 @@
                     if (!sched.validateFields())
                         return;
                 }
-                else if (this.currentState == "OverViewState") {
-                    if (!overView.validateFields())
-                        return;
-                }
+
 
 		// before continue, check start date is not taken
                 validateStartDate(continueSaveDraft);
@@ -803,13 +810,7 @@
 
                 // validate that first step is filled.
                 if (step > 1) {
-                    if ((contestSelect.selectContests.selectedItem == null || contestSelect.selectContests.selectedItem.data == -1) && contestSelect.prjInput.text == "") {
-                        Helper.showAlertMessage("New Project or Existing Project must have a value.");
-                        return;
-                    }
-                
-			        if (contestSelect.contestType.selectedValue == null) {
-                        Helper.showAlertMessage("Please select a contest type!");
+                    if (contestSelect.validateFields() == false) {
                         return;
                     }
                 }
@@ -860,10 +861,9 @@
 
                         this.currentState="ContestSelectionState";
                         setReadOnlyMode();
-                        //TODO-HEIGHT-this.height=CONTEST_SELECTION_HEIGHT;
                         back.visible=false;
                         
-                        save.includeInLayout=save.visible=false;
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
                         }
@@ -877,31 +877,22 @@
                         break;
                     case 2:
                         
-                        var ret:int=0;
-                        
-                        if (this.currentState=="ContestSelectionState") {
-                            ret=contestSelect.goToOverView();
+                        this.currentState="OverViewState";
+                        setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
                         }
-                        
-                        if (ret == 0) {
-                            this.currentState="OverViewState";
-                            setReadOnlyMode();
-                            save.includeInLayout=save.visible=false;
-                            if (save.visible) {
-                                save.label=getSaveLabel();
-                            }
-                    
-                            goNext.includeInLayout=goNext.visible=true;
-                            goNext.label = "NEXT";
-                    
-                            //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT;
-                            back.visible=true;
+                
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                
+                        back.visible=true;
 
-                            setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
-                            setCurStep(newStepBox);
-                               
-                            result.type = contestSelect.contestType.selectedValue;
-                        }
+                        setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
+                        setCurStep(newStepBox);
+                           
+                        result.type = contestSelect.selectContestTypes.selectedItem.data;
 
                         break;
                     case 3:
@@ -918,12 +909,10 @@
                     
                        details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
                         details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
-                        details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
                         details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
                         details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
                         details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
                         details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
-                       //TODO-HEIGHT-this.height = DETAILS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
@@ -943,7 +932,6 @@
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
                         
-                       //TODO-HEIGHT-this.height = SPECIFICATIONS_HEIGHT;
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
@@ -961,7 +949,6 @@
                         goNext.label = "NEXT";
                         
                        
-                       //TODO-HEIGHT-this.height = ATTACH_FILES_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
 
@@ -982,7 +969,6 @@
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
                        
-                       //TODO-HEIGHT-this.height = SCHEDULE_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
                         break;
@@ -1011,7 +997,6 @@
                        review.setAllValues();
 
     
-                       //TODO-HEIGHT-this.height = REVIEW_HEIGHT;
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
                         break;
@@ -1020,14 +1005,13 @@
                         this.currentState = "ActivateState";
                         setReadOnlyMode();
                         save.visible = false;
-                        //TODO-HEIGHT-this.height = ACTIVATE_HEIGHT;
                         
                         setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                         setCurStep(newStepBox);
                         
                         setButton(1);
     
-                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contentTitleStr = review.ctInput.text; // BUGR-1682
                         activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1682
                         
                         activate.initData();
@@ -1056,29 +1040,25 @@
              */ 
             public function next(event:EffectEvent=null):void {
                 if (this.currentState == "ContestSelectionState") {
-                    if (contestSelect.contestType.selectedValue == null) {
-                        Helper.showAlertMessage("Please select a contest type!");
+                    if (contestSelect.validateFields() == false) {
                         return;
                     }
-                   // BUGR-1067
-		   //Currently only implement Studio constest type
-                   /*if (contestSelect.contestType.selectedValue != "STUDIO"){
-                       return;
-                     }*/
+
                     this.currentState="OverViewState";
                     setReadOnlyMode();
-                    save.includeInLayout=save.visible=false;
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
                     
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT; // BUGR-1134
                     back.visible=true;
                     setPreviousStep(step1box); // BUGR-1141
                     setCurStep(step2box); // BUGR-1141
                     
-                    result.type=contestSelect.contestType.selectedValue;
-                        //bottemline.height=mainPanel.height-710;
+                    result.type=contestSelect.selectContestTypes.selectedItem.data;
                 } else if (this.currentState == "OverViewState") {
                     //validate input
                     if (overView.validateFields() == false){
@@ -1098,12 +1078,10 @@
 
                     details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
                     details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
-                    details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
                     details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
                     details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
                     details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
                     details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
-                   //TODO-HEIGHT-this.height = DETAILS_HEIGHT;  // BUGR-1134
 
                    if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
                            review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')';
@@ -1112,7 +1090,7 @@
                     setPreviousStep(step2box);
                     setCurStep(step3box);
 					
-                    if (contestSelect.contestType.selectedValue == "SPECIFICATION" || contestSelect.contestType.selectedValue == "CONCEPTUALIZATION" ){
+                    if (contestSelect.selectContestTypes.selectedItem.data == "SPECIFICATION" || contestSelect.selectContestTypes.selectedItem.data == "CONCEPTUALIZATION" ){
                        details.tech1.visible = false;
                        details.tech2.visible = false;
                        details.tech1.includeInLayout = false;
@@ -1137,7 +1115,6 @@
                     if (!studioContestType) {
                         this.currentState="AttachFilesState";
                         setReadOnlyMode();
-                        //TODO-HEIGHT-this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                         setPreviousStep(step3box);
                         setCurStep(step4box);
                         setPreviousStep(step4box);
@@ -1157,7 +1134,6 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setPreviousStep(step3box);
                     setCurStep(step4box);
                 } else if (this.currentState == "SpecificationsState") {
@@ -1177,7 +1153,6 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                     setPreviousStep(step4box);
                     setCurStep(step5box);
                 } else if (this.currentState == "AttachFilesState") {
@@ -1196,7 +1171,6 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=SCHEDULE_HEIGHT; // BUGR-1134
                     setPreviousStep(step5box);
                     setCurStep(step6box);
                 } else if (this.currentState == "ScheduleState") {
@@ -1223,11 +1197,6 @@
                     
                     this.currentState="ReviewState";
                     setReadOnlyMode();
-                    //BUGR-1792
-                    /*if (!this.studioContestType)
-                        goNext.visible = false;
-                    BUGR-1682 */
-                    //TODO-HEIGHT-this.height=REVIEW_HEIGHT; // BUGR-1134
                     setPreviousStep(step6box);
                     setCurStep(step7box);
                 } else if (this.currentState == "ReviewState") {
@@ -1261,7 +1230,7 @@
                         setCurStep(step8box);
                         setButton(1);
     
-                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contentTitleStr = review.ctInput.text;
                         activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
     
                         activate.initData();
@@ -1275,7 +1244,7 @@
                 }
             }
  
-      /**
+            /**
              * This method will trigger start date validation when a save draft or activate operation is triggerd.
              *
              * @param listener the webservice listener
@@ -1318,7 +1287,7 @@
                         setCurStep(step8box);
                         setButton(3);
                         
-                        activate.contentTitleStr = isStudioContestType ? review.contentTitleStr : review.ns_componentNameStr; // BUGR-1682
+                        activate.contentTitleStr = review.ctInput.text;
                         activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
           
                          activate.initData();
@@ -1469,15 +1438,12 @@
                             }
                         }
                         
-                        //TODO-HEIGHT-this.height = REVIEW_HEIGHT; // BUGR-1134
-
                        setCurStep(step7box);
                        setNextStep(step8box); // BUGR-1141
                     }
                 } else if (this.currentState == "ReviewState") {
                     this.currentState="ScheduleState";
                     setReadOnlyMode();
-                    //TODO-HEIGHT-this.height=SCHEDULE_HEIGHT; // BUGR-1134
                     
                     save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
@@ -1500,13 +1466,11 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=ATTACH_FILES_HEIGHT; // BUGR-1134
                     setCurStep(step5box);
                     setNextStep(step6box); // BUGR-1141
                 } else if (this.currentState == "AttachFilesState") {
                     // BUGR-1067
                     if (!studioContestType) {
-                        details.ns_shortDesc.htmlText = details.ns_shortDesc.htmlText; //BUGR-1895
                         details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
                         details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
                         details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
@@ -1521,7 +1485,6 @@
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
                     
-                        //TODO-HEIGHT-this.height=DETAILS_HEIGHT; // BUGR-1134
                         setCurStep(step4box);
                         setNextStep(step5box);
                         setCurStep(step3box);
@@ -1539,7 +1502,6 @@
                     
                     this.currentState="SpecificationsState";
                     setReadOnlyMode();
-                    //TODO-HEIGHT-this.height=SPECIFICATIONS_HEIGHT; // BUGR-1134
                     setCurStep(step4box);
                     setNextStep(step5box); // BUGR-1141
                 } else if (this.currentState == "SpecificationsState") {
@@ -1555,13 +1517,12 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=DETAILS_HEIGHT; // BUGR-1134
                     setCurStep(step3box);
                     setNextStep(step4box); // BUGR-1141
                 } else if (this.currentState == "DetailsState") {
                     this.currentState="OverViewState";
                     setReadOnlyMode();
-                    save.includeInLayout=save.visible=false;
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
                     }
@@ -1569,13 +1530,12 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=OVERVIEW_HEIGHT; // BUGR-1134
                     setCurStep(step2box);
                     setNextStep(step3box); // BUGR-1141
                 } else if (this.currentState == "OverViewState") {
                     this.currentState="ContestSelectionState";
                     setReadOnlyMode();    
-                    save.includeInLayout=save.visible=false;
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
                     if (save.visible) {
                         save.label=getSaveLabel();
                     }
@@ -1583,7 +1543,6 @@
                     goNext.includeInLayout=goNext.visible=true;
                     goNext.label = "NEXT";
                     
-                    //TODO-HEIGHT-this.height=CONTEST_SELECTION_HEIGHT; // BUGR-1134
                     back.visible=false;
 
                     setCurStep(step1box);
@@ -1805,9 +1764,7 @@
             }
 
             private function goToOverViewPage():void {
-                var result:int=contestSelect.goToOverView();
-                if (result < 0)
-                    return;
+                contestSelect.initData();
                 next();
             }
             
@@ -1963,6 +1920,20 @@
                 capacityFullDatesCol.addItem({rangeEnd: new Date()});
                 capacityFullDates = capacityFullDatesCol.toArray();
             }
+
+            private function showHelpVideo():void {
+                var widgetSetting:WidgetGlobalSetting=WidgetGlobalSettingManager.instance().getWidgetGlobalSetting(this.name);
+                if (!widgetSetting) {
+                    return;
+                }
+                
+                var src:String=widgetSetting.settings[this.currentState + ".HelpVideoSource"] as String;
+                var frame:String=widgetSetting.settings[this.currentState + ".HelpVideoFrame"] as String;
+                trace("Help Video [" + this.currentState + "] == " 
+                    + widgetSetting.settings[this.currentState + ".HelpVideoSource"] + "," 
+                    + widgetSetting.settings[this.currentState + ".HelpVideoFrame"]);
+                VideoPopupManager.showHelpVideo(this, src, frame);
+            }
         ]]>
     </mx:Script>
 
@@ -1978,7 +1949,7 @@
                    wsdl="{projectServiceFacadeWsdl}">
         <mx:operation name="createProject"
                       resultFormat="object"
-                      fault="showWebserviceError('createProject', event);">
+                      fault="hideLoadingProgress();Helper.showAlertMessage('Your new project was not able to be saved. Please try again or contact directassist@topcoder.com if the problem continues.');">
         </mx:operation>
 
         <mx:operation name="getAllProjects"
@@ -2188,8 +2159,6 @@
              </mx:method>             
     </mx:RemoteObject>
 
-    <!--<mx:Spacer height="5" />-->
-    <!--<pages:InitialWidget id="initialWdt" />-->
     <mx:HBox id="launchWdt"
              width="100%"
              height="100%"
@@ -2454,143 +2423,170 @@
                  paddingLeft="20"
                  id="mainPanel">
 
-            <!-- New summary box - since 1.0.3 -->
-            <mx:HRule width="100%" visible="{showSummary}"
-                      includeInLayout="{showSummary}"/>
-            <mx:HBox width="100%"
-                     height="60"
-                     verticalGap="0"
-                     horizontalGap="0"
-                     paddingRight="8"
-                     paddingLeft="20"
-                     id="summaryBox"
-                     verticalScrollPolicy="off"
-                     horizontalScrollPolicy="off"
-                      visible="{showSummary}"
-                      includeInLayout="{showSummary}">
-                     <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Project:" fontWeight="bold"/>
-                              <mx:Label text="{tcDirectProjectName}"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Contest Fee:" fontWeight="bold"/>
-                              <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Start date:" fontWeight="bold"/>
-                              <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                     </mx:VBox>
-                     <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Contest Type:" fontWeight="bold"/>
-                              <mx:Label text="{competitionType}"/>
-                              <mx:Label text="({overView.studioType.selection.label})"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Prizes:" fontWeight="bold"/>
-                              <mx:Label id="contestPrizesTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Milestone date:" fontWeight="bold"/>
-                              <mx:Label id="contestMilestoneTxt" text="{NONE_MESSAGE}"/>
-                         </mx:HBox>
-                     </mx:VBox>
-                     <mx:VBox width="34%" verticalGap="0" horizontalGap="0">
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Status:" fontWeight="bold"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
-                              <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                         <mx:HBox verticalGap="0">
-                              <mx:Label text="End date:" fontWeight="bold"/>
-                              <mx:Label id="contestEndTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
-                         </mx:HBox>
-                     </mx:VBox>
+            <!-- header section start -->
+            <mx:HBox horizontalAlign="right"
+                 width="100%">
+                <mx:Label text="{header}" width="80%" styleName="sectionTitle" />
+                <mx:Spacer width="100" />
+                <mx:Button id="helpVideoBtn"
+                            styleName="helpVideoIcon"
+                            label=""
+                            toolTip="Show Help"
+                            click="showHelpVideo()" />
+                <mx:Button id="previewContestBtn"
+                            styleName="arrowRightBtnStyle"
+                            labelPlacement="{ButtonLabelPlacement.LEFT}"
+                            label="PREVIEW CONTEST"
+                            click="previewContest()" /> 
+                <mx:Button id="reviewWorkflowButton"
+                       styleName="arrowRightBtnStyle"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       label="Submit For Review"
+                       visible="false"
+                       includeInLayout="false"/>
             </mx:HBox>
-            <mx:HRule width="100%" visible="{showSummary}"
-                      includeInLayout="{showSummary}"/>
+            <!-- header section end -->
+            
             <mx:Spacer height="5"/>
-            <pages:ContestSelection id="contestSelect"/>
-            <pages:OverView id="overView"/>
-            <pages:Details id="details"/>
-            <pages:Specifications id="specf"/>
-            <pages:AttachFiles id="attch"/>
-            <pages:Schedule id="sched"/>
-            <pages:Review id="review"/>
-            <pages:PaymentContest id="activate"
-                                  width="100%"/>
+            <!-- New summary box - since 1.0.3 -->
+            <mx:VBox width="100%" height="100%" visible="{showSummary}"
+                          includeInLayout="{showSummary}">
+                <mx:HRule width="100%"/>
+                <mx:HBox width="100%"
+                         height="60"
+                         verticalGap="0"
+                         horizontalGap="0"
+                         paddingRight="8"
+                         paddingLeft="20"
+                         id="summaryBox"
+                         verticalScrollPolicy="off"
+                         horizontalScrollPolicy="off"
+                          >
+                         <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Project:" fontWeight="bold"/>
+                                  <mx:Label text="{tcDirectProjectName}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Fee:" fontWeight="bold"/>
+                                  <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Start date:" fontWeight="bold"/>
+                                  <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                         <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Type:" fontWeight="bold"/>
+                                  <mx:Label text="{competitionType}"/>
+                                  <mx:Label text="({overView.studioType.selection.label})"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Prizes:" fontWeight="bold"/>
+                                  <mx:Label id="contestPrizesTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Milestone date:" fontWeight="bold"/>
+                                  <mx:Label id="contestMilestoneTxt" text="{NONE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                         <mx:VBox width="34%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Status:" fontWeight="bold"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
+                                  <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="End date:" fontWeight="bold"/>
+                                  <mx:Label id="contestEndTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                </mx:HBox>
+                <mx:HRule width="100%"/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <!-- body section start -->
+            <mx:HBox width="100%" height="100%">
+                <pages:ContestSelection id="contestSelect"/>
+                <pages:OverView id="overView"/>
+                <pages:Details id="details"/>
+                <pages:Specifications id="specf"/>
+                <pages:AttachFiles id="attch"/>
+                <pages:Schedule id="sched"/>
+                <pages:Review id="review"/>
+                <pages:PaymentContest id="activate"
+                                      width="100%"/>
+            </mx:HBox>
+            <!-- body section end -->
             <mx:HRule width="100%"/>
-            <!--<mx:Spacer  id="bottemline" height="100%"/>-->
+            <mx:Spacer height="5"/>
+            <!-- footer section start -->
+            <!--<mx:HBox id="SaveAndContinueHBox"
+                     visible="{this.currentState == 'ContestSelectionState'}"
+                     height="{this.currentState == 'ContestSelectionState' ? 30 : 0}"
+                     paddingTop="0"
+                     horizontalAlign="right"
+                     width="100%">
+                <mx:Button label="NEXT"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           click="goToOverViewPage()"
+                           buttonMode="true"/>
+            </mx:HBox>-->
+            <mx:HBox id="BtnsHBox"
+                     paddingTop="0"
+                     verticalAlign="top"
+                     horizontalAlign="center"
+                     width="100%">
+        
+                <mx:Button id="back"
+                           label="BACK"
+                           buttonMode="true"
+                           styleName="arrowLeftBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                           click="previous()"/>
+                <mx:Button id="cancel"
+                           label="CANCEL"
+                           buttonMode="true"
+                           styleName="arrowLeftBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                           click="cancelBtn()"/>
+                <mx:HBox horizontalAlign="center" width="100%" id="activateBtnPanel" visible="false" includeInLayout="false">
+                    <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+                    <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                    <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
+                </mx:HBox>
+        
+                <mx:Spacer width="90%"/>
+                <!-- BUGR-1643 -->
+                <mx:Button id="save"
+                           buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="SAVE AS DRAFT"
+                           click="validateAndSaveAsDraft()"
+                           includeInLayout="{save.visible}"/>
+        
+                <mx:Button id="goNext"
+                           label="NEXT"
+                           buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           click="next()"/>
+            </mx:HBox>
         </mx:VBox>
-    </mx:HBox>
-    <mx:HBox id="SaveAndContinueHBox"
-             visible="{this.currentState == 'ContestSelectionState'}"
-             height="{this.currentState == 'ContestSelectionState' ? 30 : 0}"
-             paddingLeft="220"
-             paddingTop="0"
-             horizontalAlign="right"
-             width="100%">
-        <mx:Button label="NEXT"
-                   styleName="arrowRightBtnStyle"
-                   labelPlacement="{ButtonLabelPlacement.LEFT}"
-                   click="goToOverViewPage()"
-                   buttonMode="true"/>
-    </mx:HBox>
-    <mx:HBox id="BtnsHBox"
-             paddingLeft="220"
-             paddingTop="0"
-             verticalAlign="top"
-             horizontalAlign="center"
-             width="100%"
-             height="{SaveAndContinueHBox.visible ? 0 : 30}"
-             visible="{!SaveAndContinueHBox.visible}"
-             includeInLayout="{!SaveAndContinueHBox.visible}">
-
-        <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
-        <mx:Button id="back"
-                   label="BACK"
-                   buttonMode="true"
-                   styleName="arrowLeftBtnStyle"
-                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
-                   click="previous()"/>
-        <mx:Button id="cancel"
-                   label="CANCEL"
-                   buttonMode="true"
-                   styleName="arrowLeftBtnStyle"
-                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
-                   click="cancelBtn()"/>
-        <mx:HBox horizontalAlign="center" width="100%" id="activateBtnPanel" visible="false" includeInLayout="false">
-            <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
-            <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-            <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
-        </mx:HBox>
-
-        <mx:Spacer width="90%"/>
-        <!-- BUGR-1643 -->
-        <mx:Button id="save"
-                   buttonMode="true"
-                   styleName="arrowRightBtnStyle"
-                   labelPlacement="{ButtonLabelPlacement.LEFT}"
-                   label="SAVE AS DRAFT"
-                   click="validateAndSaveAsDraft()"
-                   includeInLayout="{save.visible}"/>
-
-        <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-
-        <mx:Button id="goNext"
-                   label="NEXT"
-                   buttonMode="true"
-                   styleName="arrowRightBtnStyle"
-                   labelPlacement="{ButtonLabelPlacement.LEFT}"
-                   click="next()"/>
     </mx:HBox>
     <mx:Spacer height="5"/>
     <tc:states>
         <mx:State name="ContestSelectionState">
+            <mx:SetProperty target="{this}" name="header" value="Create Contest"/>
+            <mx:SetProperty target="{back}" name="visible" value="false"/>
+            <mx:SetProperty target="{back}" name="includeInLayout" value="false"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="false"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="false"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
             <mx:RemoveChild target="{specf}"/>
@@ -2601,6 +2597,9 @@
         </mx:State>
         
         <mx:State name="OverViewState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Overview"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{details}"/>
             <mx:RemoveChild target="{specf}"/>
@@ -2611,6 +2610,9 @@
         </mx:State>
         
         <mx:State name="DetailsState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Details"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{specf}"/>
@@ -2621,6 +2623,9 @@
         </mx:State>
         
         <mx:State name="SpecificationsState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Specifications"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
@@ -2631,6 +2636,9 @@
         </mx:State>
         
         <mx:State name="AttachFilesState">
+            <mx:SetProperty target="{this}" name="header" value="Attach Files"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
@@ -2641,6 +2649,9 @@
         </mx:State>
         
         <mx:State name="ScheduleState">
+            <mx:SetProperty target="{this}" name="header" value="Schedule"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
@@ -2651,6 +2662,9 @@
         </mx:State>
         
         <mx:State name="ReviewState">
+            <mx:SetProperty target="{this}" name="header" value="Review"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
@@ -2661,6 +2675,9 @@
         </mx:State>
                 
         <mx:State name="ActivateState">
+            <mx:SetProperty target="{this}" name="header" value="Activate Your Contest"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
             <mx:RemoveChild target="{contestSelect}"/>
             <mx:RemoveChild target="{overView}"/>
             <mx:RemoveChild target="{details}"/>
