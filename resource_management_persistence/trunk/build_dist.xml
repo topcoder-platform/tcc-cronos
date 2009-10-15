@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Aether Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -10,8 +10,8 @@
     <property name="tcs_libdir" value="${libdir}/tcs"/>
     <property name="ext_libdir" value="${libdir}/third_party"/>
 
-    <property name="aether_libdir" value="${libdir}/aether"/>
-    <property name="target_libdir" value="${aether_libdir}"/>
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
 
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
