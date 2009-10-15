@@ -540,13 +540,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 lastMode=mode;
                 mode=value;
                 if (mode == "MAIN") {
-                    updateSummary();
+                    //updateSummary();
                 } else if (mode == "BREAK") {
                     breakIdx=0;
                     breakField=breakArray[0];
-                    updateBreak();
+                    //updateBreak();
                 } else if (mode == "PRICE" || mode == "DATE") {
-                    updateHistory();
+                    //updateHistory();
                 }
                 dispatchEvent(new Event("modeChange"));
             }

@@ -60,7 +60,7 @@
              * Initializes this widget.
              */
             private function init():void {
-                timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
+               // timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
                 model.addEventListener("clearType", handleClearType);
                 model.addEventListener("lock", handleUpdated);
                 model.addEventListener("modeChange", handleModeChange);
@@ -105,7 +105,7 @@
                         model.navigateToMode(model.hist[list.selectedIndex]);
                         model.updateHistory();
                     }
-                    doFadeOut("TOP");
+
                 } else {
                     return;
                 }
@@ -156,7 +156,7 @@
                             backBtn.visible=true;
                             list.dataProvider=model.hist;
                             list.selectedIndex=1;
-                            doFadeOut("TOP");
+                       
                             return;
                     }
                 } else {
@@ -181,7 +181,7 @@
                             backBtn.visible=true;
                             list.dataProvider=model.hist;
                             list.selectedIndex=1;
-                            doFadeOut("TOP");
+                           
                             return;
                     }
                     
@@ -215,13 +215,13 @@
                         backBtn.visible=true;
                         list.dataProvider=model.hist;
                         list.selectedIndex=1;
-                        doFadeOut("TOP");
+                     
                         return;
                 }
                 
                 list.selectedIndex=0;
                 model.filterDetail();
-                doFadeOut("LEFT");
+               
             }
             
             /**
@@ -285,26 +285,6 @@
              */
             private var v:Boolean=false;
             
-            /**
-             * Animation effect related
-             */
-            private function doFadeOut(dir:String):void {
-                if (pnlContainer.numChildren > 1) {
-                    pnlContainer.removeChildAt(1);
-                }
-//                model.showDateChooser = false;
-                var bm:BitmapData=new BitmapData(stack.width, stack.height);
-                bm.draw(stack);
-                coms=new UIComponent();
-                coms.addChild(new Bitmap(bm));
-                coms.width=stack.width;
-                coms.height=stack.height;
-                coms.x=3;
-                pnlContainer.addChildAt(coms, 1);
-                _direction=dir;
-                v=false;
-                timer.start();
-            }
             
             /**
              * Animation effect related
