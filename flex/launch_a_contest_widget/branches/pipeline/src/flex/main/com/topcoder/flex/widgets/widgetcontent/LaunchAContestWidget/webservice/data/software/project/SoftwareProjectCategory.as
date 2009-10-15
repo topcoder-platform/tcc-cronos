@@ -43,5 +43,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         public var projectType:SoftwareProjectType=null;
 
+        public static const PROJECT_CATEGORY_DESIGN:Number = 1;
+
+        public static const PROJECT_CATEGORY_DEV:Number = 2;
+
+
+
     }
 }
