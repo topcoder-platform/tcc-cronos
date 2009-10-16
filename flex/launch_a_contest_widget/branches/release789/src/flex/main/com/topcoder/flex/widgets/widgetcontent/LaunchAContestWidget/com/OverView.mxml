@@ -540,8 +540,17 @@
                 for (var i:int=0; i < ns_inputs.length; i++) {
                     var prizeData:PrizeData=new PrizeData();
 
-                    var input:TextInput=this[ns_inputs[i]] as TextInput;
-                    var amount:Number=Number(input.text);
+                    var amount:Number = 0; 
+                    if (i == 0)
+                    {
+                        var input:TextInput=this[ns_inputs[i]] as TextInput;
+                        amount=Number(input.text);
+                    }
+                    else
+                    {
+                        var input2:Label=this[ns_inputs[i]] as Label;
+                        amount=Number(input2.text);
+                    }
                     if (amount <= 0) {
                         break;
                     }

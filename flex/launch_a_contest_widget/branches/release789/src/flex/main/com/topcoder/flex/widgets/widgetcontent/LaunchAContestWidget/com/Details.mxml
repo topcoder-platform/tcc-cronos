@@ -436,7 +436,7 @@
                             (mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
                                         mainWidget.softwareCompetition.type == "DESIGN")) 
                        ||
-                        (mainWidget.softwareCompetition.projectHeader 
+                        (mainWidget.softwareCompetition && mainWidget.softwareCompetition.projectHeader 
                               && mainWidget.softwareCompetition.projectHeader.projectCategory
                               &&
                                 (mainWidget.softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DESIGN
