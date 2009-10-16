@@ -959,7 +959,7 @@
                     case 6:
 
                         //validate input
-                       sched.curContestType = Number(overView.studioType.selectedValue);
+                       sched.curContestType = studioContestSubTypeId;
                        sched.requestSchedule.send();
     
                        this.currentState = "ScheduleState";
@@ -1160,7 +1160,7 @@
                     setCurStep(step5box);
                 } else if (this.currentState == "AttachFilesState") {
                     //validate input
-                    sched.curContestType=Number(overView.studioType.selectedValue);
+                    sched.curContestType=studioContestSubTypeId;
                     sched.requestSchedule.send();
 
                     this.currentState="ScheduleState";
@@ -2483,7 +2483,7 @@
                              <mx:HBox verticalGap="0">
                                   <mx:Label text="Contest Type:" fontWeight="bold"/>
                                   <mx:Label text="{competitionType}"/>
-                                  <mx:Label text="({overView.studioType.selection.label})"/>
+                                  <mx:Label text="({studioContestSubTypeLabel})"/>
                              </mx:HBox>
                              <mx:HBox verticalGap="0">
                                   <mx:Label text="Prizes:" fontWeight="bold"/>

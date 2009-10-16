@@ -267,6 +267,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable]
         private var _manualPrizeSetting:Boolean=false;
         
+        public var studioContestSubTypeId:Number=-1;
+        
+        [Bindable]
+        public var studioContestSubTypeLabel:String="";
+        
         /**
         * @since BUGR-1737
         */     
@@ -729,6 +734,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 trace("getSoftwareContestHandler:: c: " + c);
                 (container.contents as LaunchWidget).competition=null;
                 (container.contents as LaunchWidget).softwareCompetition=c;
+                (container.contents as LaunchWidget).competitionType=SoftwareCompetitionUtils.instance().getCompetitionType(
+                    c.projectHeader.projectCategory.id);
                 (container.contents as LaunchWidget).contestCreateUser=c.projectHeader.creationUser;
                 //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);

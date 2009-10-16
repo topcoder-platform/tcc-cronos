@@ -527,7 +527,7 @@
                 ]]>
             </mx:htmlText>
         </mx:Text>
-        <mx:Text text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the suggested timelines are:" />
+        <mx:Text text="For your chosen contest type - {mainWidget.studioContestSubTypeLabel} - the suggested timelines are:" />
         <mx:Label text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
         <mx:Label text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
         <mx:Label text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>

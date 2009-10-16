@@ -203,9 +203,7 @@
                 if (e != null && e.result != null && e.result is XML) {
                     fileTypes=e.result as XML;
                     fileFormatsBox.removeAllChildren();
-                    var id:Number=Number(mainWidget.overView.studioType.selection.value);
-                    mainWidget.overView.studioType.selection.value
-                    trace("id=" + id);
+                    var id:Number=mainWidget.studioContestSubTypeId;
                     for each (var fmt:XML in fileTypes.contestType.(@id == id).children()) {
                         var chb:CheckBox=new CheckBox();
                         chb.label=fmt.description;
@@ -304,7 +302,7 @@
                 <mx:Text htmlText="You can also email" paddingTop="3" />
                 <mx:LinkButton styleName="linkBtn" label="directassist@topcoder.com" click="{navigateToURL(new URLRequest('mailto:directassist@topcoder.com'), '_self');}" />
             </mx:HBox>
-            <mx:Text width="100%" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the most common final file formats are:" />
+            <mx:Text width="100%" text="For your chosen contest type - {mainWidget.studioContestSubTypeLabel} - the most common final file formats are:" />
             <mx:VBox width="100%" paddingLeft="10">
                 <mx:VBox id="fileFormatsBox">
 

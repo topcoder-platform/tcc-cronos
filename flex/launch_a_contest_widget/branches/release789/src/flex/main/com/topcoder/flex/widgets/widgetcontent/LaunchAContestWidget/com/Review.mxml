@@ -229,9 +229,7 @@
                 if (mainWidget && mainWidget.studioContestType) {
                     if (mainWidget.overView) {
                         // assign values from overview screen.
-                        if (mainWidget.overView.studioType.selection) {
-                            cstTypeStep2=mainWidget.overView.studioType.selection.label;
-                        }
+                        cstTypeStep2=mainWidget.studioContestSubTypeLabel;
                         firstPrize=mainWidget.overView.firstPlace.text;
                         secondPrize=mainWidget.overView.secondPlace.text;
                         thirdPrize=mainWidget.overView.thirdPlace.text;

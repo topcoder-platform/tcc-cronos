@@ -83,6 +83,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * Resource role key.
          */
         private var _resourceRoleKey:String="2";
+        
+        private var _idToCompetitionType:Dictionary=new Dictionary();
 
         /**
          * Constructor for this class.
@@ -94,56 +96,67 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             _projectTypeIds["CONCEPTUALIZATION"]=2;
             _projectCategoryIds["CONCEPTUALIZATION"]=23;
 	    _projectTypeNames["CONCEPTUALIZATION"]="Application";
+	    _idToCompetitionType[23]="CONCEPTUALIZATION";
 
             _competitionTypes.addItem("SPECIFICATION");
             _projectTypeIds["SPECIFICATION"]=2;
             _projectCategoryIds["SPECIFICATION"]=6;
 	    _projectTypeNames["SPECIFICATION"]="Application";
+	    _idToCompetitionType[6]="SPECIFICATION";
 
             _competitionTypes.addItem("ARCHITECTURE");
             _projectTypeIds["ARCHITECTURE"]=2;
             _projectCategoryIds["ARCHITECTURE"]=7;
 	    _projectTypeNames["ARCHITECTURE"]="Application";
+	    _idToCompetitionType[7]="ARCHITECTURE";
 
             _competitionTypes.addItem("DESIGN");
             _projectTypeIds["DESIGN"]=1;
             _projectCategoryIds["DESIGN"]=1;
 	    _projectTypeNames["DESIGN"]="Component";
+	    _idToCompetitionType[1]="DESIGN";
 
             _competitionTypes.addItem("DEVELOPMENT");
             _projectTypeIds["DEVELOPMENT"]=1;
             _projectCategoryIds["DEVELOPMENT"]=2;
 	    _projectTypeNames["DEVELOPMENT"]="Component";
+	    _idToCompetitionType[2]="DEVELOPMENT";
 
             _competitionTypes.addItem("ASSEMBLY");
             _projectTypeIds["ASSEMBLY"]=2;
             _projectCategoryIds["ASSEMBLY"]=14;
 	    _projectTypeNames["ASSEMBLY"]="Application";
+	    _idToCompetitionType[14]="ASSEMBLY";
 
             _competitionTypes.addItem("RIACOMPONENT");
             _projectTypeIds["RIACOMPONENT"]=2;
             _projectCategoryIds["RIACOMPONENT"]=25;
 	    _projectTypeNames["RIACOMPONENT"]="Application";
+	    _idToCompetitionType[25]="RIACOMPONENT";
 
             _competitionTypes.addItem("RIABUILD");
             _projectTypeIds["RIABUILD"]=2;
             _projectCategoryIds["RIABUILD"]=24;
 	    _projectTypeNames["RIABUILD"]="Application";
+	    _idToCompetitionType[24]="RIABUILD";
 
             _competitionTypes.addItem("UIPROTOTYPE");
             _projectTypeIds["UIPROTOTYPE"]=2;
             _projectCategoryIds["UIPROTOTYPE"]=19;
 	    _projectTypeNames["UIPROTOTYPE"]="Application";
+	    _idToCompetitionType[19]="UIPROTOTYPE";
 
             _competitionTypes.addItem("TESTSUITES");
             _projectTypeIds["TESTSUITES"]=2;
             _projectCategoryIds["TESTSUITES"]=13;
 	    _projectTypeNames["TESTSUITES"]="Application";
+	    _idToCompetitionType[13]="TESTSUITES";
 
 	    _competitionTypes.addItem("TESTSCENARIOS");
             _projectTypeIds["TESTSCENARIOS"]=2;
             _projectCategoryIds["TESTSCENARIOS"]=26;
 	    _projectTypeNames["TESTSCENARIOS"]="Application";
+	    _idToCompetitionType[26]="TESTSCENARIOS";
         }
 
         /**
@@ -874,6 +887,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          */
         public function calculateDRPoint(firstPlacePrize:Number, secondPlacePrize:Number, reliabilityPrize:Number):Number {
             return (firstPlacePrize + secondPlacePrize + reliabilityPrize) * 0.20;
+        }
+        
+        public function getCompetitionType(id:Number):String {
+            return _idToCompetitionType[id];
         }
     }
 }

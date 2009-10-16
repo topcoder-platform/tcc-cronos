@@ -53,11 +53,6 @@
          horizontalScrollPolicy="off"
          verticalScrollPolicy="off">
 
-    <mx:HTTPService id="requestContestTypes"
-                    url="/i/cockpit/data/launch_a_contest/contestTypes.xml"
-                    resultFormat="xml"
-                    result="preprocessTypes(event)">
-    </mx:HTTPService>
     <!--
          Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
          - Changed the name to more generic 'overview data' rather than 'examples'
@@ -139,23 +134,6 @@
             [Bindable]
             private var reliabilityBonusXML:XML;
             
-            /**
-             * Change to use the type name instead of Id
-             * 
-             * Updated for Version 1.0.1
-             */ 
-            [Bindable]
-            private var curContestType:String;
-            
-            /**
-             * Updated for Cockpit Release Assembly 1 v1.0
-             *    - To avoid binding can not detect error.
-             * 
-             * Updated the text for 1.0.4
-             */
-            [Bindable]
-            private var curContestTypeId:int;
-            
             //
             // Updated for Cockpit Release Assembly 1 v1.0
             //    - To avoid binding can not detect error.
@@ -218,7 +196,7 @@
             private var currentCostLevel:String="";
             
             [Bindable]
-            private var _showSWMilestonePrize=false;
+            private var _showSWMilestonePrize:Boolean=false;
             
             private var _firstReadFromPersistence:Boolean=true;
             
@@ -256,14 +234,19 @@
                     if (mainWidget.competition && mainWidget.competition.contestData) {
                         mainWidget.multiRoundContest = mainWidget.competition.contestData.multiRound;
                     }
-                    // For studio contest it is loaded inside handler for requestContestTypes.
-                    requestContestTypes.send();
+                    // request overview data after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    requestOverviewData.send();
+                    
+                    //
+                    // request contest fees after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    requestContestFees.send();
+                    
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
-
-		     // recalculate start date forbidden dates
-                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestTypeId, true);      
                 } else {
                     // load reliability bonus xml.
                     requestReliabilityBonus.send();
@@ -474,8 +457,6 @@
              * @return true always
              */
             private function s_updateResult():Boolean {
-                mainWidget.competition.contestData.contestTypeId=Number(studioType.selectedValue);
-
                 var prizes:Array=new Array();
 		var sum:Number = 0;
                 mainWidget.competition.contestData.prizes=prizes;
@@ -617,48 +598,6 @@
                 return true;
             }
             
-            
-            /**
-             * Handles the select for sub contest type.
-             *
-             * Updated to set / unset whether exampleOne and exampleTwo box should be shown or not.
-             *
-             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-             * 
-             * Updated for Version 1.0.1
-             *    - for contest sub type use type name instead of id
-             *
-             * Note: this method calls pipeline webservice in order to recalculate forbidden start dates
-             *
-             * Note: added amount update
-             * @param event the item click event
-             */
-            private function handleSelect(event:ItemClickEvent):void {
-                typeName.text=(event.currentTarget as RadioButtonGroup).selection.label;
-                curContestType=typeName.text;
-	        curContestTypeId=Number(studioType.selectedValue);
-
-                if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                    adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
-                }
-                
-                if (mainWidget.studioContestType) {
-                    showExampleOne=isPresentXml('example1');
-                    showExampleTwo=isPresentXml('example2');
-
-                    // recalculate start date forbidden dates
-                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestTypeId, true);
-                } else {
-                    showExampleOne=false;
-                    showExampleTwo=false;
-                }
-
-                s_updateAmount(true);
-
-                dispatchEvent(new Event("curContestTypeChanged"));
-            }
-
             /**
              * This method updates contest format when the corresponding radiobutton is selected
              *
@@ -755,11 +694,6 @@
              * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
              */
             public function s_validateFields():Boolean { // BUGR-1067
-                if (studioType.selection == null) {
-                    Helper.showAlertMessage("Contest type not selected");
-                    return false;
-                }
-
                 for (var i:int=0; i < s_inputs.length - 1; i++) {
 
                     var input:TextInput=this[s_inputs[i]] as TextInput;
@@ -861,12 +795,6 @@
                         showExampleOne=false;
                         showExampleTwo=false;
                     }
-                    
-                    //
-                    // once data is loaded fire curContestTypeChanged event
-                    // so that ui gets updated with description etc.
-                    //
-                    dispatchEvent(new Event("curContestTypeChanged"));
                 }
             }
 
@@ -904,7 +832,7 @@
                         //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId).contestFee; // BUGR-1737
 			            s_updateAmount(true);
                     }
                 }
@@ -956,7 +884,6 @@
              *
              * @return whether the current contest type xml has the specified property or not.
              */
-            [Bindable(event="curContestTypeChanged")]
             private function isPresentXml(prop:String):Boolean {
                 var xml:XML=getCurrentContestTypeXml();
                 if (xml) {
@@ -976,89 +903,14 @@
              *
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
              */
-            [Bindable(event="curContestTypeChanged")]
             private function getCurrentContestTypeXml():XML {
                 if (mainWidget.studioContestType) {
-                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType)[0];
+                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId)[0];
                 } else {
                     return contestOverview.contestType.(@id == mainWidget.competitionType)[0];
                 }
             }
 
-            /**
-             * Loads the contest sub types.
-             * 
-             * Updated for Version 1.0.1
-             *    - for contest sub type use type name instead of id.
-             * 
-             * @param e the webservice result event.
-             */  
-            private function preprocessTypes(e:ResultEvent):void {
-                studioTypeBox.removeAllChildren();
-                studioType.selection=null;
-                
-                var contestType:String="";
-                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
-                    contestType=mainWidget.competition.contestData.contestTypeId.toString();
-                } else {
-                    // default id for Web Page Design
-                    contestType="1";
-                }
-                
-                var selectedValue:Number=-1;
-                var selectedLabel:String="";
-
-                if (e != null && e.result != null && e.result is XMLNode) {
-                    var root:XMLNode=e.result as XMLNode;
-                    for (var i:int=0; i < root.childNodes.length; i++) {
-                        if (studioTypeBox.getChildren().length == 0) {
-                            studioTypeBox.addChild(new VBox());
-                        }
-                        var vbox:VBox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length - 1) as VBox;
-                        if (vbox.getChildren().length >= 2) {
-                            studioTypeBox.addChild(new VBox());
-                            vbox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length - 1) as VBox;
-                        }
-                        var typeRadio:RadioButton=new RadioButton();
-                        typeRadio.group=studioType;
-                        typeRadio.label=root.childNodes[i].attributes.description;
-                        typeRadio.value=root.childNodes[i].attributes.contestTypeId;
-
-                        if (typeRadio.value == contestType) {
-                            typeRadio.selected=true;
-                            selectedValue=Number(contestType);
-                            selectedLabel=typeRadio.label;
-                        }
-                        vbox.addChild(typeRadio);
-                    }
-                    // this will not happen anymore.
-                    if (selectedValue == -1) {
-                        selectedValue=1;
-                        studioType.selectedValue=selectedValue;
-                        selectedLabel=root.childNodes[0].attributes.description;
-                    }
-                      
-                     curContestType=selectedLabel;
-		     curContestTypeId = Number(selectedValue);
-
-                    // recalculate start date forbidden dates
-                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                    getCapacityFullDatesOp.send(curContestTypeId, true);
-                }
-                
-                //
-                // request overview data after studio contest types has been loaded.
-                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-                //
-                requestOverviewData.send();
-                
-                //
-                // request contest fees after studio contest types has been loaded.
-                // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-                //
-                requestContestFees.send();
-            }
-            
             /**
              * Gets the contest fees by billing project.
              * 
@@ -1104,7 +956,7 @@
                         ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
                         ns_updateAmount();
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee[0]; // BUGR-1737
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId).contestFee[0]; // BUGR-1737
                         s_updateAmount(true);
                     }
                 }
@@ -1373,19 +1225,6 @@
                           width="80%"/>
                 <mx:Spacer width="100%"/>
             </mx:HBox>
-            <!-- BUGR-1067 -->
-            <mx:VBox width="100%"
-                     visible="{mainWidget.studioContestType}"
-                     includeInLayout="{mainWidget.studioContestType}">
-                <mx:Label text="What type of {mainWidget.contestSelect.selectContestTypes.selectedItem.data} contest do you want to run?"
-                          styleName="boldBlackText"/>
-                <mx:RadioButtonGroup id="studioType"
-                                     itemClick="handleSelect(event);"/>
-                <mx:HBox id="studioTypeBox"
-                         horizontalGap="25"
-                         styleName="smallBlackText">
-                </mx:HBox>
-            </mx:VBox>
             <mx:Spacer height="5"/>
             <!-- New contest format radiobuttons -->
             <mx:VBox width="100%"
@@ -1411,7 +1250,7 @@
             <mx:HRule width="100%"/>
             <!-- BUGR-1204 -->
             <mx:Label id="typeName"
-                      text="{curContestType}"
+                      text="{mainWidget.studioContestSubTypeLabel}"
                       styleName="subsectionTitle"/>
             <!-- BUGR-1503 -->
             <mx:Text width="100%"

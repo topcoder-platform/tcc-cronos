@@ -74,6 +74,9 @@
             private var contestTypes:ArrayCollection=new ArrayCollection([{label: "Please select a contest type", data: null, desc: ""}, {label: "Studio", data: "STUDIO", desc: ""}, {label: "Software Conceptualization", data: "CONCEPTUALIZATION", desc: ""}, {label: "Software Specification", data: "SPECIFICATION", desc: ""}, {label: "Architecture", data: "ARCHITECTURE", desc: ""}, {label: "Component Design", data: "DESIGN", desc: ""}, {label: "Component Development", data: "DEVELOPMENT", desc: ""}, {label: "RIA Component", data: "RIACOMPONENT", desc: ""}, {label: "RIA Build", data: "RIABUILD", desc: ""}, {label: "UI Prototype", data: "UIPROTOTYPE", desc: ""}, {label: "Software Assembly", data: "ASSEMBLY", desc: ""}, {label: "Test Suites", data: "TESTSUITES", desc: ""}, {label: "Test Scenarios", data: "TESTSCENARIOS", desc: ""},]);
             
             [Bindable]
+            private var studioContestSubTypes:ArrayCollection=new ArrayCollection();
+            
+            [Bindable]
             private var _rangeStartDate:Date;
             
             private var _currentHelpPopup:String;
@@ -102,11 +105,40 @@
                 
                 // BUGR-1067
                 mainWidget.studioContestType=(competionType == "STUDIO");
+                if (mainWidget.studioContestType) {
+                    if (studioContestSubTypes.length <= 0) {
+                        // get the data here.
+                        requestContestTypes.send();
+                    } else {
+                        selectContestSubTypes.selectedIndex=0;
+                    }
+                    
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
+                } else {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=false;
+                }
+                
+                dfStart.selectedDate=null;
 
                 // recalculate start date forbidden dates
                 var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
                 var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
                 getCapacityFullDatesOp.send(contestType, false);
+            }
+            
+            private function handleSelectContestSubType(event:Event):void {
+                if (!event) {
+                    return;
+                }
+
+                mainWidget.studioContestSubTypeId=selectContestSubTypes.selectedItem.data;
+                mainWidget.studioContestSubTypeLabel=selectContestSubTypes.selectedItem.label;
+                
+                dfStart.selectedDate=null;        
+
+                // recalculate start date forbidden dates
+                var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                getCapacityFullDatesOp.send(mainWidget.studioContestSubTypeId, true);
             }
             
             
@@ -275,8 +307,8 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             public function initData():void {
-                if (mainWidget && mainWidget.competitionType != null && selectContestTypes != null) {
-                    selectContestType(mainWidget.competitionType)
+                if (mainWidget && selectContestTypes != null && mainWidget.competitionType != null) {
+                    selectContestType(mainWidget.competitionType)    
                 }
                 
                 if (selectProjects.dataProvider) {
@@ -292,12 +324,39 @@
                     contestNameInput.text=this.mainWidget.competition.contestData.name;
                     
                     startTime=mainWidget.competition.startTime;
+                    
+                    if (studioContestSubTypes.length <= 0) {
+                        // get the data here.
+                        requestContestTypes.send();
+                    } else {
+                        // default select as zero.
+                        if (mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
+                            mainWidget.studioContestSubTypeId=mainWidget.competition.contestData.contestTypeId;
+                            
+                            var i:int=0;
+                            for each (var item:Object in studioContestSubTypes) {
+                                if (item.data == mainWidget.studioContestSubTypeId) {
+                                    selectContestSubTypes.selectedIndex=i;
+                                    break;
+                                } 
+                                
+                                i++;
+                            }
+                        }
+                        
+                        mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
+                        
+                    }
+                        
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
                 } else if (mainWidget.softwareCompetition) {
                     // set contest name.
                     // set start date.
                     contestNameInput.text=this.mainWidget.softwareCompetition.assetDTO.name;
                     
                     startTime=mainWidget.softwareCompetition.assetDTO.productionDate;
+                    
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=false;
                 }
                 
                 var dataStrArr:Array=null;
@@ -341,6 +400,13 @@
                     if (showMsg) {
                         Helper.showAlertMessage("Please select a Contest Type" + (showPageName ? " at Create Contest Page" : ""));
                     }
+                    return false;
+                }
+                
+                if (selectContestSubTypes.visible 
+                        && selectContestSubTypes.includeInLayout 
+                        && !(selectContestSubTypes.selectedItem || !selectContestSubTypes.selectedItem.data)) {
+                    Helper.showAlertMessage("Contest sub type not selected");
                     return false;
                 }
                 
@@ -838,8 +904,58 @@
                 mainContainer.mouseEnabled=true;
                 createProjectPopupFadeOut.play();
             }
+            
+            /**
+             * Loads the contest sub types.
+             * 
+             * Updated for Version 1.0.1
+             *    - for contest sub type use type name instead of id.
+             * 
+             * @param e the webservice result event.
+             */  
+            private function preprocessTypes(e:ResultEvent):void {
+                var selectedContestTypeId:String="";
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
+                    selectedContestTypeId=mainWidget.competition.contestData.contestTypeId.toString();
+                } 
+                
+                var selectedValueIndex:Number=0;
+
+                if (e != null && e.result != null && e.result is XMLNode) {
+                    var root:XMLNode=e.result as XMLNode;
+                    for (var i:int=0; i < root.childNodes.length; i++) {
+                        var label:String=root.childNodes[i].attributes.description;
+                        var value:String=root.childNodes[i].attributes.contestTypeId;
+                        
+                        var item:Object=new Object();
+                        item.label=label;
+                        item.data=value;
+                        item.description="";
+                        
+                        studioContestSubTypes.addItem(item);
+
+                        if (value == selectedContestTypeId) {
+                            selectedValueIndex=i;
+                        }
+                    }
+                }
+                
+                if (selectedValueIndex >= 0) {
+                    selectContestSubTypes.selectedIndex=selectedValueIndex;
+                    mainWidget.studioContestSubTypeId = selectContestSubTypes.selectedItem.data;
+                    mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
+                    
+                }
+            }
         ]]>
     </mx:Script>
+    
+    <mx:HTTPService id="requestContestTypes"
+                    url="/i/cockpit/data/launch_a_contest/contestTypes.xml"
+                    resultFormat="xml"
+                    result="preprocessTypes(event)">
+    </mx:HTTPService>
+    
     <mx:VBox width="100%"
              id="mainContainer"
              styleName="boxStyle">
@@ -851,6 +967,12 @@
             <mx:ComboBox id="selectContestTypes"
                          dataProvider="{contestTypes}"
                          change="handleSelectContestType(event)"
+                         width="100%"/>
+            <mx:ComboBox id="selectContestSubTypes"
+                         dataProvider="{contestTypes}"
+                         change="handleSelectContestSubType(event)"
+                         visible="{mainWidget.studioContestType}"
+                         includeInLayout="{mainWidget.studioContestType}"
                          width="100%"/>
             <mx:LinkButton label="Help me choose"
                            click="showHideHelpPopup(event, 'contestType', 'Help for Contest Type');"/>
