@@ -283,7 +283,7 @@
                     }
                     
                     requestContestFees.send(); // BUGR-1737
-                    ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
+                    //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
                 }
                 
                 trace("INIT DATA For OverView - _showSWMilestonePrize: " + _showSWMilestonePrize + ", manualPrizeSetting: " + mainWidget.manualPrizeSetting);
@@ -891,7 +891,7 @@
                             highCostData);
 
 			            ns_setPrizes();
-                        ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
+                        //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                         adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == curContestType).contestFee; // BUGR-1737
@@ -1751,10 +1751,8 @@
                                               width="120"
                                               editable="false"
                                               change="handleSWFirstPlacePrizeChange()"/>
-                                <mx:TextInput id="ns_secondPlace"
-                                              width="120"
-                                              editable="false"
-                                              borderStyle="none"/>
+                                <mx:Label id="ns_secondPlace"
+                                              width="120"/>
                             </mx:VBox>
                         </mx:HBox>
         
@@ -1766,15 +1764,10 @@
                                           fontWeight="bold"/>
                             </mx:VBox>
                             <mx:VBox verticalGap="2">
-                                <mx:TextInput id="ns_contestf"
-                                              width="120"
-                                              borderStyle="none"
-                                              change="ns_updateAmount()"
-                                              editable="{mainWidget &amp;&amp; mainWidget.isAdmin}"/> <!-- BUGR-1737 -->
-                                <mx:TextInput id="ns_cntstTtl"
-                                              width="120"
-                                              editable="false"
-                                              borderStyle="none"/>
+                                <mx:Label id="ns_contestf"
+                                              width="120"/> <!-- BUGR-1737 -->
+                                <mx:Label id="ns_cntstTtl"
+                                              width="120"/>
                             </mx:VBox>
                         </mx:HBox>
                     </mx:HBox>
@@ -1816,14 +1809,11 @@
                                           fontWeight="bold"/>
                                 </mx:VBox>
                                 <mx:VBox verticalGap="2">
-                                    <mx:TextInput id="ns_reviewCost"
-                                                  width="120"
-                                                  editable="false"/>
+                                    <mx:Label id="ns_reviewCost"
+                                                  width="120"/>
                                     
-                                    <mx:TextInput id="ns_dr"
-                                                  width="120"
-                                                  editable="false"
-                                                  borderStyle="none"/>
+                                    <mx:Label id="ns_dr"
+                                                  width="120"/>
                                 </mx:VBox>                                      
                             </mx:HBox>
                             <mx:HBox>
@@ -1836,14 +1826,10 @@
                                       includeInLayout="{_showSWMilestonePrize}"/>
                                 </mx:VBox>
                                 <mx:VBox verticalGap="2">
-                                    <mx:TextInput id="ns_reliabilityBonus"
+                                    <mx:Label id="ns_reliabilityBonus"
+                                          width="120"/>
+                                    <mx:Label id="ns_milestoneBonus"
                                           width="120"
-                                          editable="false"/>
-                                    
-                                    <mx:TextInput id="ns_milestoneBonus"
-                                          width="120"
-                                          editable="false"
-                                          borderStyle="none"
                                           visible="{_showSWMilestonePrize}"
                                           includeInLayout="{_showSWMilestonePrize}"/>
                                 </mx:VBox>

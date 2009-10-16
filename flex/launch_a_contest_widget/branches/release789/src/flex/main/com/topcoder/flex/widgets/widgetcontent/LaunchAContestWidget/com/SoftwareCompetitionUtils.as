@@ -776,7 +776,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             } 
             
             if (bonusPercentage && !isNaN(Number(bonusPercentage))) {
-                return (firstPlacePrize + secondPlacePrize) * Number(bonusPercentage);
+                return (firstPlacePrize) * Number(bonusPercentage);
             } else {
                 return 0;
             }
