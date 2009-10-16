@@ -727,8 +727,6 @@
                     overView.initData();
                     if (!overView.validateFields())
                         return;
-                     if (!details.validateFields())
-                        return;
                 } else if (this.currentState == "OverViewState") {
                     if (!overView.validateFields())
                         return;
