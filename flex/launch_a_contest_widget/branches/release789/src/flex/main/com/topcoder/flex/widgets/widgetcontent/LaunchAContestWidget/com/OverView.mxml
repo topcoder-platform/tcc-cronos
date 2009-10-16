@@ -284,6 +284,7 @@
                     
                     requestContestFees.send(); // BUGR-1737
                     //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
+                    enforceCCAChkBox.selected = mainWidget.enforcedCCA;
                 }
                 
                 trace("INIT DATA For OverView - _showSWMilestonePrize: " + _showSWMilestonePrize + ", manualPrizeSetting: " + mainWidget.manualPrizeSetting);
@@ -1140,11 +1141,11 @@
                 trace("High cost data: " + highCostData);
                 
                 // re-calculate the label for each radio button.
-                lowCost.label="Low ($" + getTotalSWCost(lowCostData).toFixed(0) + ")";
-                mediumCost.label="Medium ($" + getTotalSWCost(midCostData).toFixed(0) + ")";
-                highCost.label="High ($" + getTotalSWCost(highCostData).toFixed(0) + ")";
+                lowCost.label="Low ($" + getTotalSWCost(lowCostData).toFixed(2) + ")";
+                mediumCost.label="Medium ($" + getTotalSWCost(midCostData).toFixed(2) + ")";
+                highCost.label="High ($" + getTotalSWCost(highCostData).toFixed(2) + ")";
                 if (custCost && custCost.visible) {
-                    custCost.label="Custom ($" + getTotalSWCost(custCostData).toFixed(0) + ")";
+                    custCost.label="Custom ($" + getTotalSWCost(custCostData).toFixed(2) + ")";
                 }
                 
                 var selCostData:Dictionary=null;
@@ -1240,16 +1241,16 @@
                 
                 var contestFee:Number=data["ContestFee"] as Number;
                 
-                ns_firstPlace.text=firstPlaceCost.toFixed(0);
-                ns_secondPlace.text=secondPlaceCost.toFixed(0);
-                ns_reviewCost.text=reviewBoardCost.toFixed(0);
-                ns_reliabilityBonus.text=reliabilityBonus.toFixed(0);
-                ns_dr.text=drCost.toFixed(0);
+                ns_firstPlace.text=firstPlaceCost.toFixed(2);
+                ns_secondPlace.text=secondPlaceCost.toFixed(2);
+                ns_reviewCost.text=reviewBoardCost.toFixed(2);
+                ns_reliabilityBonus.text=reliabilityBonus.toFixed(2);
+                ns_dr.text=drCost.toFixed(2);
                 
                 if (_showSWMilestonePrize) {
-                    ns_milestoneBonus.text=milestoneBonus.toFixed(0);
+                    ns_milestoneBonus.text=milestoneBonus.toFixed(2);
                 }
-                ns_contestf.text=contestFee.toFixed(0);
+                ns_contestf.text=contestFee.toFixed(2);
             }
             
             /**
@@ -1311,18 +1312,7 @@
                 selCostData["ContestFee"]=contestFee;
 
                 ns_updateAmount();
-                
-                /*ns_secondPlace.text=secondPlaceCost.toFixed(0);
-                ns_reviewCost.text=reviewBoardCost.toFixed(0);
-                ns_reliabilityBonus.text=reliabilityBonus.toFixed(0);
-                ns_dr.text=drCost.toFixed(0);
-                
-                if (_showSWMilestonePrize) {
-                    ns_milestoneBonus.text=milestoneBonus.toFixed(0);
-                }
-                
-                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee;
-                ns_cntstTtl.text=totalCost.toFixed(0);*/
+
             }
             
             /**

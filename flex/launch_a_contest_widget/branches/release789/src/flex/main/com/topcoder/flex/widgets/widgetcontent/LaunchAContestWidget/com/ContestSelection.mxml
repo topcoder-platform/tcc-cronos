@@ -396,32 +396,7 @@
                 
                 mainWidget.studioContestType=(competionType == "STUDIO");
                 trace("In ContestSelection updateData - MainWidget.studioContestType: " + mainWidget.studioContestType);
-		
-		/*
-		// snow01: this code was earlier in handleSelect, figure out where to place this or needed or not.
-		if (mainWidget.studioContestType) {
-                        if (mainWidget.competition) {
-                            mainWidget.competition.type=competionType;
-                        }
-                    } else {
-                        if (mainWidget.softwareCompetition) {
-                            mainWidget.softwareCompetition.type=competionType;
-                            mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
-                            mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
-                            mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
-                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
-                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
-                            mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
-                            mainWidget.details.loadCategories(); // BUGR-1678
-                        }
-
-                        // recalculate start date forbidden dates
-                        var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
-                        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                        getCapacityFullDatesOp.send(contestType, false);
-                    }
-		    */
-                
+               
                 if (mainWidget.studioContestType) {
                     if (!mainWidget.competition) {
                         // create new.
@@ -444,6 +419,15 @@
                         // create new.
                         initializeSoftwareContest(new Number(mainWidget.tcDirectProjectId));
                     }
+                    
+                    mainWidget.softwareCompetition.type=competionType;
+                    mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
+                    mainWidget.details.loadCategories();
                     
                     // set contest name.
                     this.mainWidget.softwareCompetition.assetDTO.name=contestNameInput.text;
