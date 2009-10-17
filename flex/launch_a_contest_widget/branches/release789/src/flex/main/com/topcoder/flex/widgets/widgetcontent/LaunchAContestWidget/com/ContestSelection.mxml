@@ -80,7 +80,7 @@
             private var _rangeStartDate:Date;
             
             private var _currentHelpPopup:String;
-	    private function handleSelectContestType(event:Event):void {
+	        private function handleSelectContestType(event:Event):void {
                 if (!event) {
                     return;
                 }
@@ -969,7 +969,7 @@
                          change="handleSelectContestType(event)"
                          width="100%"/>
             <mx:ComboBox id="selectContestSubTypes"
-                         dataProvider="{contestTypes}"
+                         dataProvider="{studioContestSubTypes}"
                          change="handleSelectContestSubType(event)"
                          visible="{mainWidget.studioContestType}"
                          includeInLayout="{mainWidget.studioContestType}"
