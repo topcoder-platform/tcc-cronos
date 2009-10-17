@@ -904,6 +904,10 @@
                 mainContainer.mouseEnabled=true;
                 createProjectPopupFadeOut.play();
             }
+
+            private function gotoContestHelp():void {
+                navigateToURL(new URLRequest('http://www.topcoder.com/wiki/display/DIRECT/Contest+Types+-+Help+Me+Choose'), "_blank");
+            }
             
             /**
              * Loads the contest sub types.
@@ -955,83 +959,6 @@
                     resultFormat="xml"
                     result="preprocessTypes(event)">
     </mx:HTTPService>
-
-    <mx:String id="contestHelpText"><![CDATA[
-                   <b>Studio</b>
-                    <br/>
-                    <p>Use Studio contests to produce designs for user interfaces, logos, banners, presentations, print materials and any other creative element you can think of.</p> 
-                    <br/>
-                     
-                    <b>Conceptualization</b>
-                    <br/>
-                    <p>
-                    In Conceptualization contests, competitors collaborate with clients in the project forums to help identify, organize, and document their needs and ideas, and produce a high-level Business Requirements Document. The Business Requirements Document identifies and describes the workflows that the client follows, or intends to follow, to accomplish one or more business goals. Competitors compete to concisely document who does what, how they do it, and how they should do it.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Conceptualization+Competitions" target="_blank"><b><u>Conceptualization Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=23" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Specification</b>
-                    <br/>
-                    <p>
-                    In Specification Contests, the application requirements are documented in as much detail as necessary in order to accomplish the goals for the implementation of an application or application module. Whereas the high-level use cases were identified during Conceptualization contests, and assigned to modules during System Architecture, it is in Specification that you break out all the individual scenarios that make up those use cases, both in text form and graphical form using UML Activity Diagrams. Using these forms, you detail both the basic success scenarios and all alternate scenarios resulting from error conditions or other ways of accomplishing subgoals within the main use cases.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Specification+Competitions" target="_blank"><b><u>Specification Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=6" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Architecture</b>
-                    <br/>
-                    <p>
-                    There are 2 types of architecture contests TopCoder runs.  The System Level Architecture competition defines the overall technical approach to meet the requirements of the project. It defines the application-wide concerns, the technologies and patterns used throughout the application, the modules of the application, and the probably most importantly the strategy and common functionality required to build and deploy these modules. The output from this competition is a complete plan on how to build the application, and an integration plan for the modules as they complete.  Each module may require a more detailed architecture to be run.  This is the Module Architecture contest and is used to futher define the specific architecture of part of an application, or a module.  The Module Architecture defines the components, interactions between components, integration of the UI, etc.  It also defines the specific implementation plan for the module, including all contests that will be required to complete and deliver the module.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/System+Level+Architecture+Competitions" target="_blank"><b><u>System Architecture Guide</u></b></a> and the <a href="http://www.topcoder.com/wiki/display/tc/Module+Level+Architecture+Competitions" target="_blank"><b><u>Module Architecture Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=7" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Component Design</b>
-                    <br/>
-                    <p>
-                    Component Design contests produce a detailed technical design of a component.  Typical applications are comprised of many components.  The components are identified during the architecture process.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Component+Production+Competitions" target="_blank"><b><u>Component Production Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ViewActiveContests&ph=112" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Component Development</b>
-                    <br/>
-                    <p>
-                    Component Development contests produce a discrete functional unit of code (a component) based on a detailed technical design of a component produced in a Component Design contest.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Component+Production+Competitions" target="_blank"><b><u>Component Production Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ViewActiveContests&ph=113" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>UI Prototype</b>
-                    <br/>
-                    <p>
-                    UI Prototype competitions are designed to take the graphics (UI storyboards) and information architecture (IA wireframes) of a web site or application and create a demonstration of the working application. Storyboards and wireframes are developed in TopCoder Studio. Prototypes in this type of competition are created in HTML/CSS and are generally used as the input of the next phase of development, although some prototypes move directly into production (simple web sites, for example).<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/UI+Prototype+Competitions" target="_blank"><b><u>UI Prototype Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=19" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>RIA Build</b>
-                    <br/>
-                    <p>
-                    Rich Internet Application (RIA) Build Competitions provide the build of small applications used both on the Internet and on the desktop. Most of the competitions here are for Flash/Flex designers and developers. The competitions take the graphics (UI storyboards) and information archetecture (IA wireframes) of the app to be built and create the working application. Storyboards and wireframes are developed in TopCoder Studio.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/RIA+Build+Competitions" target="_blank"><b><u>RIA Build Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=24" target="_blank"><b><u>here</u></b></a>
-                    </p>                
-                    <br/>                
-
-                    <b>Assembly</b>
-                    <br/>
-                    <p>
-                    You can run several types of assemblies.  System Assemblies are intended to implement any common application/system level functionality/frameworks/standards/etc.  This is a good way to get a baseline running application built that you can add on to as you complete each new piece.  Prototype Conversion Assemblies focus on the implementation of the UI.  Typically you start with wireframes and/or storyboards and are looking to convert them into your technology of choice (JSP, ASP, Flex, Flash, PHP, etc.).  Module Assemblies are used to complete coding/integration tasks that implement particular application modules or part of modules.  These typically deal with wiring components together and connecting them to the UI.  You will typically have several assemblies to complete a module unless the module is very trivial, like a registration form.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/System+Assembly+Competitions" target="_blank"><b><u>System Assembly Guide</u></b></a>, <a href="http://www.topcoder.com/wiki/display/tc/Prototype+Assembly+Competitions" target="_blank"><b><u>Prototype Assembly Guide</u></b></a> and <a href="http://www.topcoder.com/wiki/display/tc/Module+Assembly+Competitions" target="_blank"><b><u>Module Assembly Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ViewAssemblyActiveContests" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Test Suites</b>
-                    <br/>
-                    <p>
-                    Test Suite contests are used to produce automated test cases.  The goal of these is to have a set of scripted test cases that tests as much of the application as possible automatically.  These can be used during initial system testing and for regression testing.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Testing+Competitions" target="_blank"><b><u>Testing Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=13" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-                    <br/>
-
-                    <b>Test Scenarios</b>
-                    <br/>
-                    <p>
-                    Test Scenarios contests are used to produce written steps that can be used to test a particular set of requirements.  These are often referred to as test plans, QA plans, etc.  These are used as inputs to the Test Suites contests or used independently by a QA team.<br/><br/>For complete details please refer to the <a href="http://www.topcoder.com/wiki/display/tc/Testing+Competitions" target="_blank"><b><u>Testing Guide</u></b></a>.<br/><br/>You can see active examples of contests <a href="http://www.topcoder.com/tc?module=ActiveContests&pt=26" target="_blank"><b><u>here</u></b></a>.
-                    </p>
-        ]]></mx:String>
-
     
     <mx:VBox width="100%"
              id="mainContainer"
@@ -1052,7 +979,7 @@
                          includeInLayout="{mainWidget.studioContestType}"
                          width="100%"/>
             <mx:LinkButton label="Help me choose"
-                           click="showHideHelpPopup(event, 'contestType', contestHelpText);"/>
+                           click="gotoContestHelp();"/>
         </mx:HBox>
         <mx:Spacer height="5"/>
 
