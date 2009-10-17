@@ -1031,6 +1031,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             competition._id=competition.id;
             competition._type=competition.type;
 
+            competition.contestData.contestTypeId = studioContestSubTypeId;
+
 	        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
             competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
             
