@@ -1150,8 +1150,10 @@
                 <mx:HBox>
                     <mx:Label text="Detailed Requirements:"
                               fontWeight="bold"/>
-                    <mx:Spacer width="295"/>
+		    <!--
+		    <mx:Spacer width="295"/>
                     <mx:LinkButton label="[+ show hint]"/>
+		    -->
                 </mx:HBox>
                 <mx:Text id="ns_detailedRequirementsHint"
                          height="0"
@@ -1172,8 +1174,10 @@
                 <mx:HBox>
                     <mx:Label text="Submission Deliverables:"
                               fontWeight="bold"/>
-                    <mx:Spacer width="295"/>
+                    <!--
+		    <mx:Spacer width="295"/>
                     <mx:LinkButton label="[+ show hint]"/>
+		    -->
                 </mx:HBox>
                 <mx:Text id="ns_submissionDeliverablesHint"
                          height="0"
@@ -1194,8 +1198,10 @@
                 <mx:HBox>
                     <mx:Label text="Environment Setup Instructions:"
                               fontWeight="bold"/>
-                    <mx:Spacer width="295"/>
+                    <!--
+		    <mx:Spacer width="295"/>
                     <mx:LinkButton label="[+ show hint]"/>
+		    -->
                 </mx:HBox>
                 <mx:Text id="ns_environmentSetupInstructionsHint"
                          height="0"
@@ -1216,8 +1222,10 @@
                 <mx:HBox>
                     <mx:Label text="Final Submission Guidelines:"
                               fontWeight="bold"/>
+	            <!--
                     <mx:Spacer width="295"/>
                     <mx:LinkButton label="[+ show hint]"/>
+		    -->
                 </mx:HBox>
                 <mx:Text id="ns_finalSubmissionGuidelinesHint"
                          height="0"
@@ -1267,10 +1275,10 @@
                 <mx:HBox>
                     <mx:Label text="Master Technologies:"
                               fontWeight="bold"/>
-                    <mx:Spacer width="100"/>
+                    <mx:Spacer width="115"/>
                     <mx:Label text="Current Project Technologies:"
                               fontWeight="bold"/>
-                    <mx:LinkButton label="[+ show hint]"/>
+                    <!-- <mx:LinkButton label="[+ show hint]"/> -->
                 </mx:HBox>
                 <mx:Text id="techListHint_ns"
                          height="0"
@@ -1340,7 +1348,7 @@
                                      width="292"
                                      dataProvider="{_catalogs}"
                                      change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
-                        <mx:LinkButton label="[+ show hint]"/>
+                        <!-- <mx:LinkButton label="[+ show hint]"/> -->
                     </mx:HBox>
                     <mx:Text id="ns_catalogNameHints"
                              color="0x888888"
@@ -1363,7 +1371,7 @@
                         <mx:Spacer width="100"/>
                         <mx:Label text="Current Project Categories:"
                                   fontWeight="bold"/>
-                        <mx:LinkButton label="[+ show hint]"/>
+                        <!-- <mx:LinkButton label="[+ show hint]"/> -->
                     </mx:HBox>
                     <mx:Text id="categoriesHint_ns"
                              height="0"
