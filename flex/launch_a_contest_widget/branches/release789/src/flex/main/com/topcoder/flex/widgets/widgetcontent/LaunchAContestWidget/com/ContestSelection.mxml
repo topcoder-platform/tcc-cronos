@@ -1057,8 +1057,8 @@
                                  width="100%"
                                  dataProvider="{mainWidget.clientProjectNames}"
                                  change="handleBillingAccountChange(event)"/>
-                    <mx:LinkButton label="Help me choose"
-                                   click="showHideHelpPopup(event, 'billingAccount', 'Help for Billing Projects');"/>
+                    <!-- <mx:LinkButton label="Help me choose"
+                                   click="showHideHelpPopup(event, 'billingAccount', 'Help for Billing Projects');"/> -->
                 </mx:HBox>
             </mx:VBox>
         </mx:HBox>
