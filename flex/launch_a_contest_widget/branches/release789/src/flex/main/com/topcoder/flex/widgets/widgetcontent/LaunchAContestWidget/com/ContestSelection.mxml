@@ -1035,7 +1035,9 @@
                      text="ET"/>
         </mx:HBox>
 
+        <mx:Spacer height="5"/>
         <mx:HRule width="100%"/>
+        <mx:Spacer height="5"/>
 
         <mx:Label text="Payment Method"
                   width="100%"
@@ -1044,11 +1046,11 @@
             <mx:VBox>
                 <mx:Label text="Credit Card"
                           fontWeight="bold"/>
-                <mx:Text text="You will asked for your credit card information during the checkout process."/>
+                <mx:Text text="You will be asked for your credit card information during the activation process."/>
             </mx:VBox>
             <mx:VRule height="100%"/>
             <mx:VBox>
-                <mx:Label text="Invoice"
+                <mx:Label text="Billing Account"
                           fontWeight="bold"/>
                 <mx:Text text="Enterprise customers can choose to be invoiced to a billing account in the dropdown below."/>
 
