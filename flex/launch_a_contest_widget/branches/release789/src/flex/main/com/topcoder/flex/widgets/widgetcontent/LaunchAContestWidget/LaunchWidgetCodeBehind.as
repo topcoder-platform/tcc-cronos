@@ -19,6 +19,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSaleData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReview;
     
@@ -29,6 +32,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
+    import mx.collections.Sort;
     import mx.containers.VBox;
     import mx.core.Application;
     import mx.events.FlexEvent;
@@ -36,6 +40,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
+    import mx.utils.ObjectUtil;
 
     /**
      * <p>
@@ -272,6 +277,61 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable]
         public var studioContestSubTypeLabel:String="";
         
+        //
+        // Stores master technology list as retrieved from web-service.
+        // This is loaded only one time.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public static var masterTechnologies:ArrayCollection;
+
+        //
+        // Stores list of categories as retrieved from web-service.
+        // This is loaded one time.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public static var categories:ArrayCollection;
+
+        //
+        // Stores catalogs / root category.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        [Bindable]
+        public static var catalogs:ArrayCollection;
+
+        //
+        // Map of catalog id to categories list.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public static var catalogToCategoriesMap:Dictionary=new Dictionary();
+        
+        /**
+         * Stores the reference to application catalog.
+         * This is the default catalog for non design & non development contest.
+         * 
+         * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+         */ 
+        public static var applicationCatalog:SoftwareCategory = null;
+        
+        /**
+         * Stores the reference to 'Business Layer' category.
+         * This is the default category for non design & non development contest.
+         * 
+         * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+         */
+        public static var businessLayerApplicationCategory:SoftwareCategory = null;
+        
+        /**
+         * Stores the reference to not set catalog.
+         * This is the default catalog for design & development contest.
+         */ 
+        public static var notSetCatalog:SoftwareCategory = null;
+        
+        /**
+         * Stores the reference to 'Not Set' category.
+         * This is the default category for design & development contest.
+         */
+        public static var notSetCategory:SoftwareCategory = null;
+        
         /**
         * @since BUGR-1737
         */     
@@ -431,9 +491,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		if (map) {
                     (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
-                    (container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
+                    //(container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
+                    (container.contents as LaunchWidget).studioContestType=(map["contestType"].toLocaleUpperCase()=="STUDIO");
             }
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
@@ -441,10 +502,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 if (map) {
                     (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
-                    (container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
+                    //(container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
-                    (container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
+                    (container.contents as LaunchWidget).studioContestType=(map["contestType"].toLocaleUpperCase()=="STUDIO");
+                    //(container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
                     
                     var editMode:String=map["mode"];
                     
@@ -708,12 +770,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).softwareCompetition=null;
                 (container.contents as LaunchWidget).competition=c;
                 (container.contents as LaunchWidget).contestCreateUser=c.creatorUserId.toString();
-                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
+                (container.contents as LaunchWidget).competitionType="STUDIO";
+                (container.contents as LaunchWidget).studioContestType=true;
                 (container.contents as LaunchWidget).onCreateComplete(2);
                 (container.contents as LaunchWidget).contestSelect.selectBillingProject(c.contestData.billingProject);
 
                 (container.contents as LaunchWidget).tcDirectProjectId = c.contestData.tcDirectProjectId.toString();
-                //(container.contents as LaunchWidget).tcDirectProjectName = c.contestData.tcDirectProjectName;
                 
                 (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
             }
@@ -736,8 +798,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).softwareCompetition=c;
                 (container.contents as LaunchWidget).competitionType=SoftwareCompetitionUtils.instance().getCompetitionType(
                     c.projectHeader.projectCategory.id);
+                trace("Project Category Id: " + c.projectHeader.projectCategory.id + ", competitionType: " + (container.contents as LaunchWidget).competitionType);
+                (container.contents as LaunchWidget).studioContestType=false;
                 (container.contents as LaunchWidget).contestCreateUser=c.projectHeader.creationUser;
-                //(container.contents as LaunchWidget).currentState="ContestSelectionState";
                 (container.contents as LaunchWidget).onCreateComplete(2);
                 var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(c);
     	        if (billingAccount) {
@@ -745,7 +808,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	        }
 
                 (container.contents as LaunchWidget).tcDirectProjectId = c.projectHeader.tcDirectProjectId.toString();
-                //(container.contents as LaunchWidget).tcDirectProjectName = c.projectHeader.tcDirectProjectName;
                 (container.contents as LaunchWidget).contestSelect.selectTCProject((container.contents as LaunchWidget).tcDirectProjectId);
                 (container.contents as LaunchWidget).enforcedCCA=!(SoftwareCompetitionUtils.instance().getConfidentialityTypeProp(c)==SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_PUBLIC);
             }
@@ -1379,6 +1441,192 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
         public function set manualPrizeSetting(b:Boolean):void {
             this._manualPrizeSetting=b;
+        }
+        
+        //
+        // load master technologies from web-service.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public function loadMasterTechnologies():void {
+            if (!_csws) {
+                return;
+            }
+            var getActiveTechnologiesOp:AbstractOperation=_csws.getOperation("getActiveTechnologies");
+            getActiveTechnologiesOp.addEventListener("result", handleMasterTechnologiesLoad);
+            getActiveTechnologiesOp.send();
+        }
+
+        //
+        // handle successful load of master technologies from web-service.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        private function handleMasterTechnologiesLoad(e:ResultEvent):void {
+            trace("handleMasterTechnologiesLoad: " + e + ", " + e.result);
+            if (e && e.result) {
+                var technologies:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SoftwareTechnology) as ArrayCollection;
+
+                masterTechnologies=new ArrayCollection();
+                for (var i:int=0; i < technologies.length; i++) {
+                    var t:SoftwareTechnology=technologies.getItemAt(i) as SoftwareTechnology;
+                    var o:Object=new Object();
+                    o.label=t.name;
+                    o.data=t;
+                    masterTechnologies.addItem(o);
+                }
+
+                if (!masterTechnologies.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    masterTechnologies.sort=sort;
+                }
+
+                masterTechnologies.refresh();
+            }
+        }
+        
+        //
+        // load active categories from web-service.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public function loadCategories():void { // BUGR-1678
+            if (!_csws) {
+                return;
+            }
+            var getActiveCategoriesOp:AbstractOperation=_csws.getOperation("getActiveCategories");
+            getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
+            getActiveCategoriesOp.send();
+        }
+
+        // BUGR-1678
+        public function isDesOrDevContestType():Boolean {
+            return (softwareCompetition &&
+                        (softwareCompetition.type == "DEVELOPMENT" ||
+                                    softwareCompetition.type == "DESIGN")) 
+                   ||
+                    (softwareCompetition && softwareCompetition.projectHeader 
+                          && softwareCompetition.projectHeader.projectCategory
+                          &&
+                            (softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DESIGN
+                                    || softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DEV));
+        }
+        
+        //
+        // handled for load of active categories from web-service.
+        // this method identifies the child / parent relationship as mentioned in 1.1.4
+        // and groups the categories into root and child categories.
+        // root categories are recognized as catalogs.
+        // while for child categories catalog-id to list of child categories map is created.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        private function handleCategoriesLoad(e:ResultEvent):void {
+            trace("handleCategoriesLoad: " + e + ", " + e.result);
+            const APPLICATION_DESCR:String = "Application"; // BUGR-1678
+            
+            //
+            // Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+            //
+            const BUSINESS_LAYER_DESCR:String = "Business Layer";
+            
+            const NOT_SET_DESCR:String = "Not Set";
+            
+            catalogToCategoriesMap = new Dictionary();  // BUGR-1678 
+            if (e && e.result) {
+                categories=ObjectTranslatorUtils.translateCollection(e.result, SoftwareCategory) as ArrayCollection;
+
+                catalogs=new ArrayCollection();
+                var oEmpty:Object=new Object();
+                oEmpty.label="";
+                oEmpty.data=null;
+                catalogs.addItem(oEmpty);
+
+                for (var i:int=0; i < categories.length; i++) {
+                    var t:SoftwareCategory=categories.getItemAt(i) as SoftwareCategory;
+                    
+                    //
+                    // For non admin user just consider the custom catalogs.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                    //
+                    if (!isAdmin && t.viewable) {
+                        continue;
+                    }
+
+                    
+                    if (t.catalogName) {
+                        // it is the root category.
+                        // add this catalog name to list of catalog names.
+                        var o:Object=new Object();
+                        o.label=t.name;
+                        o.data=t;
+
+                        // we only show catalog for dev/design, and dont show Application and Not Set
+                        if (t.name != APPLICATION_DESCR && t.name != NOT_SET_DESCR) {
+                            catalogs.addItem(o);
+                        }
+                        
+                        //
+                        // Stores the reference of application catalog to the variable 'applicationCatalog'
+                        // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        //
+                        if (o.label == APPLICATION_DESCR) {
+                            applicationCatalog = o.data;
+                        } else if (o.label == NOT_SET_DESCR) {
+                            notSetCatalog = o.data;
+                        }
+                    } else if (t.parentCategory) {
+                        var categoryObj:Object=new Object();
+                        categoryObj.label=t.name;
+                        categoryObj.data=t;
+
+                        var rootCategoryId:Number=t.parentCategory.id;
+                        var categoriesList:ArrayCollection=null;
+                        if (!catalogToCategoriesMap[rootCategoryId]) {
+                            categoriesList=new ArrayCollection();
+                            catalogToCategoriesMap[rootCategoryId]=categoriesList;
+
+                            if (!categoriesList.sort) {
+                                var srt:Sort=new Sort();
+                                srt.compareFunction=compareListItem;
+                                categoriesList.sort=srt;
+                            }
+
+                            categoriesList.addItem(categoryObj);
+                            categoriesList.refresh();
+
+                        } else {
+                            categoriesList=catalogToCategoriesMap[rootCategoryId] as ArrayCollection;
+
+                            categoriesList.addItem(categoryObj);
+                            categoriesList.refresh();
+                        }
+                        
+                        //
+                        // Stores the reference of business layer category to the variable 'businessLayerApplicationCategory'
+                        // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        //
+                        if (categoryObj.label == BUSINESS_LAYER_DESCR && categoryObj.data.parentCategory.name == APPLICATION_DESCR) {
+                            businessLayerApplicationCategory = categoryObj.data;
+                        } else if (categoryObj.label == NOT_SET_DESCR && categoryObj.data.parentCategory.name == NOT_SET_DESCR) {
+                            notSetCategory = categoryObj.data;
+                        }
+                    }
+                }
+
+                if (!catalogs.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareListItem;
+                    catalogs.sort=sort;
+                }
+
+                catalogs.refresh();
+            }
+        }
+        
+        //
+        // utility function to compare list item by label.
+        // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        //
+        public function compareListItem(a:Object, b:Object, fields:Array=null):int {
+            return ObjectUtil.stringCompare(a.label, b.label, true);
         }
     }
 }

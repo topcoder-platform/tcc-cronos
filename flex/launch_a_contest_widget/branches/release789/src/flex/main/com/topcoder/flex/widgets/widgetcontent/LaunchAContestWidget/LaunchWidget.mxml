@@ -507,38 +507,22 @@
 
             public function initComponent():void {
                 trace("IN INIT COMPONENT OF LAUNCH WIDGET: " + this + "," + this.competitionType + "," + this.studioContestType);
-                // modified lines below for BUGR-1134
-                //this.height=760;
+                rightPanel.horizontalScrollPolicy="false";
                 mainPanel.horizontalScrollPolicy="false";
 
                 back.visible=false;
+                
                 //read hints.xml data
                 getData(null);
                 
-                //details.widgetHeight=950; // BUGR-1134
-                //specf.widgetHeight=800;
-                //attch.height=600;
-                //sched.height=800;
-                //overView.height=700; // BUGR-1134
-                //review.height=1080; // BUGR-1134
-				//contestSelect.height=720;
-
-		trace("In initComponent... this: " + this);
-                /*contestSelect.mainWidget=this;
-                overView.mainWidget=this;
-                details.mainWidget=this;
-                specf.mainWidget=this;
-                attch.mainWidget=this;
-                sched.mainWidget=this;
-                review.mainWidget=this;
-                activate.mainWidget=this;*/
-		setWidgetReferences();
-
-		trace("In initComponent... contestSelect.mainWidget: " + contestSelect.mainWidget);
-		trace("In initComponent... overView.mainWidget: " + overView.mainWidget);
+		        setWidgetReferences();
 
                 // initialize web-services
                 initWebServices();
+                
+                loadCategories();
+                loadMasterTechnologies();
+                
                 // BUGR-1235
                 //initialWdt.init();
                 contestSelect.init();
@@ -592,7 +576,7 @@
                         this.studioContestType=true;
                     } else if (this.softwareCompetition) {
                         if (this.softwareCompetition.projectHeader && this.softwareCompetition.projectHeader.projectCategory) {
-                            this.competitionType=this.softwareCompetition.projectHeader.projectCategory.name.toUpperCase();    
+                            this.competitionType=SoftwareCompetitionUtils.instance().getCompetitionType(this.softwareCompetition.projectHeader.projectCategory.id);
                         }
                         this.studioContestType=false;
                     }
@@ -727,6 +711,10 @@
                     overView.initData();
                     if (!overView.validateFields())
                         return;
+                    
+                    // call validate so default values get set.
+                    details.initData();
+                    details.validateFieldsEx2(false,false);
                 } else if (this.currentState == "OverViewState") {
                     if (!overView.validateFields())
                         return;
@@ -2424,7 +2412,7 @@
                  verticalGap="0"
                  paddingRight="8"
                  paddingLeft="20"
-                 id="mainPanel">
+                 id="rightPanel">
 
             <!-- header section start -->
             <mx:HBox horizontalAlign="right"
@@ -2512,7 +2500,7 @@
             </mx:VBox>
             <mx:Spacer height="5"/>
             <!-- body section start -->
-            <mx:HBox width="100%" height="100%">
+            <mx:HBox width="100%" height="100%" id="mainPanel">
                 <pages:ContestSelection id="contestSelect"/>
                 <pages:OverView id="overView"/>
                 <pages:Details id="details"/>
