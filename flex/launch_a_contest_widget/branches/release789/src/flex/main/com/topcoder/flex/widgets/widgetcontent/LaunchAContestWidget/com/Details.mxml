@@ -24,6 +24,7 @@
            creationComplete="handleCreationComplete(event)">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidgetCodeBehind;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestMultiRoundInformationData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
             import mx.utils.ObjectUtil;
@@ -74,33 +75,6 @@
             private var config:XML;
             
             //
-            // Stores master technology list as retrieved from web-service.
-            // This is loaded only one time.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private static var _masterTechnologies:ArrayCollection;
-
-            //
-            // Stores list of categories as retrieved from web-service.
-            // This is loaded one time.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private static var _categories:ArrayCollection;
-
-            //
-            // Stores catalogs / root category.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            [Bindable]
-            private static var _catalogs:ArrayCollection;
-
-            //
-            // Map of catalog id to categories list.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private static var _catalogToCategoriesMap:Dictionary=new Dictionary();
-
-            //
             // Item list for currently available master technologies.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
@@ -131,22 +105,6 @@
             // BUGR-1641
             private var currentResizingRTEditor:TCRichTextEditor = null;
             
-            /**
-             * Stores the reference to application catalog.
-             * This is the default catalog for non design & non development contest.
-             * 
-             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-             */ 
-            public static var applicationCatalog:SoftwareCategory = null;
-            
-            /**
-             * Stores the reference to 'Business Layer' category.
-             * This is the default category for non design & non development contest.
-             * 
-             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-             */
-            public static var businessLayerApplicationCategory:SoftwareCategory = null;
-
             private var SW_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Competitors need specific information in order to successfully meet the requirements of the contest. Be sure to be specific about the requirements of the contest and what will distinguish a winning submission.";
             private var ST_PROJECT_DESCRIPTION:String = "A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized, excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.";
 
@@ -192,58 +150,59 @@
                         ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
                         ns_finalSubmissionGuidelines.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines;
                     }
+                    
+                    if (!LaunchWidgetCodeBehind.masterTechnologies) {
+                        return
+                    }
                         
                     //
                     // load the master technologies if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                     //
-                    if (!_masterTechnologies) {
-                        loadMasterTechnologies();
-                    } else {
-                        _boundMasterTechnologies.removeAll();
+                    _boundMasterTechnologies.removeAll();
 
-                        for (var i:int=0; i < _masterTechnologies.length; i++) {
-                            var o:Object=_masterTechnologies.getItemAt(i);
+                    for (var i:int=0; i < LaunchWidgetCodeBehind.masterTechnologies.length; i++) {
+                        var o:Object=LaunchWidgetCodeBehind.masterTechnologies.getItemAt(i);
 
-                            _boundMasterTechnologies.addItem(o);
-                        }
-
-                        sortBoundMasterTechnologies();
-
-                        // assign technologies.
-                        setTechnologies();
+                        _boundMasterTechnologies.addItem(o);
                     }
+
+                    sortBoundMasterTechnologies();
+
+                    // assign technologies.
+                    setTechnologies();
 
                     //
                     // Shows the catalog controls only if the contest is design or development.
                     // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
                     //    
-                    if (isDesOrDevContestType()) {
+                    if (mainWidget.isDesOrDevContestType()) {
                         catalogContainer.visible=true;
                         catalogContainer.includeInLayout=true;
                     } else {
                         catalogContainer.visible=false;
                         catalogContainer.includeInLayout=false;
                     }
+                    
+                    if (!LaunchWidgetCodeBehind.catalogs) {
+                        return
+                    }
 
                     //
                     // load the catalog names and categories if they have not already been loaded.
                     // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                     //
-                    if (!_categories) {
-                        loadCategories();
-                    } else {
-                        // assign root category.
-                        setRootCategory();
+                    
+                    // assign root category.
+                    setRootCategory();
 
-                        // set master categories.
-                        setMasterCategories(this.ns_catalogNameInput.selectedItem);
+                    // set master categories.
+                    setMasterCategories(this.ns_catalogNameInput.selectedItem);
 
-                        // assign list of categories.
-                        setCategories();
-                    }
+                    // assign list of categories.
+                    setCategories();
                 }
-	  }
+	        }
 
             /**
              * Handler for loading config data from xml file.
@@ -270,11 +229,9 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setTechnologies():void {
-                if (!_masterTechnologies || !_boundMasterTechnologies) {
+                if (!LaunchWidgetCodeBehind.masterTechnologies || !_boundMasterTechnologies) {
                     return;
                 }
-
-
 
                 _boundCurrentTechnologies.removeAll();
 
@@ -299,14 +256,14 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setRootCategory():void {
-                trace("IN SET ROOT CATEGORY: " + _catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
-                if (!_catalogs || !this.ns_catalogNameInput || !this.catalogContainer.visible) {
+                trace("IN SET ROOT CATEGORY: " + LaunchWidgetCodeBehind.catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
+                if (!LaunchWidgetCodeBehind.catalogs || !this.ns_catalogNameInput || !this.catalogContainer.visible) {
                     return;
                 }
 
                 if (this.mainWidget.softwareCompetition.assetDTO.rootCategory) {
-                    for (var j:int=0; j < _catalogs.length; j++) {
-                        var catalogObj:Object=_catalogs.getItemAt(j);
+                    for (var j:int=0; j < LaunchWidgetCodeBehind.catalogs.length; j++) {
+                        var catalogObj:Object=LaunchWidgetCodeBehind.catalogs.getItemAt(j);
                         
                         trace("------> " + (catalogObj && catalogObj.data ? catalogObj.data.id : "") + "," + (this.mainWidget.softwareCompetition.assetDTO.rootCategory ? this.mainWidget.softwareCompetition.assetDTO.rootCategory.id : ""));
                         if (catalogObj && catalogObj.data && catalogObj.data.id == this.mainWidget.softwareCompetition.assetDTO.rootCategory.id) {
@@ -316,7 +273,7 @@
                         }
                     }
                 } else {
-                    var emptyCatalogObj:Object=_catalogs.getItemAt(0);
+                    var emptyCatalogObj:Object=LaunchWidgetCodeBehind.catalogs.getItemAt(0);
                     this.ns_catalogNameInput.selectedItem=emptyCatalogObj;
                 }
             }
@@ -346,55 +303,7 @@
                     }
                 }
             }
-
-            //
-            // load master technologies from web-service.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private function loadMasterTechnologies():void {
-                if (!mainWidget._csws) {
-                    return;
-                }
-                var getActiveTechnologiesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveTechnologies");
-                getActiveTechnologiesOp.addEventListener("result", handleMasterTechnologiesLoad);
-                getActiveTechnologiesOp.send();
-            }
-
-            //
-            // handle successful load of master technologies from web-service.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private function handleMasterTechnologiesLoad(e:ResultEvent):void {
-                trace("handleMasterTechnologiesLoad: " + e + ", " + e.result);
-                if (e && e.result) {
-                    _boundMasterTechnologies.removeAll();
-
-                    var technologies:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, SoftwareTechnology) as ArrayCollection;
-
-                    _masterTechnologies=new ArrayCollection();
-                    for (var i:int=0; i < technologies.length; i++) {
-                        var t:SoftwareTechnology=technologies.getItemAt(i) as SoftwareTechnology;
-                        var o:Object=new Object();
-                        o.label=t.name;
-                        o.data=t;
-                        _masterTechnologies.addItem(o);
-                        _boundMasterTechnologies.addItem(o);
-                    }
-
-                    if (!_masterTechnologies.sort) {
-                        var sort:Sort=new Sort();
-                        sort.compareFunction=compareListItem;
-                        _masterTechnologies.sort=sort;
-                    }
-
-                    _masterTechnologies.refresh();
-
-                    sortBoundMasterTechnologies();
-
-                    setTechnologies();
-                }
-            }
-
+            
             //
             // sort master technologies item list.
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -402,156 +311,11 @@
             private function sortBoundMasterTechnologies():void {
                 if (!_boundMasterTechnologies.sort) {
                     var sort:Sort=new Sort();
-                    sort.compareFunction=compareListItem;
+                    sort.compareFunction=mainWidget.compareListItem;
                     _boundMasterTechnologies.sort=sort;
                 }
 
                 _boundMasterTechnologies.refresh();
-            }
-
-            //
-            // utility function to compare list item by label.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private function compareListItem(a:Object, b:Object, fields:Array=null):int {
-                return ObjectUtil.stringCompare(a.label, b.label, true);
-            }
-
-            //
-            // load active categories from web-service.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            public function loadCategories():void { // BUGR-1678
-                if (!mainWidget._csws) {
-                    return;
-                }
-                var getActiveCategoriesOp:AbstractOperation=mainWidget._csws.getOperation("getActiveCategories");
-                getActiveCategoriesOp.addEventListener("result", handleCategoriesLoad);
-                getActiveCategoriesOp.send();
-            }
-
-            // BUGR-1678
-            public function isDesOrDevContestType():Boolean {
-                return (mainWidget.softwareCompetition &&
-                            (mainWidget.softwareCompetition.type == "DEVELOPMENT" ||
-                                        mainWidget.softwareCompetition.type == "DESIGN")) 
-                       ||
-                        (mainWidget.softwareCompetition && mainWidget.softwareCompetition.projectHeader 
-                              && mainWidget.softwareCompetition.projectHeader.projectCategory
-                              &&
-                                (mainWidget.softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DESIGN
-                                        || mainWidget.softwareCompetition.projectHeader.projectCategory.id == SoftwareProjectCategory.PROJECT_CATEGORY_DEV));
-            }
-            //
-            // handled for load of active categories from web-service.
-            // this method identifies the child / parent relationship as mentioned in 1.1.4
-            // and groups the categories into root and child categories.
-            // root categories are recognized as catalogs.
-            // while for child categories catalog-id to list of child categories map is created.
-            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-            //
-            private function handleCategoriesLoad(e:ResultEvent):void {
-                trace("handleCategoriesLoad: " + e + ", " + e.result);
-                const APPLICATION_DESCR:String = "Application"; // BUGR-1678
-                
-                //
-                // Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-                //
-                const BUSINESS_LAYER_DESCR:String = "Business Layer";
-                _catalogToCategoriesMap = new Dictionary();  // BUGR-1678 
-                if (e && e.result) {
-                    _categories=ObjectTranslatorUtils.translateCollection(e.result, SoftwareCategory) as ArrayCollection;
-
-                    _catalogs=new ArrayCollection();
-                    var oEmpty:Object=new Object();
-                    oEmpty.label="";
-                    oEmpty.data=null;
-                    _catalogs.addItem(oEmpty);
-
-                    for (var i:int=0; i < _categories.length; i++) {
-                        var t:SoftwareCategory=_categories.getItemAt(i) as SoftwareCategory;
-                        
-                        //
-                        // For non admin user just consider the custom catalogs.
-                        // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-                        //
-                        if (!mainWidget.isAdmin && t.viewable) {
-                            continue;
-                        }
-
-                        
-                        if (t.catalogName) {
-                            // it is the root category.
-                            // add this catalog name to list of catalog names.
-                            var o:Object=new Object();
-                            o.label=t.name;
-                            o.data=t;
-
-                            // we only show catalog for dev/design, and dont show Application
-                            if (t.name != APPLICATION_DESCR) {
-                                _catalogs.addItem(o);
-                            }
-                            
-                            //
-                            // Stores the reference of application catalog to the variable 'applicationCatalog'
-                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-                            //
-                            if (o.label == APPLICATION_DESCR) {
-                                applicationCatalog = o.data;
-                            }
-                        } else if (t.parentCategory) {
-                            var categoryObj:Object=new Object();
-                            categoryObj.label=t.name;
-                            categoryObj.data=t;
-
-                            var rootCategoryId:Number=t.parentCategory.id;
-                            var categoriesList:ArrayCollection=null;
-                            if (!_catalogToCategoriesMap[rootCategoryId]) {
-                                categoriesList=new ArrayCollection();
-                                _catalogToCategoriesMap[rootCategoryId]=categoriesList;
-
-                                if (!categoriesList.sort) {
-                                    var srt:Sort=new Sort();
-                                    srt.compareFunction=compareListItem;
-                                    categoriesList.sort=srt;
-                                }
-
-                                categoriesList.addItem(categoryObj);
-                                categoriesList.refresh();
-
-                            } else {
-                                categoriesList=_catalogToCategoriesMap[rootCategoryId] as ArrayCollection;
-
-                                categoriesList.addItem(categoryObj);
-                                categoriesList.refresh();
-                            }
-                            
-                            //
-                            // Stores the reference of business layer category to the variable 'businessLayerApplicationCategory'
-                            // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
-                            //
-                            if (categoryObj.label == BUSINESS_LAYER_DESCR && categoryObj.data.parentCategory.name == APPLICATION_DESCR) {
-                                businessLayerApplicationCategory = categoryObj.data;
-                            }
-                        }
-                    }
-
-                    if (!_catalogs.sort) {
-                        var sort:Sort=new Sort();
-                        sort.compareFunction=compareListItem;
-                        _catalogs.sort=sort;
-                    }
-
-                    _catalogs.refresh();
-
-                    // set root category.
-                    setRootCategory();
-
-                    // set master categories.
-                    setMasterCategories(this.ns_catalogNameInput.selectedItem);
-
-                    setCategories();
-                }
             }
 
             public function validateFields():Boolean {
@@ -613,7 +377,7 @@
                 // If contest type is design or development then only validate input controls.
                 // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
                 //
-                if (isDesOrDevContestType()) {
+                if (mainWidget.isDesOrDevContestType()) {
                     if (!ns_catalogNameInput.selectedItem || !ns_catalogNameInput.selectedItem.data) {
                         if (showMsg) {
                             Helper.showAlertMessage("Please select valid catalog name" + (showPageName ? " at Details Page" : ""));
@@ -628,7 +392,7 @@
                         }
                     }
                 } else {
-                    if (!applicationCatalog || !businessLayerApplicationCategory) {
+                    if (!LaunchWidgetCodeBehind.applicationCatalog || !LaunchWidgetCodeBehind.businessLayerApplicationCategory) {
                         if (showMsg) {
                             Helper.showAlertMessage("Root category must be selected" + (showPageName ? " at Details Page" : ""));
                             return false;
@@ -654,7 +418,7 @@
                 // otherwise assume that to be of type "Application"
                 // @since Cockpit Release Assembly 1 v1.0 [BUGR-1850]
                 //
-                if (isDesOrDevContestType()) {
+                if (mainWidget.isDesOrDevContestType()) {
                     // assign root category.
                     this.mainWidget.softwareCompetition.assetDTO.rootCategory=this.ns_catalogNameInput.selectedItem.data;
                 
@@ -672,9 +436,9 @@
                     }
                 } else {
                     // assign root category.
-                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=applicationCatalog;
+                    this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.applicationCatalog;
                     this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                    this.mainWidget.softwareCompetition.assetDTO.categories.push(businessLayerApplicationCategory);
+                    this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.businessLayerApplicationCategory);
                 }
 
                 // assign technologies.
@@ -927,7 +691,7 @@
             private function sortCurrentTechnologies():void {
                 if (!_boundCurrentTechnologies.sort) {
                     var sort:Sort=new Sort();
-                    sort.compareFunction=compareListItem;
+                    sort.compareFunction=mainWidget.compareListItem;
                     _boundCurrentTechnologies.sort=sort;
                 }
 
@@ -988,7 +752,7 @@
             private function sortCurrentCategories():void {
                 if (!_boundCurrentCategories.sort) {
                     var sort:Sort=new Sort();
-                    sort.compareFunction=compareListItem;
+                    sort.compareFunction=mainWidget.compareListItem;
                     _boundCurrentCategories.sort=sort;
                 }
 
@@ -1002,7 +766,7 @@
             private function sortBoundMasterCategories():void {
                 if (!_boundMasterCategories.sort) {
                     var sort:Sort=new Sort();
-                    sort.compareFunction=compareListItem;
+                    sort.compareFunction=mainWidget.compareListItem;
                     _boundMasterCategories.sort=sort;
                 }
 
@@ -1019,7 +783,7 @@
 
                 if (catalogData && catalogData.data && catalogData.data.id) {
                     // set master categories.
-                    var categories:ArrayCollection=_catalogToCategoriesMap[catalogData.data.id];
+                    var categories:ArrayCollection=LaunchWidgetCodeBehind.catalogToCategoriesMap[catalogData.data.id];
                     for each (var c:Object in categories) {
                         _boundMasterCategories.addItem(c);
                     }
@@ -1346,7 +1110,7 @@
                                   fontWeight="bold"/>
                         <mx:ComboBox id="ns_catalogNameInput"
                                      width="292"
-                                     dataProvider="{_catalogs}"
+                                     dataProvider="{LaunchWidgetCodeBehind.catalogs}"
                                      change="setMasterCategories(ns_catalogNameInput.selectedItem)"/>
                         <!-- <mx:LinkButton label="[+ show hint]"/> -->
                     </mx:HBox>

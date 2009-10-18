@@ -216,10 +216,8 @@
              *    - identifies whether to show milestone prize for sw contest or not.
              */
             public function initData():void {
-                for each (var inptName:String in s_inputs) {
-                    this[inptName].text="";
-                }
-                   //
+                
+                //
                 // For now contest types need to be loaded only for studio contests.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
@@ -230,6 +228,13 @@
                 }
 
                 if (mainWidget.studioContestType) {
+                    for each (var inptName:String in s_inputs) {
+                        this[inptName].text="";
+                    }
+                    
+                    firstPlace.text="800";
+                    secondPlace.text="300";
+                    
                     // sets multi round contest flag
                     if (mainWidget.competition && mainWidget.competition.contestData) {
                         mainWidget.multiRoundContest = mainWidget.competition.contestData.multiRound;
@@ -795,6 +800,12 @@
                         showExampleOne=false;
                         showExampleTwo=false;
                     }
+                    
+                    //
+                    // once data is loaded fire curContestTypeChanged event
+                    // so that ui gets updated with description etc.
+                    //
+                    dispatchEvent(new Event("curContestTypeChanged"));
                 }
             }
 
@@ -832,7 +843,7 @@
                         //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId).contestFee; // BUGR-1737
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee; // BUGR-1737
 			            s_updateAmount(true);
                     }
                 }
@@ -861,6 +872,10 @@
              * @since 1.0.3
              */ 
             private function loadCostLevelData(xml:XML, data:Dictionary):void {
+                if (!xml || !data) {
+                    return;
+                }
+                
                 data["FirstPlace"]=new Number(xml.firstPlaceCost);
                 data["SecondPlace"]=new Number(xml.secondPlaceCost);
                 data["ReviewBoard"]=new Number(xml.reviewBoardCost);
@@ -884,6 +899,7 @@
              *
              * @return whether the current contest type xml has the specified property or not.
              */
+            [Bindable(event="curContestTypeChanged")]
             private function isPresentXml(prop:String):Boolean {
                 var xml:XML=getCurrentContestTypeXml();
                 if (xml) {
@@ -903,6 +919,7 @@
              *
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
              */
+            [Bindable(event="curContestTypeChanged")]
             private function getCurrentContestTypeXml():XML {
                 if (mainWidget.studioContestType) {
                     return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId)[0];
@@ -956,7 +973,7 @@
                         ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
                         ns_updateAmount();
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId).contestFee[0]; // BUGR-1737
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee[0]; // BUGR-1737
                         s_updateAmount(true);
                     }
                 }
@@ -1488,12 +1505,12 @@
                              horizontalGap="0">
                         <mx:TextInput id="firstPlace"
                                       width="120"
-                                      text=""
+                                      text="800"
                                       change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="secondPlace"
                                       width="120"
-                                      text=""
+                                      text="300"
                                       change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="thirdPlace"

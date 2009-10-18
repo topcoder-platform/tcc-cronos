@@ -30,6 +30,7 @@
          creationComplete="init()">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidgetCodeBehind;
             import com.topcoder.flex.Helper;
             import mx.rpc.events.ResultEvent;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecSectionReview;
@@ -296,7 +297,7 @@
                             ns_techListData.addItem(mainWidget.details._boundCurrentTechnologies.getItemAt(m).label);
                         }
         
-                        if (mainWidget.details.isDesOrDevContestType()) {
+                        if (mainWidget.isDesOrDevContestType()) {
                              if (mainWidget.details.ns_catalogNameInput && mainWidget.details.ns_catalogNameInput.selectedItem) {
                                 ns_catalogNameStr=mainWidget.details.ns_catalogNameInput.selectedItem.label;
                             }
@@ -306,12 +307,12 @@
                                 ns_categoriesData.addItem(mainWidget.details._boundCurrentCategories[n].label);
                             }
                         } else {
-                            if (Details.applicationCatalog) {
-                                ns_catalogNameStr=Details.applicationCatalog.name;
+                            if (LaunchWidgetCodeBehind.applicationCatalog) {
+                                ns_catalogNameStr=LaunchWidgetCodeBehind.applicationCatalog.name;
                             }
                             ns_categoriesData=new ArrayCollection();
-                            if (Details.businessLayerApplicationCategory) {
-                                ns_categoriesData.addItem(Details.businessLayerApplicationCategory.name);
+                            if (LaunchWidgetCodeBehind.businessLayerApplicationCategory) {
+                                ns_categoriesData.addItem(LaunchWidgetCodeBehind.businessLayerApplicationCategory.name);
                             }
                         }
                     }

@@ -87,6 +87,7 @@
                     if (mainWidget.competition != null) {
                         startTime=mainWidget.competition.startTime;
                         endTime=mainWidget.competition.endTime;
+                        trace("In Schedule.mxml: endTime: " + endTime);
                     }
                     // if multi round, show milestone date
                     if (mainWidget.multiRoundContest && this.mainWidget.competition.contestData.multiRoundData != null &&
@@ -182,7 +183,8 @@
                     setTimeControl(CmbHourEnd, CmbMinuteEnd, endDate);
                 }
                 
-                startDateChanged();
+                startDateChangedInternal(false);
+                
             }
             
             public function validateFields():Boolean {
@@ -434,25 +436,33 @@
             private function showfileDecsHint():void {
                     
             }
+            
+            private function startDateChanged():void {
+                startDateChangedInternal(true);
+            }
 
             /**
              * This method handles start date changes
              */
-            private function startDateChanged():void {
+            private function startDateChangedInternal(resetDate:Boolean):void {
                 if (mainWidget.studioContestType) {
                     // if multi round, clear milestone date as well
                     if (mainWidget.multiRoundContest) {
                         rangeMilestoneDate=new Date(dfStart.selectedDate.getTime() - 1);
                         dfMilestone.displayedMonth=rangeMilestoneDate.getMonth();
                         dfMilestone.displayedYear=rangeMilestoneDate.getFullYear();
-                        dfMilestone.selectedDate=null;
-                        rangeEndDate=null;
-                        dfEnd.selectedDate=null;
+                        if (resetDate) {
+                            dfMilestone.selectedDate=null;
+                            rangeEndDate=null;
+                            dfEnd.selectedDate=null;
+                        }
                     } else {
                         rangeEndDate=new Date(dfStart.selectedDate.getTime() - 1);
                         dfEnd.displayedMonth=rangeEndDate.getMonth();
                         dfEnd.displayedYear=rangeEndDate.getFullYear();
-                        dfEnd.selectedDate=null;
+                        if (resetDate) {
+                            dfEnd.selectedDate=null;
+                        }
                     }
                 }
                 //BUGR-1789
@@ -460,7 +470,9 @@
                     rangeEndDate=new Date(dfStart.selectedDate.getTime() - 1);
                     dfEnd.displayedMonth=rangeEndDate.getMonth();
                     dfEnd.displayedYear=rangeEndDate.getFullYear();
-                    dfEnd.selectedDate=null;
+                    if (resetDate) {
+                        dfEnd.selectedDate=null;
+                    }
                 }
             }
 

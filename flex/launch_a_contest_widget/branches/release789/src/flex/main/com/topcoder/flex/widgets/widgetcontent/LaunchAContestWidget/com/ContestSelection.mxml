@@ -21,6 +21,7 @@
            verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidgetCodeBehind;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
             import com.topcoder.flex.util.date.DateUtil;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
@@ -41,7 +42,7 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.soap.WebService;
             import mx.collections.ArrayCollection;
@@ -74,12 +75,13 @@
             private var contestTypes:ArrayCollection=new ArrayCollection([{label: "Please select a contest type", data: null, desc: ""}, {label: "Studio", data: "STUDIO", desc: ""}, {label: "Software Conceptualization", data: "CONCEPTUALIZATION", desc: ""}, {label: "Software Specification", data: "SPECIFICATION", desc: ""}, {label: "Architecture", data: "ARCHITECTURE", desc: ""}, {label: "Component Design", data: "DESIGN", desc: ""}, {label: "Component Development", data: "DEVELOPMENT", desc: ""}, {label: "RIA Component", data: "RIACOMPONENT", desc: ""}, {label: "RIA Build", data: "RIABUILD", desc: ""}, {label: "UI Prototype", data: "UIPROTOTYPE", desc: ""}, {label: "Software Assembly", data: "ASSEMBLY", desc: ""}, {label: "Test Suites", data: "TESTSUITES", desc: ""}, {label: "Test Scenarios", data: "TESTSCENARIOS", desc: ""},]);
             
             [Bindable]
-            private var studioContestSubTypes:ArrayCollection=new ArrayCollection();
+            private var studioContestSubTypes:ArrayCollection=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
             
             [Bindable]
             private var _rangeStartDate:Date;
             
             private var _currentHelpPopup:String;
+
 	        private function handleSelectContestType(event:Event):void {
                 if (!event) {
                     return;
@@ -106,7 +108,7 @@
                 // BUGR-1067
                 mainWidget.studioContestType=(competionType == "STUDIO");
                 if (mainWidget.studioContestType) {
-                    if (studioContestSubTypes.length <= 0) {
+                    if (studioContestSubTypes.length <= 1) {
                         // get the data here.
                         requestContestTypes.send();
                     } else {
@@ -325,7 +327,7 @@
                     
                     startTime=mainWidget.competition.startTime;
                     
-                    if (studioContestSubTypes.length <= 0) {
+                    if (studioContestSubTypes.length <= 1) {
                         // get the data here.
                         requestContestTypes.send();
                     } else {
@@ -441,10 +443,6 @@
                     return false;
                 }
 
-                if (!mainWidget.studioContestType) {        
-                    mainWidget.details.loadCategories();
-                }
-                
                 updateData();
                 return true;
             }
@@ -462,7 +460,7 @@
                 
                 mainWidget.studioContestType=(competionType == "STUDIO");
                 trace("In ContestSelection updateData - MainWidget.studioContestType: " + mainWidget.studioContestType);
-               
+
                 if (mainWidget.studioContestType) {
                     if (!mainWidget.competition) {
                         // create new.
@@ -475,6 +473,15 @@
                     // set contest start date.
                     var startDate:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
                     mainWidget.competition.startTime=startDate;
+                    
+                    // set default date as start + 7 days.
+                    trace("In ContestSelection. startDate: " + startDate);
+                    var endDt:Date=DateUtil.parseFromString(startDate);
+                    trace("In ContestSelection. startDate as Date type: " + endDt);
+                    if (endDt) {
+                        endDt=new Date(endDt.getTime() + 7 * 24 * OneHour);
+                        mainWidget.competition.endTime=DateUtil.toString(endDt);
+                    }
                     mainWidget.competition.contestData.launchDateAndTime=startDate;
                     
                     // set billing project
@@ -493,10 +500,28 @@
                     mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
                     mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
                     mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
-                    mainWidget.details.loadCategories();
                     
                     // set contest name.
                     this.mainWidget.softwareCompetition.assetDTO.name=contestNameInput.text;
+                    
+                    // shannon: please have a look into this code block. i believe the next block that has date set should happen after capacity
+                    // data is available.
+                    // 
+                    // recalculate start date forbidden dates
+                    var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(contestType, false);
+                    
+                    // set the default root catalog and category.
+                    if (mainWidget.isDesOrDevContestType()) {
+                        this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.notSetCatalog;
+                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                        this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.notSetCategory);
+                    } else {
+                        this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.applicationCatalog;
+                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                        this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.businessLayerApplicationCategory);
+                    }
                     
                     // set contest start date.
                     var start:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
@@ -594,29 +619,9 @@
                 // later it need to be removed from catalog service.
                 mainWidget.softwareCompetition.assetDTO.detailedDescription="NA";
                 
-                mainWidget.softwareCompetition.assetDTO.shortDescription="NA";
-                
-                var applicationCatalog:SoftwareCategory=new SoftwareCategory();
-                applicationCatalog.catalogName="Application";
-                applicationCatalog.name="Application";
-                applicationCatalog.description="Integration of components";
-                applicationCatalog.id=9926572;
-                applicationCatalog.status="ACTIVE";
-                applicationCatalog.viewable=false;
-                
-                this.mainWidget.softwareCompetition.assetDTO.rootCategory=applicationCatalog;
-                
-                this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                var businessLayerCategory:SoftwareCategory=new SoftwareCategory();
-                businessLayerCategory.name="Business Layer";
-                businessLayerCategory.description="Business Layer";
-                businessLayerCategory.id=9926575;
-                businessLayerCategory.parentCategory=applicationCatalog;
-                businessLayerCategory.status="ACTIVE";
-                businessLayerCategory.viewable=false;
-                this.mainWidget.softwareCompetition.assetDTO.categories.push(businessLayerCategory);
+                mainWidget.softwareCompetition.assetDTO.shortDescription="NA";                
 		
-		this.mainWidget.softwareCompetition.assetDTO.technologies=new Array();
+		        this.mainWidget.softwareCompetition.assetDTO.technologies=new Array();
                 
                 // initialize project header.
                 mainWidget.softwareCompetition.projectHeader=new SoftwareProjectHeader();
@@ -681,6 +686,9 @@
                     selectTCProject(projectData.projectId.toFixed(0));
                     
                     hideCreateProjectPopup();
+                    
+                    //mark refresh of my project.
+            	    mainWidget.notifyMyProjectWidget();
                 }
             }
             
@@ -975,9 +983,10 @@
             <mx:ComboBox id="selectContestSubTypes"
                          dataProvider="{studioContestSubTypes}"
                          change="handleSelectContestSubType(event)"
-                         visible="{mainWidget.studioContestType}"
-                         includeInLayout="{mainWidget.studioContestType}"
+                         visible="{mainWidget.studioContestType &amp;&amp; selectContestTypes.selectedItem &amp;&amp; selectContestTypes.selectedItem.data}"
+                         includeInLayout="{mainWidget.studioContestType &amp;&amp; selectContestTypes.selectedItem &amp;&amp; selectContestTypes.selectedItem.data}"
                          width="100%"/>
+
             <mx:LinkButton label="Help me choose"
                            click="gotoContestHelp();"/>
         </mx:HBox>
