@@ -122,10 +122,13 @@
                 
                 dfStart.selectedDate=null;
 
-                // recalculate start date forbidden dates
-                var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
-                var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-                getCapacityFullDatesOp.send(contestType, false);
+                // for studio - it will happen in sub type selection
+                if (!mainWidget.studioContestType) {
+                    // recalculate start date forbidden dates
+                    var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(contestType, false);
+                }
             }
             
             private function handleSelectContestSubType(event:Event):void {
@@ -385,12 +388,24 @@
                 if (mainWidget.isEditMode) {
                     termCheckBox.selected=true;
                 }
+                
+                // we also init overview to have default prizes.
+                mainWidget.overView.initData();
 		
-		// recalculate start date forbidden dates
-	        var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
-	        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
-	        getCapacityFullDatesOp.send(currentContestType, false);
-
+		        if (!mainWidget._psws) {
+		            return;
+		        }
+		        
+    		    if (mainWidget.studioContestType && mainWidget.competition && mainWidget.competition.contestData) {
+    		        // recalculate start date forbidden dates
+        	        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+        	        getCapacityFullDatesOp.send(mainWidget.competition.contestData.contestTypeId, true);
+    		    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
+        		    // recalculate start date forbidden dates
+        	        var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
+        	        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+        	        getCapacityFullDatesOp.send(currentContestType, false);
+        	    }
             }
             
             public function validateFields():Boolean {
@@ -441,6 +456,11 @@
                         Helper.showAlertMessage("Please agree to TopCoder Direct Terms" + (showPageName ? " at Create Contest Page" : ""));
                     }
                     return false;
+                }
+                
+                if (!mainWidget.overView.fetchedContestFee && (!mainWidget.isInvoicedContest || mainWidget.overView.fetchedContestFeeForBillingProject)) {
+                    Helper.showAlertMessage("Default Contest Fee data is getting loaded, wait for a moment and re-do the step");
+                    return false; 
                 }
 
                 updateData();
@@ -763,6 +783,9 @@
                 if (mainWidget) {
                     var val:Object=selectBillingAccount.selectedItem;
                     setBillingProjectProperties(val);    
+                    
+                    // we also init overview to have default prizes.
+                    mainWidget.overView.initData();
                 }
             }
             
@@ -929,10 +952,13 @@
                 var selectedContestTypeId:String="";
                 if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
                     selectedContestTypeId=mainWidget.competition.contestData.contestTypeId.toString();
+                    trace("In preprocessTypes - SelectedContestTypeId: " + selectedContestTypeId);
                 } 
                 
+                studioContestSubTypes.removeAll();
+                studioContestSubTypes=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
                 var selectedValueIndex:Number=0;
-
+    
                 if (e != null && e.result != null && e.result is XMLNode) {
                     var root:XMLNode=e.result as XMLNode;
                     for (var i:int=0; i < root.childNodes.length; i++) {
@@ -945,17 +971,22 @@
                         item.description="";
                         
                         studioContestSubTypes.addItem(item);
+                        
+                        trace("In preprocessTypes - value,selectedContestTypeId: " + value + "," + selectedContestTypeId + "," + i);
 
                         if (value == selectedContestTypeId) {
-                            selectedValueIndex=i;
+                            selectedValueIndex=i+1;
                         }
                     }
                 }
+                
+                trace("In preprocessTypes - selectedValueIndex: " + selectedValueIndex);
                 
                 if (selectedValueIndex >= 0) {
                     selectContestSubTypes.selectedIndex=selectedValueIndex;
                     mainWidget.studioContestSubTypeId = selectContestSubTypes.selectedItem.data;
                     mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
+                    trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectContestSubTypes.selectedItem.data + "," + selectContestSubTypes.selectedItem.label); 
                     
                 }
             }

@@ -515,16 +515,15 @@
                 //read hints.xml data
                 getData(null);
                 
-		        setWidgetReferences();
-
                 // initialize web-services
                 initWebServices();
                 
+		setWidgetReferences();
+
                 loadCategories();
                 loadMasterTechnologies();
                 
                 // BUGR-1235
-                //initialWdt.init();
                 contestSelect.init();
                 
                 // BUGR-1141
@@ -708,13 +707,14 @@
                 if (this.currentState == "ContestSelectionState") {
                     if (!contestSelect.validateFields())
                         return;
-                    overView.initData();
+                    
+                    //overView.initData();
                     if (!overView.validateFields())
                         return;
                     
                     // call validate so default values get set.
-                    details.initData();
-                    details.validateFieldsEx2(false,false);
+                    //details.initData();
+                    //details.validateFieldsEx2(false,false);
                 } else if (this.currentState == "OverViewState") {
                     if (!overView.validateFields())
                         return;

@@ -126,6 +126,10 @@
             [Bindable]
             private var contestFees:XML;
             
+            public var fetchedContestFee:Boolean=false;
+            
+            public var fetchedContestFeeForBillingProject=false;
+            
             /**
              * Reliability Bonus XML
              * 
@@ -226,6 +230,11 @@
                 {
                     return;
                 }
+                
+                // reset it.
+                contestFees=null;
+                fetchedContestFee=false;
+                fetchedContestFeeForBillingProject=false;
 
                 if (mainWidget.studioContestType) {
                     for each (var inptName:String in s_inputs) {
@@ -242,13 +251,17 @@
                     // request overview data after studio contest types has been loaded.
                     // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
                     //
-                    requestOverviewData.send();
+                    if (!contestOverview) {
+                        requestOverviewData.send();
+                    }
                     
                     //
                     // request contest fees after studio contest types has been loaded.
                     // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
                     //
-                    requestContestFees.send();
+                    if (!contestFees) {
+                        requestContestFees.send();
+                    }
                     
                     adminf.editable = mainWidget.isAdmin; // BUGR-1737
                     s_setPrizes();
@@ -270,7 +283,10 @@
                         ns_firstPlace.editable=true;
                     }
                     
-                    requestContestFees.send(); // BUGR-1737
+                    if (!contestFees) {
+                        requestContestFees.send(); // BUGR-1737
+                    }
+                    
                     //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
                     enforceCCAChkBox.selected = mainWidget.enforcedCCA;
                 }
@@ -823,6 +839,8 @@
             private function loadContestFees(e:ResultEvent):void {
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
+                    fetchedContestFee=true;
+                    
                     if (!mainWidget.studioContestType) {
                         if (!mainWidget.isEditMode) {
                             ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737
@@ -859,7 +877,9 @@
                 // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
                 //    - Changed the name to more generic 'overview data' rather than 'examples'
                 //
-                requestOverviewData.send();
+                if (!contestOverview) {
+                    requestOverviewData.send();
+                }
             }
             
             /**
@@ -966,6 +986,8 @@
                             contestFees.contestType.(@id == contestType).contestFee[0]=contestFee;
                         }
                     }
+                    
+                    fetchedContestFeeForBillingProject=true;
                 }
 
                 if (contestFees) {

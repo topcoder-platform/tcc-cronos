@@ -969,12 +969,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */ 
 	    private function prepareSoftwareContest():void {
 		    // set dynamic properties before save.
-            /*var prizes:Array=new Array();
-            for (var i:int=0; i < this.softwareCompetition.prizes.length; i++) {
-                var p:Number=PrizeData(this.softwareCompetition.prizes[i]).amount;
-                prizes.push(p);
-            }*/
-
+            
+            if (!this.softwareCompetition.assetDTO.detailedDescription || this.softwareCompetition.assetDTO.detailedDescription == "") {
+                this.softwareCompetition.assetDTO.detailedDescription="NA";
+            }
+            
+            if (!this.softwareCompetition.assetDTO.shortDescription || this.softwareCompetition.assetDTO.shortDescription == "") {
+                this.softwareCompetition.assetDTO.shortDescription="NA";
+            }
+                
     	    // we need a reason for update
     	    this.softwareCompetition.projectHeaderReason = "user update";
             this.softwareCompetition.projectHeader.tcDirectProjectName=tcDirectProjectName;
@@ -985,14 +988,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 SoftwareCompetitionUtils.instance().addConfidentialityTypeProp(this.softwareCompetition, SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_PUBLIC);
             }
 
-	    //SoftwareCompetitionUtils.instance().addAdminFeeProp(this.softwareCompetition, this.softwareCompetition.adminFee);
-            //SoftwareCompetitionUtils.instance().addPrizeProps(this.softwareCompetition, prizes);
             SoftwareCompetitionUtils.instance().addProjectNameProp(this.softwareCompetition, this.softwareCompetition.assetDTO.name);
             SoftwareCompetitionUtils.instance().addRootCatalogIdProp(this.softwareCompetition, this.softwareCompetition.assetDTO.rootCategory.id);
 
             SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, this.invoicedProjectId.toString());
-	        //SoftwareCompetitionUtils.instance().addBillingProjectProp(this.softwareCompetition, SoftwareCompetitionUtils.instance().getBillingProjectProp(softwareCompetition));
-
 	    }
 
         /**
