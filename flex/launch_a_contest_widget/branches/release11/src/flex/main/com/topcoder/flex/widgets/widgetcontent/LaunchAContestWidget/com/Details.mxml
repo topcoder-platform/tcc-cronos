@@ -112,9 +112,6 @@
              * This method initializes the corresponding data necessary to show this page
              */
             public function initData():void {
-                
-                requestConfigData.send();
-                
                 //
                 // depending on the competition type set/reset the data.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -139,10 +136,13 @@
                     }
 
                 } else {
-                    ns_detailedRequirements.htmlText="";
-                    ns_submissionDeliverables.htmlText="";
-                    ns_environmentSetupInstructions.htmlText="";
-                    ns_finalSubmissionGuidelines.htmlText="";
+                    // set the config data.
+                    setConfigData();
+
+                    //ns_detailedRequirements.htmlText="";
+                    //ns_submissionDeliverables.htmlText="";
+                    //ns_environmentSetupInstructions.htmlText="";
+                    //ns_finalSubmissionGuidelines.htmlText="";
 
                     if (this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
                         ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
@@ -152,6 +152,7 @@
                     }
                     
                     if (!LaunchWidgetCodeBehind.masterTechnologies) {
+                        trace("Master technology are not set, so returning");
                         return
                     }
                         
@@ -185,6 +186,7 @@
                     }
                     
                     if (!LaunchWidgetCodeBehind.catalogs) {
+                        trace("Master catalogs are not set, so returning");
                         return
                     }
 
@@ -205,22 +207,14 @@
 	        }
 
             /**
-             * Handler for loading config data from xml file.
-             * 
-             * @param e the result event. 
              * @since Cockpit Launch Widget - Update Spec Reviews
              */
-            private function loadConfigData(e:ResultEvent):void {
-                if (e != null && e.result != null && e.result is XML) {
-                    config=e.result as XML;
-                    if (!mainWidget.isEditMode) {
-                        if (!mainWidget.studioContestType) {
-                            ns_detailedRequirements.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
-                            ns_submissionDeliverables.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
-                            ns_environmentSetupInstructions.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
-                            ns_finalSubmissionGuidelines.htmlText=config.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines'); 
-                        }    
-                    }
+            private function setConfigData():void {
+                if (mainWidget.detailsConfig) {
+                    ns_detailedRequirements.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
+                    ns_submissionDeliverables.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
+                    ns_environmentSetupInstructions.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                    ns_finalSubmissionGuidelines.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines'); 
                 }
             }
 
@@ -793,16 +787,6 @@
             }
         ]]>
     </mx:Script>
-    <!--
-         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
-         - Changed the name to more generic 'overview data' rather than 'examples'
-    -->
-    <mx:HTTPService id="requestConfigData"
-                    url="/i/cockpit/data/launch_a_contest/details.xml"
-                    resultFormat="e4x"
-                    result="loadConfigData(event)"
-                    fault="Helper.showAlertMessage(event.fault.faultString);">
-    </mx:HTTPService>
     
     <mx:VBox width="100%"
              styleName="boxStyle"

@@ -226,7 +226,7 @@
                 {
                     return;
                 }
-
+                
                 contestFees=null;
                 
                 if (mainWidget.studioContestType) {

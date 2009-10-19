@@ -51,6 +51,7 @@
 
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
             import com.topcoder.flex.util.videoPopup.VideoPopupManager;
             import com.topcoder.flex.widgets.setting.WidgetGlobalSettingManager;
             import com.topcoder.flex.widgets.setting.WidgetGlobalSetting;
@@ -510,7 +511,7 @@
                 rightPanel.horizontalScrollPolicy="false";
                 mainPanel.horizontalScrollPolicy="false";
 
-                back.visible=false;
+                //back.visible=false;
                 
                 //read hints.xml data
                 getData(null);
@@ -522,6 +523,7 @@
 
                 loadCategories();
                 loadMasterTechnologies();
+                requestConfigData.send();
                 
                 // BUGR-1235
                 contestSelect.init();
@@ -717,6 +719,9 @@
                 } else if (this.currentState == "OverViewState") {
                     if (!overView.validateFields())
                         return;
+                    if (!studioContestType) {
+                        setSoftwareDefaultDetails();
+                    }
                 } else if (this.currentState == "DetailsState") {
                     if (!details.validateFields())
                         return;
@@ -728,14 +733,17 @@
                         return;
                 }
 
-
-		// before continue, check start date is not taken
+		        // before continue, check start date is not taken
                 validateStartDate(continueSaveDraft);
             }
             
             private function saveAfterFeesLoaded(event:Event):void {
                 if (!overView.validateFields())
                             return;
+                
+                if (!studioContestType) {
+                    setSoftwareDefaultDetails();
+                }
                             
                 validateStartDate(continueSaveDraft);
                 this.removeEventListener("OverviewFeesLoaded", saveAfterFeesLoaded);
@@ -916,6 +924,19 @@
                        
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
+                       
+                       if (contestSelect.selectContestTypes.selectedItem.data == "SPECIFICATION" || contestSelect.selectContestTypes.selectedItem.data == "CONCEPTUALIZATION" ){
+                           details.tech1.visible = false;
+                           details.tech2.visible = false;
+                           details.tech1.includeInLayout = false;
+                           details.tech2.includeInLayout = false;
+    					} else {
+    					   details.tech1.visible = true;
+                           details.tech2.visible = true;
+                           details.tech1.includeInLayout = true;
+                           details.tech2.includeInLayout = true;
+    					}
+					
                         details.initData();
                         break;
                     case 4:
@@ -1695,7 +1716,7 @@
             }
 
             public function startLaunchProcess():void {
-                trace("IN START LAUNCH PROCESS");
+                trace("IN START LAUNCH PROCESS: " + this.currentState);
                 launchWdt.percentWidth=100;
                 launchWdt.percentHeight=100;
                 mainPanel.percentWidth=100;
@@ -1936,8 +1957,69 @@
                     + widgetSetting.settings[this.currentState + ".HelpVideoFrame"]);
                 VideoPopupManager.showHelpVideo(this, src, frame);
             }
+            
+            /**
+             * Handler for loading config data from xml file.
+             * 
+             * @param e the result event. 
+             * @since Cockpit Launch Widget - Update Spec Reviews
+             */
+            private function loadDetailsConfigData(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    detailsConfig=e.result as XML;
+                }
+            }
+            
+            private function setSoftwareDefaultDetails():void {
+                if (!detailsConfig || !this.softwareCompetition) {
+                    return;
+                }
+                
+                var ns_detailedRequirements:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
+                var ns_submissionDeliverables:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
+                var ns_environmentSetupInstructions:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                var ns_finalSubmissionGuidelines:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines');
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec) {
+                    this.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.detailedRequirements 
+                        || this.softwareCompetition.projectHeader.projectSpec.detailedRequirements == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.detailedRequirements=ns_detailedRequirements;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables 
+                        || this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables=ns_submissionDeliverables;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions 
+                        || this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines 
+                        || this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines;
+                }
+                
+				// for now, also set detailed Reuqirements on function description
+				this.softwareCompetition.assetDTO.detailedDescription=this.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+            }
         ]]>
     </mx:Script>
+    
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestConfigData"
+                    url="/i/cockpit/data/launch_a_contest/details.xml"
+                    resultFormat="e4x"
+                    result="loadDetailsConfigData(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
 
      <mx:HTTPService
         id="dummyService"
