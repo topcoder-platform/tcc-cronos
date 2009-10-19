@@ -332,6 +332,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         public static var notSetCategory:SoftwareCategory = null;
         
+        public var detailsConfig:XML=null;
+        
         /**
         * @since BUGR-1737
         */     

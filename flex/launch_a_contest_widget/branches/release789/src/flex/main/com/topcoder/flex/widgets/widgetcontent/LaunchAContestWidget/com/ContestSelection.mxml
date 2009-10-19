@@ -531,14 +531,16 @@
                     getCapacityFullDatesOp.send(contestType, false);
                     
                     // set the default root catalog and category.
-                    if (mainWidget.isDesOrDevContestType()) {
-                        this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.notSetCatalog;
-                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                        this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.notSetCategory);
-                    } else {
-                        this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.applicationCatalog;
-                        this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
-                        this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.businessLayerApplicationCategory);
+                    if (!this.mainWidget.softwareCompetition.assetDTO.rootCategory) {
+                        if (mainWidget.isDesOrDevContestType()) {
+                            this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.notSetCatalog;
+                            this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.notSetCategory);
+                        } else {
+                            this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.applicationCatalog;
+                            this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.businessLayerApplicationCategory);
+                        }
                     }
                     
                     // set contest start date.
@@ -635,8 +637,6 @@
                 
                 // For Cockpit Launch Contest - Update for Spec Creation v1.0 - save some dummy text for now.
                 // later it need to be removed from catalog service.
-                mainWidget.softwareCompetition.assetDTO.detailedDescription="NA";
-                
                 mainWidget.softwareCompetition.assetDTO.shortDescription="NA";                
 		
 		        this.mainWidget.softwareCompetition.assetDTO.technologies=new Array();
