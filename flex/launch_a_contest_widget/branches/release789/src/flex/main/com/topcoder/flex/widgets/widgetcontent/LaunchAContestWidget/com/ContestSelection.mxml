@@ -108,14 +108,15 @@
                 // BUGR-1067
                 mainWidget.studioContestType=(competionType == "STUDIO");
                 if (mainWidget.studioContestType) {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
+                    
                     if (studioContestSubTypes.length <= 1) {
                         // get the data here.
                         requestContestTypes.send();
                     } else {
+                        trace("Un setting sub type to 0");
                         selectContestSubTypes.selectedIndex=0;
                     }
-                    
-                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
                 } else {
                     selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=false;
                 }
@@ -324,6 +325,8 @@
                 var startTime:Object=null;
                 
                 if (mainWidget.competition) {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
+                    
                     // set contest name.
                     // set start date.
                     contestNameInput.text=this.mainWidget.competition.contestData.name;
@@ -341,6 +344,8 @@
                             var i:int=0;
                             for each (var item:Object in studioContestSubTypes) {
                                 if (item.data == mainWidget.studioContestSubTypeId) {
+                                    trace("Setting studio sub type to: " + i);
+                                    selectContestSubTypes.selectedItem=item;
                                     selectContestSubTypes.selectedIndex=i;
                                     break;
                                 } 
@@ -350,10 +355,7 @@
                         }
                         
                         mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
-                        
                     }
-                        
-                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
                 } else if (mainWidget.softwareCompetition) {
                     // set contest name.
                     // set start date.
@@ -390,7 +392,7 @@
                 }
                 
                 // we also init overview to have default prizes.
-                mainWidget.overView.initData();
+                //mainWidget.overView.initData();
 		
 		        if (!mainWidget._psws) {
 		            return;
@@ -458,11 +460,6 @@
                     return false;
                 }
                 
-                if (!mainWidget.overView.fetchedContestFee && (!mainWidget.isInvoicedContest || mainWidget.overView.fetchedContestFeeForBillingProject)) {
-                    Helper.showAlertMessage("Default Contest Fee data is getting loaded, wait for a moment and re-do the step");
-                    return false; 
-                }
-
                 updateData();
                 return true;
             }
@@ -501,6 +498,7 @@
                     if (endDt) {
                         endDt=new Date(endDt.getTime() + 7 * 24 * OneHour);
                         mainWidget.competition.endTime=DateUtil.toString(endDt);
+                        mainWidget.competition.contestData.durationInHours=7*24;
                     }
                     mainWidget.competition.contestData.launchDateAndTime=startDate;
                     
@@ -785,7 +783,7 @@
                     setBillingProjectProperties(val);    
                     
                     // we also init overview to have default prizes.
-                    mainWidget.overView.initData();
+                    //mainWidget.overView.initData();
                 }
             }
             
@@ -955,9 +953,9 @@
                     trace("In preprocessTypes - SelectedContestTypeId: " + selectedContestTypeId);
                 } 
                 
-                studioContestSubTypes.removeAll();
-                studioContestSubTypes=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
+                var subTypes:ArrayCollection=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
                 var selectedValueIndex:Number=0;
+                var selectedItem:Object=subTypes.getItemAt(0);
     
                 if (e != null && e.result != null && e.result is XMLNode) {
                     var root:XMLNode=e.result as XMLNode;
@@ -970,23 +968,28 @@
                         item.data=value;
                         item.description="";
                         
-                        studioContestSubTypes.addItem(item);
+                        subTypes.addItem(item);
                         
                         trace("In preprocessTypes - value,selectedContestTypeId: " + value + "," + selectedContestTypeId + "," + i);
 
                         if (value == selectedContestTypeId) {
                             selectedValueIndex=i+1;
+                            selectedItem=item;
                         }
                     }
                 }
                 
                 trace("In preprocessTypes - selectedValueIndex: " + selectedValueIndex);
                 
-                if (selectedValueIndex >= 0) {
+                studioContestSubTypes=subTypes;
+                selectContestSubTypes.dataProvider=studioContestSubTypes;
+                
+                if (selectedItem) {
+                    selectContestSubTypes.selectedItem=studioContestSubTypes.getItemAt(selectedValueIndex);
                     selectContestSubTypes.selectedIndex=selectedValueIndex;
-                    mainWidget.studioContestSubTypeId = selectContestSubTypes.selectedItem.data;
-                    mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
-                    trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectContestSubTypes.selectedItem.data + "," + selectContestSubTypes.selectedItem.label); 
+                    mainWidget.studioContestSubTypeId = selectedItem.data;
+                    mainWidget.studioContestSubTypeLabel = selectedItem.label;
+                    trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectedItem.data + "," + selectedItem.label); 
                     
                 }
             }

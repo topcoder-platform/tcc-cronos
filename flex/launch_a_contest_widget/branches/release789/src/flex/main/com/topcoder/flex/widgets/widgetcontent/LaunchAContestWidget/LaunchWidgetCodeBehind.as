@@ -495,6 +495,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     (container.contents as LaunchWidget).tcDirectProjectId=map["projectid"];
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
                     (container.contents as LaunchWidget).studioContestType=(map["contestType"].toLocaleUpperCase()=="STUDIO");
+                    if ((container.contents as LaunchWidget).studioContestType) {
+                        (container.contents as LaunchWidget).competitionType="STUDIO";
+                    }
             }
             
             (container.contents as LaunchWidget).initWidgetCallbackFn=function():void {
@@ -507,6 +510,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     (container.contents as LaunchWidget).tcDirectProjectName=map["projectName"];
                     (container.contents as LaunchWidget).studioContestType=(map["contestType"].toLocaleUpperCase()=="STUDIO");
                     //(container.contents as LaunchWidget).studioContestType=(container.contents as LaunchWidget).competitionType=="STUDIO";
+                    if ((container.contents as LaunchWidget).studioContestType) {
+                        (container.contents as LaunchWidget).competitionType="STUDIO";
+                    }
                     
                     var editMode:String=map["mode"];
                     

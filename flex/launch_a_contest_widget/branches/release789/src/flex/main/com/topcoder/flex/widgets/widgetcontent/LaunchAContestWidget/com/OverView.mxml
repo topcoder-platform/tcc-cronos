@@ -126,10 +126,6 @@
             [Bindable]
             private var contestFees:XML;
             
-            public var fetchedContestFee:Boolean=false;
-            
-            public var fetchedContestFeeForBillingProject=false;
-            
             /**
              * Reliability Bonus XML
              * 
@@ -184,12 +180,12 @@
              */
             private var highCostData:Dictionary=new Dictionary();
 
-	    /**
-	     * Stores the cost items for custom cost data.
+    	    /**
+    	     * Stores the cost items for custom cost data.
              * Initializes when user changes the values for manual prize setting.
              *
-	     * @since 1.0.4
-	     */
+    	     * @since 1.0.4
+    	     */
             private var custCostData:Dictionary=new Dictionary();
             
             /**
@@ -231,11 +227,6 @@
                     return;
                 }
                 
-                // reset it.
-                contestFees=null;
-                fetchedContestFee=false;
-                fetchedContestFeeForBillingProject=false;
-
                 if (mainWidget.studioContestType) {
                     for each (var inptName:String in s_inputs) {
                         this[inptName].text="";
@@ -839,7 +830,6 @@
             private function loadContestFees(e:ResultEvent):void {
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
-                    fetchedContestFee=true;
                     
                     if (!mainWidget.studioContestType) {
                         if (!mainWidget.isEditMode) {
@@ -871,6 +861,8 @@
                 // like someone changes the billing project then the value should be as getContestFeesByBillingProject, otherwise from contest data.
                 if (mainWidget.isInvoicedContest) {
                     getContestFeesByBillingProject();
+                } else {
+                    mainWidget.dispatchEvent(new Event("OverviewFeesLoaded"));
                 }
                 
                 //
@@ -986,8 +978,6 @@
                             contestFees.contestType.(@id == contestType).contestFee[0]=contestFee;
                         }
                     }
-                    
-                    fetchedContestFeeForBillingProject=true;
                 }
 
                 if (contestFees) {
@@ -999,6 +989,8 @@
                         s_updateAmount(true);
                     }
                 }
+                
+                mainWidget.dispatchEvent(new Event("OverviewFeesLoaded"));
             }
 
             private function goToUrl(url:String):void {
@@ -1132,7 +1124,7 @@
                 
                 var contestFee:Number=data["ContestFee"] as Number;
                 
-                ns_firstPlace.text=firstPlaceCost.toFixed(2);
+                ns_firstPlace.text=firstPlaceCost.toFixed(0);
                 ns_secondPlace.text=secondPlaceCost.toFixed(2);
                 ns_reviewCost.text=reviewBoardCost.toFixed(2);
                 ns_reliabilityBonus.text=reliabilityBonus.toFixed(2);
@@ -1203,7 +1195,6 @@
                 selCostData["ContestFee"]=contestFee;
 
                 ns_updateAmount();
-
             }
             
             /**
