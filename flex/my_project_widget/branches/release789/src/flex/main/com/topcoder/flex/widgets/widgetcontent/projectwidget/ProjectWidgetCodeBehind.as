@@ -8,14 +8,19 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
     
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
+    import mx.collections.Sort;
     import mx.containers.HBox;
     import mx.core.Application;
+    import mx.rpc.AbstractOperation;
+    import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.SOAPHeader;
     import mx.rpc.soap.mxml.WebService;
+    import mx.utils.ObjectUtil;
 
     /**
      * <p>
@@ -76,6 +81,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * Reference to the contest service facade bean.
          */
         private var _ContestServiceFacadeBean:WebService;
+        
+        /**
+         * Reference to the project service facade bean.
+         */
+        private var _ProjectServiceFacadeBean:WebService;
 
         /**
          * The project id only for which project contest data should be loaded.
@@ -103,6 +113,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * @since Cockpit Release Assembly 2 [BUGR-1830]
          */
         private var _model:Model=null;
+        
+        public var projectMap:Dictionary=new Dictionary();
         
         /**
          * ProjectWidgetCodeBehind constructor.
@@ -163,24 +175,99 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         public function set ContestServiceFacadeBean(w:WebService):void {
             _ContestServiceFacadeBean=w;
         }
+        
+        /**
+         * Getter for the Project service facade bean service reference.
+         *
+         * @return the Project service facade bean reference.
+         */
+        public function get ProjectServiceFacadeBean():WebService {
+            return _ProjectServiceFacadeBean;
+        }
+
+        /**
+         * A simple setter for the project service facade bean service.
+         *
+         * @param w the webservice to be set.
+         */
+        public function set ProjectServiceFacadeBean(w:WebService):void {
+            _ProjectServiceFacadeBean=w;
+        }
 
         /**
          * Loads the data from webservice.
          */
         public function loadData():void {
             showLoadingProgress();
-            if (pid) {
-                ContestServiceFacadeBean.clearHeaders();
-                ContestServiceFacadeBean.addHeader(getHeader(username, password));
-                ContestServiceFacadeBean.getCommonProjectContestDataByPID.send();
-            } else {
-                if (this.container) {
-                    this.container.startMaximize();
+            ProjectServiceFacadeBean.clearHeaders();
+            ProjectServiceFacadeBean.addHeader(getHeader(username, password));
+            var getAllProjectsOp:AbstractOperation=ProjectServiceFacadeBean.getOperation("getAllProjects");
+            getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+            getAllProjectsOp.send();
+            
+            
+        }
+        
+        // TCCC-1023
+        private function getAllProjectsHandler(e:ResultEvent):void {
+            hideLoadingProgress();
+            
+            if (e && e.result) {
+                var projects:ArrayCollection=null;
+                
+                if (e.result is ArrayCollection) {
+                    projects=e.result as ArrayCollection;
+                } else {
+                    projects=new ArrayCollection();
+                    projects.addItem(e.result);
                 }
-                ContestServiceFacadeBean.clearHeaders();
-                ContestServiceFacadeBean.addHeader(getHeader(username, password));
-                ContestServiceFacadeBean.getCommonProjectContestData();
+                
+                model.proList=new ArrayCollection();
+                for (var i:int=0; i < projects.length; i++) {
+                    var prj:Object=projects[i];
+                    var newProject:Project=new Project(prj.projectId,prj.name,prj.description,"","",null);
+                    projectMap[newProject.id]=newProject;
+                    model.proList.addItem(newProject);
+                }       
+                
+                sortByName(model.proList); 
+            
+                showLoadingProgress();        
+                if (pid) {
+                    ContestServiceFacadeBean.clearHeaders();
+                    ContestServiceFacadeBean.addHeader(getHeader(username, password));
+                    ContestServiceFacadeBean.getCommonProjectContestDataByPID.send();
+                } else {
+                    if (this.container) {
+                        this.container.startMaximize();
+                    }
+                    ContestServiceFacadeBean.clearHeaders();
+                    ContestServiceFacadeBean.addHeader(getHeader(username, password));
+                    ContestServiceFacadeBean.getCommonProjectContestData();
+                }
             }
+        }
+        
+        /**
+         * Sorts the given collection by name
+         *
+         * @param coll specified array collection to be sorted.
+         */
+        public function sortByName(coll:ArrayCollection):void {
+            if (!coll.sort) {
+                var sort:Sort=new Sort();
+                sort.compareFunction=compareName;
+                coll.sort=sort;
+            }
+
+            coll.refresh();
+        }
+        
+        /**
+         * Callback function on sorting by name.
+         */
+        private function compareName(a:Object, b:Object, fields:Array=null):int {
+            return ObjectUtil.stringCompare(a.name, b.name, true);
         }
 
         /**

@@ -3,10 +3,10 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
-
-    import mx.collections.ArrayCollection;
     
     import flash.utils.Dictionary;
+    
+    import mx.collections.ArrayCollection;
     
     /**
      * <p>
@@ -100,6 +100,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
             this.status=_status;
             this.owner=_owner;
             this.contests=_contests;
+            
+            if (!this.contests) {
+                this.contests=new ArrayCollection();        
+            }
+            
             contests.filterFunction=Model.filterDate;
             
             for each (var c:Contest in this.contests) {
@@ -123,6 +128,30 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
                 
                 a2.contests.addItem(c);
             }
+        }
+        
+        public function addContest(c:Contest):void {
+            this.contests.addItem(c);
+            
+            var a1:Cate=this.statusGroup[c.status] as Cate;
+            if (!a1) {
+                a1=new Cate();
+                a1.label=c.status;
+                a1.contests=new ArrayCollection();
+                this.statusGroup[c.status]=a1;
+            }
+            
+            a1.contests.addItem(c);
+            
+            var a2:Cate=this.typeGroup[c.type] as Cate;
+            if (!a2) {
+                a2=new Cate();
+                a2.label=c.type;
+                a2.contests=new ArrayCollection();
+                this.typeGroup[c.type]=a2;
+            }
+            
+            a2.contests.addItem(c);
         }
     }
 }
