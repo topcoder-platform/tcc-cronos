@@ -226,6 +226,8 @@
                 {
                     return;
                 }
+
+                contestFees=null;
                 
                 if (mainWidget.studioContestType) {
                     for each (var inptName:String in s_inputs) {

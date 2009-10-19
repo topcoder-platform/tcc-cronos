@@ -871,7 +871,9 @@
 
                         setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
                         setCurStep(newStepBox);
-
+                        
+                        contestSelect.initData();
+                        
                         break;
                     case 2:
                         
@@ -1340,7 +1342,7 @@
                   if (start && event && event.result) {
 
                     var startDate:Date=DateUtil.parseFromString(start);
- //Helper.showAlertMessage("--------------start year=="+startDate.getFullYear()+",m=="+startDate.getMonth()+",d=="+startDate.getDay()+"...");
+
                     var capArray:ArrayCollection=new ArrayCollection;
                     if (event.result is ArrayCollection)
                         capArray=event.result as ArrayCollection;
@@ -1350,7 +1352,6 @@
                     for (var i:int = 0; i < capArray.length && ok; i++) {
 
                         var fullDate:Date = DateUtil.parseFromString(capArray[i].date);
- //Helper.showAlertMessage("--------------full year=="+fullDate.getFullYear()+",m=="+fullDate.getMonth()+",d=="+fullDate.getDay()+"...");
                         var contests:ArrayCollection = capArray[i].contests;
 
                         if (fullDate.getFullYear() == startDate.getFullYear() &&
@@ -1546,6 +1547,8 @@
 
                     setCurStep(step1box);
                     setNextStep(step2box); // BUGR-1141
+                    
+                    contestSelect.initData();
                 }
             }
             public function goToStep1():void {
