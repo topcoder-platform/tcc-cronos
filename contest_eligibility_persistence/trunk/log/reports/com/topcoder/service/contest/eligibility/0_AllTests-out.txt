@@ -1,0 +1,879 @@
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:06 GMT 2009
+Parameters: [ contestEligibility = null ]
+Error recognized: The argument contestEligibility cannot be null.
+java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.create(ContestEligibilityManagerBean.java:127)
+	at com.topcoder.service.contest.eligibility.failuretests.ContestEligibilityManagerBeanFailureTest.testCreateNull(ContestEligibilityManagerBeanFailureTest.java:119)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = null ]
+Error recognized: The argument contestEligibility cannot be null.
+java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.remove(ContestEligibilityManagerBean.java:152)
+	at com.topcoder.service.contest.eligibility.failuretests.ContestEligibilityManagerBeanFailureTest.testRemoveNull(ContestEligibilityManagerBeanFailureTest.java:132)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=1 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ list = null ]
+Error recognized: The argument list cannot be null.
+java.lang.IllegalArgumentException: The argument list cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:186)
+	at com.topcoder.service.contest.eligibility.failuretests.ContestEligibilityManagerBeanFailureTest.testSaveNull(ContestEligibilityManagerBeanFailureTest.java:163)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ list = [] ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ list = {  null} ]
+Error recognized: The argument contest eligibility in list cannot be null.
+java.lang.IllegalArgumentException: The argument contest eligibility in list cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:188)
+	at com.topcoder.service.contest.eligibility.failuretests.ContestEligibilityManagerBeanFailureTest.testSaveContaingingNull(ContestEligibilityManagerBeanFailureTest.java:193)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = false ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11300 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11301 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11303 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11304 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11306 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11307 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11309 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11310 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11312 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11313 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = false ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11302 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11305 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11308 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11311 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11314 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestId = 100 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11350  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11351  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11352  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11354  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11355  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11356  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11358  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11359  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11360  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11362  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11363  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11364  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11366  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11367  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11368  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestId = 123 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11404  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11405  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestId = 111 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestId = 111 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestId = 111 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11407 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:08 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Parameters: [ contestId = 111 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+1
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
+Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
+Parameters: [ contestEligibility = null ]
+Error recognized: The argument contestEligibility cannot be null.
+java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.create(ContestEligibilityManagerBean.java:127)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testCreateFailure1(ContestEligibilityManagerBeanTests.java:144)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:10 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.MockContestEligibility with id=0 ]
+Error recognized: Some error happens while persisting the entity.
+com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while persisting the entity.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.create(ContestEligibilityManagerBean.java:131)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testCreateFailure2(ContestEligibilityManagerBeanTests.java:163)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
+	at org.hibernate.ejb.AbstractEntityManagerImpl.persist(AbstractEntityManagerImpl.java:215)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.create(ContestEligibilityManagerBean.java:129)
+	... 34 more
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11500 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+Parameters: [ contestEligibility = null ]
+Error recognized: The argument contestEligibility cannot be null.
+java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.remove(ContestEligibilityManagerBean.java:152)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testRemoveFailure1(ContestEligibilityManagerBeanTests.java:202)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.MockContestEligibility with id=0 ]
+Error recognized: Some error happens while removing the entity.
+com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while removing the entity.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.remove(ContestEligibilityManagerBean.java:156)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testRemoveFailure2(ContestEligibilityManagerBeanTests.java:221)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
+	at org.hibernate.ejb.AbstractEntityManagerImpl.merge(AbstractEntityManagerImpl.java:233)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.remove(ContestEligibilityManagerBean.java:154)
+	... 34 more
+Caused by: org.hibernate.MappingException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
+	at org.hibernate.impl.SessionFactoryImpl.getEntityPersister(SessionFactoryImpl.java:550)
+	at org.hibernate.impl.SessionImpl.getEntityPersister(SessionImpl.java:1338)
+	at org.hibernate.event.def.DefaultMergeEventListener.onMerge(DefaultMergeEventListener.java:97)
+	at org.hibernate.event.def.DefaultMergeEventListener.onMerge(DefaultMergeEventListener.java:53)
+	at org.hibernate.impl.SessionImpl.fireMerge(SessionImpl.java:677)
+	at org.hibernate.impl.SessionImpl.merge(SessionImpl.java:661)
+	at org.hibernate.impl.SessionImpl.merge(SessionImpl.java:665)
+	at org.hibernate.ejb.AbstractEntityManagerImpl.merge(AbstractEntityManagerImpl.java:227)
+	... 35 more
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11600  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11650  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+Parameters: [ list = null ]
+Error recognized: The argument list cannot be null.
+java.lang.IllegalArgumentException: The argument list cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:186)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testSaveFailure1(ContestEligibilityManagerBeanTests.java:339)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0    null} ]
+Error recognized: The argument contest eligibility in list cannot be null.
+java.lang.IllegalArgumentException: The argument contest eligibility in list cannot be null.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkNull(ContestEligibilityManagerBean.java:325)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:188)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testSaveFailure2(ContestEligibilityManagerBeanTests.java:361)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.MockContestEligibility with id=0  } ]
+Error recognized: Some error happens while saving the list of contestEligibility.
+com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while saving the list of contestEligibility.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:206)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testSaveFailure3(ContestEligibilityManagerBeanTests.java:382)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
+	at org.hibernate.ejb.AbstractEntityManagerImpl.persist(AbstractEntityManagerImpl.java:215)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:203)
+	... 34 more
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:12 GMT 2009
+Parameters: [ contestId = 1 ] [ isStudio = true ]
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:12 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:13 GMT 2009
+Parameters: [ contestId = 0 ] [ isStudio = true ]
+Error recognized: contestId should be positive.
+java.lang.IllegalArgumentException: contestId should be positive.
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.checkPositive(ContestEligibilityManagerBean.java:345)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.getContestEligibility(ContestEligibilityManagerBean.java:228)
+	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBeanTests.testGetContestEligibilityFailure(ContestEligibilityManagerBeanTests.java:433)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:79)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at org.junit.runners.Suite.runChild(Suite.java:115)
+	at org.junit.runners.Suite.runChild(Suite.java:23)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
