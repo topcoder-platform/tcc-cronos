@@ -385,6 +385,7 @@
                 }
                 
                 dfStart.selectedDate=startDate;
+                setTimeControl(CmbHourStart, CmbMinuteStart, startDate);
                 
                 // in edit mode, set terms & agreement.
                 if (mainWidget.isEditMode) {
@@ -490,16 +491,18 @@
                     // set contest start date.
                     var startDate:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
                     mainWidget.competition.startTime=startDate;
-                    
-                    // set default date as start + 7 days.
-                    trace("In ContestSelection. startDate: " + startDate);
-                    var endDt:Date=DateUtil.parseFromString(startDate);
+                    var startDt:Date=DateUtil.parseFromString(startDate);
+
+
                     trace("In ContestSelection. startDate as Date type: " + endDt);
-                    if (endDt) {
-                        endDt=new Date(endDt.getTime() + 7 * 24 * OneHour);
+                    // set default date as start + 7 days.
+                    if (!mainWidget.competition.contestData.durationInHours || mainWidget.competition.contestData.durationInHours == 0) {
+                        var endDt:Date=new Date(startDt.getTime() + 7 * 24 * OneHour);
                         mainWidget.competition.endTime=DateUtil.toString(endDt);
-                        mainWidget.competition.contestData.durationInHours=7*24;
+                        mainWidget.competition.contestData.durationInHours=Number(((endDt.time - startDt.time) / 3600000).toFixed(2));
                     }
+
+                    
                     mainWidget.competition.contestData.launchDateAndTime=startDate;
                     
                     // set billing project
@@ -570,6 +573,29 @@
                 resultstr=resultstr + DateUtil.formatString(Number(minuteComb.value), 2) + ":00";
                 
                 return resultstr;
+            }
+
+            /**
+             * This method sets time control
+             *
+             * @param hourComb the hour combo box
+             * @param minuteComb the minute combo box
+             * @param date the date with the information
+             */
+            private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, date:Date):void {
+                if (date == null) {
+                    hourComb.selectedIndex=0;
+                    minuteComb.selectedIndex=0;
+                    return;
+                }
+
+                var hour:int=date.getHours();
+                var am:Boolean=true;
+
+
+                hourComb.selectedIndex=hour;
+                var minute:int=date.getMinutes();
+                minuteComb.selectedIndex=minute / 15;
             }
             
             //
