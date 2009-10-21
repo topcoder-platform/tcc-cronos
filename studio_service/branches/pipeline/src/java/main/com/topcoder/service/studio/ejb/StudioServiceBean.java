@@ -4765,7 +4765,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since 1.3.1
      */
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<StudioCapacityData> getCapacity(int contestType) throws PersistenceException {
         logEnter("getCapacity(" + contestType + ")");
 
