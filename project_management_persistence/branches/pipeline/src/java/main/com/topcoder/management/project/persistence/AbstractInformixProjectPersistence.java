@@ -3848,10 +3848,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 		try
 		{
 			
-
+            String terms = "(" + PUBLIC_SUBMITTERE_TERMS_ID + ", " + PUBLIC_REVIEWER_TERMS_ID + ", " + STANDARD_CCA_SUBMITTERE_TERMS_ID + ")";
 			StringBuffer query = new StringBuffer(1024);
 			query.append("UPDATE project_role_terms_of_use_xref set terms_of_use_id =  ? ");
-			query.append(" WHERE project_id = ? AND resource_role_id = ?");
+			query.append(" WHERE project_id = ? AND resource_role_id = ? ");
+            query.append("     AND  terms_of_use_id in " + terms);
 
 			ps = conn.prepareStatement(query.toString());
             ps.setLong(1, termsOfUseId);
@@ -3860,11 +3861,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			
 
 			int rc = ps.executeUpdate();
-			if (rc != 1) {
+			/*if (rc != 1) {
 				throw(new PersistenceException("Wrong number of rows updated in " +
 						"'project_role_terms_of_use_xref'. Updated " + rc + ", " +
 						"should have updated 1."));
-			}
+			}*/
 		}
 		catch (SQLException e)
 		{
