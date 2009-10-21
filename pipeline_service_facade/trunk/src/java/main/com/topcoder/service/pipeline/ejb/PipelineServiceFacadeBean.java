@@ -339,7 +339,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      *
      * @since 1.1
      */
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
         throws ContestPipelineServiceException {
         logger.log(Level.DEBUG, "Enter getCapacityFullDates(int contestType, boolean isStudio) method.");
