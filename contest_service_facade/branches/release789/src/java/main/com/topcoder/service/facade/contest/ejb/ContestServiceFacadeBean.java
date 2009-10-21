@@ -4728,7 +4728,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 activateContestReceiptEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
         
-        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replaceAll("%ORDER_NUMBER%",
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replace("%ORDER_NUMBER%",
                 orderNumber), new String[] {toAddr}, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
                 phase);
     }
@@ -4815,7 +4815,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 purchaseSubmissionReceiptEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
-        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, purchaseSubmissionReceiptEmailSubject.replaceAll(
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, purchaseSubmissionReceiptEmailSubject.replace(
                 "%ORDER_NUMBER%", orderNumber), new String[] {toAddr}, null, purchaseSubmissionReceiptEmailBCCAddr,
                 purchaseSubmissionReceiptEmailFromAddr, phase);
     }
@@ -5139,7 +5139,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 specReviewNotificationEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
-        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, specReviewNotificationEmailSubject.replaceAll(
+        sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, specReviewNotificationEmailSubject.replace(
                 "%CONTEST_NAME%", contestName), toAddrs, null, specReviewNotificationEmailBCCAddr,
                 specReviewNotificationEmailFromAddr, phase);
     }
