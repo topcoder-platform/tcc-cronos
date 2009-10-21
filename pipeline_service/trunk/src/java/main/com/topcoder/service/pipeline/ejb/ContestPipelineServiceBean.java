@@ -611,7 +611,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *
      * @since 1.1
      */
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio)
         throws ContestPipelineServiceException {
 
