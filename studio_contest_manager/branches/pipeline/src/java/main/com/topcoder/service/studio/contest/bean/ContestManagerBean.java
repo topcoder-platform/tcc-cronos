@@ -5260,7 +5260,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.2
      */
     @SuppressWarnings("unchecked")
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<StudioCapacityData> getCapacity(int contestType) throws ContestManagementException {
 
         try {
