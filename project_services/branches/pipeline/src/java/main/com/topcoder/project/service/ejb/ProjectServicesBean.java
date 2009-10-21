@@ -1031,7 +1031,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * 
      * @since 1.2
      */
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException {
         String method = "ProjectServicesBean#getCapacity(" + contestType + ") method.";
 
