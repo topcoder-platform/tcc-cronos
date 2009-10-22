@@ -3,11 +3,45 @@
  */
 package com.topcoder.service.facade.contest.ejb;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.activation.DataHandler;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.jws.WebService;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.jboss.logging.Logger;
+import org.jboss.ws.annotation.EndpointConfig;
+
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
-
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
@@ -27,20 +61,20 @@ import com.topcoder.clients.dao.ProjectDAO;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
-
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.ResourceRole;
-
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
-
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
-
 import com.topcoder.security.auth.module.UserProfilePrincipal;
-
+import com.topcoder.service.contest.eligibility.ContestEligibility;
+import com.topcoder.service.contest.eligibility.dao.ContestEligibilityManager;
+import com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException;
+import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManager;
+import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManagerException;
 import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
@@ -96,58 +130,14 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
-
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.file.DocumentGenerator;
 import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
-
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-
-import org.jboss.logging.Logger;
-
-import org.jboss.ws.annotation.EndpointConfig;
-
-import java.rmi.RemoteException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.HashSet;
-
-import javax.activation.DataHandler;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
-
-import javax.ejb.EJB;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-
-import javax.jws.WebService;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -208,8 +198,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * created.
  * </p>
  * 
+ * <p>
+ * Changes in v1.2.2 Added elegibility services.
+ * </p>
+ * 
  * @author snow01, pulky
- * @version 1.2.1
+ * @version 1.2.2
  */
 @Stateless
 @WebService
@@ -509,6 +503,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     @EJB(name = "ejb/StudioService")
     private StudioService studioService = null;
+
+    /**
+     * <p>
+     * A <code>ContestEligibilityValidationManager</code> providing access to available
+     * <code>Contest Eligibility Validation EJB</code>.
+     * </p>
+     */
+    @EJB(name = "ejb/contest_eligibility_validation")
+    private ContestEligibilityValidationManager contestEligibilityValidationManager = null;
+
+    /**
+     * <p>
+     * A <code>ContestEligibilityManager</code> providing access to available
+     * <code>Contest Eligibility Persistence EJB</code>.
+     * </p>
+     */
+    @EJB(name = "ejb/contest_eligibility_persistence")
+    private ContestEligibilityManager contestEligibilityManager = null;
 
     /**
      * <p>
@@ -5311,5 +5323,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
 
         logger.info("Exit: " + methodName);
+    }
+    
+    /**
+     * Returns whether a user is eligible for a particular contest.
+     *
+     * @param userId
+     *            The user id
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the user is eligible for the specified contest, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2.2
+     */
+    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException {
+        String methodName = "isEligible";
+        logger.info("Enter: " + methodName);
+
+        boolean eligible = false;
+    	
+    	try {
+			List<ContestEligibility> eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
+			eligible = contestEligibilityValidationManager.validate(userId, eligibilities);
+		} catch (ContestEligibilityPersistenceException e) {
+            logger.error(e.getMessage(), e);
+            throw new ContestServiceException(e.getMessage(), e);
+		} catch (ContestEligibilityValidationManagerException e) {
+            logger.error(e.getMessage(), e);
+            throw new ContestServiceException(e.getMessage(), e);
+		}
+    	    	
+        logger.info("Exit: " + methodName);
+    	return eligible;
     }
 }

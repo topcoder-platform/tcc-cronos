@@ -11,6 +11,14 @@
                 <jndi-name>StudioServiceBean/remote</jndi-name>
             </ejb-ref>
             <ejb-ref>
+                <ejb-ref-name>ejb/contest_eligibility_validation</ejb-ref-name>
+                <jndi-name>ContestEligibilityValidationBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/contest_eligibility_persistence</ejb-ref-name>
+                <jndi-name>ContestEligibilityPersistenceBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
                 <jndi-name>CatalogService/remote</jndi-name>
             </ejb-ref>

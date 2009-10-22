@@ -156,6 +156,16 @@
     <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
     <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
 
+    <property name="contest_eligibility_persistence.version" value="1.0.0"/>
+    <property name="contest_eligibility_persistence.jar.name" value="contest_eligibility_persistence.jar"/>
+    <property name="contest_eligibility_persistence.path" value="contest_eligibility_persistence/${contest_eligibility_persistence.version}"/>
+    <property name="contest_eligibility_persistence.jar" value="${tcs_libdir}/${contest_eligibility_persistence.path}/${contest_eligibility_persistence.jar.name}"/>
+
+    <property name="contest_eligibility_validation.version" value="1.0.0"/>
+    <property name="contest_eligibility_validation.jar.name" value="contest_eligibility_validation.jar"/>
+    <property name="contest_eligibility_validation.path" value="contest_eligibility_validation/${contest_eligibility_validation.version}"/>
+    <property name="contest_eligibility_validation.jar" value="${tcs_libdir}/${contest_eligibility_validation.path}/${contest_eligibility_validation.jar.name}"/>
+
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
@@ -244,6 +254,8 @@
         
         <!-- added for Cockpit Release Assembly 5 v1.0 -->
         <pathelement location="${client_project_entities_dao.jar}"/>
+        <pathelement location="${contest_eligibility_persistence.jar}"/>
+        <pathelement location="${contest_eligibility_validation.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

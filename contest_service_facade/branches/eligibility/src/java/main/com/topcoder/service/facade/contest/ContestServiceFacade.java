@@ -88,8 +88,12 @@ import javax.jws.WebService;
  *
  * -----
  *
+ * <p>
+ * Changes in v1.2: Added elegibility services.
+ * </p>
+ *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 1.2
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -1884,4 +1888,23 @@ public interface ContestServiceFacade {
      */
     public void setSubmissionMilestonePrize(long submissionId,
         long milestonePrizeId) throws ContestServiceException;
+    
+    
+    /**
+     * Returns whether a user is eligible for a particular contest.
+     *
+     * @param userId
+     *            The user id
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the user is eligible for the specified contest, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2
+     */
+    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException;
+
 }
