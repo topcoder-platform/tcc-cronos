@@ -20,7 +20,7 @@
 							<Value>java.lang.String</Value>
 						</Property>
 						<Property name="value">
-							<Value>persistence-unit</Value>
+							<Value>ContestEligibilityPersistence</Value>
 						</Property>
 					</Property>
 				</Property>

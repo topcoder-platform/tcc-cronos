@@ -20,15 +20,15 @@
 
 	<property name="logging_wrapper" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
 	
-	<property name="configuration_api" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+	<property name="configuration_api" value="${tcs_libdir}/configuration_api/1.0/configuration_api.jar" />
 
 	<property name="configuration_manager" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
 
-	<property name="configuration_persistence" value="${tcs_libdir}/configuration_persistence/1.0.2/configuration_persistence.jar" />
+	<property name="configuration_persistence" value="${tcs_libdir}/configuration_persistence/1.0/configuration_persistence.jar" />
 	
-	<property name="object_factory" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
+	<property name="object_factory" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar" />
 
-	<property name="object_factory_configuration_api_plugin" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+	<property name="object_factory_configuration_api_plugin" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar" />
 	
 	<property name="ifxjdbc.jar" value="${test_reflib}/ifxjdbc.jar" />
 
