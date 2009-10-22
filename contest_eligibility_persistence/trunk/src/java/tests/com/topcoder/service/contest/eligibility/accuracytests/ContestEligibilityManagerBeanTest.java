@@ -37,7 +37,7 @@ public class ContestEligibilityManagerBeanTest extends TestCase {
     /**
      * persistence unit name.
      */
-    private static final String PERSISTENCE_UNIT = "persistence-unit";
+    private static final String PERSISTENCE_UNIT = "ContestEligibilityPersistence";
     /**
      * Represents the entity manager used for CRUD operations on entity.
      */

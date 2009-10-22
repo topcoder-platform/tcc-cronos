@@ -33,7 +33,7 @@ public class ContestEligibilityManagerBeanFailureTest {
      * </p>
      */
     private static EntityManager entityManager = Persistence.createEntityManagerFactory(
-            "persistence-unit").createEntityManager();
+            "ContestEligibilityPersistence").createEntityManager();
     /**
      * <p>
      * Represents the <code>EntityManager</code> instance.

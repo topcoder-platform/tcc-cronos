@@ -63,7 +63,7 @@ public class ContestEligibilityManagerBeanTests extends TestCase {
      *             to jUnit.
      */
     protected void setUp() throws Exception {
-        entityManager = Persistence.createEntityManagerFactory("persistence-unit").createEntityManager();
+        entityManager = Persistence.createEntityManagerFactory("ContestEligibilityPersistence").createEntityManager();
         bean = new ContestEligibilityManagerBean();
         setPrivateField(ContestEligibilityManagerBean.class, bean, "entityManager", entityManager);
     }

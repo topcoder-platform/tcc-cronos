@@ -250,11 +250,8 @@
 
 	<target name="dist" depends="compile, manifest">
 		<mkdir dir="${dist_lib}/${component_path}" />
-		<jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" >
-            <metainf dir="${testfiles}/ejb/META-INF"/>
-        </jar>
+		<jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" />
 	</target>
-
 
 	<target name="dist_tests" depends="compile_tests">
 		<mkdir dir="${dist_lib}" />

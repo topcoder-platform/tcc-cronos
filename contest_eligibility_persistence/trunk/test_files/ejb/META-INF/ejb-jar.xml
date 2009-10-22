@@ -17,7 +17,7 @@
             </env-entry>
             <persistence-context-ref>
                 <persistence-context-ref-name>unitName</persistence-context-ref-name>
-                <persistence-unit-name>persistence-unit</persistence-unit-name>
+                <persistence-unit-name>ContestEligibilityPersistence</persistence-unit-name>
             </persistence-context-ref>
         </session>
     </enterprise-beans>

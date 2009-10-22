@@ -1,3 +1,5 @@
+database common_oltp;
+
 create table 'informix'.contest_eligibility (
 contest_eligibility_id DECIMAL(10, 0) not null,
 contest_id DECIMAL(10,0) not null,
