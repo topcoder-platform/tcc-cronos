@@ -10,6 +10,7 @@
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="javax.naming.Context" %>
 <%@ page import="javax.naming.InitialContext" %>
+<%@ page import="java.util.Properties" %>
 <%@ page import="com.topcoder.service.facade.contest.ContestServiceFacade" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -26,8 +27,14 @@
             String uid = request.getParameter("user_id");
             String cid = request.getParameter("contest_id");
             String isStudio = request.getParameter("is_studio");
+
+            Properties env = new Properties(); 
+
+            env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+            env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+            env.put(Context.PROVIDER_URL, "jnp://localhost:1399"); // remote machine IP
             
-            Context context = new InitialContext();
+            Context context = new InitialContext(env);
             ContestServiceFacade contestServiceFacade =
                 (ContestServiceFacade) context.lookup("remote/ContestServiceFacadeBean");
 
@@ -50,7 +57,7 @@
   </head>
   <body>
       <p>Contest Eligibility tests: <%=calledOperation%></p>
-      <p>Resulf of the call::::: <%=callResult%></p>
+      <p>Resulf of the call isss <%=callResult%></p>
       <a href="test_services.jsp">Back to list of available operations</a>
   </body>
 </html>
