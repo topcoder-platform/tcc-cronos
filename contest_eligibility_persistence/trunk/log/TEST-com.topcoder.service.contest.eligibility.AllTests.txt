@@ -1,7 +1,7 @@
 Testsuite: com.topcoder.service.contest.eligibility.AllTests
-Tests run: 65, Failures: 0, Errors: 0, Time elapsed: 6.563 sec
+Tests run: 65, Failures: 0, Errors: 0, Time elapsed: 8.171 sec
 ------------- Standard Output ---------------
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:06 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = null ]
 Error recognized: The argument contestEligibility cannot be null.
 java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
@@ -44,10 +44,10 @@ java.lang.IllegalArgumentException: The argument contestEligibility cannot be nu
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = null ]
 Error recognized: The argument contestEligibility cannot be null.
 java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
@@ -90,13 +90,13 @@ java.lang.IllegalArgumentException: The argument contestEligibility cannot be nu
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=1 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ list = null ]
 Error recognized: The argument list cannot be null.
 java.lang.IllegalArgumentException: The argument list cannot be null.
@@ -139,13 +139,13 @@ java.lang.IllegalArgumentException: The argument list cannot be null.
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ list = [] ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ list = {  null} ]
 Error recognized: The argument contest eligibility in list cannot be null.
 java.lang.IllegalArgumentException: The argument contest eligibility in list cannot be null.
@@ -188,344 +188,344 @@ java.lang.IllegalArgumentException: The argument contest eligibility in list can
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:34 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = false ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11300 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11301 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11303 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11304 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11306 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11307 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11309 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11310 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11312 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11313 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=625 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=626 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=628 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=629 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=631 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=632 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=634 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=635 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=637 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=638 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = false ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11302 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11305 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11308 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11311 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11314 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=627 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=630 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=633 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=636 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=639 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 100 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11350  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11351  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11352  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=640  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=641  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=642  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:07 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11354  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11355  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11356  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=644  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=645  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=646  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11358  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11359  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11360  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=648  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=649  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=650  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11362  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11363  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11364  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=652  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=653  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=654  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11366  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11367  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11368  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=656  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=657  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=658  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 123 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11404  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11405  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=664  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=665  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 111 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 111 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 111 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:08 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11407 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:08 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=667 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:35 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 Parameters: [ contestId = 111 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:08 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:35 GMT 2009
 1
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:37 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0 ]
-Exit out Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:09 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:37 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:38 GMT 2009
 Parameters: [ contestEligibility = null ]
 Error recognized: The argument contestEligibility cannot be null.
 java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
@@ -562,10 +562,10 @@ java.lang.IllegalArgumentException: The argument contestEligibility cannot be nu
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#create At Tue Oct 20 14:02:10 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#create At Thu Oct 22 16:34:38 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.MockContestEligibility with id=0 ]
 Error recognized: Some error happens while persisting the entity.
 com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while persisting the entity.
@@ -601,17 +601,17 @@ com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceExcept
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
 Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
 	at org.hibernate.ejb.AbstractEntityManagerImpl.persist(AbstractEntityManagerImpl.java:215)
 	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.create(ContestEligibilityManagerBean.java:129)
 	... 34 more
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
-Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11500 ]
-Exit out Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:38 GMT 2009
+Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.GroupContestEligibility with id=670 ]
+Exit out Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:38 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:39 GMT 2009
 Parameters: [ contestEligibility = null ]
 Error recognized: The argument contestEligibility cannot be null.
 java.lang.IllegalArgumentException: The argument contestEligibility cannot be null.
@@ -648,10 +648,10 @@ java.lang.IllegalArgumentException: The argument contestEligibility cannot be nu
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#remove At Tue Oct 20 14:02:10 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#remove At Thu Oct 22 16:34:39 GMT 2009
 Parameters: [ contestEligibility = com.topcoder.service.contest.eligibility.MockContestEligibility with id=0 ]
 Error recognized: Some error happens while removing the entity.
 com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while removing the entity.
@@ -687,9 +687,9 @@ com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceExcept
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
 Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
 	at org.hibernate.ejb.AbstractEntityManagerImpl.merge(AbstractEntityManagerImpl.java:233)
 	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.remove(ContestEligibilityManagerBean.java:154)
@@ -704,16 +704,16 @@ Caused by: org.hibernate.MappingException: Unknown entity: com.topcoder.service.
 	at org.hibernate.impl.SessionImpl.merge(SessionImpl.java:665)
 	at org.hibernate.ejb.AbstractEntityManagerImpl.merge(AbstractEntityManagerImpl.java:227)
 	... 35 more
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:39 GMT 2009
 Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11600  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
-Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=11650  } ]
-Exit out Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:11 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:39 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=672  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
+Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=673  } ]
+Exit out Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
 Parameters: [ list = null ]
 Error recognized: The argument list cannot be null.
 java.lang.IllegalArgumentException: The argument list cannot be null.
@@ -750,10 +750,10 @@ java.lang.IllegalArgumentException: The argument list cannot be null.
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:40 GMT 2009
 Parameters: [ list = {com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0  com.topcoder.service.contest.eligibility.GroupContestEligibility with id=0    null} ]
 Error recognized: The argument contest eligibility in list cannot be null.
 java.lang.IllegalArgumentException: The argument contest eligibility in list cannot be null.
@@ -790,10 +790,10 @@ java.lang.IllegalArgumentException: The argument contest eligibility in list can
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-Enter into Method: ContestEligibilityManagerBean#save At Tue Oct 20 14:02:12 GMT 2009
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+Enter into Method: ContestEligibilityManagerBean#save At Thu Oct 22 16:34:41 GMT 2009
 Parameters: [ list = {com.topcoder.service.contest.eligibility.MockContestEligibility with id=0  } ]
 Error recognized: Some error happens while saving the list of contestEligibility.
 com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException: Some error happens while saving the list of contestEligibility.
@@ -829,17 +829,17 @@ com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceExcept
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
 Caused by: java.lang.IllegalArgumentException: Unknown entity: com.topcoder.service.contest.eligibility.MockContestEligibility
 	at org.hibernate.ejb.AbstractEntityManagerImpl.persist(AbstractEntityManagerImpl.java:215)
 	at com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerBean.save(ContestEligibilityManagerBean.java:203)
 	... 34 more
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:12 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:41 GMT 2009
 Parameters: [ contestId = 1 ] [ isStudio = true ]
-Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:12 GMT 2009
-Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Tue Oct 20 14:02:13 GMT 2009
+Exit out Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:41 GMT 2009
+Enter into Method: ContestEligibilityManagerBean#getContestEligibility At Thu Oct 22 16:34:41 GMT 2009
 Parameters: [ contestId = 0 ] [ isStudio = true ]
 Error recognized: contestId should be positive.
 java.lang.IllegalArgumentException: contestId should be positive.
@@ -876,26 +876,26 @@ java.lang.IllegalArgumentException: contestId should be positive.
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
 log4j:WARN No appenders could be found for logger (org.hibernate.ejb.Version).
 log4j:WARN Please initialize the log4j system properly.
 ------------- ---------------- ---------------
 
-Testcase: testCreateNull took 0.422 sec
-Testcase: testRemoveNull took 0.047 sec
-Testcase: testRemoveNotExist took 0.063 sec
+Testcase: testCreateNull took 0.531 sec
+Testcase: testRemoveNull took 0.016 sec
+Testcase: testRemoveNotExist took 0.125 sec
 Testcase: testSaveNull took 0.015 sec
 Testcase: testSaveEmpty took 0 sec
 Testcase: testSaveContaingingNull took 0.016 sec
-Testcase: testSaveDeletingNotExist took 0.015 sec
-Testcase: testGetContestEligibility took 0.438 sec
-Testcase: testCreate took 0.094 sec
-Testcase: testRemove took 0.25 sec
-Testcase: testSave took 0.187 sec
+Testcase: testSaveDeletingNotExist took 0.031 sec
+Testcase: testGetContestEligibility took 0.453 sec
+Testcase: testCreate took 0.203 sec
+Testcase: testRemove took 0.281 sec
+Testcase: testSave took 0.313 sec
 Testcase: testConstructor took 0 sec
 Testcase: testGetId took 0 sec
 Testcase: testSetId took 0 sec
@@ -903,35 +903,35 @@ Testcase: testGetContestId took 0 sec
 Testcase: testSetContestId took 0 sec
 Testcase: testIsStudio took 0 sec
 Testcase: testSetStudio took 0 sec
-Testcase: testIsDeleted took 0 sec
+Testcase: testIsDeleted took 0.016 sec
 Testcase: testSetDeleted took 0 sec
 Testcase: testConstructor took 0 sec
 Testcase: testGetGroupId took 0 sec
 Testcase: testSetGroupId took 0 sec
-Testcase: testGetContestEligibility took 0.032 sec
-Testcase: testCreate took 0.015 sec
-Testcase: testSave took 0.032 sec
-Testcase: testConstuctor took 0.062 sec
+Testcase: testGetContestEligibility took 0.031 sec
+Testcase: testCreate took 0.031 sec
+Testcase: testSave took 0.094 sec
+Testcase: testConstuctor took 0.015 sec
 Testcase: testRemvoe took 0.016 sec
 Testcase: testCtor1 took 0 sec
 Testcase: testCtor2 took 0 sec
-Testcase: testDemoUsage took 0.375 sec
-Testcase: testConstructorAccuracy took 0.313 sec
-Testcase: testInitializeAccuracy took 0.219 sec
-Testcase: testCreateAccuracy took 0.312 sec
-Testcase: testCreateFailure1 took 0.219 sec
-Testcase: testCreateFailure2 took 0.359 sec
-Testcase: testRemoveAccuracy took 0.235 sec
-Testcase: testRemoveFailure1 took 0.203 sec
-Testcase: testRemoveFailure2 took 0.281 sec
-Testcase: testSaveAccuracy1 took 0.203 sec
-Testcase: testSaveAccuracy2 took 0.563 sec
+Testcase: testDemoUsage took 0.5 sec
+Testcase: testConstructorAccuracy took 0.343 sec
+Testcase: testInitializeAccuracy took 0.516 sec
+Testcase: testCreateAccuracy took 0.313 sec
+Testcase: testCreateFailure1 took 0.437 sec
+Testcase: testCreateFailure2 took 0.297 sec
+Testcase: testRemoveAccuracy took 0.406 sec
+Testcase: testRemoveFailure1 took 0.297 sec
+Testcase: testRemoveFailure2 took 0.344 sec
+Testcase: testSaveAccuracy1 took 0.25 sec
+Testcase: testSaveAccuracy2 took 0.359 sec
 Testcase: testSaveAccuracy3 took 0.281 sec
-Testcase: testSaveFailure1 took 0.203 sec
-Testcase: testSaveFailure2 took 0.187 sec
-Testcase: testSaveFailure3 took 0.344 sec
-Testcase: testGetContestEligibilityAccuracy took 0.219 sec
-Testcase: testGetContestEligibilityFailure took 0.203 sec
+Testcase: testSaveFailure1 took 0.25 sec
+Testcase: testSaveFailure2 took 0.313 sec
+Testcase: testSaveFailure3 took 0.281 sec
+Testcase: testGetContestEligibilityAccuracy took 0.344 sec
+Testcase: testGetContestEligibilityFailure took 0.281 sec
 Testcase: testCtor1Accuracy took 0 sec
 Testcase: testCtor2Accuracy took 0 sec
 Testcase: testCtor3Accuracy took 0 sec
