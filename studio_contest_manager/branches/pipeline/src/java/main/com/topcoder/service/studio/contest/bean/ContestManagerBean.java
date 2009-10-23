@@ -2893,6 +2893,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     }
 
     @PermitAll
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData()
             throws ContestManagementException {
         try {
@@ -2979,6 +2980,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @since 1.1
      */
     @PermitAll
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData(long pid)
             throws ContestManagementException {
         try {
@@ -3050,6 +3052,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     }
 
     @PermitAll
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestDataForUser(long createdUser)
             throws ContestManagementException {
         try {
@@ -3503,6 +3506,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest
      * @since 1.1
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnlyForUser(long createdUser)
             throws ContestManagementException {
         try {
@@ -4775,7 +4779,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *         permissions.
      */
     @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
             long createdUser) throws ContestManagementException {
         try {
