@@ -1431,6 +1431,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<StudioCompetition> getAllContests() throws PersistenceException {
         List<ContestData> studioContests = this.studioService.getAllContests();
         logger.debug("getAllContests");
@@ -1448,6 +1449,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData()
         throws PersistenceException {
         logger.debug("getSimpleContestData");
@@ -1468,6 +1470,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(
         long pid) throws PersistenceException {
         logger.debug("getSimpleProjectContestDataByPID");
@@ -1488,6 +1491,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestDataByPID(long pid)
         throws PersistenceException {
         logger.debug("getSimpleContestDataByPID");
@@ -1506,6 +1510,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnly()
         throws PersistenceException {
         logger.debug("getContestDataOnly");
@@ -1526,6 +1531,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnlyByPID(long pid)
         throws PersistenceException {
         logger.debug("getContestDataOnlyByPID");
@@ -1543,6 +1549,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
+     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData()
         throws PersistenceException {
         logger.debug("getSimpleProjectContestData");
@@ -4462,6 +4469,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since TCCC-1329
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
         long createdUser) throws PersistenceException {
         logger.debug("getCommonProjectPermissionDataForUser (" + createdUser +
