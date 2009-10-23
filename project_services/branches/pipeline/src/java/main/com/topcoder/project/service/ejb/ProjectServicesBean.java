@@ -382,6 +382,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * @throws ProjectServicesException
      *             If there is a system error while performing the search
      */
+     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Project[] findProjectsHeaders(Filter filter) {
         String method = "ProjectServicesBean#findProjectsHeaders(Filter filter) method.";
 
@@ -915,6 +916,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * 
      * @since Cockpit Project Admin Release Assembly v1.0
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
             throws ProjectServicesException {
         String method = "ProjectServicesBean#getSimpleProjectPermissionDataForUser(getSimpleProjectPermissionDataForUser) method.";
