@@ -6,6 +6,9 @@
 	<!-- Override these in ../topcoder_global.properties -->
 	<property name="javadoc.locale" value="en_US" />
 	<property name="javac.encoding" value="UTF-8" />
+
+
+  <property name="target_libdir" value="${tcs_libdir}" />
     <!-- need ant-contrib for <if> -->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 	<if>
@@ -16,8 +19,13 @@
 			<property name="libdir" value="../tcs/lib" />
             <property name="tcs_libdir" value="${libdir}/tcs" />
             <property name="ext_libdir" value="${libdir}/third_party" />
+            	<!-- Change this for custom component build -->
+              <property name="cronos_libdir" value="${libdir}/cronos"/>
+              <property name="target_libdir" value="${cronos_libdir}"/>
 		</then>
 	</if>
+
+      
 	
 	<property name="debug" value="off" />
 	<property name="verbose" value="no" />
@@ -44,9 +52,7 @@
 	<property name="component_version" value="${component.version.major}.${component.version.minor}.${component.version.micro}" />
 	<property name="component_path" value="${distfilename}/${component_version}" />
 
-	<!-- Change this for custom component build -->
-  <property name="cronos_libdir" value="${libdir}/cronos"/>
-  <property name="target_libdir" value="${cronos_libdir}"/>
+
 
 
 	<!-- DIRECTORY STRUCTURE -->
@@ -313,7 +319,7 @@
 		</copy>
 		<copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
 
-		<mkdir dir="${dist_coverage}" />
+	<!--	<mkdir dir="${dist_coverage}" />
 		<copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}" />
 		<copy todir="${dist_coverage}">
 			<fileset dir="${testlogdir}/coverage" />
@@ -322,7 +328,7 @@
 		<mkdir dir="${dist_javadocs}" />
 		<copy todir="${dist_javadocs}">
 			<fileset dir="${javadocsdir}" />
-		</copy>
+		</copy>-->
 
 		<antcall target="package_docs" />
 
