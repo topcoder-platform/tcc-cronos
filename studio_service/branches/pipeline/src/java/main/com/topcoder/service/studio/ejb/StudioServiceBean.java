@@ -2816,6 +2816,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData() throws PersistenceException {
         logEnter("getSimpleContestData");
 
@@ -2855,6 +2856,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData(long pid) throws PersistenceException {
         logEnter("getSimpleContestData(pid)");
 
@@ -2963,6 +2965,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnly() throws PersistenceException {
         logEnter("getContestDataOnly");
 
@@ -3006,6 +3009,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since 1.1
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnly(long pid) throws PersistenceException {
         logEnter("getContestDataOnly(pid)");
 
@@ -3048,6 +3052,7 @@ public class StudioServiceBean implements StudioService {
      *         not supported for searching
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<ContestData> searchContests(Filter filter) throws PersistenceException {
         logEnter("searchContests");
 
@@ -3075,6 +3080,7 @@ public class StudioServiceBean implements StudioService {
      * @return all contests for the given client ID.
      * @throws PersistenceException if any error occurs when getting contest.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<ContestData> getContestsForClient(long clientId) throws PersistenceException {
         logEnter("getContestsForClient");
 
@@ -4546,6 +4552,7 @@ public class StudioServiceBean implements StudioService {
      * @return the list of project, contest and their read/write/full
      *         permissions.
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
         throws PersistenceException {
         logEnter("SimpleProjectPermissionDataForUser");
