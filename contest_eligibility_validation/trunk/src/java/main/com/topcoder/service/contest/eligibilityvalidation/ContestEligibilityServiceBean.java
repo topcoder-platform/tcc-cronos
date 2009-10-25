@@ -12,6 +12,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.jboss.logging.Logger;
 
@@ -99,4 +100,40 @@ public class ContestEligibilityServiceBean implements ContestEligibilityServiceL
         logger.info("Exit: " + methodName);
     	return eligible;
     }
+
+     /**
+     * Returns whether a contest has any eligibility
+     *
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the user is eligible for the specified contest, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2
+     */
+    public boolean hasEligibility(long contestId, boolean isStudio) throws ContestEligibilityValidatorException {
+
+        String methodName = "hasEligibility";
+        logger.info("Enter: " + methodName);
+
+        List<ContestEligibility> eligibilities = new ArrayList<ContestEligibility>();
+    	
+    	try {
+			 eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
+		} catch (ContestEligibilityPersistenceException e) {
+            logger.error(e.getMessage(), e);
+            throw new ContestEligibilityValidatorException(e.getMessage(), e);
+		}
+    	    	
+        if (eligibilities == null || eligibilities.size() == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }

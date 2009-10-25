@@ -73,6 +73,7 @@
 
 	<!-- NAME FOR .JAR FILES -->
 	<property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar" />
+    <property name="component-client.jar" value="${dist_lib}/${component_path}/${distfilename}_client.jar" />
 	<property name="javadoc.jar" value="javadocs.jar" />
 	<property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar" />
 	<property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar" />
@@ -250,6 +251,15 @@
 		<mkdir dir="${dist_lib}/${component_path}" />
 		<jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" >
             <metainf dir="${testfiles}/ejb/META-INF"/>
+        </jar>
+	</target>
+
+    <target name="jar-client" depends="compile">
+		<mkdir dir="${dist_lib}/${component_path}" />
+		<jar jarfile="${component-client.jar}" basedir="${build_classdir}" >
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/service/contest/eligibilityvalidation/ContestEligibilityService*.class"/>
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/service/contest/eligibilityvalidation/ContestEligibilityValidatorException.class"/>
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/service/contest/eligibilityvalidation/ShannonTest.class"/>
         </jar>
 	</target>
 

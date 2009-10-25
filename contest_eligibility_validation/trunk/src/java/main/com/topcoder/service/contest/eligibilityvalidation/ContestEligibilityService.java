@@ -30,4 +30,19 @@ public interface ContestEligibilityService {
      */
     public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestEligibilityValidatorException;
 
+    /**
+     * Returns whether a contest has any eligibility
+     *
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the user is eligible for the specified contest, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2
+     */
+    public boolean hasEligibility(long contestId, boolean isStudio) throws ContestEligibilityValidatorException;
+
 }
