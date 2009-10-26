@@ -16,6 +16,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.NumbericFilter;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Project;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+    import com.topcoder.flex.Helper;
     
     import flash.events.Event;
     import flash.events.EventDispatcher;
@@ -343,8 +344,43 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          */
         public function doFilter(obj:Object):Boolean {
             var detail:Detail=obj as Detail;
+     
             if (detail) {
                 trace("Filter.type: " + filter.type);
+
+                if (filter.start)
+                {
+                    filter.start.hours=0;
+                    filter.start.minutes=0;
+                    filter.start.seconds=0;
+                    filter.start.milliseconds=0;
+                	
+                }
+                if (filter.end) 
+                {
+                    filter.end.hours=0;
+                    filter.end.minutes=0;
+                    filter.end.seconds=0;
+                    filter.end.milliseconds=0;
+       
+                }
+                if (filter.startAdd)
+                {
+                    filter.startAdd.hours=0;
+                    filter.startAdd.minutes=0;
+                    filter.startAdd.seconds=0;
+                    filter.startAdd.milliseconds=0;
+  
+                }
+                if (filter.endAdd) 
+                {
+                    filter.endAdd.hours=0;
+                    filter.endAdd.minutes=0;
+                    filter.endAdd.seconds=0;
+                    filter.endAdd.milliseconds=0;
+  
+                }
+
                 trace("detail.type: " + detail.category);
                 if (filter.type && filter.type != typeValues[0]) {
                     if (filter.type && detail.category && filter.type.toLocaleLowerCase() != detail.category.toLocaleLowerCase()) {
@@ -359,14 +395,14 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 }
                 if (filter.end) {
                     var e:Date=new Date();
-                    e.time=filter.end.time + 1000 * 3600 * 24;
+                    e.time=filter.end.time + 1000 * 3600 * 24 - 1000;
                     if (e < detail.date) {
                         return false;
                     }
                 }
                 if (filter.endAdd) {
                     var e2:Date=new Date();
-                    e2.time=filter.endAdd.time + 1000 * 3600 * 24;
+                    e2.time=filter.endAdd.time + 1000 * 3600 * 24 - 1000;
                     if (e2 < detail.added) {
                         return false;
                     }
