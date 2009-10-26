@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -418,6 +419,46 @@ public class ContestEligibilityManagerBeanTests extends TestCase {
         checkEqualGroupContestEligibilities(first, (GroupContestEligibility) resultList.get(0));
         runSQL("drop.sql", entityManager);
     }
+
+
+    /**
+     * <p>
+     * Accuracy test case for getContestEligibility.It verifies that we can get a list of contest eligibility
+     * correctly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testHavetEligibilityAccuracy() throws Exception {
+        bean.initialize();
+
+        GroupContestEligibility first = createGroupContestEligibility();
+        first.setContestId(1);
+        first.setStudio(false);
+        insertGroupContestEligibility(first);
+
+
+        GroupContestEligibility second = createGroupContestEligibility();
+        second.setContestId(2);
+        second.setStudio(false);
+        insertGroupContestEligibility(second);
+
+
+        
+        GroupContestEligibility third = createGroupContestEligibility();
+        third.setContestId(3);
+        third.setStudio(false);
+        insertGroupContestEligibility(third);
+
+
+
+        // search first
+        Set<Long> resultList = bean.haveEligibility(new long[] {1,2,3,4,5,6}, false);
+        assertTrue("Only three should return", resultList.size() == 3);
+        runSQL("drop.sql", entityManager);
+    }
+
 
     /**
      * <p>

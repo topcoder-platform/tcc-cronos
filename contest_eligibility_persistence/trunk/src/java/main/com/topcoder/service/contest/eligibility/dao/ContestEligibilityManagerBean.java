@@ -6,6 +6,8 @@ package com.topcoder.service.contest.eligibility.dao;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -234,6 +236,67 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
         List<ContestEligibility> results = query.getResultList();
         logExit("ContestEligibilityManagerBean#getContestEligibility");
         return results;
+    }
+
+
+    /**
+     * Return a list of contest ids that has eligibility.
+     *
+     * @param contestIds
+     *            the contest id list
+     * @param isStudio
+     *            the flag used to indicate whether it is studio
+     * @return a list of contst ids
+     * @throws IllegalArgumentException
+     *             if contestId is not positive
+     */
+    @SuppressWarnings("unchecked")
+    public Set<Long> haveEligibility(long[] contestids, boolean isStudio) {
+        logEntrance("ContestEligibilityManagerBean#haveEligibility", new String[] {"contestId[]",
+            "isStudio"}, new Object[]{contestids, isStudio});
+
+        Set<Long> result = new HashSet<Long>();
+
+        if (contestids == null || contestids.length == 0)
+        {
+            return result;
+        }
+        
+        String ids = "(" + contestids[0] ;
+        if (contestids.length > 1)
+        {
+            for (int i = 1; i < contestids.length; i++)
+            {
+                ids += ", " + contestids[i];
+            }
+        }
+        
+        ids += ")";
+
+        int studio = isStudio ? 1 : 0;
+        String qeuryStr = "select unique contest_id from contest_eligibility where is_studio = "+ studio +" and  contest_id in " + ids;
+
+        Query query =
+            entityManager
+                .createNativeQuery(qeuryStr);
+
+        List list = query.getResultList();
+
+        if (list == null || list.size() == 0)
+        {
+            return result;
+        }
+
+
+        for (int i = 0; i < list.size(); i++) {
+
+            Object row = list.get(i);
+
+            result.add(new Long(row.toString()));
+        }
+
+        logExit("ContestEligibilityManagerBean#haveEligibility");
+        return result;
     }
 
     /**

@@ -5,6 +5,8 @@
 package com.topcoder.service.contest.eligibility.dao;
 
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.topcoder.service.contest.eligibility.ContestEligibility;
 
@@ -85,4 +87,18 @@ public interface ContestEligibilityManager {
      */
     public List<ContestEligibility> save(List<ContestEligibility> list)
         throws ContestEligibilityPersistenceException;
+
+     /**
+     * Return a list of contest ids that has eligibility.
+     *
+     * @param contestIds
+     *            the contest id list
+     * @param isStudio
+     *            the flag used to indicate whether it is studio
+     * @return a list of contst ids
+     * @throws IllegalArgumentException
+     *             if contestId is not positive
+     */
+    public Set<Long> haveEligibility(long[] contestids, boolean isStudio)
+         throws ContestEligibilityPersistenceException;
 }

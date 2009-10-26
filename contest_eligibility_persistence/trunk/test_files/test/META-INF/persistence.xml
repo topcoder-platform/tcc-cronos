@@ -7,9 +7,9 @@
 		<mapping-file>META-INF/ContestEligibility.hbm.xml</mapping-file>
 		<properties>
 			<property name="hibernate.show_sql" value="false" />
-			<property name="hibernate.connection.url" value="jdbc:informix-sqli://127.0.0.1:9088/common_oltp:informixserver=ol_svr_custom" />
+			<property name="hibernate.connection.url" value="jdbc:informix-sqli://174.129.149.172:2021/common_oltp:INFORMIXSERVER=informixoltp_tcp" />
 			<property name="hibernate.connection.username" value="informix" />
-			<property name="hibernate.connection.password" value="topcoder" />
+			<property name="hibernate.connection.password" value="1nf0rm1x" />
 			<property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect"></property>
             <property name="hibernate.hbm2ddl.auto" value="update" />
