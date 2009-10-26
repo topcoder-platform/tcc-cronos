@@ -11,7 +11,7 @@
 <%@ page import="javax.naming.Context" %>
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="java.util.Properties" %>
-<%@ page import="com.topcoder.service.facade.contest.ContestServiceFacade" %>
+<%@ page import="com.topcoder.service.contest.eligibilityvalidation.*" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -32,11 +32,11 @@
 
             env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
             env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
-            env.put(Context.PROVIDER_URL, "jnp://localhost:1399"); // remote machine IP
+            env.put(Context.PROVIDER_URL, "jnp://ec2-174-129-60-137.compute-1.amazonaws.com:1399"); // remote machine IP
             
             Context context = new InitialContext(env);
-            ContestServiceFacade contestServiceFacade =
-                (ContestServiceFacade) context.lookup("remote/ContestServiceFacadeBean");
+            ContestEligibilityService contestServiceFacade =
+                (ContestEligibilityService) context.lookup("remote/ContestEligibilityServiceBean");
 
             callResult = contestServiceFacade.isEligible(Long.parseLong(uid), Long.parseLong(cid), isStudio.equalsIgnoreCase("true"));
 

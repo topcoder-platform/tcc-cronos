@@ -29,7 +29,7 @@
 <form action="call_service.jsp" method="POST" name="Form" id="Form">
     <input type="hidden" name="operation" value="">
 <ul>
-    <li>boolean isEligible(long userId, long contestId, boolean isStudio) &nbsp; &nbsp;<br/>
+    <li>booleanddd isEligible(long userId, long contestId, boolean isStudio) &nbsp; &nbsp;<br/>
         User id: <input type="text" name="user_id" value=""> &nbsp; &nbsp;<br/>
         Contest id (1 - 6): <input type="text" name="contest_id" value=""> &nbsp; &nbsp;<br/>
         is studio: <input type="text" name="is_studio" value=""> &nbsp; &nbsp;<br/>
