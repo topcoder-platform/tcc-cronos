@@ -13,6 +13,8 @@ import javax.ejb.TransactionManagementType;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.jboss.logging.Logger;
 
@@ -134,6 +136,29 @@ public class ContestEligibilityServiceBean implements ContestEligibilityServiceL
         }
 
         return true;
+    }
+
+
+    /**
+     * Return a list of contest ids that has eligibility.
+     *
+     * @param contestIds
+     *            the contest id list
+     * @param isStudio
+     *            the flag used to indicate whether it is studio
+     * @return a list of contst ids
+     * @throws IllegalArgumentException
+     *             if contestId is not positive
+     */
+    public Set<Long> haveEligibility(long[] contestids, boolean isStudio) throws ContestEligibilityValidatorException
+    {
+
+        try {
+			 return contestEligibilityManager.haveEligibility(contestids, isStudio);
+		} catch (ContestEligibilityPersistenceException e) {
+            logger.error(e.getMessage(), e);
+            throw new ContestEligibilityValidatorException(e.getMessage(), e);
+		}
     }
 
 }

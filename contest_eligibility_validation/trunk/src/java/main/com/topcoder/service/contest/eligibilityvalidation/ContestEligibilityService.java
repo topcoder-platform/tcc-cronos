@@ -3,7 +3,7 @@
  */
 package com.topcoder.service.contest.eligibilityvalidation;
 
-
+import java.util.Set;
 
 /**
  * <p>
@@ -44,5 +44,18 @@ public interface ContestEligibilityService {
      * @since 1.2
      */
     public boolean hasEligibility(long contestId, boolean isStudio) throws ContestEligibilityValidatorException;
+
+    /**
+     * Return a list of contest ids that has eligibility.
+     *
+     * @param contestIds
+     *            the contest id list
+     * @param isStudio
+     *            the flag used to indicate whether it is studio
+     * @return a list of contst ids
+     * @throws IllegalArgumentException
+     *             if contestId is not positive
+     */
+    public Set<Long> haveEligibility(long[] contestids, boolean isStudio) throws ContestEligibilityValidatorException;
 
 }

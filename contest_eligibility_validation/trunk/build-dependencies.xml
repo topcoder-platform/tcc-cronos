@@ -10,7 +10,7 @@
 	<property name="component.target" value="1.x" />
 	<property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
 
-	<property name="contest_eligibility_persistence" value="${testfiles}/contest_eligibility_persistence.jar" />
+	<property name="contest_eligibility_persistence" value="${tcs_libdir}/contest_eligibility_persistence/1.0.0/contest_eligibility_persistence.jar" />
 	
 	<property name="base_exception" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
 
