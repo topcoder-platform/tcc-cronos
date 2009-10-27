@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+    <mx:Script>
+        <![CDATA[
+            import mx.containers.Box;
+            import mx.controls.Image;
+            
+            public var overriddenSize:Number=0;
+
+            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+            {
+                var childWidth:Number=(unscaledWidth - getStyle("paddingLeft") - getStyle("paddingRight") + getStyle("horizontalGap")) / numChildren - getStyle("horizontalGap");
+                
+                if (overriddenSize > 0) {
+                    // if exist use overrridenSize
+                    childWidth = overriddenSize;
+                } else {
+                    // if does not exist store for further use.
+                    overriddenSize = childWidth;
+                }
+                
+                for each (var child:Box in getChildren())
+                {
+                    if (child.numChildren == 1)
+                    {
+                        child.width=childWidth;
+                        child.height=childWidth;
+                        var img:Image=child.getChildAt(0) as Image;
+                        img.width=childWidth;
+                        img.height=childWidth;
+                        if (img.content)
+                        {
+                            img.scaleContent=false;
+                            img.content.width=childWidth;
+                            img.content.height=childWidth;
+                        }
+                    }
+                }
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+            }
+        ]]>
+    </mx:Script>
+</mx:HBox>
