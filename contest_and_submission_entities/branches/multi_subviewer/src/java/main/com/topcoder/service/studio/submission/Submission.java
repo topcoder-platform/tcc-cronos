@@ -25,17 +25,22 @@ import com.topcoder.service.studio.contest.MimeType;
  * </p>
  *
  * <p>
+ * Changes in v1.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI): Addeded
+ * awardMilestonePrize and milestonePrizes attributes with their corresponding getters and setters.
+ * </p>
+ *
+ * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author tushak, cyberjag, TCSDEVELOPER
- * @version 1.0
+ * @author tushak, cyberjag, pulky
+ * @version 1.1
  */
 public class Submission implements Serializable {
     /**
      * Generated serial version id.
      */
-    private static final long serialVersionUID = -2936624282604563363L;
+    private static final long serialVersionUID = 6712030650291889759L;
 
     /**
      * Represents the entity id.
@@ -165,6 +170,20 @@ public class Submission implements Serializable {
      * @since Cockpit Submission Viewer Assembly - Part 2
      */
     private Integer artifactCount;
+
+    /**
+     * Flag representing whether this submission should be awarded a milestone prize or not
+     *
+     * @since 1.1
+     */
+    private Boolean awardMilestonePrize = Boolean.FALSE;
+
+    /**
+     * Set representing milestone prizes awarded to this submission
+     *
+     * @since 1.1
+     */
+    private Set<MilestonePrize> milestonePrizes = new TreeSet<MilestonePrize>();
 
     /**
      * Default constructor.
@@ -673,5 +692,57 @@ public class Submission implements Serializable {
      */
     public void setArtifactCount(Integer artifactCount) {
         this.artifactCount = artifactCount;
+    }
+
+    /**
+     * <p>
+     * Gets the award milestone prize flag
+     * </p>
+     *
+     * @return true if the submission should be awarded a milestone prize, false otherwise
+     *
+     * @since 1.1
+     */
+    public Boolean isAwardMilestonePrize() {
+        return awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Sets the award milestone prize flag
+     * </p>
+     *
+     * @param awardMilestonePrize true if the submission should be awarded a milestone prize, false otherwise
+     *
+     * @since 1.1
+     */
+    public void setAwardMilestonePrize(Boolean awardMilestonePrize) {
+        this.awardMilestonePrize = awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Gets the awarded milestone prizes
+     * </p>
+     *
+     * @return a set with the awarded milestone prizes
+     *
+     * @since 1.1
+     */
+    public Set<MilestonePrize> getMilestonePrizes() {
+        return milestonePrizes;
+    }
+
+    /**
+     * <p>
+     * Sets the awarded milestone prizes
+     * </p>
+     *
+     * @param milestonePrizes the set of awarded milestone prizes
+     *
+     * @since 1.1
+     */
+    public void setMilestonePrizes(Set<MilestonePrize> milestonePrizes) {
+        this.milestonePrizes = milestonePrizes;
     }
 }
