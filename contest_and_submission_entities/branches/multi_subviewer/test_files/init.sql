@@ -1,0 +1,1 @@
+insert into contest_status_lu values (1, 'Test');
