@@ -30,7 +30,7 @@ import com.topcoder.util.config.ConfigManager;
  * @version 1.2
  * @since 1.1
  */
-final class DBTestUtil {
+public final class DBTestUtil {
     /**
      * <p>
      * Represents the namespace for DB Connection Factory component.
@@ -51,8 +51,8 @@ final class DBTestUtil {
      */
     private static String[] tableNames =
         {"notification", "notification_type_lu", "resource_submission", "resource_info",
-            "resource_info_type_lu", "resource", "resource_role_lu", "submission", "project_phase",
-            "phase_type_lu", "project"};
+            "resource_info_type_lu", "resource", "project_user_audit", "resource_role_lu",
+            "submission", "project_phase", "phase_type_lu", "project"};
 
     /**
      * Private constructor.
@@ -131,7 +131,7 @@ final class DBTestUtil {
         Date now = new Date();
         resource.setCreationUser("tc");
         resource.setCreationTimestamp(now);
-        resource.setModificationUser("topcoder");
+        resource.setModificationUser("1");
         resource.setModificationTimestamp(now);
 
         resource.setProject(new Long(projectId));
@@ -140,6 +140,8 @@ final class DBTestUtil {
         ResourceRole role = createResourceRole(5);
 
         resource.setResourceRole(role);
+
+        resource.setProperty("External Reference ID", 1);
 
         return resource;
     }

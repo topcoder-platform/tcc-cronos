@@ -14,6 +14,7 @@ import com.topcoder.management.resource.Notification;
 import com.topcoder.management.resource.NotificationType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -118,10 +119,11 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * In this test case, the resource has null submission and no external properties, project and phase is
      * also not set.
+     * Exception thrown when audit failed.
      *
      * @throws Exception to junit.
      */
-    public void testAddResource_2() throws Exception {
+    public void testAddResourceFailure() throws Exception {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
@@ -133,16 +135,13 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         persistence1.addResourceRole(role);
 
-        // add resource.
-        persistence1.addResource(r);
-
-        // get back the resource instance from persistence.
-        Resource ret = persistence1.loadResource(r.getId());
-        assertNotNull("The resource got back should not be null.", ret);
-        assertNull("The project should be null.", ret.getProject());
-        assertNull("The phase should be null.", ret.getPhase());
-        assertEquals("The submissions should be empty", 0, ret.getSubmissions().length);
-        assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
+        try {
+            // add resource.
+            persistence1.addResource(r);
+            fail("Cannot go here");
+        } catch (ResourcePersistenceException e) {
+            // OK
+        }
     }
 
     /**
@@ -293,6 +292,9 @@ public class TestAbstractResourcePersistence extends TestCase {
      */
     public void testDeleteResource_1() throws Exception {
         Resource r = DBTestUtil.createResource(100, 1, 1);
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        persistence1.addResourceRole(role);
+
         persistence1.deleteResource(r);
     }
 

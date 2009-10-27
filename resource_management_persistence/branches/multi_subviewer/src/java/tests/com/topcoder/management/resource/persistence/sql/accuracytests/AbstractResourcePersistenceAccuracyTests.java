@@ -10,7 +10,9 @@ import com.topcoder.management.resource.Notification;
 import com.topcoder.management.resource.NotificationType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.persistence.sql.AbstractResourcePersistence;
+import com.topcoder.management.resource.persistence.sql.DBTestUtil;
 import com.topcoder.management.resource.persistence.sql.SqlResourcePersistence;
 
 import com.topcoder.util.config.ConfigManager;
@@ -161,10 +163,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      * <p>
      * In this test case, the resource has null submission and no external
      * properties, project and phase is also not set.
+     * Throws ResourcePersistenceException since audit failed.
      * </p>
      * @throws Exception to JUnit.
      */
-    public void testAddResource2Accuracy() throws Exception {
+    public void testAddResource2Failure() throws Exception {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
@@ -176,17 +179,14 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         instance.addResourceRole(role);
 
-        // add resource.
-        instance.addResource(r);
-
-        // get back the resource instance from instance.
-        Resource ret = instance.loadResource(r.getId());
-        assertNotNull("The resource got back should not be null.", ret);
-        assertNull("The project should be null.", ret.getProject());
-        assertNull("The phase should be null.", ret.getPhase());
-
-        assertTrue("The submission should contain one element.", ret.getSubmissions().length == 1);
-        assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
+        try {
+            // add resource.
+            instance.addResource(r);
+            fail("Cannot go here");
+        }
+        catch(ResourcePersistenceException e) {
+            // OK
+        }
     }
 
     /**
@@ -356,6 +356,9 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      */
     public void testDeleteResource1Accuracy() throws Exception {
         Resource r = AccuracyHelper.createResource(100, 1, 1);
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        instance.addResourceRole(role);
+
         instance.deleteResource(r);
     }
 

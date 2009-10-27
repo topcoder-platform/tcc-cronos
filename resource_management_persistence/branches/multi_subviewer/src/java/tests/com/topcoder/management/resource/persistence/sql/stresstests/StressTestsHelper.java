@@ -89,6 +89,7 @@ final class StressTestsHelper {
             executeSQL(conn, "DELETE FROM resource_info;");
             executeSQL(conn, "DELETE FROM resource_info_type_lu;");
             executeSQL(conn, "DELETE FROM resource;");
+            executeSQL(conn, "DELETE FROM project_user_audit;");
             executeSQL(conn, "DELETE FROM resource_role_lu;");
             executeSQL(conn, "DELETE FROM submission;");
             executeSQL(conn, "DELETE FROM project_phase;");
@@ -237,7 +238,9 @@ final class StressTestsHelper {
         resource.setCreationTimestamp(current);
         resource.setCreationUser("stress");
         resource.setModificationTimestamp(current);
-        resource.setModificationUser("stress");
+        resource.setModificationUser("1");
+        resource.setProperty("External Reference ID", 1);
+        resource.setProject(2007L);
         for (int i = 1; i <= 10; i++) {
             resource.addSubmission(new Long(i));
         }

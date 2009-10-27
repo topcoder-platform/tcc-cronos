@@ -10,6 +10,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.resource.NotificationType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.resource.persistence.sql.DBTestUtil;
 import com.topcoder.management.resource.persistence.sql.SqlResourcePersistence;
 
 /**
@@ -75,6 +76,10 @@ public class SqlResourcePersistenceTest extends TestCase {
      * @throws Exception if there is any problem.
      */
     public void testAddRemoveNotificationSuccess() throws Exception {
+
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        role.setPhaseType(new Long(2007));
+        persistence.addResourceRole(role);
         for (int i = 0; i < 10; i++) {
             persistence.addNotification(i + 1, 2007, 2007, "stress");
         }
@@ -124,6 +129,10 @@ public class SqlResourcePersistenceTest extends TestCase {
      * @throws Exception if there is any problem.
      */
     public void testAddDeleteResourceSuccess() throws Exception {
+
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        role.setPhaseType(new Long(2007));
+        persistence.addResourceRole(role);
         for (int i = 0; i < 10; i++) {
             persistence.addResource(StressTestsHelper.getResource(i + 1, 2007));
         }
@@ -205,6 +214,10 @@ public class SqlResourcePersistenceTest extends TestCase {
      * @throws Exception if there is any problem.
      */
     public void testAddLoadResourceSuccess() throws Exception {
+
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        role.setPhaseType(new Long(2007));
+        persistence.addResourceRole(role);
         for (int i = 0; i < 10; i++) {
             persistence.addResource(StressTestsHelper.getResource(i + 1, 2007));
         }
@@ -260,6 +273,10 @@ public class SqlResourcePersistenceTest extends TestCase {
      * @throws Exception if there is any problem.
      */
     public void testAddUpdateResourceSuccess() throws Exception {
+
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+        role.setPhaseType(new Long(2007));
+        persistence.addResourceRole(role);
         for (int i = 0; i < 10; i++) {
             persistence.addResource(StressTestsHelper.getResource(i + 1, 2007));
         }

@@ -52,7 +52,7 @@ public final class AccuracyHelper {
     /** The table names in this component. */
     private static String[] tableNames = {"notification", "notification_type_lu", "resource_submission",
                                           "resource_info", "resource_info_type_lu", "resource",
-                                          "resource_role_lu", "submission",
+                                          "project_user_audit", "resource_role_lu", "submission",
                                           "project_phase", "phase_type_lu", "project" };
 
     /**
@@ -107,7 +107,7 @@ public final class AccuracyHelper {
 
         role.setCreationUser("developer");
         role.setCreationTimestamp(now);
-        role.setModificationUser("developer");
+        role.setModificationUser("1");
         role.setModificationTimestamp(now);
 
         return role;
@@ -127,12 +127,11 @@ public final class AccuracyHelper {
         Date now = new Date();
         resource.setCreationUser("tc");
         resource.setCreationTimestamp(now);
-        resource.setModificationUser("topcoder");
+        resource.setModificationUser("1");
         resource.setModificationTimestamp(now);
-
         resource.setProject(new Long(projectId));
         resource.setPhase(new Long(phaseId));
-
+        resource.setProperty("External Reference ID", 1);
         ResourceRole role = createResourceRole(5);
 
         resource.setResourceRole(role);

@@ -100,7 +100,7 @@ public class DemoTest extends TestCase {
         submissionId = 1200;
         resource.addSubmission(new Long(submissionId)); // add a submission.
 
-        resource.setModificationUser("me"); // set the users that modified the record.
+        resource.setModificationUser("2"); // set the users that modified the record.
         resource.setModificationTimestamp(new Date()); // set the timestamp of the modification
 
         // The resource has been modified, update the database.
