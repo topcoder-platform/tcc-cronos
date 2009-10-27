@@ -15,17 +15,23 @@ import javax.xml.bind.annotation.XmlType;
  * contest has been made completed from 'action required'.
  * </p>
  *
- * @author shailendra_80
- * @version 1.0
+ * <p>
+ * Changes v1.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) : 
+ * - awardMilestonePrize flag was added.
+ * </p>
+ *
+ * @author shailendra_80, pulky
+ * @version 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "submissionPaymentData", propOrder = { "id", "rank", "amount", "paymentTypeId",
+@XmlType(name = "submissionPaymentData", propOrder = { "id", "rank", "amount", "awardMilestonePrize", "paymentTypeId",
         "paymentReferenceNumber", "paymentStatusId" })
 public class SubmissionPaymentData implements Serializable {
+
     /**
-     * Default serial version uid of this class.
+     * Generated serial version uid of this class.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4234558355500444560L;
 
     /**
      * Submission Identifier.
@@ -41,6 +47,13 @@ public class SubmissionPaymentData implements Serializable {
      * Amount at which submission is being purchased.
      */
     private double amount = 0;
+
+    /**
+     * Flag representing whether this submission should be awarded a milestone prize or not
+     * 
+     * @since 1.1
+     */
+    private boolean awardMilestonePrize = false;
 
     /**
      * <p>
@@ -131,6 +144,45 @@ public class SubmissionPaymentData implements Serializable {
      */
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    /**
+     * <p>
+     * Gets the award milestone prize flag
+     * </p>
+     *
+     * @return true if the submission should be awarded a milestone prize, false otherwise
+     * 
+     * @since 1.1
+     */
+    public boolean getAwardMilestonePrize() {
+        return this.awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Gets the award milestone prize flag
+     * </p>
+     *
+     * @return true if the submission should be awarded a milestone prize, false otherwise
+     * 
+     * @since 1.1
+     */
+    public boolean isAwardMilestonePrize() {
+        return this.awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Sets the award milestone prize flag
+     * </p>
+     *
+     * @param awardMilestonePrize true if the submission should be awarded a milestone prize, false otherwise
+     * 
+     * @since 1.1
+     */
+    public void setAwardMilestonePrize(boolean awardMilestonePrize) {
+        this.awardMilestonePrize = awardMilestonePrize;
     }
 
     /**

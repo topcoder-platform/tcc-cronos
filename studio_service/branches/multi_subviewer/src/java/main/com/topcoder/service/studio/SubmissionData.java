@@ -20,24 +20,32 @@ import java.io.Serializable;
  * Changes v1.3: Added the following field with the corresponding getter and
  * setter: submissionType. Updated 'XmlType' annotation.
  * </p>
+ *
+ * <p>
+ * Changes v1.4 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) :
+ * - since submission date is not maintained in the database, create date will be used to fill that value.
+ * - awardMilestonePrize flag was added.
+ * </p>
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
  *
- * @author fabrizyo, TCSDEVELOPER
- * @version 1.3
+ * @author fabrizyo, pulky
+ * @version 1.4
  * @since 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
         "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
         "removed", "feedbackText", "feedbackThumb", "submissionUrl", "artifactCount", "userRank",
-        "submissionType" })
+        "submissionType", "awardMilestonePrize"})
 public class SubmissionData implements Serializable {
+
     /**
-     * Default serial version id.
+     * Generated serial version id.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5583967615706527054L;
 
     /**
      * Represents submission rank.
@@ -175,6 +183,13 @@ public class SubmissionData implements Serializable {
      * @since TCCC-1219
      */
     private int userRank;
+
+    /**
+     * Flag representing whether this submission should be awarded a milestone prize or not
+     *
+     * @since 1.4
+     */
+    private Boolean awardMilestonePrize = Boolean.FALSE;
 
     /**
      * <p>
@@ -584,5 +599,44 @@ public class SubmissionData implements Serializable {
      */
     public void setSubmissionType(String submissionType) {
         this.submissionType = submissionType;
+    }
+
+    /**
+     * <p>
+     * Gets the award milestone prize flag
+     * </p>
+     *
+     * @return true if the submission should be awarded a milestone prize, false otherwise
+     *
+     * @since 1.4
+     */
+    public Boolean getAwardMilestonePrize() {
+        return awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Gets the award milestone prize flag
+     * </p>
+     *
+     * @return true if the submission should be awarded a milestone prize, false otherwise
+     *
+     * @since 1.4
+     */
+    public Boolean isAwardMilestonePrize() {
+        return awardMilestonePrize;
+    }
+
+    /**
+     * <p>
+     * Sets the award milestone prize flag
+     * </p>
+     *
+     * @param awardMilestonePrize true if the submission should be awarded a milestone prize, false otherwise
+     *
+     * @since 1.4
+     */
+    public void setAwardMilestonePrize(Boolean awardMilestonePrize) {
+        this.awardMilestonePrize = awardMilestonePrize;
     }
 }

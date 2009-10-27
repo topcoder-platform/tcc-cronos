@@ -230,13 +230,21 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * </pre>
  *
  * <p>
+ * Changes in v1.5 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
+ * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
+ * - Since submission date  is not maintained in the database, submission date attribute in SubmissionData
+ *   will get create date value instead.
+ * - Added support to award milestone prizes
+ * </p>
+ *
+ * <p>
  * Thread safety: this class is thread safe if the managers used are thread
  * safe. Considering that probably the managers beans will use the transactions,
  * this stateless bean is thread safe
  * </p>
  *
  * @author fabrizyo, saarixx, pulky
- * @version 1.4
+ * @version 1.5
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -2319,6 +2327,10 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Change in 1.3: the Submission Type property of Submission is set.
      * </p>
+     * <p>
+     * Changes v1.5 since submission date is not maintained in the database, create date will be used to fill that
+     * value. AwardMilestonePrize is also supported.
+     * </p>
      *
      * @param submissions list of submissions to convert
      * @param submissionPayments list of submission payments to be used in
@@ -2354,7 +2366,11 @@ public class StudioServiceBean implements StudioService {
             // Set rank.
             sd.setRank(s.getRank());
             sd.setSubmissionId(unbox(s.getSubmissionId()));
-            sd.setSubmittedDate(getXMLGregorianCalendar(s.getSubmissionDate()));
+
+            // since submission date is not maintained in the database, create date will be used to fill that value
+            sd.setSubmittedDate(getXMLGregorianCalendar(s.getCreateDate()));
+            sd.setAwardMilestonePrize(s.isAwardMilestonePrize());
+
             sd.setSubmitterId(unbox(s.getSubmitterId()));
 
             // [TCCC-411]
@@ -3871,6 +3887,54 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
+     * Awards milestone prize to submission.
+     *
+     * @param submission the submission to award the prize
+     *
+     * @throws PersistenceException if any error occurs when awarding prize.
+     *
+     * @since 1.5
+     */
+    private void awardMilestonePrize(Submission submission) throws PersistenceException {
+        logEnter("awardMilestonePrize", submission.getSubmissionId());
+
+        try {
+            // If the submission is already associated to a milestone prize, we are all set.
+            Set<MilestonePrize> prizes = submission.getMilestonePrizes();
+            if (prizes.size() > 0) {
+                logDebug("Milestone prize already found in submission " + submission.getSubmissionId());
+                logExit("awardMilestonePrize");
+                return;
+            }
+
+            // get the contest for the submission
+            Contest contest = submission.getContest();
+
+            // get milestone prize reference
+            if (contest.getMilestonePrize() == null) {
+                String message = "Milestone prize not found for contest id: " + contest.getContestId();
+                logDebug(message);
+                logExit("awardMilestonePrize");
+                throw new PersistenceException(message, message);
+            }
+
+            // add prize
+            submissionManager.addMilestonePrizeToSubmission(submission.getSubmissionId(),
+                contest.getMilestonePrize().getMilestonePrizeId());
+
+            // For topCoder direct, payment is done automatically
+            if (contest.getContestChannel().getContestChannelId() == 2) {
+                addMilestonePayment(submission);
+            }
+
+            logExit("awardMilestonePrize");
+            return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
+
+    /**
      * Marks submission for purchase.
      *
      * @param submissionId Submission Id.
@@ -4144,6 +4208,63 @@ public class StudioServiceBean implements StudioService {
                 submissionManager.updateSubmission(submission);
 
                 logExit("addPayment");
+            } catch (SubmissionManagementException e) {
+                handlePersistenceError("SubmissionManager reports error while updateSubmission.", e);
+            } catch (RemoteException e) {
+                handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+            } catch (NamingException e) {
+                handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+            } catch (CreateException e) {
+                handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+            } catch (SQLException e) {
+                handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+            }
+        }
+    }
+
+    /**
+     * Adds a milestone prize payment.
+     *
+     * @param submission the submission being paid the milestone prize.
+     * @throws PersistenceException if any error occurs when adding milestone payment.
+     *
+     * @since 1.5
+     */
+    private void addMilestonePayment(Submission submission) throws PersistenceException {
+        logEnter("addMilestonePayment");
+        checkParameter("submission", submission);
+
+        if (submission.getContest().getMilestonePrize().getAmount() == 0) {
+            logInfo("Payments with amount of 0 are not sent to PACTS");
+            logExit("addMilestonePayment");
+            return;
+        }
+
+        if (autoPaymentsEnabled) {
+            PactsServicesLocator.setProviderUrl(pactsServiceLocation);
+
+            try {
+                BasePayment payment = BasePayment.createPayment(
+                        com.topcoder.web.ejb.pacts.Constants.TC_STUDIO_PAYMENT, submission.getSubmitterId(),
+                        submission.getContest().getMilestonePrize().getAmount(), submission.getContest().getContestId(),
+                        0);
+
+                String client = "";
+                for (ContestConfig config : submission.getContest().getConfig()) {
+                    if (config.getId().getProperty().getPropertyId() == contestPropertyCreateUserHandleId) {
+                        client = (config.getValue());
+                        break;
+                    }
+                }
+
+                payment.setClient(client);
+
+                payment = PactsServicesLocator.getService().addPayment(payment);
+
+                submission.setPaymentId(payment.getId());
+                submissionManager.updateSubmission(submission);
+
+                logExit("addMilestonePayment");
             } catch (SubmissionManagementException e) {
                 handlePersistenceError("SubmissionManager reports error while updateSubmission.", e);
             } catch (RemoteException e) {
@@ -4453,7 +4574,8 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method ranks and purchases submission. If placement > 0, then it
      * ranks the submission. If paymentData != null, then it purchases the
-     * submission
+     * submission.
+     * This method will also award milestone prize when corresponds.
      * </p>
      *
      * @param submissionId a <code>long</code> id of submission
@@ -4478,7 +4600,15 @@ public class StudioServiceBean implements StudioService {
             }
 
             if (paymentData != null) {
-                this.purchaseSubmission(submission, paymentData, userId);
+                // award milestone prize when corresponds
+                if (paymentData.getAwardMilestonePrize()) {
+                    this.awardMilestonePrize(submission);
+                }
+
+                // purchase submission when corresponds
+                if (paymentData.isPurchased()) {
+                    this.purchaseSubmission(submission, paymentData, userId);
+                }
             }
 
             logExit("rankAndPurchaseSubmission");
@@ -4517,15 +4647,19 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Updates the submission user rank
+     * Updates the submission user rank. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId a <code>long</code> id of the submission
      * @param rank a <code>int</code> rank of the submission.
+     * @param isRankingMilestone true if the user is ranking milestone submissions.
+     *
      * @throws PersistenceException when error reported by manager
      * @since TCCC-1219
      */
-    public void updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException {
+    public void updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
+        throws PersistenceException {
         try {
             Submission submission = submissionManager.getSubmission(submissionId);
             if (submission == null) {
@@ -4535,7 +4669,7 @@ public class StudioServiceBean implements StudioService {
                 throw new PersistenceException(message, message);
             }
             logDebug("Updating submission user rank for submission id: " + submissionId + ", rank: " + rank);
-            this.submissionManager.updateSubmissionUserRank(submissionId, rank);
+            this.submissionManager.updateSubmissionUserRank(submissionId, rank, isRankingMilestone);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManagement reports error.", e);
         }

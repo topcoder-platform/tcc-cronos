@@ -66,9 +66,13 @@ import com.topcoder.service.studio.submission.Submission;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
+ * <p>
+ * Changes in v1.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI): Added a flag to
+ * updateSubmissionUserRank method to support ranking milestone submissions.
+ * </p>
  *
  * @author fabrizyo, pulky
- * @version 1.1
+ * @version 1.2
  */
 // @WebService
 @Remote
@@ -737,15 +741,19 @@ public interface StudioService {
 
     /**
      * <p>
-     * Updates the submission user rank
+     * Updates the submission user rank. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId a <code>long</code> id of the submission
      * @param rank a <code>int</code> rank of the submission.
+     * @param isRankingMilestone true if the user is ranking milestone submissions.
+     *
      * @throws PersistenceException when error reported by manager
      * @since TCCC-1219
      */
-    public void updateSubmissionUserRank(long submissionId, int rank) throws PersistenceException;
+    public void updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
+        throws PersistenceException;
 
     /**
      * <p>
