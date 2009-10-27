@@ -7,7 +7,6 @@ import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
-
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
@@ -27,20 +26,15 @@ import com.topcoder.clients.dao.ProjectDAO;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
-
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.ResourceRole;
-
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
-
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
-
 import com.topcoder.security.auth.module.UserProfilePrincipal;
-
 import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
@@ -96,14 +90,12 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
-
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.file.DocumentGenerator;
 import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
-
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
 
@@ -204,12 +196,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * created.
  * </p>
  * <p>
- * Changes in v1.2.1 updated to set creator user as Observer
- * created.
+ * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
+ * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
+ * - Added support for milestone prizes payment.
  * </p>
  * 
  * @author snow01, pulky
- * @version 1.2.1
+ * @version 1.3
  */
 @Stateless
 @WebService
@@ -2998,6 +2991,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * send email notification on successful purchase.
      * </p>
      *
+     * <p>
+     * Updated for Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI:
+     * Added support for milestone prizes payment.
+     * </p>
+     *
      * @param completedContestData
      *            data of completed contest.
      * @param paymentData
@@ -3080,8 +3078,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
                 long submissionId = submissionPaymentData.getId();
 
-                if (submissionPaymentData.isPurchased()) {
-                    this.markForPurchase(submissionId);
+                if (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize()) {
+                    if (submissionPaymentData.isPurchased()) {
+                        this.markForPurchase(submissionId);
+                    }
                     submissionPaymentData.setPaymentReferenceNumber(result.getReferenceNumber());
 
                     if (paymentData instanceof TCPurhcaseOrderPaymentData) {
@@ -3096,10 +3096,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 }
 
                 this.studioService.rankAndPurchaseSubmission(submissionId,
-                    submissionPaymentData.isRanked()
-                    ? submissionPaymentData.getRank() : 0,
-                    submissionPaymentData.isPurchased() ? submissionPaymentData
-                                                        : null, userId);
+                    submissionPaymentData.isRanked() ? submissionPaymentData.getRank() : 0,
+                    (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize())
+                        ? submissionPaymentData : null, userId);
             }
 
             // update contest status to complete.
@@ -4171,27 +4170,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Ranks the submissions, given submission identifiers and the rank.
+     * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId
      *            identifier of the submission.
      * @param rank
      *            rank of the submission.
+     * @param isRankingMilestone
+     *            true if the user is ranking milestone submissions.
+     *
      * @return a <code>boolean</code> true if successful, else false.
      * @throws PersistenceException
      *             if any error occurs when retrieving/updating the data.
      * @since TCCC-1219
      */
-    public boolean updateSubmissionUserRank(long submissionId, int rank)
+    public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
         throws PersistenceException {
-        logger.debug("updateSubmissionUserRank (" + submissionId + "," + rank +
+        logger.debug("updateSubmissionUserRank (" + submissionId + "," + rank + "," + isRankingMilestone +
             ")");
 
         try {
-            this.studioService.updateSubmissionUserRank(submissionId, rank);
+            this.studioService.updateSubmissionUserRank(submissionId, rank, isRankingMilestone);
             logger.debug("Exit updateSubmissionUserRank (" + submissionId +
-                "," + rank + ")");
+                "," + rank + "," + isRankingMilestone + ")");
 
             return true;
         } catch (PersistenceException e) {
