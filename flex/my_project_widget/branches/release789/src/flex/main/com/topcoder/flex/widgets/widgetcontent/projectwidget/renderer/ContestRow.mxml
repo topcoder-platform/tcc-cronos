@@ -319,6 +319,18 @@
              * status is 'draft' or 'scheduled' instead of status 'active'.
              */
             private function mouseOverHandle():void {
+                if (isLaunchActionAllowed()) {
+        			editBtn.visible=true;
+                } 
+            }
+            
+            /**
+             * Identifies if launch action is allowed.
+             * A contest that is neither a draft nor a scheduled contest has launch action disabled.
+             * 
+             * @since TCCC-1473
+             */ 
+            private function isLaunchActionAllowed():Boolean {
                 if ((contest.type.toLocaleLowerCase() == "studio" 
                         && (contest.status.toLocaleLowerCase() == "draft" 
                                 || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
@@ -327,9 +339,10 @@
 		                && (contest.status.toLocaleLowerCase() == "draft" 
 		                		|| contest.status.toLocaleLowerCase() == "scheduled"
 		                        || contest.status.toLocaleLowerCase() == "inactive"))) {
-
-        			    editBtn.visible=true;
-                }
+                    return true;		                            
+		        } 
+		        
+		        return false;
             }
 
             /**
@@ -417,6 +430,11 @@
              * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
              */
             private function openReviewScreen(event:MouseEvent):void {
+                if (!isLaunchActionAllowed()) {
+                    // TCCC-1473
+                    // disable review button click if launch action is not allowed.
+                    return;
+                }
                 var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
                 var props:Dictionary=new Dictionary();
                 props["contestType"]=contest.type;

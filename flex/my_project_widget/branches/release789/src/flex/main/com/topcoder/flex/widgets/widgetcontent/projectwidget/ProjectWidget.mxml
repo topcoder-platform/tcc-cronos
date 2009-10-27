@@ -486,22 +486,25 @@
                         sortByName(contests);
                         
                         var newp:Project=projectMap[projectId];
-                        if (newp) {
-                            newp.owner=owner;
-                            newp.permission=prjArray[prjIdx].pperm;
-                            
-                            for each (var cont:Contest in contests) {
-                                newp.addContest(cont);
-                            }
+                        if (!newp) {
+                            newp=new Project(projectId.toString(),pname,pdesc,"",owner,contests);
+        			        newp.permission=prjArray[prjIdx].pperm;
+        			        model.proList.addItem(newp);
+        			        projectMap[projectId]=newp;
+                        } 
+                        
+                        newp.owner=owner;
+                        newp.permission=prjArray[prjIdx].pperm;
+                        
+                        for each (var cont:Contest in contests) {
+                            newp.addContest(cont);
                         }
                         
-                        /*var newp:Project=new Project(projectId.toString(),pname,pdesc,"",owner,contests);
-        			    newp.permission=prjArray[prjIdx].pperm;*/
         			    prjIdx=i;
-                        //model.proList.addItem(newp);
+                        
                     }
 
-                    //sortByName(model.proList);
+                    sortByName(model.proList);
 
                     //
                     // Updated for Version 1.0.1 [BUGR-2135]
