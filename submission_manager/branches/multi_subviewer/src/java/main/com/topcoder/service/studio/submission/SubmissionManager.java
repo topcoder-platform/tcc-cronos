@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -30,8 +30,14 @@ import java.util.List;
  * missing in the original diagram, they are added in this version.(at the
  * bottom of this interface)
  *
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.2
+ * <p>
+ * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
+ * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
+ * - Added support to award milestone prizes.
+ * </p>
+ *
+ * @author pulky
+ * @version 1.3
  */
 public interface SubmissionManager {
     /**
@@ -261,6 +267,27 @@ public interface SubmissionManager {
      *             If any error occurs during the add
      */
     void addPrizeToSubmission(long submissionId, long prizeId)
+        throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Adds the milestone prize with the given id to the submission with the given id.
+     * Both must currently exist in persistence.
+     * </p>
+     *
+     * @param submissionId the id of the submission to add the prize to
+     * @param milestonePrizeId the id of the milestone prize to add to the submission
+     * @throws IllegalArgumentException
+     *             If the submission is not marked for milestone prize
+     * @throws EntityNotFoundException
+     *             If the milestone prize or submission with the given ids does not exist
+     *             in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the addition
+     *
+     * @since 1.3
+     */
+    void addMilestonePrizeToSubmission(long submissionId, long milestonePrizeId)
         throws SubmissionManagementException;
 
     /**
@@ -513,13 +540,17 @@ public interface SubmissionManager {
 
     /**
      * <p>
-     * Updates the user rank of the submission with the given id.
+     * Updates the user rank of the submission with the given id. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId
      *            The id of the submission to update
      * @param rank
      *            The rank of the submission
+     * @param isRankingMilestone
+     *            true if the user is ranking milestone submissions.
+     *
      * @throws EntityNotFoundException
      *             If the submission or status does not exist in persistence, or
      *             submission already deleted
@@ -527,7 +558,7 @@ public interface SubmissionManager {
      *             If any error occurs during the update
      * @since TCCC-1219
      */
-    public void updateSubmissionUserRank(long submissionId, int rank)
+    public void updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
         throws SubmissionManagementException;
 
     /**

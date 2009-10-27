@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -168,8 +168,15 @@ import javax.persistence.Query;
  * exit logging should be performed at DEBUG level following the current
  * implementation, not INFO level.
  *
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.2
+ * <p>
+ * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
+ * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
+ * - Added support to award milestone prizes.
+ * - Removed rank - prize placement check in addPrizeToSubmission method.
+ * </p>
+ *
+ * @author pulky
+ * @version 1.3
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -912,6 +919,55 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
 
             // not need to update prize as the relation is created, same
             // relation insertion will raise problem.
+        }
+
+        logExit(methodName);
+    }
+
+    /**
+     * <p>
+     * Adds the milestone prize with the given id to the submission with the given id.
+     * Both must currently exist in persistence.
+     * </p>
+     *
+     * @param submissionId the id of the submission to add the prize to
+     * @param milestonePrizeId the id of the milestone prize to add to the submission
+     * @throws IllegalArgumentException
+     *             If the submission is not marked for milestone prize
+     * @throws EntityNotFoundException
+     *             If the milestone prize or submission with the given ids does not exist
+     *             in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the addition
+     *
+     * @since 1.3
+     */
+    public void addMilestonePrizeToSubmission(long submissionId, long milestonePrizeId)
+        throws SubmissionManagementException {
+        final String methodName = "addMilestonePrizeToSubmission(long, long)";
+        logEnter(methodName);
+
+        EntityManager entityManager = getEntityManager(methodName);
+
+        // get the milestone prize
+        MilestonePrize prize = getEntity(entityManager, MilestonePrize.class, milestonePrizeId, methodName);
+
+        if (null == prize) {
+            throw logException(new EntityNotFoundException("The milestone prize does not exist."), methodName);
+        }
+
+        // get the submission
+        Submission submission = getActiveSubmission(entityManager, submissionId, methodName);
+
+        if (!submission.isAwardMilestonePrize()) {
+            throw logException(new IllegalArgumentException("The submission is not marked for milestone prize"),
+                methodName);
+        }
+
+        // only add if it's not already there
+        if (!submission.getMilestonePrizes().contains(prize)) {
+            submission.getMilestonePrizes().add(prize);
+            updateEntity(entityManager, submission, methodName);
         }
 
         logExit(methodName);
@@ -2283,13 +2339,17 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
 
     /**
      * <p>
-     * Updates the user rank of the submission with the given id.
+     * Updates the user rank of the submission with the given id. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId
      *            The id of the submission to update
      * @param rank
      *            The rank of the submission
+     * @param isRankingMilestone
+     *            true if the user is ranking milestone submissions.
+     *
      * @throws EntityNotFoundException
      *             If the submission or status does not exist in persistence, or
      *             submission already deleted
@@ -2297,7 +2357,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
      *             If any error occurs during the update
      * @since TCCC-1219
      */
-    public void updateSubmissionUserRank(long submissionId, int rank)
+    public void updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
         throws SubmissionManagementException {
         final String methodName = "updateSubmissionUserRank(long, int)";
         logEnter(methodName);
@@ -2306,7 +2366,12 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
 
         Submission submission = getActiveSubmission(entityManager,
                 submissionId, methodName);
-        submission.setUserRank(rank);
+
+        if (!isRankingMilestone) {
+            submission.setUserRank(rank);
+        } else {
+            submission.setAwardMilestonePrize(rank != 0);
+        }
 
         updateEntity(entityManager, submission, methodName);
 
