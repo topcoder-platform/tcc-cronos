@@ -23,16 +23,25 @@
      - for action required contest, 'Checkout' button is visible. On click, the flow leads to Checkout Confirmation page.
      - for past contests, only thumbnail browsing of submissions can be done. All other functionalities are disabled.
      - for past but completed contest, 'Download' button is visible. On click, the flow leads to Download page.
-     
+     - New business rules implemented for multi round contests. See version 1.0.2 changelog notes.
+
      Updated for Cockpit Release Assembly 2 [BUGR-1940, BUGR-1666]
-     
+
      Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
         - BUGR-2134: for multi submission MultiImageView is opened rather than MultiSubmissionView.
         - BUGR-2128: for abandoned contest, a different screen shown.
 
-     @author snow01, TCSASSEMBLER
+     Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Added support for multi round contests, including:
+              - added timeline filtering for multi round contests.
+              - fixed code to allow showing all user viewable contests.
+              - added support for milestone rankings.
+              - added extra validations to UI objects visibility/enabling.
+              - added/updated UI to support the new multi-round functionality.
+
+     @author snow01, pulky
      @since Submission Viewer Overhaul
-     @version 1.0.1
+     @version 1.0.2
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
@@ -47,8 +56,8 @@
          xmlns:submission="com.topcoder.flex.submission.*">
 
     <mx:Metadata>
-		[Event(name="onRender", type="mx.events.ResizeEvent")]
-	</mx:Metadata>
+        [Event(name="onRender", type="mx.events.ResizeEvent")]
+    </mx:Metadata>
     <mx:Script>
         <![CDATA[
             import mx.effects.Tween;
@@ -63,9 +72,9 @@
             import mx.rpc.events.ResultEvent;
             import mx.collections.ArrayCollection;
             import com.topcoder.flex.Helper;
-            
+
             import flash.events.Event;
-            
+
             /**
              * The data model class which stores various state behavior for this view.
              * It basically stores,
@@ -79,11 +88,19 @@
             public var model:ThumbnailGalleryDataModel;
 
             /**
+             * Flag representing whether the timeline panel is shown or not.
+             *
+             * @since 1.0.2
+             */
+            [Bindable]
+            private var showTimelinePanel:Boolean=false;
+
+            /**
              * Reference to the parent submission viewer widget.
              */
             [Bindable]
             private var _subViewer:SubmissionViewerWidget;
-            
+
             public var _tobeShownSubmission:Object;
 
             //status icon class declaration
@@ -101,10 +118,10 @@
             private var prjInDanger:Class;
 
             private var _status:int;
-            
+
             private var _isInitialized:Boolean=false;
 
-	    
+
 
             // setter and getter of status propriety
             // the status change the icon and the color of the label
@@ -155,7 +172,7 @@
 
             /**
              * Sets the reference of the parent submission viewer widget.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - BUGR-2134: MultiSubmissionView is no more supported.
              *    - BUGR-2128: For abdandoned contest, a different view is shown.
@@ -189,7 +206,7 @@
              * Initializes this component.
              *
              * This component simply calls handleComplete and handleSubComplete through timers, to produce smooth effect.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - BUGR-2134: MultiSubmissionView is no more supported.
              *    - BUGR-2128: For abdandoned contest, a different view is shown.
@@ -200,8 +217,9 @@
                 this.simpleSubViewer.model=this.model;
                 //this.multiSubViewer.model=this.model;
                 this.multiImageViewer.model=this.model;
+                this.model.thumbnailView=this;
                 this.abandonedContestViewer.subViewer=this._subViewer;
-                
+
                 timer=new Timer(200, 1);
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleComplete);
                 subTimer=new Timer(200, 1);
@@ -237,6 +255,35 @@
             }
 
             /**
+             * Defines the multi round timeline filter logic. This method is called when any of the timeline filter
+             * buttons are activated
+             *
+             * @since 1.0.2
+             */
+            private function doFilterTimeline():void {
+                var filterBefore:Boolean=false;
+                var filterAfter:Boolean=false;
+                if (contestCombo.selectedItem.multiRound && timelinePanel.selectedIndex != 0) {
+                    filterAfter = timelinePanel.selectedIndex == 1;
+                    filterBefore = timelinePanel.selectedIndex == 2;
+                }
+
+                // show only num of mileston prizes ranks if we are filtering by milestone
+                var numRanks:int=5;
+                if (filterAfter) {
+                    numRanks = contestCombo.selectedItem.numberOfMilestonePrizes;
+                }
+
+                this.subViewer.rankingMilestone = filterAfter;
+
+                model.showUsingTimeline(filterBefore, filterAfter, numRanks)
+
+                // refresh submissions title after filtering
+                setTitle();
+            }
+
+
+            /**
              * Defines the contest filter logic.
              *
              * If 'All' is selected, then all contests are shown in the combo box.
@@ -264,7 +311,7 @@
                 trace("Selected contest id: " + this.subViewer.selectedContestId);
                 trace("Default contest id: " + this.subViewer.defaultContestId);
 
-                // try selecting the currently selected contest. 
+                // try selecting the currently selected contest.
                 if (this.subViewer.selectedContestId && this.subViewer.selectedContestId > 0) {
                     for (var i:int=0; i < this.subViewer.contestList.length; i++) {
                         var itemI:*=this.subViewer.contestList[i];
@@ -289,7 +336,7 @@
                     }
                 }
 
-                // execution would come ere if neither selected nor default are in the filtered list.        
+                // execution would come ere if neither selected nor default are in the filtered list.
                 trace("Selecting the combo box: " + 0);
                 contestCombo.selectedIndex=0;
                 handleContest(null);
@@ -301,20 +348,25 @@
              * Depending on the contest type, it updates the ui.
              * If contest is different from last, then it loads the submission data through webservice.
              * Else it simply updates the ui for currently loaded submissions.
-    	     *
-    	     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
-    	     *		-- handle abandoned contest correctly.
+             *
+             * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+             *        -- handle abandoned contest correctly.
              *
              * @param event not used parameter.
              */
             public function handleContest(event:Event):void {
                 trace("Handle contest... event: " + event);
-                 
+
                 if (contestCombo && contestCombo.selectedItem) {
                     if (!event) {
                         this.contestCombo.selectedItem=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId];
                     }
-                    
+
+                    if (!contestCombo.selectedItem && this.subViewer.contestInfoList.length > 0) {
+                        // select the first one
+                        this.contestCombo.selectedItem=this.subViewer.contestInfoList.getItemAt(0);
+                    }
+
                     //trace("------------------ ThumbnailGallerySubmissionViewer:: this.subViewer.selectedContestId: " + this.subViewer.selectedContestId);
                     //trace("------------------ ThumbnailGallerySubmissionViewer:: contestCombo.selectedItem.id: " + contestCombo.selectedItem.id);
 
@@ -322,7 +374,7 @@
                     if (this.subViewer.selectedContestId && this.subViewer.selectedContestId == contestCombo.selectedItem.id) {
                         isContestChanged=false;
                     }
-                    
+
                     model.showDownloadFullPreview=true;
 
                     this.subViewer.selectedContestId=contestCombo.selectedItem.id;
@@ -333,27 +385,29 @@
                     this.subViewer.selectedContestStatusId=statusId;
                     this.subViewer.selectedContestStatus=this.subViewer.statusTypeDictionary[statusId].name;
 
-                    // let's get the status of current selected contest 
+                    // let's get the status of current selected contest
                     // and accordingly activate following:
-                    //		purchase box -- active for action required only
-                    //		i can not choose winner -- active for action required only
-                    //		rating selector -- active for any active or action required only.
+                    //        purchase box -- active for action required only
+                    //        i can not choose winner -- active for action required only
+                    //        rating selector -- active for any active or action required only.
                     //
                     // I can do both save as draft or continue to checkout here.
-		            // 'in danger' has same logic as 'action required'
+                    // 'in danger' has same logic as 'action required'
                     if (this.subViewer.selectedContestStatusId == this.subViewer.actionRequiredContestTypeId
-		                || this.subViewer.selectedContestStatusId == this.subViewer.inDangerContestTypeId) {
+                        || this.subViewer.selectedContestStatusId == this.subViewer.inDangerContestTypeId) {
                         updateUIForActionRequiredContest();
                     } else if (this.subViewer.activeContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForActiveContest();
                     } else if (this.subViewer.selectedContestStatusId == this.subViewer.completedContestTypeId) {
                         updateUIForCompletedContest();
-                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId 
+                    } else if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId
                         || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
                         updateUIForAbandonedContest();
                     } else if (this.subViewer.pastContestTypeIds[this.subViewer.selectedContestStatusId] == true) {
                         updateUIForPastContest();
                     }
+
+                    this.model.filterDate = contestCombo.selectedItem.milestoneDate;
 
                     if ((isContestChanged && isContestChanged == true)) {
                         trace("Reloading submissions...");
@@ -387,27 +441,27 @@
                 if (checkout_top) {
                     checkout_top.visible=true;
                     checkout_top.label="Check out";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_top.enabled=true;
                     } else {
                         checkout_top.enabled=false;
                     }
                 }
-                
+
                 if (checkout_bottom) {
                     checkout_bottom.visible=true;
                     checkout_bottom.label="Check out";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_bottom.enabled=true;
                     } else {
                         checkout_bottom.enabled=false;
                     }
                 }
-                
+
                 if (checkout_detailed) {
                     checkout_detailed.visible=true;
                     checkout_detailed.label="Check out";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_detailed.enabled=true;
                     } else {
                         checkout_detailed.enabled=false;
@@ -422,27 +476,27 @@
                 if (checkout_top) {
                     checkout_top.visible=true;
                     checkout_top.label="Download";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_top.enabled=true;
                     } else {
                         checkout_top.enabled=false;
                     }
                 }
-                
+
                 if (checkout_bottom) {
                     checkout_bottom.visible=true;
                     checkout_bottom.label="Download";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_bottom.enabled=true;
                     } else {
                         checkout_bottom.enabled=false;
                     }
                 }
-                
+
                 if (checkout_detailed) {
                     checkout_detailed.visible=true;
                     checkout_detailed.label="Download";
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         checkout_detailed.enabled=true;
                     } else {
                         checkout_detailed.enabled=false;
@@ -455,24 +509,24 @@
             */
             private function updateUIForCompletedContest():void {
                 model.isRankMode=false;
-                
+
                 setRankBarVisible();
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
                 }
-                
+
                 if (purchaseTotalContainer) {
                     purchaseTotalContainer.visible=false;
                     purchaseTotalContainer.includeInLayout=false;
                 }
-                
+
                 if (feedbackContainer) {
                     feedbackContainer.visible=false;
                     feedbackContainer.includeInLayout=false;
                 }
-                
+
                 disableNoWinnerSelector();
                 showDownload();
                 disablePurchaseSelector();
@@ -488,37 +542,37 @@
                 } else {
                     model.isRankMode=false;
                 }
-                
+
                 setRankBarVisible();
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
                 }
-                
+
                 if (purchaseTotalContainer) {
                     purchaseTotalContainer.visible=true;
                     purchaseTotalContainer.includeInLayout=true;
                 }
-                
+
                 if (feedbackContainer) {
                     feedbackContainer.visible=true;
                     feedbackContainer.includeInLayout=true;
                     if (feed) {
-                        if (!model.isPermissionReadOnly()) {
+                        if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                             feed.enabled=true;
                         } else {
                             feed.enabled=false;
                         }
                     }
                 }
-                
+
                 enableNoWinnerSelector();
                 showCheckout();
                 enablePurchaseSelector();
                 enableSaveClearBtns();
             }
-            
+
 
             /**
             * Updates ui for active but not action required contests.
@@ -529,31 +583,31 @@
                 } else {
                     model.isRankMode=false;
                 }
-                
+
                 setRankBarVisible();
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
                 }
-                
+
                 if (purchaseTotalContainer) {
                     purchaseTotalContainer.visible=true;
                     purchaseTotalContainer.includeInLayout=true;
                 }
-                
+
                 if (feedbackContainer) {
                     feedbackContainer.visible=true;
                     feedbackContainer.includeInLayout=true;
                     if (feed) {
-                        if (!model.isPermissionReadOnly()) {
+                        if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                             feed.enabled=true;
                         } else {
                             feed.enabled=false;
                         }
                     }
                 }
-                
+
                 disableNoWinnerSelector();
                 hideCheckout();
                 contestActivePurchaseSelector();
@@ -562,16 +616,16 @@
 
             /**
              * Update ui for abandoned contests.
-	         * Updated for Cockpit Release Assembly 2 [BUGR-1940]
-	         *		-- handle abandoned contest correctly.
-	         * 
-	         * Updated for Version 1.0.1
+             * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+             *        -- handle abandoned contest correctly.
+             *
+             * Updated for Version 1.0.1
             *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
             private function updateUIForAbandonedContest():void {
                 model.isRankMode=false;
                 model.showDownloadFullPreview=false;
-                
+
                 model.selectedIndex=3;
             }
 
@@ -580,38 +634,38 @@
             */
             private function updateUIForPastContest():void {
                 model.isRankMode=false;
-                
+
                 if (rankContainer) {
                     rankContainer.visible=false;
                     rankContainer.includeInLayout=false;
                 }
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
                 }
-                
+
                 if (feedbackContainer) {
                     feedbackContainer.visible=false;
                     feedbackContainer.includeInLayout=false;
                 }
-                
+
                 if (purchaseTotalContainer) {
                     purchaseTotalContainer.visible=true;
                     purchaseTotalContainer.includeInLayout=true;
                 }
-                
+
                 disableNoWinnerSelector();
                 hideCheckout();
                 disablePurchaseSelector();
                 disableSaveClearBtns();
             }
 
-			private function setRankBarVisible():void {
+            private function setRankBarVisible():void {
                 if (rankContainer) {
                     rankContainer.visible=true;
                     rankContainer.includeInLayout=true;
-                    
+
                     if (!model.isPermissionReadOnly()) {
                         currentRank.removeEventListener("itemClick", updateRank);
                         currentRank.addEventListener("itemClick", updateRank);
@@ -632,7 +686,7 @@
             */
             private function enableRatingSelector():void {
                 setRankBarVisible();
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=true;
                     contentActionControlContainer.includeInLayout=true;
@@ -647,7 +701,7 @@
                     rankContainer.visible=false;
                     rankContainer.includeInLayout=false;
                 }
-                
+
                 if (contentActionControlContainer) {
                     contentActionControlContainer.visible=false;
                     contentActionControlContainer.includeInLayout=false;
@@ -662,14 +716,20 @@
                     purchase.visible=true;
                     purchase.includeInLayout=true;
 
-        		    if (!model.isPermissionReadOnly())
-        		    {
-        			    purchase.enabled=true;
-        		    }
-        		    else
-        		    {
-        			    purchase.enabled=false;
-        		    }
+                    if (subViewer.rankingMilestone) {
+                        purchaseTotalContainer.visible = false;
+                    } else {
+                        purchaseTotalContainer.visible = true;
+                    }
+
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone)
+                    {
+                        purchase.enabled=true;
+                    }
+                    else
+                    {
+                        purchase.enabled=false;
+                    }
                 }
             }
 
@@ -701,7 +761,7 @@
             private function enableNoWinnerSelector():void {
                 if (noWinner) {
                     noWinner.visible=true;
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         noWinner.enabled=true;
                     } else {
                         noWinner.enabled=false;
@@ -709,7 +769,7 @@
                 }
                 if (noWinner1) {
                     noWinner1.visible=true;
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         noWinner1.enabled=true;
                     } else {
                         noWinner1.enabled=false;
@@ -717,7 +777,7 @@
                 }
                 if (noWinner2) {
                     noWinner2.visible=true;
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         noWinner2.enabled=true;
                     } else {
                         noWinner2.enabled=false;
@@ -751,7 +811,7 @@
                     saveBtn.visible=false;
                     saveBtn.includeInLayout=false;
                 }
-                
+
                 if (clearBtn) {
                     clearBtn.visible=false;
                     clearBtn.includeInLayout=false;
@@ -765,17 +825,17 @@
                 if (saveBtn) {
                     saveBtn.visible=true;
                     saveBtn.includeInLayout=true;
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         saveBtn.enabled=true;
                     } else {
                         saveBtn.enabled=false;
                     }
                 }
-                
+
                 if (clearBtn) {
                     clearBtn.visible=true;
                     clearBtn.includeInLayout=true;
-                    if (!model.isPermissionReadOnly()) {
+                    if (!model.isPermissionReadOnly() && !subViewer.rankingMilestone) {
                         clearBtn.enabled=true;
                     } else {
                         clearBtn.enabled=false;
@@ -785,15 +845,15 @@
 
             /**
             * Sets the header text for gallery view ui.
-            * 
+            *
             * @param index1 not in use.
             * @param index2 not in use.
-            * 
+            *
             * @return always returns true.
             */
             private function setText(index1:int, index2:int):Boolean {
                 trace("Setting text..");
-                
+
                 handleContest(null);
                 return true;
             }
@@ -824,16 +884,39 @@
             private function updateUIOnSubmissionsLoad(fullReset:Boolean=true):void {
                 trace("------------------------ UPDATING UI ON SUBMISSIONS");
                 // TODO: do we need to show different ui when no submissions ?
+
                 model.reset(fullReset);
                 model.setSubmission(fullReset);
                 model.updateRankList();
                 this.subViewer.updatePurchase();
                 setTitle();
+
+                // if contest is multi round, show timeline panel.
+                showTimelinePanel = contestCombo.selectedItem.multiRound;
+                if (showTimelinePanel && model.selectedIndex!=1 && model.selectedIndex!=2) {
+                    // decide how timeline panel buttons should be shown
+                    var showOnlyMilestoneTab:Boolean=false;
+                    if (contestCombo.selectedItem.milestoneDate > new Date()) {
+                        showOnlyMilestoneTab=true;
+                    } else {
+                        showOnlyMilestoneTab = !model.hasMilestonePrize();
+                    }
+
+                    timelinePanel.getChildren()[0].enabled=!showOnlyMilestoneTab;
+                    timelinePanel.getChildren()[2].enabled=!showOnlyMilestoneTab;
+
+                    if (showOnlyMilestoneTab) {
+                        // default to milestone
+                        timelinePanel.selectedIndex = 1;
+                    }
+                    
+                    doFilterTimeline();
+                }                
             }
 
             /**
             * Logic for showing submission detail in popup ui.
-            * 
+            *
             * @param value the submission to be shown.
             */
             private function set showSubDetail(value:Object):void {
@@ -930,6 +1013,22 @@
                     model.updateRank(j, data1.id as Number);
                 }
                 isDrag=false;
+                refreshTimelineTabs();
+            }
+
+            /**
+             * This method refreshes timeline tabs. It will show view all and final submissions buttons only
+             * if milestone date has been reached and milestone prizes has been selected.
+             *
+             * @since 1.0.2
+             */
+            public function refreshTimelineTabs():void {
+                if (showTimelinePanel && contestCombo.selectedItem.milestoneDate < new Date()) {
+                    var hasMilestoneAward:Boolean = model.hasMilestonePrize();
+
+                    timelinePanel.getChildren()[0].enabled=hasMilestoneAward;
+                    timelinePanel.getChildren()[2].enabled=hasMilestoneAward;
+                }
             }
 
             /**
@@ -972,10 +1071,10 @@
 
             /**
              * Handle different gallery layout.
-             * 
+             *
              * Updated for Version 1.0.1
             *    - BUGR-2128: For abdandoned contest, a different view is shown.
-             * 
+             *
              * @param value the layout index.
              */
             private function set handleLayout(value:int):void {
@@ -987,6 +1086,10 @@
                     extraBtnPanel.includeInLayout=true;
                     showHideRank(false);
                     handleContest(null);
+
+                    nextBtn.visible = model.hasNextViewableSubmission();
+                    prevBtn.visible = model.hasPrevViewableSubmission();
+
                     model.showFooter=true;
                     currentRank.selectedIndex=model.getRank();
                     updatePurchaseButton();
@@ -1012,6 +1115,7 @@
              */
             public function updateRank(event:Event):void {
                 model.updateRank(currentRank.selectedIndex, -1);
+                refreshTimelineTabs();
             }
 
             /**
@@ -1071,10 +1175,10 @@
 
             /**
             * Go to previous page / submission in animated form.
-    	    *
-    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-    	    *	-- Better animation on sub viewer
-    	    *	-- Start image load earlier.
+            *
+            * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+            *    -- Better animation on sub viewer
+            *    -- Start image load earlier.
             */
             public function goPrev():void {
                 if (!model.canGoPrev()) {
@@ -1125,10 +1229,10 @@
 
             /**
             * Go to next page / submission in animated form.
-    	    *
-    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-    	    *	-- Better animation on sub viewer
-    	    *	-- Start image load earlier.
+            *
+            * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+            *    -- Better animation on sub viewer
+            *    -- Start image load earlier.
             */
             public function goNext():void {
                 if (!model.canGoNext()) {
@@ -1238,24 +1342,26 @@
                     next_top.enabled=true;
                     prev_top.enabled=true;
                 }
-                
+
                 if (next_bottom) {
                     next_bottom.enabled=true;
                     prev_bottom.enabled=true;
                 }
-                
+
                 if (prevBtn) {
                     prevBtn.enabled=true;
+                    prevBtn.visible=model.hasPrevViewableSubmission();
                 }
-                
+
                 if (nextBtn) {
                     nextBtn.enabled=true;
+                    nextBtn.visible=model.hasNextViewableSubmission();
                 }
             }
 
             /**
             * Handler for creating animation effect on initial submisison box load.
-            */ 
+            */
             public function handleSubComplete(event:TimerEvent):void {
                 if (masks) {
                     var bitmap:BitmapData=new BitmapData(stack.width, stack.height);
@@ -1285,13 +1391,13 @@
 
             /**
             * Go to previous submission in animated form.
-    	    *
-    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-    	    *	-- Better animation on sub viewer
-    	    *	-- Start image load earlier.
+            *
+            * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+            *    -- Better animation on sub viewer
+            *    -- Start image load earlier.
             */
             public function prevSub():void {
-                if (model.activeSubmissionIndex <= 0) {
+                if (!model.hasPrevViewableSubmission()) {
                     return;
                 }
                 //BUGR-1754
@@ -1338,13 +1444,13 @@
 
             /**
             * Go to next submission in animated form.
-    	    *
-    	    * Updated for Cockpit Release Assembly 2 [BUGR-1666]
-    	    *	-- Better animation on sub viewer
-    	    *	-- Start image load earlier.
+            *
+            * Updated for Cockpit Release Assembly 2 [BUGR-1666]
+            *    -- Better animation on sub viewer
+            *    -- Start image load earlier.
             */
             public function nextSub():void {
-                if (model.activeSubmissionIndex >= this.subViewer.submissionList.length - 1) {
+                if (!model.hasNextViewableSubmission()) {
                     return;
                 }
                 nextBtn.enabled=false;
@@ -1376,7 +1482,7 @@
                 }
                 currentSub.x=0;
                 masks.x=0;
-                
+
                 if (canvas.numChildren <= 1) {
                     canvas.addChild(masks);
                 } else {
@@ -1458,10 +1564,10 @@
                     submission.feedback=feed.text;
                 }
             }
-            
+
             /**
              * Shows a given submission in full size view.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - BUGR-2134: for multi image submission, we first show MultiImageView rather than MultiSubmissionView
              *
@@ -1470,7 +1576,7 @@
             public function showSubmission(data:Object):void {
                 this.model.selectedIndex=-1;
                 handleContest(null);
-                
+
                 if (data) {
                     this.model.setCurrentSubmission(data.id);
                     if (data.hasOwnProperty("multi") && data.multi == true) {
@@ -1480,24 +1586,23 @@
                             model.selectedImage=model.imageList.getItemAt(0) as String;
                         } else {
                             model.selectedImage="";
-                        }            
-                        
+                        }
+
                     } else {
                         this.model.selectedIndex=1;
                     }
                 }
-                
+
                 _tobeShownSubmission = null;
             }
-            
+
             public function isPermissionReadOnly():Boolean {
-                
                 return this.model.isPermissionReadOnly();
             }
-            
+
             /**
              * Sets the title of the view.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
@@ -1506,9 +1611,9 @@
                     trace("@@@@@@ ----------------- Active sub index: " + model.activeSubmissionIndex);
                     var item:Object=contestCombo.selectedItem;
                     if (model.selectedIndex == 0) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.currentIndex + 1) + "-" + (model.currentLast + 1) + "" + " of " + model.filteredSubmissions.length + " submissions</b></FONT>";
                     } else if (model.selectedIndex == 1 || model.selectedIndex == 2) {
-                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.activeSubmissionIndex + 1) + " of " + this.subViewer.submissionList.length + " submissions</b></FONT>";
+                        content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#000000'><b>" + (model.getFilteredIndex(model.activeSubmissionId) + 1) + " of " + model.filteredSubmissions.length + " submissions</b></FONT>";
                     } else if (model.selectedIndex == 3) {
                         content.htmlText="<FONT FACE='Arial' SIZE='16' COLOR='#000000'><b>" + item.name + "</b></FONT>" + "<FONT FACE='Arial' SIZE='13' COLOR='#a9a9a9'><b> | </b></FONT>";
                     }
@@ -1597,14 +1702,14 @@
                     <mx:Button styleName="goPrev"
                                click="prevSub()"
                                id="prevBtn"
-                               visible="{model.activeSubmissionIndex > 0}"/>
+                               visible="{model.hasPrevViewableSubmission()}"/>
                     <mx:Button styleName="gallery"
                                click="gotoGallery()"
                                toolTip="Return to Gallery"/>
                     <mx:Button styleName="goNext"
                                click="nextSub()"
                                id="nextBtn"
-                               visible="{model.activeSubmissionIndex &lt; this.subViewer.submissionList.length - 1}"/>
+                               visible="{model.hasNextViewableSubmission()}"/>
                 </mx:HBox>
             </mx:HBox>
             <mx:Button id="showHideBtn"
@@ -1617,7 +1722,7 @@
                        click="showHideRank(!contestSelection.visible)"/>
         </mx:Canvas>
 
-        <mx:Canvas id="canvas"
+            <mx:Canvas id="canvas"
                    width="100%"
                    height="100%"
                    horizontalScrollPolicy="off"
@@ -1670,7 +1775,7 @@
                                      selected="{noWinner2.selected}"
                                      styleName="CheckBoxStyle"
                                      label="I cannot choose a winner."
-                                     enabled="{!isPermissionReadOnly()}"/>
+                                     enabled="{!model.isPermissionReadOnly() &amp;&amp; !subViewer.rankingMilestone}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
@@ -1686,7 +1791,7 @@
                                    id="checkout_top"
                                    styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"
-                                   enabled="{!isPermissionReadOnly()}"/>
+                                   enabled="{!model.isPermissionReadOnly() &amp;&amp; !subViewer.rankingMilestone}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
                                    labelPlacement="left"
@@ -1696,6 +1801,24 @@
                                    visible="{model.canGoNext(model.activeSubmission.getItemAt(0))}"/>
                     </mx:HBox>
                     <mx:HRule width="100%"/>
+                    <!-- New timeline panel -->
+                    <mx:HBox verticalAlign="middle"
+                            width="100%"
+                            paddingLeft="20"
+                            backgroundColor="#ffffff"
+                            height="100%"
+                            visible="{showTimelinePanel}">
+                            <mx:ToggleButtonBar id="timelinePanel"
+                                                buttonStyleName="button"
+                                                horizontalGap="5"
+                                                buttonHeight="25"
+                                                buttonWidth="100"
+                                                valueCommit="doFilterTimeline()">
+                                <mx:String>View All</mx:String>
+                                <mx:String>Milestone</mx:String>
+                                <mx:String>Final Subs</mx:String>
+                            </mx:ToggleButtonBar>
+                    </mx:HBox>
                     <mx:Box horizontalAlign="center"
                             verticalAlign="middle"
                             width="100%"
@@ -1747,7 +1870,7 @@
                                      selected="{noWinner.selected}"
                                      styleName="CheckBoxStyle"
                                      label="I cannot choose a winner."
-                                     enabled="{!isPermissionReadOnly()}"/>
+                                     enabled="{!model.isPermissionReadOnly() &amp;&amp; !subViewer.rankingMilestone}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Label text="Sort by:"
                                   styleName="normalText"
@@ -1763,7 +1886,7 @@
                                    id="checkout_bottom"
                                    styleName="arrowRightBtnStyle"
                                    click="handleCheckout()"
-                                   enabled="{!isPermissionReadOnly()}"/>
+                                   enabled="{!model.isPermissionReadOnly() &amp;&amp; !subViewer.rankingMilestone}"/>
                         <mx:Spacer width="50%"/>
                         <mx:Button label="Next 10"
                                    labelPlacement="left"
@@ -1780,7 +1903,7 @@
                                         width="100%"/>-->
                 <tc:MultiImageView id="multiImageViewer"
                                    width="100%"/>
-                <tc:AbandonedContestScreen id="abandonedContestViewer" 
+                <tc:AbandonedContestScreen id="abandonedContestViewer"
                                            width="100%"/>
             </mx:ViewStack>
         </mx:Canvas>

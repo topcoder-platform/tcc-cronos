@@ -13,13 +13,16 @@
      Ranked submissions would be shown with numbered rank icon. While purchased submissions would be shown with $ icon.
 
      By double clicking on a submission - submission viewer gets maximized and gallery view gets opened.
-     
+
      Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
         - BUGR-2128: For abdandoned contest, a different view is shown.
 
-     @author shailendra_80, TCSASSEMBLER
+     Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Fixed code to show selected contest in the combo box.
+
+     @author shailendra_80, pulky
      @since Submission Viewer Overhaul
-     @version 1.0.1
+     @version 1.0.2
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
@@ -62,23 +65,23 @@
             }
 
             /**
-            * Array collection of currently active / visible submissions in the view. 
+            * Array collection of currently active / visible submissions in the view.
             */
             [Bindable]
             private var activeSubmissionForMin:ArrayCollection=new ArrayCollection();
 
             /**
             * This index the page index of the visible submissions in the view.
-            * 
-            * At start, page index would be zero. 
-            * Page index gets is a function of total submissions, number of columns, number of rows, visible rows. 
+            *
+            * At start, page index would be zero.
+            * Page index gets is a function of total submissions, number of columns, number of rows, visible rows.
             */
             private var currentIndexMinPage:int=0;
 
-            
+
             /**
             * Gets the submisison list.
-            * 
+            *
             * @return array collection of all submissions.
             */
             private function getSubmissionList():ArrayCollection {
@@ -87,7 +90,7 @@
 
             /**
             * Gets the contest list.
-            * 
+            *
             * @return array collection of all contests.
             */
             private function getContestList():ArrayCollection {
@@ -96,7 +99,7 @@
 
             /**
             * This is called whenever submission sets get loaded from web-service.
-            * 
+            *
             * This logic calculates currently visible submissions, the page index etc.
             * It accordingly enables page navigation buttons.
             */
@@ -129,10 +132,10 @@
 
             /**
             * This is called when up (previous) page arrow gets clicked.
-            * 
+            *
             * It calculates new active/visible submission set, page index.
             * It accordingly enables page navigation buttons.
-            */ 
+            */
             private function goUpMinPage():void {
                 if (currentIndexMinPage <= 0 || getSubmissionList().length == 0) {
                     currentIndexMinPage=0;
@@ -163,7 +166,7 @@
 
             /**
             * This is called when down (next) page arrow gets clicked.
-            * 
+            *
             * It calculates new active/visible submission set, page index.
             * It accordingly enables page navigation buttons.
             */
@@ -207,16 +210,29 @@
 
             /**
             * This logic implements the filter logic for the contest.
-            * 
+            *
             * In case of this view, all contests are shown. So filter logic is not there.
             * It then delegates to handleContest(..) which updates the UI as per selected contest.
-            * 
+            *
             * This is basically called by parent submission viewer widget on contest set load/reload.
             */
             public function doFilter():void {
                 this.subViewer.contestList=new ArrayCollection();
+                var useId:int = -1;
+
+                // try to use selected contest id or to be loaded contest id
+                if (this.subViewer.selectedContestId) {
+                    useId = this.subViewer.selectedContestId;
+                } else if (this.subViewer.tobeLoadedContestId) {
+                    useId = this.subViewer.tobeLoadedContestId;
+                }
+
                 for each (var item:*in this.subViewer.contestInfoList) {
                     this.subViewer.contestList.addItem(item);
+
+                    if (useId > 0 && item.id == useId) {
+                        contestlist_minpage.selectedItem=item;
+                    }
                 }
 
                 handleContest(null);
@@ -226,7 +242,7 @@
              * This logic updates the UI as per the selected contest.
              *
              * It identifies if contest has changed from last. If yes, then it loads the submission data from webservice.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - setting the selectedContestStatus to correctly identify abandoned contest.
              */
@@ -240,16 +256,16 @@
 
                 if (this.contestlist_minpage.selectedItem) {
                     this.subViewer.selectedContestId=contestlist_minpage.selectedItem.id;
-                    
+
                     trace("DefaultViewSubmissionViewer this.subViewer.selectedContestId: " + this.subViewer.selectedContestId);
-                    
+
                     if (this.subViewer.contestInfoDictionary) {
                         var statusId:int=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId].statusId;
                         this.subViewer.selectedContestStatusId=statusId;
-                        
+
                         trace("DefaultViewSubmissionViewer this.subViewer.selectedContestStatusId: " + this.subViewer.selectedContestStatusId);
                         trace("DefaultViewSubmissionViewer this.subViewer.selectedContestStatusId: " + this.subViewer.statusTypeDictionary[statusId]);
-                        
+
                         if (this.subViewer.statusTypeDictionary && this.subViewer.statusTypeDictionary[statusId] && this.subViewer.statusTypeDictionary[statusId].hasOwnProperty("name")) {
                             this.subViewer.selectedContestStatus=this.subViewer.statusTypeDictionary[statusId].name;
                         }
@@ -266,14 +282,14 @@
              *
              * This works as callback function when submission data load is complete.
              * Parent submission viewer determines when to call it.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - BUGR-2128: For abdandoned contest, a different view is shown.
              */
             private function updateUIOnSubmission():void {
                 //trace("-------------------------------------- Updating UI callback on submission");
                 // if there are no submissions then show no-submision screen.
-                if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId 
+                if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId
                         || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
                    min_thumbnails_stack.selectedChild=abandonedContestScreen;
                 } else if (this.subViewer.submissionList.length == 0) {
@@ -285,7 +301,7 @@
                     list_minpage.select(activeSubmissionForMin.getItemAt(0));
                 }
             }
-            
+
             // BUGR-1392
             private function handleResize():void {
                 if (!subViewer || !getSubmissionList())
@@ -348,8 +364,8 @@
         <mx:ViewStack id="min_thumbnails_stack"
                       width="100%"
                       height="100%"
-                      selectedIndex="{this.subViewer 
-                        &amp;&amp; this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId 
+                      selectedIndex="{this.subViewer
+                        &amp;&amp; this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId
                         || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId ? 1 : 0}">
             <mx:VBox id="min_thumbnails"
                      width="100%"

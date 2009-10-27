@@ -2,28 +2,23 @@
  * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
-    import com.topcoder.flex.Helper;
     import com.topcoder.flex.model.IWidgetFramework;
-    import com.topcoder.flex.util.progress.ProgressWindowManager;
+    import com.topcoder.flex.util.date.DateUtil;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
     import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
-    import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
     import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
-    
-    import flash.display.DisplayObject;
+    import com.topcoder.flex.util.progress.ProgressWindowManager;
+
     import flash.events.Event;
     import flash.utils.Dictionary;
-    
+
     import mx.binding.utils.ChangeWatcher;
     import mx.collections.ArrayCollection;
     import mx.collections.Sort;
-    import mx.collections.SortField;
-    import mx.containers.Panel;
     import mx.containers.VBox;
-    import mx.containers.ViewStack;
     import mx.controls.Alert;
     import mx.core.Application;
     import mx.formatters.NumberFormatter;
@@ -39,16 +34,25 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
      * <p>
      * This is the code behind mxml widget component for the submission viewer widget. It implements the IWidget interface.
      * It extends from the VBox.
-     * 
+     *
      * Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
      *    - introduced new state variable _isMaxView to correctly capture the view state of the widget.
-     * 
+     *
+     * Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+     *    - Added support for multi round contests, including:
+     *          - Multi round information load.
+     *          - Separate checkout submission list.
+     *          - Milestone prizes rankings.
+     *          - Submission entity changes to support milestone prizes.
+     *          - Milestone prizes payment.
+     *    - All contests the user has access to are now shown.
+     *
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
-     * @author shailendra_80, TCSASSEMBLER
-     * @version 1.0.1
+     * @author shailendra_80, pulky
+     * @version 1.0.2
      * @since Flex Submission Viewer Overhaul
      */
     [Bindable]
@@ -210,20 +214,20 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Id of the terminated contest status.
          */
         private var _terminatedContestTypeId:int;
-        
+
         /**
          * Id of the draft contest status.
          */
         private var _draftContestTypeId:int;
-        
+
         /**
          * Id of the scheduled contest status.
          */
         private var _scheduledContestTypeId:int;
-        
+
         /**
          * Id of the abandoned contest status.
-         * 
+         *
          * @since Cockpit Release Assembly 2
          */
         private var _abandonedContestTypeId:int;
@@ -242,6 +246,13 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Array collection of to be downloaded submissions.
          */
         private var _downloadList:ArrayCollection=new ArrayCollection();
+
+        /**
+         * Array collection of to be checkout submissions.
+         *
+         * @since 1.0.2
+         */
+        private var _checkoutList:ArrayCollection=new ArrayCollection();
 
         /**
          * Array collection of client project names item for purchase order.
@@ -278,19 +289,26 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Instance of data model class for thumbnail gallery view.
          */
         public var model:ThumbnailGalleryDataModel;
-		/**
+        /**
         * Reference to air viewer - this class provides method to launch a url in external air viewer.
-        * 
+        *
         * @since Cockpit Submission Viewer Widget Enhancement Part 1.
         */
         private var _airViewer:AirViewer;
-        
+
         /**
          * Introduced new state variable to correctly capture the state of the widget.
-         * 
-         * @since 1.0.1 
+         *
+         * @since 1.0.1
          */
         private var _isMaxView:Boolean=false;
+
+        /**
+         * Flag representing whether milestone ranking is being performed.
+         *
+         * @since 1.0.2
+         */
+        private var _isRankingMilestone:Boolean=false;
 
         /**
          * SubmissionViewerWidgetCodeBehind constructor.
@@ -302,17 +320,17 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * Initializes this class.
-	 * Updated for Cockpit Release Assembly 2 [BUGR-1940]
-	 *	- to correctly handle abandoned contest.
+     * Updated for Cockpit Release Assembly 2 [BUGR-1940]
+     *    - to correctly handle abandoned contest.
          */
         private function init():void {
             // add list of active contest types here.
-            // Active Contests should show contests with a status of: 
-            //		Active-Public = 2, 
-            //		Active = 5, 
-            //		Action Required = 6,
-            //		In Danger = 10 
-            //		or Extended = 12,
+            // Active Contests should show contests with a status of:
+            //        Active-Public = 2,
+            //        Active = 5,
+            //        Action Required = 6,
+            //        In Danger = 10
+            //        or Extended = 12,
             _activeContestTypeIds[2]=true;
             _activeContestTypeIds[5]=true;
             _activeContestTypeIds[6]=true;
@@ -321,10 +339,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             // add list of past contest types here.
             // Past Contests should show contests with a status of:
-            //		No Winner Chosen = 7, 
-            //		Completed = 8, 
-            //		Insufficient Submissions - Rerun Possible = 11, 
-            //		or Insufficient Submissions = 13
+            //        No Winner Chosen = 7,
+            //        Completed = 8,
+            //        Insufficient Submissions - Rerun Possible = 11,
+            //        or Insufficient Submissions = 13
             //      Abandoned = 14
             _pastContestTypeIds[7]=true;
             _pastContestTypeIds[8]=true;
@@ -346,10 +364,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             this._moneyFormatter.precision=2;
             this._moneyFormatter.useThousandsSeparator=true;
             this._moneyFormatter.useNegativeSign=true;
-            
+
             this.model=new ThumbnailGalleryDataModel();
-			
-			//
+
+            //
             // Create new instance of AirViewer.
             //
             // since Cockpit Submission Viewer Widget Enhancement Part 1.
@@ -677,6 +695,28 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
+         * Simple getter for the array collection of to be checkout submissions.
+         *
+         * @return the array collection of to be checkout submissions.
+         *
+         * @since 1.0.2
+         */
+        public function get checkoutList():ArrayCollection {
+            return this._checkoutList;
+        }
+
+        /**
+         * Simple setter for the array collection of to be checkout submissions.
+         *
+         * @param list the array collection of to be checkout submissions.
+         *
+         * @since 1.0.2
+         */
+        public function set checkoutList(list:ArrayCollection):void {
+            this._checkoutList=list;
+        }
+
+        /**
          * Simple getter for the array collection of to be puchased submissions.
          *
          * @return the array collection of to be puchased submissions.
@@ -866,7 +906,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function get noWinnerChosenContestTypeId():int {
             return this._noWinnerChosenContestTypeId;
         }
-        
+
         /**
          * Simple getter for the status id of the no winner chosen contest type.
          *
@@ -894,7 +934,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function get terminatedContestTypeId():int {
             return this._terminatedContestTypeId;
         }
-        
+
         /**
          * Simple getter for the status id of the draft contest type.
          *
@@ -903,7 +943,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function get draftContestTypeId():int {
             return this._draftContestTypeId;
         }
-        
+
         /**
          * Simple getter for the status id of the scheduled contest type.
          *
@@ -971,7 +1011,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Simple getter for the air viewer.
          *
          * @return the air viewer.
-         * 
+         *
          * @since Cockpit Submission Viewer Widget Enhancement Part 1.
          */
         public function get airViewer():AirViewer {
@@ -982,7 +1022,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * Simple setter for the air viewer.
          *
          * @param viewer the air viewer.
-         * 
+         *
          * @since Cockpit Submission Viewer Widget Enhancement Part 1.
          */
         public function set airViewer(viewer:AirViewer):void {
@@ -1016,7 +1056,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This will tell the caller if the widget is in minimzie mode or not.
-         * 
+         *
          * Updated for Version 1.0.1
          *    - returning value as per state variable '_isMaxView'
          *
@@ -1028,7 +1068,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This will tell the caller if the widget is in maximize mode or not.
-         * 
+         *
          * Updated for Version 1.0.1
          *    - returning value as per state variable '_isMaxView'
          *
@@ -1036,6 +1076,28 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public function isMaximized():Boolean {
             return this._isMaxView;
+        }
+
+        /**
+         * Simple getter for the ranking milestone flag
+         *
+         * @return the ranking milestone flag
+         *
+         * @since 1.0.2
+         */
+        public function get rankingMilestone():Boolean {
+            return this._isRankingMilestone;
+        }
+
+        /**
+         * Simple setter for the ranking milestone flag
+         *
+         * @param value the ranking milestone flag value to set
+         *
+         * @since 1.0.2
+         */
+         public function set rankingMilestone(value:Boolean):void {
+            this._isRankingMilestone=value;
         }
 
         /**
@@ -1073,12 +1135,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             if (map.hasOwnProperty("reload")) {
                 showLoadingProgress();
 
-                // reload the widget data.
-                if (pid) {
-                    this.contestServiceFacadeWS.getContestDataOnlyByPID(pid);
-                } else {
-                    this.contestServiceFacadeWS.getContestDataOnly();
-                }
+                // reload the widget data. (show all contests the user has access to)
+                this.contestServiceFacadeWS.getContestDataOnly();
             }
         }
 
@@ -1113,7 +1171,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This action will minimize this widget.
-         * 
+         *
          * Updated for Version 1.0.1
          *    - setting variable '_isMaxView' to true.
          */
@@ -1123,7 +1181,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This action will restpre this widget (for example from a menu bar).
-         * 
+         *
          * Updated for Version 1.0.1
          *    - setting variable '_isMaxView' to true.
          */
@@ -1136,7 +1194,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * This action will maximize this widget.
-         * 
+         *
          * Updated for Version 1.0.1
          *    - setting variable '_isMaxView' to true.
          */
@@ -1187,9 +1245,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @param event webservice result event.
          */
         public function handleResult(event:ResultEvent=null):void {
-            this.contestInfoList.removeAll();
-
             if (event != null && event.result != null) {
+
+                this.contestInfoList.removeAll();
+
                 var contests:ArrayCollection=new ArrayCollection();
 
                 if (event.result is ArrayCollection) {
@@ -1218,6 +1277,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     contestInfo.statusId=item.statusId;
                     contestInfo.permission=item.permission;
 
+                    // add multi round information
+                    contestInfo.multiRound=item.multiRound;
+                    contestInfo.milestonePrizeAmount=item.milestonePrizeAmount;
+                    contestInfo.numberOfMilestonePrizes=item.numberOfMilestonePrizes;
+                    contestInfo.milestoneDate=DateUtil.parseFromString(item.milestoneDate);
+
                     // add prizes to contest info.
                     contestInfo.prizes=new ArrayCollection();
 
@@ -1230,15 +1295,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         }
                     }
 
-                    // Module Cockpit My Projects Release Assembly 1
-                    // 1.1.7
-                    // show only the toBeLoadedContestId, as passed from my project widget.
                     if (this.activeContestTypeIds[contestInfo.statusId] == true || this.pastContestTypeIds[contestInfo.statusId] == true) {
-                        if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
-
-                            this.contestInfoList.addItem(contestInfo);
-                            this.contestInfoDictionary[contestInfo.id]=contestInfo;
-                        }
+                        this.contestInfoList.addItem(contestInfo);
+                        this.contestInfoDictionary[contestInfo.id]=contestInfo;
                     } else if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
                         this.contestInfoList.addItem(contestInfo);
                         this.contestInfoDictionary[contestInfo.id]=contestInfo;
@@ -1253,7 +1312,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
         /**
          * Webservice Callback function for handling the status list load.
-         * 
+         *
          * Updated for Version 1.0.1
          *    - if status list is loaded later then contest status id is set here.
          *
@@ -1265,12 +1324,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     this.statusTypeDictionary[item.statusId as int]=item;
                 }
             }
-            
+
             if (this.selectedContestId) {
                 if (this.contestInfoDictionary) {
                     var statusId:int=this.contestInfoDictionary[this.selectedContestId].statusId;
                     this.selectedContestStatusId=statusId;
-                    
+
                     if (this.statusTypeDictionary) {
                         this.selectedContestStatus=this.statusTypeDictionary[statusId].name;
                     }
@@ -1295,6 +1354,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             this.submissionList=new ArrayCollection();
 
+
             var sort:Sort=new Sort();
             sort.compareFunction=compareNumber;
             this.submissionList.sort=sort;
@@ -1308,11 +1368,15 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                 for (var i:int=0; i < submissions.length; i++) {
                     var sub:Object=new Object();
-                    
+
                     sub.parentModel=this.model;
 
                     sub.id=submissions[i].submissionId;
-                    
+                    sub.submitterId=submissions[i].submitterId;
+                    sub.passedScreening=submissions[i].passedScreening;
+                    sub.submittedDate=DateUtil.parseFromString(submissions[i].submittedDate);
+                    sub.awardMilestonePrize=submissions[i].awardMilestonePrize;
+
                     trace("---------- this.selectedContestId: " + this.selectedContestId);
 
                     // placement in submission data is mapped to rank.
@@ -1335,9 +1399,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         thumbVal=submissions[i].feedbackThumb;
                     }
                     sub.upDown=thumbVal > 0 ? "up" : (thumbVal < 0 ? "down" : "");
-                    
+
                     sub.feedback=submissions[i].feedbackText;
-                    
+
                     //
                     // Represents the artifact count of submissions.
                     // In multi image submission artifact count > 1
@@ -1345,7 +1409,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     // since: Cockpit Submission Viewer Widget Enhancement Part 1.
                     //
                     sub.artifactCount=submissions[i].artifactCount;
-                    
+
                     //
                     // A submission having more than 1 artifact is considered as multi image submission.
                     //
@@ -1356,7 +1420,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     } else {
                         sub.multi=false;
                     }
-                    
+
                     //
                     // Represents the submission url of submission.
                     // A submission which is openable in Air Viewer would have valid submissionUrl.
@@ -1366,15 +1430,15 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     if (submissions[i].hasOwnProperty("submissionUrl") && submissions[i].submissionUrl && submissions[i].submissionUrl != "") {
                         sub.submissionUrl=submissions[i].submissionUrl;
                     }
-                    
+
                     sub.thumbnail=this._imageAddress + sub.id + "&sbt=thumb";
-                    
+
                     // even in case of multi image submission, this is valid
                     // and this would point to first (0th index) image of the submission.
                     sub.fullsizepreview=this._imageAddress + sub.id + "&sbt=full";
-                    
+
                     trace("For submission: " + sub.id + ", Image full path: " + sub.fullsizepreview);
-                    
+
                     //
                     // In case of multi image submission we also populate 'fullsizepreviewList'
                     //
@@ -1394,7 +1458,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                             trace("For submission: " + sub.id + ", Image full path: " + path);
                         }
                     }
-                    
+
                     sub.submissionContent=submissions[i].submissionContent;
 
                     // BUGR-1169: separate db price from app price.
@@ -1418,40 +1482,40 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     } else {
                         if (prizes) {
                             if (sub.rank && sub.rank > 0) {
-				    // retrieve the price from contest info's prizeList.
-				    if (prizes.length < sub.rank) {
-					 if (sub.markedForPurchase) {
-					     // if prizes are not there, then use the 2nd place prize
-				 
-					     if (prizes.length > 1 && prizes[1] > 0) {
-						 sub.price=prizes[1];
-					     }
-					} else {
-				 
-					     // do nothing here.
-					}
-				    } else if (prizes[sub.rank - 1] > 0) {
-					 // here I override the earlier set markedForPurchase field.
-					 // since prize list is there for the current submission
-					 // i do not need markedForPurchase field here.
-					 sub.markedForPurchase=false;
-				 
-					 sub.price=prizes[sub.rank - 1];
-				     } else  if (sub.markedForPurchase) {
-					     // if prizes are not there, then use the 2nd place prize
-				 
-					     if (prizes.length > 1 && prizes[1] > 0) {
-						 sub.price=prizes[1];
-					     }
-					}
-				 } else if (sub.markedForPurchase) {
-				    // if submission is not ranked and markedForPurchase is there,
-				 
-				    // then price must be equal to 2nd place prize.
-				    if (prizes.length > 1 && prizes[1] > 0) {
-					sub.price=prizes[1];
-				    }
-				 }
+                    // retrieve the price from contest info's prizeList.
+                    if (prizes.length < sub.rank) {
+                     if (sub.markedForPurchase) {
+                         // if prizes are not there, then use the 2nd place prize
+
+                         if (prizes.length > 1 && prizes[1] > 0) {
+                         sub.price=prizes[1];
+                         }
+                    } else {
+
+                         // do nothing here.
+                    }
+                    } else if (prizes[sub.rank - 1] > 0) {
+                     // here I override the earlier set markedForPurchase field.
+                     // since prize list is there for the current submission
+                     // i do not need markedForPurchase field here.
+                     sub.markedForPurchase=false;
+
+                     sub.price=prizes[sub.rank - 1];
+                     } else  if (sub.markedForPurchase) {
+                         // if prizes are not there, then use the 2nd place prize
+
+                         if (prizes.length > 1 && prizes[1] > 0) {
+                         sub.price=prizes[1];
+                         }
+                    }
+                 } else if (sub.markedForPurchase) {
+                    // if submission is not ranked and markedForPurchase is there,
+
+                    // then price must be equal to 2nd place prize.
+                    if (prizes.length > 1 && prizes[1] > 0) {
+                    sub.price=prizes[1];
+                    }
+                 }
                         }
                     }
 
@@ -1461,7 +1525,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     sub.purchased=sub.markedForPurchase || sub.mustPurchase || sub.paidFor;
 
                     var subProxy:ObjectProxy=new ObjectProxy(sub);
-                    
+
                     var thumbChangeWatcherFn:Function = function(e:Event):void {
                         if (e && e.target) {
                             trace("thumbChangeWatcherFn --- SubProxy: " + e.target.id);
@@ -1470,7 +1534,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     }
                     // initialize a change watcher for the upDown property.
                     var thumbChangeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "upDown", thumbChangeWatcherFn);
-                    
+
                     var rankChangeWatcherFn:Function = function(e:Event):void {
                         if (e && e.target) {
                             trace("rankChangeWatcherFn --- SubProxy: " + e.target.id);
@@ -1478,11 +1542,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         }
                     }
                     // initialize a change watcher for the upDown property.
-                    var rankChangeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "rank", rankChangeWatcherFn);  
+                    var rankChangeWatcher:ChangeWatcher=ChangeWatcher.watch(subProxy, "rank", rankChangeWatcherFn);
+
+                    // add a watcher for the milestone awards also
+                    ChangeWatcher.watch(subProxy, "awardMilestonePrize", rankChangeWatcherFn);
 
                     this.submissionList.addItem(subProxy);
 
-                    if (sub.rank && sub.rank > 0) {
+                    if ((sub.rank && sub.rank > 0 && !rankingMilestone) || (rankingMilestone && sub.awardMilestonePrize)) {
                         updateRankList(subProxy);
                     }
 
@@ -1561,31 +1628,47 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             if (!item || !item.id) {
                 return;
             }
-            
-            if (item.rank && (item.rank is Number || item.rank.length > 0)) {
-                var index:int=parseInt(item.rank) - 1;
-                //trace("---------------------------------- Submission Viewer RANK: " + item.id + "," + item.rank + "," + index);
-                if (index > 4 || index < 0) {
-                    // placement values can be more than 5 also.
-                    return;
-                }
 
-                // get if there is already an object with the given rank.
-                var obj:Object=this.rankList.getItemAt(index);
-                if (obj && obj.hasOwnProperty("id") && obj.hasOwnProperty("rank") && item.id != obj.id) {
-                    obj.rank="";
-                    obj.mustPurchase=false;
-                    obj.purchased=obj.markedForPurchase || obj.mustPurchase;
-                    obj.price=0;
-                }
+            // The concept of ranking is not exactly the same for milestone prizes. The ranking really doesn't matter
+            // for now, so the submission is assigned to the first available spot.
+            var emptySpaceIndex:int=0;
+            if (this.rankingMilestone) {
+                if (item.awardMilestonePrize) {
+                    // add it to the first available rank
+                    for (; emptySpaceIndex < 5 && this.rankList.getItemAt(emptySpaceIndex) &&
+                        this.rankList.getItemAt(emptySpaceIndex).hasOwnProperty("id"); emptySpaceIndex++) {
+                    }
 
-                //trace("---------------------------------- Setting item at: " + item.id + "," + item.rank + "," + index);
-                this.rankList.setItemAt(item, index);
+                    this.rankList.setItemAt(item, emptySpaceIndex);
+                } else {
+                    removeFromRankList(item);
+                }
             } else {
-                removeFromRankList(item);
+                if (item.rank && (item.rank is Number || item.rank.length > 0)) {
+                    var index:int=parseInt(item.rank) - 1;
+                    //trace("---------------------------------- Submission Viewer RANK: " + item.id + "," + item.rank + "," + index);
+                    if (index > 4 || index < 0) {
+                        // placement values can be more than 5 also.
+                        return;
+                    }
+
+                    // get if there is already an object with the given rank.
+                    var obj:Object=this.rankList.getItemAt(index);
+                    if (obj && obj.hasOwnProperty("id") && obj.hasOwnProperty("rank") && item.id != obj.id) {
+                        obj.rank="";
+                        obj.mustPurchase=false;
+                        obj.purchased=obj.markedForPurchase || obj.mustPurchase;
+                        obj.price=0;
+                    }
+
+                    //trace("---------------------------------- Setting item at: " + item.id + "," + item.rank + "," + index);
+                    this.rankList.setItemAt(item, index);
+                } else {
+                    removeFromRankList(item);
+                }
             }
         }
-        
+
         /**
          * Removes the item from rank list.
          *
@@ -1595,15 +1678,15 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             if (!item || !item.id) {
                 return;
             }
-            
+
             var i:int = 0;
             for each (var o:Object in this.rankList) {
                 if (o && o.id == item.id) {
                     //trace("Setting item NULL at i: " + i);
-                    this.rankList.setItemAt(null, i);
+                    this.rankList.setItemAt(new Object(), i);
                     break;
                 }
-                
+
                 i++;
             }
         }
@@ -1639,50 +1722,50 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         private function getClientProjectsHandler(e:ResultEvent):void {
             trace("getClientProjectsHandler: " + e + ", " + e.result);
             if (e && e.result) {
-                
+
                 if (e.result is ArrayCollection) {
                     var results:ArrayCollection=e.result as ArrayCollection;
                     for (var i:int=0; i < results.length; i++) {
                         var result1:*=results[i];
-                        // add client project name 
+                        // add client project name
                         var item1:Object=new Object();
                         var id1:Number = result1.id;
-        	            var name1:String = result1.name;
+                        var name1:String = result1.name;
                         var poNumber1:String = result1.pOBoxNumber;
                         var clientId1:Number = result1.client.id;
                         var clientName1:String = result1.client.name;
                         item1.label=name1;
                         item1.data = new Object();
-    			item1.data.poNumber = poNumber1;
-    			item1.data.projectName = name1;
-    			item1.data.projectId = id1;
-    			item1.data.clientId = clientId1;
-    			item1.data.clientName = clientName1;
+                item1.data.poNumber = poNumber1;
+                item1.data.projectName = name1;
+                item1.data.projectId = id1;
+                item1.data.clientId = clientId1;
+                item1.data.clientName = clientName1;
                         this.clientProjectNames.addItem(item1);
                     }
                 } else {
                     var result2:*=e.result;
-                    // add client project name 
+                    // add client project name
                     var item2:Object=new Object();
                     var id2:Number = result2.id;
-    	            var name2:String = result2.name;
+                    var name2:String = result2.name;
                     var poNumber2:String = result2.pOBoxNumber;
                     var clientId2:Number = result2.client.id;
                     var clientName2:String = result2.client.name;
                     item2.label=name2;
                     item2.data = new Object();
-		    item2.data.poNumber = poNumber2;
-		    item2.data.projectName = name2;
-		    item2.data.projectId = id2;
-		    item2.data.clientId = clientId2;
-		    item2.data.clientName = clientName2;
+            item2.data.poNumber = poNumber2;
+            item2.data.projectName = name2;
+            item2.data.projectId = id2;
+            item2.data.clientId = clientId2;
+            item2.data.clientName = clientName2;
                     this.clientProjectNames.addItem(item2);
                 }
             }
         }
 
         /**
-         * This updates the purchase amount, purchase count, purchase list, download list.
+         * This updates the purchase amount, purchase count, purchase list, download list and checkout list.
          *
          * It simply iterates over all submissions and recalculates purchase amount, purchase count, purchase list, download list.
          * A submission is supposed to be purchased if its 'purchased' property is set to 'true'
@@ -1694,9 +1777,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             this.purchaseList=new ArrayCollection();
             this.downloadList=new ArrayCollection();
+            this.checkoutList=new ArrayCollection();
 
             for each (var item:Object in this.submissionList) {
                 //trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+                var addedToDownloadList:Boolean=false;
 
                 if ((item.rank && item.rank > 0) || item.purchased) {
                     this.purchaseList.addItem(item);
@@ -1706,6 +1791,24 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     this.purchaseCount++;
                     totalMoney+=item.price;
                     this.downloadList.addItem(item);
+                    this.checkoutList.addItem(item);
+                    addedToDownloadList=true;
+                }
+
+                if (item.awardMilestonePrize) {
+                    // only add to purchase and checkout lists if there is a submission after milestone date from
+                    // this same submitter that passed screening.
+                    if (shouldAwardMilestonePrize(item.submitterId)) {
+                        var milestonePrize:Object=new Object();
+                        milestonePrize.id=item.id;
+                        milestonePrize.rank=0;
+                        milestonePrize.awardMilestonePrize=true;
+                        milestonePrize.price = this.contestInfoDictionary[this.selectedContestId].milestonePrizeAmount;
+                        this.checkoutList.addItem(milestonePrize);
+                        this.purchaseList.addItem(milestonePrize);
+                    }
+
+                    totalMoney+=this.contestInfoDictionary[this.selectedContestId].milestonePrizeAmount;
                 }
             }
 
@@ -1715,6 +1818,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             sort.compareFunction=compareNumber;
             this.downloadList.sort=sort;
             this.downloadList.refresh();
+
+            this.checkoutList.sort=sort;
+            this.checkoutList.refresh();
 
             this.purchaseList.sort=sort;
             this.purchaseList.refresh();
@@ -1732,12 +1838,34 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         }
 
         /**
+         * Function that decides if the milestone prize should be awarded for a particular submission.
+         *
+         * The submitter should have submitted a passing screening submission after the milestone date to be
+         * eligible for the prize.
+         *
+         * @param originalSubmitterId the submitter id
+         * @return true if the milestone prize should be awarded, false otherwise.
+         */
+        private function shouldAwardMilestonePrize(originalSubmitterId:int):Boolean {
+            var found:Boolean=false;
+            for (var i:int; i < this.submissionList.length && !found; i++) {
+                var item:Object=this.submissionList[i];
+
+                if (item.submitterId == originalSubmitterId && item.passedScreening &&
+                    item.submittedDate > this.contestInfoDictionary[this.selectedContestId].milestoneDate) {
+                    found = true;
+                }
+            }
+            return found;
+        }
+
+        /**
          * Updates contest / submisison purchase to websrvice.
          *
          * @param checkoutPage the ui page from where to read the purchase data.
          */
         public function updatePurchaseToWS(checkoutPage:SubmissionsCheckoutPage):void {
-            
+
 
             var header:SOAPHeader=getHeader(this.username, this.password);
 
@@ -1754,6 +1882,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 if (item.rank && item.rank > 0) {
                     submissionPaymentData.rank=item.rank;
                     shouldAdd=true;
+                }
+
+                if (item.awardMilestonePrize) {
+                    // only add if there is there is a submission after milestone date from this same submitter that passed screening.
+                    if (shouldAwardMilestonePrize(item.submitterId)) {
+                        submissionPaymentData.awardMilestonePrize=true;
+                        shouldAdd=true;
+                    }
                 }
 
                 if (item.purchased) {
@@ -1800,7 +1936,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 purchaseOrderPaymentData.projectName=checkoutPage.wf1.order.selectedItem.data.projectName;
                 purchaseOrderPaymentData.clientId=checkoutPage.wf1.order.selectedItem.data.clientId;
                 purchaseOrderPaymentData.clientName=checkoutPage.wf1.order.selectedItem.data.clientName;
-                
+
                 this.contestServiceFacadeWS.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
             }
 
@@ -1837,12 +1973,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 this.contestServiceFacadeWS.addHeader(header);
 
                 this.contestServiceFacadeWS.getStatusList();
-
-                if (pid) {
-                    this.contestServiceFacadeWS.getContestDataOnlyByPID(pid);
-                } else {
-                    this.contestServiceFacadeWS.getContestDataOnly();
-                }
+                this.contestServiceFacadeWS.getContestDataOnly();
 
                 getClientProjectsByUser();
             } else {
@@ -1862,7 +1993,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 status.name="Completed"
                 status.statusId=8;
                 statuses.addItem(status);
-                
+
                 status=new Object();
                 status.name="Abandoned"
                 status.statusId=14;
@@ -1957,9 +2088,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                     //
                     // Setting test data.
-                    // 
+                    //
                     // since Cockpit Submission Viewer Widget Enhancement Part 1.
-                    // 
+                    //
                     sub=new Object();
                     sub.submissionId=24053;
                     sub.placement=2;
@@ -2083,16 +2214,24 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 if (item.rank && item.rank != "" && item.rank is Number) {
                     rank=item.rank as Number;
                 }
-                
+
                 trace("------------------------- Saving rank: " + rank + ", for submission: " + item.id);
-                
-                rankSubmissionsOp.send(item.id, rank);
+
+                if (rankingMilestone) {
+                    // the underlying service uses rank, so 0 non't award while 1 will
+                    if (item.awardMilestonePrize) {
+                        rank = 1;
+                    } else {
+                        rank = 0;
+                    }
+                }
+                rankSubmissionsOp.send(item.id, rank, rankingMilestone);
             }
         }
 
         /**
          * Saves given submisison feedback and thumb to the webservice.
-         * 
+         *
          * @param item submission item
          */
         public function saveSubmissionsFeedback(item:Object):void {

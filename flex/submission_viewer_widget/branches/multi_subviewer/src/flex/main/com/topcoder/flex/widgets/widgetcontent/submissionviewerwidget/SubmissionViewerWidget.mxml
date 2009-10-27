@@ -7,13 +7,16 @@
 <!--
 
     This mxml component is the main entry point for the submission viewer widget.
-    
+
     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
         - correctly setting the view index for case of maximize.
 
-    @author shailendra_80, TCSASSEMBLER
+     Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Fixed code to show selected contest in the combo box.
+
+    @author shailendra_80, pulky
     @since Submission Viewer Overhaul
-    @version 1.0.1
+    @version 1.0.2
 -->
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                                      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
@@ -23,14 +26,14 @@
                                      height="100%"
                                      styleName="NewWidgetPanel"
                                      horizontalAlign="left"
-									 resizeEffect="{resize}">
+                                     resizeEffect="{resize}">
 
 
     <mx:Style source="Style.css"/>
 
     <mx:Script>
         <![CDATA[
-        	import mx.events.ResizeEvent;
+            import mx.events.ResizeEvent;
             import mx.core.Application;
             import mx.binding.utils.BindingUtils;
             import mx.controls.scrollClasses.ScrollBar;
@@ -78,7 +81,7 @@
              */
             [Bindable]
             public var _currentItemLabel:String="";
-            
+
             /**
             * To be shown submission on maximize.
             */
@@ -91,13 +94,13 @@
              * - It initializes webservices.
              * - It defines filter, maximize and restore callback functions
              * - It calls data services to load password and hence load the data from webservices.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - for maximize case, correctly setting the view index.
              */
             private function init():void {
                 trace("----------------------- init");
-                
+
                 this.model.subViewer=this;
 
                 // assigns itself to various child viewers.
@@ -110,7 +113,7 @@
 
                 //
                 // Setting self reference to the Air Viewer
-                // 
+                //
                 // since Cockpit Submission Viewer Widget Enhancement Part 1.
                 //
                 airViewer.subViewer=this;
@@ -121,14 +124,14 @@
                 this.maximizeFn=function():void {
                     trace("@@@@ Maximizing");
                     subViewer.selectedChild=gallery;
-                    
+
 
                     //ThumbnailGallerySubmissionViewer(gallery).doFilter();
 
                     /*if (!_tobeShownSubOnMaximize && submissionList.length > 0) {
                         _tobeShownSubOnMaximize=submissionList.getItemAt(0);
                     } */
-                    
+
                     if (_tobeShownSubOnMaximize) {
                         trace("_tobeShownSubOnMaximize::" + _tobeShownSubOnMaximize.id);
                         if (gallery.initialized) {
@@ -139,15 +142,15 @@
                     } else {
                          if (gallery.initialized) {
                              gallery.model.selectedIndex=-1;
-			                 gallery.handleContest(null);
-			                 if (gallery.model.selectedIndex==-1) {
+                             gallery.handleContest(null);
+                             if (gallery.model.selectedIndex==-1) {
                                 gallery.model.selectedIndex=0;
                             }
                         }
                         //gallery.handleContest(null);
 
                     }
-                    
+
                     _tobeShownSubOnMaximize=null;
                 }
 
@@ -155,6 +158,7 @@
                     trace("@@@@ Restoring");
                     subViewer.selectedChild=minPage;
                     minPage.list_minpage.dispatchEvent(new ResizeEvent("resize")); // BUGR-1392
+                    minPage.doFilter();
                 }
 
                 // initialize webservices.
@@ -179,13 +183,13 @@
                     initComponent();
                 }
             }
-            
+
             private function dummyServiceResultHandler(event:ResultEvent):void {
                     getDataService();
             }
-            
+
             private function dummyServiceFaultHandler(event:FaultEvent):void {
-                	getDataService();
+                    getDataService();
             }
 
             /**
@@ -217,9 +221,9 @@
 
             /**
              * Handle successful credit card purchase.
-             * 
+             *
              * Updated for Cockpit Release Assembly for Receipts.
-             * 
+             *
              * @param event the webservice result event.
              */
             private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void {
@@ -253,7 +257,7 @@
                     submissionCheckoutScreen.header.text="Your Transaction was Approved!";
                     submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
                     submissionCheckoutScreen.sub2.label="Download Submissions";
-		            submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
                 }
             }
 
@@ -306,9 +310,9 @@
              */
             public function continueFromGallery():void {
                 // action required
-                //		continue to confirmation screen if everything okay.
-                //		shows error text if  no submission selections + no winner not selected.
-                //		continue to abandon screen if no winner is selected.
+                //        continue to confirmation screen if everything okay.
+                //        shows error text if  no submission selections + no winner not selected.
+                //        continue to abandon screen if no winner is selected.
                 if (this.selectedContestStatusId == this.actionRequiredContestTypeId || this.selectedContestStatusId == this.inDangerContestTypeId) {
                     if (!ThumbnailGallerySubmissionViewer(gallery).isWinnerSelected()) {
                         subViewer.selectedChild=abandonConfirmationScreen;
@@ -418,7 +422,7 @@
             }
         ]]>
     </mx:Script>
-	 <mx:HTTPService
+     <mx:HTTPService
         id="dummyService"
         url="http://www.topcoder.com/"
         resultFormat="e4x"
@@ -438,13 +442,13 @@
 
      <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
          destination="contest-facade">
-		<mx:channelSet>
-			<mx:ChannelSet id="contestfacadeChannelSet">
-			    <mx:channels>
-				<mx:SecureAMFChannel uri="{_blazedsendpoint}"/>
-			    </mx:channels>
-			</mx:ChannelSet>
-		</mx:channelSet>
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                <mx:SecureAMFChannel uri="{_blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
         <mx:operation name="getContestDataOnly"
                       resultFormat="object"
                       result="handleResult(event)"
@@ -516,5 +520,5 @@
         <tc:SubmissionsCheckoutPage id="submissionCheckoutScreen"/>
         <tc:SubmissionsDownloadPage id="submissionsDownloadScreen"/>
     </mx:ViewStack>
-  <mx:Resize id="resize" /> 
+  <mx:Resize id="resize" />
 </tc:SubmissionViewerWidgetCodeBehind>
