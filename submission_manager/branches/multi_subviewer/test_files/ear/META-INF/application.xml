@@ -1,0 +1,32 @@
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN"
+ "http://java.sun.com/dtd/application_1_3.dtd">
+<application>
+    <display-name>Submission Manager</display-name>
+
+
+    <!-- Descriptor only ejb deployment (the classes are deployed as java modules) -->
+    <module>
+        <ejb>submission_manager.jar</ejb>
+    </module>
+    <module>
+        <java>contest_and_submission_entities.jar</java>
+    </module>
+    <module>
+        <java>base_exception.jar</java>
+    </module>
+    <module>
+        <java>logging_wrapper.jar</java>
+    </module>
+    <module>
+        <java>object_formatter.jar</java>
+    </module>
+    <module>
+        <java>typesafe_enum.jar</java>
+    </module>
+    <module>
+        <java>ifxjdbc.jar</java>
+    </module>
+    <module>
+        <java>informix-ds.xml</java>
+    </module>
+</application>
