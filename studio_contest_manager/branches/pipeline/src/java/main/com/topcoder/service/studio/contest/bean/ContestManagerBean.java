@@ -257,11 +257,15 @@ import com.topcoder.util.log.LogManager;
  * the thread-safety of this class when its EJB methods are called. So this
  * class can be used thread-safely in EJB container.
  * </p>
+ * <p>
+ * Version 1.3.2: Cockpit Release Assembly 10: Modify three getSimpleProjectContestData methods to get milestone date.
+ * </p>
  *
  * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @version 1.3.1
+ * @author murphydog
+ * @version 1.3.2
  * @since 1.0
  */
 @Stateless
@@ -3191,7 +3195,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 		            		+ "          from spec_review_status_type_lu as c " 
 		            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
 		            		+ " from spec_review as sr " 
-		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -3293,8 +3301,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     			+ "          from spec_review_status_type_lu as c " 
                     			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
                     			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
 					
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3398,8 +3410,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     			+ "          from spec_review_status_type_lu as c " 
                     			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
                     			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
 					
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
