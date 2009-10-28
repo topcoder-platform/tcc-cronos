@@ -20,9 +20,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * </p>
  * -----update in version 1.1---- Add the comments for some methods based on the
  * UML file.
+ *
+ * Version 1.2
+ * 	Add milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
  * 
- * @author will.xie, squarY
- * @version 1.1
+ * @author will.xie, squarY, murphydog
+ * @version 1.2
  */
 public class CommonProjectContestData {
     /**
@@ -118,6 +121,18 @@ public class CommonProjectContestData {
      * @since Cockpit Launch Contest - Inline Spec Reviews part 2
      */
     private String specReviewStatus;
+
+    /**
+     * The date of milestone(if exists).
+     * @since 1.2
+     */
+    private XMLGregorianCalendar milestoneDate;
+
+    /**
+     * The date of end of submission(only in software competitions).
+     * @since 1.2
+     */
+    private XMLGregorianCalendar submissionEndDate;
     
     /**
      * Returns the contestId.
@@ -520,5 +535,52 @@ public class CommonProjectContestData {
      */
     public void setSpecReviewStatus(String specReviewStatus) {
         this.specReviewStatus = specReviewStatus;
+    }
+
+
+    /**
+     * Gets the milestone date.
+     * 
+     * @return the milestone date
+     * 
+     * @since 1.2
+     */
+    public XMLGregorianCalendar getMilestoneDate() {
+        return milestoneDate;
+    }
+
+    /**
+     * Sets the milestone date.
+     * 
+     * @param milestoneDate
+     *            the new milestone dates
+     * 
+     * @since 1.2
+     */
+    public void setMilestoneDate(XMLGregorianCalendar milestoneDate) {
+        this.milestoneDate = milestoneDate;
+    }
+
+    /**
+     * Gets the submission end date.
+     * 
+     * @return submission end date
+     * 
+     * @since 1.2
+     */
+    public XMLGregorianCalendar getSubmissionEndDate() {
+        return submissionEndDate;
+    }
+
+    /**
+     * Sets the submission end date.
+     * 
+     * @param submissionEndDate
+     *            the new submission end date
+     * 
+     * @since 1.2
+     */
+    public void setSubmissionEndDate(XMLGregorianCalendar submissionEndDate) {
+        this.submissionEndDate = submissionEndDate;
     }
 }

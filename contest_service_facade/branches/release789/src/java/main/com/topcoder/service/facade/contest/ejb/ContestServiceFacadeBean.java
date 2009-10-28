@@ -207,9 +207,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * Changes in v1.2.1 updated to set creator user as Observer
  * created.
  * </p>
- * 
- * @author snow01, pulky
- * @version 1.2.1
+ * <p>
+ * Changes in v1.2.2 
+ * Modified getCommonProjectContestDataByPID and getCommonProjectContestData
+ * Handle milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
+ * </p>
+ * @author snow01, pulky, murphydog
+ * @version 1.2.2
  */
 @Stateless
 @WebService
@@ -4230,8 +4234,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
-                ret.add(newData);
+                newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
+		ret.add(newData);
             }
         }
 
@@ -4256,6 +4261,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
  			newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
@@ -4312,7 +4318,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
                 ret.add(newData);
             }
         }
@@ -4336,7 +4343,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
-			newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
