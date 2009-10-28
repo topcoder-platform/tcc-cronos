@@ -346,6 +346,7 @@
              id="title"
              verticalScrollPolicy="off"
              horizontalScrollPolicy="off"
+             buttonMode="true"
              click="handleClick()">
         <mx:Image width="16"
                   height="16"

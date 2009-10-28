@@ -14,10 +14,13 @@
         
      Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
         -  BUGR-2135: on refresh previous selected project and view is preserved.
+     Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
+        - Look and feel changed to match the prototype.
+        - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
 
      @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
-     @version 1.0.1
+     @version 1.0.2
 -->
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                             width="100%"
@@ -50,6 +53,7 @@
             import mx.core.UIComponent;
             import flash.events.Event;
             import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.utils.Status;
 
             /**
              * Moved the magic number 7, project list row size, to a const variable.
@@ -112,6 +116,36 @@
              */
             private var index:int=0;
             
+            /**
+             * Number of all scheduled contests.
+             */
+            [Bindable]
+            private var scheduledCnt:int = 0;
+            
+            /**
+             * Number of all active contests.
+             */
+            [Bindable]
+            private var activeCnt:int = 0;            
+            
+            /**
+             * Number of all completed contests.
+             */
+            [Bindable]
+            private var completedCnt:int = 0;
+            
+            /**
+             * Number of all action required contests.
+             */
+            [Bindable]
+            private var actionRequiredCnt:int = 0;
+            
+            /**
+             * project name.
+             */
+            [Bindable]
+            private var prjName:String = "";
+
             //private var _maxWidth:Number=0;
             //private var _maxHeight:Number=0;
 
@@ -153,25 +187,21 @@
                 timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
             }
 
-            /**
-             * Handler for left project panel open / close.
-             */
-            private function openCloseLeft():void {
-                open=!open;
-                arrow.selected=open;
-                if (open) {
-                    proList.visible=proList.includeInLayout=true;
-                    openEffect.play()
-                } else {
-                    closeEffect.play();
-                }
-            }
 
+            
             /**
-             * Effect handler for left project panel close.
+             * Calc the number of specified status.
              */
-            public function handleClose():void {
-                proList.visible=proList.includeInLayout=false;
+            private function getCountByStatus(status:String):int {
+                var rst:int = 0;
+                var curProj:Project=model.currentProj;
+                var contests:ArrayCollection = curProj.contests;
+                for (var cstIndex:int=0; cstIndex < contests.length; cstIndex++) {
+                    if (contests[cstIndex].status == status) {
+                        rst++;
+                    }
+                }
+                return rst;
             }
 
             /**
@@ -226,6 +256,7 @@
                 //trace(">>>>>>>> handleSelect start: " + new Date());
                 if (proList.selectedItem || (model.proList && proList.selectedIndex >= 0 && proList.selectedIndex < model.proList.length)) {
                     doFadeOut();
+                    prjName = model.currentProj.name;
                 } else {
                     return;
                 }
@@ -282,12 +313,10 @@
 
                     stack.selectedIndex=buttonSelectedIndex;
                     if (buttonSelectedIndex == 0) {
-			       		detailsBtn.enabled = true;
-						contestBtn.enabled = false;
+                        detailsBtn.enabled = true;
                         _direction="LEFT";
                     } else {
-						detailsBtn.enabled = false;
-						contestBtn.enabled = true;
+                        detailsBtn.enabled = false;
                         _direction="RIGHT";
                     }
                     
@@ -305,6 +334,10 @@
                         model.currentProj=model.proList.getItemAt(proList.selectedIndex) as Project;
                     }
                 }
+                scheduledCnt = getCountByStatus(Status.SCHEDULED);
+                activeCnt = getCountByStatus(Status.ACTIVE);
+                completedCnt = getCountByStatus(Status.COMPLETED);
+                actionRequiredCnt = getCountByStatus(Status.ACTION_REQUIRED);
                 
                 //trace(">>>>>>>> rotate end: " + new Date());
             }
@@ -329,7 +362,7 @@
             private function doRotate(event:Event):void {
                 //trace(">>>>>>>> doRotate start: " + new Date());
                 
-                if (event.currentTarget.label == "DETAILS") {
+                if (event.currentTarget.label == "Project Info") {
                     buttonSelectedIndex=1;
                 } else {
                     buttonSelectedIndex=0;
@@ -385,60 +418,6 @@
               //                //trace(">>>>>>>> setList end: " + new Date());
               //            }
 
-            /**
-             * Pagination handler for project list.
-             * 
-             * Updated for Version 1.0.1
-             *    - refactored: have put the logic of show/hide of pagination buttons 
-             *      in another method 'showHideProjListPagination'.
-             *    - refactored: have put the logic of setting index and proList.verticalScrollPosition 
-             *      in another method 'setIndex'
-             *
-             * @param up true if up pagination, false if down pagination.
-             */
-            private function moveList(up:Boolean):void {
-                if (index > 0 && up) {
-                    setPaginationIndex(index-1);
-                } else if (!up && index < proList.dataProvider.length - 7) {
-                    setPaginationIndex(index+1);
-                }
-
-                showHideProjListPagination();
-            }
-            
-            /**
-             * It sets the pagination index for the left hand side project list.
-             * 
-             * Refactored from moveList method.
-             * 
-             * @since 1.0.1 
-             */ 
-            private function setPaginationIndex(i:int):void {
-                var diff:int=i-index;
-                
-                index+=diff;
-                proList.verticalScrollPosition=proList.verticalScrollPosition + diff;
-            }
-            
-            /**
-             * It shows hides project list pagination controls.
-             * 
-             * Refactored from moveList method.
-             * 
-             * @since 1.0.1 
-             */ 
-            private function showHideProjListPagination():void {
-                if (index == 0) {
-                    prevBtn.visible=false;
-                } else {
-                    prevBtn.visible=true
-                }
-                if (index >= model.proList.length - ProjectListRowSize) {
-                    nextBtn.visible=false;
-                } else {
-                    nextBtn.visible=true;
-                }
-            }
 
             /**
              * Webservice result event handler for project contest data retrieval.
@@ -473,7 +452,7 @@
                                 break;
                             }
                             if (prjArray[i].contestId != null && prjArray[i].contestId != 0) {
-                                var c:Contest=new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate, prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for, prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner);
+                                var c:Contest=new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate, prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for, prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner, prjArray[i].milestoneDate, prjArray[i].submissionEndDate);
                                 c.permission=prjArray[i].cperm;
                                 if (prjArray[i].endDate != null) {
                                     c.date=DateUtil.parseFromString(prjArray[i].endDate);
@@ -483,28 +462,23 @@
 
                         }
 
-                        sortByName(contests);
+                        sortByTime(contests);
                         
                         var newp:Project=projectMap[projectId];
-                        if (!newp) {
-                            newp=new Project(projectId.toString(),pname,pdesc,"",owner,contests);
-        			        newp.permission=prjArray[prjIdx].pperm;
-        			        model.proList.addItem(newp);
-        			        projectMap[projectId]=newp;
-                        } 
-                        
-                        newp.owner=owner;
-                        newp.permission=prjArray[prjIdx].pperm;
-                        
-                        for each (var cont:Contest in contests) {
-                            newp.addContest(cont);
+                        if (newp) {
+                            newp.owner=owner;
+                            newp.permission=prjArray[prjIdx].pperm;
+                            
+                            for each (var cont:Contest in contests) {
+                                newp.addContest(cont);
+                            }
                         }
                         
         			    prjIdx=i;
                         
                     }
 
-                    sortByName(model.proList);
+                    sortByTime(model.proList);
 
                     //
                     // Updated for Version 1.0.1 [BUGR-2135]
@@ -542,10 +516,38 @@
                         proList.selectedIndex=selectedProjectIndex;
                         index=0;
                         proList.verticalScrollPosition=0;
-                        setPaginationIndex(selectedProjectIndex);
-                        showHideProjListPagination();
                     }
                 }
+                scheduledCnt = getCountByStatus(Status.SCHEDULED);
+                activeCnt = getCountByStatus(Status.ACTIVE);
+                completedCnt = getCountByStatus(Status.COMPLETED);
+                actionRequiredCnt = getCountByStatus(Status.ACTION_REQUIRED);
+                projectName.text = "Project Name: " + model.currentProj.name;
+            }
+
+
+            
+            /**
+             * Sort by the start time.
+             */
+            private function sortByTime(coll:ArrayCollection):void {
+                //trace(">>>>>>>> sortByName start: " + new Date());
+                if (!coll.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareTime;
+                    coll.sort=sort;
+                }
+
+                coll.refresh();
+                
+                //trace(">>>>>>>> sortByName end: " + new Date());
+            }
+
+            /**
+             * Callback function on sorting by name.
+             */
+            private function compareTime(a:Object, b:Object, fields:Array=null):int {
+                return -ObjectUtil.stringCompare(a.startDate, b.startDate, true);
             }
 
             /**
@@ -666,137 +668,122 @@
                           duration="1000"
                           suspendBackgroundProcessing="true"
                           effectEnd="effectEnd(event)"/>
-    <mx:Resize widthFrom="160"
-               widthTo="1"
-               heightFrom="{proDetail.height}"
-               heightTo="{proDetail.height}"
-               id="closeEffect"
-               effectEnd="handleClose()"
-               target="{left}"/>
-    <mx:Resize widthFrom="1"
-               widthTo="160"
-               heightFrom="{proDetail.height}"
-               heightTo="{proDetail.height}"
-               id="openEffect"
-               target="{left}"/>
-    <mx:VBox height="100%"
-             width="160"
-             paddingLeft="0"
-             paddingRight="0"
-             borderSides="right"
-             backgroundColor="#E6E6E6"
-             horizontalScrollPolicy="off"
-             borderStyle="solid"
-             borderColor="#D5D5D5"
-             id="left"
-             horizontalAlign="center">
-        <mx:Button id="prevBtn"
-                   buttonMode="true"
-                   click="moveList(true)"
-                   styleName="up"
-                   visible="false"/>
-        <mx:TileList id="proList"
-                     width="152"
-                     height="100%"
-                     variableRowHeight="true"
-                     rowHeight="50"
-                     backgroundColor="#E6E6E6"
-                     rollOverColor="#FAFAFA"
-                     paddingLeft="0"
-                     paddingRight="0"
-                     borderStyle="none"
-                     rowCount="{ProjectListRowSize}"
-                     selectionColor="#FFFFFF"
-                     dataProvider="{model.proList}"
-                     labelField="name"
-                     wordWrap="true"
-                     allowMultipleSelection="false"
-                     allowDragSelection="false"
-                     useHandCursor="true"
-                     change="handleSelect()"
-                     verticalScrollPolicy="off"
-                     horizontalScrollPolicy="off"
-                     selectable="true"
-                     columnCount="1"
-                     styleName="listStyle"
-                     itemsChangeEffect="{myDTLE}"/>
-        <mx:Button id="nextBtn"
-                   buttonMode="true"
-                   click="moveList(false)"
-                   styleName="down"/>
-    </mx:VBox>
+    <mx:HDividedBox width="100%" height="100%">
+        <mx:VBox height="100%"
+                 width="160"
+                 paddingLeft="0"
+                 paddingRight="0"
+                 borderSides="right"
+                 backgroundColor="#E6E6E6"
+                 horizontalScrollPolicy="off"
+                 borderStyle="solid"
+                 borderColor="#D5D5D5"
+                 id="left"
+                 horizontalAlign="center">
+            <mx:List id="proList"
+                         width="100%"
+                         height="100%"
+                         variableRowHeight="true"
+                         rowHeight="50"
+                         backgroundColor="#E6E6E6"
+                         rollOverColor="#FAFAFA"
+                         paddingLeft="0"
+                         paddingRight="0"
+                         borderStyle="solid"
+                         rowCount="{ProjectListRowSize}"
+                         selectionColor="#FFFFFF"
+                         dataProvider="{model.proList}"
+                         labelField="name"
+                         wordWrap="true"
+                         allowMultipleSelection="false"
+                         allowDragSelection="false"
+                         useHandCursor="true"
+                         change="handleSelect()"
+                         verticalScrollPolicy="off"
+                         horizontalScrollPolicy="off"
+                         selectable="true"
+                         styleName="listStyle"
+                         itemsChangeEffect="{myDTLE}"/>
+        </mx:VBox>
 
-    <mx:VBox id="proDetail"
-             width="100%"
-             height="100%"
-             borderColor="#D5D5D5"
-             verticalGap="0"
-             paddingTop="0"
-             paddingBottom="0"
-             paddingLeft="0"
-             paddingRight="0">
-        <mx:HBox id="buttonBar"
+        <mx:VBox id="proDetail"
                  width="100%"
-                 height="38"
+                 height="100%"
+                 borderColor="#D5D5D5"
+                 verticalGap="0"
                  paddingTop="0"
                  paddingBottom="0"
                  paddingLeft="0"
                  paddingRight="0">
-            <mx:Button id="arrow"
-                       styleName="arrowBtnStyle"
-                       selected="true"
-                       click="openCloseLeft()"/>
-            <mx:Spacer width="100%"/>
-            <mx:Button id="detailsBtn"
-                       label="DETAILS"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       styleName="button"
-                       buttonMode="true"
-                       click="doRotate(event)"/>
-            <mx:Spacer width="5"/>
-            <mx:Button id="contestBtn"
-                       label="CONTESTS"
-		       		   enabled="false"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       styleName="button"
-                       buttonMode="true"
-                       click="doRotate(event)"/>
-            <mx:Spacer width="5"/>
-            <mx:Button id="openPrjInNewTabBtn"
-                       label="Open in New Tab"
-                       labelPlacement="{ButtonLabelPlacement.LEFT}"
-                       styleName="button"
-                       buttonMode="true"
-                       click="openProjectInNewTab()"/>
-        </mx:HBox>
-        <mx:HBox width="100%"
-                 horizontalAlign="center">
-            <mx:Text styleName="listStyle"
-                     text="{details.prjName.text}"/>
-        </mx:HBox>
-        <mx:Canvas minHeight="368"
-                   height="100%"
-                   id="viewContainer"
-                   verticalScrollPolicy="off"
-                   width="100%">
-            <mx:ViewStack width="100%"
-                          left="3"
-                          minHeight="368"
-                          height="100%"
-                          backgroundAlpha="1.0"
-                          paddingLeft="12"
-                          paddingRight="0"
-                          paddingTop="15"
-                          paddingBottom="0"
-                          resizeToContent="true"
-                          clipContent="true"
-                          id="stack">
-                <tc:Contests width="100%" height="100%" id="contest"
-                             backgroundColor="#ffffff"/>
-                <tc:ProjectDetails width="100%" height="100%" id="details"
-                                   backgroundColor="#ffffff"/>
-            </mx:ViewStack>
-        </mx:Canvas>
-    </mx:VBox>
+            <mx:HBox width="100%">
+                <mx:HBox horizontalAlign="left">
+                    <mx:Text styleName="projectNameStyle"
+                        id="projectName"
+                        text="Project Name: {details.prjName.text}"/>
+                    <mx:LinkButton label="Edit" styleName="linkBtn" />
+                </mx:HBox>
+                <mx:Spacer width="100%"/> 
+                <mx:HBox id="buttonBar"
+                         height="38"
+                         paddingTop="0"
+                         paddingBottom="0"
+                         paddingLeft="0"
+                         paddingRight="0"
+                         horizontalAlign="right">
+                    <mx:Image width="20" height="20" id="videoIcon" source="@Embed('../assets/video.png')"/>
+                    <mx:Spacer width="5"/>
+                    <mx:Button id="detailsBtn"
+                               label="Project Info"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               styleName="button"
+                               buttonMode="true"
+                               click="doRotate(event)"/>
+                    <mx:Spacer width="5"/>
+                    <mx:Button id="openPrjInNewTabBtn"
+                               label="Open in New Tab"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               styleName="button"
+                               buttonMode="true"
+                               click="openProjectInNewTab()"/>
+                </mx:HBox>
+            </mx:HBox>
+            <mx:VBox width="100%"
+                     horizontalAlign="left">
+                <mx:Text styleName="normalStyle"
+        paddingTop="0"
+        paddingBottom="0"
+                         text="Scheduled Contests: {scheduledCnt}"/>
+                <mx:Text styleName="normalStyle"
+                         text="Active Contests: {activeCnt}"/>
+                <mx:Text styleName="normalStyle"
+                         text="Completed Contests: {completedCnt}"/>
+                <mx:Text styleName="normalStyle"
+                         text="Action Required: {actionRequiredCnt}"/>
+             </mx:VBox>
+            <mx:Canvas minHeight="736"
+                       height="100%"
+                       id="viewContainer"
+                       verticalScrollPolicy="off"
+                       width="100%">
+                <mx:ViewStack width="100%"
+                              left="3"
+                              minHeight="736"
+                              height="100%"
+                              backgroundAlpha="1.0"
+                              paddingLeft="12"
+                              paddingRight="0"
+                              paddingTop="0"
+                              paddingBottom="0"
+                              resizeToContent="true"
+                              clipContent="true"
+                              id="stack">
+                    <tc:Contests width="100%" height="100%" id="contest"
+                                 backgroundColor="#ffffff"/>
+                    <tc:ProjectDetails width="100%" height="100%" id="details"
+                                       backgroundColor="#ffffff"/>
+                </mx:ViewStack>
+            </mx:Canvas>
+        </mx:VBox>
+    </mx:HDividedBox>
     <mx:Resize id="resize" /> 
 </tc:ProjectWidgetCodeBehind>
