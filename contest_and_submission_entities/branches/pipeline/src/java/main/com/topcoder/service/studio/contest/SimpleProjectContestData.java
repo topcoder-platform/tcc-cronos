@@ -31,8 +31,10 @@ import javax.xml.datatype.DatatypeConfigurationException;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author will.xie, TCSDEVELOPER
- * @version 1.0
+ * Version 1.1
+ * 	Add milestoneDate  for Cockpit Release Assembly 10 - My Projects v1.0
+ * @author will.xie, TCSDEVELOPER, murphydog
+ * @version 1.1
  */
 @SqlResultSetMapping(
         name="ContestForMyProjectResults",
@@ -53,7 +55,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
                         @FieldResult(name="createUser",         column="create_user"),
                         @FieldResult(name="cperm",           column="cperm"),
                         @FieldResult(name="pperm",           column="pperm"),
-						@FieldResult(name = "specReviewStatus", column = "spec_review_status")
+			@FieldResult(name = "specReviewStatus", column = "spec_review_status"),
+			@FieldResult(name = "milestoneDate", column = "milestone_date")
                         }
         )})
 @Entity
@@ -158,6 +161,13 @@ public class SimpleProjectContestData {
      * @since Cockpit Launch Contest - Inline Spec Reviews part 2
      */
     private String specReviewStatus;
+
+    /**
+     * The date of milestone(if exists).
+     * @since 1.1
+     */
+    private Date milestoneDate;
+
 
 
     /**
@@ -536,4 +546,27 @@ public class SimpleProjectContestData {
     public void setSpecReviewStatus(String specReviewStatus) {
         this.specReviewStatus = specReviewStatus;
     }
+
+    /**
+     * Gets the milestone date.
+     * 
+     * @return the milestone date
+     * 
+     * @since 1.1
+     */
+    public XMLGregorianCalendar getMilestoneDate() {
+        return getXMLGregorianCalendar(milestoneDate);
+    }
+
+    /**
+     * Sets the milestone date.
+     * 
+     * @param milestoneDate
+     *            the new milestone dates
+     * 
+     * @since 1.1
+     */
+    public void setMilestoneDate(XMLGregorianCalendar milestoneDate) {
+        this.milestoneDate = getDate(milestoneDate);
+    }    
 }
