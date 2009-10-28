@@ -165,6 +165,12 @@
                     greenWidth = Math.min(greenWidth, capacityWidth);
                     yellowWidth = Math.min(yellowWidth, capacityWidth);
                 }
+                // else reset
+                else
+                {
+                    greenWidth = 0;
+                    yellowWidth = 0;
+                }
             }
 
             /**
@@ -611,14 +617,17 @@
                     <mx:Text
                         paddingTop="-2"
                         paddingBottom="-2"
+                        height = "15"
                         htmlText="Registrations: "/>
                     <mx:Text
                         paddingTop="-2"
                         paddingBottom="-2"
+                        height = "15"
                         htmlText="Submissions: "/>
                     <mx:Text
                         paddingTop="-2"
                         paddingBottom="-2"
+                        height = "15"
                         htmlText="Forum Posts: "/>
                 </mx:VBox>
                 <mx:VBox horizontalAlign="left" verticalAlign="top">
@@ -626,6 +635,7 @@
                         paddingTop="-2"
                         paddingBottom="-2"
                         width="100%"
+                        height = "15"
                         id="lblRegistrants"
                         htmlText="{contest.registrants}"/>
                     <mx:LinkButton 
@@ -633,6 +643,7 @@
                         paddingBottom="-2"
                         paddingLeft="0"
                         paddingRight="0"
+                        height = "15"
                         id="lblSubmissions"
                         textDecoration="underline"
                         label="{setLinkProperties(contest.submissions, lblSubmissions, showSubmission)}"/>
@@ -641,6 +652,7 @@
                         paddingBottom="-2"
                         paddingLeft="0"
                         paddingRight="0"
+                        height = "15"
                         id="lblForumPosts"
                         textDecoration="underline"
                         label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
@@ -654,7 +666,7 @@
                 verticalCenter="0"
                 horizontalCenter="0"
                 width="{capacityWidth}"
-                height="30"
+                height="15"
                 mask="{roundMask}">
                 
                 <degrafa:GeometryGroup
@@ -673,7 +685,7 @@
                                     color="#479B55"/>
                                 <degrafa:SolidFill
                                     id="colorTwo"
-                                    color="#989B47"/>
+                                    color="#F0E765"/>
                                 <degrafa:SolidFill
                                     id="colorThree"
                                     color="#FFFFFF"/>

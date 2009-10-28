@@ -750,14 +750,18 @@
             <mx:VBox width="100%"
                      horizontalAlign="left">
                 <mx:Text styleName="normalStyle"
-        paddingTop="0"
-        paddingBottom="0"
+                            paddingTop="0"
+                            paddingBottom="0"
+                            height = "10"
                          text="Scheduled Contests: {scheduledCnt}"/>
                 <mx:Text styleName="normalStyle"
+                         height = "10"
                          text="Active Contests: {activeCnt}"/>
                 <mx:Text styleName="normalStyle"
+                         height = "10"
                          text="Completed Contests: {completedCnt}"/>
                 <mx:Text styleName="normalStyle"
+
                          text="Action Required: {actionRequiredCnt}"/>
              </mx:VBox>
             <mx:Canvas minHeight="736"
