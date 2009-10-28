@@ -313,10 +313,15 @@
 
                     stack.selectedIndex=buttonSelectedIndex;
                     if (buttonSelectedIndex == 0) {
+
+                        detailsBtn.label = "Project Info";
                         detailsBtn.enabled = true;
+                        
                         _direction="LEFT";
                     } else {
-                        detailsBtn.enabled = false;
+
+                        detailsBtn.label = "Contests";
+                        detailsBtn.enabled = true;
                         _direction="RIGHT";
                     }
                     
@@ -699,7 +704,7 @@
                          allowDragSelection="false"
                          useHandCursor="true"
                          change="handleSelect()"
-                         verticalScrollPolicy="off"
+                         verticalScrollPolicy="auto"
                          horizontalScrollPolicy="off"
                          selectable="true"
                          styleName="listStyle"
@@ -761,7 +766,7 @@
                          height = "10"
                          text="Completed Contests: {completedCnt}"/>
                 <mx:Text styleName="normalStyle"
-
+                   
                          text="Action Required: {actionRequiredCnt}"/>
              </mx:VBox>
             <mx:Canvas minHeight="736"
