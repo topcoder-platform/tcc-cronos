@@ -110,7 +110,8 @@ import com.topcoder.util.log.Log;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
- *
+ * Version 1.2.1 Cockpit Release Assembly 10
+ *     - Change three getSimpleProjectContestData methods, to include the submission_end_date
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
@@ -120,8 +121,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky
- * @version 1.2
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog
+ * @version 1.2.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -537,7 +538,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "          from spec_review_status_type_lu as c " 
             + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             + " from spec_review as sr " 
-            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
@@ -583,7 +588,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     + "          from spec_review_status_type_lu as c " 
     + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
     + " from spec_review as sr " 
-    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "	
+    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "	
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
@@ -612,7 +621,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
 		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
 			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,Helper.DATE_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -3079,6 +3088,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * <p>
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * </p>
      * 
      * @return the full list of contests.
@@ -3165,6 +3176,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 {
                     ret[i].setSpecReviewStatus((String)rows[i][18]);
                 }
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3207,6 +3222,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
      * </p>
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * 
      * @param pid the specified tc project id for which to get the list of contest.
      * @return the list of contest for specified tc project id.
@@ -3299,6 +3316,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     ret[i].setSpecReviewStatus((String)rows[i][18]);
                 }
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
+
 			}
 
 			closeConnection(conn);
@@ -3340,6 +3362,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * Updated for Spec Reviews Finishing Touch v1.0
      *  - Changed the way now spec status is queried.
 	 * 
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
 	 * @param createdUser the specified user for which to get the list of contest.
 	 * @return the list of contest for specified user.
 	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -3383,7 +3407,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             		+ "          from spec_review_status_type_lu as c " 
             		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             		+ " from spec_review as sr " 
-            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+" and p.project_status_id != 3";
@@ -3464,6 +3492,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     ret[i].setSpecReviewStatus((String)rows[i][18]);
                 }
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
 			}
 
 			closeConnection(conn);
