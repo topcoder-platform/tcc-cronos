@@ -99,6 +99,6 @@ public interface ContestEligibilityManager {
      * @throws IllegalArgumentException
      *             if contestId is not positive
      */
-    public Set<Long> haveEligibility(long[] contestids, boolean isStudio)
+    public Set<Long> haveEligibility(Long[] contestids, boolean isStudio)
          throws ContestEligibilityPersistenceException;
 }

@@ -251,7 +251,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      *             if contestId is not positive
      */
     @SuppressWarnings("unchecked")
-    public Set<Long> haveEligibility(long[] contestids, boolean isStudio) {
+    public Set<Long> haveEligibility(Long[] contestids, boolean isStudio) {
         logEntrance("ContestEligibilityManagerBean#haveEligibility", new String[] {"contestId[]",
             "isStudio"}, new Object[]{contestids, isStudio});
 
@@ -262,12 +262,12 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
             return result;
         }
         
-        String ids = "(" + contestids[0] ;
+        String ids = "(" + contestids[0].longValue();
         if (contestids.length > 1)
         {
             for (int i = 1; i < contestids.length; i++)
             {
-                ids += ", " + contestids[i];
+                ids += ", " + contestids[i].longValue();
             }
         }
         
