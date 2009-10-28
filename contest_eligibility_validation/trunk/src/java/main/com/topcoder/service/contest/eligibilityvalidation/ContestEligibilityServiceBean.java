@@ -150,7 +150,7 @@ public class ContestEligibilityServiceBean implements ContestEligibilityServiceL
      * @throws IllegalArgumentException
      *             if contestId is not positive
      */
-    public Set<Long> haveEligibility(long[] contestids, boolean isStudio) throws ContestEligibilityValidatorException
+    public Set<Long> haveEligibility(Long[] contestids, boolean isStudio) throws ContestEligibilityValidatorException
     {
 
         try {
