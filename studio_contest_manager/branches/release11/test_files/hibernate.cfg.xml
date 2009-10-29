@@ -1,0 +1,28 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory name="contestAndSubmission">
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">
+			com.informix.jdbc.IfxDriver
+		</property>
+		<property name="connection.url">
+			jdbc:informix-sqli://192.168.0.3:1526/contest:informixserver=informix_server
+		</property>
+		<property name="connection.username">informix</property>
+		<property name="connection.password">101777</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">
+			org.hibernate.dialect.InformixDialect
+		</property>
+		<property name="use_sql_comments">false</property>
+		<property name="show_sql">false</property>
+
+		<!--  Entity Mappings -->
+
+		
+	</session-factory>
+</hibernate-configuration>
