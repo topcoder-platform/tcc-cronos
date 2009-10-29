@@ -10,10 +10,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
-     * Version 1.1
-     * Add milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
+     *
      * @author TCSDEVELOPER
-     * @version 1.1
+     * @version 1.0
      * @since My Project Overhaul Assembly.
      */
     [Bindable]
@@ -113,18 +112,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
         
         public var createUser:String;
 
-    /**
-     * The date of milestone(if exists).
-     * @since 1.1
-     */
-    public var milestoneDate:Date;
-
-    /**
-     * The date of end of submission(only in software competitions).
-     * @since 1.1
-     */
-    public var submissionEndDate:Date;
-
         /**
          * A simple constructor which assigns parameters to member variables.
          *
@@ -139,7 +126,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
          * @param _sts status type of the contest.
          * @param _type type of the contest.
          */
-        public function Contest(_pName:String, _pid:String,_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String, _reviewStatus:String, _createUser:String, _mlsDate:String, _subEndDate:String) {
+        public function Contest(_pName:String, _pid:String,_id:String, _name:String, _stDt:String, _eDt:String, _regs:int, _subs:int, _fPost:int, _fId:String, _sts:String, _type:String, _reviewStatus:String, _createUser:String) {
             this.projName=_pName;
             this.projId=_pid;
             this.id=_id;
@@ -162,8 +149,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.vo {
             
             this.reviewStatus=_reviewStatus;
             this.createUser=_createUser;
-            this.milestoneDate = DateUtil.parseFromString(_mlsDate);
-            this.submissionEndDate = DateUtil.parseFromString(_subEndDate);
         }
     }
 }
