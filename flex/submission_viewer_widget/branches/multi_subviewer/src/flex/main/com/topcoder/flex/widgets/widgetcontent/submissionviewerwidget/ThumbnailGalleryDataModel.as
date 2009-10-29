@@ -800,6 +800,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             var found:Boolean=false;
             for (var i:int=0; i < submissionList.length && !found; i++) {
                 found = submissionList[i].awardMilestonePrize;
+                if (found)
+                {
+                    return true;
+                }
             }
             return found;
         }
