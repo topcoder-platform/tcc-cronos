@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <project name="Test Project 1" description="This is test project Active" status="Active">
+    <contests>
+      <contest id="1234" name="Flex cockpit 'lanch a context' Widget ">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+      <contest id="1235" name="Flex timeline">
+        <start_date>12.09.2008</start_date>
+        <end_date>12.11.2008</end_date>
+        <registrants>3</registrants>
+        <submissions>0</submissions>
+        <forum_posts>3</forum_posts>
+        <forum_id>321</forum_id>
+        <status>Active - Public</status>
+      </contest>
+      <contest id="1236" name="Flex contest 1">
+        <start_date>12.10.2008</start_date>
+        <end_date>12.14.2008</end_date>
+        <registrants>0</registrants>
+        <submissions>0</submissions>
+        <forum_posts>0</forum_posts>
+        <forum_id>444</forum_id>
+        <status>Draft</status>
+      </contest>
+    </contests>
+  </project>
+  <project name="Test Project Completed" description="This is test Completed" status="Completed">
+    <contests>
+      <contest id="1234" name="Flex contest 2">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+  	</contests>
+   </project>
+   <project name="Test Project In Danger" description="This is test project In Danger" status="In Danger">
+    <contests>
+      <contest id="1234" name="">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+  	</contests>
+   </project>
+   <project name="Test Project Scheduled" description="This is test project Scheduled" status="Scheduled">
+    <contests>
+      <contest id="1234" name="">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+  	</contests>
+   </project>
+   <project name="Test Project Draft" description="This is test project Draft" status="Draft">
+    <contests>
+      <contest id="1234" name="">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+  	</contests>
+   </project>
+   <project name="Test Project Terminated" description="This is test project Terminated" status="Terminated">
+    <contests>
+      <contest id="1234" name="">
+        <start_date>12.08.2008</start_date>
+        <end_date>12.10.2008</end_date>
+        <registrants>12</registrants>
+        <submissions>2</submissions>
+        <forum_posts>23</forum_posts>
+        <forum_id>345</forum_id>
+        <status>Active - Public</status>
+      </contest>
+  	</contests>
+   </project>
+</projects>
