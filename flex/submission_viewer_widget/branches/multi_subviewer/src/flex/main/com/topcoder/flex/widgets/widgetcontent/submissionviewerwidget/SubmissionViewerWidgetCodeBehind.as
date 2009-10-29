@@ -1135,8 +1135,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             if (map.hasOwnProperty("reload")) {
                 showLoadingProgress();
 
-                // reload the widget data. (show all contests the user has access to)
-                this.contestServiceFacadeWS.getContestDataOnly();
+                // reload the widget data.
+                if (pid) {
+                    this.contestServiceFacadeWS.getContestDataOnlyByPID(pid);
+                } else {
+                    this.contestServiceFacadeWS.getContestDataOnly();
+                }
             }
         }
 
@@ -1295,9 +1299,15 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         }
                     }
 
+                    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.7
+                    // show only the toBeLoadedContestId, as passed from my project widget.
                     if (this.activeContestTypeIds[contestInfo.statusId] == true || this.pastContestTypeIds[contestInfo.statusId] == true) {
-                        this.contestInfoList.addItem(contestInfo);
-                        this.contestInfoDictionary[contestInfo.id]=contestInfo;
+                        if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
+
+                            this.contestInfoList.addItem(contestInfo);
+                            this.contestInfoDictionary[contestInfo.id]=contestInfo;
+                        }
                     } else if (!this.tobeLoadedContestId || contestInfo.id == this.tobeLoadedContestId) {
                         this.contestInfoList.addItem(contestInfo);
                         this.contestInfoDictionary[contestInfo.id]=contestInfo;
