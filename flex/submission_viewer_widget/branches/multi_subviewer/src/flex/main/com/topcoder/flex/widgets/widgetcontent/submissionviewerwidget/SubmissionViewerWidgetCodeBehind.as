@@ -1808,7 +1808,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 if (item.awardMilestonePrize) {
                     // only add to purchase and checkout lists if there is a submission after milestone date from
                     // this same submitter that passed screening.
-                    if (shouldAwardMilestonePrize(item.submitterId)) {
+                    //if (shouldAwardMilestonePrize(item.submitterId)) {
                         var milestonePrize:Object=new Object();
                         milestonePrize.id=item.id;
                         milestonePrize.rank=0;
@@ -1816,7 +1816,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         milestonePrize.price = this.contestInfoDictionary[this.selectedContestId].milestonePrizeAmount;
                         this.checkoutList.addItem(milestonePrize);
                         this.purchaseList.addItem(milestonePrize);
-                    }
+                    //}
 
                     totalMoney+=this.contestInfoDictionary[this.selectedContestId].milestonePrizeAmount;
                 }
