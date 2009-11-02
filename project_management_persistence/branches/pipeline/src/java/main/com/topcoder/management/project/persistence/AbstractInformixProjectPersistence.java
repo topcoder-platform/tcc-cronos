@@ -522,7 +522,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for, "
+			// fixed forum post
+            + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            + "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -570,7 +573,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 	+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-	+ " 0 as num_for, "
+	// fixed forum post
+    + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+    + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+    + "             and pi.project_id =  p.project_id) as num_for, "
 	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -3167,19 +3173,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				if (rows[i][16] != null) {
 				    ret[i].setCperm((String) rows[i][16]);
 				}
-				
-				if (rows[i][17] != null) {
+            
+				if (rows[i][17] != null) 
+                {
                     ret[i].setPperm((String) rows[i][17]);
                 }
+                
 
 				if (rows[i][18] != null)
                 {
                     ret[i].setSpecReviewStatus((String)rows[i][18]);
                 }
 				if (rows[i][19] != null)
-		                {
-                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
-		                }
+		        {
+                    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		        }
+
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3302,7 +3311,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				    ret[i].setCperm((String) rows[i][16]);
 				}
 				
-				if (rows[i][17] != null) {
+				if (rows[i][17] != null) 
+				{
                     ret[i].setPperm((String) rows[i][17]);
                 }
 
@@ -3389,7 +3399,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for , "
+			// fixed forum post
+            + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            + "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -3478,7 +3491,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				    ret[i].setCperm((String) rows[i][16]);
 				}
 				
-				if (rows[i][17] != null) {
+				if (rows[i][17] != null) 
+				{
                     ret[i].setPperm((String) rows[i][17]);
                 }
 
