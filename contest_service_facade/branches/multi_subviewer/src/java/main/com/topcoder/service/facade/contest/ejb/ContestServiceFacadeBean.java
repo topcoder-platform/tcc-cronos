@@ -196,12 +196,21 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * created.
  * </p>
  * <p>
+ * Changes in v1.2.1 updated to set creator user as Observer
+ * created.
+ * </p>
+ * <p>
+ * Changes in v1.2.2 
+ * Modified getCommonProjectContestDataByPID and getCommonProjectContestData
+ * Handle milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
+ * </p>
+ * <p>
  * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
  * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
  * - Added support for milestone prizes payment.
  * </p>
  * 
- * @author snow01, pulky
+ * @author snow01, pulky, murphydog
  * @version 1.3
  */
 @Stateless
@@ -4233,8 +4242,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
-                ret.add(newData);
+                newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
+		ret.add(newData);
             }
         }
 
@@ -4258,7 +4268,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
- 			newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+ 	    newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
@@ -4315,7 +4326,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
                 ret.add(newData);
             }
         }
@@ -4339,7 +4351,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
-			newData.setSpecReviewStatus(data.getSpecReviewStatus());
+	    newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
