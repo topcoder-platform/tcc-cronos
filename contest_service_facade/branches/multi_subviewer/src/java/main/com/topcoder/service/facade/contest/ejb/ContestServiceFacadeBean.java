@@ -2481,6 +2481,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         ContestPaymentResult contestPaymentResult = null;
 
+        PaymentResult result = null;
+
         try {
             long contestId = competition.getContestData().getContestId();
 
@@ -2530,7 +2532,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     "");
             }
 
-            PaymentResult result = null;
+            
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
@@ -2633,13 +2635,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 paymentAmount, paymentAmount, result.getReferenceNumber());
 
             return contestPaymentResult;
+
         } catch (PersistenceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (PaymentException e) {
             sessionContext.setRollbackOnly();
             throw e;
         } catch (ContestNotFoundException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (EmailMessageGenerationException e) {
@@ -2647,6 +2652,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new PaymentException(e.getMessage(), e);
         }
@@ -2749,6 +2755,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         SoftwareContestPaymentResult softwareContestPaymentResult = null;
 
+         PaymentResult result = null;
+
         try {
             long contestId = competition.getProjectHeader().getId();
         	double pastPayment=0;
@@ -2779,7 +2787,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
-            PaymentResult result = null;
+           
 
 			double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE)) 
 			    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
@@ -2890,6 +2898,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (EmailMessageGenerationException e) {
@@ -2897,6 +2906,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -3141,6 +3151,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             return result;
         } catch (PersistenceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (PaymentException e) {
@@ -3151,6 +3162,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new PaymentException(e.getMessage(), e);
         }
@@ -5335,5 +5347,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
 
         logger.info("Exit: " + methodName);
+    }
+
+    
+    /**
+     * <p>
+     * Void a previous payment
+     *
+     * @param processor
+     * @param result
+     */
+    private void voidPayment(PaymentProcessor processor, PaymentResult result, PaymentData paymentData)
+    {
+        try
+        {
+            if (result == null)
+            {
+                return;
+            }
+
+            if (paymentData instanceof TCPurhcaseOrderPaymentData)
+            {
+                return;
+            }
+
+            processor.voidPayment(result.getReferenceNumber());
+        }
+        catch (Exception e)
+        {
+            logger.error("Error voiding " + result.getReferenceNumber() + ": " +e.getMessage(), e);
+        }
+        
     }
 }
