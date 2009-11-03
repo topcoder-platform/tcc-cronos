@@ -170,7 +170,8 @@
                 {
                     greenWidth = 0;
                     yellowWidth = 0;
-                }
+		}
+		initActionPopBtn();
             }
 
             /**
@@ -364,7 +365,10 @@
             /**
              * Init the pop up button.
              */           
-            private function initActionPopBtn():void {
+	     private function initActionPopBtn():void {
+		if (actionPopBtn == null) {
+		    return;
+		}
 	        actionMenu = new Menu();
 		BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");
                 var labels:Object;
@@ -567,7 +571,8 @@
         ]]>
     </mx:Script>
     <mx:HBox width="100%"
-             styleName="rowContent">
+	    styleName="rowContent">
+	<mx:Spacer width="5" />
         <mx:LinkButton buttonMode="true"
                            useHandCursor="true"
                            id="lblContextName"
@@ -604,7 +609,7 @@
     <mx:HBox width="100%"
              styleName="rowContent">
         <mx:HBox width="30%">
-            <mx:VBox  verticalAlign="center">
+            <mx:VBox  verticalAlign="center" width="40%">
                 <mx:LinkButton 
                     buttonMode="true"
                     id="statusBtn"
@@ -612,35 +617,35 @@
                     labelPlacement="bottom"
                     click="showStats()"/>
             </mx:VBox>
-            <mx:HBox>
+            <mx:HBox width="60%">
                 <mx:VBox horizontalAlign="right" verticalAlign="top">
                     <mx:Text
-                        paddingTop="-2"
-                        paddingBottom="-2"
-                        height = "15"
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
                         htmlText="Registrations: "/>
                     <mx:Text
-                        paddingTop="-2"
-                        paddingBottom="-2"
-                        height = "15"
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
                         htmlText="Submissions: "/>
                     <mx:Text
-                        paddingTop="-2"
-                        paddingBottom="-2"
-                        height = "15"
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
                         htmlText="Forum Posts: "/>
                 </mx:VBox>
                 <mx:VBox horizontalAlign="left" verticalAlign="top">
                     <mx:Text 
-                        paddingTop="-2"
-                        paddingBottom="-2"
+                        paddingTop="-4"
+                        paddingBottom="-4"
                         width="100%"
-                        height = "15"
+                        height = "13"
                         id="lblRegistrants"
                         htmlText="{contest.registrants}"/>
                     <mx:LinkButton 
-                        paddingTop="-2"
-                        paddingBottom="-2"
+                        paddingTop="-9"
+                        paddingBottom="-3"
                         paddingLeft="0"
                         paddingRight="0"
                         height = "15"
@@ -648,8 +653,8 @@
                         textDecoration="underline"
                         label="{setLinkProperties(contest.submissions, lblSubmissions, showSubmission)}"/>
                     <mx:LinkButton 
-                        paddingTop="-2"
-                        paddingBottom="-2"
+                        paddingTop="-9"
+                        paddingBottom="-3"
                         paddingLeft="0"
                         paddingRight="0"
                         height = "15"
