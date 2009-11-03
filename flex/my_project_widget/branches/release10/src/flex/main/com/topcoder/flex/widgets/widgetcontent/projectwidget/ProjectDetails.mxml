@@ -94,7 +94,7 @@
         <mx:GridItem width="100%"
                      verticalAlign="middle">
             <mx:Text textAlign="left"
-                     text="{parentWidget.model.currentProj.owner}"
+                     text=""
                      width="100%"/>
         </mx:GridItem>
     </mx:GridRow>
