@@ -242,8 +242,8 @@
                     
                     if (mainWidget && mainWidget.details) {
                         // assign values from details screen.
-                        IntroductionStr=mainWidget.details.introInput.text;
-                        glsInputStr=mainWidget.details.glsInput.text;
+                        IntroductionStr=mainWidget.details.introInput.htmlText;
+                        glsInputStr=mainWidget.details.glsInput.htmlText;
                     }
                     
                     if (mainWidget && mainWidget.specf) {
@@ -287,10 +287,10 @@
                     
                     if (mainWidget && mainWidget.details) {
                         // assign values from details screen.
-                        ns_detailedRequirementsStr=mainWidget.details.ns_detailedRequirements.text;
-                        ns_submissionDeliverablesStr=mainWidget.details.ns_submissionDeliverables.text;
-                        ns_environmentSetupInstructionsStr=mainWidget.details.ns_environmentSetupInstructions.text;
-                        ns_finalSubmissionGuidelinesStr=mainWidget.details.ns_finalSubmissionGuidelines.text;
+                        ns_detailedRequirementsStr=mainWidget.details.ns_detailedRequirements.htmlText;
+                        ns_submissionDeliverablesStr=mainWidget.details.ns_submissionDeliverables.htmlText;
+                        ns_environmentSetupInstructionsStr=mainWidget.details.ns_environmentSetupInstructions.htmlText;
+                        ns_finalSubmissionGuidelinesStr=mainWidget.details.ns_finalSubmissionGuidelines.htmlText;
                         ns_techListData=new ArrayCollection();
                         
                         for (var m:int=0; mainWidget.details._boundCurrentTechnologies && m < mainWidget.details._boundCurrentTechnologies.length; m++) {
@@ -394,10 +394,10 @@
                     glsInput.htmlText=glsInputStr; // BUGR-1279
                 } else {
                     // added for Cockpit Launch Contest - Update for Spec Creation v1.0
-                    ns_detailedRequirements.text=ns_detailedRequirementsStr;
-                    ns_submissionDeliverables.text=ns_submissionDeliverablesStr;
-                    ns_environmentSetupInstructions.text=ns_environmentSetupInstructionsStr;
-                    ns_finalSubmissionGuidelines.text=ns_finalSubmissionGuidelinesStr;            
+                    ns_detailedRequirements.htmlText=ns_detailedRequirementsStr;
+                    ns_submissionDeliverables.htmlText=ns_submissionDeliverablesStr;
+                    ns_environmentSetupInstructions.htmlText=ns_environmentSetupInstructionsStr;
+                    ns_finalSubmissionGuidelines.htmlText=ns_finalSubmissionGuidelinesStr;            
 
                     // fix repeat of technologies.
                     ns_techList.htmlText="";
