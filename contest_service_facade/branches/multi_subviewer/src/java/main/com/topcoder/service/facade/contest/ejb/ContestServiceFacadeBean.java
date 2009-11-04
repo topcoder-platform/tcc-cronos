@@ -72,6 +72,7 @@ import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.MediumData;
+import com.topcoder.service.studio.MilestonePrizeData;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.ProjectNotFoundException;
@@ -3147,7 +3148,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             sendPurchaseSubmissionReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType, contestData.getName(),
                 projectName, completedContestData.getSubmissions(),
-                result.getReferenceNumber());
+                result.getReferenceNumber(), contestData.getMilestonePrizeData());
 
             return result;
         } catch (PersistenceException e) {
@@ -4800,7 +4801,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private void sendPurchaseSubmissionReceiptEmail(String toAddr,
         String purchasedBy, PaymentData paymentData, String competitionType,
         String competitionTitle, String projectName,
-        SubmissionPaymentData[] subPaymentDatas, String orderNumber)
+        SubmissionPaymentData[] subPaymentDatas, String orderNumber, MilestonePrizeData milestonePrize)
         throws EmailMessageGenerationException, EmailSendingException {
         com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
 
@@ -4818,7 +4819,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         for (SubmissionPaymentData submissionPaymentData : subPaymentDatas) {
             long submissionId = submissionPaymentData.getId();
 
-            if (submissionPaymentData.isPurchased()) {
+            if (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize()) {
                 j++;
                 // Map<String, Serializable> subPrice = new HashMap<String,
                 // Serializable>();
@@ -4829,14 +4830,39 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 // phase.setAttribute("PRICE-" + j,
                 // submissionPaymentData.getAmount());
                 // phase.setAttribute("SUB_PRICES", subPrices);
-                totalCost += submissionPaymentData.getAmount();
 
-                if (j > 0) {
-                    sb.append("\n");
+                if (submissionPaymentData.isPurchased())
+                {
+                    totalCost += submissionPaymentData.getAmount();
                 }
 
-                sb.append(Long.toString(submissionId)).append(" - ")
+                if (submissionPaymentData.getAwardMilestonePrize() && milestonePrize != null)
+                {
+                    totalCost += milestonePrize.getAmount().doubleValue();
+                }
+
+
+                
+                 if (submissionPaymentData.isPurchased())
+                {
+                     sb.append(Long.toString(submissionId)).append(" - ")
                   .append(submissionPaymentData.getAmount());
+
+                     if (j > 0) {
+                        sb.append("\n");
+                    }
+                }
+
+                if (submissionPaymentData.getAwardMilestonePrize() && milestonePrize != null)
+                {
+                     sb.append(Long.toString(submissionId)).append(" - ")
+                  .append(milestonePrize.getAmount().doubleValue());
+                     if (j > 0) {
+                        sb.append("\n");
+                    }
+                }
+
+               
 
                 // subPrices.add(subPrice);
             }
