@@ -2197,8 +2197,20 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             var requiredRatingCount:int=Math.min(5, submissionsCount);
 
             var rankingCnt:int=0;
+            var sort:Sort=new Sort();
+            sort.compareFunction=compareRank;
+            rankList.sort=sort;   
+            rankList.refresh();
+
+
             for (var i:int=0; i < this.rankList.length; i++) {
                 if (this.rankList[i] && this.rankList[i].rank && this.rankList[i].rank > 0) {
+                    
+                    // since we sort the rank, we compare to make sure top X are filled
+                    if (this.rankList[i].rank != i+1)
+                    {
+                        return false;
+                    }
                     rankingCnt++;
                 }
             }
@@ -2208,6 +2220,26 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             }
 
             return false;
+        }
+
+        /**
+         * Callback function on sorting by rank.
+         */
+        private function compareRank(a:Object, b:Object, fields:Array=null):int {
+            if (!a.rank && !b.rank)
+            {
+                return 0;
+            }
+            if (!a.rank)
+            {
+                return 1;
+            }
+            if (!b.rank)
+            {
+                return -1;
+            }
+
+            return ObjectUtil.numericCompare(a.rank, b.rank);
         }
 
         /**
