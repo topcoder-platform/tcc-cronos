@@ -1806,8 +1806,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 }
 
                 if (item.awardMilestonePrize) {
-                    // only add to purchase and checkout lists if there is a submission after milestone date from
-                    // this same submitter that passed screening.
                     if (item.passedScreening) {
                         var milestonePrize:Object=new Object();
                         milestonePrize.id=item.id;
@@ -1856,7 +1854,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @param originalSubmitterId the submitter id
          * @return true if the milestone prize should be awarded, false otherwise.
          */
-        private function shouldAwardMilestonePrize(originalSubmitterId:int):Boolean {
+ /*       private function shouldAwardMilestonePrize(originalSubmitterId:int):Boolean {
             var found:Boolean=false;
             for (var i:int; i < this.submissionList.length && !found; i++) {
                 var item:Object=this.submissionList[i];
@@ -1867,7 +1865,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                 }
             }
             return found;
-        }
+        }*/
 
         /**
          * Updates contest / submisison purchase to websrvice.
@@ -1896,7 +1894,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
                 if (item.awardMilestonePrize) {
                     // only add if there is there is a submission after milestone date from this same submitter that passed screening.
-                    if (shouldAwardMilestonePrize(item.submitterId)) {
+                    if (item.passedScreening) {
                         submissionPaymentData.awardMilestonePrize=true;
                         shouldAdd=true;
                     }
