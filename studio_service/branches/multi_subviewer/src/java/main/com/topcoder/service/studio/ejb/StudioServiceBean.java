@@ -4595,15 +4595,18 @@ public class StudioServiceBean implements StudioService {
                 throw new PersistenceException(message, message);
             }
 
-            if (placement > 0) {
-                this.setSubmissionPlacement(submission, placement);
-            }
-
             if (paymentData != null) {
                 // award milestone prize when corresponds
                 if (paymentData.getAwardMilestonePrize()) {
                     this.awardMilestonePrize(submission);
                 }
+            }
+
+            if (placement > 0) {
+                this.setSubmissionPlacement(submission, placement);
+            }
+
+            if (paymentData != null) {
 
                 // purchase submission when corresponds
                 if (paymentData.isPurchased()) {
