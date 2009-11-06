@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.Map.Entry;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -3958,7 +3960,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the connection
             conn = openConnection();
             
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar start = new GregorianCalendar();
+            start.setTime(startDate);
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.set(Calendar.SECOND, 0);
+            startDate = start.getTime();
+
+            Calendar end = new GregorianCalendar();
+            end.setTime(endDate);
+            end.set(Calendar.HOUR_OF_DAY, 23);
+            end.set(Calendar.MINUTE, 59);
+            end.set(Calendar.SECOND, 59);
+            endDate = end.getTime();
+
+
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
             StringBuffer sb = new StringBuffer();
             
@@ -4124,9 +4141,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" ( ");
             sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
                     .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND to_date('")
+                    .append("','%Y-%m-%d %H:%M:%S') AND to_date('")
                     .append(formatter.format(endDate))
-                    .append("','%Y-%m-%d')) ");
+                    .append("','%Y-%m-%d %H:%M:%S')) ");
 
             sb.append(" ) ");
 
