@@ -1787,7 +1787,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             this.purchaseList=new ArrayCollection();
             this.downloadList=new ArrayCollection();
-            this.checkoutList=new ArrayCollection();
+            var checkoutList2:ArrayCollection=new ArrayCollection();
 
             for each (var item:Object in this.submissionList) {
                 //trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
@@ -1801,7 +1801,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                     this.purchaseCount++;
                     totalMoney+=item.price;
                     this.downloadList.addItem(item);
-                    this.checkoutList.addItem(item);
+                    checkoutList2.addItem(item);
                     addedToDownloadList=true;
                 }
 
@@ -1812,7 +1812,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
                         milestonePrize.rank=0;
                         milestonePrize.awardMilestonePrize=true;
                         milestonePrize.price = this.contestInfoDictionary[this.selectedContestId].milestonePrizeAmount;
-                        this.checkoutList.addItem(milestonePrize);
+                        checkoutList2.addItem(milestonePrize);
                         this.purchaseList.addItem(milestonePrize);
                     }
 
@@ -1827,8 +1827,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             this.downloadList.sort=sort;
             this.downloadList.refresh();
 
-            this.checkoutList.sort=sort;
-            this.checkoutList.refresh();
+            checkoutList2.sort=sort;
+            checkoutList2.refresh();
+            this.checkoutList = checkoutList2;
 
             this.purchaseList.sort=sort;
             this.purchaseList.refresh();
