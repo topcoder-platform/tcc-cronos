@@ -36,6 +36,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
 import java.util.GregorianCalendar;
+import java.util.Calendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -5278,7 +5279,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append(" AND ");
             sb.append(" ( ");
             sb
-                    .append(" (c.start_time BETWEEN to_date(:startDate,'%Y-%m-%d') AND to_date(:endDate,'%Y-%m-%d')) ");
+                    .append(" (c.start_time BETWEEN to_date(:startDate,'%Y-%m-%d %H:%M:%S') AND to_date(:endDate,'%Y-%m-%d %H:%M:%S')) ");
             sb.append(" ) ");
             sb.append("  ");
 
@@ -5288,7 +5289,21 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             query.setParameter("userId", userId);
 
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Calendar start = new GregorianCalendar();
+            start.setTime(startDate);
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.set(Calendar.SECOND, 0);
+            startDate = start.getTime();
+
+            Calendar end = new GregorianCalendar();
+            end.setTime(endDate);
+            end.set(Calendar.HOUR_OF_DAY, 23);
+            end.set(Calendar.MINUTE, 59);
+            end.set(Calendar.SECOND, 59);
+            endDate = end.getTime();
 
             query.setParameter("startDate", formatter.format(startDate));
             query.setParameter("endDate", formatter.format(endDate));
