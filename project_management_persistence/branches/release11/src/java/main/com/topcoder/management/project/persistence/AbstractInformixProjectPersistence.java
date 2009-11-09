@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.Map.Entry;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -111,8 +113,12 @@ import com.topcoder.util.log.Log;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
+ * * </p>
+ * Version 1.2.1 Cockpit Release Assembly 10
+ *     - Change three getSimpleProjectContestData methods, to include the submission_end_date
  * <p>
- * Changes in v1.2.1 - Cockpit Release Assembly 11
+ * <p>
+ * Changes in v1.2.2 - Cockpit Release Assembly 11
  * Add method getDesignComponents to get design components.
  * </p>
 
@@ -125,8 +131,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, COCKPITASSEMBLIER
- * @version 1.2.1
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog
+ * @version 1.2.2
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -526,7 +532,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for, "
+			// fixed forum post
+            + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            + "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -542,7 +551,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "          from spec_review_status_type_lu as c " 
             + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             + " from spec_review as sr " 
-            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
@@ -570,7 +583,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 	+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-	+ " 0 as num_for, "
+	// fixed forum post
+    + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+    + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+    + "             and pi.project_id =  p.project_id) as num_for, "
 	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -588,7 +604,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     + "          from spec_review_status_type_lu as c " 
     + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
     + " from spec_review as sr " 
-    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "	
+    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "	
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
@@ -617,7 +637,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
 		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
 			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,Helper.DATE_TYPE};
+
     /**
      * Represents the sql statement to query all design components data for a user id.
      * @since 1.2.1
@@ -702,6 +723,27 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "ON category.project_type_id=type.project_type_id "
             + "WHERE project.project_id IN ";
 
+    private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
+
+			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
+            + "                  project_category_lu.project_category_id, project_category_lu.name, project_type_lu.project_type_id, project_type_lu.name, "
+            + "                  project.create_user, project.create_date, project.modify_user, project.modify_date, project_category_lu.description, "
+			+ "                  pi1.value as project_name, pi2.value as project_version "
+            + "              FROM project, "
+            + "                   project_category_lu, "
+            + "                   project_status_lu, "
+            + "                   project_type_lu, "
+			+ "                   project_info pi1, "
+            + "                   project_info pi2 "
+            + "             WHERE project.project_category_id = project_category_lu.project_category_id "
+            + "               AND project.project_status_id = project_status_lu.project_status_id "
+            + "               AND project_category_lu.project_type_id = project_type_lu.project_type_id "
+			+ "               AND pi1.project_id = project.project_id AND pi1.project_info_type_id = 6 "
+            + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
+            + "               AND (project.project_status_id = 1 or project.project_status_id = 7)"
+			+ "			      AND date(project.create_date) > date(current) - ";
+
+
     /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query projects.
@@ -711,6 +753,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
+    
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query projects.
+     */
+    private static final DataType[] QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, 
+		Helper.STRING_TYPE, Helper.STRING_TYPE};
     
     /**
      * Represents the sql statement to query tc direct projects.
@@ -3138,6 +3191,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * <p>
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * </p>
      * 
      * @return the full list of contests.
@@ -3217,13 +3272,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                    		    ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
+				if (rows[i][19] != null)
+		        	{
+                    		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		        	}
+
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3266,6 +3326,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
      * </p>
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * 
      * @param pid the specified tc project id for which to get the list of contest.
      * @return the list of contest for specified tc project id.
@@ -3345,8 +3407,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                     		    ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3354,10 +3416,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
+
 			}
 
 			closeConnection(conn);
@@ -3399,6 +3466,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * Updated for Spec Reviews Finishing Touch v1.0
      *  - Changed the way now spec status is queried.
 	 * 
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
 	 * @param createdUser the specified user for which to get the list of contest.
 	 * @return the list of contest for specified user.
 	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -3424,7 +3493,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for , "
+			// fixed forum post
+            		+ " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            		+ "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            		+ "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -3442,7 +3514,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             		+ "          from spec_review_status_type_lu as c " 
             		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             		+ " from spec_review as sr " 
-            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+" and p.project_status_id != 3";
@@ -3510,8 +3586,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                    		   ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3519,10 +3595,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
 			}
 
 			closeConnection(conn);
@@ -3971,7 +4051,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the connection
             conn = openConnection();
             
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar start = new GregorianCalendar();
+            start.setTime(startDate);
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.set(Calendar.SECOND, 0);
+            startDate = start.getTime();
+
+            Calendar end = new GregorianCalendar();
+            end.setTime(endDate);
+            end.set(Calendar.HOUR_OF_DAY, 23);
+            end.set(Calendar.MINUTE, 59);
+            end.set(Calendar.SECOND, 59);
+            endDate = end.getTime();
+
+
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
             StringBuffer sb = new StringBuffer();
             
@@ -4137,9 +4232,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" ( ");
             sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
                     .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND to_date('")
+                    .append("','%Y-%m-%d %H:%M:%S') AND to_date('")
                     .append(formatter.format(endDate))
-                    .append("','%Y-%m-%d')) ");
+                    .append("','%Y-%m-%d %H:%M:%S')) ");
 
             sb.append(" ) ");
 
@@ -4367,6 +4462,97 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    public Project[] getProjectsByCreateDate(int days)
+        throws PersistenceException {
+       
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get projects by create date: " + days);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Project[] projects = getProjectsByCreateDate(days, conn);
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving by create date: " + days, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+ 
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Project[] getProjectsByCreateDate(int days, Connection conn)
+        throws PersistenceException {
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days,
+                new Object[] {}, QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
+
+        // create the Project array.
+        Project[] projects = new Project[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1])
+                    .longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
+                    (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3])
+                    .longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+            // create a new instance of ProjectType class
+            projects[i] = new Project(((Long) row[0]).longValue(), category,
+                    status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+
+			// here we only get project name and project version
+			projects[i].setProperty("Project Name", (String) row[12]);
+			projects[i].setProperty("Project Version", (String) row[13]);
+        }
+
+       
+        return projects;
+    }
+
 
      /**
      * Get all design components.
