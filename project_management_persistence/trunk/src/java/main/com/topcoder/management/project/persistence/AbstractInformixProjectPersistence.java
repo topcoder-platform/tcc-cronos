@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,10 +32,10 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
-import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -71,7 +72,7 @@ import com.topcoder.util.log.Log;
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  * @author tuenm, urtks, bendlund, fuyun
- * @version 1.1
+ * @version 1.1.2
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
@@ -314,6 +315,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String DELETE_PROJECT_PROPERTIES_SQL = "DELETE FROM project_info "
             + "WHERE project_id=? AND project_info_type_id IN ";
+    
+    /**
+     * <p>
+     * Represents the audit creation type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_CREATE_TYPE = 1;
+
+    /**
+     * <p>
+     * Represents the audit deletion type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_DELETE_TYPE = 2;
+    
+    /**
+     * <p>
+     * Represents the audit update type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_UPDATE_TYPE = 3;
+    
+    /**
+     * Represents the SQL statement to audit project info.
+     * 
+     * @since 1.1.2
+     */
+    private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
+    	+ "(project_info_audit_id, project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
+    	+ "VALUES (PROJECT_INFO_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -964,7 +1001,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 .getAllProperties(), conn);
 
         // create the project properties
-        createProjectProperties(projectId, idValueMap, operator, conn);
+        createProjectProperties(project, idValueMap, operator, conn);
     }
 
     /**
@@ -996,7 +1033,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 .getAllProperties(), conn);
 
         // update the project properties
-        updateProjectProperties(projectId, idValueMap, operator, conn);
+        updateProjectProperties(project, idValueMap, operator, conn);
 
         // create project audit record into project_audit table
         createProjectAudit(projectId, reason, operator, conn);
@@ -1279,15 +1316,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Create the project properties in the database.
-     * @param projectId The new generated project id
+     * @param project The new generated project
      * @param idValueMap The property id - property value map
      * @param operator The creation user of this project
      * @param conn The database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void createProjectProperties(Long projectId, Map idValueMap,
+    private void createProjectProperties(Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
+    	
+    	Long projectId = project.getId();
 
     	getLogger().log(Level.INFO, new LogMessage(projectId, operator,
     			"insert record into project_info with project id" + projectId));
@@ -1305,6 +1344,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Object[] queryArgs = new Object[] {projectId, entry.getKey(),
                         entry.getValue(), operator, operator };
                 Helper.doDMLQuery(preparedStatement, queryArgs);
+                
+                auditProjectInfo(conn, project, AUDIT_CREATE_TYPE,
+                		Integer.parseInt((String) entry.getKey()), (String) entry.getValue());
             }
 
         } catch (SQLException e) {
@@ -1332,15 +1374,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Update the project properties into the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param idValueMap the property id - property value map
      * @param operator the modification user of this project
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void updateProjectProperties(Long projectId, Map idValueMap,
+    private void updateProjectProperties(Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
+    	
+    	Long projectId = project.getId();
+    	
         // get old property ids from database
         Set propertyIdSet = getProjectPropertyIds(projectId, conn);
 
@@ -1373,6 +1418,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     Object[] queryArgs = new Object[] {entry.getValue(),
                         operator, projectId, propertyId };
                     Helper.doDMLQuery(preparedStatement, queryArgs);
+                    
+                    auditProjectInfo(conn, project, AUDIT_UPDATE_TYPE, propertyId.intValue(), (String) entry.getValue());
                 } else {
                     // add the entry to the createIdValueMap
                     createIdValueMap.put(propertyId, entry.getValue());
@@ -1387,11 +1434,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 
         // create the new properties
-        createProjectProperties(projectId, createIdValueMap, operator, conn);
+        createProjectProperties(project, createIdValueMap, operator, conn);
 
         // delete the remaining property ids that are not in the project object
         // any longer
-        deleteProjectProperties(projectId, propertyIdSet, conn);
+        deleteProjectProperties(project, propertyIdSet, conn);
     }
 
     /**
@@ -1423,14 +1470,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Delete the project properties from the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param propertyIdSet the Set that contains the property ids to delete
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void deleteProjectProperties(Long projectId, Set propertyIdSet,
-            Connection conn) throws PersistenceException {
+    private void deleteProjectProperties(Project project, Set propertyIdSet, Connection conn)
+    		throws PersistenceException {
+    	
+    	Long projectId = project.getId();
+    	
         // check if the property id set is empty
         // do nothing if property id set is empty
         if (!propertyIdSet.isEmpty()) {
@@ -1453,6 +1503,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // delete the properties whose id is in the set
             Helper.doDMLQuery(conn, DELETE_PROJECT_PROPERTIES_SQL
                     + idListBuffer.toString(), new Object[] {projectId});
+            
+            for (Object id : propertyIdSet) {
+            	auditProjectInfo(conn, project, AUDIT_DELETE_TYPE, Integer.parseInt((String) id), null);
+            }
         }
     }
 
@@ -1572,6 +1626,46 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 
         return projectStatuses;
+    }
+    
+    /**
+     * This method will audit project information. This information is generated when most project properties are
+     * inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param project the project being audited
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param projectInfoTypeId the project info type id
+     * @param value the project info value that we're changing to
+     *
+     * @throws PersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.1.2
+     */
+    private void auditProjectInfo(Connection connection, Project project, int auditType, int projectInfoTypeId, String value)
+    		throws PersistenceException {
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(PROJECT_INFO_AUDIT_INSERT_SQL);
+
+            int index = 1;
+            statement.setLong(index++, project.getId());
+            statement.setLong(index++, projectInfoTypeId);
+            statement.setString(index++, value);
+            statement.setInt(index++, auditType);
+            statement.setTimestamp(index++, new Timestamp(project.getModificationTimestamp().getTime()));
+            statement.setLong(index++, Long.parseLong(project.getModificationUser()));
+
+            if (statement.executeUpdate() != 1) {
+                throw new PersistenceException("Audit information was not successfully saved.");
+            }
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            throw new PersistenceException("Unable to insert project_info_audit record.", e);
+        } finally {
+            Helper.closeStatement(statement);
+        }
     }
 
 }

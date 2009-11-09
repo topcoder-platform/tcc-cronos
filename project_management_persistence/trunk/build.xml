@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.project.persistence" />
     <property name="packagedir" value="com/topcoder/management/project/persistence" />
     <property name="distfilename" value="project_management_persistence" />
-    <property name="component_version" value="1.1.1" />
+    <property name="component_version" value="1.1.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -133,7 +133,7 @@
 		<property name="project_management.path" value="project_management/${project_management.version}"/>
 		<property name="project_management.jar" value="${tcs_libdir}/${project_management.path}/${project_management.jar.name}"/>
 
-	<property name="logging_wrapper.version" value="2.0.0" />
+	<property name="logging_wrapper.version" value="1.2" />
 	    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
 	    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
 	    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
