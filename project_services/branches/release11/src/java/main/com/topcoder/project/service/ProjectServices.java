@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimplePipelineData;
@@ -60,15 +61,19 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
- *
+ * <p>
+ * Changes in v1.2.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+
  * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf
- * @version 1.2
+ * @author fabrizyo, znyyddf, COCKPITASSEMBLIER
+ * @version 1.2.1
  * @since 1.0
  */
 public interface ProjectServices {
@@ -498,5 +503,23 @@ public interface ProjectServices {
      * @since 1.2
      */
     public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException;
-
+     /**
+     * Get all design components.
+     * @param userId
+     *            The dummy user id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public List<DesignComponents> getDesignComponents(long userId) throws ProjectServicesException;
+     /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param userId
+     *            The user id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDevelopmentContestId(long contestId) throws ProjectServicesException;
 }
