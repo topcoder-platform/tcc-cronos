@@ -25,6 +25,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.ContestSale;
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
@@ -110,7 +111,11 @@ import com.topcoder.util.log.Log;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
- *
+ * <p>
+ * Changes in v1.2.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
@@ -120,8 +125,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky
- * @version 1.2
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, COCKPITASSEMBLIER
+ * @version 1.2.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -613,7 +618,48 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
 			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
 			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
-
+    /**
+     * Represents the sql statement to query all design components data for a user id.
+     * @since 1.2.1
+     */
+    private static final String QUERY_ALL_DESIGN_COMPONENTS = "select p.project_id as project_id, " + 
+        "(select (c.category_name ||' ' || pi.value || ' ' || cv.version_text) " + 
+        "from comp_catalog cc, categories c, project_info pi, comp_versions cv " + 
+        "where  c.category_id = cc.root_category_id and " + 
+        "cc.component_id = (select pi.value from project_info pi " + 
+        "where pi.project_info_type_id = 2 and pi.project_id = p.project_id )" + 
+        "and project_id = p.project_id and " + 
+        "project_info_type_id =6 " + 
+        "and cv.comp_vers_id = (select pi.value from project_info pi " + 
+        "where pi.project_info_type_id = 1 and pi.project_id = p.project_id) " + 
+        ") as component_name, " + 
+        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
+        "from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 and user_id = ? " + 
+        " ),0)) as cperm, " + 
+        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
+        "from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = ? " + 
+        "),0)) as pperm " + 
+        "from project p, project_category_lu pcl," + 
+        " project_status_lu psl, tc_direct_project tcd " + 
+        " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id " + 
+        "and p.tc_direct_project_id = tcd.project_id " + 
+        "and p.project_status_id != 3 and p.project_category_id = 1 " + 
+        "and not exists (" + 
+        "select 1 from project_info q1 " + 
+        "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = p.project_id " + 
+        "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 " + 
+        "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = p.project_id " + 
+        "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 " + 
+        "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = p.project_id " + 
+        "where q1.project_info_type_id = 1 and q1.project_id <> p.project_id )";
+        
+    /**
+     * Represents  the column types for the result set which is returned by executing the sql statement
+     * to query all design components data for a user id.
+     * @since 1.2.1
+     */
+    private static final DataType[] QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+	Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
     /**
      * Represents the sql statement to query all project statuses.
      */
@@ -925,6 +971,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+            
+    /**
+     * Represents the sql statement to find the corresponding develop contest for the design contest.
+     * 
+     * @since 1.2.1
+     */
+    private static final String FIND_CORRESPONDING_DEVELOPMENT_CONTEST = "select q1.project_id from project_info q1 "
+        + "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = ? "
+        + "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 "
+        + "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = ? "
+        + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
+        + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
+        + "where q1.project_info_type_id = 1 and q1.project_id <> ?";
 
 	/**
 	 * 'Active' status name
@@ -4308,4 +4367,106 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+
+     /**
+     * Get all design components.
+     *
+     * @param userId
+     *            The user id
+     * @throws PersistenceException
+     *             if any other error occurs
+     * @since 1.2.2
+     */
+    public List<DesignComponents> getDesignComponents(long userId) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignComponents() method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                    QUERY_ALL_DESIGN_COMPONENTS, new Object[] {userId, userId},
+                    QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES );
+
+            List<DesignComponents> designList = new ArrayList<DesignComponents>();
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
+
+            DesignComponents designComponents = null;
+
+            for(int i=0;i<rows.length;i++)
+            {   
+		designComponents = new DesignComponents();
+                {
+                    designComponents.setProjectId((Long)rows[i][0]);
+                    designComponents.setText(rows[i][1].toString());
+                    designComponents.setCperm(rows[i][2] == null ? null : rows[i][2].toString());
+                    designComponents.setPperm(rows[i][3] == null ? null : rows[i][3].toString());
+                }
+                designList.add(designComponents);
+            }
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignComponents method."));
+            return designList;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null,
+                            "Fails to retrieving design components information ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+     /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param userId
+     *            The user id
+     * @throws PersistenceException
+     *             if any other error occurs
+     * @since 1.2.2
+     */
+    public long getDevelopmentContestId(long contestId) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignComponents() method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                FIND_CORRESPONDING_DEVELOPMENT_CONTEST, 
+                new Object[] {contestId, contestId, contestId, contestId},
+                new DataType[] {Helper.LONG_TYPE});
+
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
+            long rst = -1;
+            if (rows.length != 0) {
+                rst = ((Long)rows[0][0]).longValue();
+            }
+            getLogger().log(Level.INFO, new LogMessage(null, null, "The id is: " + rst));
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignComponents method."));
+            return rst;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                "Fails to retrieving development contest's id ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+    
 }
