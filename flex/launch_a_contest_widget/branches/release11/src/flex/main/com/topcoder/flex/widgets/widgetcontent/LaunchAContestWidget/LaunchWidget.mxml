@@ -29,10 +29,10 @@
         - Added event handler for the full capacity dates webservice so that it disables forbidden dates
           in the start date picker.
         - Added validation before draft save and activation to see if the choosen start date is not full.
+     Version 1.0.5 (Cockpit Release Assembly 11 1.0) Change Notes:
+        - Updated the wsdl operator
 
-
-
-    @author pulky
+    @author pulky, COCKPITASSEMBLIER
     @version 1.0.3
     @since 1.0
 -->
@@ -2067,8 +2067,15 @@
                 <mx:SecureAMFChannel uri="{blazedsendpoint}"/>
                 </mx:channels>
             </mx:ChannelSet>
-        </mx:channelSet>
-        <mx:operation name="createContest"
+    </mx:channelSet>
+        <!-- Since version 1.0.5 -->
+        <mx:operation name="getDesignComponents"
+                      resultFormat="object"
+                      fault="showWebserviceError('getDesignCompoennts', event);">
+	      </mx:operation>
+        <!--end since 1.0.5-->
+
+	<mx:operation name="createContest"
                       resultFormat="object"
                       fault="showWebserviceError('createContest', event);">
         </mx:operation>

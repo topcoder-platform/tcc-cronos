@@ -2,6 +2,7 @@
  * Copyright (c) 2008-2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
+    import com.topcoder.flex.util.date.DateUtil;
     import com.topcoder.flex.Helper;
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.util.progress.ProgressWindowManager;
@@ -22,6 +23,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectHeader;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSaleData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.specreview.SpecReview;
     
@@ -30,6 +32,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import flash.net.URLRequest;
     import flash.net.navigateToURL;
     import flash.utils.Dictionary;
+    import flash.utils.ByteArray;
     
     import mx.collections.ArrayCollection;
     import mx.collections.Sort;
@@ -41,6 +44,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
     import mx.utils.ObjectUtil;
+    import mx.events.CloseEvent;
+    import mx.controls.Alert;
 
     /**
      * <p>
@@ -79,10 +84,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      *
      * Version 1.0.8 (Cockpit Release Assembly 8 v1.0) Change Notes:
      *    
-     *
-     * 
+     * Version 1.0.9 (Cockpit Release Assembly 11 v1.0) Change Notes:
+     *    - Create corresponding develop competition on request.
      * @author snow01, pulky
-     * @version 1.0.8
+     * @version 1.0.9
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -169,6 +174,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		 */ 
 		[Bindable]
         protected var _isAdmin:Boolean;
+        
+        private var alert:Alert;
             
         /**
         * @since BUGR-1737
@@ -297,7 +304,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         //
         [Bindable]
         public static var catalogs:ArrayCollection;
-
+	
+        //The number respresents one hour
+        //@since 1.0.9
+        private static const OneHour:Number=1000 * 60 * 60;
         //
         // Map of catalog id to categories list.
         // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -333,6 +343,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public static var notSetCategory:SoftwareCategory = null;
         
         public var detailsConfig:XML=null;
+        
+        private var bolckSaveAsDraft:Boolean = false;
         
         /**
         * @since BUGR-1737
@@ -820,12 +832,42 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 (container.contents as LaunchWidget).enforcedCCA=!(SoftwareCompetitionUtils.instance().getConfidentialityTypeProp(c)==SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_PUBLIC);
             }
         }
+        
+        private var _type:String;
+        private var _eventHandler:Function;
+        private var _faultEventHandler:Function;
+
+        private function handleSubmitPurchase(event:CloseEvent):void {
+            if (event && event.detail) {
+                if (event.detail == Alert.YES) {
+                    addDevelopmentData();
+                }
+            }
+            _submitPurchase(_type, _eventHandler, _faultEventHandler);
+        }
 
         /**
          * Updated for Cockpit Release Assembly 3
          *    - Added the billing project property.
          */ 
         public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
+            if (this.competitionType == "DESIGN" &&
+                (isNaN(this.softwareCompetition.projectHeader.id) || this.softwareCompetition.projectHeader.id <= 0)) {
+                Alert.yesLabel = "Yes";
+                Alert.noLabel = "No";
+                bolckSaveAsDraft = true;
+                alert = Alert.show("Would you like to create the corresponding Component Development contest?",
+                    "", 3, this, handleSubmitPurchase);
+                alert.height = 150;
+                _type = type;
+                _eventHandler = eventHandler;
+                _faultEventHandler = faultEventHandler;
+                return;
+            }
+            _submitPurchase(type, eventHandler, faultEventHandler);
+        }
+        
+        public function _submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
         	var studioContestType:Boolean = (this.container.contents as LaunchWidget).studioContestType; // BUGR-1682
         	
         	if(studioContestType) { // BUGR-1682
@@ -926,6 +968,29 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
          */
         public function saveAsDraft():void {
+            if (this.competitionType == "DESIGN" &&
+                (isNaN(this.softwareCompetition.projectHeader.id) || this.softwareCompetition.projectHeader.id <= 0)) {
+                Alert.yesLabel = "Yes";
+                Alert.noLabel = "No";
+                bolckSaveAsDraft = true;
+                alert = Alert.show("Would you like to create the corresponding Component Development contest?",
+                    "", 3, this, handleSaveAsDraft);
+                alert.height = 150;
+                return;
+            }
+            _saveAsDraft();
+        }
+        
+        private function handleSaveAsDraft(event:CloseEvent):void {
+            if (event && event.detail) {
+                if (event.detail == Alert.YES) {
+                    addDevelopmentData();
+                }
+            }
+            _saveAsDraft();
+        }
+        
+        public function _saveAsDraft():void {
             //var type:CompetionType = new CompetionType();
             if (this.competitionType == "STUDIO") {
                 var competionType:String="STUDIO";
@@ -946,10 +1011,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     updateSoftwareContest();
                 }
             }
-
-	    showLoadingProgress();
-
-        
+            showLoadingProgress();
         }
 
         /**
@@ -958,7 +1020,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
          */
         private function createSoftwareContest():void {
-
             prepareSoftwareContest();
             
             var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
@@ -966,6 +1027,67 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             createContestOp.addEventListener("result", createSoftwareContestHandler);
             createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
         }
+        
+        /**
+            *Handle the alert pop up box of create development contest.
+            */
+        private function addDevelopmentData():void {
+            var tempCompetition:SoftwareCompetition = new SoftwareCompetition();
+            tempCompetition.projectHeader = new SoftwareProjectHeader();
+            tempCompetition.projectHeader.properties = new Array();
+            var me:LaunchWidget = container.contents as LaunchWidget; 
+            var developmentAdminFee:Number=me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestFee; 
+            var selCostData:Dictionary=null;
+            var level:String=SoftwareCompetitionUtils.instance().getCostLevelProp(softwareCompetition);
+            if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
+                me.overView.loadCostLevelData(
+                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'low')[0] as XML,
+                    selCostData);
+            } else if (level==SoftwareCompetitionUtils.COST_LEVEL_B) {
+                me.overView.loadCostLevelData(
+                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'medium')[0] as XML,
+                    selCostData);
+            } else if (level==SoftwareCompetitionUtils.COST_LEVEL_C) {
+                me.overView.loadCostLevelData(
+                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'high')[0] as XML,
+                    selCostData);
+            }
+            
+            if (selCostData) {
+                
+                SoftwareCompetitionUtils.instance().addCostLevelProp(tempCompetition, level);
+                
+                var firstPlaceCost:Number=selCostData["FirstPlace"] as Number;
+                var secondPlaceCost:Number=selCostData["SecondPlace"] as Number;
+                var reviewBoardCost:Number=selCostData["ReviewBoard"] as Number;
+                var reliabilityBonus:Number=selCostData["ReliabilityBonus"] as Number;
+                var drCost:Number=selCostData["DR"] as Number;
+                var milestoneBonus:Number=selCostData["MilestoneBonus"] as Number;
+                
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, firstPlaceCost, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);    
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, secondPlaceCost, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, reviewBoardCost, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_REVIEW_COST_KEY);
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, reliabilityBonus, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_RELIABILITY_BONUS_COST_KEY);
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, drCost, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_DR_POINTS_KEY);
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, milestoneBonus, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_MILESTONE_BONUS_COST_KEY);                
+                    
+                // TODO: ideally in payments property we should be storing total sw cost.
+                // but not sure how does TC / OR works - so for now storing first place cost.
+                SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, firstPlaceCost/*getTotalSWCost(selCostData)*/, 
+                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY); 
+            }
+            SoftwareCompetitionUtils.instance().addCostProp(tempCompetition, 
+                developmentAdminFee, 
+                SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);                
+            this.softwareCompetition.developmentProjectHeader = tempCompetition.projectHeader;
+        }
+
 
         /**
          * Updated for Cockpit Release Assembly 3

@@ -9,12 +9,15 @@
        
     Version 1.0.2 (Cockpit Release Assembly 7 v1.0) Change Notes:
         - Gets manualPrizeSetting for ClientProject.
-    
+    Version 1.0.3 (Cockpit Release Assembly 11 v1.0) Change Notes:
+        - Select design contest for development contest
+     
     @author TCSASSEMBLER
-    @version 1.0.2
+    @version 1.0.3
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+xmlns:hc="com.hillelcoren.components.*"	
            width="100%"
            height="100%"
            horizontalScrollPolicy="off"
@@ -34,6 +37,7 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareAssetDTO;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DesignComponents;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import mx.events.ItemClickEvent;
 
@@ -52,7 +56,7 @@
             import com.topcoder.flex.Helper;
             import mx.rpc.AbstractOperation;
             import mx.controls.ButtonLabelPlacement; // BUGR-1501	
-            
+            import mx.controls.Alert;
             import flash.events.Event;
             import com.topcoder.flex.Helper;
             
@@ -60,7 +64,13 @@
             
             private static const ETtoUTC:int=1000 * 60 * 60 * 5;
             
-            private static const OneHour:Number=1000 * 60 * 60;
+        private static const OneHour:Number=1000 * 60 * 60;
+        //All design components with id
+        private var designComponentsWithID:ArrayCollection;
+        //All design components(only text)
+        [Bindable]
+        public var designComponents:ArrayCollection = new ArrayCollection();
+        
             
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -80,20 +90,54 @@
             [Bindable]
             private var _rangeStartDate:Date;
             
-            private var _currentHelpPopup:String;
+        private var _currentHelpPopup:String;
+        
+        //The selected design component
+        //@since 1.2
+        private var correspondingDesignComponent:SoftwareCompetition = null;
 
-	        private function handleSelectContestType(event:Event):void {
+        //Handler for select check box dev only
+        private function handleDevOnly():void {
+            contestNameInput.text = "";
+            autoComplete.selectedItem = null;
+            if (selectDevOnly.selected) {
+                autoComplete.percentWidth = 0;
+                contestNameInput.percentWidth = 100;
+            } else {
+                autoComplete.width = 250;
+                contestNameInput.width = 0;
+            }
+        }
+    
+        private function handleSelectContestType(event:Event):void {
                 if (!event) {
                     return;
                 }
                 
                 var competionType:String="";
+                correspondingDesignComponent = null;
                 
                 if (selectContestTypes.selectedItem.data) {
                     competionType=selectContestTypes.selectedItem.data;
                 } else {
                     return;
-                }
+        }
+
+        //since 1.2
+        if (competionType == "DEVELOPMENT") {
+            selectDevOnly.visible = true;
+            lblDevOnly.visible = true;
+            autoComplete.width = 250;
+            autoComplete.visible = true;
+            contestNameInput.width = 0;
+        } else {
+            selectDevOnly.visible = false;
+            lblDevOnly.visible = false;
+            autoComplete.width = 0;
+            autoComplete.visible = false;
+            contestNameInput.percentWidth = 100;
+        }
+
                 
                 if (mainWidget.isEditMode && (mainWidget.studioContestType != (competionType == "STUDIO"))) {
                     Helper.showAlertMessage("Can not change contest type from Studio to Software, and vice versa");
@@ -136,7 +180,7 @@
                 if (!event) {
                     return;
                 }
-
+                correspondingDesignComponent = null;
                 mainWidget.studioContestSubTypeId=selectContestSubTypes.selectedItem.data;
                 mainWidget.studioContestSubTypeLabel=selectContestSubTypes.selectedItem.label;
                 
@@ -174,6 +218,11 @@
                 var getAllProjectsOp:AbstractOperation=mainWidget._pws.getOperation("getAllProjects");
                 getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
                 getAllProjectsOp.send();
+                //Get all design components
+                var getDesignComponentsOp:AbstractOperation=mainWidget._csws.getOperation("getDesignComponents");
+                getDesignComponentsOp.addEventListener("result", getDesignComponentsHandler);
+                getDesignComponentsOp.send();
+
                 
                 getClientProjectsByUser();
                 
@@ -192,7 +241,24 @@
                         }
                     } 
                 }
-            
+            //Handler for all design components
+            //Since 1.2
+            private function getDesignComponentsHandler(e:ResultEvent):void {
+                if (e && e.result) {
+                     if (e.result is ArrayCollection)
+                        designComponentsWithID=ObjectTranslatorUtils.translateCollection(e.result, DesignComponents);
+                    else {
+                        designComponentsWithID = new ArrayCollection();
+                        designComponentsWithID.addItem(e.result);
+                    }
+                    designComponents = new  ArrayCollection();
+                    for (var i:int = 0; i < designComponentsWithID.length; i++) {
+                        designComponents.addItem(designComponentsWithID[i].text);
+                    }
+                }
+            }
+
+
             // TCCC-1023
             private function getAllProjectsHandler(e:ResultEvent):void{
                 mainWidget.hideLoadingProgress();
@@ -225,50 +291,50 @@
          * Updated for Version 1.0.1
          *    - the default label is "Select a Billing Account"
          */ 
-	    private function getClientProjectsByUser():void {
-			    // add an empty item.
-			    var item:Object = null;
-			    
-			    item = new Object();
-			    item.label="Select a Billing Account";
-			    item.data=null;
-			    mainWidget.clientProjectNames.addItem(item);
-			    
-			    // get client projects by user.
-			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
-			    if (getClientProjectsByUserOp) {
-				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
-				getClientProjectsByUserOp.send();
-				
-				mainWidget.showLoadingProgress();
-			    }
-	    }
-			
-    	    /**
-    	     * Handles the load of client billing project from backend web-service.
-    	     * 
-    	     * Updated for Version 1.0.1
-    	     *    - the client projects are assigned to Billing Project combo box in ContestSelection page rather than activate page.
-    	     * 
-    	     * Updated for Version 1.0.2
-    	     *    - gets manualPrizeSetting for the ClientProject.
-    	     * 
-    	     * @param e the webservice result event.
-    	     */ 
-	        private function getClientProjectsHandler(e:ResultEvent):void {
-			    trace("getClientProjectsHandler: " + e + ", " + e.result);
-			    mainWidget.hideLoadingProgress();
-			    
-            	if(e && e.result)
-            	{
-            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
-            	    trace("getClientProjectsHandler:: projects: " + projects);
-            	    
-            	    if (projects && projects.length > 0) {
-            	        for (var i:int = 0; i < projects.length; i++) {
-            	            var project:ClientProject = projects[i] as ClientProject;
-            	            var id:Number = project.id;
-            	            var name:String = project.name;
+        private function getClientProjectsByUser():void {
+                // add an empty item.
+                var item:Object = null;
+                
+                item = new Object();
+                item.label="Select a Billing Account";
+                item.data=null;
+                mainWidget.clientProjectNames.addItem(item);
+                
+                // get client projects by user.
+                var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+                if (getClientProjectsByUserOp) {
+                getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+                getClientProjectsByUserOp.send();
+                
+                mainWidget.showLoadingProgress();
+                }
+        }
+            
+            /**
+             * Handles the load of client billing project from backend web-service.
+             * 
+             * Updated for Version 1.0.1
+             *    - the client projects are assigned to Billing Project combo box in ContestSelection page rather than activate page.
+             * 
+             * Updated for Version 1.0.2
+             *    - gets manualPrizeSetting for the ClientProject.
+             * 
+             * @param e the webservice result event.
+             */ 
+            private function getClientProjectsHandler(e:ResultEvent):void {
+                trace("getClientProjectsHandler: " + e + ", " + e.result);
+                mainWidget.hideLoadingProgress();
+                
+                if(e && e.result)
+                {
+                    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+                    trace("getClientProjectsHandler:: projects: " + projects);
+                    
+                    if (projects && projects.length > 0) {
+                        for (var i:int = 0; i < projects.length; i++) {
+                            var project:ClientProject = projects[i] as ClientProject;
+                            var id:Number = project.id;
+                            var name:String = project.name;
                             var poNumber:String = project.pOBoxNumber;
                             var clientId:Number = project.client.id;
                             var clientName:String = project.client.name;
@@ -555,8 +621,18 @@
                         SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
                     } else {
                         SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
-                    }
                 }
+                //Set corresponding fields 
+                if (correspondingDesignComponent != null) {
+                    mainWidget.softwareCompetition.assetDTO= correspondingDesignComponent.assetDTO;
+                    mainWidget.softwareCompetition.assetDTO.technologies=correspondingDesignComponent.assetDTO.technologies;
+                    mainWidget.softwareCompetition.assetDTO.rootCategory=correspondingDesignComponent.assetDTO.rootCategory;
+                    mainWidget.softwareCompetition.assetDTO.categories=correspondingDesignComponent.assetDTO.categories;
+                    mainWidget.softwareCompetition.projectHeader.projectSpec=correspondingDesignComponent.projectHeader.projectSpec;
+                    mainWidget.softwareCompetition.projectHeader.projectSpec.projectSpecId=0;
+                }
+
+            }
                 
                 mainWidget.startLaunchProcess();
             }
@@ -1018,7 +1094,32 @@
                     trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectedItem.data + "," + selectedItem.label); 
                     
                 }
+        }
+
+        //Handler for all dsign components
+        private function handleDesignComponents():void {
+            var item:Object = autoComplete.selectedItem;
+            if (item != null) {
+                contestNameInput.text = item.toString();
+                for (var i:int = 0; i < designComponentsWithID.length; i++) {
+                    if (designComponentsWithID[i].text == item.toString()) {
+                        mainWidget.showLoadingProgress();
+                        var getSWContestOp:AbstractOperation=mainWidget._csws.getOperation("getSoftwareContestByProjectId");
+                        getSWContestOp.addEventListener("result", getDesignComponentsDetailHandler);
+                        getSWContestOp.send(parseInt(designComponentsWithID[i].projectId));
+                        break;
+                    }
+                }
             }
+        }
+        //Handler for the select design components' detail
+        private function getDesignComponentsDetailHandler(e:ResultEvent):void {
+            if (e && e.result) {
+                mainWidget.hideLoadingProgress();
+                correspondingDesignComponent = ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
+            }
+        }
+
         ]]>
     </mx:Script>
     
@@ -1062,7 +1163,17 @@
             <mx:TextInput id="contestNameInput"
                           maxChars="255"
                           width="100%"/>
-        </mx:HBox>
+        <hc:AutoComplete id="autoComplete" dataProvider="{designComponents}" labelField="name" matchType="anyPart" 
+            prompt="Please choose corresponding design component." width="250" change="handleDesignComponents()"
+            allowNewValues="false" selectedItemStyleName="none"
+            allowDuplicates="false" allowMultipleSelection="false"
+            allowEditingNewValues="false"
+            visible="false"/>
+        <mx:Spacer width="10"/>
+        <mx:CheckBox id="selectDevOnly" visible="false" click="handleDevOnly();"/>
+        <mx:Spacer width="5"/>
+        <mx:Label id="lblDevOnly" text="Dev Only"  visible="false"/>
+    </mx:HBox>
         <mx:Spacer height="5"/>
 
         <mx:HBox>
