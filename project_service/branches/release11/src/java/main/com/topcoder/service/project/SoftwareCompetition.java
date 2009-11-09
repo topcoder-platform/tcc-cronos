@@ -30,15 +30,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * This class is not thread safe because it's highly mutable.
  * </p>
  *
+ * <p>
+ * Change log in 1.1:
+ * Add field developmentProjectHeader to hold the useful informations about development.
+ * </p>
+ *
  * @author PE
- * @version 1.0
+ * @version 1.1
  *
  * @since TopCoder Service Layer Integration 3 Assembly
  */
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "softwareCompetition", propOrder =  {
-    "id", "assetDTO", "projectHeader", "projectHeaderReason",
+    "id", "assetDTO", "projectHeader", "developmentProjectHeader", "projectHeaderReason",
     "projectPhases", "projectResources", "projectData", "type", "adminFee",
     "clientApproval", "clientName", "reviewPayment", "specificationReviewPayment", "contestFee", "status",
     "category", "confidence", "pricingApproval", "hasWikiSpecification", "passedSpecReview", "hasDependentCompetitions",
@@ -58,6 +63,14 @@ public class SoftwareCompetition extends Competition {
      * </p>
      */
     private Project projectHeader;
+
+    /**
+     * <p>
+     * Represents the development project header.
+     * </p>
+     * @since 1.1
+     */
+    private Project developmentProjectHeader;
 
     /**
      * <p>
@@ -219,6 +232,26 @@ public class SoftwareCompetition extends Competition {
     public void setProjectHeader(Project projectHeader) {
         this.projectHeader = projectHeader;
     }
+
+    /**
+     * Gets the developmentProjectHeader.
+     *
+     * @return the developmentProjectHeader.
+     * @since 1.1
+     */
+    public Project getDevelopmentProjectHeader() {
+        return developmentProjectHeader;
+    }
+
+    /**
+     * Sets the developmentProjectHeader.
+     *
+     * @param developmentProjectHeader the developmentProjectHeader to set.
+     * @since 1.1
+     */
+    public void setDevelopmentProjectHeader(Project developmentProjectHeader) {
+        this.developmentProjectHeader = developmentProjectHeader;
+    }    
 
     /**
      * Gets the projectHeaderReason.
