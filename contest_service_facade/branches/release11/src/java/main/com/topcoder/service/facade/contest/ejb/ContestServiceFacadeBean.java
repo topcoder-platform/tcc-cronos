@@ -79,6 +79,7 @@ import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.MediumData;
+import com.topcoder.service.studio.MilestonePrizeData;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.ProjectNotFoundException;
@@ -212,9 +213,14 @@ import javax.xml.datatype.Duration;
  * Changes in v1.2.2 - Cockpit Release Assembly 11
  * Add method getDesignComponents to get design components.
  * </p>
+	* <p>
+ * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
+ * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
+ * - Added support for milestone prizes payment.
+ * </p>
  * 
- * @author snow01, pulky, COCKPITASSEMBLIER
- * @version 1.2.2
+ * @author snow01, pulky, murphydog
+ * @version 1.3
  */
 @Stateless
 @WebService
@@ -2484,6 +2490,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         ContestPaymentResult contestPaymentResult = null;
 
+        PaymentResult result = null;
+
         try {
             long contestId = competition.getContestData().getContestId();
 
@@ -2533,7 +2541,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     "");
             }
 
-            PaymentResult result = null;
+            
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 // processing purchase order is not in scope of this assembly.
@@ -2636,13 +2644,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 paymentAmount, paymentAmount, result.getReferenceNumber());
 
             return contestPaymentResult;
+
         } catch (PersistenceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (PaymentException e) {
             sessionContext.setRollbackOnly();
             throw e;
         } catch (ContestNotFoundException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (EmailMessageGenerationException e) {
@@ -2650,6 +2661,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new PaymentException(e.getMessage(), e);
         }
@@ -2752,6 +2764,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         SoftwareContestPaymentResult softwareContestPaymentResult = null;
 
+         PaymentResult result = null;
+
         try {
             long contestId = competition.getProjectHeader().getId();
         	double pastPayment=0;
@@ -2782,7 +2796,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
-            PaymentResult result = null;
+           
 
 			double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE)) 
 			    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
@@ -2893,6 +2907,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (EmailMessageGenerationException e) {
@@ -2900,6 +2915,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -3003,6 +3019,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * send email notification on successful purchase.
      * </p>
      *
+     * <p>
+     * Updated for Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI:
+     * Added support for milestone prizes payment.
+     * </p>
+     *
      * @param completedContestData
      *            data of completed contest.
      * @param paymentData
@@ -3085,8 +3106,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
                 long submissionId = submissionPaymentData.getId();
 
-                if (submissionPaymentData.isPurchased()) {
-                    this.markForPurchase(submissionId);
+                if (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize()) {
+                    if (submissionPaymentData.isPurchased()) {
+                        this.markForPurchase(submissionId);
+                    }
                     submissionPaymentData.setPaymentReferenceNumber(result.getReferenceNumber());
 
                     if (paymentData instanceof TCPurhcaseOrderPaymentData) {
@@ -3101,10 +3124,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 }
 
                 this.studioService.rankAndPurchaseSubmission(submissionId,
-                    submissionPaymentData.isRanked()
-                    ? submissionPaymentData.getRank() : 0,
-                    submissionPaymentData.isPurchased() ? submissionPaymentData
-                                                        : null, userId);
+                    submissionPaymentData.isRanked() ? submissionPaymentData.getRank() : 0,
+                    (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize())
+                        ? submissionPaymentData : null, userId);
             }
 
             // update contest status to complete.
@@ -3134,10 +3156,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             sendPurchaseSubmissionReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType, contestData.getName(),
                 projectName, completedContestData.getSubmissions(),
-                result.getReferenceNumber());
+                result.getReferenceNumber(), contestData.getMilestonePrizeData());
 
             return result;
         } catch (PersistenceException e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw e;
         } catch (PaymentException e) {
@@ -3148,6 +3171,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (EmailSendingException e) {
             logger.error("Error duing email sending", e);
         } catch (Exception e) {
+            voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
             throw new PaymentException(e.getMessage(), e);
         }
@@ -4202,27 +4226,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Ranks the submissions, given submission identifiers and the rank.
+     * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId
      *            identifier of the submission.
      * @param rank
      *            rank of the submission.
+     * @param isRankingMilestone
+     *            true if the user is ranking milestone submissions.
+     *
      * @return a <code>boolean</code> true if successful, else false.
      * @throws PersistenceException
      *             if any error occurs when retrieving/updating the data.
      * @since TCCC-1219
      */
-    public boolean updateSubmissionUserRank(long submissionId, int rank)
+    public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
         throws PersistenceException {
-        logger.debug("updateSubmissionUserRank (" + submissionId + "," + rank +
+        logger.debug("updateSubmissionUserRank (" + submissionId + "," + rank + "," + isRankingMilestone +
             ")");
 
         try {
-            this.studioService.updateSubmissionUserRank(submissionId, rank);
+            this.studioService.updateSubmissionUserRank(submissionId, rank, isRankingMilestone);
             logger.debug("Exit updateSubmissionUserRank (" + submissionId +
-                "," + rank + ")");
+                "," + rank + "," + isRankingMilestone + ")");
 
             return true;
         } catch (PersistenceException e) {
@@ -4261,8 +4289,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
-                ret.add(newData);
+                newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
+		ret.add(newData);
             }
         }
 
@@ -4286,7 +4315,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
- 			newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+ 	    newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
@@ -4343,7 +4373,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-				newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setMilestoneDate(data.getMilestoneDate());
                 ret.add(newData);
             }
         }
@@ -4367,7 +4398,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
-			newData.setSpecReviewStatus(data.getSpecReviewStatus());
+	    newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
 
@@ -4803,7 +4835,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private void sendPurchaseSubmissionReceiptEmail(String toAddr,
         String purchasedBy, PaymentData paymentData, String competitionType,
         String competitionTitle, String projectName,
-        SubmissionPaymentData[] subPaymentDatas, String orderNumber)
+        SubmissionPaymentData[] subPaymentDatas, String orderNumber, MilestonePrizeData milestonePrize)
         throws EmailMessageGenerationException, EmailSendingException {
         com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
 
@@ -4821,7 +4853,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         for (SubmissionPaymentData submissionPaymentData : subPaymentDatas) {
             long submissionId = submissionPaymentData.getId();
 
-            if (submissionPaymentData.isPurchased()) {
+            if (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize()) {
                 j++;
                 // Map<String, Serializable> subPrice = new HashMap<String,
                 // Serializable>();
@@ -4832,14 +4864,39 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 // phase.setAttribute("PRICE-" + j,
                 // submissionPaymentData.getAmount());
                 // phase.setAttribute("SUB_PRICES", subPrices);
-                totalCost += submissionPaymentData.getAmount();
 
-                if (j > 0) {
-                    sb.append("\n");
+                if (submissionPaymentData.isPurchased())
+                {
+                    totalCost += submissionPaymentData.getAmount();
                 }
 
-                sb.append(Long.toString(submissionId)).append(" - ")
+                if (submissionPaymentData.getAwardMilestonePrize() && milestonePrize != null)
+                {
+                    totalCost += milestonePrize.getAmount().doubleValue();
+                }
+
+
+                
+                 if (submissionPaymentData.isPurchased())
+                {
+                     sb.append(Long.toString(submissionId)).append(" - ")
                   .append(submissionPaymentData.getAmount());
+
+                     if (j > 0) {
+                        sb.append("\n");
+                    }
+                }
+
+                if (submissionPaymentData.getAwardMilestonePrize() && milestonePrize != null)
+                {
+                     sb.append(Long.toString(submissionId)).append(" - ")
+                  .append(milestonePrize.getAmount().doubleValue());
+                     if (j > 0) {
+                        sb.append("\n");
+                    }
+                }
+
+               
 
                 // subPrices.add(subPrice);
             }
@@ -5350,6 +5407,37 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
 
         logger.info("Exit: " + methodName);
+    }
+
+    
+    /**
+     * <p>
+     * Void a previous payment
+     *
+     * @param processor
+     * @param result
+     */
+    private void voidPayment(PaymentProcessor processor, PaymentResult result, PaymentData paymentData)
+    {
+        try
+        {
+            if (result == null)
+            {
+                return;
+            }
+
+            if (paymentData instanceof TCPurhcaseOrderPaymentData)
+            {
+                return;
+            }
+
+            processor.voidPayment(result.getReferenceNumber());
+        }
+        catch (Exception e)
+        {
+            logger.error("Error voiding " + result.getReferenceNumber() + ": " +e.getMessage(), e);
+        }
+        
     }
 
     /**

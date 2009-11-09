@@ -26,6 +26,7 @@ import paypal.payflow.PayflowUtility;
 import paypal.payflow.Response;
 import paypal.payflow.SDKProperties;
 import paypal.payflow.SaleTransaction;
+import paypal.payflow.VoidTransaction;
 import paypal.payflow.TransactionResponse;
 import paypal.payflow.UserInfo;
 
@@ -192,6 +193,100 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
                     paymentResult.setReferenceNumber(trxnResponse.getPnref());
                     logger.debug("Exit process (" + payment.getType().name() +
                         ")");
+
+                    return paymentResult;
+                }
+            } else {
+                throw logException(new PaymentException(
+                        "No transaction response"));
+            }
+
+            // Get the Fraud Response parameters.
+            FraudResponse fraudResp = resp.getFraudResponse();
+
+            if (fraudResp != null) {
+                System.out.println("PREFPSMSG = " + fraudResp.getPreFpsMsg());
+                System.out.println("POSTFPSMSG = " + fraudResp.getPostFpsMsg());
+            }
+
+            // Get the Transaction Context and check for any contained SDK
+            // specific errors (optional code).
+            Context transCtx = resp.getContext();
+
+            if ((transCtx != null) && (transCtx.getErrorCount() > 0)) {
+                System.out.println("\nTransaction Errors = " +
+                    transCtx.toString());
+            }
+
+            throw logException(new PaymentException(trxnResponse.getRespMsg()));
+        }
+
+        throw logException(new PaymentException("No response"));
+    }
+
+    /**
+     * <p>
+     * Void a previous payment. On success it should
+     * return <code>PaymentResult</code> On failure it throws
+     * <code>PaymentException</code>
+     * </p>
+     *
+     * @param referenceNumber
+     *            the referenceNumber of the to be voided payment
+     * @return a <code>PaymentResult</code> the payment result.
+     * @throws PaymentException
+     *             on payment failure. It captures Error message and Error code
+     *             for the failure case.
+     */
+    public PaymentResult voidPayment(String referenceNumber) throws PaymentException {
+        logger.debug("void (" + referenceNumber + ")");
+
+        
+
+        // Create the Payflow Connection data object with the required
+        // connection details.
+        // The PAYFLOW_HOST and CERT_PATH are properties defined within
+        // SDKProperties.
+        PayflowConnectionData connection = new PayflowConnectionData();
+
+        
+        // Create a new Sale Transaction.
+        BaseTransaction trans = new VoidTransaction(referenceNumber, userInfo, connection, PayflowUtility.getRequestId()); 
+        trans.setVerbosity("MEDIUM"); 
+
+        Response resp = trans.submitTransaction();
+
+        // Display the transaction response parameters.
+        if (resp != null) {
+            // Get the Transaction Response parameters.
+            TransactionResponse trxnResponse = resp.getTransactionResponse();
+
+            // Create a new Client Information data object.
+            ClientInfo clInfo = new ClientInfo();
+
+            // Set the ClientInfo object of the transaction object.
+            trans.setClientInfo(clInfo);
+
+            System.out.println("--" + PayflowUtility.getStatus(resp));
+
+            if (trxnResponse != null) {
+                System.out.println("RESULT = " + trxnResponse.getResult());
+                System.out.println("PNREF = " + trxnResponse.getPnref());
+                System.out.println("RESPMSG = " + trxnResponse.getRespMsg());
+                System.out.println("AUTHCODE = " + trxnResponse.getAuthCode());
+                System.out.println("AVSADDR = " + trxnResponse.getAvsAddr());
+                System.out.println("AVSZIP = " + trxnResponse.getAvsZip());
+                System.out.println("IAVS = " + trxnResponse.getIavs());
+                System.out.println("CVV2MATCH = " +
+                    trxnResponse.getCvv2Match());
+                System.out.println("DUPLICATE = " +
+                    trxnResponse.getDuplicate());
+
+                if (trxnResponse.getResult() == 0) { // success
+
+                    PaymentResult paymentResult = new PaymentResult();
+                    paymentResult.setReferenceNumber(trxnResponse.getPnref());
+                    logger.debug("Exit process (" + referenceNumber + ")");
 
                     return paymentResult;
                 }
