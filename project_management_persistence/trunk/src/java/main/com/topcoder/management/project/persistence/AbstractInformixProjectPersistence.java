@@ -349,8 +349,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.1.2
      */
     private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
-    	+ "(project_info_audit_id, project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
-    	+ "VALUES (PROJECT_INFO_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
+    	+ "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
+    	+ "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
