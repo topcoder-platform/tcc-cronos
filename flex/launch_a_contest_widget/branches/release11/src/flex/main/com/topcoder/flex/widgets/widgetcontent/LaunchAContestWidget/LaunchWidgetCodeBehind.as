@@ -905,6 +905,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 creditCardPaymentData.csc=Model.instance.csc; // BUGR-1398
                 
                 if (studioContestType) { // BUGR-1682
+                    prepareStudioContestSave(false);
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
@@ -936,6 +937,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 purchaseOrderPaymentData.clientName=Model.instance.purchaseOrder.clientName;
                 
                 if (studioContestType) { // BUGR-1682
+                    prepareStudioContestSave(false);
                     competition.contestData.billingProject = this.invoicedProjectId;
                     
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
@@ -1222,15 +1224,21 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             competition._id=competition.id;
             competition._type=competition.type;
 
-            competition.contestData.contestTypeId = studioContestSubTypeId;
-
-	        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-            competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
-            
+            prepareStudioContestSave(true);
+                        
             createContestOp.addEventListener("result", createStudioContestHandler);
             createContestOp.send(competition, competition.contestData.tcDirectProjectId);
             
             showLoadingProgress();
+        }
+        
+        private function prepareStudioContestSave(inactive:Boolean):void {
+            competition.contestData.contestTypeId = studioContestSubTypeId;
+            
+            if (inactive) {
+                competition.contestData.statusId=CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED;
+                competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_DRAFT;
+            }
         }
 
         /**
@@ -1273,11 +1281,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          *    - unpaid contests are considered inactive.
          */
         private function updateStudioContest():void {
-
-	        if (!isPaidContest() || getExtraContestFee() > 0) {
-		        competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-		        competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
-	        }
+	        prepareStudioContestSave(!isPaidContest() || getExtraContestFee() > 0);
 
             var updateContestOp:AbstractOperation=_csws.getOperation("updateContest");
 
