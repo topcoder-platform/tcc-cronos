@@ -10,6 +10,7 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.service.specreview.SpecReview;
 
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -87,9 +88,13 @@ import javax.jws.WebService;
  * getFinalSubmissionsForContest(contestId:long):List<SubmissionData>
  *
  * -----
- *
+ * <p>
+ * Changes in v1.1.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.1
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -1884,4 +1889,13 @@ public interface ContestServiceFacade {
      */
     public void setSubmissionMilestonePrize(long submissionId,
         long milestonePrizeId) throws ContestServiceException;
+     /**
+     * Get all design components.
+     *
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.1.1
+     */
+    public List<DesignComponents> getDesignComponents() throws ContestServiceException;
+
 }

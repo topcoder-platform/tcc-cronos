@@ -28,6 +28,7 @@ import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.ResourceRole;
 
@@ -148,7 +149,7 @@ import javax.naming.InitialContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
+import javax.xml.datatype.Duration;
 
 /**
  * <p>
@@ -207,9 +208,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * Changes in v1.2.1 updated to set creator user as Observer
  * created.
  * </p>
+ * <p>
+ * Changes in v1.2.2 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
  * 
- * @author snow01, pulky
- * @version 1.2.1
+ * @author snow01, pulky, COCKPITASSEMBLIER
+ * @version 1.2.2
  */
 @Stateless
 @WebService
@@ -3518,6 +3523,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.debug("createSoftwareContest");
 
         try {
+            boolean creatingDevContest = contest.getDevelopmentProjectHeader() != null
+                && contest.getDevelopmentProjectHeader().getProperties() != null
+                && contest.getDevelopmentProjectHeader().getProperties().size() != 0;
+            SoftwareCompetition devContest = null;
+            if (creatingDevContest) {
+                devContest = (SoftwareCompetition)contest.clone();
+            }
+
             AssetDTO assetDTO = contest.getAssetDTO();
             long forumId = 0;
 
@@ -3529,31 +3542,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 
                 boolean isDevContest = contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
                 boolean useExistingAsset=false;
-                
-                if (isDevContest) {
-                    String componentName = assetDTO.getName();
-                    SearchCriteria searchCriteria = new SearchCriteria(null, null, null, componentName, null, null, null, null, null);
-                    List<AssetDTO> foundDTOs = this.catalogService.findAssets(searchCriteria, false);
-                    if (foundDTOs != null && foundDTOs.size() > 0) {
-                        System.out.println("createSoftwareContest ====================> FoundAssetDTO for DEV: " + foundDTOs);
-                        useExistingAsset=true;
-                        assetDTO=foundDTOs.get(0);
-                        
-                        // re-get it, as the one found from findAsset seem to be shallow instance.
-                        assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getCompVersionId());
-                        
-                        if (assetDTO.getProductionDate() == null) {
-                            GregorianCalendar startDate = new GregorianCalendar();
-                            startDate.setTime(new Date());
-                            startDate.add(Calendar.HOUR, 24 * 14);
-                            int m = startDate.get(Calendar.MINUTE);
-                            startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
-                            assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
-                        }
-                     
-                        productionDate = assetDTO.getProductionDate();
-                        assetDTO.setProductionDate(null);
+
+                if (isDevContest && assetDTO.getVersionNumber()!= null && assetDTO.getVersionNumber().longValue() != 1) {
+                    useExistingAsset=true;
+                    assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
+                    if (assetDTO.getProductionDate() == null) {
+                        GregorianCalendar startDate = new GregorianCalendar();
+                        startDate.setTime(new Date());
+                        startDate.add(Calendar.HOUR, 24 * 14);
+                        int m = startDate.get(Calendar.MINUTE);
+                        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+                        assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
                     }
+                    if (productionDate == null) {
+                        productionDate = assetDTO.getProductionDate();
+                    }
+                    assetDTO.setProductionDate(null);
                 }
                 
                 if (!useExistingAsset) {
@@ -3757,6 +3761,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                        .setProductionDate(getXMLGregorianCalendar(
                         contest.getProjectPhases().getStartDate()));
             }
+            if (creatingDevContest) {
+                devContest.setAssetDTO(contest.getAssetDTO());
+                devContest.getProjectHeader().getProperties().putAll(
+                    contest.getDevelopmentProjectHeader().getProperties());
+                devContest.setDevelopmentProjectHeader(null);
+                devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);
+                Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
+                XMLGregorianCalendar elevenDaysLater = 
+                    ((XMLGregorianCalendar)(productionDate.clone()));
+                elevenDaysLater.add(elevenDay);
+                devContest.getAssetDTO().setProductionDate(elevenDaysLater);
+                devContest.setProjectHeaderReason("Create corresponding development contest");
+                createSoftwareContest(devContest, tcDirectProjectId);
+            }
 
             logger.debug("Exit createSoftwareContest");
 
@@ -3860,6 +3878,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     allPhases[i].setProject(null);
                     allPhases[i].clearDependencies();
                 }
+                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+                    long rst = projectServices.getDevelopmentContestId(contest.getId());
+                    if (rst != -1) {
+                        SoftwareCompetition developmentContest = getSoftwareContestByProjectId(rst);
+                        Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
+                        XMLGregorianCalendar elevenDaysLater = 
+                            ((XMLGregorianCalendar)(productionDate.clone()));
+                        elevenDaysLater.add(elevenDay);
+                        developmentContest.getAssetDTO().setProductionDate(elevenDaysLater);
+                        developmentContest.setProjectHeaderReason("Casade update from corresponding design contest");
+                        updateSoftwareContest(developmentContest, tcDirectProjectId);
+                    }
+                }            
             }
 
             // set project start date in production date
@@ -5320,4 +5351,26 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         logger.info("Exit: " + methodName);
     }
+
+    /**
+     * Get all design components.
+     *
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.1
+     */
+    public List<DesignComponents> getDesignComponents() throws ContestServiceException {
+        String methodName = "getDesignComponents";
+        logger.info("Enter: " + methodName);
+
+        try {
+            return projectServices.getDesignComponents(0);
+        } catch (ProjectServicesException pe) {
+            logger.error(pe.getMessage(), pe);
+            throw new ContestServiceException(pe.getMessage(), pe);
+        } finally{
+            logger.info("Exit: " + methodName);
+	}
+    }
+
 }
