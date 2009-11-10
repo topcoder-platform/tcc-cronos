@@ -2564,7 +2564,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void deleteProjectProperties(Project project, Set propertyIdSet, Connection conn)
+    private void deleteProjectProperties(Project project, Set<Long> propertyIdSet, Connection conn)
     		throws PersistenceException {
     	
     	Long projectId = project.getId();
@@ -2577,11 +2577,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             StringBuffer idListBuffer = new StringBuffer();
             idListBuffer.append('(');
             int idx = 0;
-            for (Iterator it = propertyIdSet.iterator(); it.hasNext();) {
+            for (Long id : propertyIdSet) {
                 if (idx++ != 0) {
                     idListBuffer.append(',');
                 }
-                idListBuffer.append(it.next());
+                idListBuffer.append(id);
             }
             idListBuffer.append(')');
 
@@ -2592,8 +2592,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.doDMLQuery(conn, DELETE_PROJECT_PROPERTIES_SQL
                     + idListBuffer.toString(), new Object[] {projectId});
             
-            for (Object id : propertyIdSet) {
-            	auditProjectInfo(conn, project, AUDIT_DELETE_TYPE, Long.parseLong((String) id), null);
+            for (Long id : propertyIdSet) {
+            	auditProjectInfo(conn, project, AUDIT_DELETE_TYPE, id, null);
             }
         }
     }
