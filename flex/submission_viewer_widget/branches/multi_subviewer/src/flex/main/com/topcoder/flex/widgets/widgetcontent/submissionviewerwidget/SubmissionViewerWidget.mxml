@@ -318,7 +318,9 @@
                         subViewer.selectedChild=abandonConfirmationScreen;
                     } else if (!areProperRanking()) { // no submissions ranked.
                         // show error text.
-                        Helper.showAlertMessage("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
+                        var submissionsCount:int=this.submissionList.length;
+                        var requiredRatingCount:int=Math.min(5, submissionsCount);
+                        Helper.showAlertMessage("You must rank your top "+ requiredRatingCount +" selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
                     } else {
                         subViewer.selectedChild=submissionsConfirmationScreen;
                     }

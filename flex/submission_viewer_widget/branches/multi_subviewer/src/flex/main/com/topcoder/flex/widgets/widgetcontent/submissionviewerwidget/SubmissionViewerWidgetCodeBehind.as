@@ -2194,24 +2194,20 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function areProperRanking():Boolean {
             var submissionsCount:int=this.submissionList.length;
             var requiredRatingCount:int=Math.min(5, submissionsCount);
-
             var rankingCnt:int=0;
-            var sort:Sort=new Sort();
-            sort.compareFunction=compareRank;
-            rankList.sort=sort;   
-            rankList.refresh();
+            var rankBitmap:int=0;
 
 
             for (var i:int=0; i < this.rankList.length; i++) {
                 if (this.rankList[i] && this.rankList[i].rank && this.rankList[i].rank > 0) {
-                    
-                    // since we sort the rank, we compare to make sure top X are filled
-                    if (this.rankList[i].rank != i+1)
-                    {
-                        return false;
-                    }
+                    rankBitmap |= Math.pow(2, this.rankList[i].rank - 1);
                     rankingCnt++;
                 }
+            }
+
+            // check there are no "holes" in the ranklist
+            if (rankBitmap != Math.pow(2, rankingCnt) -1) {
+             return false;
             }
 
             if (rankingCnt == requiredRatingCount) {
@@ -2220,6 +2216,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 
             return false;
         }
+
 
         /**
          * Callback function on sorting by rank.
