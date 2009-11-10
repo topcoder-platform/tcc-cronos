@@ -1043,10 +1043,10 @@ public class InformixPhasePersistence implements PhasePersistence {
      * <p>
      * Batch version of the {@link #getPhase(long) getPhase} method. For each entry in the input array at index i
      * of the Phase is not found then we return a null in the corresponding index in the output array. All the
-     * phases depedencies will be satisfied.
+     * phases dependencies will be satisfied.
      * </p>
      *
-     * @param phaseIds an arry of phase ids to fetch phases with
+     * @param phaseIds an array of phase ids to fetch phases with
      * @return a non-null array of Phases.
      * @throws PhasePersistenceException if any database related error occurs.
      * @throws IllegalArgumentException if phaseIds array is null.
@@ -1064,7 +1064,7 @@ public class InformixPhasePersistence implements PhasePersistence {
         try {
             return getPhasesImpl(conn, phaseIds);
         } catch (SQLException ex) {
-            throw new PhasePersistenceException("Error occurs while retrievig phases.", ex);
+            throw new PhasePersistenceException("Error occurs while retrieving phases.", ex);
         } finally {
             close(conn);
         }
@@ -1327,6 +1327,17 @@ public class InformixPhasePersistence implements PhasePersistence {
         if (phases.length == 0) {
             return;
         }
+        
+        // Retrieve the original phases to check for modifications.
+        long[] phaseIds = new long[phases.length];
+        for (int i = 0; i < phases.length; ++i) {
+        	phaseIds[i] = phases[i].getId();
+        }
+        Phase[] oldPhases = getPhases(phaseIds);
+        Map<Long, Phase> oldPhasesMap = new HashMap<Long, Phase>();
+        for (Phase p : oldPhases) {
+        	oldPhasesMap.put(p.getId(), p);
+        }
 
         Connection conn = createConnection(false);
         PreparedStatement pstmt = null;
@@ -1369,12 +1380,21 @@ public class InformixPhasePersistence implements PhasePersistence {
                     if (pstmt.executeUpdate() == 0) {
                         toCreate.add(phases[i]);
                     } else {
-                        // if phase exists - update the criteria and depedencies
+                        // if phase exists - update the criteria and dependencies
                         updatePhaseCriteria(conn, phases[i], operator, lookUps);
                         updateDependencies(conn, phases[i], operator);
                         
-                        auditProjectPhase(conn, phases[i], AUDIT_UPDATE_TYPE, scheduledStartTime, scheduledEndTime,
-                        		Long.parseLong(operator), updateTime);
+                        Phase oldPhase = oldPhasesMap.get(phases[i].getId());
+                        Timestamp auditScheduledStartTime =
+                        	oldPhase.getScheduledStartDate().equals(scheduledStartTime) ? null : scheduledStartTime;
+                        Timestamp auditScheduledEndTime =
+                        	oldPhase.getScheduledEndDate().equals(scheduledEndTime) ? null : scheduledEndTime;
+                        
+                        // only audit if one of the scheduled times changed
+                        if (auditScheduledStartTime != null || auditScheduledEndTime != null) {
+                        	auditProjectPhase(conn, phases[i], AUDIT_UPDATE_TYPE, auditScheduledStartTime,
+                        			auditScheduledEndTime, Long.parseLong(operator), updateTime);
+                        }
                     }
                 }
             }
