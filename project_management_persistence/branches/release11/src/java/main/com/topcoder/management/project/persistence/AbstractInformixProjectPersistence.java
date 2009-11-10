@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -832,10 +833,25 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "project_info_type_id FROM project_info WHERE project_id=?";
 
     /**
+     * Represents the sql statement to query project property ids and values.
+     */
+    private static final String QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_SQL = "SELECT "
+            + "project_info_type_id, value FROM project_info WHERE project_id=?";
+
+
+    /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query project property ids.
      */
     private static final DataType[] QUERY_PROJECT_PROPERTY_IDS_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE};
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query project property ids and values.
+     */
+    private static final DataType[] QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_COLUMN_TYPES = new DataType[] {
+    	Helper.LONG_TYPE, Helper.STRING_TYPE
+    };
 
     /**
      * Represents the sql statement to create project.
@@ -863,6 +879,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final DataType[] QUERY_CONTEST_SALE_BY_ID_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE };
+
+    
 
     /**
      * Represents the sql statement to query the contest sale via contest id.
@@ -921,7 +939,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to update project.
      */
     private static final String UPDATE_PROJECT_SQL = "UPDATE project "
-            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date=CURRENT, tc_direct_project_id=? "
+            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date= ?, tc_direct_project_id=? "
             + "WHERE project_id=?";
 
     /**
@@ -1052,6 +1070,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * 'final review' phase name
 	 */
 	private static final String PROJECT_PHASE_FINAL_REVIEW = "Final Review";
+
+    /**
+     * <p>
+     * Represents the audit creation type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_CREATE_TYPE = 1;
+
+    /**
+     * <p>
+     * Represents the audit deletion type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_DELETE_TYPE = 2;
+    
+    /**
+     * <p>
+     * Represents the audit update type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_UPDATE_TYPE = 3;
+    
+    /**
+     * Represents the SQL statement to audit project info.
+     * 
+     * @since 1.1.2
+     */
+    private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
+    	+ "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
+    	+ "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -1301,9 +1355,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         // newId will contain the new generated Id for the project
         Long newId;
-        // createDate will contain the create_date value retrieved from
-        // database.
-        Date createDate;
+      
         
         Date specCreateDate;
 
@@ -1336,14 +1388,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // create the project
             createProject(newId, project, operator, conn);
-
-            // get the creation date.
-            createDate = (Date) Helper.doSingleValueQuery(conn,
-                    "SELECT create_date FROM project WHERE project_id=?",
-                    new Object[] {newId}, Helper.DATE_TYPE);
             
             closeConnection(conn);
         } catch (PersistenceException e) {
+            project.setCreationUser(null);
+            project.setCreationTimestamp(null);
+            project.setModificationUser(null);
+            project.setModificationTimestamp(null);
         	getLogger().log(Level.ERROR,
         			new LogMessage(null, operator, "Fails to create project " + project.getAllProperties(), e));
             if (conn != null) {
@@ -1355,12 +1406,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // set the newId when no exception occurred
         project.setId(newId.longValue());
 
-        // set the creation/modification user and date when no exception
-        // occurred
-        project.setCreationUser(operator);
-        project.setCreationTimestamp(createDate);
-        project.setModificationUser(operator);
-        project.setModificationTimestamp(createDate);
+        
     }
 
     /**
@@ -1517,6 +1563,41 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             
             throw new PersistenceException("Fails to retrieve projects", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    public Project[] getProjectsByCreateDate(int days)
+        throws PersistenceException {
+       
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get projects by create date: " + days);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Project[] projects = getProjectsByCreateDate(days, conn);
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving by create date: " + days, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
         }
     }
 
@@ -1844,6 +1925,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             new Long(project.getProjectCategory().getId()), operator,
             operator, tcDirectProjectId};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SQL, queryArgs);
+
+        // get the creation date.
+          // createDate will contain the create_date value retrieved from
+        // database.
+        Date    createDate = (Date) Helper.doSingleValueQuery(conn,
+                    "SELECT create_date FROM project WHERE project_id=?",
+                    new Object[] {projectId}, Helper.DATE_TYPE);
+
+        // set the creation/modification user and date when no exception
+        // occurred
+        project.setCreationUser(operator);
+        project.setCreationTimestamp(createDate);
+        project.setModificationUser(operator);
+        project.setModificationTimestamp(createDate);
         
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -1868,7 +1963,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // create the project properties
-        createProjectProperties(projectId, idValueMap, operator, conn);
+        createProjectProperties(projectId, project, idValueMap, operator, conn);
     }
 
     /**
@@ -1964,12 +2059,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         } else {
         	tcDirectProjectId = null;
         }
+
+         Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
         // update the project type and project category
         Object[] queryArgs = new Object[] {
             new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator, tcDirectProjectId, 
+            new Long(project.getProjectCategory().getId()), operator, modifyDate, tcDirectProjectId, 
             projectId };
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
+
+       // update the project object so this data's correct for audit purposes
+        project.setModificationUser(operator);
+        project.setModificationTimestamp(modifyDate);
         
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -1995,7 +2096,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         updateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // update the project properties
-        updateProjectProperties(projectId, idValueMap, operator, conn);
+        updateProjectProperties(project, idValueMap, operator, conn);
 
         // create project audit record into project_audit table
         createProjectAudit(projectId, reason, operator, conn);
@@ -2274,14 +2375,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Create the project properties in the database.
-     * @param projectId The new generated project id
+     * @param project The new generated project
      * @param idValueMap The property id - property value map
      * @param operator The creation user of this project
      * @param conn The database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void createProjectProperties(Long projectId, Map idValueMap,
+    private void createProjectProperties(Long projectId, Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
 
     	getLogger().log(Level.INFO, new LogMessage(projectId, operator,
@@ -2300,6 +2401,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Object[] queryArgs = new Object[] {projectId, entry.getKey(),
                         entry.getValue(), operator, operator };
                 Helper.doDMLQuery(preparedStatement, queryArgs);
+                
+                auditProjectInfo(conn, projectId, project, AUDIT_CREATE_TYPE, (Long) entry.getKey(),
+                		(String) entry.getValue());
             }
 
         } catch (SQLException e) {
@@ -2327,17 +2431,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Update the project properties into the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param idValueMap the property id - property value map
      * @param operator the modification user of this project
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void updateProjectProperties(Long projectId, Map idValueMap,
+    private void updateProjectProperties(Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
-        // get old property ids from database
-        Set propertyIdSet = getProjectPropertyIds(projectId, conn);
+    	
+    	Long projectId = project.getId();
+    	
+        // get old property ids and values from database
+        Map<Long, String> propertyMap = getProjectPropertyIdsAndValues(projectId, conn);
 
         // create a property id-property value map that contains the properties
         // to insert
@@ -2349,8 +2456,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
              				"update project, update project_info with projectId:" + projectId));
         	 
             // prepare the statement.
-            preparedStatement = conn
-                    .prepareStatement(UPDATE_PROJECT_PROPERTY_SQL);
+            preparedStatement = conn.prepareStatement(UPDATE_PROJECT_PROPERTY_SQL);
 
             // enumerator each property id in the project object
             for (Iterator it = idValueMap.entrySet().iterator(); it.hasNext();) {
@@ -2359,15 +2465,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Long propertyId = (Long) entry.getKey();
 
                 // check if the property in the project object already exists in
-                // the
-                // database
-                if (propertyIdSet.contains(propertyId)) {
-                    propertyIdSet.remove(propertyId);
-
-                    // update the project property
-                    Object[] queryArgs = new Object[] {entry.getValue(),
-                        operator, projectId, propertyId };
-                    Helper.doDMLQuery(preparedStatement, queryArgs);
+                // the database
+                if (propertyMap.containsKey(propertyId)) {
+                	// if the value hasn't been changed, we don't need to update anything
+                	if (!propertyMap.get(propertyId).equals((String) entry.getValue())) {
+                		// update the project property
+                		Object[] queryArgs = new Object[] {entry.getValue(),
+                    		operator, projectId, propertyId };
+                    	Helper.doDMLQuery(preparedStatement, queryArgs);
+                    
+                    	auditProjectInfo(conn, project, AUDIT_UPDATE_TYPE, propertyId, (String) entry.getValue());
+                	}
+                	propertyMap.remove(propertyId);
                 } else {
                     // add the entry to the createIdValueMap
                     createIdValueMap.put(propertyId, entry.getValue());
@@ -2382,11 +2491,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 
         // create the new properties
-        createProjectProperties(projectId, createIdValueMap, operator, conn);
+        createProjectProperties(project.getId(), project, createIdValueMap, operator, conn);
 
         // delete the remaining property ids that are not in the project object
         // any longer
-        deleteProjectProperties(projectId, propertyIdSet, conn);
+        deleteProjectProperties(project, propertyMap.keySet(), conn);
     }
 
     /**
@@ -2417,15 +2526,49 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     }
 
     /**
+     * Gets all the property ids and values associated to this project.
+     * 
+     * @param projectId The id of this project
+     * @param conn The database connection
+     * @return A map that contains the property values, keyed by id
+     * 
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Map<Long, String> getProjectPropertyIdsAndValues(Long projectId, Connection conn)
+    		throws PersistenceException {
+    	
+        Map<Long, String> idMap = new HashMap<Long, String>();
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_SQL,
+                new Object[] {projectId},
+                QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_COLUMN_TYPES);
+
+        // enumerator each row
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // add the id to the map
+            idMap.put((Long) row[0], (String) row[1]);
+        }
+        
+        return idMap;
+    }
+
+    /**
      * Delete the project properties from the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param propertyIdSet the Set that contains the property ids to delete
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void deleteProjectProperties(Long projectId, Set propertyIdSet,
-            Connection conn) throws PersistenceException {
+    private void deleteProjectProperties(Project project, Set propertyIdSet, Connection conn)
+    		throws PersistenceException {
+    	
+    	Long projectId = project.getId();
+    	
         // check if the property id set is empty
         // do nothing if property id set is empty
         if (!propertyIdSet.isEmpty()) {
@@ -2448,6 +2591,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // delete the properties whose id is in the set
             Helper.doDMLQuery(conn, DELETE_PROJECT_PROPERTIES_SQL
                     + idListBuffer.toString(), new Object[] {projectId});
+            
+            for (Object id : propertyIdSet) {
+            	auditProjectInfo(conn, project, AUDIT_DELETE_TYPE, Long.parseLong((String) id), null);
+            }
         }
     }
 
@@ -2568,6 +2715,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return projectStatuses;
     }
+
+     /**
+     * This method will audit project information. This information is generated when most project properties are
+     * inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param projectId the id of the project being audited
+     * @param project the project being audited
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param projectInfoTypeId the project info type id
+     * @param value the project info value that we're changing to
+     *
+     * @throws PersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.1.2
+     */
+    private void auditProjectInfo(Connection connection, Long projectId, Project project, int auditType,
+    		long projectInfoTypeId, String value) throws PersistenceException {
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(PROJECT_INFO_AUDIT_INSERT_SQL);
+
+            int index = 1;
+            statement.setLong(index++, projectId);
+            statement.setLong(index++, projectInfoTypeId);
+            statement.setString(index++, value);
+            statement.setInt(index++, auditType);
+            statement.setTimestamp(index++, new Timestamp(project.getModificationTimestamp().getTime()));
+            statement.setLong(index++, Long.parseLong(project.getModificationUser()));
+
+            if (statement.executeUpdate() != 1) {
+                throw new PersistenceException("Audit information was not successfully saved.");
+            }
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            throw new PersistenceException("Unable to insert project_info_audit record.", e);
+        } finally {
+            Helper.closeStatement(statement);
+        }
+    }
+    
+    /**
+     * This method will audit project information. This information is generated when most project properties are
+     * inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param project the project being audited
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param projectInfoTypeId the project info type id
+     * @param value the project info value that we're changing to
+     *
+     * @throws PersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.1.2
+     */
+    private void auditProjectInfo(Connection connection, Project project, int auditType, long projectInfoTypeId, String value)
+			throws PersistenceException {
+    	auditProjectInfo(connection, project.getId(), project, auditType, projectInfoTypeId, value);
+    }
+
     
     /**
      * <p>
@@ -4463,40 +4671,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
 
-    /**
-     * <p>
-     * Retrieves an array of project instance from the persistence whose
-	 * create date is within current - days 
-     * </p>
-     * @param days last 'days' 
-     * @param conn the database connection
-     * @return An array of project instances.
-     * @throws PersistenceException if error occurred while accessing the
-     *             database.
-     */
-    public Project[] getProjectsByCreateDate(int days)
-        throws PersistenceException {
-       
-        Connection conn = null;
-
-        getLogger().log(Level.INFO, "get projects by create date: " + days);
-        try {
-            // create the connection
-            conn = openConnection();
-
-            // get the project objects
-            Project[] projects = getProjectsByCreateDate(days, conn);
-            closeConnection(conn);
-            return projects;
-        } catch (PersistenceException e) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null,
-                  "Fails to retrieving by create date: " + days, e));
-            if (conn != null) {
-                closeConnectionOnError(conn);
-            }
-            throw e;
-        }
-    }
+    
  
     /**
      * <p>
