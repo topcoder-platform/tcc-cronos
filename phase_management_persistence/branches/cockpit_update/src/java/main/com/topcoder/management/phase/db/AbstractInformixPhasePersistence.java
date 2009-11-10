@@ -95,7 +95,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * thread-safety.
  * </p>
  * @author AleaActaEst, kr00tki, TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.2
  */
 public abstract class AbstractInformixPhasePersistence extends
         AbstractDbPhasePersistence {
@@ -254,6 +254,44 @@ public abstract class AbstractInformixPhasePersistence extends
      * Selects all projects - checks if all exists in database.
      */
     private static final String SELECT_PROJECT_IDS = "SELECT project_id FROM project WHERE project_id IN ";
+
+   
+    /**
+     * <p>
+     * Represents the audit creation type.
+     * </p>
+     *
+     * @since 1.0.2
+     */
+    private static final int AUDIT_CREATE_TYPE = 1;
+
+    /**
+     * <p>
+     * Represents the audit deletion type.
+     * </p>
+     *
+     * @since 1.0.2
+     */
+    private static final int AUDIT_DELETE_TYPE = 2;
+    
+    /**
+     * <p>
+     * Represents the audit update type.
+     * </p>
+     *
+     * @since 1.0.2
+     */
+    private static final int AUDIT_UPDATE_TYPE = 3;
+    
+    /**
+     * Represents the SQL statement to audit project info.
+     * 
+     * @since 1.0.2
+     */
+    private static final String PROJECT_PHASE_AUDIT_INSERT_SQL = "INSERT INTO project_phase_audit "
+    	+ "(project_phase_id, scheduled_start_time, scheduled_end_time, audit_action_type_id, action_date, action_user_id) "
+    	+ "VALUES (?, ?, ?, ?, ?, ?)";
+
 
     /**
      * <p>
@@ -617,6 +655,17 @@ public abstract class AbstractInformixPhasePersistence extends
             return;
         }
 
+        // Retrieve the original phases to check for modifications.
+        long[] phaseIds = new long[phases.length];
+        for (int i = 0; i < phases.length; ++i) {
+        	phaseIds[i] = phases[i].getId();
+        }
+        Phase[] oldPhases = getPhases(phaseIds);
+        Map<Long, Phase> oldPhasesMap = new HashMap<Long, Phase>();
+        for (Phase p : oldPhases) {
+        	oldPhasesMap.put(p.getId(), p);
+        }
+
 		  // get the connection
         Connection conn = getConnection();
 
@@ -663,7 +712,8 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // set audit values
             pstmt.setString(10, operator);
-            pstmt.setTimestamp(11, new Timestamp(System.currentTimeMillis()));
+            Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+            pstmt.setTimestamp(11, updateTime);
 
             // iterate over all phases
             for (int i = 0; i < phases.length; i++) {
@@ -676,10 +726,10 @@ public abstract class AbstractInformixPhasePersistence extends
                     pstmt.setLong(2, phases[i].getPhaseType().getId());
                     pstmt.setLong(3, phases[i].getPhaseStatus().getId());
                     insertValueOrNull(pstmt, 4, phases[i].getFixedStartDate());
-                    pstmt.setTimestamp(5, new Timestamp(phases[i]
-                            .getScheduledStartDate().getTime()));
-                    pstmt.setTimestamp(6, new Timestamp(phases[i]
-                            .getScheduledEndDate().getTime()));
+                    Timestamp scheduledStartTime = new Timestamp(phases[i].getScheduledStartDate().getTime());
+                    pstmt.setTimestamp(5, scheduledStartTime);
+                    Timestamp scheduledEndTime = new Timestamp(phases[i].getScheduledEndDate().getTime());
+                    pstmt.setTimestamp(6, scheduledEndTime);
 
                     insertValueOrNull(pstmt, 7, phases[i].getActualStartDate());
                     insertValueOrNull(pstmt, 8, phases[i].getActualEndDate());
@@ -695,6 +745,18 @@ public abstract class AbstractInformixPhasePersistence extends
 						// dont seem returned in get phase, so update here will delete all data
                         //updatePhaseCriteria(conn, phases[i], operator, lookUps);
                         //updateDependencies(conn, phases[i], operator);
+
+                        Phase oldPhase = oldPhasesMap.get(phases[i].getId());
+                        Timestamp auditScheduledStartTime =
+                        	oldPhase.getScheduledStartDate().equals(scheduledStartTime) ? null : scheduledStartTime;
+                        Timestamp auditScheduledEndTime =
+                        	oldPhase.getScheduledEndDate().equals(scheduledEndTime) ? null : scheduledEndTime;
+                        
+                        // only audit if one of the scheduled times changed
+                        if (auditScheduledStartTime != null || auditScheduledEndTime != null) {
+                        	auditProjectPhase(conn, phases[i], AUDIT_UPDATE_TYPE, auditScheduledStartTime,
+                        			auditScheduledEndTime, Long.parseLong(operator), updateTime);
+                        } 
                     }
                 }
             }
@@ -790,6 +852,11 @@ public abstract class AbstractInformixPhasePersistence extends
             pstmt3.executeUpdate();
             // delete phases
             pstmt2.executeUpdate();
+
+             for (int i = 0; i < phases.length; i++) {
+            	auditProjectPhase(conn, phases[i], AUDIT_DELETE_TYPE, null, null, 0L,
+            			new Timestamp(System.currentTimeMillis()));
+            }
 
             // everything is OK, commit the transaction.
             commitTransaction(context);
@@ -1291,16 +1358,20 @@ public abstract class AbstractInformixPhasePersistence extends
                 pstmt.setLong(3, phases[i].getPhaseType().getId());
                 pstmt.setLong(4, phases[i].getPhaseStatus().getId());
                 insertValueOrNull(pstmt, 5, phases[i].getFixedStartDate());
-                pstmt.setTimestamp(6, new Timestamp(phases[i]
-                        .getScheduledStartDate().getTime()));
-                pstmt.setTimestamp(7, new Timestamp(phases[i]
-                        .getScheduledEndDate().getTime()));
+                Timestamp scheduledStartTime = new Timestamp(phases[i].getScheduledStartDate().getTime());
+                pstmt.setTimestamp(6, scheduledStartTime);
+                Timestamp scheduledEndTime = new Timestamp(phases[i].getScheduledEndDate().getTime());
+                pstmt.setTimestamp(7, scheduledEndTime);
                 insertValueOrNull(pstmt, 8, phases[i].getActualStartDate());
                 insertValueOrNull(pstmt, 9, phases[i].getActualEndDate());
                 pstmt.setLong(10, phases[i].getLength());
 
                 // insert the phase
                 pstmt.executeUpdate();
+                
+                auditProjectPhase(conn, phases[i], AUDIT_CREATE_TYPE, scheduledStartTime, scheduledEndTime,
+                		Long.parseLong(operator), now);
+                
                 // create the criteria for phase
                 createPhaseCriteria(conn, phases[i], filterAttributes(phases[i]
                         .getAttributes()), operator, lookUp);
@@ -1821,6 +1892,46 @@ public abstract class AbstractInformixPhasePersistence extends
         public int compare(Object o1, Object o2) {
             return ((Phase) o1).getScheduledStartDate().compareTo(
                     ((Phase) o2).getScheduledStartDate());
+        }
+    }
+
+     /**
+     * This method will a project phase's scheduled start and end time when they are inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param phase the phase being audited
+     * @param scheduledStartTime the new scheduled start time for the phase
+     * @param scheduledEndTime the new scheduled end time for the phase
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param auditUser the user initiating the change
+     * @param auditTime the timestamp for the audit event
+     *
+     * @throws PhasePersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.0.2
+     */
+    private void auditProjectPhase(Connection connection, Phase phase, int auditType, Timestamp scheduledStartTime,
+    		Timestamp scheduledEndTime, Long auditUser, Timestamp auditTime) throws PhasePersistenceException {
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(PROJECT_PHASE_AUDIT_INSERT_SQL);
+
+            int index = 1;
+            statement.setLong(index++, phase.getId());
+            statement.setTimestamp(index++, scheduledStartTime);
+            statement.setTimestamp(index++, scheduledEndTime);
+            statement.setInt(index++, auditType);
+            statement.setTimestamp(index++, auditTime);
+            statement.setLong(index++, auditUser);
+
+            if (statement.executeUpdate() != 1) {
+                throw new PhasePersistenceException("Audit information was not successfully saved.");
+            }
+        } catch (SQLException e) {
+            throw new PhasePersistenceException("Unable to insert project_info_audit record.", e);
+        } finally {
+            close(statement);
         }
     }
 
