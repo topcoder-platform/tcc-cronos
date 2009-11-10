@@ -546,9 +546,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         // newId will contain the new generated Id for the project
         Long newId;
-        // createDate will contain the create_date value retrieved from
-        // database.
-        Date createDate;
+        
 
         getLogger().log(Level.INFO, new LogMessage(null, operator, 
         		"creating new project: " + project.getAllProperties()));
@@ -580,13 +578,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the project
             createProject(newId, project, operator, conn);
 
-            // get the creation date.
-            createDate = (Date) Helper.doSingleValueQuery(conn,
-                    "SELECT create_date FROM project WHERE project_id=?",
-                    new Object[] {newId}, Helper.DATE_TYPE);
             
             closeConnection(conn);
         } catch (PersistenceException e) {
+            project.setCreationUser(null);
+            project.setCreationTimestamp(null);
+            project.setModificationUser(null);
+            project.setModificationTimestamp(null);
         	getLogger().log(Level.ERROR,
         			new LogMessage(null, operator, "Fails to create project " + project.getAllProperties(), e));
             if (conn != null) {
@@ -598,12 +596,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // set the newId when no exception occurred
         project.setId(newId.longValue());
 
-        // set the creation/modification user and date when no exception
-        // occurred
-        project.setCreationUser(operator);
-        project.setCreationTimestamp(createDate);
-        project.setModificationUser(operator);
-        project.setModificationTimestamp(createDate);
+        
     }
 
     /**
@@ -1009,6 +1002,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             new Long(project.getProjectCategory().getId()), operator,
             operator };
         Helper.doDMLQuery(conn, CREATE_PROJECT_SQL, queryArgs);
+
+        // get the creation date.
+        Date    createDate = (Date) Helper.doSingleValueQuery(conn,
+                    "SELECT create_date FROM project WHERE project_id=?",
+                    new Object[] {projectId}, Helper.DATE_TYPE);
+
+
+        // set the creation/modification user and date when no exception
+        // occurred
+        project.setCreationUser(operator);
+        project.setCreationTimestamp(createDate);
+        project.setModificationUser(operator);
+        project.setModificationTimestamp(createDate);
 
         // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
@@ -1699,7 +1705,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             statement = connection.prepareStatement(PROJECT_INFO_AUDIT_INSERT_SQL);
 
             int index = 1;
-            statement.setLong(index++, project.getId());
+            statement.setLong(index++, projectId);
             statement.setLong(index++, projectInfoTypeId);
             statement.setString(index++, value);
             statement.setInt(index++, auditType);
