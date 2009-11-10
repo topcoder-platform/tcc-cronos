@@ -1344,7 +1344,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Helper.doDMLQuery(preparedStatement, queryArgs);
                 
                 auditProjectInfo(conn, projectId, project, AUDIT_CREATE_TYPE,
-                		Integer.parseInt((String) entry.getKey()), (String) entry.getValue());
+                		((Long) entry.getKey()).intValue(), (String) entry.getValue());
             }
 
         } catch (SQLException e) {
