@@ -3569,6 +3569,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                 if (isDevContest && assetDTO.getVersionNumber()!= null && assetDTO.getVersionNumber().longValue() != 1) {
                     useExistingAsset=true;
+                    if (productionDate == null) {
+                        productionDate = assetDTO.getProductionDate();
+                    }
                     assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
                     if (assetDTO.getProductionDate() == null) {
                         GregorianCalendar startDate = new GregorianCalendar();
@@ -3577,10 +3580,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         int m = startDate.get(Calendar.MINUTE);
                         startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
                         assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
-                    }
-                    if (productionDate == null) {
-                        productionDate = assetDTO.getProductionDate();
-                    }
+                    }                    
                     assetDTO.setProductionDate(null);
                 }
                 
@@ -3793,7 +3793,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);
                 Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
                 XMLGregorianCalendar elevenDaysLater = 
-                    ((XMLGregorianCalendar)(productionDate.clone()));
+                    devContest.getAssetDTO().getProductionDate();
                 elevenDaysLater.add(elevenDay);
                 devContest.getAssetDTO().setProductionDate(elevenDaysLater);
                 devContest.setProjectHeaderReason("Create corresponding development contest");
@@ -3887,7 +3887,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         String.valueOf(p.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.
-		projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
+		        projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
 
                 contest.setProjectHeader(projectData.getProjectHeader());
                 contest.setProjectPhases(projectData);
@@ -3902,6 +3902,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     allPhases[i].setProject(null);
                     allPhases[i].clearDependencies();
                 }
+
+
                 if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
                     if (rst != -1) {
@@ -3915,7 +3917,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         updateSoftwareContest(developmentContest, tcDirectProjectId);
                     }
                 }            
-            }
+            } 
 
             // set project start date in production date
             contest.getAssetDTO()
@@ -4435,7 +4437,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since BURG-1716
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public SoftwareCompetition getSoftwareContestByProjectId(long projectId)
         throws ContestServiceException {
         logger.debug("getSoftwareContestByProjectId (" + projectId + ")");
