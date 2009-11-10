@@ -1001,7 +1001,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 .getAllProperties(), conn);
 
         // create the project properties
-        createProjectProperties(project, idValueMap, operator, conn);
+        createProjectProperties(projectId, project, idValueMap, operator, conn);
     }
 
     /**
@@ -1323,10 +1323,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void createProjectProperties(Project project, Map idValueMap,
+    private void createProjectProperties(Long projectId, Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
-    	
-    	Long projectId = project.getId();
 
     	getLogger().log(Level.INFO, new LogMessage(projectId, operator,
     			"insert record into project_info with project id" + projectId));
@@ -1345,7 +1343,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                         entry.getValue(), operator, operator };
                 Helper.doDMLQuery(preparedStatement, queryArgs);
                 
-                auditProjectInfo(conn, project, AUDIT_CREATE_TYPE,
+                auditProjectInfo(conn, projectId, project, AUDIT_CREATE_TYPE,
                 		Integer.parseInt((String) entry.getKey()), (String) entry.getValue());
             }
 
@@ -1434,7 +1432,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 
         // create the new properties
-        createProjectProperties(project, createIdValueMap, operator, conn);
+        createProjectProperties(project.getId(), project, createIdValueMap, operator, conn);
 
         // delete the remaining property ids that are not in the project object
         // any longer
@@ -1633,6 +1631,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * inserted, deleted, or edited.
      *
      * @param connection the connection to database
+     * @param prjoectId the id of the project being audited
      * @param project the project being audited
      * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
      * @param projectInfoTypeId the project info type id
@@ -1642,8 +1641,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *
      * @since 1.1.2
      */
-    private void auditProjectInfo(Connection connection, Project project, int auditType, int projectInfoTypeId, String value)
-    		throws PersistenceException {
+    private void auditProjectInfo(Connection connection, Long projectId, Project project, int auditType,
+    		int projectInfoTypeId, String value) throws PersistenceException {
 
         PreparedStatement statement = null;
         try {
@@ -1666,6 +1665,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         } finally {
             Helper.closeStatement(statement);
         }
+    }
+    
+    private void auditProjectInfo(Connection connection, Project project, int auditType, int projectInfoTypeId, String value)
+			throws PersistenceException {
+    	auditProjectInfo(connection, project.getId(), project, auditType, projectInfoTypeId, value);
     }
 
 }
