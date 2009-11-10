@@ -1100,7 +1100,6 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      *             if any other error occurs
      * @since 1.2.1
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public long getDevelopmentContestId(long contestId) throws ProjectServicesException {
         String method = "ProjectServicesBean#getDesignComponents() method.";
 
