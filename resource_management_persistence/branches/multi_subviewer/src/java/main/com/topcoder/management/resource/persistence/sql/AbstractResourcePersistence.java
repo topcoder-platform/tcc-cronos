@@ -2604,8 +2604,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             throw new ResourcePersistenceException("Failed to get resource role id for resource.", e);
         } finally {
-            Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+            
         }
     }
 
