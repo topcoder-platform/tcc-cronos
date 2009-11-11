@@ -8,12 +8,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagementType;
+import javax.ejb.TransactionManagement;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -67,8 +72,19 @@ import com.topcoder.util.log.LogManager;
  * @version 1.0
  */
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ContestEligibilityManagerBean implements ContestEligibilityManagerLocal,
     ContestEligibilityManagerRemote {
+
+    /**
+     * <p>
+     * Represents the sessionContext of the EJB.
+     * </p>
+     */
+    @Resource
+    private SessionContext sessionContext;
+
 
     /**
      * <p>
@@ -78,8 +94,8 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      * It's automatically injected by EJB container.
      * </p>
      */
-    @PersistenceContext(name = "unitName")
-    private EntityManager entityManager;
+    @Resource(name = "unitName")
+    private String unitName;
 
     /**
      * The logger is used to log the methods.
@@ -121,13 +137,13 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      * @throws ContestEligibilityPersistenceException
      *             if any errors occurred when persisting the given contest eligibility
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestEligibility create(ContestEligibility contestEligibility)
         throws ContestEligibilityPersistenceException {
         logEntrance("ContestEligibilityManagerBean#create", new String[] {"contestEligibility"},
             new Object[] {contestEligibility});
         checkNull(contestEligibility, "contestEligibility");
         try {
+            EntityManager entityManager = getEntityManager();
             entityManager.persist(contestEligibility);
         } catch (RuntimeException e) {
             throw logError(new ContestEligibilityPersistenceException(
@@ -147,12 +163,12 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      * @throws ContestEligibilityPersistenceException
      *             if any errors occurred when removing the given contest eligibility
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void remove(ContestEligibility contestEligibility) throws ContestEligibilityPersistenceException {
         logEntrance("ContestEligibilityManagerBean#remove", new String[] {"contestEligibility"},
             new Object[] {contestEligibility});
         checkNull(contestEligibility, "contestEligibility");
         try {
+            EntityManager entityManager = getEntityManager();
             entityManager.remove(entityManager.merge(contestEligibility));
         } catch (RuntimeException e) {
             throw logError(new ContestEligibilityPersistenceException(
@@ -181,7 +197,6 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      * @throws ContestEligibilityPersistenceException
      *             if any errors occurred when saving eligibilities
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestEligibility> save(List<ContestEligibility> list)
         throws ContestEligibilityPersistenceException {
         logEntrance("ContestEligibilityManagerBean#save", new String[] {"list"}, new Object[] {list});
@@ -190,6 +205,8 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
             checkNull(contestEligibility, "contest eligibility in list");
         }
         try {
+            EntityManager entityManager = getEntityManager();
+
             for (Iterator<ContestEligibility> iterator = list.iterator(); iterator.hasNext();) {
                 ContestEligibility contestEligibility = iterator.next();
                 if (contestEligibility.isDeleted()) {
@@ -224,10 +241,12 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      *             if contestId is not positive
      */
     @SuppressWarnings("unchecked")
-    public List<ContestEligibility> getContestEligibility(long contestId, boolean isStudio) {
+    public List<ContestEligibility> getContestEligibility(long contestId, boolean isStudio) throws ContestEligibilityPersistenceException {
+      
         logEntrance("ContestEligibilityManagerBean#getContestEligibility", new String[] {"contestId",
-            "isStudio"}, new Object[] {contestId, isStudio});
+        "isStudio"}, new Object[] {contestId, isStudio});
         checkPositive(contestId, "contestId");
+        EntityManager entityManager = getEntityManager();
         final Query query =
             entityManager
                 .createQuery("from ContestEligibility c where c.contestId=:contestId and c.studio=:studio");
@@ -236,6 +255,8 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
         List<ContestEligibility> results = query.getResultList();
         logExit("ContestEligibilityManagerBean#getContestEligibility");
         return results;
+    
+        
     }
 
 
@@ -251,8 +272,8 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      *             if contestId is not positive
      */
     @SuppressWarnings("unchecked")
-    public Set<Long> haveEligibility(Long[] contestids, boolean isStudio) {
-        logEntrance("ContestEligibilityManagerBean#haveEligibility", new String[] {"contestId[]",
+    public Set<Long> haveEligibility(Long[] contestids, boolean isStudio) throws ContestEligibilityPersistenceException {
+        logEntrance("ContestEligibilityManagerBean#haveEligibility", new String[] {"contestIds[]",
             "isStudio"}, new Object[]{contestids, isStudio});
 
         Set<Long> result = new HashSet<Long>();
@@ -276,6 +297,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
         int studio = isStudio ? 1 : 0;
         String qeuryStr = "select unique contest_id from contest_eligibility where is_studio = "+ studio +" and  contest_id in " + ids;
 
+        EntityManager entityManager = getEntityManager();
         Query query =
             entityManager
                 .createNativeQuery(qeuryStr);
@@ -407,6 +429,33 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
         if (arg <= 0) {
             IllegalArgumentException e = new IllegalArgumentException(name + " should be positive.");
             throw logError(e);
+        }
+    }
+
+
+    /**
+     * <p>
+     * Returns the <code>EntityManager</code> looked up from the session context.
+     * </p>
+     * 
+     * @return the EntityManager looked up from the session context
+     * @throws ContestManagementException
+     *             if fail to get the EntityManager from the sessionContext.
+     */
+    private EntityManager getEntityManager() throws ContestEligibilityPersistenceException {
+        try {
+            Object obj = sessionContext.lookup(unitName);
+
+            if (obj == null) {
+                throw logError(new ContestEligibilityPersistenceException(
+                "The object for jndi name '" + unitName + "' doesn't exist."));
+            }
+
+            return (EntityManager) obj;
+        } catch (ClassCastException e) {
+             throw new ContestEligibilityPersistenceException(
+               "The jndi name for '" + unitName
+                    + "' should be EntityManager instance.", e);
         }
     }
 }

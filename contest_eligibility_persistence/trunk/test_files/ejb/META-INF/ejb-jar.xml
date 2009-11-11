@@ -15,8 +15,13 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>contest_eligibility_persistence_logger</env-entry-value>
             </env-entry>
+            <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/ContestEligibilityPersistence</env-entry-value>
+            </env-entry>
             <persistence-context-ref>
-                <persistence-context-ref-name>unitName</persistence-context-ref-name>
+                <persistence-context-ref-name>persistence/ContestEligibilityPersistence</persistence-context-ref-name>
                 <persistence-unit-name>ContestEligibilityPersistence</persistence-unit-name>
             </persistence-context-ref>
         </session>
