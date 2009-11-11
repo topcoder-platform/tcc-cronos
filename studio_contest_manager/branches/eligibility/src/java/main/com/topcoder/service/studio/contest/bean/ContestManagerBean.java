@@ -5210,6 +5210,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("        ) )  ");
             sb.append(" ) ");
             sb.append(" AND ");
+             // exclude contests that has eligibility
+            sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
+            sb.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) ");
             // not show inactive or cancelled or terminated
             sb.append(" (c.contest_detailed_status_id != 3 AND c.contest_detailed_status_id != 16 AND c.contest_detailed_status_id != 17)  ");
             sb.append(" AND (c.deleted is null or c.deleted = 0) ");
@@ -5273,11 +5276,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             StringBuffer queryBuffer = new StringBuffer();
-            queryBuffer.append(" select date(start_time), contest_id");
-            queryBuffer.append(" from contest");
-            queryBuffer.append(" where date(start_time) > date(current)");
-            queryBuffer.append(" and contest_detailed_status_id == ").append(SCHEDULED_STATUS_ID);
-            queryBuffer.append(" and contest_type_id = ").append(contestType);
+            queryBuffer.append(" select date(c.start_time), c.contest_id");
+            queryBuffer.append(" from contest c ");
+            queryBuffer.append(" where date(c.start_time) > date(current)");
+            queryBuffer.append(" and c.contest_detailed_status_id == ").append(SCHEDULED_STATUS_ID);
+            queryBuffer.append(" and c.contest_type_id = ").append(contestType);
+            queryBuffer.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce ");
+            queryBuffer.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) ");
             queryBuffer.append(" order by 1");
 
             Query query = em.createNativeQuery(queryBuffer.toString());
