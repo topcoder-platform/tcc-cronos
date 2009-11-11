@@ -662,18 +662,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = ? " + 
         "),0)) as pperm " + 
         "from project p, project_category_lu pcl," + 
-        " project_status_lu psl, tc_direct_project tcd " + 
+        " project_status_lu psl, tc_direct_project tcd , project_info pi " + 
         " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id " + 
         "and p.tc_direct_project_id = tcd.project_id " + 
-        "and p.project_status_id != 3 and p.project_category_id = 1 " + 
+        "and p.project_status_id != 3 and p.project_category_id = 1 " +
+        "and p.project_id = pi.project_id and pi.project_info_type_id = 1 " +
         "and not exists (" + 
         "select 1 from project_info q1 " + 
-        "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = p.project_id " + 
-        "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 " + 
-        "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = p.project_id " + 
-        "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 " + 
-        "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = p.project_id " + 
-        "where q1.project_info_type_id = 1 and q1.project_id <> p.project_id )";
+        "where q1.project_info_type_id = 1 and q1.project_id <> p.project_id and q1.value = pi.value) ";
         
     /**
      * Represents  the column types for the result set which is returned by executing the sql statement
@@ -4760,7 +4756,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             for(int i=0;i<rows.length;i++)
             {   
-		designComponents = new DesignComponents();
+		        designComponents = new DesignComponents();
                 {
                     designComponents.setProjectId((Long)rows[i][0]);
                     designComponents.setText(rows[i][1].toString());
