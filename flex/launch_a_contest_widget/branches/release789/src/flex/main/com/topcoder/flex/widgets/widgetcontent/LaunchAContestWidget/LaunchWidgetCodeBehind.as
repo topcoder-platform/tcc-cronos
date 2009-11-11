@@ -79,11 +79,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      *
      * Version 1.0.8 (Cockpit Release Assembly 8 v1.0) Change Notes:
      *    
-     * Version 1.0.9 (Cockpit Contest Eligibility) Change Notes:
-     *    - handle the creation of private contest
+     *
      * 
      * @author snow01, pulky
-     * @version 1.0.9
+     * @version 1.0.8
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -334,10 +333,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public static var notSetCategory:SoftwareCategory = null;
         
         public var detailsConfig:XML=null;
-
-	// The private contest's client id.
-	// since 1.0.9
-	public var privateClientId:Number = 0;
         
         /**
         * @since BUGR-1737
@@ -480,6 +475,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @param map the various key-value parameters that usually gets passed during edit from another widget (My Project Widget)
          */
         private function reloadInternal(isEmptyStart:Boolean, map:Dictionary):void {
+            trace("IN RELOAD OF LAUNCH WIDGET:: START");
             if (!container.contents.isMaximized()) {
                 container.startMaximize();
             }
@@ -871,7 +867,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(competition, creditCardPaymentData, privateClientId);
+                    processContestPaymentOp.send(competition, creditCardPaymentData);
                 } else {
                     
                     prepareSoftwareContest();
@@ -885,7 +881,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(softwareCompetition, creditCardPaymentData, privateClientId);
+                    processContestPaymentOp.send(softwareCompetition, creditCardPaymentData);
                 }
             } else {
                 var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
@@ -905,7 +901,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(competition, purchaseOrderPaymentData, privateClientId);
+                    processContestPaymentOp.send(competition, purchaseOrderPaymentData);
                 } else {
                     prepareSoftwareContest();
                     
@@ -919,7 +915,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData, privateClientId);
+                    processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData);
                 }
             }
             
@@ -970,7 +966,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
             
             createContestOp.addEventListener("result", createSoftwareContestHandler);
-            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId, privateClientId);
+            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
         }
 
         /**
@@ -1109,7 +1105,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             prepareStudioContestSave(true);
                         
             createContestOp.addEventListener("result", createStudioContestHandler);
-            createContestOp.send(competition, competition.contestData.tcDirectProjectId, privateClientId);
+            createContestOp.send(competition, competition.contestData.tcDirectProjectId);
             
             showLoadingProgress();
         }
