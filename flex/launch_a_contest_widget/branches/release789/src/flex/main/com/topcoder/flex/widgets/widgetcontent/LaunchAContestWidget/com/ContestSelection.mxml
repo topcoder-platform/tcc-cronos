@@ -10,8 +10,11 @@
     Version 1.0.2 (Cockpit Release Assembly 7 v1.0) Change Notes:
         - Gets manualPrizeSetting for ClientProject.
     
-    @author TCSASSEMBLER
-    @version 1.0.2
+    Version 1.0.2 (Cockpit Contest Eligibility) Change Notes:
+        - Handle creating private contest.
+    
+	@author TCSASSEMBLER
+    @version 1.0.3
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -81,6 +84,10 @@
             private var _rangeStartDate:Date;
             
             private var _currentHelpPopup:String;
+
+	    //Represent the client's id.
+	    //since 1.0.3
+	    private var _privateClientId:Number;
 
 	        private function handleSelectContestType(event:Event):void {
                 if (!event) {
@@ -808,10 +815,38 @@
                     var val:Object=selectBillingAccount.selectedItem;
                     setBillingProjectProperties(val);    
                     
-                    // we also init overview to have default prizes.
+		    _privateClientId = val.data.clientId;
+		    var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+		    getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+		    getEligibilityNameOp.send(_privateClientId);
+		    mainWidget.showLoadingProgress();
+
+		    // we also init overview to have default prizes.
                     //mainWidget.overView.initData();
                 }
-            }
+	    }
+
+	    /**
+	     * Handler for RPC getEligibilityName. 
+	     * Show or hide the check box according whether the name is not empty
+	     *
+	     * since 1.0.3
+	     */ 
+	    private function getEligibilityNameOpHandler(e:ResultEvent):void {
+		mainWidget.hideLoadingProgress();
+		if (e) {
+		    if (e.result.length != 0) {
+			LCCBoxSpace.height = 5;
+			LCCBox.percentHeight = 100;
+			lblLCCOnly.text = e.result + " Only: ";
+		    } else {
+			LCCBoxSpace.height = 0;
+			LCCBox.height = 0;
+			checkBoxLCCOnly.selected = false;
+		    }
+		}
+	    }
+
             
             /**
              * Sets billing project related properties.
@@ -1018,7 +1053,14 @@
                     trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectedItem.data + "," + selectedItem.label); 
                     
                 }
-            }
+	    }
+	    /**
+	     * Handle the select of check box.
+	     * since 1.0.3
+	     */
+	    private function handleCheckBoxLCC():void {
+	    	mainWidget.privateClientId = checkBoxLCCOnly.selected ? _privateClientId: 0;
+	    }
         ]]>
     </mx:Script>
     
@@ -1052,7 +1094,13 @@
         </mx:HBox>
         <mx:Spacer height="5"/>
 
-        <mx:HBox>
+	<mx:HBox id="LCCBox" height="0">
+	    <mx:Label id="lblLCCOnly" text="" />
+	    <mx:CheckBox id="checkBoxLCCOnly" click="handleCheckBoxLCC()"/>
+	</mx:HBox>
+        <mx:Spacer height="0" id="LCCBoxSpace" />
+
+	<mx:HBox>
             <mx:Label text="Give your contest a name."
                       fontWeight="bold"/>
             <mx:Text text="This will appear to competitors in a list of active contests."/>

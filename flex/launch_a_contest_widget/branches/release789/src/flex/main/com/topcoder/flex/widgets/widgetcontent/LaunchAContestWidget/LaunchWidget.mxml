@@ -29,11 +29,11 @@
         - Added event handler for the full capacity dates webservice so that it disables forbidden dates
           in the start date picker.
         - Added validation before draft save and activation to see if the choosen start date is not full.
-
-
+     Version 1.0.5 (Cockpit Contest Eligibility) Change Notes:
+        - handle the creation of private contest
 
     @author pulky
-    @version 1.0.3
+    @version 1.0.5
     @since 1.0
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -406,7 +406,6 @@
                 setStep(step8box);
                 totalStepsNumber=stepNumber - 1;
                 stepNumber=1;
-                trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
                 
                 if (studio) {
                     competitionType="STUDIO";
@@ -465,8 +464,6 @@
             }
             
             private function dummyServiceFaultHandler(event:FaultEvent):void {
-				trace("dummyServiceFaultHandler:: competitionType: " + competitionType);
-                trace("dummyServiceFaultHandler:: isStudioContestType: " + isStudioContestType);
 
 					this.currentState="ContestSelectionState";
                      if (competitionType) {
