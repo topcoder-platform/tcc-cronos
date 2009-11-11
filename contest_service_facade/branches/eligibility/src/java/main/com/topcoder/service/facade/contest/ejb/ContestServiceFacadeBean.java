@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Enumeration;
 
 import javax.activation.DataHandler;
 import javax.annotation.PostConstruct;
@@ -71,6 +72,7 @@ import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
+import com.topcoder.service.contest.eligibility.GroupContestEligibility;
 import com.topcoder.service.contest.eligibility.dao.ContestEligibilityManager;
 import com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException;
 import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManager;
@@ -138,7 +140,10 @@ import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.Property;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
 
 /**
  * <p>
@@ -202,8 +207,11 @@ import com.topcoder.web.ejb.forums.ForumsHome;
  * Changes in v1.2.2 Added elegibility services.
  * </p>
  * 
- * @author snow01, pulky
- * @version 1.2.2
+ * <p>
+ * Changes in v1.2.3 Added support for eligibility services.
+ * </p>
+ * @author snow01, pulky, murphydog
+ * @version 1.2.3
  */
 @Stateless
 @WebService
@@ -492,7 +500,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
 	private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
 
+    /**
+     * The const string for configuration files.
+     * @since 1.2.2
+     */
+    private static final String CONTEST_ELIGIBILITY_MAPPING_PREFIX = "ContestEligibilityMapping";
 
+    /**
+     * The const string for configuration name sapce.
+     * @since 1.2.2
+     */
+    private static final String CONTEST_ELIGIBILITY_MAPPING_NAMESPACE
+    = "com.topcoder.service.facade.contest.ejb.ContestServiceFacadeBean";
+
+    /**
+     * The const string for configuration EligibilityName key.
+     * @since 1.2.2
+     */
+    private static final String ELIGIBILITY_NAME = "EligibilityName";
+    
+    /**
+     * The const string for configuration EligibilityGroupId key.
+     * @since 1.2.2
+     */
+    private static final String ELIGIBILITY_ID = "EligibilityGroupId";
+    
+    
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -510,7 +543,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <code>Contest Eligibility Validation EJB</code>.
      * </p>
      */
-    @EJB(name = "ejb/contest_eligibility_validation")
+    @EJB(name = "ejb/ContestEligibilityValidation")
     private ContestEligibilityValidationManager contestEligibilityValidationManager = null;
 
     /**
@@ -519,7 +552,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <code>Contest Eligibility Persistence EJB</code>.
      * </p>
      */
-    @EJB(name = "ejb/contest_eligibility_persistence")
+    @EJB(name = "ejb/ContestEligibilityPersistence")
     private ContestEligibilityManager contestEligibilityManager = null;
 
     /**
@@ -961,6 +994,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param tcDirectProjectId
      *            a <code>long</code> providing the ID of a project the new
      *            competition belongs to.
+     * @param clientId
+     *            a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
      * @return a <code>StudioCompetition</code> providing the data for created
      *         contest and having the ID auto-generated.
      * @throws PersistenceException
@@ -972,7 +1008,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *             if the specified <code>tcDirectProjectId</code> is negative.
      */
     public StudioCompetition createContest(StudioCompetition contest,
-        long tcDirectProjectId) throws PersistenceException {
+        long tcDirectProjectId, long clientId) throws PersistenceException {
         logger.debug("createContest");
 
         ContestData contestData = convertToContestData(contest);
@@ -1036,6 +1072,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         ContestData createdContestData = this.studioService.createContest(contestData,
                 tcDirectProjectId);
+        if (clientId != 0) {
+            GroupContestEligibility contestEligibility = new GroupContestEligibility();
+            contestEligibility.setContestId(createdContestData.getContestId());
+            contestEligibility.setStudio(true);
+            contestEligibility.setDeleted(false);
+            contestEligibility.setGroupId(getEligibilityGroupId(clientId));
+            
+            try {
+                contestEligibilityManager.create(contestEligibility);
+            } catch (ContestEligibilityPersistenceException cepe) {
+                throw new PersistenceException("Cannot save contest eligibility.", cepe, "Cannot save contest eligibility.") ;
+            }
+        }
+
         logger.debug("Exit createContest");
 
         return (StudioCompetition) convertToCompetition(CompetionType.STUDIO,
@@ -2392,14 +2442,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(
-        StudioCompetition competition, CreditCardPaymentData paymentData)
+        StudioCompetition competition, CreditCardPaymentData paymentData, long clientId)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.debug("processContestCreditCardPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.debug("Exit processContestCreditCardPayment");
 
-        return processContestPaymentInternal(competition, paymentData);
+        return processContestPaymentInternal(competition, paymentData, clientId);
     }
 
     /**
@@ -2435,13 +2485,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(
-        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.debug("processContestPurchaseOrderPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
 
-        return processContestPaymentInternal(competition, paymentData);
+        return processContestPaymentInternal(competition, paymentData, clientId);
     }
 
     /**
@@ -2484,7 +2534,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     private ContestPaymentResult processContestPaymentInternal(
-        StudioCompetition competition, PaymentData paymentData)
+        StudioCompetition competition, PaymentData paymentData, long clientId)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
@@ -2506,7 +2556,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition = createContest(competition,
-                        competition.getContestData().getTcDirectProjectId());
+                        competition.getContestData().getTcDirectProjectId(), clientId);
             } else {
                 tobeUpdatedCompetition = competition;
             }
@@ -2685,11 +2735,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(
-        SoftwareCompetition competition, CreditCardPaymentData paymentData)
+        SoftwareCompetition competition, CreditCardPaymentData paymentData, long clientId)
         throws ContestServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(competition, paymentData);
+        return processContestSaleInternal(competition, paymentData, clientId);
     }
 
     /**
@@ -2713,11 +2763,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
         throws ContestServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(competition, paymentData);
+        return processContestSaleInternal(competition, paymentData, clientId);
     }
 
     /**
@@ -2752,7 +2802,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     private SoftwareContestPaymentResult processContestSaleInternal(
-        SoftwareCompetition competition, PaymentData paymentData)
+        SoftwareCompetition competition, PaymentData paymentData, long clientId)
         throws ContestServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
@@ -2779,7 +2829,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition = this.createSoftwareContest(competition,
-                        competition.getProjectHeader().getTcDirectProjectId());
+                        competition.getProjectHeader().getTcDirectProjectId(), clientId);
             } else {
                 competition.setProjectHeaderReason("User Update");
                 tobeUpdatedCompetition = this.updateSoftwareContest(competition,
@@ -3514,6 +3564,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @param contest the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId the TC direct project id.
+     * @param clientId
+     *            a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
      *
      * @return the created <code>SoftwareCompetition</code> as a contest
      *
@@ -3525,7 +3578,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition createSoftwareContest(
-        SoftwareCompetition contest, long tcDirectProjectId)
+        SoftwareCompetition contest, long tcDirectProjectId, long clientId)
         throws ContestServiceException {
         logger.debug("createSoftwareContest");
 
@@ -3676,7 +3729,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                 boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
                 // tc staff add as manager, other as observer
-                if (tcstaff)
+                if (tcstaff || clientId != 0)
                 {
                     resources[0].setResourceRole(manager_role);
                 }
@@ -3769,6 +3822,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                        .setProductionDate(getXMLGregorianCalendar(
                         contest.getProjectPhases().getStartDate()));
             }
+            if (clientId != 0) {
+                GroupContestEligibility contestEligibility = new GroupContestEligibility();
+                contestEligibility.setContestId(contest.getProjectHeader().getId());
+                contestEligibility.setStudio(false);
+                contestEligibility.setDeleted(false);
+                contestEligibility.setGroupId(getEligibilityGroupId(clientId));
+
+                projectServices.createPrivateProjectRoleTermsOfUse(contest.getProjectHeader().getId(), clientId);
+                
+                contestEligibilityManager.create(contestEligibility);
+               
+            }
 
             logger.debug("Exit createSoftwareContest");
 
@@ -3783,6 +3848,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.error("Operation failed in the contest service facade.", e);
             throw new ContestServiceException("Operation failed in the contest service facade.",
                 e);
+	    } catch (ContestEligibilityPersistenceException e) {
+		    sessionContext.setRollbackOnly();
+		    logger.error("Operation failed in the contest service facade.", e);
+                throw new ContestServiceException ("Cannot save contest eligibility.", e) ;
         } catch (Exception e) {
             sessionContext.setRollbackOnly();
             logger.error("Operation failed in the contest service facade.", e);
@@ -5368,4 +5437,90 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.info("Exit: " + methodName);
     	return eligible;
     }
+
+    /**
+     * Find eligibility name for the client.
+     * 
+     * @param clientId;
+     * 			The ID of the client.
+     * @return
+     * 			The name of the eligibility group.
+     * @since 1.2.3
+     */
+    public String getEligibilityName(long clientId) {
+        String methodName = "getEligibilityName : "+clientId;
+        logger.info("Enter: " + methodName);
+        try {
+            ConfigManager cfgMgr = ConfigManager.getInstance();
+            Property rootProperty = cfgMgr.getPropertyObject(CONTEST_ELIGIBILITY_MAPPING_NAMESPACE,
+                CONTEST_ELIGIBILITY_MAPPING_PREFIX);
+            Property eligibility = rootProperty.getProperty(Long.toString(clientId));
+            if (eligibility != null) {
+    System.out.println("-------------------eligibilty name-----"+eligibility.getValue(ELIGIBILITY_NAME));
+                return (String)(eligibility.getValue(ELIGIBILITY_NAME));
+            }
+            return "";
+        } catch (Exception e) {
+            logger.error("Cannot retrieve eligibility name.");
+            return "";
+        } finally {
+            logger.info("Exit: " + methodName);
+        }
+    }
+
+    
+    /**
+     * Find eligibility group id for the client.
+     * 
+     * @param clientId;
+     * 			The ID of the client.
+     * @return
+     * 			The id of the eligibility group.
+     * @since 1.2.3
+     */
+    private long getEligibilityGroupId(long clientId) {
+        String methodName = "getEligibilityName";
+        logger.info("Enter: " + methodName);
+        try {
+            ConfigManager cfgMgr = ConfigManager.getInstance();
+            Property rootProperty = cfgMgr.getPropertyObject(CONTEST_ELIGIBILITY_MAPPING_NAMESPACE,
+                CONTEST_ELIGIBILITY_MAPPING_PREFIX);
+            Property eligibility = rootProperty.getProperty(Long.toString(clientId));
+            return Long.valueOf((String)(eligibility.getValue(ELIGIBILITY_ID)));
+        } catch (Exception e) {
+            logger.error("Cannot retrieve eligibility id.");
+            return 0;
+        } finally {
+            logger.info("Exit: " + methodName);
+        }
+    }
+    
+    /**
+     * Returns whether the contest is private.
+     *
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the contest is a private one, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2.3
+     */
+    public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException {
+        String methodName = "isPrivate";
+        logger.info("Enter: " + methodName);
+        
+        List<ContestEligibility> eligibilities;
+        try {
+            eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
+        } catch (ContestEligibilityPersistenceException e) {
+            logger.error(e.getMessage(), e);
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+                
+        logger.info("Exit: " + methodName);
+        return !eligibilities.isEmpty();
+    }    
 }

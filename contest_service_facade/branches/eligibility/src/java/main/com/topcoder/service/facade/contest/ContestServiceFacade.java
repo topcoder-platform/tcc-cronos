@@ -92,8 +92,11 @@ import javax.jws.WebService;
  * Changes in v1.2: Added elegibility services.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.2
+ * <p>
+ * Changes in v1.2.1 Added support for eligibility services.
+ * </p>
+ * @author murphydog
+ * @version 1.2.1
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -109,6 +112,9 @@ public interface ContestServiceFacade {
      * @param tcDirectProjectId
      *            a <code>long</code> providing the ID of a project the new
      *            competition belongs to.
+     * @param clientId
+     *            a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
      * @return a <code>StudioCompetition</code> providing the data for created
      *         contest and having the ID auto-generated.
      * @throws PersistenceException
@@ -121,7 +127,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public StudioCompetition createContest(StudioCompetition contest,
-        long tcDirectProjectId) throws PersistenceException;
+        long tcDirectProjectId, long clientId) throws PersistenceException;
 
     /**
      * <p>
@@ -1134,7 +1140,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(
-        StudioCompetition competition, CreditCardPaymentData paymentData)
+        StudioCompetition competition, CreditCardPaymentData paymentData, long clientId)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
@@ -1148,7 +1154,7 @@ public interface ContestServiceFacade {
      * @throws ContestNotFoundException
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(
-        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentDat, long clientId)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
@@ -1171,7 +1177,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(
-        SoftwareCompetition competition, CreditCardPaymentData paymentData)
+        SoftwareCompetition competition, CreditCardPaymentData paymentData, long clientId)
         throws ContestServiceException;
 
     /**
@@ -1194,7 +1200,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
         throws ContestServiceException;
 
     /**
@@ -1342,6 +1348,9 @@ public interface ContestServiceFacade {
      *            the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId
      *            the TC direct project id.
+     * @param clientId
+     *            a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
      *
      * @return the created <code>SoftwareCompetition</code> as a contest
      *
@@ -1353,7 +1362,7 @@ public interface ContestServiceFacade {
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition createSoftwareContest(
-        SoftwareCompetition contest, long tcDirectProjectId)
+        SoftwareCompetition contest, long tcDirectProjectId, long clientId)
         throws ContestServiceException;
 
     /**
@@ -1907,4 +1916,14 @@ public interface ContestServiceFacade {
      */
     public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException;
 
+    /**
+     * Find eligibility name for the client.
+     * 
+     * @param clientId;
+     * 			The ID of the client.
+     * @return
+     * 			The name of the eligibility group.
+     * @since 1.2.1
+     */
+    public String getEligibilityName(long clientId);
 }

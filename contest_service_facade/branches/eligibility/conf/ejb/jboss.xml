@@ -11,11 +11,11 @@
                 <jndi-name>StudioServiceBean/remote</jndi-name>
             </ejb-ref>
             <ejb-ref>
-                <ejb-ref-name>ejb/contest_eligibility_validation</ejb-ref-name>
+                <ejb-ref-name>ejb/ContestEligibilityValidation</ejb-ref-name>
                 <jndi-name>ContestEligibilityValidationBean/remote</jndi-name>
             </ejb-ref>
             <ejb-ref>
-                <ejb-ref-name>ejb/contest_eligibility_persistence</ejb-ref-name>
+                <ejb-ref-name>ejb/ContestEligibilityPersistence</ejb-ref-name>
                 <jndi-name>ContestEligibilityPersistenceBean/remote</jndi-name>
             </ejb-ref>
             <ejb-ref>
