@@ -165,6 +165,10 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
+ * <p>
+ * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ *     - added a method for create private contest's roles
+ * </p>
  *
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
@@ -172,8 +176,8 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf
- * @version 1.2
+ * @author fabrizyo, znyyddf, murphydog
+ * @version 1.2.1
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -1969,4 +1973,27 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+   /**
+     * This method will create project role terms of use association for private contests.
+     *
+     * @param projectId the project id to associate
+     * @param clientId the clientId.
+     * @throws PersistenceException if any error occurs
+     * @since 1.2.1
+     */
+    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#createPrivateProjectRoleTermsOfUse(" + projectId
+		    + ", " + clientId + ") method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            projectManager.createPrivateProjectRoleTermsOfUse(projectId, clientId);
+        } catch (PersistenceException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }        
+    }    
 }

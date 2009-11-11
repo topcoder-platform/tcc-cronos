@@ -62,13 +62,18 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  * </p>
  *
  * <p>
+ * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ *     - added a method for create private contest's roles
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf
- * @version 1.2
+ * @author fabrizyo, znyyddf, murphydog
+ * @version 1.2.1
  * @since 1.0
  */
 public interface ProjectServices {
@@ -499,4 +504,14 @@ public interface ProjectServices {
      */
     public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException;
 
+	/**
+     * This method will create project role terms of use association for private contests.
+     *
+     * @param projectId the project id to associate
+     * @param clientId the clientId.
+     * @throws ProjectServicesException if any error occurs
+     * @since 1.2.1
+     */
+    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
+            throws ProjectServicesException;  
 }

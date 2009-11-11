@@ -112,14 +112,18 @@ import javax.ejb.TransactionAttributeType;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from 
  *       tomorrow for a given contest type
  * </p>
+ * <p>
+ * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ *     - added a method for create private contest's roles
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
  * required to be thread safe.
  * </p>
  *
- * @author fabrizyo, znyyddf, pulky
- * @version 1.2
+ * @author fabrizyo, znyyddf, pulky, murphydog
+ * @version 1.2.1
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -1040,6 +1044,31 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
         try {
             return getProjectServices().getCapacity(contestType);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }        
+    }
+    
+    
+   /**
+     * This method will create project role terms of use association for private contests.
+     *
+     * @param projectId the project id to associate
+     * @param clientId the clientId.
+     * @throws PersistenceException if any error occurs
+     * @since 1.2.1
+     */
+     public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#createPrivateProjectRoleTermsOfUse(" + projectId
+		    + ", " + clientId + ") method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            getProjectServices().createPrivateProjectRoleTermsOfUse(projectId, clientId);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
