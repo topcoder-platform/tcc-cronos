@@ -110,7 +110,10 @@ import com.topcoder.util.log.Log;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
- *
+ * <p>
+ * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ *     - Create terms for private contest
+ * </p>
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
@@ -120,8 +123,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky
- * @version 1.2
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog
+ * @version 1.2.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -187,7 +190,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * @since 1.1.2
      */
-    public static final long PUBLIC_SUBMITTERE_TERMS_ID = 20703;
+    public static final long PUBLIC_SUBMITTER_TERMS_ID = 20703;
 	
 	/**
      * <p>
@@ -202,25 +205,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     
     /**
      * <p>
-     * Represents the default value for standard cca confidentiality submitter_terms_id.  This value will be
-     * overridden by 'standard_cca_submitter_terms_id' configuration parameter if it
-     * exist.
+     * Represents the default value for standard cca confidentiality terms_id. 
      * </p>
      * 
      * @since 1.1.2
      */
-    public static final long STANDARD_CCA_SUBMITTERE_TERMS_ID = 20713;
+    public static final long STANDARD_CCA_TERMS_ID = 20713;
     
-    /**
-     * <p>
-     * Represents the default value for standard cca confidentiality reviewer_terms_id.  This value will be
-     * overridden by 'standard_cca_reviewer_terms_id' configuration parameter if it
-     * exist.
-     * </p>
-     * 
-     * @since 1.1.2
-     */
-    public static final long STANDARD_CCA_REVIEWER_TERMS_ID = 20713;
 
 
 	/**
@@ -302,6 +293,81 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      */
     public static final int FINAL_REVIEWER_ROLE_ID = 9;
+    /**
+     * <p>
+     * Represents the default value for screenner_role_id. 
+     * </p>
+     * @since 1.2.1
+     */
+    public static final int SCREENER_ROLE_ID = 3;
+    /**
+     * <p>
+     * Represents the default value for final_reviewer_role_id. 
+     * </p>
+     * @since 1.2.1
+     */
+    public static final int APPROVER_ROLE_ID = 10;
+    /**
+     * <p>
+     * Represents the default value for designer_role_id. 
+     * </p>
+     * @since 1.2.1
+     */
+    public static final int DESIGNER_ROLE_ID = 11;
+    /**
+     * <p>
+     * Represents the default value for observer_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int OBSERVER_ROLE_ID = 12;
+    /**
+     * <p>
+     * Represents the default value for manager_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int MANAGER_ROLE_ID = 13;
+    /**
+     * <p>
+     * Represents the default value for deactivated_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int DEACTIVATED_ROLE_ID = 86;
+    /**
+     * <p>
+     * Represents the default value for team_captain_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int TEAM_CAPTAIN_ROLE_ID = 1001;
+    /**
+     * <p>
+     * Represents the default value for free_agent_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int FREE_AGENT_ROLE_ID = 1002;
+    /**
+     * <p>
+     * Represents the default value for payment_manager_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int PAYMENT_MANAGER_ROLE_ID = 1003;
+    /**
+     * <p>
+     * Represents the all roles' id
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int[] ALL_ROLES_ID = new int[] {SUBMITTER_ROLE_ID, PRIMARY_SCREENER_ROLE_ID,
+        SCREENER_ROLE_ID, REVIEWER_ROLE_ID, ACCURACY_REVIEWER_ROLE_ID, FAILURE_REVIEWER_ROLE_ID,
+        STRESS_REVIEWER_ROLE_ID, AGGREGATOR_ROLE_ID, FINAL_REVIEWER_ROLE_ID,
+        APPROVER_ROLE_ID, DESIGNER_ROLE_ID, OBSERVER_ROLE_ID, MANAGER_ROLE_ID, DEACTIVATED_ROLE_ID,
+        TEAM_CAPTAIN_ROLE_ID, FREE_AGENT_ROLE_ID, PAYMENT_MANAGER_ROLE_ID};
+    
 
 	/**
 	 * <p>
@@ -367,7 +433,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * Updated for Version 1.1.2
      */
-    private static final String PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER = "public_submitter_terms_id";
+    private static final String PUBLIC_SUBMITTER_TERMS_ID_PARAMETER = "public_submitter_terms_id";
     
     /**
      * Represents the name of public_reviewer_terms_id parameter in
@@ -391,7 +457,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * @since 1.1.2
      */
-    private static final String STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER = "standard_cca_submitter_terms_id";
+    private static final String STANDARD_CCA_SUBMITTER_TERMS_ID_PARAMETER = "standard_cca_submitter_terms_id";
 
 	/**
      * Represents the name of submitter_role_id parameter in
@@ -926,10 +992,24 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
-	/**
-	 * 'Active' status name
-	 */
-	private static final String PROJECT_STATUS_ACTIVE = "Active";
+            
+    /**
+        * Represents the sql statement to insert the term of use.
+        * @since 1.2.1
+        */
+    private static final String INSERT_PRIVATE_CONTEST_TERMS = "insert into "
+        + "project_role_terms_of_use_xref values (?, ?, ?, CURRENT, CURRENT)";
+            
+    /**
+        * Represents the sql statement to select all term of use's id for a proejct.
+        * @since 1.2.1
+        */
+    private static final String SELCT_PRIVATE_CONTEST_TERMS = 
+        "select terms_of_user_id  from client_terms_mapping where client_project_id = ?";
+    /**
+     * 'Active' status name
+     */
+    private static final String PROJECT_STATUS_ACTIVE = "Active";
 
     /**
 	 * 'Completed' status name
@@ -3636,24 +3716,30 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private void generateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId,  boolean standardCCA, Connection conn
            ) throws PersistenceException {
 
+        PreparedStatement preparedStatement = null;
         try {
 
             // get the instance of ConfigManager
             ConfigManager cm = ConfigManager.getInstance();
-
-            long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
-                    standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER : PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER,
-                    getLogger(), Long.toString(standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID
-                            : PUBLIC_SUBMITTERE_TERMS_ID)));
-            int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
-                    SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
-            long reviewerTermsId = Long
-                    .parseLong(Helper
-                            .getConfigurationParameterValue(cm, namespace,
-                                    standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID_PARAMETER
-                                            : PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
-                                            .toString(standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID
-                                                    : PUBLIC_REVIEWER_TERMS_ID)));
+            if (standardCCA) {
+                preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+                preparedStatement.setLong(1, projectId);
+                preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
+                for (int roleId : ALL_ROLES_ID) { 
+                    preparedStatement.setInt(2, roleId);
+                    preparedStatement.execute(); 
+                }
+            } else {
+                long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
+                    PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
+                    getLogger(), Long.toString(STANDARD_CCA_TERMS_ID)));
+                int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                        SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+                long reviewerTermsId = Long
+                        .parseLong(Helper
+                                .getConfigurationParameterValue(cm, namespace,
+                                         PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
+                                                .toString(STANDARD_CCA_TERMS_ID)));
 
 			createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
 
@@ -3685,15 +3771,35 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
 													cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
 
-			createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-			createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
-			createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+            }
 
-		}
-		catch (ConfigurationException e)
-		{
-			throw new PersistenceException(e.getMessage());
-		}
+            
+
+        }
+        catch (ConfigurationException e)
+        {
+            throw new PersistenceException(e.getMessage());
+        }
+        catch (SQLException e)
+        {
+            throw(new PersistenceException(e.getMessage()));
+        }
+         finally {
+            if (preparedStatement != null)
+            {
+                try
+                {
+                    preparedStatement.close();
+                }
+                catch (Exception ee)
+                {
+                }
+                
+            }
+        }
     }
 
 
@@ -3713,107 +3819,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private void updateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId, boolean standardCCA, Connection conn
             ) throws PersistenceException {
 
-        try {
+        PreparedStatement ps = null;
 
-            // get the instance of ConfigManager
+        try
+        {
             ConfigManager cm = ConfigManager.getInstance();
 
             long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
-                    standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID_PARAMETER : PUBLIC_SUBMITTERE_TERMS_ID_PARAMETER,
-                    getLogger(), Long.toString(standardCCA ? STANDARD_CCA_SUBMITTERE_TERMS_ID
-                            : PUBLIC_SUBMITTERE_TERMS_ID)));
-            int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
-                    SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+                PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
+                getLogger(), Long.toString(PUBLIC_SUBMITTER_TERMS_ID)));
             long reviewerTermsId = Long
                     .parseLong(Helper
                             .getConfigurationParameterValue(cm, namespace,
-                                    standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID_PARAMETER
-                                            : PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
-                                            .toString(standardCCA ? STANDARD_CCA_REVIEWER_TERMS_ID
-                                                    : PUBLIC_REVIEWER_TERMS_ID)));
+                                     PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
+                                            .toString(PUBLIC_REVIEWER_TERMS_ID)));
+            StringBuffer query = new StringBuffer(1024);
+            query.append("delete ");
+            query.append("from project_role_terms_of_use_xref ");
+            query.append("where project_id = ? and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
 
-			updateProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+            ps = conn.prepareStatement(query.toString());
+            ps.setLong(1, projectId);
+            ps.setLong(2, submitterTermsId);
+            ps.setLong(3, reviewerTermsId);
+            ps.setLong(4, STANDARD_CCA_TERMS_ID);
 
-			if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
-				int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
-				int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
-				int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
-
-				// if it's a development project there are several reviewer roles
-				updateProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
-				updateProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
-				updateProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
-			} else {
-				int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
-
-				// if it's not development there is a single reviewer role
-				updateProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
-			}
-
-			// also add terms for the rest of the reviewer roles
-			int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
-			int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
-			int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
-
-			updateProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-			updateProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
-			updateProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
-
-		}
-		catch (ConfigurationException e)
-		{
-			throw new PersistenceException(e.getMessage());
-		}
-    }
-
-
-
-	/**
-     * This method will create a project role terms of use association.
-     *
-     * @param projectId the project id to associate
-     * @param resourceRoleId the role id to associate
-     * @param termsOfUseId the terms of use id to associate
-     * @param dataSource the datasource.
-     * @throws PersistenceException if any error occurs
-     */
-    public void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
-            throws PersistenceException {
-
-        PreparedStatement ps = null;
-
-		try
-		{
-			
-
-			StringBuffer query = new StringBuffer(1024);
-			query.append("INSERT ");
-			query.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
-			query.append("VALUES (?, ?, ?)");
-
-			ps = conn.prepareStatement(query.toString());
-			ps.setLong(1, projectId);
-			ps.setInt(2, resourceRoleId);
-			ps.setLong(3, termsOfUseId);
-
-			int rc = ps.executeUpdate();
-			if (rc != 1) {
-				throw(new PersistenceException("Wrong number of rows inserted into " +
-						"'project_role_terms_of_use_xref'. Inserted " + rc + ", " +
-						"should have inserted 1."));
-			}
-		}
-		catch (SQLException e)
-		{
-			throw(new PersistenceException(e.getMessage()));
-		}
+            ps.executeUpdate();
+            generateProjectRoleTermsOfUseAssociations(projectId, projectCategoryId, standardCCA, conn);
+        }
+        catch (ConfigurationException e)
+        {
+            throw new PersistenceException(e.getMessage());
+        }
+        catch (SQLException e)
+        {
+            throw(new PersistenceException(e.getMessage()));
+        }
          finally {
 			if (ps != null)
 			{
@@ -3832,7 +3873,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 
     /**
-     * This method will update a project role terms of use association in case term changes
+     * This method will create a project role terms of use association.
      *
      * @param projectId the project id to associate
      * @param resourceRoleId the role id to associate
@@ -3840,49 +3881,48 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @param dataSource the datasource.
      * @throws PersistenceException if any error occurs
      */
-    public void updateProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
+    public void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
             throws PersistenceException {
 
         PreparedStatement ps = null;
 
-		try
-		{
-			
-            String terms = "(" + PUBLIC_SUBMITTERE_TERMS_ID + ", " + PUBLIC_REVIEWER_TERMS_ID + ", " + STANDARD_CCA_SUBMITTERE_TERMS_ID + ")";
-			StringBuffer query = new StringBuffer(1024);
-			query.append("UPDATE project_role_terms_of_use_xref set terms_of_use_id =  ? ");
-			query.append(" WHERE project_id = ? AND resource_role_id = ? ");
-            query.append("     AND  terms_of_use_id in " + terms);
+        try
+        {
+            
 
-			ps = conn.prepareStatement(query.toString());
-            ps.setLong(1, termsOfUseId);
-			ps.setLong(2, projectId);
-			ps.setInt(3, resourceRoleId);
-			
+            StringBuffer query = new StringBuffer(1024);
+            query.append("INSERT ");
+            query.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
+            query.append("VALUES (?, ?, ?)");
 
-			int rc = ps.executeUpdate();
-			/*if (rc != 1) {
-				throw(new PersistenceException("Wrong number of rows updated in " +
-						"'project_role_terms_of_use_xref'. Updated " + rc + ", " +
-						"should have updated 1."));
-			}*/
-		}
-		catch (SQLException e)
-		{
-			throw(new PersistenceException(e.getMessage()));
-		}
+            ps = conn.prepareStatement(query.toString());
+            ps.setLong(1, projectId);
+            ps.setInt(2, resourceRoleId);
+            ps.setLong(3, termsOfUseId);
+
+            int rc = ps.executeUpdate();
+            if (rc != 1) {
+                throw(new PersistenceException("Wrong number of rows inserted into " +
+                        "'project_role_terms_of_use_xref'. Inserted " + rc + ", " +
+                        "should have inserted 1."));
+            }
+        }
+        catch (SQLException e)
+        {
+            throw(new PersistenceException(e.getMessage()));
+        }
          finally {
-			if (ps != null)
-			{
-				try
-				{
-					ps.close();
-				}
-				catch (Exception ee)
-				{
-				}
-				
-			}
+            if (ps != null)
+            {
+                try
+                {
+                    ps.close();
+                }
+                catch (Exception ee)
+                {
+                }
+                
+            }
         }
         
     }
@@ -4071,6 +4111,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
             sb.append("        ) )  ");
             sb.append(" ) ");
+            // exclude contests that has eligibility
+            sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
+            sb.append("           WHERE ce.is_studio = 0 AND ce.contest_id = c.project_id) ");
             sb.append(" AND ");
             // not show inactive or deleted
             sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
@@ -4253,6 +4296,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         queryBuffer.append(" and p.project_id = c.contest_id");
         queryBuffer.append(" and (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
         queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) > date(current)");
+        queryBuffer.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce ");
+        queryBuffer.append("           WHERE ce.is_studio = 0 AND ce.contest_id = p.project_id) ");
         queryBuffer.append(" order by 1");
 
         try {
@@ -4308,4 +4353,69 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+    
+    
+    /**
+     * This method will create project role terms of use association for private contests.
+     *
+     * @param projectId the project id to associate
+     * @param clientId the clientId.
+     * @throws PersistenceException if any error occurs
+     */
+    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
+            throws PersistenceException {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // build the statement
+            
+            Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
+                new Object[] {clientId}, new DataType[] {Helper.LONG_TYPE});
+                
+            preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+            preparedStatement.setLong(1, projectId);
+            if (rows.length > 0)
+            {
+                for (int index = 0; index < rows[0].length; index++) {
+                    for (int roleId : ALL_ROLES_ID) { 
+                        preparedStatement.setInt(2, roleId);
+                        preparedStatement.setObject(3, rows[0][index]);
+                        preparedStatement.execute(); 
+                    }
+                }
+            }
+            
+        }
+        catch (SQLException e)
+        {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null,
+                            "Fails to create the private project role terms of use ", e));      
+            throw(new PersistenceException(e.getMessage()));
+                  
+        }
+        finally {
+            if (preparedStatement != null)
+            {
+                try
+                {
+                    preparedStatement.close();
+                }
+                catch (Exception ee)
+                {
+                    //ignore it
+                }
+                
+            }
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+        }
+        
+    }    
 }
