@@ -3,6 +3,11 @@
  */
 package com.topcoder.service.facade.contest;
 
+import java.util.List;
+
+import javax.activation.DataHandler;
+import javax.jws.WebService;
+
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
@@ -10,6 +15,7 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.service.specreview.SpecReview;
 
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -87,7 +93,14 @@ import javax.jws.WebService;
  * getFinalSubmissionsForContest(contestId:long):List<SubmissionData>
  *
  * -----
- *
+ * <p>
+ * Changes in v1.1.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+ * <p>
+ * Changes in v1.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI): Added a flag to
+ * updateSubmissionUserRank method to support ranking milestone submissions.
+ * </p>
  * <p>
  * Changes in v1.2: Added elegibility services.
  * </p>
@@ -95,7 +108,7 @@ import javax.jws.WebService;
  * <p>
  * Changes in v1.2.1 Added support for eligibility services.
  * </p>
- * @author murphydog
+ * @author pulky, murphydog
  * @version 1.2.1
  */
 @WebService(name = "ContestServiceFacade")
@@ -1631,19 +1644,23 @@ public interface ContestServiceFacade {
 
     /**
      * <p>
-     * Ranks the submissions, given submission identifiers and the rank.
+     * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true,
+     * the rank will target milestone submissions.
      * </p>
      *
      * @param submissionId
      *            identifier of the submission.
      * @param rank
      *            rank of the submission.
+     * @param isRankingMilestone
+     *            true if the user is ranking milestone submissions.
+     *
      * @return a <code>boolean</code> true if successful, else false.
      * @throws PersistenceException
      *             if any error occurs when retrieving/updating the data.
      * @since TCCC-1219
      */
-    public boolean updateSubmissionUserRank(long submissionId, int rank)
+    public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
         throws PersistenceException;
 
     /**
@@ -1897,6 +1914,15 @@ public interface ContestServiceFacade {
      */
     public void setSubmissionMilestonePrize(long submissionId,
         long milestonePrizeId) throws ContestServiceException;
+
+    /**
+     * Get all design components.
+     *
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.1.1
+     */
+    public List<DesignComponents> getDesignComponents() throws ContestServiceException;
     
     
     /**
