@@ -1,7 +1,12 @@
+/*
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.studio.contest;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
@@ -10,20 +15,24 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * </p>
  *
  * <p>
+ * Version 1.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+ *  - Added fields for round type, milestone date, number of milestone prizes and amount.
+ * </p>
+ *
+ * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author will.xie
- * @version 1.0
+ * @author will.xie, pulky
+ * @version 1.1
  */
-public class SimpleContestData {
-	
-	/**
+public class SimpleContestData implements Serializable {
+
+    /**
      * Generated serial version id.
      */
-    private static final long serialVersionUID = -6991488651979864256L;
-    
-    
+    private static final long serialVersionUID = -4603421184647057450L;
+
     /**
      * Represents the contest id.
      */
@@ -87,6 +96,37 @@ public class SimpleContestData {
      * @since BUGR-1797 .
      */
     private String permission;
+
+    /**
+     * <p>
+     * Represents multi round format flag
+     * </p>
+     *
+     * @since 1.1
+     */
+    private boolean multiRound;
+
+    /**
+     * The milestone amount. Can be any value. Has getter and setter.
+     *
+     * @since 1.1
+     */
+    private Double milestonePrizeAmount;
+
+    /**
+     * The number of submissions that get milestone prize. Can be any value. Has getter
+     * and setter.
+     *
+     * @since 1.1
+     */
+    private Integer numberOfMilestonePrizes;
+
+    /**
+     * The milestone date. Can be any value. Has getter and setter.
+     *
+     * @since 1.1
+     */
+    private XMLGregorianCalendar milestoneDate;
 
     /**
      * Default constructor.
@@ -304,7 +344,106 @@ public class SimpleContestData {
      * 
      * @since BUGR-1797.
      */
-	public void setPermission(String permission) {
-		this.permission = permission;
-	}
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    /**
+     * Gets the value of the multi round flag
+     *
+     * @return true if the contest is a multi round format, false otherwise.
+     *
+     * @since 1.1
+     */
+    public boolean isMultiRound() {
+        return multiRound;
+    }
+
+     /**
+     * Gets the value of the multi round flag
+     *
+     * @return true if the contest is a multi round format, false otherwise.
+     *
+     * @since 1.1
+     */
+    public boolean getMultiRound() {
+        return multiRound;
+    }
+
+    /**
+     * Sets the value of the multi round flag
+     *
+     * @param multiRound the new value for the multi round flag
+     *
+     * @since 1.1
+     */
+    public void setMultiRound(boolean multiRound) {
+        this.multiRound = multiRound;
+    }
+
+    /**
+     * Gets the value of the milestone prize amount attribute.
+     *
+     * @return the value of the milestone prize amount attribute
+     *
+     * @since 1.1
+     */
+    public Double getMilestonePrizeAmount() {
+        return this.milestonePrizeAmount;
+    }
+
+    /**
+     * Sets the value of the milestone prize amount attribute.
+     *
+     * @param milestonePrizeAmount the new value for the milestone prize amount attribute
+     *
+     * @since 1.1
+     */
+    public void setMilestonePrizeAmount(Double milestonePrizeAmount) {
+        this.milestonePrizeAmount = milestonePrizeAmount;
+    }
+
+    /**
+     * Gets the value of the number of milestone prizes
+     *
+     * @return the value of the number of milestone prizes
+     *
+     * @since 1.1
+     */
+    public Integer getNumberOfMilestonePrizes() {
+        return this.numberOfMilestonePrizes;
+    }
+
+    /**
+     * Sets the value of the number of milestone prizes
+     *
+     * @param numberOfMilestonePrizes the new value for the number milestone prizes
+     *
+     * @since 1.1
+     */
+    public void setNumberOfMilestonePrizes(Integer numberOfMilestonePrizes) {
+        this.numberOfMilestonePrizes = numberOfMilestonePrizes;
+    }
+
+    /**
+     * Gets the value of the milestone date attribute.
+     *
+     * @return the value of the milestone date attribute
+     *
+     * @since 1.1
+     */
+    public XMLGregorianCalendar getMilestoneDate() {
+        return this.milestoneDate;
+    }
+
+    /**
+     * Sets the value of the milestone date attribute.
+     *
+     * @param milestoneDate the new value for the milestone date attribute
+     *
+     * @since 1.1
+     */
+    public void setMilestoneDate(XMLGregorianCalendar milestoneDate) {
+        this.milestoneDate = milestoneDate;
+    }
 }

@@ -36,6 +36,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
 import java.util.GregorianCalendar;
+import java.util.Calendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -251,6 +252,14 @@ import com.topcoder.util.log.LogManager;
  *     - added service that retrieves a list of capacity data (date, number of scheduled contests) starting from
  *       tomorrow for a given contest type
  * </p>
+ * <p>
+ * Version 1.3.2: Cockpit Release Assembly 10: Modify three getSimpleProjectContestData methods to get milestone date.
+ * </p>
+ * <p>
+ * Version 1.4 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+ *  - Added support for new multi-round type fields.
+ *  - Status transition is no longer checked in updateContestStatus method.
+ * </p>
  * <strong>Thread safety:</strong> The variables in this class are initialized
  * once in the initialize method after the bean is instantiated by EJB
  * container. They would be never be changed afterwards. So they won't affect
@@ -261,13 +270,21 @@ import com.topcoder.util.log.LogManager;
  * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @version 1.3.1
+ * @author saarixx, murphydog, pulky
+ * @version 1.4
  * @since 1.0
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @DeclareRoles({ "Cockpit User", "Cockpit Administrator" })
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
+    /**
+     * Represents the format pattern used to parse dates.
+     * 
+     * @since 1.4
+     */
+    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
+
     /**
      * <p>
      * Represents the default value for submitter_terms_id.  This value will be
@@ -931,16 +948,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 throw wrapContestManagementException("The next statuses list should not be null.");
             }
 
-            if (!status.getStatuses().contains(contestStatus)) {
-                ContestStatusTransitionException e = new ContestStatusTransitionException(
-                        "The contest's status can't be change to dest status: "
-                                + contestStatus.getName());
-                logException(e,
-                        "The contest's status can't be change to dest status.");
-                sessionContext.setRollbackOnly();
-
-                throw e;
-            }
+            // This check is no longer required.
+            // if (!status.getStatuses().contains(contestStatus)) {
+            //     ContestStatusTransitionException e = new ContestStatusTransitionException(
+            //             "The contest's status can't be change to dest status: "
+            //                     + contestStatus.getName());
+            //     logException(e,
+            //             "The contest's status can't be change to dest status.");
+            //     sessionContext.setRollbackOnly();
+            //     throw e;
+            // }
 
             contest.setStatus(contestStatus);
             em.merge(contest);
@@ -2924,7 +2941,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<SimpleContestData> result = new ArrayList<SimpleContestData>();
             SimpleDateFormat myFmt = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.SSS");
+                    DATE_FORMAT_PATTERN);
 
             for (int i = 0; i < list.size(); i++) {
 
@@ -3011,7 +3028,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<SimpleContestData> result = new ArrayList<SimpleContestData>();
             SimpleDateFormat myFmt = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.SSS");
+                    DATE_FORMAT_PATTERN);
 
             for (int i = 0; i < list.size(); i++) {
 
@@ -3083,7 +3100,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<SimpleContestData> result = new ArrayList<SimpleContestData>();
             SimpleDateFormat myFmt = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.SSS");
+                    DATE_FORMAT_PATTERN);
 
             for (int i = 0; i < list.size(); i++) {
 
@@ -3191,7 +3208,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 		            		+ "          from spec_review_status_type_lu as c " 
 		            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
 		            		+ " from spec_review as sr " 
-		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
 					
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -3293,8 +3314,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     			+ "          from spec_review_status_type_lu as c " 
                     			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
                     			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
 					
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3307,7 +3332,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
             SimpleDateFormat myFmt = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.SSS");
+                    DATE_FORMAT_PATTERN);
 
             for (int i = 0; i < list.size(); i++) {
 
@@ -3398,8 +3423,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     			+ "          from spec_review_status_type_lu as c " 
                     			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
                     			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status "
+                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
 					
+			/* Added in cockpit R 10 */
+			+ " (select milestone_date from contest_multi_round_information as cmri "
+			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+			/* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3412,7 +3441,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
             SimpleDateFormat myFmt = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.SSS");
+                    DATE_FORMAT_PATTERN);
 
             for (int i = 0; i < list.size(); i++) {
                 SimpleProjectContestData data = (SimpleProjectContestData) list
@@ -3597,8 +3626,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " where ((resource_id=c.contest_id and is_studio=1) or resource_id = c.tc_direct_project_id)  "
                     + " and user_id= "
                     + createdUser
-                    + " ),0)) as permission "
+                    + " ),0)) as permission, "
+                    + "case when c.is_multi_round then 1 else 0 end as is_multi_round, "
+                    + "cmp.number_of_submissions, "
+                    + "cmp.amount as milestone_prize_amount, "
+                    + "cmri.milestone_date "
                     + "from contest c   "
+                    + "left outer join contest_multi_round_information cmri on "
+                    + "c.contest_multi_round_information_id = cmri.contest_multi_round_information_id "
+                    + "left outer join contest_milestone_prize cmp on "
+                    + "c.contest_milestone_prize_id = cmp.contest_milestone_prize_id "                    
                     + "where not c.tc_direct_project_id is null "
                     + "  and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
 
@@ -3659,6 +3696,29 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     }
                     result.add(c);
                 }
+                
+                // round type
+                if (os[11] != null) {
+                    c.setMultiRound("1".equals(os[11].toString()));
+                } else {
+                    c.setMultiRound(false);                    
+                }
+                                
+                // number of milestone prizes
+                if (os[12] != null) {
+                    c.setNumberOfMilestonePrizes(Integer.parseInt(os[12].toString()));
+                }
+                
+                // milestone prize amount
+                if (os[13] != null) {
+                    c.setMilestonePrizeAmount(Double.parseDouble(os[13].toString()));
+                }
+                
+                // milestone date
+                if (os[14] != null) {
+                    SimpleDateFormat myFmt = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+                    c.setMilestoneDate(getXMLGregorianCalendar(myFmt.parse(os[14].toString())));
+                }
             }
 
             return result;
@@ -3668,6 +3728,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         } catch (PersistenceException e) {
             throw wrapContestManagementException(e,
                     "There are errors while persisting the entity.");
+        } catch (ParseException e) {
+            throw wrapContestManagementException(e,
+                    "There are errors while building the entity.");
         } finally {
             logEnter("getContestDataOnlyInternal(createdUser, pid)");
         }
@@ -5209,17 +5272,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
             sb.append("        ) )  ");
             sb.append(" ) ");
-            sb.append(" AND ");
              // exclude contests that has eligibility
             sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
             sb.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) ");
+
             // not show inactive or cancelled or terminated
+            sb.append(" AND ");
             sb.append(" (c.contest_detailed_status_id != 3 AND c.contest_detailed_status_id != 16 AND c.contest_detailed_status_id != 17)  ");
             sb.append(" AND (c.deleted is null or c.deleted = 0) ");
             sb.append(" AND ");
             sb.append(" ( ");
             sb
-                    .append(" (c.start_time BETWEEN to_date(:startDate,'%Y-%m-%d') AND to_date(:endDate,'%Y-%m-%d')) ");
+                    .append(" (c.start_time BETWEEN to_date(:startDate,'%Y-%m-%d %H:%M:%S') AND to_date(:endDate,'%Y-%m-%d %H:%M:%S')) ");
             sb.append(" ) ");
             sb.append("  ");
 
@@ -5229,7 +5293,21 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             query.setParameter("userId", userId);
 
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Calendar start = new GregorianCalendar();
+            start.setTime(startDate);
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.set(Calendar.SECOND, 0);
+            startDate = start.getTime();
+
+            Calendar end = new GregorianCalendar();
+            end.setTime(endDate);
+            end.set(Calendar.HOUR_OF_DAY, 23);
+            end.set(Calendar.MINUTE, 59);
+            end.set(Calendar.SECOND, 59);
+            endDate = end.getTime();
 
             query.setParameter("startDate", formatter.format(startDate));
             query.setParameter("endDate", formatter.format(endDate));
