@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,11 +21,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.Map.Entry;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.ContestSale;
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
@@ -111,7 +115,15 @@ import com.topcoder.util.log.Log;
  *       tomorrow for a given contest type
  * </p>
  * <p>
- * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ * Version 1.2.1 Cockpit Release Assembly 10
+ *     - Change three getSimpleProjectContestData methods, to include the submission_end_date
+ * </p>
+ * <p>
+ * Changes in v1.2.2 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+ * <p>
+ * Version 1.2.3 (Cockpit Contest Eligibility) changelog:
  *     - Create terms for private contest
  * </p>
  * <p>
@@ -124,7 +136,7 @@ import com.topcoder.util.log.Log;
  * otherwise, show 'status' from db.  
  *
  * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog
- * @version 1.2.1
+ * @version 1.2.3
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -587,7 +599,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for, "
+			// fixed forum post
+            		+ " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            		+ "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            		+ "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -603,7 +618,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "          from spec_review_status_type_lu as c " 
             + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             + " from spec_review as sr " 
-            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+ "		and p.project_status_id != 3 ";
@@ -631,7 +650,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 	+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-	+ " 0 as num_for, "
+	// fixed forum post
+    + " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+    + "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+    + "             and pi.project_id =  p.project_id) as num_for, "
 	+ " tc_direct_project_id as project_id , tcd.name, tcd.description, tcd.user_id, "
 	+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 	+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -649,7 +671,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     + "          from spec_review_status_type_lu as c " 
     + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
     + " from spec_review as sr " 
-    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "	
+    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "	
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
@@ -678,8 +704,46 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
 		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
 			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,Helper.DATE_TYPE};
 
+    /**
+     * Represents the sql statement to query all design components data for a user id.
+     * @since 1.2.1
+     */
+    private static final String QUERY_ALL_DESIGN_COMPONENTS = "select p.project_id as project_id, " + 
+        "(select (c.category_name ||' ' || pi.value || ' ' || cv.version_text) " + 
+        "from comp_catalog cc, categories c, project_info pi, comp_versions cv " + 
+        "where  c.category_id = cc.root_category_id and " + 
+        "cc.component_id = (select pi.value from project_info pi " + 
+        "where pi.project_info_type_id = 2 and pi.project_id = p.project_id )" + 
+        "and project_id = p.project_id and " + 
+        "project_info_type_id =6 " + 
+        "and cv.comp_vers_id = (select pi.value from project_info pi " + 
+        "where pi.project_info_type_id = 1 and pi.project_id = p.project_id) " + 
+        ") as component_name, " + 
+        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
+        "from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 and user_id = ? " + 
+        " ),0)) as cperm, " + 
+        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
+        "from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = ? " + 
+        "),0)) as pperm " + 
+        "from project p, project_category_lu pcl," + 
+        " project_status_lu psl, tc_direct_project tcd , project_info pi " + 
+        " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id " + 
+        "and p.tc_direct_project_id = tcd.project_id " + 
+        "and p.project_status_id != 3 and p.project_category_id = 1 " +
+        "and p.project_id = pi.project_id and pi.project_info_type_id = 1 " +
+        "and not exists (" + 
+        "select 1 from project_info q1 " + 
+        "where q1.project_info_type_id = 1 and q1.project_id <> p.project_id and q1.value = pi.value) ";
+        
+    /**
+     * Represents  the column types for the result set which is returned by executing the sql statement
+     * to query all design components data for a user id.
+     * @since 1.2.1
+     */
+    private static final DataType[] QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+	Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
     /**
      * Represents the sql statement to query all project statuses.
      */
@@ -722,6 +786,27 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "ON category.project_type_id=type.project_type_id "
             + "WHERE project.project_id IN ";
 
+    private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
+
+			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
+            + "                  project_category_lu.project_category_id, project_category_lu.name, project_type_lu.project_type_id, project_type_lu.name, "
+            + "                  project.create_user, project.create_date, project.modify_user, project.modify_date, project_category_lu.description, "
+			+ "                  pi1.value as project_name, pi2.value as project_version "
+            + "              FROM project, "
+            + "                   project_category_lu, "
+            + "                   project_status_lu, "
+            + "                   project_type_lu, "
+			+ "                   project_info pi1, "
+            + "                   project_info pi2 "
+            + "             WHERE project.project_category_id = project_category_lu.project_category_id "
+            + "               AND project.project_status_id = project_status_lu.project_status_id "
+            + "               AND project_category_lu.project_type_id = project_type_lu.project_type_id "
+			+ "               AND pi1.project_id = project.project_id AND pi1.project_info_type_id = 6 "
+            + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
+            + "               AND (project.project_status_id = 1 or project.project_status_id = 7)"
+			+ "			      AND date(project.create_date) > date(current) - ";
+
+
     /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query projects.
@@ -731,6 +816,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
+    
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query projects.
+     */
+    private static final DataType[] QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, 
+		Helper.STRING_TYPE, Helper.STRING_TYPE};
     
     /**
      * Represents the sql statement to query tc direct projects.
@@ -799,10 +895,25 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "project_info_type_id FROM project_info WHERE project_id=?";
 
     /**
+     * Represents the sql statement to query project property ids and values.
+     */
+    private static final String QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_SQL = "SELECT "
+            + "project_info_type_id, value FROM project_info WHERE project_id=?";
+
+
+    /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query project property ids.
      */
     private static final DataType[] QUERY_PROJECT_PROPERTY_IDS_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE};
+
+    /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query project property ids and values.
+     */
+    private static final DataType[] QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_COLUMN_TYPES = new DataType[] {
+    	Helper.LONG_TYPE, Helper.STRING_TYPE
+    };
 
     /**
      * Represents the sql statement to create project.
@@ -830,6 +941,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final DataType[] QUERY_CONTEST_SALE_BY_ID_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE };
+
+    
 
     /**
      * Represents the sql statement to query the contest sale via contest id.
@@ -888,7 +1001,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to update project.
      */
     private static final String UPDATE_PROJECT_SQL = "UPDATE project "
-            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date=CURRENT, tc_direct_project_id=? "
+            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date= ?, tc_direct_project_id=? "
             + "WHERE project_id=?";
 
     /**
@@ -992,13 +1105,26 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
+    /**
+     * Represents the sql statement to find the corresponding develop contest for the design contest.
+     * 
+     * @since 1.2.1
+     */
+    private static final String FIND_CORRESPONDING_DEVELOPMENT_CONTEST = "select q1.project_id from project_info q1 "
+        + "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = ? "
+        + "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 "
+        + "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = ? "
+        + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
+        + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
+        + "where q1.project_info_type_id = 1 and q1.project_id <> ?";
+
             
     /**
         * Represents the sql statement to insert the term of use.
         * @since 1.2.1
         */
     private static final String INSERT_PRIVATE_CONTEST_TERMS = "insert into "
-        + "project_role_terms_of_use_xref values (?, ?, ?, CURRENT, CURRENT)";
+        + "project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) values (?, ?, ?)";
             
     /**
         * Represents the sql statement to select all term of use's id for a proejct.
@@ -1020,6 +1146,42 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * 'final review' phase name
 	 */
 	private static final String PROJECT_PHASE_FINAL_REVIEW = "Final Review";
+
+    /**
+     * <p>
+     * Represents the audit creation type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_CREATE_TYPE = 1;
+
+    /**
+     * <p>
+     * Represents the audit deletion type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_DELETE_TYPE = 2;
+    
+    /**
+     * <p>
+     * Represents the audit update type.
+     * </p>
+     *
+     * @since 1.1.2
+     */
+    private static final int AUDIT_UPDATE_TYPE = 3;
+    
+    /**
+     * Represents the SQL statement to audit project info.
+     * 
+     * @since 1.1.2
+     */
+    private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
+    	+ "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
+    	+ "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -1269,9 +1431,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         // newId will contain the new generated Id for the project
         Long newId;
-        // createDate will contain the create_date value retrieved from
-        // database.
-        Date createDate;
+      
         
         Date specCreateDate;
 
@@ -1304,14 +1464,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // create the project
             createProject(newId, project, operator, conn);
-
-            // get the creation date.
-            createDate = (Date) Helper.doSingleValueQuery(conn,
-                    "SELECT create_date FROM project WHERE project_id=?",
-                    new Object[] {newId}, Helper.DATE_TYPE);
             
             closeConnection(conn);
         } catch (PersistenceException e) {
+            project.setCreationUser(null);
+            project.setCreationTimestamp(null);
+            project.setModificationUser(null);
+            project.setModificationTimestamp(null);
         	getLogger().log(Level.ERROR,
         			new LogMessage(null, operator, "Fails to create project " + project.getAllProperties(), e));
             if (conn != null) {
@@ -1323,12 +1482,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // set the newId when no exception occurred
         project.setId(newId.longValue());
 
-        // set the creation/modification user and date when no exception
-        // occurred
-        project.setCreationUser(operator);
-        project.setCreationTimestamp(createDate);
-        project.setModificationUser(operator);
-        project.setModificationTimestamp(createDate);
+        
     }
 
     /**
@@ -1485,6 +1639,41 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             
             throw new PersistenceException("Fails to retrieve projects", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    public Project[] getProjectsByCreateDate(int days)
+        throws PersistenceException {
+       
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get projects by create date: " + days);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Project[] projects = getProjectsByCreateDate(days, conn);
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving by create date: " + days, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
         }
     }
 
@@ -1812,6 +2001,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             new Long(project.getProjectCategory().getId()), operator,
             operator, tcDirectProjectId};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SQL, queryArgs);
+
+        // get the creation date.
+          // createDate will contain the create_date value retrieved from
+        // database.
+        Date    createDate = (Date) Helper.doSingleValueQuery(conn,
+                    "SELECT create_date FROM project WHERE project_id=?",
+                    new Object[] {projectId}, Helper.DATE_TYPE);
+
+        // set the creation/modification user and date when no exception
+        // occurred
+        project.setCreationUser(operator);
+        project.setCreationTimestamp(createDate);
+        project.setModificationUser(operator);
+        project.setModificationTimestamp(createDate);
         
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -1836,7 +2039,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // create the project properties
-        createProjectProperties(projectId, idValueMap, operator, conn);
+        createProjectProperties(projectId, project, idValueMap, operator, conn);
     }
 
     /**
@@ -1932,12 +2135,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         } else {
         	tcDirectProjectId = null;
         }
+
+         Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
         // update the project type and project category
         Object[] queryArgs = new Object[] {
             new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator, tcDirectProjectId, 
+            new Long(project.getProjectCategory().getId()), operator, modifyDate, tcDirectProjectId, 
             projectId };
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
+
+       // update the project object so this data's correct for audit purposes
+        project.setModificationUser(operator);
+        project.setModificationTimestamp(modifyDate);
         
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -1963,7 +2172,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         updateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // update the project properties
-        updateProjectProperties(projectId, idValueMap, operator, conn);
+        updateProjectProperties(project, idValueMap, operator, conn);
 
         // create project audit record into project_audit table
         createProjectAudit(projectId, reason, operator, conn);
@@ -2242,14 +2451,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Create the project properties in the database.
-     * @param projectId The new generated project id
+     * @param project The new generated project
      * @param idValueMap The property id - property value map
      * @param operator The creation user of this project
      * @param conn The database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void createProjectProperties(Long projectId, Map idValueMap,
+    private void createProjectProperties(Long projectId, Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
 
     	getLogger().log(Level.INFO, new LogMessage(projectId, operator,
@@ -2268,6 +2477,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Object[] queryArgs = new Object[] {projectId, entry.getKey(),
                         entry.getValue(), operator, operator };
                 Helper.doDMLQuery(preparedStatement, queryArgs);
+                
+                auditProjectInfo(conn, projectId, project, AUDIT_CREATE_TYPE, (Long) entry.getKey(),
+                		(String) entry.getValue());
             }
 
         } catch (SQLException e) {
@@ -2295,17 +2507,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * Update the project properties into the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param idValueMap the property id - property value map
      * @param operator the modification user of this project
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void updateProjectProperties(Long projectId, Map idValueMap,
+    private void updateProjectProperties(Project project, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
-        // get old property ids from database
-        Set propertyIdSet = getProjectPropertyIds(projectId, conn);
+    	
+    	Long projectId = project.getId();
+    	
+        // get old property ids and values from database
+        Map<Long, String> propertyMap = getProjectPropertyIdsAndValues(projectId, conn);
 
         // create a property id-property value map that contains the properties
         // to insert
@@ -2317,8 +2532,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
              				"update project, update project_info with projectId:" + projectId));
         	 
             // prepare the statement.
-            preparedStatement = conn
-                    .prepareStatement(UPDATE_PROJECT_PROPERTY_SQL);
+            preparedStatement = conn.prepareStatement(UPDATE_PROJECT_PROPERTY_SQL);
 
             // enumerator each property id in the project object
             for (Iterator it = idValueMap.entrySet().iterator(); it.hasNext();) {
@@ -2327,15 +2541,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Long propertyId = (Long) entry.getKey();
 
                 // check if the property in the project object already exists in
-                // the
-                // database
-                if (propertyIdSet.contains(propertyId)) {
-                    propertyIdSet.remove(propertyId);
-
-                    // update the project property
-                    Object[] queryArgs = new Object[] {entry.getValue(),
-                        operator, projectId, propertyId };
-                    Helper.doDMLQuery(preparedStatement, queryArgs);
+                // the database
+                if (propertyMap.containsKey(propertyId)) {
+                	// if the value hasn't been changed, we don't need to update anything
+                	if (!propertyMap.get(propertyId).equals((String) entry.getValue())) {
+                		// update the project property
+                		Object[] queryArgs = new Object[] {entry.getValue(),
+                    		operator, projectId, propertyId };
+                    	Helper.doDMLQuery(preparedStatement, queryArgs);
+                    
+                    	auditProjectInfo(conn, project, AUDIT_UPDATE_TYPE, propertyId, (String) entry.getValue());
+                	}
+                	propertyMap.remove(propertyId);
                 } else {
                     // add the entry to the createIdValueMap
                     createIdValueMap.put(propertyId, entry.getValue());
@@ -2350,11 +2567,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
 
         // create the new properties
-        createProjectProperties(projectId, createIdValueMap, operator, conn);
+        createProjectProperties(project.getId(), project, createIdValueMap, operator, conn);
 
         // delete the remaining property ids that are not in the project object
         // any longer
-        deleteProjectProperties(projectId, propertyIdSet, conn);
+        deleteProjectProperties(project, propertyMap.keySet(), conn);
     }
 
     /**
@@ -2385,15 +2602,49 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     }
 
     /**
+     * Gets all the property ids and values associated to this project.
+     * 
+     * @param projectId The id of this project
+     * @param conn The database connection
+     * @return A map that contains the property values, keyed by id
+     * 
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Map<Long, String> getProjectPropertyIdsAndValues(Long projectId, Connection conn)
+    		throws PersistenceException {
+    	
+        Map<Long, String> idMap = new HashMap<Long, String>();
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_SQL,
+                new Object[] {projectId},
+                QUERY_PROJECT_PROPERTY_IDS_AND_VALUES_COLUMN_TYPES);
+
+        // enumerator each row
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // add the id to the map
+            idMap.put((Long) row[0], (String) row[1]);
+        }
+        
+        return idMap;
+    }
+
+    /**
      * Delete the project properties from the database.
-     * @param projectId the id of the project
+     * @param project the project object
      * @param propertyIdSet the Set that contains the property ids to delete
      * @param conn the database connection
      * @throws PersistenceException if error occurred while accessing the
      *             database.
      */
-    private void deleteProjectProperties(Long projectId, Set propertyIdSet,
-            Connection conn) throws PersistenceException {
+    private void deleteProjectProperties(Project project, Set<Long> propertyIdSet, Connection conn)
+    		throws PersistenceException {
+    	
+    	Long projectId = project.getId();
+    	
         // check if the property id set is empty
         // do nothing if property id set is empty
         if (!propertyIdSet.isEmpty()) {
@@ -2402,11 +2653,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             StringBuffer idListBuffer = new StringBuffer();
             idListBuffer.append('(');
             int idx = 0;
-            for (Iterator it = propertyIdSet.iterator(); it.hasNext();) {
+            for (Long id : propertyIdSet) {
                 if (idx++ != 0) {
                     idListBuffer.append(',');
                 }
-                idListBuffer.append(it.next());
+                idListBuffer.append(id);
             }
             idListBuffer.append(')');
 
@@ -2416,6 +2667,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // delete the properties whose id is in the set
             Helper.doDMLQuery(conn, DELETE_PROJECT_PROPERTIES_SQL
                     + idListBuffer.toString(), new Object[] {projectId});
+            
+            for (Long id : propertyIdSet) {
+            	auditProjectInfo(conn, project, AUDIT_DELETE_TYPE, id, null);
+            }
         }
     }
 
@@ -2536,6 +2791,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return projectStatuses;
     }
+
+     /**
+     * This method will audit project information. This information is generated when most project properties are
+     * inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param projectId the id of the project being audited
+     * @param project the project being audited
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param projectInfoTypeId the project info type id
+     * @param value the project info value that we're changing to
+     *
+     * @throws PersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.1.2
+     */
+    private void auditProjectInfo(Connection connection, Long projectId, Project project, int auditType,
+    		long projectInfoTypeId, String value) throws PersistenceException {
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(PROJECT_INFO_AUDIT_INSERT_SQL);
+
+            int index = 1;
+            statement.setLong(index++, projectId);
+            statement.setLong(index++, projectInfoTypeId);
+            statement.setString(index++, value);
+            statement.setInt(index++, auditType);
+            statement.setTimestamp(index++, new Timestamp(project.getModificationTimestamp().getTime()));
+            statement.setLong(index++, Long.parseLong(project.getModificationUser()));
+
+            if (statement.executeUpdate() != 1) {
+                throw new PersistenceException("Audit information was not successfully saved.");
+            }
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            throw new PersistenceException("Unable to insert project_info_audit record.", e);
+        } finally {
+            Helper.closeStatement(statement);
+        }
+    }
+    
+    /**
+     * This method will audit project information. This information is generated when most project properties are
+     * inserted, deleted, or edited.
+     *
+     * @param connection the connection to database
+     * @param project the project being audited
+     * @param auditType the audit type. Can be AUDIT_CREATE_TYPE, AUDIT_DELETE_TYPE, or AUDIT_UPDATE_TYPE
+     * @param projectInfoTypeId the project info type id
+     * @param value the project info value that we're changing to
+     *
+     * @throws PersistenceException if validation error occurs or any error occurs in the underlying layer
+     *
+     * @since 1.1.2
+     */
+    private void auditProjectInfo(Connection connection, Project project, int auditType, long projectInfoTypeId, String value)
+			throws PersistenceException {
+    	auditProjectInfo(connection, project.getId(), project, auditType, projectInfoTypeId, value);
+    }
+
     
     /**
      * <p>
@@ -3159,6 +3475,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * <p>
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * </p>
      * 
      * @return the full list of contests.
@@ -3238,13 +3556,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                    		    ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
+				if (rows[i][19] != null)
+		        	{
+                    		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		        	}
+
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3287,6 +3610,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *     - project and contest permissions are also fetched now.
      * </p>
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
      * 
      * @param pid the specified tc project id for which to get the list of contest.
      * @return the list of contest for specified tc project id.
@@ -3366,8 +3691,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                     		    ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3375,10 +3700,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
+
 			}
 
 			closeConnection(conn);
@@ -3420,6 +3750,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * Updated for Spec Reviews Finishing Touch v1.0
      *  - Changed the way now spec status is queried.
 	 * 
+     * Updated for Cockpit Release Assembly 10:
+     * 	   - add set SubmissionEndDate
 	 * @param createdUser the specified user for which to get the list of contest.
 	 * @return the list of contest for specified user.
 	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -3445,7 +3777,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
 			+ " (select count (distinct resource_id) from upload u where u.project_id = p.project_id and upload_status_id = 1 and upload_type_id = 1) as num_sub, "
-			+ " 0 as num_for , "
+			// fixed forum post
+            		+ " (select count(messageid) from jivecategory c, jiveforum f, jivemessage m, project_info pi "
+            		+ "        where pi.project_info_type_id =4 and c.categoryid = pi.value and c.categoryid = f.categoryid and m.forumid = f.forumid "
+            		+ "             and pi.project_id =  p.project_id) as num_for, "
 			+ " tc_direct_project_id as project_id, tcd.name, tcd.description, tcd.user_id, "
 			+ "  (select value from project_info where project_id = p.project_id and project_info_type_id =4) as forum_id, "
 			+ "  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end "
@@ -3463,7 +3798,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             		+ "          from spec_review_status_type_lu as c " 
             		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
             		+ " from spec_review as sr " 
-            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status "
+            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
+			/* Added in cockpit R 10 */
+			+ " (select scheduled_end_time from project_phase ph "
+			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
+			/* R 10 end*/
 			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
 			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
 			+" and p.project_status_id != 3";
@@ -3531,8 +3870,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 				
 				if (rows[i][17] != null) {
-                    ret[i].setPperm((String) rows[i][17]);
-                }
+                    		   ret[i].setPperm((String) rows[i][17]);
+                		}
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3540,10 +3879,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				}
 
 				if (rows[i][18] != null)
-                {
-                    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                }
+                		{
+                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
+                		}
 				
+				if (rows[i][19] != null)
+		                {
+                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
+		                }
 			}
 
 			closeConnection(conn);
@@ -3952,7 +4295,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the connection
             conn = openConnection();
             
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar start = new GregorianCalendar();
+            start.setTime(startDate);
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.set(Calendar.SECOND, 0);
+            startDate = start.getTime();
+
+            Calendar end = new GregorianCalendar();
+            end.setTime(endDate);
+            end.set(Calendar.HOUR_OF_DAY, 23);
+            end.set(Calendar.MINUTE, 59);
+            end.set(Calendar.SECOND, 59);
+            endDate = end.getTime();
+
+
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
             StringBuffer sb = new StringBuffer();
             
@@ -4121,9 +4479,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" ( ");
             sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
                     .append(formatter.format(startDate))
-                    .append("','%Y-%m-%d') AND to_date('")
+                    .append("','%Y-%m-%d %H:%M:%S') AND to_date('")
                     .append(formatter.format(endDate))
-                    .append("','%Y-%m-%d')) ");
+                    .append("','%Y-%m-%d %H:%M:%S')) ");
 
             sb.append(" ) ");
 
@@ -4353,6 +4711,164 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+
+   /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+     * @param conn the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+    private Project[] getProjectsByCreateDate(int days, Connection conn)
+        throws PersistenceException {
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days,
+                new Object[] {}, QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
+
+        // create the Project array.
+        Project[] projects = new Project[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1])
+                    .longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
+                    (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3])
+                    .longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+            // create a new instance of ProjectType class
+            projects[i] = new Project(((Long) row[0]).longValue(), category,
+                    status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+
+			// here we only get project name and project version
+			projects[i].setProperty("Project Name", (String) row[12]);
+			projects[i].setProperty("Project Version", (String) row[13]);
+        }
+
+       
+        return projects;
+    }
+
+
+     /**
+     * Get all design components.
+     *
+     * @param userId
+     *            The user id
+     * @throws PersistenceException
+     *             if any other error occurs
+     * @since 1.2.2
+     */
+    public List<DesignComponents> getDesignComponents(long userId) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignComponents() method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                    QUERY_ALL_DESIGN_COMPONENTS, new Object[] {userId, userId},
+                    QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES );
+
+            List<DesignComponents> designList = new ArrayList<DesignComponents>();
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
+
+            DesignComponents designComponents = null;
+
+            for(int i=0;i<rows.length;i++)
+            {   
+		        designComponents = new DesignComponents();
+                {
+                    designComponents.setProjectId((Long)rows[i][0]);
+                    designComponents.setText(rows[i][1].toString());
+                    designComponents.setCperm(rows[i][2] == null ? null : rows[i][2].toString());
+                    designComponents.setPperm(rows[i][3] == null ? null : rows[i][3].toString());
+                }
+                designList.add(designComponents);
+            }
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignComponents method."));
+            return designList;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null,
+                            "Fails to retrieving design components information ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+     /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param userId
+     *            The user id
+     * @throws PersistenceException
+     *             if any other error occurs
+     * @since 1.2.2
+     */
+    public long getDevelopmentContestId(long contestId) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignComponents() method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                FIND_CORRESPONDING_DEVELOPMENT_CONTEST, 
+                new Object[] {contestId, contestId, contestId, contestId},
+                new DataType[] {Helper.LONG_TYPE});
+
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
+            long rst = -1;
+            if (rows.length != 0) {
+                rst = ((Long)rows[0][0]).longValue();
+            }
+            getLogger().log(Level.INFO, new LogMessage(null, null, "The id is: " + rst));
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignComponents method."));
+            return rst;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                "Fails to retrieving development contest's id ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+    
     
     
     /**
