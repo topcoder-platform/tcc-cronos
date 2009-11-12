@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.SimplePipelineData;
 import com.topcoder.management.project.SimpleProjectContestData;
@@ -113,7 +114,11 @@ import javax.ejb.TransactionAttributeType;
  *       tomorrow for a given contest type
  * </p>
  * <p>
- * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ * Changes in v1.2.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+ * <p>
+ * Version 1.2.2 (Cockpit Contest Eligibility) changelog:
  *     - added a method for create private contest's roles
  * </p>
  *
@@ -123,7 +128,7 @@ import javax.ejb.TransactionAttributeType;
  * </p>
  *
  * @author fabrizyo, znyyddf, pulky, murphydog
- * @version 1.2.1
+ * @version 1.2.2
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -1050,6 +1055,70 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }        
+    }
+
+     /**
+     * Get all design components.
+     *
+     * @param userId
+     *            The dummy user id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<DesignComponents> getDesignComponents(long userId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getDesignComponents() method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            userId = p.getUserId();
+            List<DesignComponents> ret = getProjectServices().getDesignComponents(userId);
+	    if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+		return ret;	 
+	    } else {
+		for (int index = ret.size() - 1; index >= 0; index--) {
+		    DesignComponents designComponents = (DesignComponents)ret.get(index);
+		    if (designComponents.getCperm() == null && designComponents.getPperm() == null) {
+			ret.remove(index);
+		    }
+		}
+		return ret;
+	    }
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+     /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param contestId
+     *            The contest id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDevelopmentContestId(long contestId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getDesignComponents() method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+
+            return getProjectServices().getDevelopmentContestId(contestId);
+
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
     }
     
     

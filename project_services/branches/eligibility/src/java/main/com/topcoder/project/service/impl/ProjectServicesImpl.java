@@ -12,6 +12,7 @@ import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ContestSale;
+import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectFilterUtility;
@@ -166,7 +167,11 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *       tomorrow for a given contest type
  * </p>
  * <p>
- * Version 1.2.1 (Cockpit Contest Eligibility) changelog:
+ * Changes in v1.2.1 - Cockpit Release Assembly 11
+ * Add method getDesignComponents to get design components.
+ * </p>
+ * <p>
+ * Version 1.2.2 (Cockpit Contest Eligibility) changelog:
  *     - added a method for create private contest's roles
  * </p>
  *
@@ -1973,6 +1978,66 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+
+    /**
+     * Get all design components.
+     *
+     * @param userId
+     *            The user id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    	public List<DesignComponents> getDesignComponents(long userId)
+			throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getDesignComponents method.");
+
+		List<DesignComponents> ret = null;
+		try {
+			ret = projectManager.getDesignComponents(userId);
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getDesignComponents method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getDesignComponents method.");
+		return ret;
+	}
+     /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param contestId
+     *            The contest id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDevelopmentContestId(long contestId)
+        throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getDevelopmentContestId method.");
+
+		long ret;
+		try {
+			ret = projectManager.getDevelopmentContestId(contestId);
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getDevelopmentContestId method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getDevelopmentContestId method.");
+		return ret;
+	}
+
    /**
      * This method will create project role terms of use association for private contests.
      *
