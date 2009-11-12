@@ -124,7 +124,7 @@
             private var contestOverview:XML;
 
             [Bindable]
-            private var contestFees:XML;
+            public var contestFees:XML;
             
             /**
              * Reliability Bonus XML
@@ -885,7 +885,7 @@
              * @param data the data object in which to load the cost data.
              * @since 1.0.3
              */ 
-            private function loadCostLevelData(xml:XML, data:Dictionary):void {
+            public function loadCostLevelData(xml:XML, data:Dictionary):void {
                 if (!xml || !data) {
                     return;
                 }

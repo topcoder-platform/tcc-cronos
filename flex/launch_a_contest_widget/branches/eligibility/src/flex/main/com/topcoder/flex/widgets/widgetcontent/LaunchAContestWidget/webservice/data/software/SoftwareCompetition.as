@@ -39,6 +39,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var projectHeader:SoftwareProjectHeader;
 
         /**
+        * A <code>SoftwareProjectHeader</code> dto.
+        */
+        public var developmentProjectHeader:SoftwareProjectHeader;
+
+        /**
         * A <code>String</code> reason for project header update.
         */
         public var projectHeaderReason:String;

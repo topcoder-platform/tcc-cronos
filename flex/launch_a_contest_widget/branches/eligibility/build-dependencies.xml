@@ -8,6 +8,7 @@
 	<property name="flexunit" value="${flexunitdir}/bin/FlexUnit.swc" />
 	<property name="flexunitoptional" value="${flexunitdir}/bin/FlexUnitOptional.swc" />
 	<property name="cairngorm" value="${ext_flex_libdir}/cairngorm/2.2.1/Cairngorm.swc" />
+	<property name="autocomplete" value="${ext_flex_libdir}/AutoComplete/AdvancedAutoComplete-1.0.swc" />
 
 	<!-- Path elements required in the master build file (they MUST be defined even if empty). -->
 	<path id="component.tcs-dependencies">
@@ -17,6 +18,7 @@
 
 	<path id="component.3rdParty-dependencies">
 	    <pathelement location="${cairngorm}" />
+	    <pathelement location="${autocomplete}" />
 	</path>
 
 	<path id="component.test.3rdParty-dependencies">
