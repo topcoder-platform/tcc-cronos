@@ -21,6 +21,8 @@ TO RUN:
 5. The following properties need to be set for this component
     5.1 Update User_Project_Data_Store.xml and DB_Factory.xml for all reviewers and unit tests
     5.2 Run sql/all.sql to create db, tables and data
+    5.3 Set up an SMTP server and change Email_Engine.xml.
+    
 NB:
 	The folder ${basedir}/test_reflib contains TopCoder components 
 	that are required by this component's test code. This component is
