@@ -18,44 +18,47 @@ import com.cronos.onlinereview.phases.BaseTest;
 public class LookupHelperTest extends BaseTest {
 
     /**
-     * Tests if LookupHelper.checkNull(Object, String) throws IllegalArgumentException for null argument.
+     * Tests if LookupHelper.checkNull(Object, String) throws
+     * IllegalArgumentException for null argument.
      */
     public void testCheckNull() {
         try {
             LookupHelper.checkNull(null, "argName");
             fail("LookupHelper.checkNull() should throw IAE for null argument.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests if LookupHelper.checkString(String, String) throws IllegalArgumentException for null argument.
+     * Tests if LookupHelper.checkString(String, String) throws
+     * IllegalArgumentException for null argument.
      */
     public void testCheckStringNull() {
         try {
             LookupHelper.checkString(null, "argName");
             fail("LookupHelper.checkNull() should throw IAE for null argument.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests if LookupHelper.checkString(String, String) throws IllegalArgumentException for empty argument.
+     * Tests if LookupHelper.checkString(String, String) throws
+     * IllegalArgumentException for empty argument.
      */
     public void testCheckStringEmpty() {
         try {
             LookupHelper.checkString("   ", "argName");
             fail("LookupHelper.checkNull() should throw IAE for empty argument.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid values and tests if correct
-     * value is returned.
+     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid
+     * values and tests if correct value is returned.
      *
      * @throws Exception not during test.
      */
@@ -71,8 +74,9 @@ public class LookupHelperTest extends BaseTest {
     }
 
     /**
-     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid values and tests if the
-     * value returned is inserted in the passed map for caching or not.
+     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid
+     * values and tests if the value returned is inserted in the passed map for
+     * caching or not.
      *
      * @throws Exception not during test.
      */
@@ -85,13 +89,13 @@ public class LookupHelperTest extends BaseTest {
 
         long id = LookupHelper.lookUpId(map, value, conn, sql);
         assertEquals("lookup() did not return correct value", id, expectedId);
-        assertEquals("Lookup method did not cache the value after retrieving", new Long(id), map.get(value));
+        assertEquals("Lookup method did not cache the value after retrieving",
+                        new Long(id), map.get(value));
     }
 
-
     /**
-     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid values and asserts that
-     * the connection was not closed.
+     * Tests LookupHelper.lookUpId(Map, String, Connection, String) with valid
+     * values and asserts that the connection was not closed.
      *
      * @throws Exception not during test.
      */

@@ -52,4 +52,16 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
     </Config>
+    
+    <Config name="com.cronos.onlinereview.phases.PostMortemPhaseHandler">
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+    </Config>
 </CMConfig>

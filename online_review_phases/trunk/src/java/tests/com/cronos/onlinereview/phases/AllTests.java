@@ -1,39 +1,43 @@
 /**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+ * Copyright (c) 2009, TopCoder, Inc. All rights reserved
  */
 package com.cronos.onlinereview.phases;
+
+import com.cronos.onlinereview.phases.accuracytests.AccuracyTests;
+import com.cronos.onlinereview.phases.failuretests.ApprovalPhaseHandlerTest;
+import com.cronos.onlinereview.phases.failuretests.PostMortemPhaseHandlerTest;
+import com.cronos.onlinereview.phases.stresstests.StressTests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import com.cronos.onlinereview.phases.accuracytests.AccuracyTests;
-import com.cronos.onlinereview.phases.failuretests.FailureTests;
-import com.cronos.onlinereview.phases.stresstests.StressTests;
 
 /**
- * <p>This test case aggregates all test cases.</p>
- *
- * @author TopCoder
- * @version 1.0
+ * <p>
+ * This test case aggregates all test cases.
+ * </p>
+ * 
+ * @author TCSDEVELOPER
+ * @version 1.1
  */
 public class AllTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        
-        //unit tests
+
+        // unit tests
         suite.addTest(UnitTests.suite());
-        
-        //accuracy tests
+
+        // accuracy
         suite.addTest(AccuracyTests.suite());
-        
-        //failure tests
-        suite.addTest(FailureTests.suite());
-        
-        //stress tests
+                
+        // stress
         suite.addTest(StressTests.suite());
-        
+                
+        // failure
+        suite.addTestSuite(ApprovalPhaseHandlerTest.class);
+        suite.addTestSuite(PostMortemPhaseHandlerTest.class);
+
         return suite;
     }
 

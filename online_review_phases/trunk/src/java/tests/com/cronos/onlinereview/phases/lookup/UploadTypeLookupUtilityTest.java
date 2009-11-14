@@ -17,7 +17,8 @@ import com.cronos.onlinereview.phases.BaseTest;
 public class UploadTypeLookupUtilityTest extends BaseTest {
 
     /**
-     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with null connection.
+     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with null
+     * connection.
      *
      * @throws Exception not under test.
      */
@@ -28,12 +29,13 @@ public class UploadTypeLookupUtilityTest extends BaseTest {
             UploadTypeLookupUtility.lookUpId(conn, value);
             fail("lookUpId() did not throw IAE for null connection.");
         } catch (IllegalArgumentException e) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with null value.
+     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with null
+     * value.
      *
      * @throws Exception not under test.
      */
@@ -44,12 +46,13 @@ public class UploadTypeLookupUtilityTest extends BaseTest {
             UploadTypeLookupUtility.lookUpId(conn, value);
             fail("lookUpId() did not throw IAE for null value.");
         } catch (IllegalArgumentException e) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with empty value.
+     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with empty
+     * value.
      *
      * @throws Exception not under test.
      */
@@ -60,12 +63,13 @@ public class UploadTypeLookupUtilityTest extends BaseTest {
             UploadTypeLookupUtility.lookUpId(conn, value);
             fail("lookUpId() did not throw IAE for empty value.");
         } catch (IllegalArgumentException e) {
-            //expected
+            // expected
         }
     }
 
     /**
-     * Tests whether UploadTypeLookupUtility.lookUpId(Connection, String) returns correct value.
+     * Tests whether UploadTypeLookupUtility.lookUpId(Connection, String)
+     * returns correct value.
      *
      * @throws Exception not under test.
      */
@@ -78,8 +82,8 @@ public class UploadTypeLookupUtilityTest extends BaseTest {
     }
 
     /**
-     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with a value that is not mapped to
-     * any record in the database.
+     * Tests the UploadTypeLookupUtility.lookUpId(Connection, String) with a
+     * value that is not mapped to any record in the database.
      *
      * @throws Exception not under test.
      */
@@ -90,7 +94,7 @@ public class UploadTypeLookupUtilityTest extends BaseTest {
             UploadTypeLookupUtility.lookUpId(conn, value);
             fail("lookUpId() did not throw SQLException for value not mapped in table.");
         } catch (SQLException e) {
-            //expected
+            // expected
         }
     }
 }

@@ -59,4 +59,8 @@ DROP TABLE user_rating;
 DROP TABLE user;
 DROP TABLE email;
 
+DROP TABLE audit_action_type_lu;
+DROP TABLE project_phase_audit;
+DROP TABLE project_user_audit;
+
 close database;

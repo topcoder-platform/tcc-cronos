@@ -19,8 +19,8 @@ TO RUN:
 		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
 
 5. The following properties need to be set for this component
-	None
-
+    5.1 Update User_Project_Data_Store.xml and DB_Factory.xml for all reviewers and unit tests
+    5.2 Run sql/all.sql to create db, tables and data
 NB:
 	The folder ${basedir}/test_reflib contains TopCoder components 
 	that are required by this component's test code. This component is

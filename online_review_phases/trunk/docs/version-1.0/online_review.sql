@@ -1,5 +1,3 @@
-database online_review;
-
 CREATE TABLE project_type_lu (
   project_type_id               INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
@@ -69,7 +67,6 @@ CREATE TABLE scorecard_group (
   scorecard_id                  INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   weight                        FLOAT                           NOT NULL,
-  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -83,7 +80,6 @@ CREATE TABLE scorecard_section (
   scorecard_group_id            INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   weight                        FLOAT                           NOT NULL,
-  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -109,9 +105,8 @@ CREATE TABLE scorecard_question (
   description                   LVARCHAR(4096)                  NOT NULL,
   guideline                     LVARCHAR(4096),
   weight                        FLOAT                           NOT NULL,
-  sort                          DECIMAL(3, 0)                   NOT NULL,
-  upload_document               DECIMAL(1, 0)                   NOT NULL,
-  upload_document_required      DECIMAL(1, 0)                   NOT NULL,
+  upload_document               BOOLEAN                         NOT NULL,
+  upload_document_required      BOOLEAN                         NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -219,8 +214,8 @@ CREATE TABLE phase_type_lu (
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(phase_type_id)
 );
-CREATE TABLE project_phase (
-  project_phase_id              INTEGER                         NOT NULL,
+CREATE TABLE phase (
+  phase_id                      INTEGER                         NOT NULL,
   project_id                    INTEGER                         NOT NULL,
   phase_type_id                 INTEGER                         NOT NULL,
   phase_status_id               INTEGER                         NOT NULL,
@@ -229,12 +224,12 @@ CREATE TABLE project_phase (
   scheduled_end_time            DATETIME YEAR TO FRACTION(3)    NOT NULL,
   actual_start_time             DATETIME YEAR TO FRACTION(3),
   actual_end_time               DATETIME YEAR TO FRACTION(3),
-  duration 						DECIMAL(16, 0)					NOT NULL,
+  duration                      INTERVAL DAY TO FRACTION(3)     NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  PRIMARY KEY(project_phase_id),
+  PRIMARY KEY(phase_id),
   FOREIGN KEY(phase_type_id)
     REFERENCES phase_type_lu(phase_type_id),
   FOREIGN KEY(project_id)
@@ -245,18 +240,14 @@ CREATE TABLE project_phase (
 CREATE TABLE phase_dependency (
   dependency_phase_id           INTEGER                         NOT NULL,
   dependent_phase_id            INTEGER                         NOT NULL,
-  dependency_start              DECIMAL(1, 0)                   NOT NULL,
-  dependent_start               DECIMAL(1, 0)                   NOT NULL,
-  lag_time                      DECIMAL(16, 0)                  NOT NULL,
-  create_user                   VARCHAR(64)                     NOT NULL,
-  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  modify_user                   VARCHAR(64)                     NOT NULL,
-  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  dependency_start              BOOLEAN                         NOT NULL,
+  dependent_start               BOOLEAN                         NOT NULL,
+  lag_time                      INTERVAL DAY TO FRACTION(3)     NOT NULL,
   PRIMARY KEY(dependency_phase_id, dependent_phase_id),
   FOREIGN KEY(dependency_phase_id)
-    REFERENCES project_phase(project_phase_id),
+    REFERENCES phase(phase_id),
   FOREIGN KEY(dependent_phase_id)
-    REFERENCES project_phase(project_phase_id)
+    REFERENCES phase(phase_id)
 );
 CREATE TABLE phase_criteria_type_lu (
   phase_criteria_type_id        INTEGER                         NOT NULL,
@@ -269,16 +260,16 @@ CREATE TABLE phase_criteria_type_lu (
   PRIMARY KEY(phase_criteria_type_id)
 );
 CREATE TABLE phase_criteria (
-  project_phase_id              INTEGER                         NOT NULL,
+  phase_id                      INTEGER                         NOT NULL,
   phase_criteria_type_id        INTEGER                         NOT NULL,
   parameter                     VARCHAR(254)                    NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  PRIMARY KEY(project_phase_id, phase_criteria_type_id),
-  FOREIGN KEY(project_phase_id)
-    REFERENCES project_phase(project_phase_id),
+  PRIMARY KEY(phase_id, phase_criteria_type_id),
+  FOREIGN KEY(phase_id)
+    REFERENCES phase(phase_id),
   FOREIGN KEY(phase_criteria_type_id)
     REFERENCES phase_criteria_type_lu(phase_criteria_type_id)
 );
@@ -299,7 +290,7 @@ CREATE TABLE resource (
   resource_id                   INTEGER                         NOT NULL,
   resource_role_id              INTEGER                         NOT NULL,
   project_id                    INTEGER,
-  project_phase_id              INTEGER,
+  phase_id                      INTEGER,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -309,8 +300,8 @@ CREATE TABLE resource (
     REFERENCES project(project_id),
   FOREIGN KEY(resource_role_id)
     REFERENCES resource_role_lu(resource_role_id),
-  FOREIGN KEY(project_phase_id)
-    REFERENCES project_phase(project_phase_id)
+  FOREIGN KEY(phase_id)
+    REFERENCES phase(phase_id)
 );
 CREATE TABLE resource_info_type_lu (
   resource_info_type_id         INTEGER                         NOT NULL,
@@ -429,7 +420,7 @@ CREATE TABLE review (
   resource_id                   INTEGER                         NOT NULL,
   submission_id                 INTEGER                         NOT NULL,
   scorecard_id                  INTEGER                         NOT NULL,
-  committed                     DECIMAL(1, 0)                   NOT NULL,
+  committed                     BOOLEAN                         NOT NULL,
   score                         FLOAT,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
@@ -447,9 +438,7 @@ CREATE TABLE review_item (
   review_item_id                INTEGER                         NOT NULL,
   review_id                     INTEGER                         NOT NULL,
   scorecard_question_id         INTEGER                         NOT NULL,
-  upload_id                     INTEGER,
   answer                        VARCHAR(254)                    NOT NULL,
-  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -458,9 +447,7 @@ CREATE TABLE review_item (
   FOREIGN KEY(review_id)
     REFERENCES review(review_id),
   FOREIGN KEY(scorecard_question_id)
-    REFERENCES scorecard_question(scorecard_question_id),
-  FOREIGN KEY(upload_id)
-    REFERENCES upload(upload_id)
+    REFERENCES scorecard_question(scorecard_question_id)
 );
 CREATE TABLE review_comment (
   review_comment_id             INTEGER                         NOT NULL,
@@ -469,7 +456,6 @@ CREATE TABLE review_comment (
   comment_type_id               INTEGER                         NOT NULL,
   content                       LVARCHAR(4096)                  NOT NULL,
   extra_info                    VARCHAR(254),
-  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -489,7 +475,6 @@ CREATE TABLE review_item_comment (
   comment_type_id               INTEGER                         NOT NULL,
   content                       LVARCHAR(4096)                  NOT NULL,
   extra_info                    VARCHAR(254),
-  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -508,8 +493,8 @@ CREATE TABLE deliverable_lu (
   resource_role_id              INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   description                   VARCHAR(64)                     NOT NULL,
-  per_submission                DECIMAL(1, 0)                   NOT NULL,
-  required                      DECIMAL(1, 0)                   NOT NULL,
+  per_submission                BOOLEAN                         NOT NULL,
+  required                      BOOLEAN                         NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -622,14 +607,3 @@ CREATE TABLE screening_result (
   FOREIGN KEY(screening_response_id)
     REFERENCES screening_response_lu(screening_response_id)
 );
-
-
-CREATE TABLE id_sequences (
-  name                  VARCHAR(255)    NOT NULL,
-  next_block_start      INTEGER         NOT NULL,
-  block_size            INTEGER         NOT NULL,
-  exhausted             INTEGER         NOT NULL,
-  PRIMARY KEY (name)
-);
-
-close database;

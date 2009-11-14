@@ -1,14 +1,16 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-
 /**
  * Encapsulates the entry log data and generates consistent log messages.
+ *
+ * @version 1.0
+ * @author pulky
  */
 public class LogMessage {
     /** project id for the log message */
@@ -34,7 +36,8 @@ public class LogMessage {
      * @param message a free text message.
      * @param error an exception to append to the log message.
      */
-    public LogMessage(Long phaseId, String operator, String message, Throwable error) {
+    public LogMessage(Long phaseId, String operator, String message,
+                    Throwable error) {
         this.phaseId = phaseId;
 
         this.operator = operator;
@@ -100,12 +103,16 @@ public class LogMessage {
         if (logMessage == null) {
             StringBuffer buffer = new StringBuffer();
 
-            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append("phaseId: ")
-                  .append((phaseId == null) ? "Unknown" : phaseId.toString()).append(" - ").append(message);
+            buffer.append("operator: ").append(
+                            (operator == null) ? "Unknown" : operator).append(
+                            "phaseId: ").append(
+                            (phaseId == null) ? "Unknown" : phaseId.toString())
+                            .append(" - ").append(message);
 
-            //This should be done while the Logging Wrapper 1.2 is used.
+            // This should be done while the Logging Wrapper 1.2 is used.
 
-            //When the LW 1.3 would be ready, it will be possible pass the exception directly to LW.   
+            // When the LW 1.3 would be ready, it will be possible pass the
+            // exception directly to LW.
             if (error != null) {
                 buffer.append('\n').append(getExceptionStackTrace(error));
             }
@@ -121,7 +128,7 @@ public class LogMessage {
      *
      * @param cause the exception to be recorded
      *
-     * @return stack strace
+     * @return the stack trace of the exception.
      */
     public static String getExceptionStackTrace(Throwable cause) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

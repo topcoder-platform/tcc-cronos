@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -18,17 +18,19 @@ import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtilityTest;
 
 /**
- * <p>This test case aggregates all Unit test cases.</p>
+ * <p>
+ * This test case aggregates all Unit test cases.
+ * </p>
  *
- * @author bose_java
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 1.1
  */
 public class UnitTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        //look up classes
+        // look up classes
         suite.addTestSuite(LookupHelperTest.class);
         suite.addTestSuite(PhaseStatusLookupUtilityTest.class);
         suite.addTestSuite(PhaseTypeLookupUtilityTest.class);
@@ -39,7 +41,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(NotificationTypeLookupUtilityTest.class);
         suite.addTestSuite(UploadTypeLookupUtilityTest.class);
 
-        //main package classes
+        // main package classes
         suite.addTestSuite(ManagerHelperTest.class);
         suite.addTestSuite(AbstractPhaseHandlerTest.class);
         suite.addTestSuite(RegistrationPhaseHandlerTest.class);
@@ -53,12 +55,13 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(FinalFixPhaseHandlerTest.class);
         suite.addTestSuite(FinalReviewPhaseHandlerTest.class);
         suite.addTestSuite(ApprovalPhaseHandlerTest.class);
+        suite.addTestSuite(PostMortemPhaseHandlerTest.class);
 
-        //exception classes
+        // exception classes
         suite.addTestSuite(ConfigurationExceptionTest.class);
         suite.addTestSuite(PhaseNotSupportedExceptionTest.class);
 
-        //demo test
+        // demo test
         suite.addTestSuite(DemoTest.class);
 
         return suite;

@@ -5,7 +5,6 @@ package com.cronos.onlinereview.phases;
 
 import junit.framework.TestCase;
 
-
 /**
  * Accuracy tests for ConfigurationException class.
  *
@@ -20,18 +19,23 @@ public class ConfigurationExceptionTest extends TestCase {
     private static final Exception EXCEPTION = new Exception();
 
     /**
-     * Test that ConfigurationException(String) constructor propagates the message argument.
+     * Test that ConfigurationException(String) constructor propagates the
+     * message argument.
      */
     public void testConfigurationExceptionString() {
         ConfigurationException exc = new ConfigurationException(ERROR_MSG);
-        assertEquals("error msg not propagated to super.", ERROR_MSG, exc.getMessage());
+        assertEquals("error msg not propagated to super.", ERROR_MSG, exc
+                        .getMessage());
     }
 
     /**
-     * Test that ConfigurationException(String, Throwable) constructor propagates the arguments.
+     * Test that ConfigurationException(String, Throwable) constructor
+     * propagates the arguments.
      */
     public void testConfigurationExceptionStringThrowable() {
-        ConfigurationException exc = new ConfigurationException(ERROR_MSG, EXCEPTION);
-        assertEquals("Throwable not propagated to super.", EXCEPTION, exc.getCause());
+        ConfigurationException exc = new ConfigurationException(ERROR_MSG,
+                        EXCEPTION);
+        assertEquals("Throwable not propagated to super.", EXCEPTION, exc
+                        .getCause());
     }
 }

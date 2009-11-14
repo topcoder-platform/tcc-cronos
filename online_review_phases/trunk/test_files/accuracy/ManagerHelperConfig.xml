@@ -58,16 +58,16 @@
 			<Value>com.topcoder.management.resource.persistence.PersistenceResourceManager</Value>
 		</Property>
 		<Property name="ResourceSearchBundleName">
-			<Value>Resource Search Bundle</Value>
+			<Value>ResourceSearchBundle</Value>
 		</Property>
 		<Property name="ResourceRoleSearchBundleName">
-			<Value>Resource Role Search Bundle</Value>
+			<Value>ResourceRoleSearchBundle</Value>
 		</Property>
 		<Property name="NotificationSearchBundleName">
-			<Value>Notification Search Bundle</Value>
+			<Value>NotificationSearchBundle</Value>
 		</Property>
 		<Property name="NotificationTypeSearchBundleName">
-			<Value>Notification Type Search Bundle</Value>
+			<Value>NotificationTypeSearchBundle</Value>
 		</Property>
 		<Property name="ResourceIdGeneratorName">
 			<Value>resource_id_seq</Value>
@@ -88,10 +88,10 @@
 			<Value>com.topcoder.management.deliverable.PersistenceUploadManager</Value>
 		</Property>
 		<Property name="UploadSearchBundleName">
-			<Value>Upload Search Bundle</Value>
+			<Value>UploadSearchBundle</Value>
 		</Property>
 		<Property name="SubmissionSearchBundleName">
-			<Value>Submission Search Bundle</Value>
+			<Value>SubmissionSearchBundle</Value>
 		</Property>
 		<Property name="UploadIdGeneratorName">
 			<Value>upload_id_seq</Value>
@@ -126,6 +126,10 @@
 		<Property name="Namespace">
 			<Value>com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator</Value>
 		</Property>
-	</Property>
 
+	</Property>
+    		
+		<Property name="ProjectDetailsURL">
+			<Value>ProjectDetailsURL</Value>
+	    </Property>
 </Config>

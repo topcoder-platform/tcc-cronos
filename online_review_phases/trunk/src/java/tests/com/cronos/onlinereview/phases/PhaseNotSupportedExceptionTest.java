@@ -5,7 +5,6 @@ package com.cronos.onlinereview.phases;
 
 import junit.framework.TestCase;
 
-
 /**
  * Accuracy tests for PhaseNotSupportedException class.
  *
@@ -17,10 +16,13 @@ public class PhaseNotSupportedExceptionTest extends TestCase {
     private static final String ERROR_MSG = "error msg";
 
     /**
-     * Test that PhaseNotSupportedException(String) constructor propagates the message argument.
+     * Test that PhaseNotSupportedException(String) constructor propagates the
+     * message argument.
      */
     public void testPhaseNotSupportedExceptionString() {
-        PhaseNotSupportedException exc = new PhaseNotSupportedException(ERROR_MSG);
-        assertEquals("error msg not propagated to super.", ERROR_MSG, exc.getMessage());
+        PhaseNotSupportedException exc = new PhaseNotSupportedException(
+                        ERROR_MSG);
+        assertEquals("error msg not propagated to super.", ERROR_MSG, exc
+                        .getMessage());
     }
 }

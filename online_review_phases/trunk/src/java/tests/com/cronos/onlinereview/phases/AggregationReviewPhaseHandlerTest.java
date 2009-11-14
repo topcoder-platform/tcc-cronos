@@ -10,10 +10,9 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
-import com.topcoder.management.review.data.Comment;
-import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
+import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -41,7 +40,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
 
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
-        //add the component configurations as well
+        // add the component configurations as well
         for (int i = 0; i < COMPONENT_FILE_NAMES.length; i++) {
             configManager.add(COMPONENT_FILE_NAMES[i]);
         }
@@ -57,19 +56,19 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
         super.tearDown();
     }
 
-
     /**
      * Tests canPerform(Phase) with null phase.
      *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             handler.canPerform(null);
             fail("canPerform() did not throw IllegalArgumentException for null argument.");
         } catch (IllegalArgumentException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -79,13 +78,14 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             Phase phase = createPhase(1, 1, "Invalid", 3, "Aggregation Review");
             handler.canPerform(phase);
             fail("canPerform() did not throw PhaseHandlingException for invalid phase status.");
         } catch (PhaseHandlingException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -95,13 +95,14 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidType() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             Phase phase = createPhase(1, 1, "Scheduled", 1, "INVALID");
             handler.canPerform(phase);
             fail("canPerform() did not throw PhaseHandlingException for invalid phase type.");
         } catch (PhaseHandlingException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -111,12 +112,13 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             handler.perform(null, "operator");
             fail("perform() did not throw IllegalArgumentException for null argument.");
         } catch (IllegalArgumentException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -126,13 +128,14 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             Phase phase = createPhase(1, 1, "Invalid", 1, "Aggregation Review");
             handler.perform(phase, "operator");
             fail("perform() did not throw PhaseHandlingException for invalid phase status.");
         } catch (PhaseHandlingException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -142,13 +145,14 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
             Phase phase = createPhase(1, 1, "Scheduled", 1, "INVALID");
             handler.perform(phase, "operator");
             fail("perform() did not throw PhaseHandlingException for invalid phase type.");
         } catch (PhaseHandlingException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -158,13 +162,15 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
-            Phase phase = createPhase(1, 1, "Scheduled", 1, "Aggregation Review");
+            Phase phase = createPhase(1, 1, "Scheduled", 1,
+                            "Aggregation Review");
             handler.perform(phase, null);
             fail("perform() did not throw IllegalArgumentException for null operator.");
         } catch (IllegalArgumentException e) {
-            //expected.
+            // expected.
         }
     }
 
@@ -174,74 +180,87 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
-            Phase phase = createPhase(1, 1, "Scheduled", 1, "Aggregation Review");
+            Phase phase = createPhase(1, 1, "Scheduled", 1,
+                            "Aggregation Review");
             handler.perform(phase, "   ");
             fail("perform() did not throw IllegalArgumentException for empty operator.");
         } catch (IllegalArgumentException e) {
-            //expected.
+            // expected.
         }
     }
 
     /**
-     * Tests the AggregationReviewPhaseHandler() constructor and canPerform with Scheduled statuses.
+     * Tests the AggregationReviewPhaseHandler() constructor and canPerform with
+     * Scheduled statuses.
      *
      * @throws Exception not under test.
      */
     public void testCanPerformWithScheduled() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
 
         try {
-        	cleanTables();
-        	Project project = super.setupPhases();
-	        Phase[] phases = project.getAllPhases();
-	        Phase aggregationReviewPhase = phases[7];
-	
-	        //test with scheduled status.
-	        aggregationReviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
-	
-	        //time has not passed, nor dependencies met
-	        assertFalse("canPerform should have returned false", handler.canPerform(aggregationReviewPhase));
-	
-	        //time has passed, but dependency not met.
-	        aggregationReviewPhase.setActualStartDate(new Date());
-	        assertFalse("canPerform should have returned false", handler.canPerform(aggregationReviewPhase));
-	
-	        //time has passed and dependency met.
-	        aggregationReviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
+            cleanTables();
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase aggregationReviewPhase = phases[7];
 
-	        assertTrue("canPerform should have returned true", handler.canPerform(aggregationReviewPhase));
+            // test with scheduled status.
+            aggregationReviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            // time has not passed, nor dependencies met
+            assertFalse("canPerform should have returned false", handler
+                            .canPerform(aggregationReviewPhase));
+
+            // time has passed, but dependency not met.
+            aggregationReviewPhase.setActualStartDate(new Date());
+            assertFalse("canPerform should have returned false", handler
+                            .canPerform(aggregationReviewPhase));
+
+            // time has passed and dependency met.
+            aggregationReviewPhase.getAllDependencies()[0].getDependency()
+                            .setPhaseStatus(PhaseStatus.CLOSED);
+
+            assertTrue("canPerform should have returned true", handler
+                            .canPerform(aggregationReviewPhase));
         } finally {
-        	cleanTables();
+            cleanTables();
         }
     }
 
-
     /**
-     * Tests the AggregationReviewPhaseHandler() constructor and canPerform with Open statuses.
+     * Tests the AggregationReviewPhaseHandler() constructor and canPerform with
+     * Open statuses.
      *
      * @throws Exception not under test.
      */
     public void testCanPerformHandlerWithOpen() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
 
         try {
-        	cleanTables();
-	        Project project = super.setupPhases();
-	        Phase[] phases = project.getAllPhases();
-	        Phase aggregationReviewPhase = phases[7];
-	    	
-	        //change dependency type to F2F
-	        aggregationReviewPhase.getAllDependencies()[0].setDependentStart(false);
-	
-	        //test with open status.
-	        aggregationReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
-	
-	        //time has not passed, dependencies not met
-	        assertFalse("canPerform should have returned false", handler.canPerform(aggregationReviewPhase));
+            cleanTables();
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase aggregationReviewPhase = phases[7];
+
+            // change dependency type to F2F
+            Dependency[] ds = aggregationReviewPhase.getAllDependencies();
+
+            aggregationReviewPhase.getAllDependencies()[0]
+                            .setDependentStart(false);
+
+            // test with open status.
+            aggregationReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // time has not passed, dependencies not met
+            assertFalse("canPerform should have returned false", handler
+                            .canPerform(aggregationReviewPhase));
         } finally {
-        	cleanTables();
+            cleanTables();
         }
     }
 
@@ -251,62 +270,87 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testPerform() throws Exception {
-        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
 
-        //test with scheduled status.
-        Phase aggregationReviewPhase = createPhase(1, 1, "Scheduled", 2, "Aggregation Review");
+        // test with scheduled status.
+        Phase aggregationReviewPhase = createPhase(1, 1, "Scheduled", 2,
+                        "Aggregation Review");
         String operator = "operator";
         handler.perform(aggregationReviewPhase, operator);
     }
 
     /**
-     * Tests the perform with Open status. Tests with a rejected comment in aggregation worksheet such
-     * that a new aggregation/review cycle is created, new aggregator resource is created.
+     * Tests the perform with Open status. Tests with a rejected comment in
+     * aggregation worksheet such that a new aggregation/review cycle is
+     * created, new aggregator resource is created.
+     *
+     * <p>
+     * version 1.1 change notes: fix external reference failure, added user
+     * before adding resource.
+     * </p>
      *
      * @throws Exception not under test.
+     * @version 1.1
      */
     public void testPerformWithOpen() throws Exception {
-    	AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(
+                        PHASE_HANDLER_NAMESPACE);
         try {
-	        cleanTables();
-	        Project project = super.setupPhases();
-	        Phase[] phases = project.getAllPhases();
-	        Phase aggregationPhase = phases[6];
-	        Phase aggregationReviewPhase = phases[7];
-	        aggregationReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
-	        
-	        //populate db with required data
-	        //aggregator resource
-	        Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
-	        Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-	        Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
-	        
-	        //reviewer resource and related review
-	        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-	        Review aggWorksheet = createReview(11, aggregator.getId(), aggSubmission.getId(), scorecard1.getId(), true, 90.0f);
-	        //add a rejected comment
-	        aggWorksheet.addComment(createComment(1, aggregator.getId(), "Rejected", 1, "Aggregation Review Comment"));
-	        
-        	Connection conn = getConnection();
-            
-        	//insert records
-        	insertResources(conn, new Resource[] {aggregator});
+            cleanTables();
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase aggregationPhase = phases[6];
+            Phase aggregationReviewPhase = phases[7];
+            aggregationReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // populate db with required data
+            // aggregator resource
+            Resource aggregator = createResource(101, aggregationPhase.getId(),
+                            project.getId(), 8);
+            Upload aggUpload = createUpload(1, project.getId(), aggregator
+                            .getId(), 4, 1, "parameter");
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+
+            // reviewer resource and related review
+            Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0",
+                            75.0f, 100.0f);
+            Review aggWorksheet = createReview(11, aggregator.getId(),
+                            aggSubmission.getId(), scorecard1.getId(), true,
+                            90.0f);
+            // add a rejected comment
+            aggWorksheet.addComment(createComment(1, aggregator.getId(),
+                            "Rejected", 1, "Aggregation Review Comment"));
+
+            Connection conn = getConnection();
+
+            // insert records
+            insertResources(conn, new Resource[] {aggregator});
+
+            // Added in version 1.1: we need to insert an external reference id
+            // which references to resource's user id in resource_info table
+            insertResourceInfo(conn, aggregator.getId(), 1, "1001");
+
             insertUploads(conn, new Upload[] {aggUpload});
             insertSubmissions(conn, new Submission[] {aggSubmission});
-            insertResourceSubmission(conn, aggregator.getId(), aggSubmission.getId());
+            insertResourceSubmission(conn, aggregator.getId(), aggSubmission
+                            .getId());
             insertScorecards(conn, new Scorecard[] {scorecard1});
             insertReviews(conn, new Review[] {aggWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {aggregator.getId()}, 
-            		new long[] {aggWorksheet.getId()}, new String[] {"Rejected COmment"}, 
-            		new long[] {7}, new String[] {"Rejected"});
+            insertCommentsWithExtraInfo(conn, new long[] {1},
+                            new long[] {aggregator.getId()},
+                            new long[] {aggWorksheet.getId()},
+                            new String[] {"Rejected COmment"}, new long[] {7},
+                            new String[] {"Rejected"});
             insertScorecardQuestion(conn, 1, 1);
-            
-            //no exception should be thrown.
-            String operator = "operator";
+
+            // no exception should be thrown.
+            String operator = "1001";
             handler.perform(aggregationReviewPhase, operator);
+
         } finally {
             closeConnection();
-        	cleanTables();
+            cleanTables();
         }
     }
 }

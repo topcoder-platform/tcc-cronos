@@ -145,6 +145,8 @@ INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_
   VALUES(10, 'Final Review', 'Final Review', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(11, 'Approval', 'Approval', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(12, 'Post-Mortem', 'Post-Mortem', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO phase_status_lu(phase_status_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Scheduled', 'Scheduled', 'System', CURRENT, 'System', CURRENT);
@@ -190,6 +192,8 @@ INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description,
   VALUES(12, NULL, 'Observer', 'Observer', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(13, NULL, 'Manager', 'Manager', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(14, 12, 'Post-Mortem Reviewer', 'Post-Mortem Reviewer', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
@@ -263,6 +267,8 @@ INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, cre
   VALUES(10, 'Final Review Comment', 'Final Review Comment', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(11, 'Manager Comment', 'Manager Comment', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(12, 'Approval Review Comment', 'Approval Review Comment', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
   VALUES(1, 2, 1, 'Submission', 'Submission', 0, 0, 'System', CURRENT, 'System', CURRENT);

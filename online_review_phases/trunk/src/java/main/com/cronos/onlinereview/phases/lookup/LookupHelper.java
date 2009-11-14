@@ -10,12 +10,14 @@ import java.sql.SQLException;
 
 import java.util.Map;
 
-
 /**
- * <p>A class having helper methods to perform argument validation. It also defines a lookup method which is used
- * by all the lookup utility classes in this package.</p>
+ * <p>
+ * A class having helper methods to perform argument validation. It also defines
+ * a lookup method which is used by all the lookup utility classes in this
+ * package.
+ * </p>
  *
- * @author tuenm, bose_java
+ * @author tuenm, bose_java, TCSDEVELOPER
  * @version 1.0
  */
 final class LookupHelper {
@@ -23,11 +25,12 @@ final class LookupHelper {
      * private to prevent instantiation.
      */
     private LookupHelper() {
-        //do nothing.
+        // do nothing.
     }
 
     /**
-     * Checks whether the given Object is null and throws IllegalArgumentException if yes.
+     * Checks whether the given Object is null and throws
+     * IllegalArgumentException if yes.
      *
      * @param arg the argument to check
      * @param name the name of the argument
@@ -57,8 +60,9 @@ final class LookupHelper {
     }
 
     /**
-     * This method retrieves the id from the cache if present, else from the database. This method is not
-     * synchronized as it is called from the lookUpId() method of the various LookupUtility classes which itself is
+     * This method retrieves the id from the cache if present, else from the
+     * database. This method is not synchronized as it is called from the
+     * lookUpId() method of the various LookupUtility classes which itself is
      * synchronized.
      *
      * @param cachedPairs the cache of looked up values and ids.
@@ -71,8 +75,8 @@ final class LookupHelper {
      * @throws IllegalArgumentException if any input is null or value is empty.
      * @throws SQLException if there is any problem acessing the database.
      */
-    static long lookUpId(Map cachedPairs, String value, Connection connection, String sql)
-        throws SQLException {
+    static long lookUpId(Map cachedPairs, String value, Connection connection,
+                    String sql) throws SQLException {
         checkNull(cachedPairs, "cachedPairs");
         checkString(value, "value");
         checkNull(connection, "connection");
@@ -91,8 +95,12 @@ final class LookupHelper {
     }
 
     /**
-     * <p>A helper method to lookup the id for the given value from the database.</p>
-     *  <p>It uses a PreparedStatement to fetch the results.</p>
+     * <p>
+     * A helper method to lookup the id for the given value from the database.
+     * </p>
+     * <p>
+     * It uses a PreparedStatement to fetch the results.
+     * </p>
      *
      * @param connection The connection used to access the persistence.
      * @param sql the sql query string.
@@ -100,10 +108,11 @@ final class LookupHelper {
      *
      * @return id for the given lookup value.
      *
-     * @throws SQLException if there is a problem connecting to database, or if value is not mapped to any record.
+     * @throws SQLException if there is a problem connecting to database, or if
+     *         value is not mapped to any record.
      */
-    private static long lookUpIdFromDatabase(Connection connection, String sql, String value)
-        throws SQLException {
+    private static long lookUpIdFromDatabase(Connection connection, String sql,
+                    String value) throws SQLException {
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -115,21 +124,22 @@ final class LookupHelper {
             if (rs.next()) {
                 return rs.getLong(1);
             } else {
-                throw new SQLException("The query '" + sql + "' did not return any rows.");
+                throw new SQLException("The query '" + sql
+                                + "' did not return any rows.");
             }
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    //handle silently.
+                    // handle silently.
                 }
             }
             if (stmt != null) {
                 try {
                     stmt.close();
                 } catch (SQLException ex) {
-                    //handle silently.
+                    // handle silently.
                 }
             }
         }

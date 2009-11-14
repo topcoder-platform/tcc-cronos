@@ -39,7 +39,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
-        //add the component configurations as well
+        // add the component configurations as well
         for (int i = 0; i < COMPONENT_FILE_NAMES.length; i++) {
             configManager.add(COMPONENT_FILE_NAMES[i]);
         }
@@ -60,12 +60,13 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      *
      * @throws ConfigurationException not under test.
      */
-    public void testAbstractPhaseHandlerWithNull() throws ConfigurationException {
+    public void testAbstractPhaseHandlerWithNull()
+                    throws ConfigurationException {
         try {
             new AbstractPhaseHandlerSubClass(null);
             fail("AbstractPhaseHandler(String) did not throw IllegalArgumentException for null argument.");
         } catch (IllegalArgumentException ex) {
-            //expected.
+            // expected.
         }
     }
 
@@ -74,12 +75,13 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      *
      * @throws ConfigurationException not under test.
      */
-    public void testAbstractPhaseHandlerWithEmpty() throws ConfigurationException {
+    public void testAbstractPhaseHandlerWithEmpty()
+                    throws ConfigurationException {
         try {
             new AbstractPhaseHandlerSubClass("  ");
             fail("AbstractPhaseHandler(String) did not throw IllegalArgumentException for empty argument.");
         } catch (IllegalArgumentException ex) {
-            //expected.
+            // expected.
         }
     }
 
@@ -88,7 +90,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      *
      * @throws ConfigurationException not under test.
      */
-    public void testAbstractPhaseHandlerWithValid() throws ConfigurationException {
+    public void testAbstractPhaseHandlerWithValid()
+                    throws ConfigurationException {
         new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
     }
 
@@ -98,23 +101,27 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      * @throws PhaseHandlingException not under test.
      * @throws ConfigurationException not under test.
      */
-    public void testSendEmail() throws PhaseHandlingException, ConfigurationException {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+    public void testSendEmail() throws PhaseHandlingException,
+                    ConfigurationException {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(
+                        ABSTRACT_HANDLER_NAMESPACE);
         try {
             handler.sendEmail(null);
             fail("sendEmail(Phase) did not throw IllegalArgumentException for null argument.");
         } catch (IllegalArgumentException ex) {
-            //expected.
+            // expected.
         }
     }
 
     /**
-     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Scheduled phase status.
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Scheduled
+     * phase status.
      *
      * @throws Exception not under test.
      */
     public void testSendEmailWithStartPhase() throws Exception {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(
+                        ABSTRACT_HANDLER_NAMESPACE);
         try {
             cleanTables();
             setupDatabase();
@@ -127,19 +134,21 @@ public class AbstractPhaseHandlerTest extends BaseTest {
             ConfigManager.getInstance().add(EMAIL_CONFIG_FILE);
 
             handler.sendEmail(phase);
-            //manually check mailbox.
+            // manually check mailbox.
         } finally {
             cleanTables();
         }
     }
 
     /**
-     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase
+     * status.
      *
      * @throws Exception not under test.
      */
     public void testSendEmailWithStopPhase() throws Exception {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(
+                        ABSTRACT_HANDLER_NAMESPACE);
         try {
             cleanTables();
             setupDatabase();
@@ -152,7 +161,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
             ConfigManager.getInstance().add(EMAIL_CONFIG_FILE);
 
             handler.sendEmail(phase);
-            //manually check mailbox.
+            // manually check mailbox.
         } finally {
             cleanTables();
         }
@@ -164,7 +173,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testCreateConnection() throws Exception {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(
+                        ABSTRACT_HANDLER_NAMESPACE);
         Connection conn = null;
         try {
             conn = handler.createConnection();
@@ -182,13 +192,17 @@ public class AbstractPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testGetManagerHelper() throws Exception {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
-        assertNotNull("ManagerHelper not instantiated.", handler.getManagerHelper());
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(
+                        ABSTRACT_HANDLER_NAMESPACE);
+        assertNotNull("ManagerHelper not instantiated.", handler
+                        .getManagerHelper());
     }
 
-
     /**
-     * <p>Generates a new instance of <code>Project</code> type initialized with random data.</p>
+     * <p>
+     * Generates a new instance of <code>Project</code> type initialized with
+     * random data.
+     * </p>
      *
      * @return a new <code>Project</code> instance.
      */
@@ -209,31 +223,38 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         PreparedStatement preparedStmt = null;
 
         try {
-            //insert project
+            // insert project
             insertProject(conn);
-            //insert project info for "Project Name" and "Project Version" info ids.
-            insertProjectInfo(conn, 1, new long[] {6, 7}, new String[] {"Online Review Phases", "1.0"});
+            // insert project info for "Project Name" and "Project Version" info
+            // ids.
+            insertProjectInfo(conn, 1, new long[] {6, 7}, new String[] {
+                            "Online Review Phases", "1.0"});
 
-            //insert into notification
+            // insert into notification
             String insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id,"
-                    + "create_user, create_date, modify_user, modify_date) values "
-                    + "(1, 1, 1, 'user', ?, 'user', ?)";
+                            + "create_user, create_date, modify_user, modify_date) values "
+                            + "(1, 1, 1, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertNotification);
-            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(1, new Timestamp(System
+                            .currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System
+                            .currentTimeMillis()));
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
 
-            //insert into 'user'
+            // insert into 'user'
             stmt = conn.createStatement();
-            stmt.addBatch("insert into user(user_id, first_name, last_name, handle, status)"
-                    + "values (1, 'abc', 'xyz', 'abcxyz', 'ON')");
-            //insert into 'user_rating'
-            stmt.addBatch("insert into user_rating(user_id, phase_id) values (1, 112)");
-            //insert into email
-            stmt.addBatch("insert into email(user_id, email_id, address, primary_ind)"
-                    + " values (1, 1, 'me@somewhere.com', 1)");
+            stmt
+                            .addBatch("insert into user(user_id, first_name, last_name, handle, status)"
+                                            + "values (1, 'abc', 'xyz', 'abcxyz', 'ON')");
+            // insert into 'user_rating'
+            stmt
+                            .addBatch("insert into user_rating(user_id, phase_id) values (1, 112)");
+            // insert into email
+            stmt
+                            .addBatch("insert into email(user_id, email_id, address, primary_ind)"
+                                            + " values (1, 1, 'topcoder_smtp@126.com', 1)");
             stmt.executeBatch();
         } finally {
             closeStatement(stmt);

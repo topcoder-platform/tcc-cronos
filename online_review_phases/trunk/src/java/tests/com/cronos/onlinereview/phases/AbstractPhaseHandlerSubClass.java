@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,7 +20,8 @@ class AbstractPhaseHandlerSubClass extends AbstractPhaseHandler {
      * @param namespace namespace.
      * @throws ConfigurationException if config error occurs.
      */
-    public AbstractPhaseHandlerSubClass(String namespace) throws ConfigurationException {
+    public AbstractPhaseHandlerSubClass(String namespace)
+                    throws ConfigurationException {
         super(namespace);
     }
 
@@ -45,7 +46,8 @@ class AbstractPhaseHandlerSubClass extends AbstractPhaseHandler {
      *
      * @throws PhaseHandlingException if phase could not be processed.
      */
-    public void perform(Phase phase, String operator) throws PhaseHandlingException {
+    public void perform(Phase phase, String operator)
+                    throws PhaseHandlingException {
 
     }
 

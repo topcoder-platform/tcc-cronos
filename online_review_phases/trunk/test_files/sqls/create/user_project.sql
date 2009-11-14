@@ -1,6 +1,6 @@
 database online_review;
 
-create table 'informix'.email (
+create table email (
     user_id DECIMAL(10,0),
     email_id DECIMAL(10,0),
     email_type_id DECIMAL(5,0),
@@ -13,21 +13,19 @@ create table 'informix'.email (
 extent size 7500 next size 2750
 lock mode row;
 
-create index 'informix'.email_user_id_idx on 'informix'.email
+create index email_user_id_idx on email
 	(
 	user_id, 
 	primary_ind
 	);
 
-alter table 'informix'.email add constraint primary key 
+alter table email add constraint primary key 
 	(email_id)
 	constraint u110_23;
 
 
 
-
-
-create table 'informix'.user (
+create table user (
     user_id DECIMAL(10,0) not null,
     first_name VARCHAR(64),
     last_name VARCHAR(64),
@@ -45,24 +43,24 @@ create table 'informix'.user (
 extent size 10000 next size 5000
 lock mode row;
 
-create index 'informix'.user_handle_idx on 'informix'.user
+create index user_handle_idx on user
 	(
 	handle
 	);
 
-create index 'informix'.user_lower_handle_idx on 'informix'.user
+create index user_lower_handle_idx on user
 	(
 	handle_lower
 	);
 
-alter table 'informix'.user add constraint primary key 
+alter table user add constraint primary key 
 	(user_id)
 	constraint u124_45;
 
 
 
 
-create table 'informix'.user_rating (
+create table user_rating (
     user_id DECIMAL(10) not null,
     rating DECIMAL(10) default 0 not null,
     phase_id DECIMAL(3) not null,
@@ -78,13 +76,13 @@ create table 'informix'.user_rating (
 extent size 250 next size 124
 lock mode row;
 
-alter table 'informix'.user_rating add constraint primary key 
+alter table user_rating add constraint primary key 
 	(user_id, phase_id)
 	constraint pk_user_rating;
 
 
 
-create table 'informix'.user_reliability (
+create table user_reliability (
     user_id DECIMAL(10,0),
     rating DECIMAL(5,4),
     modify_date DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION,
@@ -94,7 +92,7 @@ create table 'informix'.user_reliability (
 extent size 32 next size 32
 lock mode row;
 
-alter table 'informix'.user_reliability add constraint primary key 
+alter table user_reliability add constraint primary key 
 	(user_id, phase_id)
 	constraint user_reliability_pkey;
 
@@ -102,7 +100,7 @@ alter table 'informix'.user_reliability add constraint primary key
 
 
 
-create table 'informix'.comp_catalog (
+create table comp_catalog (
     component_id DECIMAL(12,0) not null,
     current_version DECIMAL(12,0) not null,
     short_desc lvarchar,
@@ -118,7 +116,7 @@ create table 'informix'.comp_catalog (
 extent size 1000 next size 500
 lock mode row;
 
-alter table 'informix'.comp_catalog add constraint primary key 
+alter table comp_catalog add constraint primary key 
 	(component_id)
 	constraint pk_comp_catalog;
 
@@ -126,7 +124,7 @@ alter table 'informix'.comp_catalog add constraint primary key
 
 
 
-create table 'informix'.categories (
+create table categories (
     category_id DECIMAL(12,0) not null,
     parent_category_id DECIMAL(12,0),
     category_name VARCHAR(100) not null,
@@ -137,7 +135,7 @@ create table 'informix'.categories (
 extent size 16 next size 16
 lock mode row;
 
-alter table 'informix'.categories add constraint primary key 
+alter table categories add constraint primary key 
 	(category_id)
 	constraint pk_categories;
 
@@ -147,7 +145,7 @@ alter table 'informix'.categories add constraint primary key
 
 
 
-create table 'informix'.comp_versions (
+create table comp_versions (
     comp_vers_id DECIMAL(12,0) not null,
     component_id DECIMAL(12,0),
     version DECIMAL(12,0) not null,
@@ -163,20 +161,20 @@ create table 'informix'.comp_versions (
 extent size 500 next size 124
 lock mode row;
 
-create unique cluster index 'informix'.comp_versions_i2 on
-'informix'.comp_versions
+create unique cluster index comp_versions_i2 on
+comp_versions
 	(
 	component_id, 
 	version
 	);
 
-alter table 'informix'.comp_versions add constraint primary key 
+alter table comp_versions add constraint primary key 
 	(comp_vers_id)
 	constraint pk_comp_versions;
 
-alter table 'informix'.comp_versions add constraint foreign key 
+alter table comp_versions add constraint foreign key 
 	(component_id)
-	references 'informix'.comp_catalog
+	references comp_catalog
 	(component_id) 
 	constraint fk_comp_versions;
 
@@ -184,7 +182,7 @@ alter table 'informix'.comp_versions add constraint foreign key
 
 
 
-create table 'informix'.comp_forum_xref (
+create table comp_forum_xref (
     comp_forum_id DECIMAL(12,0) not null,
     comp_vers_id DECIMAL(12,0),
     forum_id DECIMAL(12,0),
@@ -193,20 +191,20 @@ create table 'informix'.comp_forum_xref (
 extent size 250 next size 124
 lock mode row;
 
-create unique cluster index 'informix'.comp_forum_xref_i1 on
-'informix'.comp_forum_xref
+create unique cluster index comp_forum_xref_i1 on
+comp_forum_xref
 	(
 	comp_vers_id, 
 	forum_id
 	);
 
-alter table 'informix'.comp_forum_xref add constraint primary key 
+alter table comp_forum_xref add constraint primary key 
 	(comp_forum_id)
 	constraint pk_comp_forum_xref;
 
-alter table 'informix'.comp_forum_xref add constraint foreign key 
+alter table comp_forum_xref add constraint foreign key 
 	(comp_vers_id)
-	references 'informix'.comp_versions
+	references comp_versions
 	(comp_vers_id) 
 	constraint fk_comp_forum2;
 
