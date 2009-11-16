@@ -3988,7 +3988,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 }
 
 
-                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+        // TODO: this causes problem for compForum, better way should just update project part since we only change that.
+       /*         if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
                     if (rst != -1) {
                         SoftwareCompetition developmentContest = getSoftwareContestByProjectId(rst);
@@ -4000,7 +4001,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         developmentContest.setProjectHeaderReason("Casade update from corresponding design contest");
                         updateSoftwareContest(developmentContest, tcDirectProjectId);
                     }
-                }            
+                }    */        
             } 
 
             // set project start date in production date
