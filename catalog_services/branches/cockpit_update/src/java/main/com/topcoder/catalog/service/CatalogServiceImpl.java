@@ -608,6 +608,62 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         return resDTO;
     }
 
+
+    /**
+     * <p>create dev component, basically insert a new row in CompVersionsDates</p>
+     *
+     * @param asset a <code>AssetDTO</code> instance describing the asset
+     *
+     * @throws EntityNotFoundException if the asset is not found in persistence, or version not found (if specified)
+     * @throws PersistenceException     if an error occurs when interacting with the persistence store.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public AssetDTO createDevComponent(AssetDTO asset) throws PersistenceException, EntityNotFoundException {
+        checkNotNull("asset", asset);
+        checkComponentIdNotNull(asset);
+
+        final EntityManager em = getEntityManager();
+        // retrieve the asset entity
+        final Component entityComponent = findComponentById(asset.getId());
+        CompVersion versionToUpdate = null;
+        if (asset.getCompVersionId() != null) { // if there is a version to update
+            for (CompVersion compVersion : entityComponent.getVersions()) {
+                if (compVersion.getId().equals(asset.getCompVersionId())) {
+                    versionToUpdate = compVersion;
+                    break;
+                }
+            }
+            if (versionToUpdate == null) {
+                throw new EntityNotFoundException("CompVersion with id=" + asset.getCompVersionId() + " not found");
+            }
+        }
+		else
+		{
+			throw new EntityNotFoundException("Asset Version Id is null");
+		}
+
+        final Date zeroPointDate = buildDate(1976, 5, 5);
+        //final Phase collaborationPhase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
+		
+		Phase phase =  getEntityManager().find(Phase.class, DEVELOPMENT_PHASE_ID);
+
+        // populate with CompVersionDates
+        final Date stubDate = buildDate(2000, 1, 1);
+
+        final CompVersionDates compVersionDates = createInitialCompVersionDates(asset, zeroPointDate, stubDate);
+        compVersionDates.setPhase(phase);
+        compVersionDates.setCompVersion(versionToUpdate);
+
+        versionToUpdate.getVersionDates().put(DEVELOPMENT_PHASE_ID, compVersionDates);
+
+        persistEntity(em, versionToUpdate);
+
+
+		return asset;
+
+
+    }
+
     /**
      * <p>
      * Retrieves the entity manager injected by EJB container for persistence operations.

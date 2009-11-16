@@ -284,6 +284,16 @@ public interface CatalogService {
      * @throws PersistenceException     if an error occurs when interacting with the persistence store.
      */
 	void addCompForum(long compVersId, long jiveCategoryId) throws PersistenceException;
+
+    /**
+     * <p>create dev component, basically insert a new row in CompVersionsDates</p>
+     *
+     * @param asset a <code>AssetDTO</code> instance describing the asset
+     *
+     * @throws EntityNotFoundException if the asset is not found in persistence, or version not found (if specified)
+     * @throws PersistenceException     if an error occurs when interacting with the persistence store.
+     */
+    AssetDTO createDevComponent(AssetDTO asset) throws PersistenceException, EntityNotFoundException;
 }
 
 
