@@ -4806,7 +4806,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     designComponents.setCperm(rows[i][2] == null ? null : rows[i][2].toString());
                     designComponents.setPperm(rows[i][3] == null ? null : rows[i][3].toString());
                 }
-                designList.add(designComponents);
+
+                if (designComponents.getCperm() != null || designComponents.getPperm() != null)
+                {
+                    designList.add(designComponents);
+                }
+                
             }
 
             closeConnection(conn);
