@@ -5106,7 +5106,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("     c.name as cname, ");
             sb.append("     '1.0' as cversion, ");
             sb.append("     p.project_id as project_id, ");
-            sb.append("     p.name as pname, ");
+            sb.append("     NVL(p.name, 'None') as pname, ");
             sb.append("     (select contest_type_desc  ");
             sb.append("         from contest_type_lu  ");
             sb.append("         where contest_type_id = c.contest_type_id) as contest_type_desc, ");
@@ -5233,7 +5233,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("                         and is_studio=1 ");
             sb.append("                         and upg.user_id = :userId),0)) as cperm   ");
             sb.append(" from contest as c ");
-            sb.append(" join tc_direct_project as p ");
+            sb.append(" left outer join tc_direct_project as p ");
             sb.append(" on c.tc_direct_project_id = p.project_id ");
             sb.append(" left outer join studio_competition_pipeline_info as pipe ");
             sb.append(" on pipe.contest_id = c.contest_id ");
