@@ -3640,15 +3640,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         productionDate = assetDTO.getProductionDate();
                     }
                     assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
-                    if (assetDTO.getProductionDate() == null) {
-                        GregorianCalendar startDate = new GregorianCalendar();
-                        startDate.setTime(new Date());
-                        startDate.add(Calendar.HOUR, 24 * 14);
-                        int m = startDate.get(Calendar.MINUTE);
-                        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
-                        assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));                            
-                    }                    
-                    assetDTO.setProductionDate(null);
+                    // for dev, we need to insert a row in comp version dates
+                    this.catalogService.createDevComponent(assetDTO);
                 }
                 
                 if (!useExistingAsset) {
@@ -3664,29 +3657,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
                     }
 
-                // product date is used to pass the project start date
-                // bcoz we need to use XMLGregorianCalendar and project start
-                // date
-                // is Date and since it is not DTO and hard to change, we use
-                // product date for now, but we need to set it null so it will
-                // not
-                // saved in catalog
-                productionDate = assetDTO.getProductionDate();
-                assetDTO.setProductionDate(null);
+                    // product date is used to pass the project start date
+                    // bcoz we need to use XMLGregorianCalendar and project start
+                    // date
+                    // is Date and since it is not DTO and hard to change, we use
+                    // product date for now, but we need to set it null so it will
+                    // not
+                    // saved in catalog
+                    productionDate = assetDTO.getProductionDate();
+                    assetDTO.setProductionDate(null);
 
-                    if (contest.getProjectHeader() != null) {
-                        // comp development, set phase to dev
-                        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
-                            assetDTO.setPhase("Development");
+                        if (contest.getProjectHeader() != null) {
+                            // comp development, set phase to dev
+                            if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+                                assetDTO.setPhase("Development");
+                            }
+                            // else set to design
+                            else {
+                                assetDTO.setPhase("Design");
+                            }
                         }
-                        // else set to design
-                        else {
-                            assetDTO.setPhase("Design");
-                        }
-                    }
 
-                    assetDTO = this.catalogService.createAsset(assetDTO);
-                    contest.setAssetDTO(assetDTO);
+                        assetDTO = this.catalogService.createAsset(assetDTO);
+                        contest.setAssetDTO(assetDTO);
                 }
 
                 // create forum
@@ -5601,7 +5594,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 CONTEST_ELIGIBILITY_MAPPING_PREFIX);
             Property eligibility = rootProperty.getProperty(Long.toString(clientId));
             if (eligibility != null) {
-    System.out.println("-------------------eligibilty name-----"+eligibility.getValue(ELIGIBILITY_NAME));
+
                 return (String)(eligibility.getValue(ELIGIBILITY_NAME));
             }
             return "";
