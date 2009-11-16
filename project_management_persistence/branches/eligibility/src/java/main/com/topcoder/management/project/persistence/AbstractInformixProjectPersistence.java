@@ -4319,7 +4319,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     (select value from project_info where project_info_type_id = 6 and project_id = c.project_id) as cname, ");
             sb.append("     (select value from project_info where project_info_type_id = 7 and project_id = c.project_id) as cversion, ");
             sb.append("     p.project_id as project_id, ");
-            sb.append("     p.name as pname, ");
+            sb.append("      NVL(p.name, 'None') as pname, ");
             sb.append("     ptl.name as contest_type_desc, ");
             sb.append("     pcl.name as category, ");
             sb.append("     psl.name as sname, ");
@@ -4427,7 +4427,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     on pcl.project_type_id = ptl.project_type_id ");
             sb.append(" join project_status_lu as psl ");
             sb.append("     on c.project_status_id = psl.project_status_id ");
-            sb.append(" join tc_direct_project as p ");
+            sb.append(" left outer join tc_direct_project as p ");
             sb.append("     on c.tc_direct_project_id = p.project_id ");
             sb.append(" left outer join software_competition_pipeline_info as pipe ");
             sb.append("     on pipe.competition_id = c.project_id ");
