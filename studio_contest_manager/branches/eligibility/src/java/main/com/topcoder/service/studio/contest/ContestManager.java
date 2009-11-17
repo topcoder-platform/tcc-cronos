@@ -1197,4 +1197,41 @@ public interface ContestManager {
      * @since 1.2
      */
     public List<StudioCapacityData> getCapacity(int contestType) throws ContestManagementException;
+
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ContestManagementException;
+
+     /**
+     * check submission permission, check if a user has permission (read or write) on a submission's contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkSubmissionPermission(long submissionId, boolean readonly, long userId) throws ContestManagementException;
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkProjectPermission(long projectId, boolean readonly, long userId) throws ContestManagementException;
 }

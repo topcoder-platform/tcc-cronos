@@ -316,6 +316,30 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     private static final String SCHEDULED_STATUS_ID = "9";
 
 
+    /**
+     * private constant representing the project_read permission
+     *
+     */
+    private static final long PROJECT_READ_PERMISSION_ID = 1;
+
+    /**
+     * private constant representing the project_read permission
+     *
+     */
+    private static final long PROJECT_WRITE_PERMISSION_ID = 2;
+
+     /**
+     * private constant representing the contest_read permission
+     *
+     */
+    private static final long CONTEST_READ_PERMISSION_ID = 4;
+
+    /**
+     * private constant representing the contest_read permission
+     *
+     */
+    private static final long CONTEST_WRITE_PERMISSION_ID = 5;
+
 
     /**
      * <p>
@@ -5400,5 +5424,143 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logExit("getCapacity()");
         }
 
+    }
+
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ContestManagementException
+    {
+        try
+        {
+            EntityManager em = getEntityManager();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 1 and permission_type_id >= ");
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(" or ");
+            queryBuffer.append(" (resource_id = (select tc_direct_project_id from contest where contest_id = ").append(contestId).append(") and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+        
+            Query query = em.createNativeQuery(queryBuffer.toString());
+
+            List result = query.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        }
+
+    }
+
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkProjectPermission(long projectId, boolean readonly, long userId) throws ContestManagementException
+    {
+
+        try
+        {
+            EntityManager em = getEntityManager();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where  resource_id =  ").append(projectId).append(" and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(" "); 
+        
+            Query query = em.createNativeQuery(queryBuffer.toString());
+
+            List result = query.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        }
+
+    }
+
+
+     /**
+     * check submission permission, check if a user has permission (read or write) on a submission's contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkSubmissionPermission(long submissionId, boolean readonly, long userId) throws ContestManagementException
+    {
+        try
+        {
+            EntityManager em = getEntityManager();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where (resource_id = (select contest_id from submission where submission_id = ").append(submissionId).append(") and is_studio = 1 ");
+            queryBuffer.append("   and permission_type_id >= ");
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(" or ");
+            queryBuffer.append(" (resource_id = ");
+            queryBuffer.append("        (select tc_direct_project_id from contest where contest_id = ");
+            queryBuffer.append("     (select contest_id from submission where submission_id = ").append(submissionId).append(")) ");
+            queryBuffer.append("  and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+        
+            Query query = em.createNativeQuery(queryBuffer.toString());
+
+            List result = query.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        }
     }
 }
