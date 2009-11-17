@@ -2060,5 +2060,59 @@ public class ProjectServicesImpl implements ProjectServices {
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }        
-    }    
+    } 
+    
+     /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ProjectServicesException
+    {   
+        String method = "checkContestPermission(" + contestId + ", " + readonly + ", " + userId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.checkContestPermission(contestId, readonly, userId);
+        } catch (PersistenceException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }        
+
+    }
+
+     /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkProjectPermission(long tcprojectId, boolean readonly, long userId) throws ProjectServicesException
+    {
+        String method = "checkContestPermission(" + tcprojectId + ", " + readonly + ", " + userId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.checkProjectPermission(tcprojectId, readonly, userId);
+        } catch (PersistenceException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
 }

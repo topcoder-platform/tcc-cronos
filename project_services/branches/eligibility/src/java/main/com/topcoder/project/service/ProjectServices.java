@@ -539,5 +539,32 @@ public interface ProjectServices {
      * @since 1.2.1
      */
     public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
-            throws ProjectServicesException;  
+            throws ProjectServicesException; 
+    
+     /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ProjectServicesException;
+
+     /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkProjectPermission(long tcprojectId, boolean readonly, long userId) throws ProjectServicesException;
+
 }

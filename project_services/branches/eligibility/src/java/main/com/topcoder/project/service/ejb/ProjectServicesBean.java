@@ -1145,4 +1145,44 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }        
     }
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ProjectServicesException
+    {
+        try {
+            return getProjectServices().checkContestPermission(contestId, readonly, userId);
+        } catch (ProjectServicesException e) {
+            throw e;
+        }         
+    }
+
+     /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkProjectPermission(long tcprojectId, boolean readonly, long userId) throws ProjectServicesException
+    {
+        try {
+            return getProjectServices().checkProjectPermission(tcprojectId, readonly, userId);
+        } catch (ProjectServicesException e) {
+            throw e;
+        } 
+    }
 }
