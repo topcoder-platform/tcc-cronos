@@ -4922,4 +4922,75 @@ public class StudioServiceBean implements StudioService {
 
         return null;
     }
+
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws PersistenceException
+    {
+        logEnter("checkContestPermission(" + contestId + ", " + readonly + ", " + userId + ")");
+        try {
+            logExit("checkContestPermission()");
+            return contestManager.checkContestPermission(contestId, readonly, userId);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting capacity.", e);
+        }
+
+        return false;
+    }
+
+     /**
+     * check submission permission, check if a user has permission (read or write) on a submission's contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkSubmissionPermission(long submissionId, boolean readonly, long userId) throws PersistenceException
+    {
+         logEnter("checkSubmissionPermission(" + submissionId + ", " + readonly + ", " + userId + ")");
+         try {
+            logExit("checkSubmissionPermission()");
+            return contestManager.checkSubmissionPermission(submissionId, readonly, userId);
+         } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting capacity.", e);
+        }
+
+        return false;
+    }
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkProjectPermission(long projectId, boolean readonly, long userId) throws PersistenceException
+    {
+
+        logEnter("checkProjectPermission(" + projectId + ", " + readonly + ", " + userId + ")");
+        try {
+            logExit("checkProjectPermission()");
+            return contestManager.checkProjectPermission(projectId, readonly, userId);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting capacity.", e);
+        }
+
+        return false;
+    }
 }

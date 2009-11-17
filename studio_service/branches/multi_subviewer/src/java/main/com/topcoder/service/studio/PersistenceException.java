@@ -92,6 +92,19 @@ public class PersistenceException extends StudioServiceException {
         this.faultInfo = null;
     }
 
+     /**
+     * <p>
+     * Constructor with error message.
+     * </p>
+     *
+     * @param message the error message
+     */
+    public PersistenceException(String message) {
+        super(message);
+        this.persistenceMessage = null;
+        this.faultInfo = null;
+    }
+
     /**
      * <p>
      * Constructor with error message and inner cause.
