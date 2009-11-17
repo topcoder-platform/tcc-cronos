@@ -368,6 +368,30 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     public static final int PAYMENT_MANAGER_ROLE_ID = 1003;
+
+     /**
+     * private constant representing the project_read permission
+     *
+     */
+    private static final long PROJECT_READ_PERMISSION_ID = 1;
+
+    /**
+     * private constant representing the project_read permission
+     *
+     */
+    private static final long PROJECT_WRITE_PERMISSION_ID = 2;
+
+     /**
+     * private constant representing the contest_read permission
+     *
+     */
+    private static final long CONTEST_READ_PERMISSION_ID = 4;
+
+    /**
+     * private constant representing the contest_read permission
+     *
+     */
+    private static final long CONTEST_WRITE_PERMISSION_ID = 5;
     /**
      * <p>
      * Represents the all roles' id
@@ -4938,5 +4962,124 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
         }
         
-    }    
+    }  
+    
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws PersistenceException
+    {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            conn = openConnection();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 0 and permission_type_id >= ");
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(" or ");
+            queryBuffer.append(" (resource_id = (select tc_direct_project_id from project where project_id = ").append(contestId).append(") and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+
+            preparedStatement = conn.prepareStatement(queryBuffer.toString());
+         
+            // execute the query and build the result into a list
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Error occurs while executing query ");
+        } catch (PersistenceException e) {
+           
+            throw new PersistenceException("There are errors while retrieving the information.", e);
+        }
+        finally {
+            Helper.closeResultSet(resultSet);
+            Helper.closeStatement(preparedStatement);
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+        }
+
+    }
+
+
+    /**
+     * check contest permission, check if a user has permission (read or write) on a project
+     *
+     * @param projectId the tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean checkProjectPermission(long tcprojectId, boolean readonly, long userId) throws PersistenceException
+    {
+        
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            conn = openConnection();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where  resource_id =  ").append(tcprojectId).append(" and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(" "); 
+        
+            preparedStatement = conn.prepareStatement(queryBuffer.toString());
+         
+            // execute the query and build the result into a list
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Error occurs while executing query ");
+        } catch (PersistenceException e) {
+            
+            throw new PersistenceException("There are errors while retrieving the information.", e);
+        }
+        finally {
+            Helper.closeResultSet(resultSet);
+            Helper.closeStatement(preparedStatement);
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+        }
+
+    }
 }
