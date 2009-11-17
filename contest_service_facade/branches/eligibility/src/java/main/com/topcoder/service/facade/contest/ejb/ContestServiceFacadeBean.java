@@ -538,6 +538,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String ELIGIBILITY_ID = "EligibilityGroupId";
     
+
+    /**
+     * Private constant specifying administrator role.
+     */
+    private static final String ADMIN_ROLE = "Cockpit Administrator";
     
     /**
      * <p>
@@ -1026,6 +1031,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         ContestData contestData = convertToContestData(contest);
 
+        
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
+            {
+                throw new PersistenceException("No read permission on tc direct project");
+            }
+        }
+        
+
         // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
         // contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
         double total = 0;
@@ -1128,6 +1145,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, ContestNotFoundException {
         logger.debug("getContest (" + contestId + ")");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, true, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         ContestData studioContest = this.studioService.getContest(contestId);
 
         // BUGR-1363
@@ -1164,6 +1191,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, ProjectNotFoundException {
         logger.debug("getContestFroPorject (" + tcDirectProjectId + ")");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
+            {
+                throw new PersistenceException("No read permission on project");
+            }
+        }
+
         List<ContestData> studioContests = this.studioService.getContestsForProject(tcDirectProjectId);
         logger.debug("Exit getContestFroPorject (" + tcDirectProjectId + ")");
 
@@ -1189,7 +1226,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     public void updateContest(StudioCompetition contest)
         throws PersistenceException, ContestNotFoundException {
-        logger.debug("updateContest (" + contest.getId() + ")");
+        logger.debug("updateContest (" + contest.getContestData().getContestId() + ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contest.getContestData().getContestId(), false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
 
         ContestData studioContest = convertToContestData(contest);
 
@@ -1219,7 +1266,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 winnerAnnouncementDeadlineDate));
 
         this.studioService.updateContest(studioContest);
-        logger.debug("Exit updateContest (" + contest.getId() + ")");
+        logger.debug("Exit updateContest (" + contest.getContestData().getContestId()  + ")");
     }
 
     /**
@@ -1253,6 +1300,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             StatusNotFoundException, ContestNotFoundException {
         logger.debug("updateContestStatus (" + contestId + "," + newStatusId +
             ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.updateContestStatus(contestId, newStatusId);
         logger.debug("Exit updateContestStatus (" + contestId + "," +
             newStatusId + ")");
@@ -1333,6 +1391,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, ContestNotFoundException {
         logger.debug("addDocumentToContest (" + documentId + "," + contestId +
             ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.addDocumentToContest(documentId, contestId);
         logger.debug("Exit addDocumentToContest (" + documentId + "," +
             contestId + ")");
@@ -1359,6 +1428,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, DocumentNotFoundException {
         logger.debug("removeDocumentToContest (" + document.getDocumentId() +
             ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(document.getContestId(), false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.removeDocumentFromContest(document);
         logger.debug("Exit removeDocumentToContest (" +
             document.getDocumentId() + ")");
@@ -1388,33 +1468,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, ContestNotFoundException {
         logger.debug("retrieveSubmissionsForContest (" + contestId + ")");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, true, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         return this.studioService.retrieveSubmissionsForContest(contestId);
     }
 
-    /**
-     * <p>
-     * Retrieves the list of submissions for the specified user.
-     * </p>
-     *
-     * @param userId
-     *            a <code>long</code> providing the ID of a user to get the list
-     *            of submissions for.
-     * @return a <code>List</code> providing the details for the submissions
-     *         associated with the specified user. Empty list is returned if
-     *         there are no submissions found.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the specified ID is negative.
-     */
-    public List<SubmissionData> retrieveAllSubmissionsByMember(long userId)
-        throws PersistenceException, UserNotAuthorizedException {
-        logger.debug("retrieveSubmissionsForContest (" + userId + ")");
-
-        return this.studioService.retrieveAllSubmissionsByMember(userId);
-    }
 
     /**
      * <p>
@@ -1434,6 +1500,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void updateSubmission(SubmissionData submission)
         throws PersistenceException {
         logger.debug("updateSubmission (" + submission.getSubmissionId() + ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submission.getSubmissionId(), false, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         this.studioService.updateSubmission(submission);
         logger.debug("Exit updateSubmission (" + submission.getSubmissionId() +
             ")");
@@ -1456,6 +1533,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     public void removeSubmission(long submissionId) throws PersistenceException {
         logger.debug("removeSubmission (" + submissionId + ")");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.removeSubmission(submissionId);
         logger.debug("Exit removeSubmission (" + submissionId + ")");
     }
@@ -1702,6 +1790,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException {
         logger.debug("retrieveSubmission");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, true, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         return this.studioService.retrieveSubmissionData(submissionId);
     }
 
@@ -1788,6 +1886,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         SubmissionPaymentData submissionPaymentData, String securityToken)
         throws PersistenceException {
         logger.debug("purchaseSubmission");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.purchaseSubmission(submissionId,
             submissionPaymentData, securityToken);
         logger.debug("Exit purchaseSubmission");
@@ -1816,6 +1925,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException {
         logger.debug("createContestPayment");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestPayment.getContestId(), false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         return this.studioService.createContestPayment(contestPayment,
             securityToken);
     }
@@ -1838,6 +1957,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException {
         logger.debug("getContestPayments");
 
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, true, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         return this.studioService.getContestPayments(contestId);
     }
 
@@ -1857,6 +1986,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void editContestPayment(ContestPaymentData contestPayment)
         throws PersistenceException {
         logger.debug("editContestPayments");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestPayment.getContestId(), false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.editContestPayment(contestPayment);
     }
 
@@ -1876,6 +2016,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public boolean removeContestPayment(long contestId)
         throws PersistenceException {
         logger.debug("removeContestPayments");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
 
         return this.studioService.removeContestPayment(contestId);
     }
@@ -1912,6 +2062,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void setSubmissionPlacement(long submissionId, int placement)
         throws PersistenceException {
         logger.debug("setSubmissionPlacement");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.setSubmissionPlacement(submissionId, placement);
         logger.debug("Exit setSubmissionPlacement");
     }
@@ -1931,6 +2092,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void setSubmissionPrize(long submissionId, long prizeId)
         throws PersistenceException {
         logger.debug("setSubmissionPrize");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, true, userId))
+            {
+                throw new PersistenceException("No read permission on contest");
+            }
+        }
+
         this.studioService.setSubmissionPlacement(submissionId, prizeId);
         logger.debug("Exit setSubmissionPrize");
     }
@@ -1948,6 +2120,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     public void markForPurchase(long submissionId) throws PersistenceException {
         logger.debug("markForPurchase");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.markForPurchase(submissionId);
         logger.debug("Exit markForPurchase");
     }
@@ -2021,6 +2204,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     public void deleteContest(long contestId) throws PersistenceException {
         logger.debug("deleteContest");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
         this.studioService.deleteContest(contestId);
         logger.debug("Exit deleteContest");
     }
@@ -2062,6 +2256,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void processMissingPayments(long contestId)
         throws PersistenceException {
         logger.debug("processMissingPayments");
+
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkContestPermission(contestId, false, userId))
+            {
+                throw new PersistenceException("No write permission on contest");
+            }
+        }
+
+
         this.studioService.processMissingPayments(contestId);
         logger.debug("Exit processMissingPayments");
     }
@@ -2243,31 +2449,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.debug("Exit updatePermissionType");
     }
 
-    /**
-     * <p>
-     * This method will update permission type data, return true if the
-     * permission type data exists and removed successfully, return false if it
-     * doesn't exist.
-     * </p>
-     *
-     * @param typeid
-     *            the permission type to delete.
-     *
-     * @return true if the permission type data exists and removed successfully.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when deleting the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public boolean deletePermissionType(long typeid)
-        throws PermissionServiceException {
-        logger.debug("deletePermissionType");
-
-        return this.permissionService.deletePermissionType(typeid);
-    }
 
     /**
      * <p>
@@ -3614,6 +3795,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.debug("createSoftwareContest");
 
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!projectServices.checkProjectPermission(tcDirectProjectId, true, userId))
+                {
+                    throw new ContestServiceException("No read permission on project");
+                }
+            }
+
             boolean creatingDevContest = contest.getDevelopmentProjectHeader() != null
                 && contest.getDevelopmentProjectHeader().getProperties() != null
                 && contest.getDevelopmentProjectHeader().getProperties().size() != 0;
@@ -3942,7 +4134,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             if (contest.getProjectHeader() != null) {
+
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                {
+
+                    long userId = p.getUserId();
+                    if (!projectServices.checkContestPermission(contest.getProjectHeader().getId(), false, userId))
+                    {
+                        throw new ContestServiceException("No write permission on contest");
+                    }
+                }
 
                 Set phaseset = contest.getProjectPhases().getPhases();
                 com.topcoder.project.phases.Phase[] phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
@@ -3964,7 +4167,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         String.valueOf(p.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.
-		projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
+		        projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
 
                 contest.setProjectHeader(projectData.getProjectHeader());
                 contest.setProjectPhases(projectData);
@@ -4328,6 +4531,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             ")");
 
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+                {
+                    throw new PersistenceException("No write permission on contest");
+                }
+            }
+
+
             this.studioService.updateSubmissionUserRank(submissionId, rank, isRankingMilestone);
             logger.debug("Exit updateSubmissionUserRank (" + submissionId +
                 "," + rank + "," + isRankingMilestone + ")");
@@ -4522,6 +4737,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         SoftwareCompetition contest = new SoftwareCompetition();
 
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!projectServices.checkContestPermission(projectId, true, userId))
+                {
+                    throw new ContestServiceException("No read permission on contest");
+                }
+            }
+
             FullProjectData fullProjectData = this.projectServices.getFullProjectData(projectId);
             Long compVersionId = Long.parseLong(fullProjectData.getProjectHeader()
                                                                .getProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY));
@@ -5390,12 +5616,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         String methodName = "getMilestoneSubmissionsForContest";
         logger.info("Enter: " + methodName);
 
+        
+
+
         if (contestId < 0L) {
             throw new IllegalArgumentException(
                 "contestId could not be a negative (" + contestId + ")");
         }
 
+
+
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!studioService.checkContestPermission(contestId, true, userId))
+                {
+                    throw new PersistenceException("No read permission on contest");
+                }
+            }
+
             /*
              * The return list dose not be null, the studioserivce will return
              * the empty list when not found(Based on studio service 1.3 design)
@@ -5432,7 +5674,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 "contestId could not be a negative (" + contestId + ")");
         }
 
+        
+
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!studioService.checkContestPermission(contestId, true, userId))
+                {
+                    throw new PersistenceException("No read permission on contest");
+                }
+            }
             /*
              * The return list dose not be null, the studioserivce will return
              * the empty list when not found(Based on studio service 1.3 design)
@@ -5477,7 +5731,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 submissionId + "," + milestonePrizeId + ")");
         }
 
+        
+
         try {
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+            {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                if (!studioService.checkSubmissionPermission(submissionId, false, userId))
+                {
+                    throw new PersistenceException("No write permission on contest");
+                }
+            }
+
             studioService.setSubmissionMilestonePrize(submissionId,
                 milestonePrizeId);
         } catch (PersistenceException pe) {

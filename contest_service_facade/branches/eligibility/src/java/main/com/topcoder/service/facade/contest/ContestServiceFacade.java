@@ -354,27 +354,6 @@ public interface ContestServiceFacade {
     public List<SubmissionData> retrieveSubmissionsForContest(long contestId)
         throws PersistenceException, ContestNotFoundException;
 
-    /**
-     * <p>
-     * Retrieves the list of submissions for the specified user.
-     * </p>
-     *
-     * @param userId
-     *            a <code>long</code> providing the ID of a user to get the list
-     *            of submissions for.
-     * @return a <code>List</code> providing the details for the submissions
-     *         associated with the specified user. Empty list is returned if
-     *         there are no submissions found.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the specified ID is negative.
-     * @tested
-     */
-    public List<SubmissionData> retrieveAllSubmissionsByMember(long userId)
-        throws PersistenceException, UserNotAuthorizedException;
 
     /**
      * <p>
@@ -1091,27 +1070,7 @@ public interface ContestServiceFacade {
     public void updatePermissionType(PermissionType type)
         throws PermissionServiceException;
 
-    /**
-     * <p>
-     * This method will update permission type data, return true if the
-     * permission type data exists and removed successfully, return false if it
-     * doesn't exist.
-     * </p>
-     *
-     * @param typeid
-     *            the permission type to delete.
-     *
-     * @return true if the permission type data exists and removed successfully.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when deleting the permission.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public boolean deletePermissionType(long typeid)
-        throws PermissionServiceException;
+
 
     /**
      * <p>
