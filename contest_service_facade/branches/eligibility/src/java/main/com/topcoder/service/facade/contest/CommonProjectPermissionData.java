@@ -362,7 +362,7 @@ public class CommonProjectPermissionData {
      *            the studio to use
      * @return the studio attribute of the CommonProjectPermissionData entity
      */
-    public boolean isStudio(boolean studio) {
+    public boolean isStudio() {
         return this.studio;
     }
     /**

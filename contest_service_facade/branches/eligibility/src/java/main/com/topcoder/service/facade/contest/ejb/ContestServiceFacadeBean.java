@@ -223,8 +223,11 @@ import com.topcoder.util.log.Log;
  * <p>
  * Changes in v1.3.2 Added support for eligibility services.
  * </p>
+ * <p>
+ * Changes in v1.3.3 Added permission check.
+ * </p>
  * @author snow01, pulky, murphydog
- * @version 1.3.2
+ * @version 1.3.3
  */
 @Stateless
 @WebService
@@ -543,6 +546,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying administrator role.
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
+
+    /**
+     * Private constant specifying project type info's billing project key.
+     *
+     * @since 1.3.3
+     */
+    private static final String PROJECT_TYPE_INFO_BILLING_PROJECT_KEY = "Billing Project";
     
     /**
      * <p>
@@ -1029,97 +1039,121 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         long tcDirectProjectId, long clientId) throws PersistenceException {
         logger.debug("createContest");
 
-        ContestData contestData = convertToContestData(contest);
-
-        
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        try
         {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
+
+            ContestData contestData = convertToContestData(contest);
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
             {
-                throw new PersistenceException("No read permission on tc direct project");
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                String userName = p.getName();
+                if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
+                {
+                    throw new PersistenceException("No read permission on tc direct project");
+                }
+
+                if (contestData.getBillingProject() > 0)
+                { 
+                    if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject()))
+                    {
+                        throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
+                    }
+                }
             }
-        }
-        
-
-        // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
-        // contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
-        double total = 0;
-
-        for (PrizeData prize : contestData.getPrizes()) {
-            total += prize.getAmount();
-        }
-
-        // contestData.setContestAdministrationFee(total*0.2);
-        // contestData.setDrPoints(total*0.1);
-        if (contestData.getLaunchDateAndTime() == null) { // BUGR-1445
-                                                          /*
-             * - start: current time + 1 hour (round the minutes up to the
-             * nearest 15) - end: start time + 3 days
-             */
-
-            GregorianCalendar startDate = new GregorianCalendar();
-            startDate.setTime(new Date());
-            startDate.add(Calendar.HOUR, 1);
-
-            int m = startDate.get(Calendar.MINUTE);
-            startDate.add(Calendar.MINUTE, m + ((15 - (m % 15)) % 15));
-            contestData.setLaunchDateAndTime(getXMLGregorianCalendar(
-                    startDate.getTime()));
-            contestData.setDurationInHours(24 * 3); // 3 days
-        }
-
-        // BUGR-1088
-        Date startDate = getDate(contestData.getLaunchDateAndTime());
-        Date endDate = new Date((long) (startDate.getTime() +
-                (60L * 60 * 1000 * contestData.getDurationInHours())));
-        Date winnerAnnouncementDeadlineDate;
-
-        if (contestData.getDurationInHours() <= 24) {
-            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
-                    (60L * 60 * 1000 * 24)));
-        } else {
-            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
-                    (60L * 60 * 1000 * contestData.getDurationInHours())));
-        }
-
-        if (contestData.isMultiRound()) {
-            if (contestData.getMultiRoundData() == null) {
-            	ContestMultiRoundInformationData multiRoundData = new ContestMultiRoundInformationData();
-            	multiRoundData.setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
-            	    endDate.getTime())/2)));
-            	
-            	contestData.setMultiRoundData(multiRoundData);
-            } else if (contestData.getMultiRoundData().getMilestoneDate() == null) {
-            	contestData.getMultiRoundData().setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
-            	    endDate.getTime())/2)));
-            }
-        }
-
-        contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
-                winnerAnnouncementDeadlineDate));
-
-        ContestData createdContestData = this.studioService.createContest(contestData,
-                tcDirectProjectId);
-        if (clientId != 0) {
-            GroupContestEligibility contestEligibility = new GroupContestEligibility();
-            contestEligibility.setContestId(createdContestData.getContestId());
-            contestEligibility.setStudio(true);
-            contestEligibility.setDeleted(false);
-            contestEligibility.setGroupId(getEligibilityGroupId(clientId));
             
-            try {
-                contestEligibilityManager.create(contestEligibility);
-            } catch (ContestEligibilityPersistenceException cepe) {
-                throw new PersistenceException("Cannot save contest eligibility.", cepe, "Cannot save contest eligibility.") ;
+
+            // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
+            // contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
+            double total = 0;
+
+            for (PrizeData prize : contestData.getPrizes()) {
+                total += prize.getAmount();
             }
+
+            // contestData.setContestAdministrationFee(total*0.2);
+            // contestData.setDrPoints(total*0.1);
+            if (contestData.getLaunchDateAndTime() == null) { // BUGR-1445
+                                                              /*
+                 * - start: current time + 1 hour (round the minutes up to the
+                 * nearest 15) - end: start time + 3 days
+                 */
+
+                GregorianCalendar startDate = new GregorianCalendar();
+                startDate.setTime(new Date());
+                startDate.add(Calendar.HOUR, 1);
+
+                int m = startDate.get(Calendar.MINUTE);
+                startDate.add(Calendar.MINUTE, m + ((15 - (m % 15)) % 15));
+                contestData.setLaunchDateAndTime(getXMLGregorianCalendar(
+                        startDate.getTime()));
+                contestData.setDurationInHours(24 * 3); // 3 days
+            }
+
+            // BUGR-1088
+            Date startDate = getDate(contestData.getLaunchDateAndTime());
+            Date endDate = new Date((long) (startDate.getTime() +
+                    (60L * 60 * 1000 * contestData.getDurationInHours())));
+            Date winnerAnnouncementDeadlineDate;
+
+            if (contestData.getDurationInHours() <= 24) {
+                winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
+                        (60L * 60 * 1000 * 24)));
+            } else {
+                winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
+                        (60L * 60 * 1000 * contestData.getDurationInHours())));
+            }
+
+            if (contestData.isMultiRound()) {
+                if (contestData.getMultiRoundData() == null) {
+                    ContestMultiRoundInformationData multiRoundData = new ContestMultiRoundInformationData();
+                    multiRoundData.setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+                        endDate.getTime())/2)));
+                    
+                    contestData.setMultiRoundData(multiRoundData);
+                } else if (contestData.getMultiRoundData().getMilestoneDate() == null) {
+                    contestData.getMultiRoundData().setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+                        endDate.getTime())/2)));
+                }
+            }
+
+            contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
+                    winnerAnnouncementDeadlineDate));
+
+            ContestData createdContestData = this.studioService.createContest(contestData,
+                    tcDirectProjectId);
+            if (clientId != 0) {
+                GroupContestEligibility contestEligibility = new GroupContestEligibility();
+                contestEligibility.setContestId(createdContestData.getContestId());
+                contestEligibility.setStudio(true);
+                contestEligibility.setDeleted(false);
+                contestEligibility.setGroupId(getEligibilityGroupId(clientId));
+                
+                try {
+                    contestEligibilityManager.create(contestEligibility);
+                } catch (ContestEligibilityPersistenceException cepe) {
+                    throw new PersistenceException("Cannot save contest eligibility.", cepe, "Cannot save contest eligibility.") ;
+                }
+            }
+
+            logger.debug("Exit createContest");
+
+            return (StudioCompetition) convertToCompetition(CompetionType.STUDIO,
+                createdContestData);
         }
-
-        logger.debug("Exit createContest");
-
-        return (StudioCompetition) convertToCompetition(CompetionType.STUDIO,
-            createdContestData);
+        catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+        catch (DAOException e) {
+            sessionContext.setRollbackOnly();
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
     }
 
     /**
@@ -1228,45 +1262,72 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         throws PersistenceException, ContestNotFoundException {
         logger.debug("updateContest (" + contest.getContestData().getContestId() + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+        try
         {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contest.getContestData().getContestId(), false, userId))
+
+            ContestData studioContest = convertToContestData(contest);
+
+            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
             {
-                throw new PersistenceException("No write permission on contest");
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long userId = p.getUserId();
+                String userName = p.getName();
+                if (!studioService.checkContestPermission(contest.getContestData().getContestId(), contest.getContestData().getTcDirectProjectId(), false, userId))
+                {
+                    throw new PersistenceException("No write permission on contest");
+                }
+
+                if (studioContest.getBillingProject() > 0)
+                { 
+                    if (!billingProjectDAO.checkClientProjectPermission(userName, studioContest.getBillingProject()))
+                    {
+                        throw new PersistenceException("No permission on billing project " + studioContest.getBillingProject());
+                    }
+                }
             }
-        }
 
-        ContestData studioContest = convertToContestData(contest);
+            
 
-        // BUGR-1363
-        double total = 0;
+            // BUGR-1363
+            double total = 0;
 
-        for (PrizeData prize : studioContest.getPrizes()) {
-            total += prize.getAmount();
-        }
+            for (PrizeData prize : studioContest.getPrizes()) {
+                total += prize.getAmount();
+            }
 
-        // studioContest.setContestAdministrationFee(total * 0.2);
-        // studioContest.setDrPoints(total * 0.1);
-        Date startDate = getDate(studioContest.getLaunchDateAndTime());
-        Date endDate = new Date((long) (startDate.getTime() +
-                (60L * 60 * 1000 * studioContest.getDurationInHours())));
-        Date winnerAnnouncementDeadlineDate;
-
-        if (studioContest.getDurationInHours() <= 24) {
-            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
-                    (60L * 60 * 1000 * 24)));
-        } else {
-            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
+            // studioContest.setContestAdministrationFee(total * 0.2);
+            // studioContest.setDrPoints(total * 0.1);
+            Date startDate = getDate(studioContest.getLaunchDateAndTime());
+            Date endDate = new Date((long) (startDate.getTime() +
                     (60L * 60 * 1000 * studioContest.getDurationInHours())));
+            Date winnerAnnouncementDeadlineDate;
+
+            if (studioContest.getDurationInHours() <= 24) {
+                winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
+                        (60L * 60 * 1000 * 24)));
+            } else {
+                winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() +
+                        (60L * 60 * 1000 * studioContest.getDurationInHours())));
+            }
+
+            studioContest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
+                    winnerAnnouncementDeadlineDate));
+
+            this.studioService.updateContest(studioContest);
+            logger.debug("Exit updateContest (" + contest.getContestData().getContestId()  + ")");
         }
-
-        studioContest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
-                winnerAnnouncementDeadlineDate));
-
-        this.studioService.updateContest(studioContest);
-        logger.debug("Exit updateContest (" + contest.getContestData().getContestId()  + ")");
+        catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+        catch (DAOException e) {
+            sessionContext.setRollbackOnly();
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
     }
 
     /**
@@ -1920,20 +1981,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws IllegalArgumentException
      *             if any of specified arguments is <code>null</code>.
      */
-    public ContestPaymentData createContestPayment(
+    private ContestPaymentData createContestPayment(
         ContestPaymentData contestPayment, String securityToken)
         throws PersistenceException {
         logger.debug("createContestPayment");
-
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestPayment.getContestId(), false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
 
         return this.studioService.createContestPayment(contestPayment,
             securityToken);
@@ -1953,7 +2004,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<ContestPaymentData> getContestPayments(long contestId)
+    private List<ContestPaymentData> getContestPayments(long contestId)
         throws PersistenceException {
         logger.debug("getContestPayments");
 
@@ -1983,7 +2034,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws IllegalArgumentException
      *             if the specified argument is <code>null</code>.
      */
-    public void editContestPayment(ContestPaymentData contestPayment)
+    private void editContestPayment(ContestPaymentData contestPayment)
         throws PersistenceException {
         logger.debug("editContestPayments");
 
@@ -2786,12 +2837,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     "");
             }
 
-            
-
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                
+                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                {
+                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    String userName = p.getName();
+                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
+                    {
+                        throw new ContestServiceException("No permission on poNumber " + poNumber);
+                    }
+                }
+
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
-                result.setReferenceNumber(((TCPurhcaseOrderPaymentData) paymentData).getPoNumber());
+                result.setReferenceNumber(poNumber);
             } else if (paymentData instanceof CreditCardPaymentData) {
                 // ideally client should be sending the amount,
                 // but as client has some inconsistency
@@ -2853,9 +2914,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             // BUGR-1494
             contestPaymentResult = new ContestPaymentResult();
             contestPaymentResult.setPaymentResult(result);
-            contestPaymentResult.setContestData(getContest(
-                    tobeUpdatedCompetition.getContestData().getContestId())
-                                                    .getContestData());
+            contestPaymentResult.setContestData(tobeUpdatedCompetition.getContestData());
 
             //
             // Added for Cockpit Release Assembly for Receipts
@@ -3054,9 +3113,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 			fee = fee - pastPayment;
 			
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+
+                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                {
+                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    String userName = p.getName();
+                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
+                    {
+                        throw new ContestServiceException("No permission on poNumber " + poNumber);
+                    }
+                }
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
-                result.setReferenceNumber(((TCPurhcaseOrderPaymentData) paymentData).getPoNumber());
+                result.setReferenceNumber(poNumber);
             } else if (paymentData instanceof CreditCardPaymentData) {
                 // ideally client should be sending the amount,
                 // but as client has some inconsistency
@@ -3320,9 +3390,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 completedContestData.getContestId());
 
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
-                // processing purchase order is not in scope of this assembly.
+
+                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                {
+                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    String userName = p.getName();
+                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
+                    {
+                        throw new ContestServiceException("No permission on poNumber " + poNumber);
+                    }
+                }
+
                 result = new PaymentResult();
-                result.setReferenceNumber(((TCPurhcaseOrderPaymentData) paymentData).getPoNumber());
+                result.setReferenceNumber(poNumber);
             } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
                 // BUGR-1239
                 CreditCardPaymentData creditCardPaymentData = (CreditCardPaymentData) paymentData;
@@ -3804,6 +3885,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 {
                     throw new ContestServiceException("No read permission on project");
                 }
+
+                
             }
 
             boolean creatingDevContest = contest.getDevelopmentProjectHeader() != null
@@ -3907,6 +3990,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                      * contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY
                      * , assetDTO.getVersionId().toString());
                      */
+                    if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                    {
+                            if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
+                              && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
+                              && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
+                            {
+                                    UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                                    String userName = principal.getName();
+                                    long clientProjectId = Long.parseLong((String) contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY));
+                                    if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId))
+                                    {
+                                        throw new ContestServiceException("No permission on billing project " + clientProjectId);
+                                    }
+                            }
+                    }
+
                     contest.getProjectHeader()
                            .setProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY,
                         assetDTO.getCompVersionId().toString());
@@ -4141,11 +4240,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 {
 
                     long userId = p.getUserId();
+                    String userName = p.getName();
                     if (!projectServices.checkContestPermission(contest.getProjectHeader().getId(), false, userId))
                     {
                         throw new ContestServiceException("No write permission on contest");
                     }
+
+                    if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
+                      && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
+                      && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
+                    {
+                        long clientProjectId = Long.parseLong((String) contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY));
+                        if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId))
+                        {
+                            throw new ContestServiceException("No permission on billing project " + clientProjectId);
+                        }
+                    }
                 }
+
+                
 
                 Set phaseset = contest.getProjectPhases().getPhases();
                 com.topcoder.project.phases.Phase[] phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
