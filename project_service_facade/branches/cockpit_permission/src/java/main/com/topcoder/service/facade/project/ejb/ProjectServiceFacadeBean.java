@@ -244,7 +244,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+    //@WebMethod
     public List<Project> getClientProjectsForClient(Client client) throws DAOFault {
     	try {
 			return this.clientDAO.getProjectsForClient(client);
@@ -279,7 +279,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+    //@WebMethod
     public Project retrieveClientProjectById(Long id, boolean includeChildren) throws EntityNotFoundFault, DAOFault {
     	try {
 			return this.projectDAO.retrieveById(id, includeChildren);
@@ -306,7 +306,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+ //   @WebMethod
     public List<Project> retrieveClientProjects(boolean includeChildren) throws DAOFault {
     	try {
 			return this.projectDAO.retrieveAll(includeChildren);
@@ -332,7 +332,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+   // @WebMethod
     public Project retrieveClientProjectByProjectId(Long id) throws EntityNotFoundFault, DAOFault {
     	try {
 			return this.projectDAO.retrieveById(id);
@@ -354,7 +354,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+    //@WebMethod
     public List<Project> retrieveAllClientProjects() throws DAOFault {
     	try {
 			return this.projectDAO.retrieveAll();
@@ -384,7 +384,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+    //@WebMethod
     public List<Project> getClientProjectsWithStatus(ProjectStatus status) throws DAOFault {
     	try {
 			return this.projectStatusDAO.getProjectsWithStatus(status);
@@ -412,7 +412,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    @WebMethod
+    //@WebMethod
     public ProjectStatus retrieveProjectStatusById(Long id) throws EntityNotFoundFault, DAOFault {
     	try {
 			return this.projectStatusDAO.retrieveById(id);

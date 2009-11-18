@@ -122,7 +122,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    List<Project> getClientProjectsForClient(Client client) throws DAOFault;
+    //List<Project> getClientProjectsForClient(Client client) throws DAOFault;
     
     /**
      * <p>
@@ -159,7 +159,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    Project retrieveClientProjectById(Long id, boolean includeChildren) throws EntityNotFoundFault, DAOFault;
+    //Project retrieveClientProjectById(Long id, boolean includeChildren) throws EntityNotFoundFault, DAOFault;
 
     /**
      * <p>
@@ -177,7 +177,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    List<Project> retrieveClientProjects(boolean includeChildren) throws DAOFault;
+    //List<Project> retrieveClientProjects(boolean includeChildren) throws DAOFault;
     /**
      * <p>
      * Defines the operation that performs the retrieval of an entity using the
@@ -196,7 +196,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    Project retrieveClientProjectByProjectId(Long id) throws EntityNotFoundFault, DAOFault;
+    //Project retrieveClientProjectByProjectId(Long id) throws EntityNotFoundFault, DAOFault;
 
     /**
      * <p>
@@ -209,7 +209,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    List<Project> retrieveAllClientProjects() throws DAOFault;
+    //List<Project> retrieveAllClientProjects() throws DAOFault;
 
     /**
      * <p>
@@ -230,7 +230,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    List<Project> getClientProjectsWithStatus(ProjectStatus status) throws DAOFault;
+    //List<Project> getClientProjectsWithStatus(ProjectStatus status) throws DAOFault;
     /**
      * <p>
      * Defines the operation that performs the retrieval of an entity using the
@@ -249,7 +249,7 @@ public interface ProjectServiceFacade {
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    ProjectStatus retrieveProjectStatusById(Long id) throws EntityNotFoundFault, DAOFault;
+    //ProjectStatus retrieveProjectStatusById(Long id) throws EntityNotFoundFault, DAOFault;
 
 
 
