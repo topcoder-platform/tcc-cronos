@@ -5472,6 +5472,53 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     }
 
+    /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
+     * @param projectId tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkContestPermission(long contestId, long projectId, boolean readonly, long userId)  throws ContestManagementException
+    {
+        try
+        {
+            EntityManager em = getEntityManager();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 1 and permission_type_id >= ");
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(" or ");
+            queryBuffer.append(" (resource_id = ").append(projectId).append(" and permission_type_id >= ");
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+        
+            Query query = em.createNativeQuery(queryBuffer.toString());
+
+            List result = query.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        }
+
+    }
+
+
 
     /**
      * check contest permission, check if a user has permission (read or write) on a project
