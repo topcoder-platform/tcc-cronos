@@ -4920,7 +4920,59 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public void updatePermissions(Permission[] permissions)
         throws PermissionServiceException {
         logger.debug("updatePermissions");
-        this.permissionService.updatePermissions(permissions);
+
+        try
+        {
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                {
+                    UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                    long userId = principal.getUserId();
+
+                    List<CommonProjectPermissionData> userPermissions = getCommonProjectPermissionDataForUser(userId);
+
+                    for (Permission p : permissions)
+                    {
+                        boolean hasFullPermission = false;
+
+                        for (CommonProjectPermissionData data :  userPermissions)
+                        {
+
+                            if (p.getResourceId().longValue() == data.getProjectId())
+                            {
+                                if (data.getPfull() > 0)
+                                {
+                                    hasFullPermission = true;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (p.getResourceId().longValue() == data.getContestId() && (p.isStudio() == data.isStudio()))
+                                {
+                                    if (data.getPfull() > 0 || data.getCfull() > 0)
+                                    {
+                                        hasFullPermission = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!hasFullPermission)
+                        {
+                            throw new PermissionServiceException("No full permission on resource "+p.getResourceId());
+                        }
+                    }
+                }
+
+
+             this.permissionService.updatePermissions(permissions);
+        }
+        catch (PersistenceException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+
         logger.debug("Exit updatePermissions");
     }
 
