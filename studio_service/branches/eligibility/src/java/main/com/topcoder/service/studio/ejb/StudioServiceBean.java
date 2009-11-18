@@ -4928,6 +4928,31 @@ public class StudioServiceBean implements StudioService {
      * check contest permission, check if a user has permission (read or write) on a contest
      *
      * @param contestId the contest id
+     * @param projectId tc direct project id
+     * @param readonly check read or write permission
+     * @param userId user id
+     *
+     * @return true/false
+     *
+     */
+    public boolean checkContestPermission(long contestId, long projectId, boolean readonly, long userId)  throws PersistenceException
+    {
+        logEnter("checkContestPermission(" + contestId + ", " + projectId + ", " + readonly + ", " + userId + ")");
+        try {
+            logExit("checkContestPermission()");
+            return contestManager.checkContestPermission(contestId, projectId, readonly, userId);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting capacity.", e);
+        }
+
+        return false;
+    }
+
+
+     /**
+     * check contest permission, check if a user has permission (read or write) on a contest
+     *
+     * @param contestId the contest id
      * @param readonly check read or write permission
      * @param userId user id
      *
@@ -4936,7 +4961,7 @@ public class StudioServiceBean implements StudioService {
      */
     public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws PersistenceException
     {
-        logEnter("checkContestPermission(" + contestId + ", " + readonly + ", " + userId + ")");
+        logEnter("checkContestPermission(" + contestId  + ", " + readonly + ", " + userId + ")");
         try {
             logExit("checkContestPermission()");
             return contestManager.checkContestPermission(contestId, readonly, userId);
