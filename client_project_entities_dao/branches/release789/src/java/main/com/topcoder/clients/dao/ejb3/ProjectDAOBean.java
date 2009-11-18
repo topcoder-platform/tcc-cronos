@@ -98,7 +98,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 	/**
 	 * The query string used to select projects.
 	 */
-	private static final String SELECT_MANAGER_PROJECT = "SELECT distinct project_id FROM project_manager p, user_account u WHERE p.user_account_id = u.user_account_id and p.active = 1 and  u.user_name = ";
+	private static final String SELECT_MANAGER_PROJECT = "SELECT distinct project_id FROM project_manager p, user_account u "
+            + " WHERE p.user_account_id = u.user_account_id and p.active = 1 and  u.user_name = ";
 
 	/**
 	 * The query string used to select projects.
@@ -534,6 +535,88 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 			throw Helper.WrapExceptionWithDAOException(e,
 					"Failed to search projects by project name of "
 							+ projectName + ". Error is " + e.getMessage());
+		}
+	}
+
+    /**
+	 * <p>
+	 * Check if user has permission on the client project.
+	 * <p>
+	 *
+	 * @param username  the user name
+     * @projectId client project id
+     *
+	 * @return true/false
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public boolean checkClientProjectPermission(String username, long projectId) throws DAOException {
+		EntityManager entityManager = Helper
+				.checkEntityManager(getEntityManager());
+
+		try {
+
+			String queryString = SELECT_PROJECT + " and active = 1 and p.project_id in " + "("
+					+ SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
+					+ SELECT_WORKER_PROJECT + "'" + username + "')";
+			queryString += " and p.project_id = " + projectId;
+
+			Query query2 = entityManager.createNativeQuery(queryString);
+
+			List result = query2.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+
+		} catch (Exception e) {
+			throw Helper.WrapExceptionWithDAOException(e,
+					"Failed in check client project permission for [" + username + ", " + projectId +"].");
+		}
+	}
+
+    /**
+	 * <p>
+	 * Check if user has permission on the po number.
+	 * <p>
+	 *
+	 * @param username  the user name
+     * @param poNumber po number
+     *
+	 * @return true/false
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public boolean checkPoNumberPermission(String username, String poNumber) throws DAOException {
+		EntityManager entityManager = Helper
+				.checkEntityManager(getEntityManager());
+
+		try {
+
+			String queryString = SELECT_PROJECT + " and active = 1 and p.project_id in " + "("
+					+ SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
+					+ SELECT_WORKER_PROJECT + "'" + username + "')";
+			queryString += " and p.po_box_number = '" + poNumber + "'";
+
+			Query query2 = entityManager.createNativeQuery(queryString);
+
+			List result = query2.getResultList();
+
+            if (result != null && result.size() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        
+
+		} catch (Exception e) {
+			throw Helper.WrapExceptionWithDAOException(e,
+					"Failed in check client project permission for [" + username + ", " + poNumber +"].");
 		}
 	}
 

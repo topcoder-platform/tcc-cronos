@@ -192,4 +192,32 @@ public interface ProjectDAO extends GenericDAO<Project, Long> {
 	 * @since Configurable Contest Fees v1.0 Assembly
 	 */
     public List<Project> searchProjectsByClientName(String clientName) throws DAOException;
+
+        /**
+	 * <p>
+	 * Check if user has permission on the client project.
+	 * <p>
+	 *
+	 * @param username  the user name
+     * @projectId client project id
+     *
+	 * @return true/false
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public boolean checkClientProjectPermission(String username, long projectId) throws DAOException;
+
+    /**
+	 * <p>
+	 * Check if user has permission on the po number.
+	 * <p>
+	 *
+	 * @param username  the user name
+     * @param poNumber po number
+     *
+	 * @return true/false
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public boolean checkPoNumberPermission(String username, String poNumber) throws DAOException ;
 }
