@@ -26,6 +26,10 @@ import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.UserNotFoundFault;
 import com.topcoder.service.project.ProjectHasCompetitionsFault;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.permission.Permission;
+import com.topcoder.service.permission.PermissionService;
+import com.topcoder.service.permission.PermissionServiceException;
+import com.topcoder.service.permission.PermissionType;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -42,6 +46,7 @@ import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.jboss.ws.annotation.EndpointConfig;
 
@@ -49,9 +54,12 @@ import org.jboss.ws.annotation.EndpointConfig;
  * <p>This is an implementation of <code>Project Service Facade</code> web service in form of stateless session EJB. It
  * holds a reference to {@link ProjectService} which is delegated the fulfillment of requests.</p> 
  * </p>
+ * <p>
+ *  Changes in v1.0.1 Moved insert permission when creating project
+ * </p>
  *
  * @author isv
- * @version 1.0
+ * @version 1.0.1
  */
 @Stateless
 @WebService
@@ -103,6 +111,19 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     @EJB(name = "ejb/ProjectStatusDAOBean")
     private ProjectStatusDAO projectStatusDAO = null;
+
+
+    /**
+     * <p>
+     * A <code>PermissionService</code> providing access to available
+     * <code>Permission Service EJB</code>. This bean is delegated to process
+     * the calls for CRUD on permissions.
+     * </p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/PermissionService")
+    private PermissionService permissionService = null;
     
     /**
      * <p>
@@ -119,6 +140,21 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * Private constant specifying administrator role.
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
+
+    /**
+     * Private constant specifying 'project_full' permission type name
+     * @since 1.0.1
+     *
+     */
+    private static final String PERMISSION_TYPE_PROJECT_FULL_NAME = "project_full";
+
+	/**
+     * Private constant specifying 'project_full' permission type id
+     * @since 1.0.1
+     *
+     */
+    private static final long ERMISSION_TYPE_PROJECT_FULL_ID = 3;
+
     
 
     /**
@@ -135,9 +171,43 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @see ProjectService#createProject(ProjectData)
      */
     @WebMethod
-    public @WebResult ProjectData createProject(@WebParam ProjectData projectData) throws PersistenceFault,
-                                                                                          IllegalArgumentFault {
-        return this.projectService.createProject(projectData);
+    public @WebResult ProjectData createProject(@WebParam ProjectData projectData) 
+        throws PersistenceFault, IllegalArgumentFault 
+    {
+        try
+        {
+            ProjectData result = this.projectService.createProject(projectData);
+
+            // add permission for project creator with project_full
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            Permission perm = new Permission();
+            perm.setUserId(userId);
+            perm.setResourceId(result.getProjectId());
+            PermissionType permType = new PermissionType();
+            permType.setName(PERMISSION_TYPE_PROJECT_FULL_NAME);
+            permType.setPermissionTypeId(ERMISSION_TYPE_PROJECT_FULL_ID);
+            perm.setPermissionType(permType);
+            perm.setStudio(false);
+            Permission[] permissions = new Permission[1];
+            permissions[0] = perm;
+            permissionService.updatePermissions(permissions);
+
+            return result;
+        }
+        catch (PermissionServiceException e)
+        {
+            sessionContext.setRollbackOnly();
+            throw new PersistenceFault(e.getMessage());
+        }
+
+        catch (PersistenceFault e)
+        {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+        
+
     }
 
     /**
