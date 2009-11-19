@@ -795,20 +795,6 @@ xmlns:hc="com.hillelcoren.components.*"
                     mainWidget.tcDirectProjectName=projectData.name;
                     //createContestAndContinue(projectData.projectId);
                     
-                    var updatePermissions:AbstractOperation=mainWidget._csws.getOperation("updatePermissions");
-                    if (updatePermissions) {
-                        var perm:Object=new Object();
-                        perm.userId=mainWidget.userid;
-                        perm.resourceId=mainWidget.tcDirectProjectId;
-                        perm.permissionType=new Object();
-                        perm.permissionType.name="project_full";
-                        perm.studio=false;
-                        perm.permissionType.permissionTypeId=3;
-                        var permissions:ArrayCollection=new ArrayCollection();
-                        permissions.addItem(perm);
-                        updatePermissions.send(permissions);
-                    }
-                    
                     // add to the list.
                     projectArray.addItem({label: projectData.name, data: projectData.projectId, desc: projectData.description});
                     selectTCProject(projectData.projectId.toFixed(0));
