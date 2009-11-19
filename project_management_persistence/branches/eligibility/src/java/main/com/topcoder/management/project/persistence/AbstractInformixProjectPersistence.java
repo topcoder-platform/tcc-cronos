@@ -758,8 +758,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "and p.project_status_id != 3 and p.project_category_id = 1 " +
         "and p.project_id = pi.project_id and pi.project_info_type_id = 1 " +
         "and not exists (" + 
-        "select 1 from project_info q1 " + 
-        "where q1.project_info_type_id = 1 and q1.project_id <> p.project_id and q1.value = pi.value) ";
+        "select 1 from project_info q1 , project q " + 
+        " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
+        " and (q.project_status_id = 1 or q.project_status_id = 7)) ";
         
     /**
      * Represents  the column types for the result set which is returned by executing the sql statement
