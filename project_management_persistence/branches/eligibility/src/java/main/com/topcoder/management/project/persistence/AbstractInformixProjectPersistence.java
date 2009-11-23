@@ -1492,10 +1492,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             
             closeConnection(conn);
         } catch (PersistenceException e) {
-            project.setCreationUser(null);
+            /*project.setCreationUser(null);
             project.setCreationTimestamp(null);
             project.setModificationUser(null);
-            project.setModificationTimestamp(null);
+            project.setModificationTimestamp(null); */
         	getLogger().log(Level.ERROR,
         			new LogMessage(null, operator, "Fails to create project " + project.getAllProperties(), e));
             if (conn != null) {
@@ -4097,54 +4097,53 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     preparedStatement.setInt(2, roleId);
                     preparedStatement.execute(); 
                 }
+            } 
+            
+            // always insert standard
+            long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
+                PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
+                getLogger(), Long.toString(PUBLIC_SUBMITTER_TERMS_ID)));
+            int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
+            long reviewerTermsId = Long
+                    .parseLong(Helper
+                            .getConfigurationParameterValue(cm, namespace,
+                                     PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
+                                            .toString(PUBLIC_REVIEWER_TERMS_ID)));
+
+            createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+
+            if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
+                int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
+                int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
+                int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
+
+                // if it's a development project there are several reviewer roles
+                createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
             } else {
-                long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
-                    PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
-                    getLogger(), Long.toString(STANDARD_CCA_TERMS_ID)));
-                int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
-                        SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
-                long reviewerTermsId = Long
-                        .parseLong(Helper
-                                .getConfigurationParameterValue(cm, namespace,
-                                         PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
-                                                .toString(STANDARD_CCA_TERMS_ID)));
+                int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
 
-			createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
-
-			if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
-				int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
-				int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
-				int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
-
-				// if it's a development project there are several reviewer roles
-				createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
-				createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
-				createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
-			} else {
-				int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
-
-				// if it's not development there is a single reviewer role
-				createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
-			}
-
-			// also add terms for the rest of the reviewer roles
-			int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
-			int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
-			int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-													cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
-
-                createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+                // if it's not development there is a single reviewer role
+                createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
             }
 
-            
+            // also add terms for the rest of the reviewer roles
+            int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
+            int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
+            int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
+                                                    cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
+
+            createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
+            createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
+            createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
 
         }
         catch (ConfigurationException e)
