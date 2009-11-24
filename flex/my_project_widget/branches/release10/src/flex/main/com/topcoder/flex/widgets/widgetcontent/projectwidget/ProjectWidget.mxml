@@ -478,6 +478,19 @@
                                 newp.addContest(cont);
                             }
                         }
+			            else {
+                            newp=new Project(projectId.toString(),pname,pdesc,"","",null);
+
+                            model.proList.addItem(newp);
+                            projectMap[projectId]=newp;
+                            newp.owner=owner;
+                            newp.permission=prjArray[prjIdx].pperm;
+                            
+                            for each (var cont:Contest in contests) {
+                                newp.addContest(cont);
+                        }
+				
+			}
                         
         			    prjIdx=i;
                         
