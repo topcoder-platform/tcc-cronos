@@ -4608,7 +4608,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             forums.assignRole(userId, "Software_Moderators_" + forumId); //BUGR-
                                                                          // 1677
 
-            forums.createForumWatch(userId, forumId);
+            forums.createCategoryWatch(userId, forumId);
             logger.debug("Exit createForum (" + userId + ")");
 
             return forumId;
