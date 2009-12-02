@@ -2115,4 +2115,255 @@ public class ProjectServicesImpl implements ProjectServices {
         }       
     }
 
+
+     /**
+     * <p>
+     * get project ids by tc direct id
+     * </p>
+     *
+     * @tcDirectId tc direct project id
+     *
+     * @return list of project ids
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public List<Long> getProjectIdByTcDirectProject(long tcprojectId) throws ProjectServicesException
+    {
+        String method = "getProjectIdByTcDirectProject(" + tcprojectId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.getProjectIdByTcDirectProject(tcprojectId);
+        } catch (PersistenceException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
+
+    /**
+     * <p>
+     * Searches the resources in the persistence store using the given filter.
+     * The filter can be formed using the field names and utility methods in ResourceFilterBuilder.
+     * The return will always be a non-null (possibly 0 item) array.
+     * </p>
+     *
+     * <p>
+     * In order to invoke this method correctly, one should properly set the resourceSearchBundle.
+     * <pre>
+     * A sample of the context of the search bundle is:
+     *                  SELECT resource.resource_id
+     *                  FROM resource
+     *                  LEFT OUTER JOIN resource_submission
+     *                  ON resource.resource_id = resource_submission.resource_id
+     *                  LEFT OUTER JOIN resource_info
+     *                  ON resource.resource_id = resource_info.resource_id
+     *                  LEFT OUTER JOIN resource_info_type_lu
+     *                  ON resource_info.resource_info_type_id =
+     *                  resource_info_type_lu.resource_info_type_id
+     *                  WHERE
+     * </pre>
+     *
+     * Note, make sure the selected column is only one column and of the type: long in the configuration.
+     *
+     * </p>
+     *
+     * @param filter the filter to use
+     *
+     * @return The loaded resources
+     *
+     * @throws ProjectServicesException if there is an error executing the filter
+     */
+    public Resource[] searchResources(Filter filter) throws ProjectServicesException
+    {
+        String method = "searchResources(" + filter + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return resourceManager.searchResources(filter);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
+
+    /**
+     * <p>
+     * Updates the given resource in the persistence store.
+     * </p>
+     *
+     * <p>
+     * If the resource is new (id is UNSET_ID), then an id should be assigned and
+     * the resource added to the persistence store. Otherwise the resource data
+     * in the persistence store would be updated.
+     * </p>
+     *
+     *
+     * @param resource the resource to update
+     * @param operator the operator making the update
+     *
+     * @throws IllegalArgumentException if a required field of the resource is not set (if resource.getResourceRole()
+     *         is null), or if the resource role is associated with a phase type and the resource is not associated
+     *         with a phase, or if resource or operator is null
+     * @throws ResourcePersistenceException if there is an error updating the resource
+     */
+    public Resource updateResource(Resource resource, String operator) throws ProjectServicesException
+    {
+
+        String method = "updateResource(" + resource + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return resourceManager.updateResource(resource, operator);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
+
+    /**
+     * <p>
+     * get forum id by project id
+     * </p>
+     *
+     * @projectId project id
+     *
+     * @return forum id
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public long getForumId(long projectId) throws ProjectServicesException
+    {
+
+        String method = "getForumId(" + projectId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.getForumId(projectId);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
+
+     /**
+     * check if user has contest permission, it checks contest permission only (not project permission)
+     *
+     * @param contestId the contest id
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean hasContestPermission(long contestId, long userId)  throws ProjectServicesException
+     {
+
+        String method = "hasContestPermission(" + contestId + "," + userId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.hasContestPermission(contestId, userId);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
+
+    /**
+     * <p>
+     * Removes the given resource in the persistence store (by id).
+     * If the id does not exist in the persistence, nothing would be removed.
+     * </p>
+     *
+     * @param resource the resource to remove
+     * @param operator the operator making the update
+     *
+     * @throws IllegalArgumentException if the id of the resource is UNSET_ID, or the resource or operator is null
+     * @throws ResourcePersistenceException if there is an error updating the persistence store
+     */
+    public void removeResource(Resource resource, String operator) throws ProjectServicesException
+    {
+     String method = "removeResource(" + resource + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            resourceManager.removeResource(resource, operator);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }   
+    }
+
+
+    /**
+     * Search resources by project id and role id
+     *
+     * @param projectId project id
+     * @param roleId role id
+     *
+     * @return array of resoureces
+     *
+     * @throws ResourcePersistenceException if there is an error reading the persistence store.
+     */
+    public Resource[] searchResources(long projectId, long roleId) throws ProjectServicesException
+     {
+        String method = "searchResources(" + projectId + "," + roleId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return resourceManager.searchResources(projectId, roleId);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }   
+    }
+
+
+    /**
+     * <p>
+     * get tc direct project id by project id
+     * </p>
+     *
+     * @projectId project id
+     *
+     * @return tc direct project id
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public long getTcDirectProject(long projectId) throws ProjectServicesException
+    {
+
+        String method = "getTcDirectProject(" + projectId + ")";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return projectManager.getTcDirectProject(projectId);
+        } catch (Exception e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }       
+    }
 }
