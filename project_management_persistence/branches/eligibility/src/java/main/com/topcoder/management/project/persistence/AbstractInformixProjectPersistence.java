@@ -762,6 +762,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
         " and (q.project_status_id = 1 or q.project_status_id = 7)) ";
         
+
+
     /**
      * Represents  the column types for the result set which is returned by executing the sql statement
      * to query all design components data for a user id.
@@ -1142,6 +1144,46 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
         + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
         + "where q1.project_info_type_id = 1 and q1.project_id <> ?";
+   
+    
+    /**
+     *  get all project ids by tc direct project
+     *
+     */
+    private static final String QUERY_PROJECT_ID_BY_TC_DIRECT = "select project_id from project where tc_direct_project_id = ? ";
+
+
+    /**
+     *  get tc direct project by project
+     *
+     */
+    private static final String QUERY_TC_DIRECT_PROJECT_BY_PROJECT_ID = "select tc_direct_project_id from project where project_id = ? ";
+
+
+    /**
+     *  get all project ids by tc direct project data type
+     *
+     */
+    private static final DataType[] QUERY_PROJECT_ID_BY_TC_DIRECT_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE}; 
+
+    /**
+     *  get tc direct project by project data type
+     *
+     */
+    private static final DataType[] QUERY_TC_DIRECT_PROJECT_BY_PROJECT_ID_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE}; 
+
+    /**
+     *  get all project ids by tc direct project
+     *
+     */
+    private static final String QUERY_FORUM_ID = "select value from project_info where project_info_type_id = 4 and project_id = ? ";
+
+
+    /**
+     *  get all project ids by tc direct project data type
+     *
+     */
+    private static final DataType[] QUERY_FORUM_ID_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE}; 
 
             
     /**
@@ -5071,6 +5113,199 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     "Error occurs while executing query ");
         } catch (PersistenceException e) {
             
+            throw new PersistenceException("There are errors while retrieving the information.", e);
+        }
+        finally {
+            Helper.closeResultSet(resultSet);
+            Helper.closeStatement(preparedStatement);
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+        }
+
+    }
+
+
+
+    /**
+     * <p>
+     * get project ids by tc direct id
+     * </p>
+     *
+     * @tcDirectId tc direct project id
+     *
+     * @return list of project ids
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public List<Long> getProjectIdByTcDirectProject(long tcprojectId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_PROJECT_ID_BY_TC_DIRECT, new Object[] {tcprojectId},
+            		QUERY_PROJECT_ID_BY_TC_DIRECT_COLUMN_TYPES);
+
+            List<Long> ret = new ArrayList<Long>();
+
+            for (int i = 0; i < rows.length; i++) {
+
+                ret.add((Long) rows[i][0]);
+            }
+            return ret;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve project ids by tc direct" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+         finally {
+
+            closeConnection(conn);
+        }
+    }
+
+    /**
+     * <p>
+     * get tc direct project id by project id
+     * </p>
+     *
+     * @projectId project id
+     *
+     * @return tc direct project id
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public long getTcDirectProject(long projectId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_TC_DIRECT_PROJECT_BY_PROJECT_ID, new Object[] {projectId},
+            		QUERY_TC_DIRECT_PROJECT_BY_PROJECT_ID_COLUMN_TYPES);
+
+            if (rows.length > 0 && rows[0][0] != null)
+            {
+                return ((Long) rows[0][0]).longValue();
+            }
+            
+            return 0;
+
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve project ids by tc direct" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+         finally {
+
+            closeConnection(conn);
+        }
+    }
+    
+    
+
+     /**
+     * <p>
+     * get forum id by project id
+     * </p>
+     *
+     * @projectId project id
+     *
+     * @return forum id
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public long getForumId(long projectId) throws PersistenceException 
+    {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_FORUM_ID, new Object[] {projectId},
+            		QUERY_FORUM_ID_COLUMN_TYPES);
+
+
+            if (rows.length > 0 && rows[0][0] != null)
+            {
+                return ((Long) rows[0][0]).longValue();
+            }
+            
+            return 0;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieve project ids by tc direct" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+         finally {
+
+            closeConnection(conn);
+        }
+    }
+
+
+    /**
+     * check if user has contest permission, it checks contest permission only (not project permission)
+     *
+     * @param contestId the contest id
+     * @param userId user id
+     *
+     * @return true/false
+     * @throws  PersistenceException
+     *
+     */
+    public boolean hasContestPermission(long contestId, long userId)  throws PersistenceException
+    {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            conn = openConnection();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'has permssion' from user_permission_grant ");
+            queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 0 and permission_type_id >= ");
+            queryBuffer.append(CONTEST_READ_PERMISSION_ID);  
+            queryBuffer.append(" and user_id = ").append(userId).append(")");  
+
+            preparedStatement = conn.prepareStatement(queryBuffer.toString());
+         
+            // execute the query and build the result into a list
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                return true;
+            }
+
+            return false;
+        
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Error occurs while executing query ");
+        } catch (PersistenceException e) {
+           
             throw new PersistenceException("There are errors while retrieving the information.", e);
         }
         finally {
