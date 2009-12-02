@@ -149,6 +149,12 @@ import com.topcoder.util.config.Property;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.BetweenFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.management.resource.search.ResourceFilterBuilder;
+
 /**
  * <p>
  * This is an implementation of <code>Contest Service Facade</code> web service
@@ -5036,9 +5042,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         try
         {
+                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 if (!sessionContext.isCallerInRole(ADMIN_ROLE))
                 {
-                    UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                     long userId = principal.getUserId();
 
                     List<CommonProjectPermissionData> userPermissions = getCommonProjectPermissionDataForUser(userId);
@@ -5078,11 +5084,175 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     }
                 }
 
+            // when add/remove permission, we need to add/remvoe observer
+            for (Permission per : permissions) {
+                // if add permission
+                if ((per.getPermissionId() == null || per.getPermissionId() <= 0) 
+                      && per.getPermissionType() != null && per.getPermissionType().getName() != null
+                      && !per.getPermissionType().getName().equals("")) 
+                {
 
-             this.permissionService.updatePermissions(permissions);
+                    List<Long> projectIds = new ArrayList<Long>();
+
+                    // if permission is project, get its OR projects
+                    if (per.getPermissionType().getPermissionTypeId() >= PermissionType.PERMISSION_TYPE_PROJECT_READ
+                         && per.getPermissionType().getPermissionTypeId() <= PermissionType.PERMISSION_TYPE_PROJECT_FULL)
+                    {
+                        projectIds = projectServices.getProjectIdByTcDirectProject(per.getResourceId());
+                    }
+                    else if (!per.isStudio())
+                    {
+                        projectIds.add(per.getResourceId());
+                    }   
+                    
+                    if (projectIds != null && projectIds.size() >0)
+                    {
+                        // for each OR project, find all observers
+                        for (Long pid : projectIds)
+                        {
+
+                            com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, RESOURCE_ROLE_OBSERVER_ID);
+
+                            boolean found = false;
+                            // check if user is already a observer
+                            if (resources != null && resources.length > 0)
+                            {
+                                for (com.topcoder.management.resource.Resource resource : resources )
+                                {
+                                    if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                         && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(String.valueOf(per.getUserId())))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // if not found, add resource
+                            if (!found)
+                            {
+                                 com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
+                                 newRes.setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                                 newRes.setProject(pid);
+
+                                 ResourceRole observer_role = new ResourceRole();
+                                 observer_role.setId(RESOURCE_ROLE_OBSERVER_ID);
+                                 observer_role.setName(RESOURCE_ROLE_OBSERVER_NAME);
+                                 observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
+
+                                 newRes.setResourceRole(observer_role);
+                
+                                 newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
+                                    String.valueOf(per.getUserId()));
+                                 newRes.setProperty(RESOURCE_INFO_HANDLE,
+                                    String.valueOf(userService.getUserHandle(per.getUserId())));
+                                 newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS,
+                                    RESOURCE_INFO_PAYMENT_STATUS_NA);
+
+                                 projectServices.updateResource(newRes, String.valueOf(principal.getUserId()));
+                            }
+
+                            // create forum watch
+                            long forumId = projectServices.getForumId(pid);
+                            if (forumId > 0 && createForum)
+                            {
+                                createForumWatch(forumId, per.getUserId());
+                            }
+                             
+                        }
+                        
+                    }
+                    
+                    
+                }
+                // if remove permission, we need to remove observer
+                else if (per.getPermissionType() == null || per.getPermissionType().getName() == null 
+						                  || per.getPermissionType().getName().equals("")) 
+                {
+
+                    List<Permission> ps = this.getPermissions(per.getUserId(), per.getResourceId());
+                    Permission toDelete = null;
+                    if (ps != null && ps.size() > 0) 
+                    {
+                        toDelete = ps.get(0);
+                    }
+
+                    if (toDelete != null)
+                    {
+                        List<Long> projectIds = new ArrayList<Long>();
+                        boolean isTCProject = false;
+
+                        // if permission is project, get its OR projects
+                        if (toDelete.getPermissionType().getPermissionTypeId() >= PermissionType.PERMISSION_TYPE_PROJECT_READ
+                             && toDelete.getPermissionType().getPermissionTypeId() <= PermissionType.PERMISSION_TYPE_PROJECT_FULL)
+                        {
+                            projectIds = projectServices.getProjectIdByTcDirectProject(per.getResourceId());
+                            isTCProject = true;
+                        }
+                        else if (!toDelete.isStudio())
+                        {
+                            projectIds.add(per.getResourceId());
+                        }   
+                        
+                        if (projectIds != null && projectIds.size() >0)
+                        {
+                            for (Long pid : projectIds)
+                            {
+                                // if we are removing project permission but user still has contest permission, 
+                                // or if we are removing contest permission but user still has project permission
+                                // we will not remove observer
+                                if ((!projectServices.hasContestPermission(pid, toDelete.getUserId()) && isTCProject)
+                                     || (!projectServices.checkProjectPermission(projectServices.getTcDirectProject(pid), true, toDelete.getUserId()) && !isTCProject))
+                                {
+                                    com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, RESOURCE_ROLE_OBSERVER_ID);
+
+                                    com.topcoder.management.resource.Resource delRes = null;
+                        
+                                    // check if user is already a observer
+                                    if (resources != null && resources.length > 0)
+                                    {
+                                        for (com.topcoder.management.resource.Resource resource : resources )
+                                        {
+                                            if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                                 && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(String.valueOf(toDelete.getUserId())))
+                                            {
+                                                delRes = resource;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (delRes != null)
+                                    {
+                                        projectServices.removeResource(delRes, String.valueOf(principal.getUserId()));
+                                    }
+
+                                    // delete forum watch
+                                    long forumId = projectServices.getForumId(pid);
+      System.out.println("-------------forumId " + forumId);
+                                    if (forumId > 0 && createForum)
+                                    {
+      System.out.println("-------------useriid  " + per.getUserId());
+                                        deleteForumWatch(forumId, per.getUserId());
+                                    }
+                                }
+                            }
+                        }
+                    }   
+                   
+                }
+            }
+
+            this.permissionService.updatePermissions(permissions);
         }
         catch (PersistenceException e)
         {
+            sessionContext.setRollbackOnly();
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (UserServiceException e)
+        {
+            sessionContext.setRollbackOnly();
             throw new PermissionServiceException(e.getMessage(), e);
         }
 
@@ -6092,5 +6262,83 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 
         logger.info("Exit: " + methodName);
         return !eligibilities.isEmpty();
-    }    
+    } 
+    
+    /**
+     * create forum watch with given parameters. It will lookup the ForumsHome
+     * interface, and ceate the forum by the ejb home interface. In the old
+     * version, this method misses the document, it's added in the version 1.1
+     *
+     *
+     * @param asset
+     *            The asset DTO to user
+     * @param userId
+     *            userId The user id to use
+     * @param projectCategoryId
+     *            The project category id to
+     * @return The long id of the created forum
+     */
+    private void createForumWatch(long forumId, long userId) {
+        logger.debug("createForumWatch (" + forumId + ", " + userId + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.createCategoryWatch(userId, forumId);
+            logger.debug("Exit createForumWatch (" + forumId + ", " + userId + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not create a forum watch for " + forumId + ", " + userId );
+            logger.error(e);
+        }
+    }
+
+    /**
+     * delete forum watch with given parameters. It will lookup the ForumsHome
+     * interface, and ceate the forum by the ejb home interface. In the old
+     * version, this method misses the document, it's added in the version 1.1
+     *
+     *
+     * @param asset
+     *            The asset DTO to user
+     * @param userId
+     *            userId The user id to use
+     * @param projectCategoryId
+     *            The project category id to
+     * @return The long id of the created forum
+     */
+    private void deleteForumWatch(long forumId, long userId) {
+        logger.info("deleteForumWatch (" + forumId + ", " + userId + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.deleteCategoryWatch(userId, forumId);
+            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
+            logger.error(e);
+        }
+    }
 }
