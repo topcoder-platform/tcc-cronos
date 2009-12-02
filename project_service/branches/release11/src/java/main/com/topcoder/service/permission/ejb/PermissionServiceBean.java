@@ -762,4 +762,45 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
         }
     }
 
+
+   /**
+     * <p>
+     * Get permission by id
+     * </p>
+     * 
+     * @param id
+     *            id to look for
+     * 
+     * @return permission
+     * 
+     * @throws PermissionServiceException
+     *             if any error occurs when getting permissions.
+     */
+    public Permission getPermissionsById(long id) throws PermissionServiceException {
+        try {
+            logEnter("getPermissionsById(id)");
+            logOneParameter(id);
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select p from com.topcoder.service.permission.Permission p where p.permissionId = " + id);
+
+            
+            Permission result = null;
+            
+            if (query.getSingleResult() != null)
+            {
+                result =  (Permission) query.getSingleResult();
+            }
+           
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapPermissionServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapPermissionServiceException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getPermissionsByUser(userid)");
+        }
+    }
+
 }

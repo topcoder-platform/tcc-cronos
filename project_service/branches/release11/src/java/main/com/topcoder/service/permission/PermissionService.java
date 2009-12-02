@@ -147,4 +147,20 @@ public interface PermissionService {
      * @since Cockpit Project Admin Release Assembly.
      */
     public void updatePermissions(Permission[] permissions) throws PermissionServiceException;
+
+
+    /**
+     * <p>
+     * Get permission by id
+     * </p>
+     * 
+     * @param id
+     *            id to look for
+     * 
+     * @return permission
+     * 
+     * @throws PermissionServiceException
+     *             if any error occurs when getting permissions.
+     */
+    public Permission getPermissionsById(long id) throws PermissionServiceException;
 }

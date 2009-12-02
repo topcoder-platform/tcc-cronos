@@ -21,6 +21,11 @@ public class PermissionType implements Serializable {
     /** Represents the name of permission type. */
     private String name;
 
+    public static final long PERMISSION_TYPE_PROJECT_READ = 1;
+
+    public static final long PERMISSION_TYPE_PROJECT_FULL = 3;
+
+
     /**
      * Default constructor.
      */

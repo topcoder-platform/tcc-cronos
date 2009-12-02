@@ -261,6 +261,49 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
     /**
      * <p>
+     * This method retrieve the user handle for given user id.
+     * </p>
+     * 
+     * @param userId
+     *            user id to look for
+     * 
+     * @return user handle
+     * 
+     * @throws IllegalArgumentWSException
+     *             if the argument is invalid
+     * @throws UserServiceException
+     *             if any error occurs when getting user details
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public String getUserHandle(long userId) throws UserServiceException {
+        try {
+            logEnter("getUserHandle("+userId+")");
+            logOneParameter(userId);
+           
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("select handle from user u where u.user_id = :userId");
+            query.setParameter("userId", userId);
+            Object result = query.getSingleResult();
+            if (result != null) {
+                return (result.toString());
+            }
+                
+            throw wrapUserServiceException(new NoResultException(), "No such user");
+            
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            throw wrapUserServiceException(e, "No such user");
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors in getUserHandle.");
+        } finally {
+            logExit("getUserHandle(userid)");
+        }
+    }
+
+
+    /**
+     * <p>
      * This method returns true if given user handle is admin otherwise it returns false.
      * 
      * This mock implementation returns true for 'user' handle or all those handles that has only Upper case alphabets.

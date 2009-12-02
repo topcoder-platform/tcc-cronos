@@ -91,4 +91,21 @@ public interface UserService {
      * @since Jira & Confluence User Sync Service
      */
     public boolean isAdmin(String userHandle) throws UserServiceException;
+
+    /**
+     * <p>
+     * This method retrieve the user handle for given user id.
+     * </p>
+     * 
+     * @param userId
+     *            user id to look for
+     * 
+     * @return user handle
+     * 
+     * @throws IllegalArgumentWSException
+     *             if the argument is invalid
+     * @throws UserServiceException
+     *             if any error occurs when getting user details
+     */
+    public String getUserHandle(long userId) throws UserServiceException;
 }
