@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
 
@@ -21,14 +21,21 @@ import com.topcoder.management.deliverable.NamedDeliverableStructure;
 import com.topcoder.management.deliverable.persistence.PersistenceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * Helper class for the package
  * com.topcoder.management.deliverable.persistence.sql., including the methods
  * to validate arguments and the methods to access database.
- * @author urtks
- * @version 1.0.2
+ *
+ * <p>
+ * Changes in v1.0.3 (Cockpit Spec Review Backend Service Update v1.0):
+ * - replaced LogFactory with LogManager
+ * - added flag so that container transaction demarcation can be used.
+ * </p>
+ *
+ * @author urtks, pulky
+ * @version 1.0.3
  */
 class Helper {
     /**
@@ -77,8 +84,17 @@ class Helper {
     static final DataType DATE_TYPE = new DateType();
 
     /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(Helper.class.getName()); 
-    
+    private static final Log logger = LogManager.getLog(Helper.class.getName());
+
+    /**
+     * <p>
+     * Represents whether this component should use manual commit or not.
+     * </p>
+     *
+     * @since 1.0.3
+     */
+    private static final Boolean useManualCommit = false;
+
     /**
      * <p>
      * This class is a wrapper for type safe getting of values from a ResultSet
@@ -203,9 +219,9 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, String.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setString(index, (String) value);
+                preparedStatement.setString(index, (String) value);
             } else {
-            	preparedStatement.setNull(index, Types.VARCHAR);
+                preparedStatement.setNull(index, Types.VARCHAR);
             }
         }
     }
@@ -240,7 +256,7 @@ class Helper {
             Helper.assertObjectNotNull(resultSet, "resultSet");
             long ret = resultSet.getLong(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Long(ret);
         }
@@ -266,11 +282,11 @@ class Helper {
             throws SQLException {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, Long.class, "value " + index);
-            
+
             if (value != null) {
-            	preparedStatement.setLong(index, ((Long) value).longValue());
+                preparedStatement.setLong(index, ((Long) value).longValue());
             } else {
-            	preparedStatement.setNull(index, Types.INTEGER);
+                preparedStatement.setNull(index, Types.INTEGER);
             }
         }
     }
@@ -306,7 +322,7 @@ class Helper {
 
             double ret = resultSet.getDouble(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Double(ret);
         }
@@ -334,9 +350,9 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Double.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setDouble(index, ((Double) value).doubleValue());
+                preparedStatement.setDouble(index, ((Double) value).doubleValue());
             } else {
-            	preparedStatement.setNull(index, Types.DOUBLE);
+                preparedStatement.setNull(index, Types.DOUBLE);
             }
         }
     }
@@ -371,7 +387,7 @@ class Helper {
             Helper.assertObjectNotNull(resultSet, "resultSet");
             boolean ret = resultSet.getBoolean(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Boolean(ret);
         }
@@ -399,9 +415,9 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Boolean.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
+                preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
             } else {
-            	preparedStatement.setNull(index, Types.BOOLEAN);
+                preparedStatement.setNull(index, Types.BOOLEAN);
             }
         }
     }
@@ -464,9 +480,9 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Date.class, "value" + index);
 
             if (value != null) {
-            	preparedStatement.setTimestamp(index, new Timestamp(((Date) value).getTime()));
+                preparedStatement.setTimestamp(index, new Timestamp(((Date) value).getTime()));
             } else {
-            	preparedStatement.setNull(index, Types.TIMESTAMP);
+                preparedStatement.setNull(index, Types.TIMESTAMP);
             }
         }
     }
@@ -750,7 +766,7 @@ class Helper {
     static void closeConnection(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "close the connection.");
+                logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when closing the connection.", e);
@@ -803,8 +819,10 @@ class Helper {
     static void commitTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "commit the transaction.");
-                conn.commit();
+                if(useManualCommit) {
+                    logger.log(Level.INFO, "commit the transaction.");
+                    conn.commit();
+                }
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing commit.", e);
             }
@@ -821,8 +839,10 @@ class Helper {
     static void rollBackTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "rollback the transaction.");
-                conn.rollback();
+                if(useManualCommit) {
+                    logger.log(Level.INFO, "rollback the transaction.");
+                    conn.rollback();
+                }
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing rollback.", e);
             }
@@ -855,19 +875,20 @@ class Helper {
                 : connectionFactory.createConnection(connectionName);
 
             if ( connectionName == null) {
-            	logger.log(Level.INFO, "create db connection using default connection name");
+                logger.log(Level.INFO, "create db connection using default connection name");
             } else {
-            	logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
+                logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
             }
-            conn.setAutoCommit(autoCommit);
-            conn.setReadOnly(readOnly);
+            if(useManualCommit) {
+                conn.setAutoCommit(autoCommit);
+                conn.setReadOnly(readOnly);
 
-            // if auto-commit mode is disabled, try to set transaction isolation
-            // level to Connection.TRANSACTION_SERIALIZABLE.
-            if (!autoCommit) {
-                //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                // if auto-commit mode is disabled, try to set transaction isolation
+                // level to Connection.TRANSACTION_SERIALIZABLE.
+                if (!autoCommit) {
+                    //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                }
             }
-
             return conn;
         } catch (DBConnectionException e) {
             throw new PersistenceException("Error occurs when getting the connection using "
@@ -1111,21 +1132,21 @@ class Helper {
             throw new IllegalArgumentException("The entity [" + name + "] is not valid to persist.");
         }
     }
-    
+
     /**
      * Return the id string seperated by comma for the given long id array.
-     * 
+     *
      * @param ids the id array
      * @return string seperated by comma
      */
-	static String getIdString(long[] ids) {
-		String idString = "";
+    static String getIdString(long[] ids) {
+        String idString = "";
         for(int i = 0; i < ids.length; i++) {
-        	idString += ids[i];
-        	if ( i < ids.length -1) {
-        		idString += ",";
-        	}
+            idString += ids[i];
+            if ( i < ids.length -1) {
+                idString += ",";
+            }
         }
-		return idString;
-	}
+        return idString;
+    }
 }

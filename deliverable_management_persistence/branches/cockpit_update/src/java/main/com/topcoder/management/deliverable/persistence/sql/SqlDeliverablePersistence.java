@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
 
@@ -14,7 +14,7 @@ import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
 import com.topcoder.management.deliverable.persistence.sql.logging.LogMessage;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -35,14 +35,20 @@ import com.topcoder.util.log.LogFactory;
  * component is used on multiple machines or multiple instances are used, so
  * this is not a thread-safety concern.
  * </p>
- * @author aubergineanode, urtks
- * @version 1.0.2
+ *
+ * <p>
+ * Changes in v1.0.3 (Cockpit Spec Review Backend Service Update v1.0):
+ * - replaced LogFactory with LogManager
+ * </p>
+ *
+ * @author aubergineanode, urtks, pulky
+ * @version 1.0.3
  */
 public class SqlDeliverablePersistence implements DeliverablePersistence {
 
-	 /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(SqlDeliverablePersistence.class.getName()); 
-    
+     /** Logger instance using the class name as category */
+    private static final Log logger = LogManager.getLog(SqlDeliverablePersistence.class.getName());
+
     /**
      * Represents the sql statement to load deliverables with submission.
      */
