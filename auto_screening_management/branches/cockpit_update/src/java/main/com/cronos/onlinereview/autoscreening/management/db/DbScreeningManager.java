@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.autoscreening.management.db;
 
@@ -28,8 +28,13 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
  * This class is thread-safe by being immutable.
  * </p>
  *
- * @author colau, haozhangr
- * @version 1.0
+ * <p>
+ * Changes in v1.1 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag so that container transaction demarcation can be used.
+ * </p>
+ *
+ * @author colau, haozhangr, pulky
+ * @version 1.1
  */
 public abstract class DbScreeningManager implements ScreeningManager {
 
@@ -61,6 +66,15 @@ public abstract class DbScreeningManager implements ScreeningManager {
      *
      */
     private final String connectionName;
+
+    /**
+     * <p>
+     * Represents whether this component should use manual commit or not.
+     * </p>
+     *
+     * @since 1.1
+     */
+    protected final Boolean useManualCommit = false;
 
     /**
      * <p>
@@ -121,7 +135,9 @@ public abstract class DbScreeningManager implements ScreeningManager {
             } else {
                 conn = connectionFactory.createConnection(connectionName);
             }
-            conn.setAutoCommit(false);
+            if (useManualCommit) {
+                conn.setAutoCommit(false);
+            }
             return conn;
         } catch (DBConnectionException e) {
             throw new PersistenceException("Failed to create database connection.", e);

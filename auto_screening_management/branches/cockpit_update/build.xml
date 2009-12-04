@@ -12,13 +12,22 @@
     <property name="component_version" value="1.0" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    <if>
+        <not>
+              <available file="../topcoder_global.properties"/>
+        </not>
+        <then>
+             <property name="tcs_libdir" value="../tcs/lib/tcs" />
+             <property name="ext_libdir" value="../tcs/lib/third_party" />
+             <property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
+             <property name="jar_ext_libdir" value="../tcs/lib/third_party" />
+          </then>
+    </if>
+
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
     <property name="tcs" value="../tcs" />
-    <property name="tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="ext_libdir" value="../tcs/lib/third_party" />
-    <property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="jar_ext_libdir" value="../tcs/lib/third_party" />
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
@@ -72,7 +81,7 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
 
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
     <path id="cobertura.classpath">
         <fileset dir="${cobertura.dir}">
             <include name="cobertura.jar"/>
@@ -84,17 +93,17 @@
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
 
     <!-- TCS Dependencies -->
-    <property name="base_exception.version" value="1.0"/>
+    <property name="base_exception.version" value="2.0.0"/>
     <property name="base_exception.jar.name" value="base_exception.jar"/>
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
-    <property name="configuration_manager.version" value="2.1.4"/>
+    <property name="configuration_manager.version" value="2.1.5"/>
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
 
-    <property name="db_connection_factory.version" value="1.0"/>
+    <property name="db_connection_factory.version" value="1.1"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
@@ -104,7 +113,7 @@
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
 
-    <property name="object_factory.version" value="2.0"/>
+    <property name="object_factory.version" value="2.0.1"/>
     <property name="object_factory.jar.name" value="object_factory.jar"/>
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
@@ -301,7 +310,7 @@
         <mkdir dir="${dist_coverage}"/>
         <mkdir dir="${docs_coverage}"/>
 
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+        <!--<copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
 
         <copy todir="${dist_coverage}">
@@ -309,7 +318,7 @@
         </copy>
         <copy todir="${docs_coverage}">
             <fileset dir="${testlogdir}/coverage" />
-        </copy>
+        </copy> -->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
@@ -333,7 +342,7 @@
             <fileset dir="${javadocsdir}" />
         </copy>
 
-        <antcall target="package_docs" />
+        <!--<antcall target="package_docs" /> -->
 
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">

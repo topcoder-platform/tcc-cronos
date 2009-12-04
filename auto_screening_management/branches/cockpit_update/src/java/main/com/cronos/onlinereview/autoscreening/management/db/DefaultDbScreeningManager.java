@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.autoscreening.management.db;
 
@@ -50,8 +50,13 @@ import com.topcoder.util.idgenerator.IDGeneratorImpl;
  * environment.
  * </p>
  *
- * @author colau, haozhangr
- * @version 1.0
+ * <p>
+ * Changes in v1.1 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag so that container transaction demarcation can be used.
+ * </p>
+ *
+ * @author colau, haozhangr, pulky
+ * @version 1.1
  */
 public class DefaultDbScreeningManager extends DbScreeningManager {
     /**
@@ -265,7 +270,9 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             ps.setTimestamp(SEVENTH_INDEX, new Timestamp(System.currentTimeMillis()));
 
             ps.executeUpdate();
-            conn.commit();
+            if (useManualCommit) {
+                conn.commit();
+            }
         } catch (SQLException e) {
             rollback(conn);
             throw new PersistenceException("Failed to insert a row into the screening_task table.",
@@ -607,10 +614,12 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
      *            the database connection
      */
     private void rollback(Connection conn) {
-        try {
-            conn.rollback();
-        } catch (SQLException sqle) {
-            // ignore
+        if (useManualCommit) {
+            try {
+                conn.rollback();
+            } catch (SQLException sqle) {
+                // ignore
+            }
         }
     }
 
