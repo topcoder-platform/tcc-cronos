@@ -167,8 +167,25 @@
                 <env-entry-name>specReviewNotificationEmailSubject</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>Spec Review for %CONTEST_NAME% was updated</env-entry-value>
-            </env-entry> 
-            
+            </env-entry>
+
+            <!-- Cockpit Spec Review Backend Service Update v1.0 -->
+            <env-entry>
+                <env-entry-name>specReviewPrize</env-entry-name>
+                <env-entry-type>java.lang.Double</env-entry-type>
+                <env-entry-value>50</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>mockSubmissionFileName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>mock.zip</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>mockSubmissionFilePath</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>/home/cockpit/</env-entry-value>
+            </env-entry>
+
             <ejb-ref>
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
@@ -184,7 +201,7 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerRemote</remote>
             </ejb-ref>
-			 <ejb-ref>
+	    <ejb-ref>
                 <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.permission.PermissionService</remote>

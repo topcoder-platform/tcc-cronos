@@ -128,6 +128,12 @@
     <property name="studio_service.path" value="studio_service/${studio_service.version}"/>
     <property name="studio_service.jar" value="${tcs_libdir}/${studio_service.path}/${studio_service.jar.name}"/>
 
+    <property name="review_data_structure.version" value="1.0.0"/>
+    <property name="review_data_structure.jar.name" value="review_data_structure.jar"/>
+    <property name="review_data_structure.path" value="review_data_structure/${review_data_structure.version}"/>
+    <property name="review_data_structure.jar" value="${tcs_libdir}/${review_data_structure.path}/${review_data_structure.jar.name}"/>
+
+
     <property name="online_review_upload_services.jar" value="${tcs_libdir}/online_review_upload_services/1.0/online_review_upload_services.jar"/>
     <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar"/>
     <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar"/>
@@ -249,13 +255,14 @@
         <pathelement location="${user_project_data_store.jar}"/>
         <pathelement location="${db_connection_factory.jar}"/>
         <pathelement location="${database_abstraction.jar}"/>
-		<pathelement location="${forums.jar}"/>
+	<pathelement location="${forums.jar}"/>
         <pathelement location="${jiveforums.jar}"/>
         <pathelement location="${jivebase_modified.jar}"/>
+	<pathelement location="${review_data_structure.jar}"/>
 		
-		<pathelement location="${email_engine.jar}"/>
-		<pathelement location="${document_generator.jar}"/>
-		<pathelement location="${cockpit_phase_handlers.jar}"/>
+	<pathelement location="${email_engine.jar}"/>
+	<pathelement location="${document_generator.jar}"/>
+	<pathelement location="${cockpit_phase_handlers.jar}"/>
         
         <!-- added for Cockpit Release Assembly 5 v1.0 -->
         <pathelement location="${client_project_entities_dao.jar}"/>

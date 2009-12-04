@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.Enumeration;
 
 import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -67,12 +68,14 @@ import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.review.data.Comment;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
+import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
 import com.topcoder.service.contest.eligibility.GroupContestEligibility;
@@ -232,8 +235,16 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * <p>
  * Changes in v1.3.3 Added permission check.
  * </p>
+ * <p>
+ * Changes in v1.4 (Cockpit Spec Review Backend Service Update v1.0):
+ * - Added method to create specification review project for an existing project.
+ * - Added method to get scorecard and review information for a specific project.
+ * - Added method to upload a mock submission / final fixes to the associated specification review of a project
+ *   to make it ready for review.
+ * - Added method to add comments to an existing review.
+ * </p>
  * @author snow01, pulky, murphydog
- * @version 1.3.3
+ * @version 1.4
  */
 @Stateless
 @WebService
@@ -559,6 +570,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since 1.3.3
      */
     private static final String PROJECT_TYPE_INFO_BILLING_PROJECT_KEY = "Billing Project";
+
+    /**
+     * Private constant specifying project submission phase name.
+     *
+     * @since 1.4
+     */
+    private static final String PROJECT_SUBMISSION_PHASE_NAME = "Submission";
+
+    /**
+     * Private constant specifying project final fix phase name.
+     *
+     * @since 1.4
+     */
+    private static final String PROJECT_FINAL_FIX_PHASE_NAME = "Final Fix";
     
     /**
      * <p>
@@ -870,6 +895,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     @Resource(name = "specReviewNotificationEmailSubject")
     private String specReviewNotificationEmailSubject;
     
+    /**
+     * The default prize for spec reviews
+     *
+     * @since 1.4
+     */
+    @Resource(name = "specReviewPrize")
+    private Double specReviewPrize;
+
+    /**
+     * The mock file path to use for submissions
+     *
+     * @since 1.4
+     */
+    @Resource(name = "mockSubmissionFilePath")
+    private String mockSubmissionFilePath;
+
+    /**
+     * The mock file name to use for submissions
+     *
+     * @since 1.4
+     */
+    @Resource(name = "mockSubmissionFileName")
+    private String mockSubmissionFileName;
+
     /**
      * Document generator that stores email templates.
      *
@@ -5229,10 +5278,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                                     // delete forum watch
                                     long forumId = projectServices.getForumId(pid);
-      System.out.println("-------------forumId " + forumId);
                                     if (forumId > 0 && createForum)
                                     {
-      System.out.println("-------------useriid  " + per.getUserId());
                                         deleteForumWatch(forumId, per.getUserId());
                                     }
                                 }
@@ -6263,6 +6310,138 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.info("Exit: " + methodName);
         return !eligibilities.isEmpty();
     } 
+
+     /**
+     * This method creates a Specification Review project associated to a project determined by parameter.
+     *
+     * @param projectId the project id to create a Specification Review for
+     * @return the created project
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services
+     *
+     * @since 1.4
+     */
+    public Project createSpecReview(long projectId) throws ContestServiceException {
+        String method = "createSpecReview(" + projectId + ")";
+        logger.info("Enter: " + method);
+
+        Project specReview = null;
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(p.getUserId()));
+        } catch (ProjectServicesException e) {
+            logger.error("Operation failed in ProjectServices.", e);
+            throw new ContestServiceException("Operation failed in Project Services.", e);
+        } finally {
+            logger.info("Exit: " + method);
+        }
+
+        return specReview;
+    }
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for
+     * @return the aggregated scorecard and review data
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services
+     *
+     * @since 1.4
+     */
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException {
+        String method = "getScorecardAndReview(" + projectId + ")";
+        logger.info("Enter: " + method);
+
+        ScorecardReviewData scorecardReviewData =  null;
+        try {
+            scorecardReviewData =  projectServices.getScorecardAndReview(projectId);
+        } catch (ProjectServicesException e) {
+            logger.error("Operation failed in Project Services.", e);
+            throw new ContestServiceException("Operation failed in Project Services.", e);
+        } finally {
+            logger.info("Exit: " + method);
+        }
+
+        return scorecardReviewData;
+    }
+
+    /**
+     * This method uploads a mock file to the corresponding specification review project of the specified project
+     * id, so that it can continue with review. Regular submission or final fix will be uploaded according to the
+     * open phase.
+     *
+     * @param projectId the project id of the original project
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services, if the associated
+     * specification review project id cannot be found or if neither submission or final fixes phase are open.
+     *
+     * @since 1.4
+     */
+    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException {
+        String method = "markSoftwareContestReadyForReview(" + projectId + ")";
+        logger.info("Enter: " + method);
+
+        try {
+            // get associated specification review project id
+            long specReviewProjectId = projectServices.getSpecReviewProjectId(projectId);
+            if (specReviewProjectId < 0) {
+                throw new ContestServiceException("Failed to get associated specification review.");
+            }
+
+            // get associated specification review open phases
+            Set<String> openPhases = projectServices.getOpenPhases(specReviewProjectId);
+
+            // prepare mock file for upload
+            DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
+                   mockSubmissionFileName));
+
+            // upload regular submission or final fix according to open phase
+            if (openPhases.contains(PROJECT_SUBMISSION_PHASE_NAME)) {
+                uploadSubmission(specReviewProjectId, mockSubmissionFileName, dataHandler);
+            } else if (openPhases.contains(PROJECT_FINAL_FIX_PHASE_NAME)) {
+                uploadFinalFix(specReviewProjectId, mockSubmissionFileName, dataHandler);
+            } else {
+                throw new ContestServiceException("Submission or Final Fix phase should be open.");
+            }
+        } catch (ProjectServicesException e) {
+            logger.error("Operation failed in Project Services.", e);
+            throw new ContestServiceException("Operation failed in Project Services.", e);
+        } finally {
+            logger.info("Exit: " + method);
+        }
+    }
+
+    /**
+     * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     *
+     * @param reviewId the review id to add the comment to
+     * @param comment the review comment to add
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services.
+     * @throws IllegalArgumentException if comment is null
+     *
+     * @since 1.4
+     */
+    public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException {
+        if (comment == null) {
+            throw new IllegalArgumentException("The comment cannot be null");
+        }
+
+        String method = "addReviewComment(" + reviewId + ", " + comment + ")";
+        logger.info("Enter: " + method);
+
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            projectServices.addReviewComment(reviewId, comment, String.valueOf(p.getUserId()));
+        } catch (ProjectServicesException e) {
+            logger.error("Operation failed in Project Services.", e);
+            throw new ContestServiceException("Operation failed in Project Services.", e);
+        } finally {
+            logger.info("Exit: " + method);
+        }
+    }
     
     /**
      * create forum watch with given parameters. It will lookup the ForumsHome

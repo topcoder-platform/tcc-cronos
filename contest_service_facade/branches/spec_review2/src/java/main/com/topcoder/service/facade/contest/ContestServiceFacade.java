@@ -13,6 +13,9 @@ import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 
 import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.management.project.Project;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.service.specreview.SpecReview;
 
 import com.topcoder.management.project.DesignComponents;
@@ -26,6 +29,7 @@ import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -108,8 +112,16 @@ import javax.jws.WebService;
  * <p>
  * Changes in v1.2.1 Added support for eligibility services.
  * </p>
+ * <p>
+ * Changes in v1.3 (Cockpit Spec Review Backend Service Update v1.0):
+ * - Added method to create specification review project for an existing project.
+ * - Added method to get scorecard and review information for a specific project.
+ * - Added method to upload a mock submission / final fixes to the associated specification review of a project
+ *   to make it ready for review.
+ * - Added method to add comments to an existing review.
+ * </p>
  * @author pulky, murphydog
- * @version 1.2.1
+ * @version 1.3
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -1836,4 +1848,56 @@ public interface ContestServiceFacade {
      * @since 1.2.1
      */
     public String getEligibilityName(long clientId);
+
+    /**
+     * This method creates a Specification Review project associated to a project determined by parameter.
+     *
+     * @param projectId the project id to create a Specification Review for
+     * @return the created project
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services
+     *
+     * @since 1.4
+     */
+    public Project createSpecReview(long projectId) throws ContestServiceException;
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for
+     * @return the aggregated scorecard and review data
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services
+     *
+     * @since 1.4
+     */
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException;
+
+    /**
+     * This method uploads a mock file to the corresponding specification review project of the specified project
+     * id, so that it can continue with review. Regular submission or final fix will be uploaded according to the
+     * open phase.
+     *
+     * @param projectId the project id of the original project
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services, if the associated
+     * specification review project id cannot be found or if neither submission or final fixes phase are open.
+     *
+     * @since 1.4
+     */
+    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException;
+
+    /**
+     * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     *
+     * @param reviewId the review id to add the comment to
+     * @param comment the review comment to add
+     *
+     * @throws ContestServiceException if any unexpected error occurs in the underlying services.
+     * @throws IllegalArgumentException if comment is null
+     *
+     * @since 1.4
+     */
+    public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException;
 }
