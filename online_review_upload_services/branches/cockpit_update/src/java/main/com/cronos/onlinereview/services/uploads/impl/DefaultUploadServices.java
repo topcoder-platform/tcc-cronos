@@ -88,13 +88,19 @@ import com.topcoder.util.log.Level;
  * </pre>
  * 
  * </p>
+ *
+ * <p>
+ * Changes in v1.1 (Cockpit Spec Review Backend Service Update v1.0):
+ * - fixed uploadFinalFix to delete existing final fixes first and persist upload later
+ * </p>
+ * 
  * <p>
  * Thread safety: the thread safety is completely relied to the managers implementations because it's impossible to
  * change the other variables.
  * </p>
  * 
- * @author fabrizyo, cyberjag
- * @version 1.0
+ * @author fabrizyo, cyberjag, pulky
+ * @version 1.1
  */
 public class DefaultUploadServices implements UploadServices {
 
@@ -430,13 +436,6 @@ public class DefaultUploadServices implements UploadServices {
 
                         UploadManager uploadManager = managersProvider.getUploadManager();
 
-                        // persist the upload
-                        uploadManager.createUpload(upload, operator);
-
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Created final fix Upload for project {0}, user {1} with file name {2}.",
-                                new Object[] {projectId, userId, filename});
-
                         // delete previous final fixes
                         Filter filterProject = UploadFilterBuilder.createProjectIdFilter(project.getId());
                         Filter filterResource = UploadFilterBuilder.createResourceIdFilter(resource.getId());
@@ -456,6 +455,13 @@ public class DefaultUploadServices implements UploadServices {
                         Helper.logFormat(LOG, Level.INFO,
                                 "Marked previous final fixes for deletion for the user {0}.",
                                 new Object[] {userId});
+
+                        // persist the upload
+                        uploadManager.createUpload(upload, operator);
+
+                        Helper.logFormat(LOG, Level.INFO,
+                                "Created final fix Upload for project {0}, user {1} with file name {2}.",
+                                new Object[] {projectId, userId, filename});
 
                         return upload.getId();
 
