@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -42,7 +42,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -56,10 +56,15 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <p>
  * Thread Safety: This class is not thread safe.
  * </p>
- * @author woodjhon
- * @author urtks
- * @author George1
- * @version 1.0.1
+ * 
+ * <p>
+ * Changes in v1.0.2 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag so that container transaction demarcation can be used.
+ * - LogManager is used instead of LogFactory.
+ * </p>
+ * 
+ * @author woodjhon, urtks, George1, pulky
+ * @version 1.0.2
  */
 public class InformixReviewPersistence implements ReviewPersistence {
     /**
@@ -87,7 +92,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
     public static final String REVIEW_ITEM_COMMENT_ID_SEQ = "review_item_comment_id_seq";
 
     /** Logger instance using the class name as category */
-    private static final Log LOGGER = LogFactory.getLog(InformixReviewPersistence.class.getName());
+    private static final Log LOGGER = LogManager.getLog(InformixReviewPersistence.class.getName());
+    
     /**
      * Represents the name of connection name parameter in configuration.
      */
@@ -335,6 +341,15 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * the constructor, not-null.
      */
     private final IDGenerator reviewItemCommentIDGenerator;
+
+    /**
+     * <p>
+     * Represents whether this component should use manual commit or not.
+     * </p>
+     *
+     * @since 1.0.2
+     */
+    private final Boolean useManualCommit = false;
 
     /**
      * <p>
@@ -592,7 +607,9 @@ public class InformixReviewPersistence implements ReviewPersistence {
         			"creating db connection using connection name: " + connectionName));
             Connection conn = dbFactory.createConnection(connectionName);
             LOGGER.log(Level.INFO, new LogMessage(null, null, "start transaction."));
-            conn.setAutoCommit(false);
+            if(useManualCommit) {
+                conn.setAutoCommit(false);
+            }
             //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             return conn;
         } catch (DBConnectionException e) {
@@ -859,10 +876,10 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 + REVIEW_TABLE + " WHERE review_id=?", new Object[] {changeTable.get(review)},
                 Helper.DATE_TYPE);
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Error occurs during create new Review.", e));
-        	Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Error occurs during create new Review.", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn , LOGGER);
@@ -1133,10 +1150,10 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 + REVIEW_TABLE + " WHERE review_id=?", new Object[] {new Long(review.getId())},
                 Helper.DATE_TYPE);
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(new Long(review.getId()), operator, "Error occurs during update Review.", e));
-        	Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(new Long(review.getId()), operator, "Error occurs during update Review.", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);
@@ -1642,11 +1659,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
             // get the review in the database
             Review review = getReviewsComplete(new Long(id).toString(), conn)[0];
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
             return review;
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(new Long(id), null, "Error occurs during retreive Review.", e));
-            Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(new Long(id), null, "Error occurs during retreive Review.", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);
@@ -1743,8 +1760,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             return reviews;
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs during search/retrieve Review.", e));
-            Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs during search/retrieve Review.", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);
@@ -2052,11 +2069,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             CommentType[] commentTypes = getAllCommentTypes(conn);
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
             return commentTypes;
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs retrieve all comment types .", e));
-            Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs retrieve all comment types .", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);
@@ -2146,10 +2163,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
             createReviewComments(new Comment[] {comment}, new Long[] {index}, new Long(reviewId),
                 operator, conn, changeTable);
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(new Long(reviewId), operator, "Error occurs adding comment to review .", e));
-            Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(new Long(reviewId), operator, 
+                "Error occurs adding comment to review .", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);
@@ -2202,8 +2220,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             // check if the review item id exists
             if (Helper.countEntities(REVIEW_ITEM_TABLE, "review_item_id", itemId, conn) == 0) {
-            	LOGGER.log(Level.ERROR, new LogMessage(new Long(itemId), operator,
-            			"The item id [" + itemId + "] does not exist in the database."));
+                LOGGER.log(Level.ERROR, new LogMessage(new Long(itemId), operator,
+                        "The item id [" + itemId + "] does not exist in the database."));
                 throw new ReviewEntityNotFoundException("The item id [" + itemId
                     + "] does not exist in table [" + REVIEW_ITEM_TABLE + "].", itemId);
             }
@@ -2217,11 +2235,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
             createReviewItemComments(new Comment[] {comment}, new Long[] {index}, new Long(itemId),
                 operator, conn, changeTable);
 
-            Helper.commitTransaction(conn, LOGGER);
+            Helper.commitTransaction(conn, LOGGER, useManualCommit);
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(null, operator,
-        			"Error occurs add item comment with the item id[" + itemId + "].", e));
-            Helper.rollBackTransaction(conn, LOGGER);
+            LOGGER.log(Level.ERROR, new LogMessage(null, operator,
+                    "Error occurs add item comment with the item id[" + itemId + "].", e));
+            Helper.rollBackTransaction(conn, LOGGER, useManualCommit);
             throw e;
         } finally {
             Helper.closeConnection(conn, LOGGER);

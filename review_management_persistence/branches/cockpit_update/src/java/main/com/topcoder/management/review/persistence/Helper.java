@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -20,8 +20,15 @@ import com.topcoder.util.log.Log;
 
 /**
  * Helper class for this component.
- * @author urtks
- * @version 1.0.1
+ *
+ * <p>
+ * Changes in v1.0.2 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag to commitTransaction and rollBackTransaction methods so that container transaction demarcation can
+ * be used.
+ * </p>
+ *
+ * @author urtks, pulky
+ * @version 1.0.2
  */
 class Helper {
 
@@ -500,14 +507,18 @@ class Helper {
      * Do commit for transaction.
      * @param conn
      *            the connection
+     * @param useManualCommit whether this component should use manual commit or not.
      * @throws ReviewPersistenceException
      *             error occurs when doing commit
      */
-    static void commitTransaction(Connection conn, Log logger) throws ReviewPersistenceException {
-    	if (conn != null) {
+    static void commitTransaction(Connection conn, Log logger, boolean useManualCommit)
+        throws ReviewPersistenceException {
+        if (conn != null) {
             try {
-            	logger.log(Level.INFO, "commit the transaction.");
-                conn.commit();
+                if(useManualCommit) {
+                    logger.log(Level.INFO, "commit the transaction.");
+                    conn.commit();
+                }
             } catch (SQLException e) {
                 throw new ReviewPersistenceException("Error occurs when doing commit.", e);
             }
@@ -518,14 +529,18 @@ class Helper {
      * Do rollback for transaction.
      * @param conn
      *            the connection
+     * @param useManualCommit whether this component should use manual commit or not.
      * @throws ReviewPersistenceException
      *             error occurs when doing rollback
      */
-    static void rollBackTransaction(Connection conn, Log logger) throws ReviewPersistenceException {
+    static void rollBackTransaction(Connection conn, Log logger, boolean useManualCommit)
+        throws ReviewPersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "rollback the transaction.");
-                conn.rollback();
+                if(useManualCommit) {
+                    logger.log(Level.INFO, "rollback the transaction.");
+                    conn.rollback();
+                }
             } catch (SQLException e) {
                 throw new ReviewPersistenceException("Error occurs when doing rollback.", e);
             }
