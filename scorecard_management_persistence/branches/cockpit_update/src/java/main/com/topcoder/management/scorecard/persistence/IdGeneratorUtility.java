@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.scorecard.persistence;
 
@@ -12,7 +12,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -21,17 +21,21 @@ import com.topcoder.util.log.LogFactory;
  * This method is thread safe. The only method that changes state of this class is synchronized.
  * </p>
  *
- * @author tuenm
- * @author kr00tki
- * @version 1.0.1
+ * <p>
+ * Changes in v1.0.2 (Cockpit Spec Review Backend Service Update v1.0):
+ * - LogManager is used instead of LogFactory.
+ * </p>
+ *
+ * @author tuenm, kr00tki, pulky
+ * @version 1.0.2
  */
 class IdGeneratorUtility {
-	
-	/**
-	 * Logger instance.
-	 */
-	private static final Log logger = LogFactory.getLog(IdGeneratorUtility.class.getName());
-	
+
+    /**
+     * Logger instance.
+     */
+    private static final Log logger = LogManager.getLog(IdGeneratorUtility.class.getName());
+
     /**
      * The default name of the id generator for the scorecards.
      */
@@ -131,8 +135,8 @@ class IdGeneratorUtility {
             if ((name == null) || (name.trim().length() == 0)) {
                 name = defaultName;
             } else {
-            	logger.log(Level.INFO,
-            			"Read property " + property + "[" + name + "] from namespace:" + namespace);
+                logger.log(Level.INFO,
+                        "Read property " + property + "[" + name + "] from namespace:" + namespace);
             }
    
             IDGenerator idGenerator = IDGeneratorFactory.getIDGenerator(defaultName);

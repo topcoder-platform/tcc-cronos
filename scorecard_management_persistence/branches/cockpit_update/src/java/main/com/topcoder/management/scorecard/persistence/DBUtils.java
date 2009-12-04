@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.scorecard.persistence;
 
@@ -15,23 +15,29 @@ import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
  * Helper class that maintain common database methods used in this component.
  * </p>
  *
- * @author kr00tki
- * @version 1.0.1
+ * <p>
+ * Changes in v1.0.2 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag to rollBack method so that container transaction demarcation can be used.
+ * - LogManager is used instead of LogFactory.
+ * </p>
+ *
+ * @author kr00tki, pulky
+ * @version 1.0.2
  */
 final class DBUtils {
 
-	/**
-	 * Logger instance.
-	 */
-	private static final Log logger = LogFactory.getLog(DBUtils.class.getName());
-	
+    /**
+     * Logger instance.
+     */
+    private static final Log logger = LogManager.getLog(DBUtils.class.getName());
+
     /**
      * Empty constructor.
      */
@@ -46,7 +52,7 @@ final class DBUtils {
     public static void close(Connection conn) {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "close the connection.");
+                logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 // ignore
@@ -88,11 +94,14 @@ final class DBUtils {
      * Roll backs the transaction.
      *
      * @param conn connection.
+     * @param useManualCommit whether this component should use manual commit or not.
      */
-    public static void rollback(Connection conn) {
+    public static void rollback(Connection conn, boolean useManualCommit) {
         try {
-        	logger.log(Level.INFO, "rollback the connection.");
-            conn.rollback();
+            if(useManualCommit) {
+                logger.log(Level.INFO, "rollback the connection.");
+                conn.rollback();
+            }
         } catch (SQLException ex) {
             // ignore
         }
@@ -138,8 +147,8 @@ final class DBUtils {
             logger.log(Level.INFO, "Generate next id using the idgenerator:" + generator.getIDName());
             return id;
         } catch (IDGenerationException ex) {
-        	logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
-        			+ generator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
+            logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
+                    + generator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while generating new id.", ex);
         }
     }
@@ -161,8 +170,8 @@ final class DBUtils {
                 logger.log(Level.INFO, "Generate next id using the idgenerator:" + idGenerator.getIDName());
             }
         } catch (IDGenerationException ex) {
-        	logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
-        			+ idGenerator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
+            logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
+                    + idGenerator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while generating new id.", ex);
         }
 

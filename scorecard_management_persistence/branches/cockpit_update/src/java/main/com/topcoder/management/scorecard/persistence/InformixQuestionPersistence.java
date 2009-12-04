@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.scorecard.persistence;
 
@@ -18,22 +18,26 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.persistence.logging.LogMessage;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * This class contains operations to create and update question instances into the Informix database. It is package
  * level because it is used only in InformixSectionPersistence class to persist question information. Connection to
  * the database is passed to this class during initialization. Thread Safety: The implementation is not thread safe
  * in that two threads running the same method will use the same statement and could overwrite each other's work.
+ * 
+ * <p>
+ * Changes in v1.0.2 (Cockpit Spec Review Backend Service Update v1.0):
+ * - LogManager is used instead of LogFactory.
+ * </p>
  *
- * @author tuenm
- * @author kr00tki
- * @version 1.0.1
+ * @author tuenm, kr00tki, pulky
+ * @version 1.0.2
  */
 class InformixQuestionPersistence {
-	
-	/** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(InformixQuestionPersistence.class.getName());
+    
+    /** Logger instance using the class name as category */
+    private static final Log logger = LogManager.getLog(InformixQuestionPersistence.class.getName());
     
 
     /**

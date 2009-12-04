@@ -1,13 +1,24 @@
 /*
- * Copyright (c) 2006-2007, TopCoder, Inc. All rights reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.scorecard.persistence;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-
 import com.topcoder.management.scorecard.ConfigurationException;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardIDInfo;
@@ -19,27 +30,13 @@ import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
 import com.topcoder.management.scorecard.persistence.logging.LogMessage;
-
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -53,16 +50,19 @@ import java.util.Set;
  * or without its sub items. Thread Safety: The implementation is not thread safe in that two threads running the
  * same method will use the same statement and could overwrite each other's work.
  *
- * @author tuenm
- * @author kr00tki
- * @author George1
- * @author Angen
+ * <p>
+ * Changes in v1.0.3 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag so that container transaction demarcation can be used.
+ * - LogManager is used instead of LogFactory.
+ * </p>
  *
- * @version 1.0.2
+ * @author tuenm, kr00tki, George1, Angen, pulky
+ *
+ * @version 1.0.3
  */
 public class InformixScorecardPersistence implements ScorecardPersistence {
     /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(InformixScorecardPersistence.class.getName());
+    private static final Log logger = LogManager.getLog(InformixScorecardPersistence.class.getName());
 
     /**
      * Selects the scorecards ids that are in use.
@@ -134,6 +134,15 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      *
      */
     private final String connectionName;
+
+    /**
+     * <p>
+     * Represents whether this component should use manual commit or not.
+     * </p>
+     *
+     * @since 1.0.3
+     */
+    private final Boolean useManualCommit = false;
 
     /**
      * Create a new instance of InformixScorecardPersistence. The passing namespace parameter will be used to get
@@ -213,7 +222,9 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
                     "create db connection with connect name:" + connectionName);
             }
 
-            conn.setAutoCommit(false);
+            if(useManualCommit) {
+                conn.setAutoCommit(false);
+            }
 
             return conn;
         } catch (DBConnectionException ex) {
@@ -283,17 +294,19 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             scorecard.setCreationUser(operator);
             scorecard.setModificationUser(operator);
 
-            logger.log(Level.INFO, "commit the transaction.");
-            conn.commit();
+            if(useManualCommit) {
+                logger.log(Level.INFO, "commit the transaction.");
+                conn.commit();
+            }
         } catch (SQLException ex) {
-            DBUtils.rollback(conn);
+            DBUtils.rollback(conn, useManualCommit);
             logger.log(Level.ERROR,
                 new LogMessage("Scorecard", null, operator,
                     "Fail to create Scorecard.", ex));
             throw new PersistenceException("Error occur during create operation.",
                 ex);
         } catch (PersistenceException ex) {
-            DBUtils.rollback(conn);
+            DBUtils.rollback(conn, useManualCommit);
             logger.log(Level.ERROR,
                 new LogMessage("Scorecard", null, operator,
                     "Fail to create Scorecard."));
@@ -445,14 +458,16 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
                         deletedQuestionsIds));
             }
 
-            logger.log(Level.INFO, "commit the transaction.");
-            // commit transaction and set the modification user and date
-            conn.commit();
+            if(useManualCommit) {
+                logger.log(Level.INFO, "commit the transaction.");
+                // commit transaction and set the modification user and date
+                conn.commit();
+            }
             scorecard.setVersion(version);
             scorecard.setModificationTimestamp(time);
             scorecard.setModificationUser(operator);
         } catch (SQLException ex) {
-            DBUtils.rollback(conn);
+            DBUtils.rollback(conn, useManualCommit);
 
             String errMsg = scorecard + " op:" + operator;
 
@@ -482,7 +497,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             throw new PersistenceException(
                 "Error occurs while deleting the scorecard: " + errMsg, ex);
         } catch (PersistenceException ex) {
-            DBUtils.rollback(conn);
+            DBUtils.rollback(conn, useManualCommit);
             logger.log(Level.ERROR,
                 new LogMessage("Scorecard", new Long(scorecard.getId()),
                     operator, "Fail to update Scorecard."));
