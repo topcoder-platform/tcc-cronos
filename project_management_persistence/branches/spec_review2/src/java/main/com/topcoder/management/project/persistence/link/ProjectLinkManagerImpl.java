@@ -34,9 +34,13 @@ import com.topcoder.management.project.link.ProjectLinkType;
  * <p>
  * It is created for "OR Project Linking" assembly.
  * </p>
+ * <p>
+ * Changes in v1.1 (Cockpit Spec Review Backend Service Update v1.0):
+ * - added flag so that container transaction demarcation can be used.
+ * </p>
  *
- * @author BeBetter
- * @version 1.0
+ * @author BeBetter, pulky
+ * @version 1.1
  */
 public class ProjectLinkManagerImpl implements ProjectLinkManager {
     /**
@@ -142,6 +146,15 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * </p>
      */
     private final String connectionName;
+
+    /**
+     * <p>
+     * Represents whether this component should use manual commit or not.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private final Boolean useManualCommit = false;
 
     /**
      * <p>
@@ -542,7 +555,9 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         }
         Connection conn = Helper.createConnection(getConnectionFactory(), connectionName);
         try {
-            conn.setAutoCommit(false);
+            if(useManualCommit) {
+                conn.setAutoCommit(false);
+            }
             return conn;
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs when setting "
@@ -564,8 +579,10 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
     protected void closeConnection(Connection connection) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-            LOGGER.log(Level.INFO, "committing transaction");
-            Helper.commitTransaction(connection);
+            if(useManualCommit) {
+                LOGGER.log(Level.INFO, "committing transaction");
+                Helper.commitTransaction(connection);
+            }
         } finally {
             Helper.closeConnection(connection);
         }
@@ -584,8 +601,10 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
     protected void closeConnectionOnError(Connection connection) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-            LOGGER.log(Level.INFO, "rollback transaction");
-            Helper.rollBackTransaction(connection);
+            if(useManualCommit) {
+                LOGGER.log(Level.INFO, "rollback transaction");
+                Helper.rollBackTransaction(connection);
+            }
         } finally {
             Helper.closeConnection(connection);
         }
