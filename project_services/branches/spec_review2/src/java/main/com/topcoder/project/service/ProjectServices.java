@@ -3,9 +3,9 @@
  */
 package com.topcoder.project.service;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
@@ -15,6 +15,7 @@ import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.data.Comment;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.management.project.SimpleProjectPermissionData;
 
@@ -70,6 +71,15 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  * Version 1.2.2 (Cockpit Contest Eligibility) changelog:
  *     - added a method for create private contest's roles
  * </p>
+ * <p>
+ * Version 1.3 (Cockpit Spec Review Backend Service Update v1.0) changelog:
+ *     - Added project link, scorecard and review managers creation.
+ *     - Added method to create specification review project for an existing project.
+ *     - Added method to get scorecard and review information for a specific project.
+ *     - Added method to get the corresponding specification review project id for a given project id.
+ *     - Added method to get open phases names for a given project id.
+ *     - Added method to add comments to an existing review.
+ * </p>
  *
  * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
@@ -78,7 +88,7 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog
- * @version 1.2.1
+ * @version 1.3
  * @since 1.0
  */
 public interface ProjectServices {
@@ -709,5 +719,77 @@ public interface ProjectServices {
      *
      */
     public long getTcDirectProject(long projectId) throws ProjectServicesException;
+
+    /**
+     * This method creates a Specification Review project associated to a project determined by parameter
+     *
+     * @param projectId the project id to create a Specification Review for
+     * @param specReviewPrize the prize to set for the Specification Review project
+     * @param operator the operator used to audit the operation, cannot be null or empty
+     *
+     * @return the created project
+     *
+     * @throws ProjectServicesException if any error occurs in the underlying services or if the specification
+     * review already exists
+     * @throws IllegalArgumentException if operator is null or empty or prize is negative.
+     *
+     * @since 1.3
+     */
+    public Project createSpecReview(long projectId, double specReviewPrize, String operator)
+        throws ProjectServicesException;
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for
+     * @return the aggregated scorecard and review data
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     *
+     * @since 1.3
+     */
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ProjectServicesException;
+
+    /**
+     * This method retrieves the corresponding specification review project id of a given project.
+     * The code will rely on the project links to retrieve the specification project id.
+     *
+     * @param projectId the project id to search for
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     *
+     * @return the associated specification review project id, or -1 if it was not found.
+     *
+     * @since 1.3
+     */
+    public long getSpecReviewProjectId(long destProjectId) throws ProjectServicesException;
+
+    /**
+     * This method retrieves open phases names for a given project id
+     *
+     * @param projectId the project id to search for
+     * @return a set with open phases names
+     *
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     *
+     * @since 1.3
+     */
+    public Set<String> getOpenPhases(long projectId) throws ProjectServicesException;
+
+    /**
+     * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     *
+     * @param reviewId the review id to add the comment to
+     * @param comment the review comment to add
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @throws IllegalArgumentException if comment is null or operator is null or empty
+     *
+     * @since 1.3
+     */
+    public void addReviewComment(long reviewId, Comment comment, String operator)
+        throws ProjectServicesException;
 
 }

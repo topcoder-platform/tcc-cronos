@@ -1,31 +1,13 @@
 /*
- * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
 
-import com.topcoder.management.project.DesignComponents;
-import com.topcoder.management.project.Project;
-import com.topcoder.management.project.SimplePipelineData;
-import com.topcoder.management.project.SimpleProjectContestData;
-import com.topcoder.management.project.SoftwareCapacityData;
-import com.topcoder.management.resource.Resource;
-import com.topcoder.security.auth.module.UserProfilePrincipal;
-import com.topcoder.management.project.SimpleProjectPermissionData;
-import com.topcoder.project.service.ConfigurationException;
-import com.topcoder.project.service.ContestSaleData;
-import com.topcoder.project.service.FullProjectData;
-import com.topcoder.project.service.ProjectServices;
-import com.topcoder.project.service.ProjectServicesException;
-import com.topcoder.project.service.ProjectServicesFactory;
-import com.topcoder.project.service.Util;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
@@ -35,6 +17,32 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
+import com.topcoder.management.project.Project;
+import com.topcoder.management.project.SimplePipelineData;
+import com.topcoder.management.project.SimpleProjectContestData;
+import com.topcoder.management.project.SimpleProjectPermissionData;
+import com.topcoder.management.project.SoftwareCapacityData;
+import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.resource.Resource;
+
+
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.project.service.ConfigurationException;
+import com.topcoder.project.service.ContestSaleData;
+import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ProjectDoesNotExistException;
+import com.topcoder.project.service.ProjectServices;
+import com.topcoder.project.service.ProjectServicesException;
+import com.topcoder.project.service.ProjectServicesFactory;
+import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.project.service.Util;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.util.errorhandling.ExceptionUtils;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -121,6 +129,15 @@ import javax.ejb.TransactionAttributeType;
  * Version 1.2.2 (Cockpit Contest Eligibility) changelog:
  *     - added a method for create private contest's roles
  * </p>
+ * <p>
+ * Version 1.3 (Cockpit Spec Review Backend Service Update v1.0) changelog:
+ *     - Added project link, scorecard and review managers creation.
+ *     - Added method to create specification review project for an existing project.
+ *     - Added method to get scorecard and review information for a specific project.
+ *     - Added method to get the corresponding specification review project id for a given project id.
+ *     - Added method to get open phases names for a given project id.
+ *     - Added method to add comments to an existing review.
+ * </p>
  *
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
@@ -128,7 +145,7 @@ import javax.ejb.TransactionAttributeType;
  * </p>
  *
  * @author fabrizyo, znyyddf, pulky, murphydog
- * @version 1.2.2
+ * @version 1.3
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -1386,6 +1403,162 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             throw e;
         } 
     }
+
+    /**
+     * This method creates a Specification Review project associated to a project determined by parameter
+     * 
+     * @param projectId the project id to create a Specification Review for
+     * @param specReviewPrize the prize to set for the Specification Review project
+     * @param operator the operator used to audit the operation, cannot be null or empty
+     * 
+     * @return the created project
+     * 
+     * @throws ProjectServicesException if any error occurs in the underlying services or if the specification 
+     * review already exists
+     * @throws IllegalArgumentException if operator is null or empty or prize is negative.
+     * 
+     * @since 1.3
+     */
+    public Project createSpecReview(long projectId, double specReviewPrize, String operator) 
+        throws ProjectServicesException {
+
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesBean#createSpecReview(" + projectId + ", " + specReviewPrize + ", " + 
+            operator + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        Project specReview = null;
+        try {
+            specReview = getProjectServices().createSpecReview(projectId, specReviewPrize, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }        
+        
+        return specReview;
+    }
+    
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     * 
+     * @param projectId the project id to search for
+     * @return the aggregated scorecard and review data
+     * 
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * 
+     * @since 1.3
+     */
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getScorecardAndReview(" + projectId + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        
+        ScorecardReviewData scorecardReviewData = null; 
+        try {
+            scorecardReviewData = getProjectServices().getScorecardAndReview(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+        return scorecardReviewData;
+    }
+
+    /**
+     * This method retrieves the corresponding specification review project id of a given project.
+     * The code will rely on the project links to retrieve the specification project id.
+     * 
+     * @param projectId the project id to search for
+     * 
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * 
+     * @return the associated specification review project id, or -1 if it was not found.
+     * 
+     * @since 1.3
+     */
+    public long getSpecReviewProjectId(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getSpecReviewProjectId(" + projectId + ") method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        long specReviewProjectId = -1;
+        try {
+            specReviewProjectId = getProjectServices().getSpecReviewProjectId(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+        
+        return specReviewProjectId;
+    }
+
+    /**
+     * This method retrieves open phases names for a given project id 
+     * 
+     * @param projectId the project id to search for
+     * @return a set with open phases names
+     * 
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     * 
+     * @since 1.3
+     */
+    public Set<String> getOpenPhases(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getOpenPhases(" + projectId + ") method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+        Set<String> openPhases = null;
+        try {
+            openPhases = getProjectServices().getOpenPhases(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+        
+        return openPhases;
+    }
+
+    /**
+     * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     * 
+     * @param reviewId the review id to add the comment to
+     * @param comment the review comment to add
+     * 
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services. 
+     * @throws IllegalArgumentException if comment is null or operator is null or empty 
+     * 
+     * @since 1.3
+     */
+    public void addReviewComment(long reviewId, Comment comment, String operator) 
+        throws ProjectServicesException {
+        // check comment
+        ExceptionUtils.checkNull(comment, null, null, "The parameter[comment] should not be null.");
+
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesBean#addReviewComment(" + reviewId + ", " + comment + ", " + operator + 
+            ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        
+        try {
+            getProjectServices().addReviewComment(reviewId, comment, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
 
 
 }

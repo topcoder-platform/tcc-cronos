@@ -1,12 +1,14 @@
 /*
- * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.impl;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
@@ -15,8 +17,11 @@ import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.ProjectSpec;
+import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
 import com.topcoder.management.project.SimplePipelineData;
@@ -24,11 +29,18 @@ import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.ValidationException;
+import com.topcoder.management.project.link.ProjectLink;
+import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
+import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.ReviewManager;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
 import com.topcoder.management.team.TeamPersistenceException;
@@ -42,10 +54,12 @@ import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectDoesNotExistException;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
+import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.project.service.Util;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
@@ -105,6 +119,15 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *  &lt;Property name=&quot;projectManagerKey&quot;&gt;
  *  &lt;Value&gt;projectManagerKey&lt;/Value&gt;
  *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;projectLinkManagerKey&quot;&gt;
+ *  &lt;Value&gt;projectLinkManagerKey&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;scorecardManagerKey&quot;&gt;
+ *  &lt;Value&gt;scorecardManagerKey&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;reviewManagerKey&quot;&gt;
+ *  &lt;Value&gt;reviewManagerKey&lt;/Value&gt;
+ *  &lt;/Property&gt;
  *  &lt;Property name=&quot;teamManagerKey&quot;&gt;
  *  &lt;Value&gt;teamManagerKey&lt;/Value&gt;
  *  &lt;/Property&gt;
@@ -135,6 +158,28 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *  &lt;Property name=&quot;projectManagerKey&quot;&gt;
  *  &lt;Property name=&quot;type&quot;&gt;
  *  &lt;Value&gt;com.topcoder.project.service.impl.MockProjectManager&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;projectLinkManagerKey&quot;&gt;
+ *  &lt;Property name=&quot;type&quot;&gt;
+ *  &lt;Value&gt;com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;params&quot;&gt;
+ *  &lt;Property name=&quot;param1&quot;&gt;
+ *  &lt;Property name=&quot;name&quot;&gt;
+ *  &lt;Value&gt;projectManagerKey&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;scorecardManagerKey&quot;&gt;
+ *  &lt;Property name=&quot;type&quot;&gt;
+ *  &lt;Value&gt;com.topcoder.management.scorecard.ScorecardManagerImpl&lt;/Value&gt;
+ *  &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;reviewManagerKey&quot;&gt;
+ *  &lt;Property name=&quot;type&quot;&gt;
+ *  &lt;Value&gt;com.topcoder.management.review.DefaultReviewManager&lt;/Value&gt;
  *  &lt;/Property&gt;
  *  &lt;/Property&gt;
  *  &lt;Property name=&quot;teamManagerKey&quot;&gt;
@@ -174,6 +219,15 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * Version 1.2.2 (Cockpit Contest Eligibility) changelog:
  *     - added a method for create private contest's roles
  * </p>
+ * <p>
+ * Version 1.3 (Cockpit Spec Review Backend Service Update v1.0) changelog:
+ *     - Added project link, scorecard and review managers creation.
+ *     - Added method to create specification review project for an existing project.
+ *     - Added method to get scorecard and review information for a specific project.
+ *     - Added method to get the corresponding specification review project id for a given project id.
+ *     - Added method to get open phases names for a given project id.
+ *     - Added method to add comments to an existing review.
+ * </p>
  *
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
@@ -182,7 +236,7 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog
- * @version 1.2.1
+ * @version 1.3
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -274,6 +328,235 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the "Submitter" resource role id. 
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final int SUBMITTER_ROLE_ID = 1;
+
+    /**
+     * <p>
+     * Represents the <b>projectLinkManagerKey</b> property key.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_LINK_MANAGER_KEY = "projectLinkManagerKey";
+
+    /**
+     * <p>
+     * Represents the <b>scorecardManagerKey</b> property key.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String SCORECARD_MANAGER_KEY = "scorecardManagerKey";
+
+    /**
+     * <p>
+     * Represents the <b>reviewManagerKey</b> property key.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String REVIEW_MANAGER_KEY = "reviewManagerKey";
+
+
+    /**
+     * <p>
+     * Represents the reviewer resource role id
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final int REVIEWER_RESOURCE_ROLE_ID = 4;
+
+    /**
+     * <p>
+     * Represents the scorecard id phase attribute key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String SCORECARD_ID_PHASE_ATTRIBUTE_KEY = "Scorecard ID";
+
+    /**
+     * <p>
+     * Represents the review phase type name
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String REVIEW_PHASE_TYPE_NAME = "Review";
+
+    /**
+     * <p>
+     * Represents the resource reviewer property name
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String RESOURCE_REVIEWER_PROPERTY = "reviewer";
+
+    /**
+     * <p>
+     * Represents the specification review for link type id
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final int SPEC_REVIEW_FOR_LINK_TYPE_ID = 3;
+
+    /**
+     * <p>
+     * Represents on value for the autopilot option project property
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON = "On";
+
+    /**
+     * <p>
+     * Represents the "billing project" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String BILLING_PROJECT_PROJECT_PROPERTY_KEY = "Billing Project";
+
+    /**
+     * <p>
+     * Represents the "confidentiality type" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY = "Confidentiality Type";
+
+    /**
+     * <p>
+     * Represents the "version id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String VERSION_ID_PROJECT_PROPERTY_KEY = "Version ID";
+
+    /**
+     * <p>
+     * Represents the "component id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String COMPONENT_ID_PROJECT_PROPERTY_KEY = "Component ID";
+
+    /**
+     * <p>
+     * Represents the "external reference id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY = "External Reference ID";
+
+    /**
+     * <p>
+     * Represents the "external reference id" resource property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY = "External Reference ID";
+
+    /**
+     * <p>
+     * Represents the "project version" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_VERSION_PROJECT_PROPERTY_KEY = "Project Version";
+
+    /**
+     * <p>
+     * Represents the "payments" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PAYMENTS_PROJECT_PROPERTY_KEY = "Payments";
+
+    /**
+     * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY = "Autopilot Option";
+
+    /**
+     * <p>
+     * Represents the "project name" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_NAME_PROJECT_PROPERTY_KEY = "Project Name";
+
+    /**
+     * <p>
+     * Represents the application project type id
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final int APPLICATION_PROJECT_TYPE_ID = 2;
+
+    /**
+     * <p>
+     * Represents the application project type name
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String APPLICATION_PROJECT_TYPE = "Application";
+
+    /**
+     * <p>
+     * Represents the specification review project category id
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final int SPEC_REVIEW_PROJECT_CATEGORY_ID = 27;
+
+    /**
+     * <p>
+     * Represents the specification review prject category name
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String SPEC_REVIEW_PROJECT_CATEGORY = "Spec Review";
+
+    /**
+     * <p>
+     * Represents the project properties that need to be cloned when creating a specification review project
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String[] SPEC_REVIEW_PROJECT_PROPERTIES_TO_CLONE = new String[] {
+        EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, COMPONENT_ID_PROJECT_PROPERTY_KEY,
+        VERSION_ID_PROJECT_PROPERTY_KEY, CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
+        BILLING_PROJECT_PROJECT_PROPERTY_KEY, PROJECT_VERSION_PROJECT_PROPERTY_KEY};
+
+    /**
+     * <p>
      * Represents the <code>ProjectRetrieval</code> instance that is used to retrieve the project
      * technologies information. It is set in the constructor to a non-null value, and will never
      * change.
@@ -312,6 +595,36 @@ public class ProjectServicesImpl implements ProjectServices {
      * </p>
      */
     private final ProjectManager projectManager;
+
+    /**
+     * <p>
+     * Represents the <code>ProjectLinkManager</code> instance that is used to manage project links. It
+     * is set in the constructor to a non-null value, and will never change.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private final ProjectLinkManager projectLinkManager;
+
+    /**
+     * <p>
+     * Represents the <code>ScorecardManager</code> instance that is used to manage scorecards. It
+     * is set in the constructor to a non-null value, and will never change.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private final ScorecardManager scorecardManager;
+
+    /**
+     * <p>
+     * Represents the <code>ReviewManager</code> instance that is used to manage reviews. It
+     * is set in the constructor to a non-null value, and will never change.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private final ReviewManager reviewManager;
 
     /**
      * <p>
@@ -402,6 +715,18 @@ public class ProjectServicesImpl implements ProjectServices {
             this.phaseManager = (PhaseManager) createObject(cm, objectFactory, namespace, PHASE_MANAGER_KEY);
             // gets the value of projectManagerKey and creates an instance by ObjectFactory
             this.projectManager = (ProjectManager) createObject(cm, objectFactory, namespace, PROJECT_MANAGER_KEY);
+
+            // gets the value of projectLinkManagerKey and creates an instance by ObjectFactory
+            this.projectLinkManager = (ProjectLinkManager) createObject(cm, objectFactory, namespace,
+                PROJECT_LINK_MANAGER_KEY);
+
+            // gets the value of scorecardManagerKey and creates an instance by ObjectFactory
+            this.scorecardManager = (ScorecardManager) createObject(cm, objectFactory, namespace,
+                SCORECARD_MANAGER_KEY);
+
+            // gets the value of reviewManagerKey and creates an instance by ObjectFactory
+            this.reviewManager = (ReviewManager) createObject(cm, objectFactory, namespace, REVIEW_MANAGER_KEY);
+
             // gets the value of teamManagerKey and creates an instance by ObjectFactory
             this.teamManager = (TeamManager) createObject(cm, objectFactory, namespace, TEAM_MANAGER_KEY);
 
@@ -480,6 +805,12 @@ public class ProjectServicesImpl implements ProjectServices {
      *            the TeamManager instance that is used to retrieve teams
      * @param projectManager
      *            the ProjectManager instance that is used to retrieve projects
+     * @param projectLinkManager
+     *            the ProjectLinkManager instance that is used to manage project links
+     * @param scorecardManager
+     *            the ScorecardManager instance that is used to manage scorecards
+     * @param reviewManager
+     *            the ReviewManager instance that is used to manage reviews
      * @param logger
      *            used to log information
      * @param activeProjectStatusId
@@ -490,12 +821,16 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public ProjectServicesImpl(ProjectRetrieval projectRetrieval, ResourceManager resourceManager,
             PhaseManager phaseManager, TeamManager teamManager, ProjectManager projectManager, Log logger,
-            long activeProjectStatusId, PhaseTemplate phaseTemplate) {
+            long activeProjectStatusId, PhaseTemplate phaseTemplate, ProjectLinkManager projectLinkManager,
+            ScorecardManager scorecardManager, ReviewManager reviewManager) {
         Util.checkObjNotNull(projectRetrieval, "projectRetrieval", null);
         Util.checkObjNotNull(resourceManager, "resourceManager", null);
         Util.checkObjNotNull(phaseManager, "phaseManager", null);
         Util.checkObjNotNull(teamManager, "teamManager", null);
         Util.checkObjNotNull(projectManager, "projectManager", null);
+        Util.checkObjNotNull(projectLinkManager, "projectLinkManager", null);
+        Util.checkObjNotNull(scorecardManager, "scorecardManager", null);
+        Util.checkObjNotNull(reviewManager, "reviewManager", null);
         Util.checkIDNotNegative(activeProjectStatusId, "activeProjectStatusId", null);
 
         this.projectRetrieval = projectRetrieval;
@@ -503,6 +838,9 @@ public class ProjectServicesImpl implements ProjectServices {
         this.phaseManager = phaseManager;
         this.teamManager = teamManager;
         this.projectManager = projectManager;
+        this.projectLinkManager = projectLinkManager;
+        this.scorecardManager = scorecardManager;
+        this.reviewManager = reviewManager;
         this.logger = logger;
         this.activeProjectStatusId = activeProjectStatusId;
         this.template = phaseTemplate;
@@ -1698,32 +2036,37 @@ public class ProjectServicesImpl implements ProjectServices {
 			
         
             for (Phase p : newProjectPhases.getAllPhases()) {
-					p.setPhaseStatus(PhaseStatus.SCHEDULED);
-					p.setScheduledStartDate(p.calcStartDate());
-					p.setScheduledEndDate(p.calcEndDate());
-					p.setFixedStartDate(p.calcStartDate());
+                    p.setPhaseStatus(PhaseStatus.SCHEDULED);
+                    p.setScheduledStartDate(p.calcStartDate());
+                    p.setScheduledEndDate(p.calcEndDate());
+                    p.setFixedStartDate(p.calcStartDate());
 
-					if (p.getPhaseType().getName().equals("Registration"))
-					{
-						p.setAttribute("Registration Number", "0");
-					}
-					else if (p.getPhaseType().getName().equals("Submission"))
-					{
-						p.setAttribute("Submission Number", "0");
-					}
-					else if (p.getPhaseType().getName().equals("Screening"))
-					{
-						p.setAttribute("Scorecard ID", String.valueOf(screenTemplateId));
-					}
-					else if (p.getPhaseType().getName().equals("Review"))
-					{
-						p.setAttribute("Scorecard ID", String.valueOf(reviewTemplateId));
-						p.setAttribute("Reviewer Number", "3");
-					}
-					else if (p.getPhaseType().getName().equals("Appeals"))
-					{
-						p.setAttribute("View Response During Appeals", "No");
-					}
+                    if (p.getPhaseType().getName().equals("Registration"))
+                    {
+                        p.setAttribute("Registration Number", "0");
+                    }
+                    else if (p.getPhaseType().getName().equals("Submission"))
+                    {
+                        p.setAttribute("Submission Number", "0");
+                    }
+                    else if (p.getPhaseType().getName().equals("Screening"))
+                    {
+                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
+                    }
+                    else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME))
+                    {
+                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
+                        if (category.equals(SPEC_REVIEW_PROJECT_CATEGORY)) {
+                            // specification reviews only require one reviewer.
+                            p.setAttribute("Reviewer Number", "1");
+                        } else {
+                            p.setAttribute("Reviewer Number", "3");
+                        }
+                    }
+                    else if (p.getPhaseType().getName().equals("Appeals"))
+                    {
+                        p.setAttribute("View Response During Appeals", "No");
+                    }
             }
 
             
@@ -1735,15 +2078,15 @@ public class ProjectServicesImpl implements ProjectServices {
                     e);
             logError(e, pse.getMessage());
             throw pse;
-        } 
-		catch (PersistenceException e) {
+        }
+        catch (PersistenceException e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
                     e);
             logError(e, pse.getMessage());
             throw pse;
         }
-		catch (Exception e) {
+        catch (Exception e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
                     e);
@@ -2365,5 +2708,322 @@ public class ProjectServicesImpl implements ProjectServices {
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }       
+    }
+
+    /**
+     * This method creates a Specification Review project associated to a project determined by parameter
+     *
+     * @param projectId the project id to create a Specification Review for
+     * @param specReviewPrize the prize to set for the Specification Review project
+     * @param operator the operator used to audit the operation, cannot be null or empty
+     *
+     * @return the created project
+     *
+     * @throws ProjectServicesException if any error occurs in the underlying services or if the specification
+     * review already exists
+     * @throws IllegalArgumentException if operator is null or empty or prize is negative.
+     *
+     * @since 1.3
+     */
+    public Project createSpecReview(long projectId, double specReviewPrize, String operator)
+        throws ProjectServicesException {
+
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesImpl#createSpecReview(" + projectId + ", " + specReviewPrize + ", " +
+            operator + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+        // check non-negative specification review prize
+        if (specReviewPrize < 0) {
+            throw new IllegalArgumentException("The parameter[specReviewPrize] should not be negative.");
+        }
+
+        // check if there is already a spec review project linked
+        long specReviewProjectId = getSpecReviewProjectId(projectId);
+        if (specReviewProjectId > 0) {
+            throw new ProjectServicesException("There is already an associated specification review project: " +
+                specReviewProjectId);
+        }
+
+        Project specReview = null;
+        try {
+            // get original project data
+            FullProjectData fullProjectData = getFullProjectData(projectId);
+            if (fullProjectData == null) {
+                throw new ProjectServicesException("Project was not found: " + projectId);
+            }
+            Project project = fullProjectData.getProjectHeader();
+
+            // set project start date to current
+            com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
+            projectPhases.setStartDate(new Date());
+
+            // create project header
+            Project projectHeader = new Project();
+            ProjectType projectType = new ProjectType(APPLICATION_PROJECT_TYPE_ID, APPLICATION_PROJECT_TYPE,
+                APPLICATION_PROJECT_TYPE);
+            ProjectCategory projectCategory = new ProjectCategory(SPEC_REVIEW_PROJECT_CATEGORY_ID,
+                SPEC_REVIEW_PROJECT_CATEGORY, SPEC_REVIEW_PROJECT_CATEGORY, projectType);
+
+            projectHeader.setProjectCategory(projectCategory);
+            projectHeader.setProjectStatus(project.getProjectStatus());
+
+            // clone some original project properties
+            for (String key : SPEC_REVIEW_PROJECT_PROPERTIES_TO_CLONE) {
+                projectHeader.setProperty(key, project.getProperty(key));
+            }
+
+            // set new properties for the spec review
+            projectHeader.setProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY,
+                project.getProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
+            projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
+                AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
+            projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
+
+            // create mock ProjectSpec object
+            ProjectSpec projectSpec = new ProjectSpec();
+            projectSpec.setDetailedRequirements(SPEC_REVIEW_PROJECT_CATEGORY);
+            projectSpec.setSubmissionDeliverables(SPEC_REVIEW_PROJECT_CATEGORY);
+            projectSpec.setEnvironmentSetupInstructions(SPEC_REVIEW_PROJECT_CATEGORY);
+            projectSpec.setFinalSubmissionGuidelines(SPEC_REVIEW_PROJECT_CATEGORY);
+
+            projectHeader.setProjectSpec(projectSpec);
+            projectHeader.setTcDirectProjectId(project.getTcDirectProjectId());
+
+            // clone resources (reset Id so that they are regenerated in persistence layer)
+            com.topcoder.management.resource.Resource[] resources = fullProjectData.getResources();
+            for (com.topcoder.management.resource.Resource resource : resources) {
+                resource.setId(com.topcoder.management.resource.Resource.UNSET_ID);
+            }
+
+            // add operator as a submitter
+            com.topcoder.management.resource.Resource[] extendedResources = 
+                new com.topcoder.management.resource.Resource[resources.length + 1];  
+
+            System.arraycopy(resources, 0, extendedResources, 0, resources.length);
+            ResourceRole submitterRole = new ResourceRole(SUBMITTER_ROLE_ID);
+            
+            com.topcoder.management.resource.Resource submitter = 
+                new com.topcoder.management.resource.Resource(com.topcoder.management.resource.Resource.UNSET_ID,
+                    submitterRole);
+            
+            submitter.setProperty(EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY, operator);
+            extendedResources[extendedResources.length - 1] = submitter;
+            
+            // create spec review project
+            FullProjectData projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources, 
+                operator);
+
+            // link it to the original project
+            projectLinkManager.updateProjectLinks(projectData.getProjectHeader().getId(), new long[] {projectId},
+                    new long[] {SPEC_REVIEW_FOR_LINK_TYPE_ID});
+
+            specReview = projectData.getProjectHeader();
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return specReview;
+    }
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for
+     * @return the aggregated scorecard and review data
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     *
+     * @since 1.3
+     */
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getScorecardAndReview(" + projectId + ") method.";
+
+        ScorecardReviewData scorecardReviewData = new ScorecardReviewData();
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            // Build resources filter
+            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRoles = new AndFilter(filterProject, filterRole);
+
+            // Search for the reviewers
+            Resource[] reviewers = resourceManager.searchResources(filterRoles);
+            if (reviewers.length > 1) {
+                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            }
+
+            Review review = null;
+            if (reviewers.length == 1) {
+                // build reviews filter
+                Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+
+                // Search for the reviews
+                Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
+                if (reviews.length > 1) {
+                    throw new ProjectServicesException("Invalid number of reviews found: " + reviewers.length);
+                }
+
+                if (reviews.length == 1) {
+                    review = reviews[0];
+                }
+            }
+
+            // if we have the review, we can get scorecard id from there, otherwise we need to search in review phase
+            long scorecardId = -1;
+            if (review != null) {
+                // set review in DTO
+                scorecardReviewData.setReview(review);
+                scorecardId = review.getScorecard();
+            } else {
+                com.topcoder.project.phases.Project projectPhases = phaseManager.getPhases(projectId);
+
+                if (projectPhases != null) {
+                    Set<Phase> phases = projectPhases.getPhases();
+                    Iterator<Phase> iter = phases.iterator();
+    
+                    while (iter.hasNext() && scorecardId < 0) {
+                        Phase phase = iter.next();
+                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                            scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
+                        }
+                    }
+                }
+            }
+
+            if (scorecardId < 0) {
+                throw new ProjectServicesException("Failed to find scorecard id");
+            }
+
+            // get scorecard and set it in DTO
+            scorecardReviewData.setScorecard(scorecardManager.getScorecard(scorecardId));
+        } catch (ReviewManagementException ex) {
+            log(Level.ERROR, "ReviewManagementException occurred in " + method);
+            throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
+        } catch (com.topcoder.management.scorecard.PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating Scorecard Manager.", ex);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR, "ResourcePersistenceException occurred in " + method);
+            throw new ProjectServicesException("ResourcePersistenceException occurred when operating Resource Manager.",
+                ex);
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
+        } catch (SearchBuilderException ex) {
+            log(Level.ERROR, "SearchBuilderException occurred in " + method);
+            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return scorecardReviewData;
+    }
+
+    /**
+     * This method retrieves the corresponding specification review project id of a given project.
+     * The code will rely on the project links to retrieve the specification project id.
+     *
+     * @param projectId the project id to search for
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     *
+     * @return the associated specification review project id, or -1 if it was not found.
+     *
+     * @since 1.3
+     */
+    public long getSpecReviewProjectId(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getSpecReviewProjectId(" + projectId + ") method.";
+
+        log(Level.INFO, "Enters " + method);
+        long specReviewProjectId = -1;
+        try {
+            ProjectLink[] projectLinks = projectLinkManager.getSourceProjectLinks(projectId);
+            for (int i = 0; i < projectLinks.length && specReviewProjectId < 0; i++) {
+                if (projectLinks[i].getType().getId() == SPEC_REVIEW_FOR_LINK_TYPE_ID) {
+                    specReviewProjectId = projectLinks[i].getSourceProject().getId();
+                }
+            }
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return specReviewProjectId;
+    }
+
+    /**
+     * This method retrieves open phases names for a given project id
+     *
+     * @param projectId the project id to search for
+     * @return a set with open phases names
+     *
+     * @throws ProjectServicesException if any error occurs during retrieval of information.
+     *
+     * @since 1.3
+     */
+    public Set<String> getOpenPhases(long projectId) throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getOpenPhases(" + projectId + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+        Set<String> openPhases = new HashSet<String>();
+        try {
+            com.topcoder.project.phases.Project projectPhases = phaseManager.getPhases(projectId);
+
+            for (Phase phase : projectPhases.getPhases()) {
+                if (phase.getPhaseStatus().getName().equals(PhaseStatus.OPEN.getName())) {
+                    openPhases.add(phase.getPhaseType().getName());
+                }
+            }
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating PhaseManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return openPhases;
+    }
+
+    /**
+     * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     *
+     * @param reviewId the review id to add the comment to
+     * @param comment the review comment to add
+     *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @throws IllegalArgumentException if comment is null or operator is null or empty
+     *
+     * @since 1.3
+     */
+    public void addReviewComment(long reviewId, Comment comment, String operator) throws ProjectServicesException {
+        // check comment
+        ExceptionUtils.checkNull(comment, null, null, "The parameter[comment] should not be null.");
+
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesImpl#addReviewComment(" + reviewId + ", " + comment + ", " + operator +
+            ") method.";
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            reviewManager.addReviewComment(reviewId, comment, operator);
+        } catch (ReviewManagementException ex) {
+            log(Level.ERROR, "ReviewManagementException occurred in " + method);
+            throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
     }
 }
