@@ -4294,6 +4294,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.setProjectData(projectData);
                 contest.setId(projectData.getProjectHeader().getId());
 
+                long forumId = projectServices.getForumId(projectData.getProjectHeader().getId());
+                if (forumId > 0 && createForum)
+                {
+                    updateForumName(forumId, contest.getAssetDTO().getName());
+                }
+
                 com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
 
                 // this is to avoid cycle
@@ -5229,10 +5235,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                                     // delete forum watch
                                     long forumId = projectServices.getForumId(pid);
-      System.out.println("-------------forumId " + forumId);
                                     if (forumId > 0 && createForum)
                                     {
-      System.out.println("-------------useriid  " + per.getUserId());
                                         deleteForumWatch(forumId, per.getUserId());
                                     }
                                 }
@@ -6338,6 +6342,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         } catch (Exception e) {
             logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
+            logger.error(e);
+        }
+    }
+
+
+    /**
+     * update forum name
+     *
+     *
+     * @param asset
+     *            The asset DTO to user
+     * @param userId
+     *            userId The user id to use
+     * @param projectCategoryId
+     *            The project category id to
+     * @return The long id of the created forum
+     */
+    private void updateForumName(long forumId, String name) {
+        logger.info("updateForumName (" + forumId + ", " + name + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.updateComponentName(forumId, name);
+            logger.debug("Exit updateForumName (" + forumId + ", " + name + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not updateForumName for " + forumId + ", " + name );
             logger.error(e);
         }
     }
