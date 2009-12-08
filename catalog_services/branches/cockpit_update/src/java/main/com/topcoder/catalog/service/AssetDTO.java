@@ -1,25 +1,24 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.service;
 
-import com.topcoder.catalog.entity.Category;
-import com.topcoder.catalog.entity.CompDocumentation;
-import com.topcoder.catalog.entity.CompUploadedFile;
-import com.topcoder.catalog.entity.CompForum;
-import com.topcoder.catalog.entity.CompLink;
-import com.topcoder.catalog.entity.CompVersion;
-import com.topcoder.catalog.entity.Technology;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.CompDocumentation;
+import com.topcoder.catalog.entity.CompForum;
+import com.topcoder.catalog.entity.CompLink;
+import com.topcoder.catalog.entity.CompUploadedFile;
+import com.topcoder.catalog.entity.Technology;
 
 /**
  * <p>This class is a simple DTO which provides a representation of a component that is closer to business requirements
@@ -96,17 +95,23 @@ import javax.xml.bind.annotation.XmlType;
  * getter/setter which stores documents associated to this asset.
  * </p>
  *
+ * <p>
+ * Changes in v1.2 (Cockpit Upload Attachment):
+ * - Fixed propOrder. Removed link and forum since they are not used. Made them transient.
+ * </p>
+ *
  * <p><strong>Thread safety: </strong></p> <p>This class is mutable and not thread safe.</p>
  *
- * @author caru, Retunsky, TCSDEVELOPER
- * @version 1.1
+ * @author caru, Retunsky, pulky
+ * @version 1.2
  * @since 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription", "compComments",
-                                           "compUploadedFiles", "detailedDescription", "functionalDescription", "rootCategory", "categories",
-											  "technologies", "productionDate", "link", "forum", "isCurrentVersionAlsoLatestVersion",
-											  "compVersionId", "userIds", "informationComplete", "documentation",  "phase", "dependencies"})
+@XmlType(name = "assetDTO", propOrder = { "id", "name", "clientIds", "versionText", "versionNumber", "shortDescription",
+        "detailedDescription", "functionalDescription", "rootCategory", "categories",
+                                              "technologies", "productionDate", "isCurrentVersionAlsoLatestVersion",
+                                              "compVersionId", "userIds", "informationComplete", "documentation",
+                                               "compUploadedFiles", "compComments", "phase", "dependencies"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -190,18 +195,23 @@ public class AssetDTO implements Serializable {
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      */
     private XMLGregorianCalendar productionDate;
+
     /**
      * <p>This field represents the link of this version of the asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      */
+    @XmlTransient
     private CompLink link;
+
     /**
      * <p>This field represents the forum for this version of the asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      */
+    @XmlTransient
     private CompForum forum;
+
     /**
      * <p>This field indicates if the current version is also the latest one.</p>
      * <p>The initial value is <tt>false</tt>. Access is performed via its getter and setter.</p>
@@ -237,7 +247,7 @@ public class AssetDTO implements Serializable {
      */
     private List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
 
-	/**
+    /**
      * <p>This field represents the list of the uploadedFiles of the version.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
