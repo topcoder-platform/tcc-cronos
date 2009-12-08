@@ -5,22 +5,41 @@ package com.topcoder.catalog.entity;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * <p>This class stores the documentation associated with the component compVersion.</p>
  * <p>Validation of parameters is not performed in this class. It's supposed to be a caller's responsibility.</p>
+ * <p>
+ * Changes in v1.2 (Cockpit Upload Attachment):
+ * - Added annotations
+ * - Added serialVersionUID
+ * </p>
  * <p><strong>Thread safety: </strong></p> <p>This class is mutable and not thread safe.</p>
  *
- * @author cucu, KingStone
- * @version 1.1
+ * @author cucu, KingStone, pulky
+ * @version 1.2
  * @since 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "compDocumentation", propOrder = { "documentName", "documentType", "documentTypeId", "id", "url"})
 public class CompDocumentation implements Serializable {
-	
-	/**
-	 * @since BUGR-1600
-	 */
-	public static final Long JAVADOCS = 23L;
-	
+
+    /**
+     * Serial version UID
+     *
+     * @since 1.2
+     */
+    private static final long serialVersionUID = -3661634653346198929L;
+
+    /**
+     * @since BUGR-1600
+     */
+    public static final Long JAVADOCS = 23L;
+
     /**
      * <p>This field represents the id of the entity.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
@@ -33,6 +52,7 @@ public class CompDocumentation implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>CompVersion</code> value or <code>null</code>.</p>
      */
+    @XmlTransient
     private CompVersion compVersion;
 
     /**
