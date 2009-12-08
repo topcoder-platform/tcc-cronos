@@ -8,7 +8,7 @@
     - Inline Review Feature has been introduced.
     - As per the requirement the layout of the page has been updated.
     - Now sections are in accordion like panels.
-    
+
     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
         - based on the backend data now reviewer and writer are correctly handled.
     @author snow01
@@ -16,8 +16,13 @@
     Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
         - Added multi round specific fields to the corresponding review sections.
 
+    Version 1.0.3 (Cockpit Upload Attachment) Change Notes:
+        - A couple changes for software contests were performed:
+            - Added file descriptions to attachment section.
+            - Fixed file name (removed server's path) for already uploaded files
+
     @author pulky
-    @version 1.0.2
+    @version 1.0.3
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -54,7 +59,7 @@
             import mx.controls.ButtonLabelPlacement; // BUGR-1501
             import flash.events.MouseEvent;
             import flash.geom.Point;
-            
+
             //step1 data
             public var cstTypeStep1:String;
             //step2 data
@@ -73,12 +78,12 @@
             public var ns_digitalRunS:String;
             public var ns_contestFeeS:String;
             public var ns_contestTotalS:String;
-            
+
             /**
              * Added for Cockpit Software Contest Payments v1.0
              */
             public var ns_reliabilityBonus:String;
-            
+
             /**
              * Added for Cockpit Software Contest Payments v1.0
              */
@@ -89,7 +94,7 @@
             public var glsInputStr:String;
             // BUGR-1067
             public var ns_techListData:ArrayCollection;
-            
+
             // added for Cockpit Launch Contest - Update for Spec Creation v1.0
             public var ns_detailedRequirementsStr:String;
             public var ns_submissionDeliverablesStr:String;
@@ -118,7 +123,7 @@
 
             [Bindable] // BUGR-1067
             public var mainWidget:LaunchWidget;
-            
+
             /**
              * Dictionary of review section name to ReviewData 
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
@@ -325,7 +330,7 @@
                 }
                 
                 if (this.mainWidget) {
-			        projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
+                    projectName.text = "Project: " + this.mainWidget.tcDirectProjectName;
                 }
                 
                 contestType_step1.text=cstTypeStep1;
@@ -397,7 +402,7 @@
                     ns_detailedRequirements.htmlText=ns_detailedRequirementsStr;
                     ns_submissionDeliverables.htmlText=ns_submissionDeliverablesStr;
                     ns_environmentSetupInstructions.htmlText=ns_environmentSetupInstructionsStr;
-                    ns_finalSubmissionGuidelines.htmlText=ns_finalSubmissionGuidelinesStr;            
+                    ns_finalSubmissionGuidelines.htmlText=ns_finalSubmissionGuidelinesStr;
 
                     // fix repeat of technologies.
                     ns_techList.htmlText="";
@@ -465,13 +470,13 @@
                     }
                 } else {
                     attachedFilesVBox.removeAllChildren();
-                    
+
                     if (mainWidget && mainWidget.softwareCompetition && mainWidget.softwareCompetition.assetDTO) {
                         setAttachedFiles(mainWidget.softwareCompetition.assetDTO.documentation);
                         setAttachedFiles(mainWidget.softwareCompetition.assetDTO.compUploadedFiles);
                     }
                 }
-                
+
                 if (mainWidget && mainWidget.specReviews) {
                     updateReviews=mainWidget.specReviews;
                 } else if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
@@ -483,7 +488,7 @@
                    isReadyForReview=false;
                 }
             }
-            
+
             /**
              * Updates reviews
              * 
@@ -625,63 +630,79 @@
                     updateReviewButtons(rd);
                 }
             }
-            
+
+            /**
+             * Presents attached files in attachments section
+             *
+             * @param documentationUploads the array containing the attached documents
+             */
             private function setAttachedFiles(documentationUploads:Array):void {
-				if(this.mainWidget.studioContestType) { // BUGR-1600
-					attachedFilesVBox.removeAllChildren();
-	                for each (var doc:UploadedDocument in documentationUploads) {
-	                    var hbox1:HBox=new HBox();
-	                    attachedFilesVBox.addChild(hbox1);
-	                    var labelDesc:Label=new Label();
-	                    hbox1.addChild(labelDesc);
-	                    labelDesc.text="File Description:";
-	                    labelDesc.setStyle("fontWeight", "bold");
-	
-	                    var textDesc:Text=new Text();
-	                    hbox1.addChild(textDesc);
-	                    textDesc.text=doc.description;
-	
-	                    var hbox2:HBox=new HBox();
-	                    attachedFilesVBox.addChild(hbox2);
-	                    var labelName:Label=new Label();
-	                    hbox2.addChild(labelName);
-	                    labelName.text="File Name:";
-	                    labelName.setStyle("fontWeight", "bold");
-	
-	                    var textName:Text=new Text();
-	                    hbox2.addChild(textName);
-	                    textName.text=doc.fileName;
-	
-	                    var spacer:Spacer=new Spacer();
-	                    attachedFilesVBox.addChild(spacer);
-	                    spacer.height=5;
-	
-	                    var ruler:HRule=new HRule();
-	                    attachedFilesVBox.addChild(ruler);
-	                    ruler.percentWidth=100;
-	                }
-	   			} else {
-	   				for each (var x:Object in documentationUploads) {
-	                    var hbox2:HBox=new HBox();
-	                    attachedFilesVBox.addChild(hbox2);
-	                    var labelName:Label=new Label();
-	                    hbox2.addChild(labelName);
-	                    labelName.text="File Name:";
-	                    labelName.setStyle("fontWeight", "bold");
-	
-	                    var textName:Text=new Text();
-	                    hbox2.addChild(textName);
-	                    textName.text= (x is CompDocumentation ? x.url : x.uploadedFileName);
-	
-	                    var spacer:Spacer=new Spacer();
-	                    attachedFilesVBox.addChild(spacer);
-	                    spacer.height=5;
-	
-	                    var ruler:HRule=new HRule();
-	                    attachedFilesVBox.addChild(ruler);
-	                    ruler.percentWidth=100;
-	                }
-	   			}
+                if(this.mainWidget.studioContestType) { // BUGR-1600
+                    attachedFilesVBox.removeAllChildren();
+                    for each (var doc:UploadedDocument in documentationUploads) {
+                        var hbox1:HBox=new HBox();
+                        attachedFilesVBox.addChild(hbox1);
+                        var labelDesc:Label=new Label();
+                        hbox1.addChild(labelDesc);
+                        labelDesc.text="File Description:";
+                        labelDesc.setStyle("fontWeight", "bold");
+
+                        var textDesc:Text=new Text();
+                        hbox1.addChild(textDesc);
+                        textDesc.text=doc.description;
+
+                        var hbox2:HBox=new HBox();
+                        attachedFilesVBox.addChild(hbox2);
+                        var labelName:Label=new Label();
+                        hbox2.addChild(labelName);
+                        labelName.text="File Name:";
+                        labelName.setStyle("fontWeight", "bold");
+
+                        var textName:Text=new Text();
+                        hbox2.addChild(textName);
+                        textName.text=doc.fileName;
+
+                        var spacer:Spacer=new Spacer();
+                        attachedFilesVBox.addChild(spacer);
+                        spacer.height=5;
+
+                        var ruler:HRule=new HRule();
+                        attachedFilesVBox.addChild(ruler);
+                        ruler.percentWidth=100;
+                    }
+                   } else {
+                       for each (var x:Object in documentationUploads) {
+                        var hbox1:HBox=new HBox();
+                        attachedFilesVBox.addChild(hbox1);
+                        var labelDesc:Label=new Label();
+                        hbox1.addChild(labelDesc);
+                        labelDesc.text="File Description:";
+                        labelDesc.setStyle("fontWeight", "bold");
+
+                        var textDesc:Text=new Text();
+                        hbox1.addChild(textDesc);
+                        textDesc.text=(x is CompDocumentation ? x.documentName : x.uploadedFileDesc);
+
+                        var hbox2:HBox=new HBox();
+                        attachedFilesVBox.addChild(hbox2);
+                        var labelName:Label=new Label();
+                        hbox2.addChild(labelName);
+                        labelName.text="File Name:";
+                        labelName.setStyle("fontWeight", "bold");
+
+                        var textName:Text=new Text();
+                        hbox2.addChild(textName);
+                        textName.text= (x is CompDocumentation ? x.url.substr(x.url.lastIndexOf("/") + 1) : x.uploadedFileName);
+
+                        var spacer:Spacer=new Spacer();
+                        attachedFilesVBox.addChild(spacer);
+                        spacer.height=5;
+
+                        var ruler:HRule=new HRule();
+                        attachedFilesVBox.addChild(ruler);
+                        ruler.percentWidth=100;
+                    }
+                   }
             }
 
             private function goToStep1():void {
@@ -1435,7 +1456,7 @@
                               fontWeight="bold"/>
                     <mx:Text id="ns_finalSubmissionGuidelines"
                              width="500"
-                             height="100%"/>                                                    
+                             height="100%"/>
 
                     <mx:Spacer height="5"/>
                     <mx:Label text="Current Project Technologies:"

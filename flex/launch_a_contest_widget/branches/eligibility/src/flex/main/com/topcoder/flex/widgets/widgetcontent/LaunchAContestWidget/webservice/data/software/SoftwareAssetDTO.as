@@ -3,16 +3,20 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
-    
+
     import mx.controls.Label;
 
     /**
     * Software Asset DTO class.
-    * 
+    *
     * It stores contest's id, details (functional, detailed, short), root category, list of categories, technologies, and other details too.
-    * 
-    * @author TCSDEVELOPER
-    * 
+    *
+    * Version 1.1 (Cockpit Upload Attachment) Change Notes:
+    *    - Class was cleaned up and resorted
+    *
+    * @author pulky
+    *
+    * @version 1.1
     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
     */
     public class SoftwareAssetDTO {
@@ -21,10 +25,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         }
 
         /**
-        * An array of <code>SoftwareCategory</code> dto.
+        * Identifer of this asset.
         */
-        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory")]
-        public var categories:Array;
+        public var id:Number;
+
+        /**
+        * Name of this asset.
+        */
+        public var name:String;
 
         /**
         * An array of <code>Number</code> client ids.
@@ -33,20 +41,19 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var clientIds:Array=new Array();
 
         /**
-        * Detailed comment for this contest.
+        * Version text of this asset.
         */
-        public var compComments:String;
+        public var versionText:String;
 
         /**
-        * Determines whether current version of the asset is also the latest for the contest.
+        * Version number of this asset.
         */
-        public var currentVersionAlsoLatestVersion:Boolean;
+        public var versionNumber:Number;
 
         /**
-        * An array of <code>Number</code>
+        * Short description.
         */
-        [ArrayElementType("Number")]
-        public var dependencies:Array;
+        public var shortDescription:String;
 
         /**
         * Detailed description for this contest.
@@ -54,56 +61,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var detailedDescription:String;
 
         /**
-        * An array of <code>SoftwareCompDocumentation</code>
-        */
-        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation")] // BUGR-1600
-        public var documentation:Array;
-        
-        /**
-        * @since BUGR-1600 
-        */
-        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile")]
-        public var compUploadedFiles:Array;
-
-        /**
-        * A <code>SoftwareCompForum</code>
-        */
-        //public var forum:SoftwareCompForum;
-
-        /**
         * Function description.
         */
         public var functionalDescription:String;
-
-        /**
-        * Identifer of this asset.
-        */
-        public var id:Number;
-
-        /**
-        * True if information of this asset is complete, else false.
-        */
-        public var informationComplete:Boolean;
-
-        /**
-        * A <code>SoftwareCompLink</code> dto.
-        */
-        //public var link:SoftwareCompLink;
-
-        /**
-        * Name of this asset.
-        */
-        public var name:String;
-
-        /**
-        * Phase name of this asset.
-        */
-        public var phase:String;
-    
-        /**
-        * Production date of this asset.
-        */
-        public var productionDate:String;
 
         /**
         * Root category of type <code>SoftwareCategory</code> for this asset.
@@ -111,15 +71,31 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var rootCategory:SoftwareCategory;
 
         /**
-        * Short description.
+        * An array of <code>SoftwareCategory</code> dto.
         */
-        public var shortDescription:String;
-    
+        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory")]
+        public var categories:Array;
+
         /**
         * An array of <code>SoftwareTechnology</code>
         */
         [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareTechnology")]
         public var technologies:Array;
+
+        /**
+        * Production date of this asset.
+        */
+        public var productionDate:String;
+
+        /**
+        * Determines whether current version of the asset is also the latest for the contest.
+        */
+        public var isCurrentVersionAlsoLatestVersion:Boolean;
+
+        /**
+        * Version id of this asset.
+        */
+        public var compVersionId:Number;
 
         /**
         * An array of <code>Number</code> user identifiers.
@@ -128,19 +104,52 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var userIds:Array=new Array();
 
         /**
-        * Version id of this asset.
+        * True if information of this asset is complete, else false.
         */
-        public var compVersionId:Number;
+        public var informationComplete:Boolean;
 
         /**
-        * Version number of this asset.
+        * An array of <code>SoftwareCompDocumentation</code>
         */
-        public var versionNumber:Number;
+        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation")] // BUGR-1600
+        public var documentation:Array;
 
         /**
-        * Version text of this asset.
+        * @since BUGR-1600
         */
-        public var versionText:String;
+        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile")]
+        public var compUploadedFiles:Array;
+
+        /**
+        * Detailed comment for this contest.
+        */
+        public var compComments:String;
+
+        /**
+        * Phase name of this asset.
+        */
+        public var phase:String;
+
+        /**
+        * An array of <code>Number</code>
+        */
+        [ArrayElementType("Number")]
+        public var dependencies:Array;
+
+
+        /**
+        * A <code>SoftwareCompForum</code>
+        */
+        //public var forum:SoftwareCompForum;
+
+
+        /**
+        * A <code>SoftwareCompLink</code> dto.
+        */
+        //public var link:SoftwareCompLink;
+
+
+
 
     }
 }

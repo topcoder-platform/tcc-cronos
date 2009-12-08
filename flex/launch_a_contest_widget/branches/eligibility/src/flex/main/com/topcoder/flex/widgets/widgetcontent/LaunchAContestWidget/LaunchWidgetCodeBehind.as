@@ -89,9 +89,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
      * Version 1.0.10 (Cockpit Contest Eligibility) Change Notes:
      *    - handle the creation of private contest
-     * 
+     *
+     * Version 1.0.11 (Cockpit Upload Attachment) Change Notes:
+     *    - Added attachment page refresh call after software contest is created or updated
+     *
      * @author snow01, pulky
-     * @version 1.0.9
+     * @version 1.0.11
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -99,13 +102,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * The name of the widget.
          */
         private var _name:String = "Launch Contest";
-        
-        
-        private const CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED:Number = 1; 
-		 private const CONTEST_STATUS_ACTIVE_PUBLIC:Number = 2 ;
-		 private const CONTEST_DETAILED_STATUS_DRAFT:Number =15 ;
-		 private const CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC:Number =2 ;
-		 private const CONTEST_DETAILED_STATUS_SCHEDULED:Number =9 ;
+
+
+        private const CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED:Number = 1;
+         private const CONTEST_STATUS_ACTIVE_PUBLIC:Number = 2 ;
+         private const CONTEST_DETAILED_STATUS_DRAFT:Number =15 ;
+         private const CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC:Number =2 ;
+         private const CONTEST_DETAILED_STATUS_SCHEDULED:Number =9 ;
 
         // Project Service Facade.
         public var _pws:WebService;
@@ -172,11 +175,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable]
         private var _competitionType:String;
 
-		/**
-		 * Placed here instead of LaunchWidget
-		 * @since BUGR-1737
-		 */ 
-		[Bindable]
+        /**
+         * Placed here instead of LaunchWidget
+         * @since BUGR-1737
+         */
+        [Bindable]
         protected var _isAdmin:Boolean;
         
         private var alert:Alert;
@@ -192,19 +195,19 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	_isAdmin = value;
         }    
 
-		/**
-		 * If user is software admin
-		 * @since BUGR-1737
-		 */ 
-		[Bindable]
+        /**
+         * If user is software admin
+         * @since BUGR-1737
+         */
+        [Bindable]
         protected var _isSoftwareAdmin:Boolean;
         
         [Bindable]
         private var _tcDirectProjectId:String;
 
         [Bindable]
-	    private var _tcDirectProjectName:String=""; // BUGR-1757
-        
+        private var _tcDirectProjectName:String=""; // BUGR-1757
+
         /**
         * Current user id.
         */
@@ -227,7 +230,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable]
         public var isReadOnlyMode:Boolean=false;
 
-		 /**
+         /**
          * Represents the spec reviews for the current contest.
          * 
          * Updated for Version 1.0.1
@@ -508,9 +511,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             (container.contents as LaunchWidget).container=container;
             container.contents.widgetFramework=f;
             container.contents.name=name;
-			(container.contents as LaunchWidget).isAdmin=admin;
+            (container.contents as LaunchWidget).isAdmin=admin;
 
-		if (map) {
+        if (map) {
                     (container.contents as LaunchWidget).isEditMode=true;
                     (container.contents as LaunchWidget).contestid=map["contestid"];
                     //(container.contents as LaunchWidget).competitionType=map["contestType"].toLocaleUpperCase();
@@ -709,7 +712,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @param framework the framework of this widget.
          */
         public function set widgetFramework(framework:IWidgetFramework):void {
-        	this._framework = framework;
+            this._framework = framework;
         }
 
         /**
@@ -876,14 +879,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         public function _submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void {
-        	var studioContestType:Boolean = (this.container.contents as LaunchWidget).studioContestType; // BUGR-1682
-        	
-        	if(studioContestType) { // BUGR-1682
-	            competition._id=competition.id;
-	            competition._type=competition.type;
-	            competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
-	            competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
-        	}
+            var studioContestType:Boolean = (this.container.contents as LaunchWidget).studioContestType; // BUGR-1682
+
+            if(studioContestType) { // BUGR-1682
+                competition._id=competition.id;
+                competition._type=competition.type;
+                competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
+                competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
+            }
             //
             // Module: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
             // Updated to avoid 'duplicate variable definition' warning
@@ -1049,8 +1052,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             var tempCompetition:SoftwareCompetition = new SoftwareCompetition();
             tempCompetition.projectHeader = new SoftwareProjectHeader();
             tempCompetition.projectHeader.properties = new Array();
-            var me:LaunchWidget = container.contents as LaunchWidget; 
-            var developmentAdminFee:Number=me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestFee; 
+            var me:LaunchWidget = container.contents as LaunchWidget;
+            var developmentAdminFee:Number=me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestFee;
             var selCostData:Dictionary=null;
             var level:String=SoftwareCompetitionUtils.instance().getCostLevelProp(softwareCompetition);
             if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
@@ -1156,13 +1159,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
                 this.contestid=this.softwareCompetition.projectHeader.id.toFixed(0);
-                
-		// set prize and admin fee from properties
-		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
-		this.softwareCompetition.prizes[0] = new PrizeData();
-		this.softwareCompetition.prizes[1] = new PrizeData();
-		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
-		PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+
+                // set prize and admin fee from properties
+                this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+                this.softwareCompetition.prizes[0] = new PrizeData();
+                this.softwareCompetition.prizes[1] = new PrizeData();
+                PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
+                PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+
+                // call initData in attachment page so that the attachment information is refreshed.
+                (container.contents as LaunchWidget).attch.initData();
 
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
@@ -1210,13 +1216,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 		this.softwareCompetition=ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
                 trace("createSoftwareContestHandler:: this.competition: " + this.softwareCompetition);
-                
-		// set prize and admin fee from properties
-		this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
-		this.softwareCompetition.prizes[0] = new PrizeData();
-		this.softwareCompetition.prizes[1] = new PrizeData();
-		PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
-		PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+
+                // set prize and admin fee from properties
+                this.softwareCompetition.adminFee = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+                this.softwareCompetition.prizes[0] = new PrizeData();
+                this.softwareCompetition.prizes[1] = new PrizeData();
+                PrizeData(this.softwareCompetition.prizes[0]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
+                PrizeData(this.softwareCompetition.prizes[1]).amount = SoftwareCompetitionUtils.instance().getCostProp(this.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+
+                // call initData in attachment page so that the attachment information is refreshed.
+                (container.contents as LaunchWidget).attch.initData();
 
                 // BUGR-1470 - mark refresh of my project.
             	notifyMyProjectWidget();
@@ -1458,18 +1467,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         // BUGR-1363
         public function getExtraContestFee():Number {
-    		if (this.competitionType == "STUDIO")
-    		{
-            		var me:LaunchWidget = container.contents as LaunchWidget; 
-            		var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
-            		return new Number(result.toFixed(2));
-    		}
-    		else
-    		{
-    		    var me:LaunchWidget = container.contents as LaunchWidget; 
-        		var result:Number = new Number(me.overView.ns_cntstTtl.text) - getPaidContestFee(); 
-        		return new Number(result.toFixed(2));
-    		}	
+            if (this.competitionType == "STUDIO")
+            {
+                    var me:LaunchWidget = container.contents as LaunchWidget;
+                    var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee();
+                    return new Number(result.toFixed(2));
+            }
+            else
+            {
+                var me:LaunchWidget = container.contents as LaunchWidget;
+                var result:Number = new Number(me.overView.ns_cntstTtl.text) - getPaidContestFee();
+                return new Number(result.toFixed(2));
+            }
         }
         
          /**
@@ -1495,16 +1504,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
 
         [Bindable]
-		public function get tcDirectProjectName():String {
-			return _tcDirectProjectName;
-		}
-		
-		public function set tcDirectProjectName(projectName:String):void {
-			_tcDirectProjectName = projectName;
-		}
-		
-		[Bindable]
-		public function get tcDirectProjectId():String {
+        public function get tcDirectProjectName():String {
+            return _tcDirectProjectName;
+        }
+
+        public function set tcDirectProjectName(projectName:String):void {
+            _tcDirectProjectName = projectName;
+        }
+
+        [Bindable]
+        public function get tcDirectProjectId():String {
             return _tcDirectProjectId;
         }
         

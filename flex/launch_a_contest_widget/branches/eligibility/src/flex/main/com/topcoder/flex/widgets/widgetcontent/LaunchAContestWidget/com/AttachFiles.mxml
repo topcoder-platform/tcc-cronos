@@ -9,8 +9,18 @@
     Version 1.0.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
         - Project name title is hidden if the summary is shown since it's already there
 
+    Version 1.0.2 (Cockpit Upload Attachment) Change Notes:
+        - Several changes for software file attachments were performed:
+            - Added checkbox to be able to specify Requirements Specification attachment
+            - Added description (with hint)
+            - Allow multiple files
+            - Forbidd duplicate file names and descriptions
+            - Fixed hint height
+            - Added file type and file desc attributes to CompUploadedFile
+            - Changed title wording
+
     @author pulky
-    @version 1.0.1
+    @version 1.0.2
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
@@ -38,7 +48,7 @@
             import mx.controls.Label;
             import mx.controls.Text;
             import mx.controls.Spacer;
-            
+
             import flash.utils.ByteArray;
 
             import mx.rpc.AbstractOperation;
@@ -50,8 +60,48 @@
             [Bindable]
             public var mainWidget:LaunchWidget;
             public var FileDescHint:String;
+
+            /**
+             * This variable represents the hint to show for software file description box. It is filled in LaunchWidget.
+             *
+             * @since 1.0.2
+             */
+            public var softwareFileDescHint:String;
+
+            /**
+             * Constant to store the requirements specification document type id
+             *
+             * @since 1.0.2
+             */
+            private static const REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID:Number=1;
+            
+            /**
+             * Constant to store the height that corresponds to a new upload box
+             *
+             * @since 1.0.2
+             */
+            private static const UPLOAD_BOX_HEIGHT:Number=100;
+
+            /**
+             * Constant to store the requirements specification document type id
+             *
+             * @since 1.0.2
+             */
+            private static const SUPPORTING_DOCUMENTATION_DOCUMENT_TYPE_ID:Number=24;
+
             private var file:FileReference;
-            private static const ADDEDHEIGHT:Number=80;
+
+            /**
+             * This variable represents wether the software contest has a requirements specification attached or not.
+             *
+             * @since 1.0.2
+             */
+            private var hasRequirementsSpecification:Boolean=false;
+
+            /**
+             * This constants represents the height added to show hints.
+             */
+            private static const ADDEDHEIGHT:Number=20;
 
             private static const mimeTypes:Array=["application/msword", "application/rtf", "text/plain", "application/pdf", "application/postscript",
 
@@ -73,21 +123,40 @@
 
             private var currentDoc:UploadedDocument;
 
+            /**
+             * This collection represents those file names that are already used.
+             *
+             * @since 1.0.2
+             */
+            [ArrayElementType("String")]
+            private var usedNames:ArrayCollection;
+
+            /**
+             * This collection represents those file descriptions that are already used.
+             *
+             * @since 1.0.2
+             */
+            [ArrayElementType("String")]
+            private var usedDescriptions:ArrayCollection;
+
             // BUGR-1600
             private var catalogFile:CompUploadedFile;
             // BUGR-1735
             private var catalogDocNum:int=0;
 
+            /**
+             * This method initializes data in this page
+             */
             public function initData():void {
-                uploadFilesVBox.removeAllChildren();
-
-                fileToUpload.htmlText="";
-
                 //
                 // Now handle attach files only for studio contest types.
                 // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
                 //
                 if (mainWidget.studioContestType) {
+	                uploadFilesVBox.removeAllChildren();
+	
+	                fileToUpload.htmlText="";
+
                     docUploads=new Array();
 
                     if (!this.mainWidget.competition) {
@@ -104,10 +173,20 @@
                         return;
                     }
 
-                    for each(var x:CompDocumentation in this.mainWidget.softwareCompetition.assetDTO.documentation) {
-                        addCatalogDoc(x);
-                    }
-                    this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles = new Array();
+                    if (!this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles) {
+                        uploadFilesVBox.removeAllChildren();
+    
+                        fileToUpload.htmlText="";
+
+	                    // these collections will be used to avoid file name and description duplicates
+	                    usedNames = new ArrayCollection();
+	                    usedDescriptions = new ArrayCollection();
+	
+	                    for each(var x:CompDocumentation in this.mainWidget.softwareCompetition.assetDTO.documentation) {
+	                        addCatalogDoc(x);
+	                    }
+	                    this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles = new Array();
+	                }
                 }
 
                 this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler);
@@ -226,10 +305,28 @@
                 docUploads.push(doc);
             }
 
-            // BUGR-1600
+            /**
+             * This method checks if there is no requirement specification attached (to software competitions)
+             * and if it's missing, it shows a warning box.
+             *
+             * @since 1.0.2
+             */
+            public function checkRequirementSpecWarning():void {
+                if (!mainWidget.studioContestType && !hasRequirementsSpecification) {
+                    Helper.showAlertMessage("Warning: Requirements Specification document was not attached");
+                }
+            }
+
+            /**
+             * This method adds a software document.
+             *
+             * @param doc the file to be added
+             * @param existing wether we are adding an existing document (from persistence) or not
+             */
             private function addCatalogDoc(doc:Object, existing:Boolean = true):void {
                 // BUGR-1735
                 catalogDocNum++;
+
                 var docVBox:VBox=new VBox();
                 docVBox.percentWidth=100;
                 if(existing) {
@@ -237,6 +334,25 @@
                 }
                 docVBox.data=doc;
 
+                // description is also showed.
+                var hbox1:HBox=new HBox();
+                docVBox.addChild(hbox1);
+
+                var descLabel:Label=new Label();
+                hbox1.addChild(descLabel);
+                descLabel.text="File Description:";
+                descLabel.setStyle("fontWeight", "bold");
+
+                var descText:Text=new Text();
+                hbox1.addChild(descText);
+                descText.text= existing ? doc.documentName : doc.uploadedFileDesc;
+
+                if ((existing ? doc.documentTypeId : doc.uploadedFileType) == REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID) {
+	                var descType:Text=new Text();
+	                hbox1.addChild(descType);
+	                descType.text= "(Requirements Specification)";
+                }
+                
                 var hbox2:HBox=new HBox();
                 docVBox.addChild(hbox2);
 
@@ -244,7 +360,7 @@
                 hbox2.addChild(nameLabel);
                 nameLabel.text="File Name:";
                 nameLabel.setStyle("fontWeight", "bold");
-                
+
                 var nameText:LinkButton=new LinkButton();
                 nameText.label=existing ? doc.url.substr(doc.url.lastIndexOf("/") + 1) : doc.uploadedFileName;
                 nameText.data=doc;
@@ -271,9 +387,35 @@
                 spacer.height=5;
                 docVBox.addChild(spacer);
 
+                hasRequirementsSpecification = hasRequirementsSpecification || 
+                    ((existing ? doc.documentTypeId : doc.uploadedFileType) == REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID);
+                requirementSpecificationLayoutUpdate();
+
                 uploadFilesVBox.addChild(docVBox);
                 if(!existing) {
                     this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.push(doc);
+                }
+
+                this.mainWidget.height+=UPLOAD_BOX_HEIGHT;
+
+                // store used file name and descriptio to avoid duplicates
+                usedNames.addItem(nameText.label);
+                usedDescriptions.addItem(descText.text);
+            }
+
+            /**
+             * Helper method that updates requirements specification checkbox layout to force only one requirements specification.
+             *
+             * @since 1.0.2
+             */
+            private function requirementSpecificationLayoutUpdate():void {
+                // only one requirements specification
+                if (hasRequirementsSpecification) {
+                    // uncheck and disable
+                    isRequirementsSpecificationCheckBox.selected=false;
+                    isRequirementsSpecificationCheckBox.enabled=false;
+                } else {
+                    isRequirementsSpecificationCheckBox.enabled=true;
                 }
             }
 
@@ -303,16 +445,19 @@
                     catalogDocNum--;
                     if(box.data is CompDocumentation) {
                         var doc:CompDocumentation=box.data as CompDocumentation;
-
                         var index:int=this.mainWidget.softwareCompetition.assetDTO.documentation.indexOf(doc);
                         //mx.controls.Alert.show("removing comp docu file " + index);
                         if (index != -1) {
                             this.mainWidget.softwareCompetition.assetDTO.documentation.splice(index, 1);
                         }
-                        box.parent.removeChild(box);
-                        trace("removed comp documentation");
-                    } else if(box.data is CompUploadedFile) {
 
+                        trace("removed comp documentation");
+
+                        hasRequirementsSpecification = hasRequirementsSpecification && doc.documentTypeId != 1;
+
+                        usedNames.removeItemAt(usedNames.getItemIndex(doc.url.substr(doc.url.lastIndexOf("/") + 1)));
+                        usedDescriptions.removeItemAt(usedDescriptions.getItemIndex(doc.documentName));
+                    } else if(box.data is CompUploadedFile) {
                         var x:CompUploadedFile=box.data as CompUploadedFile;
 
                         var index:int=this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.indexOf(x);
@@ -320,8 +465,16 @@
                         if (index != -1) {
                             this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.splice(index, 1);
                         }
+
+                        hasRequirementsSpecification = hasRequirementsSpecification && x.uploadedFileType != 1;
+
+                        usedNames.removeItemAt(usedNames.getItemIndex(x.uploadedFileName));
+                        usedDescriptions.removeItemAt(usedDescriptions.getItemIndex(x.uploadedFileDesc));
+
                         trace("removed upload");
                     }
+                    requirementSpecificationLayoutUpdate()
+
                     box.parent.removeChild(box);
                 }
             }
@@ -345,11 +498,16 @@
                }
             }
 
+            /**
+             * This method shows / hides file description hint
+             *
+             * @param event the mouse event
+             */
             private function showfileDecsHint(event:MouseEvent):void {
                 if (event.target.label == "[+ show hint]"){
                     event.target.label = "[- show hint]";
                     fileDescHint.height = ADDEDHEIGHT;
-                    fileDescHint.text = FileDescHint;
+                    fileDescHint.text = mainWidget.studioContestType ? FileDescHint : softwareFileDescHint;
                     fileDescHint.visible = true;
                     this.height+=ADDEDHEIGHT;
                     this.mainWidget.height+=ADDEDHEIGHT;
@@ -380,21 +538,31 @@
                 fileToUpload.text = file.name;
             }
 
+            /**
+             * This method handles upload button click event
+             */
             private function uploadFile():void {
                 if (file== null || file.name == ""){
                     Helper.showAlertMessage("Please select a file to upload");
                     return;
                 }
-                // BUGR-1735
-                if(!mainWidget.studioContestType && this.catalogDocNum>0)
-                {
-                    Helper.showAlertMessage("Only one file can be upload for software contest.");
+                if (fileDescInput.text == ""){
+                    Helper.showAlertMessage("Please enter a description for the file");
                     return;
                 }
 
-                if (mainWidget.studioContestType && fileDescInput.text == ""){ // BUGR-1600
-                    Helper.showAlertMessage("Please enter a description for the file");
-                    return;
+                // verify there are no file name or descriptiono dups (software contests)
+                if(!mainWidget.studioContestType) {
+                    // check file name
+                    if (usedNames.contains(file.name)) {
+                        Helper.showAlertMessage("File name '" + file.name + "' is already used.");
+                        return;
+                    }
+                    // check file description
+                    if (usedDescriptions.contains(fileDescInput.text)) {
+                        Helper.showAlertMessage("File description '" + fileDescInput.text + "' is already used.");
+                        return;
+                    }
                 }
 
                 file.load();
@@ -439,13 +607,24 @@
                 }
             }
 
-            // BUGR-1600
+            /**
+             * This method handles catalog file browse completion
+             *
+             * @param event the corresponding Event
+             */
             private function loadCatalogCompleteHandler(event:Event):void{
                 catalogFile = new CompUploadedFile();
                 catalogFile.fileData = file.data;
+                catalogFile.uploadedFileType = isRequirementsSpecificationCheckBox.selected ?
+                    REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID : SUPPORTING_DOCUMENTATION_DOCUMENT_TYPE_ID;
+                catalogFile.uploadedFileDesc = fileDescInput.text;
                 catalogFile.uploadedFileName = file.name;
 
-        addCatalogDoc(catalogFile, false);
+                addCatalogDoc(catalogFile, false);
+                //clear up
+                fileDescInput.text = "";
+                fileToUpload.text = "";
+                file = null;
             }
 
             // TCCC-1023
@@ -521,12 +700,12 @@
                     file=null;
                 }
             }
-            
+
             private function outFile(fileName:String, data:ByteArray):void {
                var fref:FileReference= new FileReference();
                fref.save(data, fileName);
             }
-            
+
             private function downloadUploadedDoc(e:MouseEvent):void {
                 if (e && e.target) {
                     var button:LinkButton=e.target as LinkButton;
@@ -537,7 +716,7 @@
                     }
                 }
             }
-            
+
             private function downloadCatalogDoc(e:MouseEvent):void {
                 if (e && e.target) {
                     var button:LinkButton=e.target as LinkButton;
@@ -562,7 +741,7 @@
         </mx:Text>
         <mx:Text width="100%" visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
             <mx:htmlText>
-            <![CDATA[Upload a pdf of the full requirements specification.]]>
+            <![CDATA[Upload supporting documentation here. If you select "requirements specification" as the file type then that file will be provided as the contest specification to competitors. All other uploaded files will be available for download.]]>
            </mx:htmlText>
         </mx:Text>
 
@@ -578,7 +757,7 @@
                                <mx:Button id="browse" buttonMode="true" label="BROWSE" click="browseFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
             </mx:HBox>
 
-            <mx:VBox width="100%" verticalGap="0" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}"> <!-- BUGR-1600 -->
+            <mx:VBox width="100%" verticalGap="0"> <!-- BUGR-1600 -->
                 <mx:HBox >
                     <mx:Label text="File Description:" fontWeight="bold"/>
                     <mx:Spacer width="290"/>
@@ -591,9 +770,13 @@
                 <mx:TextArea id="fileDescInput" width="500" height="50" text=""/>
             </mx:VBox>
             <mx:Spacer height="5"/>
-            <mx:VBox>
+            <mx:HBox>
                 <mx:Button id="upload" buttonMode="true" label="UPLOAD FILE" click="uploadFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-            </mx:VBox>
+                <mx:CheckBox id="isRequirementsSpecificationCheckBox"
+                             visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}"
+                             selected="false"
+                             label="Requirements Specification"/>
+            </mx:HBox>
         </mx:VBox>
 
     </mx:VBox>

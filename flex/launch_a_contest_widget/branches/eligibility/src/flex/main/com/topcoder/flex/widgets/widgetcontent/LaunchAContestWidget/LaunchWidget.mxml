@@ -7,12 +7,12 @@
 <!--
 
     This mxml component is the main entry point for the launch contest widget.
-    
+
     Updated for Cockpit Release Assembly 3
         - save as draft button is not shown in ReadOnlyMode.
         - next button is not shown on review screen in ReadOnlyMode.
         - changes for above on previous, next, skipTo methods.
-        
+
     Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
         - Updated to lead to purchase from Review page for the invoiced contest.
         - Added webservice operation definition to get contest fees by project.
@@ -29,13 +29,20 @@
         - Added event handler for the full capacity dates webservice so that it disables forbidden dates
           in the start date picker.
         - Added validation before draft save and activation to see if the choosen start date is not full.
+
      Version 1.0.5 (Cockpit Release Assembly 11 1.0) Change Notes:
         - Updated the wsdl operator
+
      Version 1.0.6 (Cockpit Contest Eligibility) Change Notes:
         - handle the creation of private contest
 
+     Version 1.0.7 (Cockpit Upload Attachment) Change Notes:
+        - Added requirements specification attachment check (warning) for when the user clicks next or navigates
+          to another step from the attcah files page (software contests)
+        - Added hint for description field in software contests attach files page.
+
     @author pulky, murphydog
-    @version 1.0.6
+    @version 1.0.7
     @since 1.0
 -->
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -49,7 +56,7 @@
                            resizeEffect="{resize}"
                            creationComplete="setWidgetReferences();onCreateComplete(1);">
     <mx:Style source="Style.css"/>
-    
+
 
     <mx:Script>
         <![CDATA[
@@ -167,8 +174,8 @@
             [Bindable]
             public var capacityData:ArrayCollection = new ArrayCollection();
 
-	    [Bindable]
-	    public var header:String = "Create Contest";
+        [Bindable]
+        public var header:String = "Create Contest";
 
 
             //
@@ -177,10 +184,10 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private var _stepBoxToStepNum:Dictionary=new Dictionary();
-            
+
             [Bindable]
             private var isStudioContestType:Boolean=true;
-            
+
             [Bindable]
             public function get studioContestType():Boolean {
                 return isStudioContestType;
@@ -382,18 +389,18 @@
                 isStudioContestType=studio;
                 //DETAILS_HEIGHT=(val ? 950 : 1850);
                 //REVIEW_HEIGHT=(val ? 1165 : 1850); // BUGR-1067
-        		//OVERVIEW_HEIGHT=(val ? 770 : 630);
-        		if(!studio) {
+                //OVERVIEW_HEIGHT=(val ? 770 : 630);
+                if(!studio) {
                     if (competitionType == "CONCEPTUALIZATION" || competitionType == "SPECIFICATION") {
-        				//DETAILS_HEIGHT = 1850;
-        				//details.widgetHeight = 670;
-        			}
-        			else {
-        				//details.widgetHeight = 800;
-        			}
-        			//overView.height = 580;
-        		}
-                
+                        //DETAILS_HEIGHT = 1850;
+                        //details.widgetHeight = 670;
+                    }
+                    else {
+                        //details.widgetHeight = 800;
+                    }
+                    //overView.height = 580;
+                }
+
                 // BUGR-1067
                 stepNumber=1;
                 setStep(step1box);
@@ -408,7 +415,7 @@
                 setStep(step8box);
                 totalStepsNumber=stepNumber - 1;
                 stepNumber=1;
-                
+
                 if (studio) {
                     competitionType="STUDIO";
                 }
@@ -437,7 +444,7 @@
                <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
                </wsse:UsernameToken>
                </wsse:Security>;
-               
+
                var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
                return header;
              }
@@ -451,11 +458,11 @@
             private function initWidget():void {
                 dummyService.send();
             }
-            
+
             private function dummyServiceResultHandler(event:ResultEvent):void {
-               
+
                     this.currentState="ContestSelectionState";
-		    		if (competitionType) {
+                    if (competitionType) {
                         initStepNums(competitionType.toUpperCase() == "STUDIO");
                     } else {
                         initStepNums(true);
@@ -464,10 +471,10 @@
                     //initStepNums(true);
                     getDataService();
             }
-            
+
             private function dummyServiceFaultHandler(event:FaultEvent):void {
 
-					this.currentState="ContestSelectionState";
+                    this.currentState="ContestSelectionState";
                      if (competitionType) {
                         initStepNums(isStudioContestType);
                     } else {
@@ -475,14 +482,14 @@
                     }
 
                     //initStepNums(true);
-                    getDataService();                
+                    getDataService();
             }
 
-	    private function getDataService():void
-	    {	
-		    dataservice.getPassword();
-		    dataservice.isSoftwareAdmin.send(); // BUGR-1737
-		    dataservice.isAdmin.send(); // BUGR-1737
+        private function getDataService():void
+        {
+            dataservice.getPassword();
+            dataservice.isSoftwareAdmin.send(); // BUGR-1737
+            dataservice.isAdmin.send(); // BUGR-1737
         }
 
             private function processPassword(e:ResultEvent):void {
@@ -494,7 +501,7 @@
                 initComponent();
             }
 
-	    private function setWidgetReferences():void {
+        private function setWidgetReferences():void {
                 contestSelect.mainWidget=this;
                 overView.mainWidget=this;
                 details.mainWidget=this;
@@ -511,22 +518,22 @@
                 mainPanel.horizontalScrollPolicy="false";
 
                 //back.visible=false;
-                
+
                 //read hints.xml data
                 getData(null);
-                
+
                 // initialize web-services
                 initWebServices();
-                
-		setWidgetReferences();
+
+        setWidgetReferences();
 
                 loadCategories();
                 loadMasterTechnologies();
                 requestConfigData.send();
-                
+
                 // BUGR-1235
                 contestSelect.init();
-                
+
                 // BUGR-1141
                 setCurStep(step1box);
                 setNextStep(step2box);
@@ -537,7 +544,7 @@
                 setNextStep(step7box);
                 setNextStep(step8box);
                 stepNumber=1;
-                
+
                 onCreateComplete(2);
             }
 
@@ -546,7 +553,7 @@
              */
             private function initWebServices():void {
                 var header:SOAPHeader=getHeader(username,password);
-                
+
                 // initialize contest service facade ws.
                 ContestServiceFacadeBean.clearHeaders();
                 ContestServiceFacadeBean.addHeader(header);
@@ -562,14 +569,14 @@
                 PipelineServiceFacadeBean.addHeader(header);
                 this._psws=PipelineServiceFacadeBean;
             }
-            
+
             private var flag:int = 0;
-            
+
             public function onCreateComplete(f:int):void {
                 flag = flag + f;
                 trace("IN ON CREATE COMPLETE:: " + this.competition + "," + this.softwareCompetition + "," + this.competitionType + "," + flag);
 
-		// this is late onCreateComplete event.
+        // this is late onCreateComplete event.
                 if (flag > 3) {
                     if (this.competition) {
                         this.competitionType="STUDIO";
@@ -586,13 +593,13 @@
                         initWidgetCallbackFn();
                         initWidgetCallbackFn=null;
                     }
-                
+
                     if (competition && competition.competitionId > 0) {
                         trace("IN ON CREATE COMPLETE OF STUDIO COMPETITION :: EDIT");
                         //this.competitionType="STUDIO";
                         competition.type=this.competitionType;
                         review.cstTypeStep1=this.competitionType;
-                        
+
                         startLaunchProcess();
                         // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
                         //if (this.currentState=="ContestSelectionState") {
@@ -604,18 +611,22 @@
                         softwareCompetition.type=this.competitionType;
                         trace("----------------------------------> in edit for s/w contest, competition type: " + this.competitionType);
                         review.cstTypeStep1=this.competitionType;
-                        
+
                         startLaunchProcess();
                         // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
                         //if (this.currentState=="ContestSelectionState") {
                         //    next();
                         //}
                     }
-                } 
+                }
             }
-            
-            
-            //after loading the xml file, fetch data
+
+
+            /**
+             * This method fetchs general data for this widget
+             *
+             * @param event the corresponding Event
+             */
             private function getData(event:Event):void {
                 //                var loader:URLLoader = event.target as URLLoader;
                 configurableText=<launch_contest><steps><details><fields><field name="Title"><hint>The title you choose is what competitors will see in the active contests list, so be as detailed as possible. Also, listing the entire prize purse in the title helps draw attention to your contest. For example, "$750 Furniture Wholesale Company Logo Design" works better than simply "New Logo".</hint></field><field name="Introduction"><hint>This short paragraph will serve as the summary at the top of your contest description page. No need to get into full details here; just give an attention-grabbing brief description of the project so members can quickly determine if they are interested.</hint></field><field name="Primary Goal"><hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
@@ -633,7 +644,7 @@
                                             You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements.
 
                                             <b>What Criteria Must the Designers Meet to Win This Contest?</b>
-                                            Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology.</hint></field><field name="Target Audience"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Brand Guidelines"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Like and Dislikes"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Criteria"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Colors"><hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you dont have specific branding colors you need to stick to, feel free to give general directions such as, "Please use blue and orange." Or "Please do not use yellow."</hint></field><field name="Fonts"><hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, "Do not use script fonts or anything that looks too feminine." Or "We need a cartoonish font that is kid-friendly."</hint></field><field name="Size"><hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: "The web banner must be exactly 300 pixels wide by 90 pixels tall." Or "The logo must be wider than it is tall. Tall logos wont fit in our websites masthead."</hint></field><field name="Additional Requirements or Restrictions"><hint>List any other instructions here that dont fit in the boxes above. Example: "All text must be surrounded by at least 200 pixels of white space."</hint></field><field name="File Description"><hint>Please provide a short description such as "Our company logo" or "PSD files of our current web site."</hint></field></fields><hints><hint field="Introduction"></hint><hint field="Primary Goals"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint></hints></details></steps></launch_contest>;
+                                            Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology.</hint></field><field name="Target Audience"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Brand Guidelines"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Like and Dislikes"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Criteria"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Colors"><hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you dont have specific branding colors you need to stick to, feel free to give general directions such as, "Please use blue and orange." Or "Please do not use yellow."</hint></field><field name="Fonts"><hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, "Do not use script fonts or anything that looks too feminine." Or "We need a cartoonish font that is kid-friendly."</hint></field><field name="Size"><hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: "The web banner must be exactly 300 pixels wide by 90 pixels tall." Or "The logo must be wider than it is tall. Tall logos wont fit in our websites masthead."</hint></field><field name="Additional Requirements or Restrictions"><hint>List any other instructions here that dont fit in the boxes above. Example: "All text must be surrounded by at least 200 pixels of white space."</hint></field><field name="File Description"><hint>Please provide a short description such as "Our company logo" or "PSD files of our current web site."</hint></field><field name="Software File Description"><hint>Please provide a short description such as "Requirements Specification" or "Activity Diagrams."</hint></field></fields><hints><hint field="Introduction"></hint><hint field="Primary Goals"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint></hints></details></steps></launch_contest>;
                 details.titleHint=configurableText.steps.details.fields.field.(@name == "Title").hint;
                 details.introductionHint=configurableText.steps.details.fields.field.(@name == "Introduction").hint;
                 details.primaryGoalHint=configurableText.steps.details.fields.field.(@name == "Primary Goal").hint;
@@ -646,6 +657,7 @@
                 specf.SizeHint=configurableText.steps.details.fields.field.(@name == "Size").hint;
                 specf.AdditionalHint=configurableText.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
                 attch.FileDescHint=configurableText.steps.details.fields.field.(@name == "File Description").hint;
+                attch.softwareFileDescHint=configurableText.steps.details.fields.field.(@name == "Software File Description").hint;
             }
 
             public function openOverViewPage():void {
@@ -657,44 +669,44 @@
                 if (save.visible) {
                     save.label=getSaveLabel();
                 }
-                
+
                 goNext.includeInLayout=goNext.visible=true;
                 goNext.label = "NEXT";
-                
+
                 setReadOnlyMode();
-                    
+
                 back.visible=true;
 
                 setPreviousStep(step1box); // BUGR-1141
                 setCurStep(step2box); // BUGR-1141
             }
-            
+
             /**
-             * Sets the current state to review screen. 
+             * Sets the current state to review screen.
              * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
-             */ 
+             */
             public function openReviewPage():void {
                 this.currentState="ReviewState";
-                
+
                 save.includeInLayout=save.visible=!isReadOnlyMode;
                 if (save.visible) {
                     save.label=getSaveLabel();
                 }
-                
+
                 if (!isNextAllowed()) {
                     goNext.includeInLayout=goNext.visible=false;
                 } else {
                     goNext.includeInLayout=goNext.visible=true;
-                    
+
                     if (isInvoicedContest) {
                         goNext.label="ACTIVATE";
                     } else {
                         goNext.label = "NEXT";
                     }
                 }
-                
+
                 setReadOnlyMode();
-                
+
                 this.review.setAllValues();
 
                 back.visible=true;
@@ -708,10 +720,10 @@
                 if (this.currentState == "ContestSelectionState") {
                     if (!contestSelect.validateFields())
                         return;
-                    
+
                     this.addEventListener("OverviewFeesLoaded", saveAfterFeesLoaded);
                     return;
-                    
+
                     // call validate so default values get set.
                     //details.initData();
                     //details.validateFieldsEx2(false,false);
@@ -732,18 +744,18 @@
                         return;
                 }
 
-		        // before continue, check start date is not taken
+                // before continue, check start date is not taken
                 validateStartDate(continueSaveDraft);
             }
-            
+
             private function saveAfterFeesLoaded(event:Event):void {
                 if (!overView.validateFields())
                             return;
-                
+
                 if (!studioContestType) {
                     setSoftwareDefaultDetails();
                 }
-                            
+
                 validateStartDate(continueSaveDraft);
                 this.removeEventListener("OverviewFeesLoaded", saveAfterFeesLoaded);
             }
@@ -751,22 +763,22 @@
             private var stateToStepNum:Dictionary=null;
             private var stepBoxes:ArrayCollection=null;
 
-            
+
             /**
              * Handles the click on left hand side step bars.
-             * 
+             *
              *
              * Updated to remove step number calculation.
              * and moved assignment to review page in individual widgets.
              * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-             * 
+             *
              * Updated for Cockpit Release Assembly 3
              * - save as draft button is not shown in ReadOnlyMode.
              * - next button is not shown on review screen in ReadOnlyMode.
-             * 
+             *
              * Updated for Version 1.0.1
              *    - in case of invoiced contest, changed the name of the 'next' button on review page to 'ACTIVATE'
-             * 
+             *
              * Updated to remove step number calculation.
              * and moved assignment to review page in individual widgets.
              * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -775,8 +787,8 @@
              * - save as draft button is not shown in ReadOnlyMode.
              * - next button is not shown on review screen in ReadOnlyMode.
              *
-             * @param step the step number 
-             * 
+             * @param step the step number
+             *
              */
             private function skipTo(step:int):void {
 
@@ -834,7 +846,9 @@
                 } else if (currentStep == 4) {
                     isCurrentStepComplete=specf.validateFieldsEx2(false, false);
                 } else if (currentStep == 5) {
-                    isCurrentStepComplete=true;
+                    // show a warning if it's a software contest and there is no requirements specification attached
+                    attch.checkRequirementSpecWarning();
+                    isCurrentStepComplete= true;
                 } else if (currentStep == 6) {
                     isCurrentStepComplete=sched.validateFieldsEx2(false, false);
                 } else if (currentStep == 7 || currentStep == 8) {
@@ -867,75 +881,75 @@
                         this.currentState="ContestSelectionState";
                         setReadOnlyMode();
                         back.visible=false;
-                        
+
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
                         }
-                    
+
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
 
                         setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
                         setCurStep(newStepBox);
-                        
+
                         contestSelect.initData();
-                        
+
                         break;
                     case 2:
-                        
+
                         this.currentState="OverViewState";
                         setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
                         }
-                
+
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
-                
+
                         back.visible=true;
 
                         setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
                         setCurStep(newStepBox);
-                           
+
                         result.type = contestSelect.selectContestTypes.selectedItem.data;
 
                         break;
                     case 3:
 
                         this.currentState = "DetailsState";
-			setReadOnlyMode();
+            setReadOnlyMode();
                         save.includeInLayout=save.visible=!isReadOnlyMode;
                         if (save.visible) {
                             save.label=getSaveLabel();
                         }
-                        
+
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
-                    
+
                        details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
                         details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
                         details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
                         details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
                         details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
                         details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
-                       
+
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
-                       
+
                        if (contestSelect.selectContestTypes.selectedItem.data == "SPECIFICATION" || contestSelect.selectContestTypes.selectedItem.data == "CONCEPTUALIZATION" ){
                            details.tech1.visible = false;
                            details.tech2.visible = false;
                            details.tech1.includeInLayout = false;
                            details.tech2.includeInLayout = false;
-    					} else {
-    					   details.tech1.visible = true;
+                        } else {
+                           details.tech1.visible = true;
                            details.tech2.visible = true;
                            details.tech1.includeInLayout = true;
                            details.tech2.includeInLayout = true;
-    					}
-					
+                        }
+
                         details.initData();
                         break;
                     case 4:
@@ -948,11 +962,11 @@
                         if (save.visible) {
                             save.label=getSaveLabel();
                         }
-                        
+
                         goNext.includeInLayout=goNext.visible=true;
                         goNext.label = "NEXT";
-                        
-                       
+
+
                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
                        setCurStep(newStepBox);
                         break;
@@ -1176,6 +1190,9 @@
                     setPreviousStep(step4box);
                     setCurStep(step5box);
                 } else if (this.currentState == "AttachFilesState") {
+                    // show a warning if it's a software contest and there is no requirements specification attached
+                    attch.checkRequirementSpecWarning();
+
                     //validate input
                     sched.curContestType=studioContestSubTypeId;
                     sched.requestSchedule.send();
@@ -1779,9 +1796,9 @@
             }
             
             private function showWebserviceError(opName:String, event:FaultEvent):void {
-            	
-			    hideLoadingProgress();
-			    
+
+                hideLoadingProgress();
+
                 Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
             }
 
@@ -2002,9 +2019,9 @@
                         || this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines == "") {
                     this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines;
                 }
-                
-				// for now, also set detailed Reuqirements on function description
-				this.softwareCompetition.assetDTO.detailedDescription=this.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+
+                // for now, also set detailed Reuqirements on function description
+                this.softwareCompetition.assetDTO.detailedDescription=this.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
             }
         ]]>
     </mx:Script>
@@ -2243,8 +2260,8 @@
         <mx:method name="isAdmin"  result="processAdminRole(event)"
              fault="handleError(event)">
              </mx:method>
-             
- 		<mx:method name="isSoftwareAdmin"  result="processSoftwareAdminRole(event)"
+
+         <mx:method name="isSoftwareAdmin"  result="processSoftwareAdminRole(event)"
              fault="handleError(event)">
              </mx:method>             
     </mx:RemoteObject>
