@@ -149,12 +149,6 @@ import com.topcoder.util.config.Property;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.BetweenFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.management.resource.search.ResourceFilterBuilder;
-
 /**
  * <p>
  * This is an implementation of <code>Contest Service Facade</code> web service
@@ -189,7 +183,7 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * </p>
  *
  * <p>
- * Version 1.0.4 
+ * Version 1.0.4
  *  - Add 'Applications'/'Components' to resource for project
  * </p>
  *
@@ -232,8 +226,15 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * <p>
  * Changes in v1.3.3 Added permission check.
  * </p>
+ *
+ * <p>
+ * Changes in v1.3.4 (Cockpit Upload Attachment):
+ * - Refactored code that removes loops from AssetDTO.documentation.
+ * - Added loops removal in updateSoftwareContest.
+ * </p>
+ *
  * @author snow01, pulky, murphydog
- * @version 1.3.3
+ * @version 1.3.4
  */
 @Stateless
 @WebService
@@ -976,7 +977,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         // the default email message generator.
         emailMessageGenerator = new DefaultEmailMessageGenerator();
 
-        
+
         try
         {
             components_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_COMPONENTS);
@@ -984,10 +985,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             applications_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_APPLICATIONS);
         }
         catch (UserServiceException e) {
-			throw new IllegalStateException("Failed to get components/applications user id.", e);
-		}
-       
-    	
+            throw new IllegalStateException("Failed to get components/applications user id.", e);
+        }
+
+
     }
 
     /**
@@ -2938,8 +2939,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
-				logger.debug("Current User Email Address: " + currentUserEmailAddress);
+                String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+                logger.debug("Current User Email Address: " + currentUserEmailAddress);
 
                 toAddr=currentUserEmailAddress; 
             } else if (paymentData instanceof CreditCardPaymentData){
@@ -3078,7 +3079,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         try {
             long contestId = competition.getProjectHeader().getId();
-        	double pastPayment=0;
+            double pastPayment=0;
 
             SoftwareCompetition tobeUpdatedCompetition = null;
 
@@ -3106,18 +3107,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
-           
 
-			double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE)) 
-			    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
-				
-			fee = fee - pastPayment;
-			
+
+            double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
+
+            fee = fee - pastPayment;
+
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
                 String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
@@ -3210,7 +3211,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+                String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -3478,7 +3479,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String purchasedByUser = p.getName();
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+                String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -3892,7 +3893,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     throw new ContestServiceException("No read permission on project");
                 }
 
-                
+
             }
 
             boolean creatingDevContest = contest.getDevelopmentProjectHeader() != null
@@ -3911,7 +3912,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             XMLGregorianCalendar productionDate = null;
 
             if (assetDTO != null) {
-                
+
                 boolean isDevContest = contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
                 boolean useExistingAsset=false;
 
@@ -3924,7 +3925,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     // for dev, we need to insert a row in comp version dates
                     this.catalogService.createDevComponent(assetDTO);
                 }
-                
+
                 if (!useExistingAsset) {
                     if (assetDTO.getProductionDate() == null) { // BUGR-1445
                         /*
@@ -3998,7 +3999,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                      */
                     if (!sessionContext.isCallerInRole(ADMIN_ROLE))
                     {
-                            if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
+                            if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null
                               && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
                               && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
                             {
@@ -4090,9 +4091,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     }
                 }
 
-				
 
-				contest.setProjectResources(resources);
+
+                contest.setProjectResources(resources);
 
                 contest.getProjectHeader()
                        .setTcDirectProjectId(tcDirectProjectId);
@@ -4119,7 +4120,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.setId(projectData.getProjectHeader().getId());
                 contest.setAssetDTO(assetDTO);
 
-		           // set null to avoid cycle
+                   // set null to avoid cycle
                 contest.getAssetDTO().setDependencies(null);
                 if (contest.getAssetDTO().getForum() != null)
                 {
@@ -4129,13 +4130,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 {
                     contest.getAssetDTO().getLink().setCompVersion(null);
                 }
-                if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0)
-                {
-                    for (CompDocumentation doc : contest.getAssetDTO().getDocumentation())
-                    {
-                        doc.setCompVersion(null);
-                    }
-                }
+
+                // need to remove loops before returning
+                removeDocumentationLoops(contest);
 
                 // set project start date in production date
                 contest.getAssetDTO()
@@ -4150,12 +4147,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contestEligibility.setGroupId(getEligibilityGroupId(clientId));
 
                 projectServices.createPrivateProjectRoleTermsOfUse(contest.getProjectHeader().getId(), clientId);
-                
+
                 contestEligibilityManager.create(contestEligibility);
-               
+
             }
 
-	    if (creatingDevContest) {
+        if (creatingDevContest) {
                 devContest.setAssetDTO(contest.getAssetDTO());
                 devContest.getProjectHeader().getProperties().putAll(
                     contest.getDevelopmentProjectHeader().getProperties());
@@ -4183,9 +4180,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.error("Operation failed in the contest service facade.", e);
             throw new ContestServiceException("Operation failed in the contest service facade.",
                 e);
-	    } catch (ContestEligibilityPersistenceException e) {
-		    sessionContext.setRollbackOnly();
-		    logger.error("Operation failed in the contest service facade.", e);
+        } catch (ContestEligibilityPersistenceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error("Operation failed in the contest service facade.", e);
                 throw new ContestServiceException ("Cannot save contest eligibility.", e) ;
         } catch (Exception e) {
             sessionContext.setRollbackOnly();
@@ -4252,7 +4249,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         throw new ContestServiceException("No write permission on contest");
                     }
 
-                    if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
+                    if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null
                       && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
                       && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
                     {
@@ -4264,7 +4261,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     }
                 }
 
-                
+
 
                 Set phaseset = contest.getProjectPhases().getPhases();
                 com.topcoder.project.phases.Phase[] phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
@@ -4286,7 +4283,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         String.valueOf(p.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.
-		        projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
+                projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
 
                 contest.setProjectHeader(projectData.getProjectHeader());
                 contest.setProjectPhases(projectData);
@@ -4315,20 +4312,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     if (rst != -1) {
                         SoftwareCompetition developmentContest = getSoftwareContestByProjectId(rst);
                         Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
-                        XMLGregorianCalendar elevenDaysLater = 
+                        XMLGregorianCalendar elevenDaysLater =
                             ((XMLGregorianCalendar)(productionDate.clone()));
                         elevenDaysLater.add(elevenDay);
                         developmentContest.getAssetDTO().setProductionDate(elevenDaysLater);
                         developmentContest.setProjectHeaderReason("Casade update from corresponding design contest");
                         updateSoftwareContest(developmentContest, tcDirectProjectId);
                     }
-                }    */        
-            } 
+                }    */
+            }
 
             // set project start date in production date
             contest.getAssetDTO()
                    .setProductionDate(getXMLGregorianCalendar(
                     contest.getProjectPhases().getStartDate()));
+
+            // need to remove loops before returning
+            removeDocumentationLoops(contest);
+
             logger.debug("Exit updateSoftwareContest");
 
             return contest;
@@ -4711,7 +4712,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCperm(data.getCperm());
                 newData.setSpecReviewStatus(data.getSpecReviewStatus());
                 newData.setMilestoneDate(data.getMilestoneDate());
-		ret.add(newData);
+                ret.add(newData);
             }
         }
 
@@ -4735,7 +4736,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
- 	    newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+            newData.setSpecReviewStatus(data.getSpecReviewStatus());
             newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
@@ -4910,13 +4911,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getAssetDTO().getLink().setCompVersion(null);
             }
 
-            if ((contest.getAssetDTO().getDocumentation() != null) &&
-                    (contest.getAssetDTO().getDocumentation().size() > 0)) {
-                for (CompDocumentation doc : contest.getAssetDTO()
-                                                    .getDocumentation()) {
-                    doc.setCompVersion(null);
-                }
-            }
+            // need to remove loops before returning
+            removeDocumentationLoops(contest);
 
             logger.debug("Exit getSoftwareContestByProjectId (" + projectId +
                 ")");
@@ -4924,23 +4920,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return contest;
         } catch (ProjectServicesException pse) {
             logger.error("Fail to get project data from project services.", pse);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project data from project services.",
                 pse);
         } catch (NumberFormatException nfe) {
             logger.error("the properites 'Version ID' is not of Long value in project.",
                 nfe);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("the properites 'Version ID' is not of Long value in project.",
                 nfe);
         } catch (EntityNotFoundException e) {
             logger.error("the version id does not exist.", e);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("the version id does not exist.",
                 e);
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Fail to get project asset.", e);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project asset.", e);
         }
     }
@@ -6166,29 +6162,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         logger.info("Enter: " + methodName);
 
         boolean eligible = false;
-    	
-    	try {
-			List<ContestEligibility> eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
-			eligible = contestEligibilityValidationManager.validate(userId, eligibilities);
-		} catch (ContestEligibilityPersistenceException e) {
+
+        try {
+            List<ContestEligibility> eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
+            eligible = contestEligibilityValidationManager.validate(userId, eligibilities);
+        } catch (ContestEligibilityPersistenceException e) {
             logger.error(e.getMessage(), e);
             throw new ContestServiceException(e.getMessage(), e);
-		} catch (ContestEligibilityValidationManagerException e) {
+        } catch (ContestEligibilityValidationManagerException e) {
             logger.error(e.getMessage(), e);
             throw new ContestServiceException(e.getMessage(), e);
-		}
-    	    	
+        }
+
         logger.info("Exit: " + methodName);
-    	return eligible;
+        return eligible;
     }
 
     /**
      * Find eligibility name for the client.
-     * 
+     *
      * @param clientId;
-     * 			The ID of the client.
+     *             The ID of the client.
      * @return
-     * 			The name of the eligibility group.
+     *             The name of the eligibility group.
      * @since 1.2.3
      */
     public String getEligibilityName(long clientId) {
@@ -6238,7 +6234,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.info("Exit: " + methodName);
         }
     }
-    
+
+    /**
+     * Private helper method to remove loops within documentation collection in AssetDTO
+     *
+     * @param contest the contest which needs loops removal
+     *
+     * @since 1.3.4
+     */
+    private void removeDocumentationLoops(SoftwareCompetition contest) {
+        if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0) {
+            for (CompDocumentation doc : contest.getAssetDTO().getDocumentation()) {
+                doc.setCompVersion(null);
+            }
+        }
+    }
+
     /**
      * Returns whether the contest is private.
      *
