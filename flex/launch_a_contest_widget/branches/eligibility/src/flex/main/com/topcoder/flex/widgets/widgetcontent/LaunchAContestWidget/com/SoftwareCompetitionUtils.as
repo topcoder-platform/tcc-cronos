@@ -789,7 +789,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             } 
             
             if (bonusPercentage && !isNaN(Number(bonusPercentage))) {
-                return (firstPlacePrize) * Number(bonusPercentage);
+                return (firstPlacePrize + secondPlacePrize) * Number(bonusPercentage);
             } else {
                 return 0;
             }
@@ -886,7 +886,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
          * @since 1.0.2
          */
         public function calculateDRPoint(firstPlacePrize:Number, secondPlacePrize:Number, reliabilityPrize:Number):Number {
-            return (firstPlacePrize + secondPlacePrize + reliabilityPrize) * 0.20;
+            return (firstPlacePrize + secondPlacePrize + reliabilityPrize) * 0.25;
         }
         
         public function getCompetitionType(id:Number):String {
