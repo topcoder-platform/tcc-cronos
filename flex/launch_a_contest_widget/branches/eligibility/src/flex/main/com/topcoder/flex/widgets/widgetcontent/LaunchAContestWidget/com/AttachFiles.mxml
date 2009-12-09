@@ -173,7 +173,9 @@
                         return;
                     }
 
-                    if (!this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles) {
+                  if (!this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles 
+                       || this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.length == 0) {
+
                         uploadFilesVBox.removeAllChildren();
     
                         fileToUpload.htmlText="";
