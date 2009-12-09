@@ -513,8 +513,8 @@
                     }
                 }
 
-                mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
-                mainWidget.competition.drPoints = new Number(new Number(sum * 0.1).toFixed(2));
+                mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.25).toFixed(2));
+                mainWidget.competition.drPoints = new Number(new Number(sum * 0.25).toFixed(2));
 
                 // update summary box
                 mainWidget.updateSummary();
