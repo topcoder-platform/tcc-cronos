@@ -234,8 +234,8 @@
                         this[inptName].text="";
                     }
                     
-                    firstPlace.text="800";
-                    secondPlace.text="300";
+                    //firstPlace.text="800";
+                    //secondPlace.text="300";
                     
                     // sets multi round contest flag
                     if (mainWidget.competition && mainWidget.competition.contestData) {
@@ -854,6 +854,8 @@
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
                         adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee; // BUGR-1737
+                        firstPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).firstPlaceCost;
+                        secondPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).secondPlaceCost;
 			            s_updateAmount(true);
                     }
                 }
@@ -1520,12 +1522,12 @@
                              horizontalGap="0">
                         <mx:TextInput id="firstPlace"
                                       width="120"
-                                      text="800"
+                                      text=""
                                       change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="secondPlace"
                                       width="120"
-                                      text="300"
+                                      text=""
                                       change="s_updateAmount(false)"
                                       maxChars="4"/>
                         <mx:TextInput id="thirdPlace"
