@@ -4178,13 +4178,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 {
                     contest.getAssetDTO().getLink().setCompVersion(null);
                 }
-                if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0)
-                {
-                    for (CompDocumentation doc : contest.getAssetDTO().getDocumentation())
-                    {
-                        doc.setCompVersion(null);
-                    }
-                }
+
+                // need to remove loops before returning
+                removeDocumentationLoops(contest);
 
                 // set project start date in production date
                 contest.getAssetDTO()
@@ -4343,6 +4339,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.setProjectData(projectData);
                 contest.setId(projectData.getProjectHeader().getId());
 
+                long forumId = projectServices.getForumId(projectData.getProjectHeader().getId());
+                if (forumId > 0 && createForum)
+                {
+                    updateForumName(forumId, contest.getAssetDTO().getName());
+                }
+
                 com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
 
                 // this is to avoid cycle
@@ -4372,6 +4374,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contest.getAssetDTO()
                    .setProductionDate(getXMLGregorianCalendar(
                     contest.getProjectPhases().getStartDate()));
+
+            // need to remove loops before returning
+            removeDocumentationLoops(contest);
+
             logger.debug("Exit updateSoftwareContest");
 
             return contest;
@@ -4953,13 +4959,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getAssetDTO().getLink().setCompVersion(null);
             }
 
-            if ((contest.getAssetDTO().getDocumentation() != null) &&
-                    (contest.getAssetDTO().getDocumentation().size() > 0)) {
-                for (CompDocumentation doc : contest.getAssetDTO()
-                                                    .getDocumentation()) {
-                    doc.setCompVersion(null);
-                }
-            }
+            // need to remove loops before returning
+            removeDocumentationLoops(contest);
 
             logger.debug("Exit getSoftwareContestByProjectId (" + projectId +
                 ")");
@@ -6281,7 +6282,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.info("Exit: " + methodName);
         }
     }
-    
+
+    /**
+     * Private helper method to remove loops within documentation collection in AssetDTO
+     *
+     * @param contest the contest which needs loops removal
+     *
+     * @since 1.3.4
+     */
+    private void removeDocumentationLoops(SoftwareCompetition contest) {
+        if (contest.getAssetDTO().getDocumentation() != null && contest.getAssetDTO().getDocumentation().size() > 0) {
+            for (CompDocumentation doc : contest.getAssetDTO().getDocumentation()) {
+                doc.setCompVersion(null);
+            }
+        }
+    }
+
     /**
      * Returns whether the contest is private.
      *
@@ -6517,6 +6533,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         } catch (Exception e) {
             logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
+            logger.error(e);
+        }
+    }
+
+
+    /**
+     * update forum name
+     *
+     *
+     * @param asset
+     *            The asset DTO to user
+     * @param userId
+     *            userId The user id to use
+     * @param projectCategoryId
+     *            The project category id to
+     * @return The long id of the created forum
+     */
+    private void updateForumName(long forumId, String name) {
+        logger.info("updateForumName (" + forumId + ", " + name + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.updateComponentName(forumId, name);
+            logger.debug("Exit updateForumName (" + forumId + ", " + name + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not updateForumName for " + forumId + ", " + name );
             logger.error(e);
         }
     }
