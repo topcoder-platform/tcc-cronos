@@ -328,9 +328,8 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
                     CONFLUENCE_SERVICE_ADMIN_USER_NAME_KEY, true);
 
             // get the value for confluence admin password.
-            // REMOVE this checking, pwd can be null/empty
-            //this.confluenceServiceAdminUserPassword = Helper.getStringPropertyValue(configNamespace,
-            //        CONFLUENCE_SERVICE_ADMIN_USER_PASSWORD_KEY, true);
+            this.confluenceServiceAdminUserPassword = Helper.getStringPropertyValue(configNamespace,
+                    CONFLUENCE_SERVICE_ADMIN_USER_PASSWORD_KEY, false);
 
             // get the value for confluence groups for normal users (it's comma separated values)
             this.normalUserConfluenceGroups = Helper.getStringPropertyValue(configNamespace,
