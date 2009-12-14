@@ -225,6 +225,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     public static final long STANDARD_CCA_TERMS_ID = 20713;
     
 
+    /**
+     * <p>
+     * Represents the default value for standard cca confidentiality terms_id. 
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long MANAGER_TERMS_ID = 20794;
+
 
 	/**
      * <p>
@@ -4135,11 +4144,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
                 preparedStatement.setLong(1, projectId);
                 preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
-                for (int roleId : ALL_ROLES_ID) { 
-                    preparedStatement.setInt(2, roleId);
-                    preparedStatement.execute(); 
+                for (int roleId : ALL_ROLES_ID) {
+                    // no manager for cca
+                    if (roleId != MANAGER_ROLE_ID)
+                    {
+                        preparedStatement.setInt(2, roleId);
+                        preparedStatement.execute(); 
+                    }
                 }
             } 
+
+            // always insert for manager
+            createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);
             
             // always insert standard
             long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
@@ -4245,13 +4261,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             StringBuffer query = new StringBuffer(1024);
             query.append("delete ");
             query.append("from project_role_terms_of_use_xref ");
-            query.append("where project_id = ? and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
+            query.append("where project_id = ? and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
 
             ps = conn.prepareStatement(query.toString());
             ps.setLong(1, projectId);
             ps.setLong(2, submitterTermsId);
             ps.setLong(3, reviewerTermsId);
             ps.setLong(4, STANDARD_CCA_TERMS_ID);
+            ps.setLong(5, MANAGER_TERMS_ID);
 
             ps.executeUpdate();
             generateProjectRoleTermsOfUseAssociations(projectId, projectCategoryId, standardCCA, conn);
