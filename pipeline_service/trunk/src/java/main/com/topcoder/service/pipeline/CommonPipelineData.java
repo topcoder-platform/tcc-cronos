@@ -6,6 +6,7 @@ package com.topcoder.service.pipeline;
 import java.util.Date;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -20,10 +21,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * @version 1.0
  * @since Cockpit Pipeline Release Assembly 1 v1.0
  */
-public class CommonPipelineData implements Comparable<CommonPipelineData>{
+public class CommonPipelineData implements Serializable, Comparable<CommonPipelineData>{
 
     /** Generated serial version id. */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1154431097193493913L;
 
     /** Represents the pipeline info id. */
     private Long pipelineInfoId;
