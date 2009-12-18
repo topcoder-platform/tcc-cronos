@@ -1419,7 +1419,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * 
      * @since 1.3
      */
-    public Project createSpecReview(long projectId, double specReviewPrize, String operator) 
+    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator) 
         throws ProjectServicesException {
 
         // check operator
@@ -1429,7 +1429,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             operator + ") method.";
         Util.log(logger, Level.INFO, "Enters " + method);
 
-        Project specReview = null;
+        FullProjectData specReview = null;
         try {
             specReview = getProjectServices().createSpecReview(projectId, specReviewPrize, operator);
         } catch (ProjectServicesException e) {
@@ -1560,5 +1560,91 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
     }
 
 
+    /**
+     * <p>
+     * update phases
+     * </p>
+     *
+     * @project project 
+     * @operator operator
+     *
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public void updatePhases(com.topcoder.project.phases.Project project, String operator) throws ProjectServicesException
+    {
+
+        String method = "ProjectServicesBean#updatePhases(" + project.getId() + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        
+        try {
+            getProjectServices().updatePhases(project, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * Update the given project 
+     *
+     * @param project
+     *            The project instance to be updated into the database.
+     * @param reason
+     *            The update reason. It will be stored in the persistence for
+     *            future references.
+     * @param operator
+     *            The modification user of this project.
+     * @throws IllegalArgumentException
+     *             if any input is null or the operator is empty string.
+     * @throws PersistenceException
+     *             if error occurred while accessing the database.
+     * @throws ValidationException
+     *             if error occurred while validating the project instance.
+     */
+    public void updateProject(Project project, String reason, String operator) throws ProjectServicesException
+    {
+        String method = "ProjectServicesBean#updateProject(" + project.getId() + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        
+        try {
+            getProjectServices().updateProject(project, reason, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
+     /**
+     * <p>
+     * check if it is dev only 
+     * </p>
+     *
+     * @projectId  project id
+     *
+     * @return boolean
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public boolean isDevOnly(long projectId) throws ProjectServicesException
+    {
+        String method = "ProjectServicesBean#isDevOnly(" + projectId + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        
+        try {
+            return getProjectServices().isDevOnly(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
 
 }

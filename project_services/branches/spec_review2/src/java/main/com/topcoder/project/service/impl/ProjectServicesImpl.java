@@ -2725,7 +2725,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public Project createSpecReview(long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator)
         throws ProjectServicesException {
 
         // check operator
@@ -2748,6 +2748,7 @@ public class ProjectServicesImpl implements ProjectServices {
         }
 
         Project specReview = null;
+        FullProjectData projectData = null;
         try {
             // get original project data
             FullProjectData fullProjectData = getFullProjectData(projectId);
@@ -2778,8 +2779,9 @@ public class ProjectServicesImpl implements ProjectServices {
             // set new properties for the spec review
             projectHeader.setProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY,
                 project.getProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
-            projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
-                AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
+            // Dont turn on yet
+            //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
+            //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
             projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
 
             // create mock ProjectSpec object
@@ -2813,7 +2815,7 @@ public class ProjectServicesImpl implements ProjectServices {
             extendedResources[extendedResources.length - 1] = submitter;
             
             // create spec review project
-            FullProjectData projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources, 
+            projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources, 
                 operator);
 
             // link it to the original project
@@ -2828,7 +2830,7 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
 
-        return specReview;
+        return projectData;
     }
 
     /**
@@ -3023,6 +3025,105 @@ public class ProjectServicesImpl implements ProjectServices {
             log(Level.ERROR, "ReviewManagementException occurred in " + method);
             throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
         } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+     /**
+     * <p>
+     * update phases
+     * </p>
+     *
+     * @project project 
+     * @operator operator
+     *
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public void updatePhases(com.topcoder.project.phases.Project project, String operator) throws ProjectServicesException
+    {
+        String method = "ProjectServicesImpl#updatePhases(" + project.getId() + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+      
+        try {
+            phaseManager.updatePhases(project, operator);
+
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating PhaseManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+
+    /**
+     * Update the given project 
+     *
+     * @param project
+     *            The project instance to be updated into the database.
+     * @param reason
+     *            The update reason. It will be stored in the persistence for
+     *            future references.
+     * @param operator
+     *            The modification user of this project.
+     * @throws IllegalArgumentException
+     *             if any input is null or the operator is empty string.
+     * @throws PersistenceException
+     *             if error occurred while accessing the database.
+     * @throws ValidationException
+     *             if error occurred while validating the project instance.
+     */
+    public void updateProject(Project project, String reason, String operator) throws ProjectServicesException
+    {
+        String method = "ProjectServicesImpl#updateProject(" + project.getId() + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+      
+        try {
+            projectManager.updateProject(project, reason, operator);
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating PhaseManager.", ex);
+        } 
+        catch (ValidationException ex) {
+            log(Level.ERROR, "ValidationException occurred in " + method);
+            throw new ProjectServicesException("ValidationException occurred when operating PhaseManager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+
+    /**
+     * <p>
+     * check if it is dev only 
+     * </p>
+     *
+     * @projectId  project id
+     *
+     * @return boolean
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public boolean isDevOnly(long projectId) throws ProjectServicesException
+    {
+        String method = "ProjectServicesImpl#isDevOnly(" + projectId + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+      
+        try {
+            return projectManager.isDevOnly(projectId);
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating PhaseManager.", ex);
+        } 
+       finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }

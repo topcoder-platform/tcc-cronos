@@ -735,7 +735,7 @@ public interface ProjectServices {
      *
      * @since 1.3
      */
-    public Project createSpecReview(long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator)
         throws ProjectServicesException;
 
     /**
@@ -792,4 +792,52 @@ public interface ProjectServices {
     public void addReviewComment(long reviewId, Comment comment, String operator)
         throws ProjectServicesException;
 
+
+    /**
+     * <p>
+     * update phases
+     * </p>
+     *
+     * @project project 
+     * @operator operator
+     *
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public void updatePhases(com.topcoder.project.phases.Project project, String operator) throws ProjectServicesException;
+
+
+    /**
+     * Update the given project 
+     *
+     * @param project
+     *            The project instance to be updated into the database.
+     * @param reason
+     *            The update reason. It will be stored in the persistence for
+     *            future references.
+     * @param operator
+     *            The modification user of this project.
+     * @throws IllegalArgumentException
+     *             if any input is null or the operator is empty string.
+     * @throws PersistenceException
+     *             if error occurred while accessing the database.
+     * @throws ValidationException
+     *             if error occurred while validating the project instance.
+     */
+    public void updateProject(Project project, String reason, String operator) throws ProjectServicesException;
+
+     /**
+     * <p>
+     * check if it is dev only 
+     * </p>
+     *
+     * @projectId  project id
+     *
+     * @return boolean
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public boolean isDevOnly(long projectId) throws ProjectServicesException;
 }
