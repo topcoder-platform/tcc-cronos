@@ -260,6 +260,11 @@ import com.topcoder.util.log.LogManager;
  *  - Added support for new multi-round type fields.
  *  - Status transition is no longer checked in updateContestStatus method.
  * </p>
+ * <p>
+ * Version 1.4.1(Cockpit spec Review - stage 2 v1.0)
+   - update the getSimpleProjectContestData three methods to get the spec review status.
+ * </p>
+ * <p>
  * <strong>Thread safety:</strong> The variables in this class are initialized
  * once in the initialize method after the bean is instantiated by EJB
  * container. They would be never be changed afterwards. So they won't affect
@@ -271,7 +276,7 @@ import com.topcoder.util.log.LogManager;
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
  * @author saarixx, murphydog, pulky
- * @version 1.4
+ * @version 1.4.1
  * @since 1.0
  */
 @Stateless
@@ -3228,11 +3233,17 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
 					+ " ),0)) as pperm, "
 					
-					+ " NVL((select (select name " 
-		            		+ "          from spec_review_status_type_lu as c " 
-		            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-		            		+ " from spec_review as sr " 
-		            		+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status, "
+					/*spec review id for studio*/
+                    + "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
+                    /*spec review status for studio*/
+                    + "(select count(*) "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1 "
+                    + " and sr.review_status_type_id in (3, 4, 5)) as spec_review_pending, "
+                    /*spec review status */
+                    + "(select sr.review_status_type_id "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
 			/* Added in cockpit R 10 */
 			+ " (select milestone_date from contest_multi_round_information as cmri "
 			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
@@ -3254,6 +3265,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                         .get(i);
                 if (data != null
                         && (data.getCperm() != null || data.getPperm() != null)) {
+
+                    if (data.getSpecReviewStatusTypeId() == null) {
+                        data.setSpecReviewStatus("Assigning Reviewer");
+                    } else if (data.getSpecReviewPending() == 1) {
+                        data.setSpecReviewStatus("Reviewing");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 1) {
+                        data.setSpecReviewStatus("Spec Review Passed");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 2) {
+                        data.setSpecReviewStatus("Spec Review Failed");
+                    }
                     result.add(data);
                 }
 
@@ -3334,16 +3355,22 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
 					+ " ),0)) as pperm, "
 					
-					+ " NVL((select (select name " 
-                    			+ "          from spec_review_status_type_lu as c " 
-                    			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-                    			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
-					
-			/* Added in cockpit R 10 */
-			+ " (select milestone_date from contest_multi_round_information as cmri "
-			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-			/* R 10 end*/
+					/*spec review id for studio*/
+					+ "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
+                    /*spec review status for studio*/
+                    + "(select count(*) "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1 "
+                    + " and sr.review_status_type_id in (3, 4, 5)) as spec_review_pending, "
+					/*spec review status */
+					+ "(select sr.review_status_type_id "
+					+ " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+					+ " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
+    
+        			/* Added in cockpit R 10 */
+        			+ " (select milestone_date from contest_multi_round_information as cmri "
+        			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+        			/* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3364,6 +3391,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                         .get(i);
                 if (data != null
                         && (data.getCperm() != null || data.getPperm() != null)) {
+                    if (data.getSpecReviewStatusTypeId() == null) {
+                        data.setSpecReviewStatus("Assigning Reviewer");
+                    } else if (data.getSpecReviewPending() == 1) {
+                        data.setSpecReviewStatus("Reviewing");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 1) {
+                        data.setSpecReviewStatus("Spec Review Passed");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 2) {
+                        data.setSpecReviewStatus("Spec Review Failed");
+                    }
                     result.add(data);
                 }
             }
@@ -3443,11 +3479,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " from user_permission_grant as upg  where resource_id=p.project_id and user_id = " + createdUser 
 					+ " ),0)) as pperm, "
 					
-					+ " NVL((select (select name " 
-                    			+ "          from spec_review_status_type_lu as c " 
-                    			+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-                    			+ " from spec_review as sr " 
-                    			+ " where sr.is_studio = 1 and sr.contest_id = c.contest_id), 'PENDING') as spec_review_status,"
+                    /*spec review id for studio*/
+                    + "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
+                    /*spec review status for studio*/
+                    + "(select count(*) "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1 "
+                    + " and sr.review_status_type_id in (3, 4, 5)) as spec_review_pending, "
+                    /*spec review status */
+                    + "(select sr.review_status_type_id "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
+ 
 					
 			/* Added in cockpit R 10 */
 			+ " (select milestone_date from contest_multi_round_information as cmri "
@@ -3472,6 +3515,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                         .get(i);
                 if (data != null
                         && (data.getCperm() != null || data.getPperm() != null)) {
+
+                    if (data.getSpecReviewStatusTypeId() == null) {
+                        data.setSpecReviewStatus("Assigning Reviewer");
+                    } else if (data.getSpecReviewPending() == 1) {
+                        data.setSpecReviewStatus("Reviewing");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 1) {
+                        data.setSpecReviewStatus("Spec Review Passed");
+                    } else if (data.getSpecReviewStatusTypeId().intValue() == 2) {
+                        data.setSpecReviewStatus("Spec Review Failed");
+                    }
                     result.add(data);
                 }
 
