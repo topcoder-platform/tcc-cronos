@@ -334,3 +334,22 @@
 	over-skin: Embed("../assets/icon-review-needed.png");
 	down-skin: Embed("../assets/icon-review-needed.png");
 }
+
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.assigningSpecReviewer {
+	color : #C1A100;
+}
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.passSpecReview {
+	color : #479B55;
+}
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.failSpecReview {
+	color : #FF0000;
+}

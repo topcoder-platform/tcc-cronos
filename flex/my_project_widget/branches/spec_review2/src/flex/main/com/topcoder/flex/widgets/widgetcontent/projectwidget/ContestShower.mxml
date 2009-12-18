@@ -14,9 +14,11 @@
         - remove spec status column. 
      Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
         - Change the columns
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - remove the 'spec review' column.
      @author TCSDEVELOPER
      @since My Project Widget Overhaul
-     @version 1.0.2
+     @version 1.0.3
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
@@ -193,11 +195,13 @@
         <mx:Label width="10%"
                   textAlign="center"
                   id="lblType"
-                  text="Type"/>          
+                  text="Type"/>
+        <!--
         <mx:Label width="10%"
                   textAlign="center"
                   id="lblSpecReview"
-                  text="Spec Review"/>          
+                  text="Spec Review"/>
+        -->
         <mx:Label width="15%"
                   textAlign="center"
                   id="lblPlaceHolder"

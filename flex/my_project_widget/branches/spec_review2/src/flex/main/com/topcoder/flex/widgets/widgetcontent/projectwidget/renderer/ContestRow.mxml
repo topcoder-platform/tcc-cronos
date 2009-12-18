@@ -20,10 +20,14 @@
      Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
         - Look and feel changed to match the prototype.
         - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - remove the 'spec review' column.
+        - add the spec review status
+        - add one more drop down option
 
      @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
-     @version 1.0.2
+     @version 1.0.3
 -->
 <mx:VBox 
     xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -36,6 +40,7 @@
     backgroundSize="100%">
     <mx:Script>
         <![CDATA[
+            import mx.utils.StringUtil;
             import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
             import mx.controls.ButtonLabelPlacement;
             import com.topcoder.flex.widgets.model.IWidget;
@@ -170,8 +175,19 @@
                 {
                     greenWidth = 0;
                     yellowWidth = 0;
-		}
-		initActionPopBtn();
+                }
+
+                //only if it is 'draft' or 'scheduled', we are going to show the spec review status
+                //since 1.0.3
+                if (contest.status.toLowerCase() == "draft" || contest.status.toLowerCase() == "scheduled") {
+                    //if no spec review status, then
+                    if (contest.reviewStatus && StringUtil.trim(contest.reviewStatus).toLowerCase() != 'null' 
+                                             && mx.utils.StringUtil.trim(contest.reviewStatus) != '') {
+                        specReviewStatusTxt.visible = true;
+                    }
+                }
+
+                initActionPopBtn();
             }
 
             /**
@@ -248,7 +264,7 @@
              * 
              * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
              */
-            private function getReviewStatusBtnStyle(status:String):String {
+/*            private function getReviewStatusBtnStyle(status:String):String {
                 var styleName:String="";
                 if (status == "PASSED") {
                     styleName="reviewPassedIcon";
@@ -260,7 +276,36 @@
 
                 return styleName;
             }
-            
+*/
+
+            /**
+             * Get the style for the spec review status.
+             * @param the status
+             * @return the style name
+             * @since 1.0.3
+             */
+            private function getReviewStatusStyle(status:String):String {
+                var styleName:String="";
+                if (status == "Assigning Reviewer") {
+                    styleName="assigningSpecReviewer";
+                } else if (status == "Spec Review Failed") {
+                    styleName="failSpecReview";
+                } else if (status == "Spec Review Passed"){
+                    styleName="passSpecReview";
+                } else if (status == "Reviewing"){
+                    styleName="assigningSpecReviewer";
+                }
+                return styleName;
+            }
+            /**
+             * Format the spec review status.
+             * @param the status
+             * @return the status name
+             * @since 1.0.3
+             */
+            private function getReviewStatus(status:String):String {
+                return status + "...";
+            }
             /**
              * Shows the contest monitor widget for this contest row.
              */
@@ -373,42 +418,95 @@
 		BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");
                 var labels:Object;
                 if (editable()) {
-                    labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}];        
+                    labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}, {label:"View Spec Review"}];        
                 } else {
-                    labels = [{label: "View"}, {label: "Submissions"}];        
+                    labels = [{label: "View"}, {label: "Submissions"}, {label:"View Spec Review"}];        
                 }
-                actionMenu.dataProvider = labels;
-                actionMenu.selectedIndex = 0;       
-                actionMenu.addEventListener("itemClick", itemClickHandler);
-                actionPopBtn.popUp = actionMenu;
-                actionPopBtn.label = actionMenu.dataProvider[actionMenu.selectedIndex].label;
-            }
+                
             
-            /**
-             * Handler for pop up button item selection.
-             */           
-            private function itemClickHandler(event:MenuEvent):void {    
-	    	actionPopBtn.close();
-		if (event != null) {
-			sltIndex = event.index;
-		}
-                if (!editable() && sltIndex == 1) {
-                    sltIndex = 2;
+            actionMenu.dataProvider = labels;
+            actionMenu.selectedIndex = 0;
+            actionMenu.addEventListener("itemClick", itemClickHandler);
+            actionPopBtn.popUp = actionMenu;
+            actionPopBtn.label = actionMenu.dataProvider[actionMenu.selectedIndex].label;
+        }
+        /**
+         * Handler for pop up button item selection.
+         * Add 'View Spec Review' in version 1.0.3.
+         */
+        private function itemClickHandler(event:MenuEvent):void {
+            actionPopBtn.close();
+            if (event != null) {
+               sltIndex = event.index;
+            }
+            var editable:Boolean = editable();
+            var canViewSpecReviewOption:Boolean = canViewSpecReview();            
+
+            if (!editable && sltIndex == 1) {
+                sltIndex = 2;
+            }
+            if (!editable && sltIndex == 2) {
+                sltIndex = 3;
+            }
+
+            if (sltIndex == 0) {
+                //View contest
+                handleClick();
+            } else if (sltIndex == 1) {
+                //Edit
+                editContest();
+            } else if (sltIndex == 2) {
+                //View submisions
+                if (contest.type == "Studio") {
+                    showSubmission(null);
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id), "_blank");
                 }
-                if (sltIndex == 0) {
-                    //View contest
-                    handleClick();
-                } else if (sltIndex == 1) {
-                    //Edit
-                    editContest();
-                } else if (sltIndex == 2) {
-                    //View submisions
-                    if (contest.type == "Studio") {
-                        showSubmission(null);
+            } else if (sltIndex == 3) {
+                if (contest.type == "Studio") {
+                    if (canViewSpecReviewOption) {
+                        //open review screen in launch contest widget
+                        openReviewScreen();
                     } else {
-                        navigateToURL(new URLRequest(softwareConetestORurl + contest.id), "_blank");
-                    }                    
-                }            }
+                        Helper.showAlertMessage("You must activate your contest prior to getting a spec review. " +
+                                                "Please Edit your contest and complete the activation process", 120);
+                    }
+                } else {
+                    if (canViewSpecReviewOption && contest.specReviewProjectId) {
+                        //open spec reviwe in OR
+                        navigateToURL(new URLRequest(softwareConetestORurl + contest.specReviewProjectId), "_blank");
+                    } else {
+                        Helper.showAlertMessage("You must activate your contest prior to getting a spec review. " +
+                                                "Please Edit your contest and complete the activation process", 120);
+                    }
+                }
+            }
+        }
+        /**
+         *
+         * Added for Cockpit Spec Review - Stage 2 v1.0.
+         * Show 'View Spec Review' button for software/studio contests also whose status is not 'draft'/'inactive'.
+         *
+         * @return return true if user can 'view spec review'
+         *
+         */
+        private function canViewSpecReview():Boolean {
+            if (!contest || !contest.type || !contest.status)
+            {
+                return false;
+            }
+            if ((contest.type.toLocaleLowerCase() == "studio"
+                    && (contest.status.toLocaleLowerCase() == "draft"
+                            || contest.status.toLocaleLowerCase() == "unactive - not yet published"))
+                || (contest.type.toLocaleLowerCase() != "studio"
+                    && (contest.status.toLocaleLowerCase() == "draft"
+                            || contest.status.toLocaleLowerCase() == "inactive"))) {
+                return false;
+            }
+            return true;
+        }
+
+
 
             /**
              * Handler for forum link click.
@@ -538,7 +636,7 @@
              *
              * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
              */
-            private function openReviewScreen(event:MouseEvent):void {
+            private function openReviewScreen(/*event:MouseEvent*/):void {
                 if (!editable()) {
                     // TCCC-1473
                     // disable review button click if launch action is not allowed.
@@ -591,14 +689,16 @@
                  id="lblType"
                  htmlText="{contest.type}"/>
         <mx:HBox width="10%">
-            <mx:Spacer width="100%"/> 
+            <mx:Spacer width="100%"/>
+            <!--
             <mx:Button id="reviewStatusBtn"
                        styleName="{getReviewStatusBtnStyle(contest.reviewStatus)}"
                        width="20"
                        height="20"
                        visible="true"
-                       click="openReviewScreen(event)"/>   
-            <mx:Spacer width="100%"/> 
+                       click="openReviewScreen(event)"/>
+            <mx:Spacer width="100%"/>
+            -->
         </mx:HBox>
         <mx:PopUpButton 
             id="actionPopBtn" 
@@ -663,8 +763,8 @@
                         label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
                 </mx:VBox>
             </mx:HBox>
-        </mx:HBox>  
-        <mx:HBox width="{capacityWidth}">
+        </mx:HBox>
+        <mx:VBox verticalGap="0" horizontalScrollPolicy="off" width="{capacityWidth}" >
             <!-- Masked Surface and Filter for the Capacity Indicator -->
             <degrafa:Surface
                 id="capacitySurface"
@@ -756,7 +856,13 @@
 
                 </degrafa:filters>
             </degrafa:Surface>
-        </mx:HBox>
+			<mx:Spacer height="2" />
+			<mx:HBox paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" horizontalAlign="center" width="100%">
+				<mx:Label id="specReviewStatusTxt" text="{getReviewStatus(contest.reviewStatus)}"
+                          styleName="{getReviewStatusStyle(contest.reviewStatus)}" visible="false"/>	
+			</mx:HBox>
+            
+         </mx:VBox>
         <mx:Spacer width="20%" />
     </mx:HBox>    
 </mx:VBox>

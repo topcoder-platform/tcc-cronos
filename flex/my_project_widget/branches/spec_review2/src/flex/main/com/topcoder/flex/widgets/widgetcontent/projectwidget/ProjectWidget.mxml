@@ -17,10 +17,11 @@
      Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
         - Look and feel changed to match the prototype.
         - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
-
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - Add the spec review project id
      @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
-     @version 1.0.2
+     @version 1.0.3
 -->
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                             width="100%"
@@ -457,7 +458,10 @@
                                 break;
                             }
                             if (prjArray[i].contestId != null && prjArray[i].contestId != 0) {
-                                var c:Contest=new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate, prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for, prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner, prjArray[i].milestoneDate, prjArray[i].submissionEndDate);
+                                var c:Contest= new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate,
+                                prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for,
+                                prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner,
+                                prjArray[i].milestoneDate, prjArray[i].submissionEndDate, prjArray[i].specReviewProjectId);
                                 c.permission=prjArray[i].cperm;
                                 if (prjArray[i].endDate != null) {
                                     c.date=DateUtil.parseFromString(prjArray[i].endDate);
