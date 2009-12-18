@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.FieldResult;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.persistence.SqlResultSetMapping;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -32,9 +33,13 @@ import javax.xml.datatype.DatatypeConfigurationException;
  * </p>
  *
  * Version 1.1
- * 	Add milestoneDate  for Cockpit Release Assembly 10 - My Projects v1.0
+ *  Add milestoneDate  for Cockpit Release Assembly 10 - My Projects v1.0
+ * 
+ * Version 1.2
+    Add specReviewProjectId/specReviewPending, change specReviewStatus Cockpit Spec Review - part 2 version 1.0
+ *
  * @author will.xie, TCSDEVELOPER, murphydog
- * @version 1.1
+ * @version 1.2
  */
 @SqlResultSetMapping(
         name="ContestForMyProjectResults",
@@ -55,8 +60,10 @@ import javax.xml.datatype.DatatypeConfigurationException;
                         @FieldResult(name="createUser",         column="create_user"),
                         @FieldResult(name="cperm",           column="cperm"),
                         @FieldResult(name="pperm",           column="pperm"),
-			@FieldResult(name = "specReviewStatus", column = "spec_review_status"),
-			@FieldResult(name = "milestoneDate", column = "milestone_date")
+                        @FieldResult(name = "specReviewProjectId", column = "spr_id"),
+                        @FieldResult(name = "specReviewPending", column = "spec_review_pending"),
+                        @FieldResult(name = "specReviewStatusTypeId", column = "spec_review_status"),
+                        @FieldResult(name = "milestoneDate", column = "milestone_date")
                         }
         )})
 @Entity
@@ -155,12 +162,46 @@ public class SimpleProjectContestData {
      */
     private String pperm;
 
-	 /** 
+     /** 
      * Represents the status for spec reviews. 
      * 
      * @since Cockpit Launch Contest - Inline Spec Reviews part 2
      */
+    @Transient
     private String specReviewStatus;
+
+     /** 
+     * Represents the status type id for spec reviews. 
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    private Long specReviewStatusTypeId;
+    
+    /**
+     * The spec review project id
+     * @since 1.2
+     */
+    private Long specReviewProjectId;
+    /**
+     * The spec review done time.
+     * @since 1.2
+     */
+    private int specReviewPending;
+
+    /**
+     * Returns the value of specReviewPending.
+     * @return the specReviewPending
+     */
+    public int getSpecReviewPending() {
+        return specReviewPending;
+    }
+    /**
+     * Set the value to  specReviewPending field.
+     * @param specReviewPending the specReviewPending to set
+     */
+    public void setSpecReviewPending(int specReviewPending) {
+        this.specReviewPending = specReviewPending;
+    }
 
     /**
      * The date of milestone(if exists).
@@ -531,6 +572,7 @@ public class SimpleProjectContestData {
      * 
      * @since Cockpit Launch Contest - Inline Spec Reviews part 2
      */
+    @Transient
     public String getSpecReviewStatus() {
         return specReviewStatus;
     }
@@ -543,8 +585,49 @@ public class SimpleProjectContestData {
      *            
      * @since Cockpit Launch Contest - Inline Spec Reviews part 2           
      */
+    @Transient
     public void setSpecReviewStatus(String specReviewStatus) {
         this.specReviewStatus = specReviewStatus;
+    }
+
+    /**
+     * Gets the spec review status.
+     * 
+     * @return the spec review status
+     * 
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2
+     */
+    public Long getSpecReviewStatusTypeId() {
+        return specReviewStatusTypeId;
+    }
+
+    /**
+     * Sets the spec review status.
+     * 
+     * @param specReviewStatus
+     *            the new spec review status
+     *            
+     * @since Cockpit Launch Contest - Inline Spec Reviews part 2           
+     */
+    public void setSpecReviewStatusId(Long specReviewStatusTypeId) {
+        this.specReviewStatusTypeId = specReviewStatusTypeId;
+    }
+
+
+
+    /**
+     * Returns the value of specReviewProjectId.
+     * @return the specReviewProjectId
+     */
+    public Long getSpecReviewProjectId() {
+        return specReviewProjectId;
+    }
+    /**
+     * Set the value to  specReviewProjectId field.
+     * @param specReviewProjectId the specReviewProjectId to set
+     */
+    public void setSpecReviewProjectId(Long specReviewProjectId) {
+        this.specReviewProjectId = specReviewProjectId;
     }
 
     /**
