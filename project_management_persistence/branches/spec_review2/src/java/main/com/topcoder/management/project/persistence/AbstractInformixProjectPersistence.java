@@ -127,6 +127,10 @@ import com.topcoder.util.log.Log;
  *     - Create terms for private contest
  * </p>
  * <p>
+ * Version 1.2.4 (Cockpit Spec Review - Stage 2 v1.0) changelog:
+ *    - update the getSimpleProjectContestData methods for spec review backend update.
+ * </p>
+ * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  * 
@@ -135,8 +139,8 @@ import com.topcoder.util.log.Log;
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
  * otherwise, show 'status' from db.  
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog
- * @version 1.2.3
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits
+ * @version 1.2.4
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -621,6 +625,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * Updated for Spec Reviews Finishing Touch v1.0 (Version 1.1.1)
      *  - Changed the way now spec status is queried.
+     *
+     * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
      */
 
 		private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST = " select p.project_id as contest_id, "
@@ -647,21 +653,71 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
             + " from user_permission_grant as upg  where resource_id=tcd.project_id  "
             + " ),0)) as pperm, "
-            + " NVL((select (select name " 
-            + "          from spec_review_status_type_lu as c " 
-            + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-            + " from spec_review as sr " 
-            + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
-			/* Added in cockpit R 10 */
-			+ " (select scheduled_end_time from project_phase ph "
-			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
-			/* R 10 end*/
-			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
-			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-			+ "		and p.project_status_id != 3 ";
-	
-   
-	
+
+            /* Added in cockpit R 10 */
+            + " (select scheduled_end_time from project_phase ph "
+            + " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date,"
+            /* R 10 end*/
+
+            /* updated by Cockpit Spec Review - Stage 2  - start */
+            /* sepc review project id*/
+            + "(select source_project_id from linked_project_xref where dest_project_id = p.project_id) as srprojectId,"
+            /* sepc review user */
+            + "(select count(*) from resource r, linked_project_xref linkp where linkp.dest_project_Id = p.project_id"
+            + " and linkp.link_type_id = 3 and r.project_id = linkp.source_project_id and r.resource_role_id = 4) as srr,"
+            /* reviewing status check */
+            + "(select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+            + " where ph.phase_type_id = 4 and ph.phase_status_id = 2 and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3"
+            + " and linkp.dest_project_Id = p.project_id) as sprs,"
+            /* sepc review result to find the 'required' fixed item. */
+            + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+            + " and ri.review_item_id = ric.review_item_id and comment_type_id = 3 and r.review_id in ("
+            + "        select review_id from review where resource_id in ("
+            + "           select r.resource_id from resource r, linked_project_xref linkp"
+            + "                                where linkp.dest_project_Id = p.project_id"
+            + "                                and linkp.link_type_id = 3 and r.resource_role_id = 4"
+            + "                                and r.project_id = linkp.source_project_id ))) as srResult,"
+            /* sepc review result to find the final fix 'fixed'. */
+            + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+            + "                 and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+            + "                 and ri.review_item_id = ric.review_item_id and comment_type_id  = 3 and r.review_id = ("
+            + "                 select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id))) as srfresult,"
+            /* sepc review result to find the final fix 'fixed' in response. */
+            + "(select count(*) from review r , review_comment ri where r.review_id = ri.review_id"
+            + "                 and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
+            + "                 and ri.comment_type_id = 10 and r.review_id = ("
+            + "               select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id))) as srfrresult, "
+            /* updated by Cockpit Spec Review - Stage 2  - end */
+
+            // check if phase is FF (open or close) and there is final review
+           + " (select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+           + "   where ph.phase_type_id = 10 and ph.phase_status_id in (2, 3) and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3 "
+           + "   and linkp.dest_project_Id = p.project_id "
+           + "    and exists  "
+           + "   (select * from review r , review_comment ri where r.review_id = ri.review_id"
+            + "                 and ri.comment_type_id = 10 and r.review_id = ("
+            + "               select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id)))) as hassrfr "
+
+
+            + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+            + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+                                                 // dont show spec review project
+            + "		and p.project_status_id != 3 and p.project_category_id != 27 ";
+
+
+
     /**
      * Represents the sql statement to query all project contest data for a tc project id.
      * 
@@ -673,6 +729,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * Updated for Spec Reviews Finishing Touch v1.0
      *  - Changed the way now spec status is queried.
+     *
+     *  Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
      */
 	private static final String QUERY_ALL_SIMPLE_PROJECT_CONTEST_BY_PID = " select p.project_id as contest_id, "
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
@@ -700,18 +758,68 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
     + " from user_permission_grant as upg  where resource_id=tcd.project_id"
     + " ),0)) as pperm, "
-    + " NVL((select (select name " 
-    + "          from spec_review_status_type_lu as c " 
-    + "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-    + " from spec_review as sr " 
-    + " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "	
-			/* Added in cockpit R 10 */
-			+ " (select scheduled_end_time from project_phase ph "
-			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
-			/* R 10 end*/
-	+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
-	+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-	+" and p.project_status_id != 3 and p.tc_direct_project_id= ";
+    /* Added in cockpit R 10 */
+    + " (select scheduled_end_time from project_phase ph "
+    + " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date,"
+    /* R 10 end*/
+
+    /* updated by Cockpit Spec Review - Stage 2  - start */
+    /* sepc review project id*/
+    + "(select source_project_id from linked_project_xref where dest_project_id = p.project_id) as srprojectId,"
+    /* sepc review user */
+    + "(select count(*) from resource r, linked_project_xref linkp where linkp.dest_project_Id = p.project_id"
+    + " and linkp.link_type_id = 3 and r.project_id = linkp.source_project_id and r.resource_role_id = 4) as srr,"
+    /* reviewing status check */
+    + "(select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+    + " where ph.phase_type_id = 4 and ph.phase_status_id = 2 and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3"
+    + " and linkp.dest_project_Id = p.project_id) as sprs,"
+    /* sepc review result to find the 'required' fixed item. */
+    + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+    + " and ri.review_item_id = ric.review_item_id and comment_type_id = 3 and r.review_id in ("
+    + "        select review_id from review where resource_id in ("
+    + "           select r.resource_id from resource r, linked_project_xref linkp"
+    + "                                where linkp.dest_project_Id = p.project_id"
+    + "                                and linkp.link_type_id = 3 and r.resource_role_id = 4"
+    + "                                and r.project_id = linkp.source_project_id ))) as srResult,"
+    /* sepc review result to find the final fix 'fixed'. */
+    + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+    + "                 and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+    + "                 and ri.review_item_id = ric.review_item_id and comment_type_id  = 3 and r.review_id = ("
+    + "                 select review_id from review where resource_id = ("
+    + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+    + "                                             where linkp.dest_project_Id = p.project_id"
+    + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+    + "                                             and r.project_id = linkp.source_project_id))) as srfresult,"
+    /* sepc review result to find the final fix 'fixed' in response. */
+    + "(select count(*) from review r , review_comment ri where r.review_id = ri.review_id"
+    + "                 and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
+    + "                 and ri.comment_type_id = 10 and r.review_id = ("
+    + "               select review_id from review where resource_id = ("
+    + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+    + "                                             where linkp.dest_project_Id = p.project_id"
+    + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+    + "                                             and r.project_id = linkp.source_project_id))) as srfrresult,"
+    /* updated by Cockpit Spec Review - Stage 2  - end */
+
+     // check if phase is FF and there is final review or FF is done
+           + " (select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+           + "   where ph.phase_type_id = 10 and ph.phase_status_id in (2, 3) and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3 "
+           + "   and linkp.dest_project_Id = p.project_id "
+           + "    and exists  "
+           + "   (select * from review r , review_comment ri where r.review_id = ri.review_id"
+            + "                 and ri.comment_type_id = 10 and r.review_id = ("
+            + "               select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id)))) as hassrfr "
+
+
+    + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+    + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+                                      // dont show spec review project
+    + " and p.project_status_id != 3 and p.project_category_id != 27 "
+    + " and p.tc_direct_project_id= ";
 
     /**
      * Represents the column types for the result set which is returned by executing the sql statement to query all
@@ -729,15 +837,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Updated for Cockpit Release Assembly 3 [RS: 1.1.1]
      *      - Added column type mapping for 2 new columns: tc project permission and contest permission.
      * </p>
+     *
+     * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
      */
     private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE,
-			Helper.DATE_TYPE,Helper.DATE_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE,
-			Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-		   	Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,  
-			Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-			Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,Helper.DATE_TYPE};
+            Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.DATE_TYPE,Helper.DATE_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+               Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE,Helper.LONG_TYPE,
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to query all design components data for a user id.
@@ -769,7 +881,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "and not exists (" + 
         "select 1 from project_info q1 , project q " + 
         " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
-        " and (q.project_status_id = 1 or q.project_status_id = 7)) ";
+        " and (q.project_status_id = 1 or q.project_status_id = 7)  and q.project_category_id == 2) ";
         
 
 
@@ -841,6 +953,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
             + "               AND (project.project_status_id = 1 or project.project_status_id = 7)"
 			+ "			      AND date(project.create_date) > date(current) - ";
+
+    
+   
 
 
     /**
@@ -1153,8 +1268,25 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
         + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
         + "where q1.project_info_type_id = 1 and q1.project_id <> ?";
+
+
+     /**
+     * query to check if it is dev only
+     */
+     private static final String QUERY_IS_DEV_ONLY_SQL = "SELECT 'devonly' "
+
+      + " from project_info q1 , project q, project_info pi "
+      + "   where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> pi.project_id and q1.value = pi.value "
+      + "   and pi.project_info_type_id = 1 "
+      + "   and (q.project_status_id = 1 or q.project_status_id = 7) and q.project_category_id = 1 "
+      + "     and pi.project_id = ? ";
    
-    
+    /**
+     * query types for QUERY_IS_DEV_ONLY_SQL
+     */
+     private static final DataType[]QUERY_IS_DEV_ONLY_SQL_COLUMN_TYPES = new DataType[] { Helper.STRING_TYPE};
+
+
     /**
      *  get all project ids by tc direct project
      *
@@ -3635,14 +3767,52 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     		    ret[i].setPperm((String) rows[i][17]);
                 		}
 
-				if (rows[i][18] != null)
-                		{
-                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                		}
-				if (rows[i][19] != null)
-		        	{
-                    		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
-		        	}
+                if (rows[i][18] != null) {
+                    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][18].toString()));
+                }
+                //it is the srprojectId
+                if (rows[i][19] != null) {
+                    ret[i].setSpecReviewProjectId((Long)rows[i][19]);
+                    //show spec review status only if the original project has not been started, so it is draft or scheduled
+                    if (ret[i].getSname().equalsIgnoreCase("Scheduled") || ret[i].getSname().equalsIgnoreCase("Draft")) {
+                      //it is number of reviewer assign to spec review project
+                        int reviewerAssignToSepcReviewProject = ((Long)rows[i][20]).intValue();
+                        //no reviwer assigned yet
+                        if (reviewerAssignToSepcReviewProject == 0) {
+                            ret[i].setSpecReviewStatus("Assigning Reviewer");
+                        } else {
+                            //21, checking whether in 'reviewing' status
+                            if (rows[i][21] != null) {
+                                ret[i].setSpecReviewStatus("Reviewing");
+                            } else {
+                              //check next value
+                                int requiredItems = ((Long)rows[i][22]).intValue();
+                                //no required items now
+                                if (requiredItems == 0) {
+                                    ret[i].setSpecReviewStatus("Spec Review Passed");
+                                } else {
+                                    // if not in final review, or in FF but no review item
+                                    if (rows[i][25] == null) {
+                                        ret[i].setSpecReviewStatus("Spec Review Failed");
+                                    }
+                                    else {
+                                        int notFixedItems = ((Long)rows[i][23]).intValue();
+                                        if (notFixedItems == 0) {
+                                            ret[i].setSpecReviewStatus("Spec Review Passed");
+                                        } else {
+                                            int notFixedFinalItems = ((Long)rows[i][24]).intValue();
+                                            if (notFixedFinalItems == 0) {
+                                                ret[i].setSpecReviewStatus("Spec Review Passed");
+                                            } else {
+                                                ret[i].setSpecReviewStatus("Spec Review Failed");
+                                            }
+                                        }
+                                    }
+                                }
+                            }                            
+                        }
+                    }
+                }
 
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
@@ -3688,7 +3858,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      * Updated for Cockpit Release Assembly 10:
      * 	   - add set SubmissionEndDate
-     * 
+     *
+     * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
+     *
      * @param pid the specified tc project id for which to get the list of contest.
      * @return the list of contest for specified tc project id.
      * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -3775,17 +3947,59 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					result.add(ret[i]);
 				}
 
-				if (rows[i][18] != null)
-                		{
-                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                		}
-				
-				if (rows[i][19] != null)
-		                {
-                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
-		                }
+                if (rows[i][18] != null) {
+                    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][18].toString()));
+                }
 
-			}
+                 //it is the srprojectId
+                if (rows[i][19] != null) {
+                    ret[i].setSpecReviewProjectId((Long)rows[i][19]);
+                } else {
+                    //there is no sepc review project, so don't need to set the spec review status
+                    continue;
+                }
+                
+               //show spec review status only if the original project has not been started, so it is draft or scheduled
+                if (!ret[i].getSname().equalsIgnoreCase("Scheduled") && !ret[i].getSname().equalsIgnoreCase("Draft")) {
+                    continue;
+                }
+
+                //it is number of reviewer assign to spec review project
+                int reviewerAssignToSepcReviewProject = ((Long)rows[i][20]).intValue();
+                //no reviwer assigned yet
+                if (reviewerAssignToSepcReviewProject == 0) {
+                    ret[i].setSpecReviewStatus("Assigning Reviewer");
+                } else {
+                    if (rows[i][21] != null) {
+                        ret[i].setSpecReviewStatus("Reviewing");
+                        continue;
+                    }
+                    //check next value
+                    int requiredItems = ((Long)rows[i][22]).intValue();
+                    //no required items now
+                    if (requiredItems == 0) {
+                        ret[i].setSpecReviewStatus("Spec Review Passed");
+                    } else {
+                        // if not in final review, or in FF but no review item
+                        if (rows[i][25] == null) {
+                            ret[i].setSpecReviewStatus("Spec Review Failed");
+                        }
+                        else {
+                            int notFixedItems = ((Long)rows[i][23]).intValue();
+                            if (notFixedItems == 0) {
+                                ret[i].setSpecReviewStatus("Spec Review Passed");
+                            } else {
+                                int notFixedFinalItems = ((Long)rows[i][24]).intValue();
+                                if (notFixedFinalItems == 0) {
+                                    ret[i].setSpecReviewStatus("Spec Review Passed");
+                                } else {
+                                    ret[i].setSpecReviewStatus("Spec Review Failed");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 			closeConnection(conn);
 	        getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getSimpleProjectContestData(pid) method."));
@@ -3828,12 +4042,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * 
      * Updated for Cockpit Release Assembly 10:
      * 	   - add set SubmissionEndDate
-	 * @param createdUser the specified user for which to get the list of contest.
-	 * @return the list of contest for specified user.
-	 * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
-	 * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
-	 */
-	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
+     *
+     * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
+     * @param createdUser the specified user for which to get the list of contest.
+     * @return the list of contest for specified user.
+     * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
+     * @throws ParseException exception is thrown when there is error in parsing the results retrieved from persistence.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String createdUser) throws PersistenceException {
 
         getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getSimpleProjectContestDataByUser method."));
 
@@ -3867,21 +4083,72 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 and user_id = " + createdUser
 			+ " ),0)) as cperm, "
 
-			+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-			+ " from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = " + createdUser
-			+ " ),0)) as pperm, "
-			+ " NVL((select (select name " 
-            		+ "          from spec_review_status_type_lu as c " 
-            		+ "          where c.review_status_type_id = case when sr.review_status_type_id > 3 then 3 else sr.review_status_type_id end) as status_name " 
-            		+ " from spec_review as sr " 
-            		+ " where sr.is_studio = 0 and sr.contest_id = p.project_id), 'PENDING') as spec_review_status, "
-			/* Added in cockpit R 10 */
-			+ " (select scheduled_end_time from project_phase ph "
-			+ " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date"
-			/* R 10 end*/
-			+ " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
-			+ " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
-			+" and p.project_status_id != 3";
+            + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+            + " from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = " + createdUser
+            + " ),0)) as pperm, "
+
+            /* Added in cockpit R 10 */
+            + " (select scheduled_end_time from project_phase ph "
+            + " where ph.phase_type_id = 2 and ph.project_id=p.project_id) as submission_end_date,"
+            /* R 10 end*/
+
+            /* updated by Cockpit Spec Review - Stage 2  - start */
+            /* sepc review project id*/
+            + "(select source_project_id from linked_project_xref where dest_project_id = p.project_id) as srprojectId,"
+            /* sepc review user */
+            + "(select count(*) from resource r, linked_project_xref linkp where linkp.dest_project_Id = p.project_id"
+            + " and linkp.link_type_id = 3 and r.project_id = linkp.source_project_id and r.resource_role_id = 4) as srr,"
+            /* reviewing status check */
+            + "(select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+            + " where ph.phase_type_id = 4 and ph.phase_status_id = 2 and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3"
+            + " and linkp.dest_project_Id = p.project_id) as sprs,"
+            /* sepc review result to find the 'required' fixed item. */
+            + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+            + " and ri.review_item_id = ric.review_item_id and comment_type_id = 3 and r.review_id in ("
+            + "        select review_id from review where resource_id in ("
+            + "           select r.resource_id from resource r, linked_project_xref linkp"
+            + "                                where linkp.dest_project_Id = p.project_id"
+            + "                                and linkp.link_type_id = 3 and r.resource_role_id = 4"
+            + "                                and r.project_id = linkp.source_project_id ))) as srResult,"
+            /* sepc review result to find the final fix 'fixed'. */
+            + "(select count(*) from review r , review_item ri, review_item_comment ric where r.review_id = ri.review_id"
+            + "                 and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+            + "                 and ri.review_item_id = ric.review_item_id and comment_type_id  = 3 and r.review_id = ("
+            + "                 select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id))) as srfresult,"
+            /* sepc review result to find the final fix 'fixed' in response. */
+            + "(select count(*) from review r , review_comment ri where r.review_id = ri.review_id"
+            + "                 and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
+            + "                 and ri.comment_type_id = 10 and r.review_id = ("
+            + "               select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id))) as srfrresult, "
+            /* updated by Cockpit Spec Review - Stage 2  - end */
+
+           // check if phase is FF open/close and there is final review
+           + " (select min(ph.phase_type_id) from project_phase ph, linked_project_xref linkp "
+           + "   where ph.phase_type_id = 10 and ph.phase_status_id in (2, 3) and ph.project_id = linkp.source_project_id and linkp.link_type_id = 3 "
+           + "   and linkp.dest_project_Id = p.project_id "
+           + "    and exists  "
+           + "   (select * from review r , review_comment ri where r.review_id = ri.review_id"
+            + "                 and ri.comment_type_id = 10 and r.review_id = ("
+            + "               select review_id from review where resource_id = ("
+            + "                   select max(r.resource_id) from resource r, linked_project_xref linkp"
+            + "                                             where linkp.dest_project_Id = p.project_id"
+            + "                                             and linkp.link_type_id = 3 and r.resource_role_id = 9"
+            + "                                             and r.project_id = linkp.source_project_id)))) as hassrfr "
+
+
+            + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
+            + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+            + " and p.project_status_id != 3 "
+            // dont show spec review project
+            + " and p.project_category_id != 27 ";
 
 			// get the project objects
 			// find projects in the table.
@@ -3954,16 +4221,59 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					result.add(ret[i]);
 				}
 
-				if (rows[i][18] != null)
-                		{
-                    		    ret[i].setSpecReviewStatus((String)rows[i][18]);
-                		}
-				
-				if (rows[i][19] != null)
-		                {
-                		    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][19].toString()));
-		                }
-			}
+                if (rows[i][18] != null) {
+                    ret[i].setSubmissionEndDate(myFmt.parse(rows[i][18].toString()));
+                }
+
+                //it is the srprojectId
+                if (rows[i][19] != null) {
+                    ret[i].setSpecReviewProjectId((Long)rows[i][19]);
+                } else {
+                    //there is no sepc review project, so don't need to set the spec review status
+                    continue;
+                }
+                
+               //show spec review status only if the original project has not been started, so it is draft or scheduled
+                if (!ret[i].getSname().equalsIgnoreCase("Scheduled") && !ret[i].getSname().equalsIgnoreCase("Draft")) {
+                    continue;
+                }
+
+                //it is number of reviewer assign to spec review project
+                int reviewerAssignToSepcReviewProject = ((Long)rows[i][20]).intValue();
+                //no reviwer assigned yet
+                if (reviewerAssignToSepcReviewProject == 0) {
+                    ret[i].setSpecReviewStatus("Assigning Reviewer");
+                } else {
+                    if (rows[i][21] != null) {
+                        ret[i].setSpecReviewStatus("Reviewing");
+                        continue;
+                    }
+                    //check next value
+                    int requiredItems = ((Long)rows[i][22]).intValue();
+                    //no required items now
+                    if (requiredItems == 0) {
+                        ret[i].setSpecReviewStatus("Spec Review Passed");
+                    } else {
+                        // if not in final review, or in FF but no review item
+                        if (rows[i][25] == null) {
+                            ret[i].setSpecReviewStatus("Spec Review Failed");
+                        }
+                        else {
+                            int notFixedItems = ((Long)rows[i][23]).intValue();
+                            if (notFixedItems == 0) {
+                                ret[i].setSpecReviewStatus("Spec Review Passed");
+                            } else {
+                                int notFixedFinalItems = ((Long)rows[i][24]).intValue();
+                                if (notFixedFinalItems == 0) {
+                                    ret[i].setSpecReviewStatus("Spec Review Passed");
+                                } else {
+                                    ret[i].setSpecReviewStatus("Spec Review Failed");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 			closeConnection(conn);
 	        getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getSimpleProjectContestDataByUser method."));
@@ -4558,6 +4868,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append(" AND ");
             // not show inactive or deleted
             sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
+            // dont show spec review project
+            sb.append(" and c.project_category_id != 27 ");
             sb.append(" AND ");
             sb.append(" ( ");
             sb.append(" ((select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=c.project_id) BETWEEN to_date('")
@@ -5188,6 +5500,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
 
+
     /**
      * <p>
      * get tc direct project id by project id
@@ -5333,5 +5646,50 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
         }
 
+    }
+
+
+    /**
+     * <p>
+     * check if it is dev only 
+     * </p>
+     *
+     * @projectId  project id
+     *
+     * @return boolean
+     *
+     * @throws PersistenceException if any other error occurs.
+     *
+     */
+    public boolean isDevOnly(long projectId) throws PersistenceException {
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the contest sale
+            Object[][] rows = Helper.doQuery(conn,
+            		QUERY_IS_DEV_ONLY_SQL, new Object[] {projectId},
+            		QUERY_IS_DEV_ONLY_SQL_COLUMN_TYPES);
+
+            if (rows.length > 0)
+            {
+                return false;
+            }
+
+            return true;
+
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to check isDevOnly" , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+         finally {
+
+            closeConnection(conn);
+        }
     }
 }
