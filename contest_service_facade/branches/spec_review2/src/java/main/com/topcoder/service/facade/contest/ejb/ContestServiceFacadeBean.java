@@ -71,6 +71,8 @@ import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
+import com.topcoder.project.phases.PhaseType;
+import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
@@ -243,8 +245,13 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  *   to make it ready for review.
  * - Added method to add comments to an existing review.
  * </p>
+ * <p>
+ * Change in v1.4.1 (Cockpit Spec Review -stage 2 v1.0)
+ * - Add spec review project id
+ * - After activiation of contests, create spec review project
+ * </p>
  * @author snow01, pulky, murphydog
- * @version 1.4
+ * @version 1.4.1
  */
 @Stateless
 @WebService
@@ -372,6 +379,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since Cockpit Release Assembly for Receipts
      */
     private static final String PROJECT_TYPE_INFO_PROJECT_NAME_KEY = "Project Name";
+
+    /**
+     * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_KEY = "Autopilot Option";
+
+    /**
+     * <p>
+     * Represents on value for the autopilot option project property
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON = "On";
 
     /**
      * Private constant specifying resource role manager id
@@ -2995,6 +3020,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
                 toAddr = cc.getEmail();
             }
+            
+            //mark ready for spec review
+            markReadyForReview(tobeUpdatedCompetition.getId(), true);
+
 
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
@@ -3266,6 +3295,60 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 toAddr = cc.getEmail();
             }
 
+            boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+
+            // no need for dev that has design, so all non-dev and dev only will have spec review 
+            if (!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId())) 
+            {
+                 //create spec review project
+                FullProjectData specReview = this.createSpecReview(tobeUpdatedCompetition.getProjectHeader().getId());
+                logger.info("spec review project for contest " + specReview.getProjectHeader().getId() + " is created.");
+
+                com.topcoder.project.phases.Phase[] allPhases = specReview.getAllPhases();
+                com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
+                projectPhases.setStartDate(new Date());
+                projectPhases.setId(specReview.getProjectHeader().getId());
+
+                // open submission and registration
+                for (int i = 0; i < allPhases.length; i++) {
+                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
+                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
+                    {
+                        allPhases[i].setPhaseStatus(PhaseStatus.OPEN);
+                    }
+                    projectPhases.addPhase(allPhases[i]);
+                }    
+
+                projectServices.updatePhases(projectPhases, Long.toString(p.getUserId()));
+
+
+                 // prepare mock file for upload
+                DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
+                       mockSubmissionFileName));
+
+                uploadSubmission(specReview.getId(), mockSubmissionFileName, dataHandler);
+                logger.info("spec review project ready for reivew ");
+
+                projectPhases.setStartDate(new Date());
+                // set submission and registration back to scheduled
+                allPhases = projectPhases.getAllPhases();
+                for (int i = 0; i < allPhases.length; i++) {
+                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
+                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
+                    {
+                        allPhases[i].setPhaseStatus(PhaseStatus.SCHEDULED);
+                    }
+                }    
+
+                projectServices.updatePhases(projectPhases, Long.toString(p.getUserId()));
+
+                //  now turn on auto pilot
+                specReview.getProjectHeader().setProperty(PROJECT_TYPE_INFO_AUTOPILOT_OPTION_KEY,
+                    PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
+                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot", Long.toString(p.getUserId()));  
+
+            }
+
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getProjectHeader()
@@ -3274,6 +3357,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 competition.getAssetDTO().getProductionDate()
                            .toGregorianCalendar().getTime(), fee, fee,
                 result.getReferenceNumber());
+
+           
 
             return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
@@ -4759,6 +4844,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
                 newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
 		ret.add(newData);
             }
@@ -4784,7 +4870,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
- 	    newData.setSpecReviewStatus(data.getSpecReviewStatus());	
+            newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
             newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
@@ -4843,6 +4930,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
 		newData.setSpecReviewStatus(data.getSpecReviewStatus());
+		newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
                 ret.add(newData);
             }
@@ -4867,7 +4955,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             newData.setCreateUser(data.getCreateUser());
             newData.setPperm(data.getPperm());
             newData.setCperm(data.getCperm());
-	    newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSpecReviewStatus(data.getSpecReviewStatus());
+            newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
             newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
             ret.add(newData);
         }
@@ -6337,11 +6426,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since 1.4
      */
-    public Project createSpecReview(long projectId) throws ContestServiceException {
+    public FullProjectData createSpecReview(long projectId) throws ContestServiceException {
         String method = "createSpecReview(" + projectId + ")";
         logger.info("Enter: " + method);
 
-        Project specReview = null;
+        FullProjectData specReview = null;
         try {
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(p.getUserId()));

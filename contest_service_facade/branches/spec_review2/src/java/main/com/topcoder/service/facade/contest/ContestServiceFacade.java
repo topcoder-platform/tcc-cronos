@@ -16,6 +16,7 @@ import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.project.service.FullProjectData;
 import com.topcoder.service.specreview.SpecReview;
 
 import com.topcoder.management.project.DesignComponents;
@@ -1859,7 +1860,7 @@ public interface ContestServiceFacade {
      *
      * @since 1.4
      */
-    public Project createSpecReview(long projectId) throws ContestServiceException;
+    public FullProjectData createSpecReview(long projectId) throws ContestServiceException;
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.

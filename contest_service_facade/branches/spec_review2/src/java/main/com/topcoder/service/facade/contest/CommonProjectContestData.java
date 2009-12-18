@@ -23,9 +23,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *
  * Version 1.2
  * 	Add milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
+ * Version 1.3
+ *  Add specReviewProjectId for Cockpit Spec Review - Stage 2 v1.0.
  * 
  * @author will.xie, squarY, murphydog
- * @version 1.2
+ * @version 1.3
  */
 public class CommonProjectContestData {
     /**
@@ -134,6 +136,29 @@ public class CommonProjectContestData {
      */
     private XMLGregorianCalendar submissionEndDate;
     
+    /**
+     * Spec review project id.
+     * @since 1.3
+     */
+    private Long specReviewProjectId;
+    
+    
+    /**
+     * Returns the value of specReviewProjectId.
+     * @return the specReviewProjectId
+     */
+    public Long getSpecReviewProjectId() {
+        return specReviewProjectId;
+    }
+
+    /**
+     * Set the value to  specReviewProjectId field.
+     * @param specReviewProjectId the specReviewProjectId to set
+     */
+    public void setSpecReviewProjectId(Long specReviewProjectId) {
+        this.specReviewProjectId = specReviewProjectId;
+    }
+
     /**
      * Returns the contestId.
      * 
