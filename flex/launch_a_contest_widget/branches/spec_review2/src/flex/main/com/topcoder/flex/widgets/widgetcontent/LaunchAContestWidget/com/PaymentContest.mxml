@@ -2,6 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.SoftwareContestPaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
@@ -30,6 +31,14 @@
 									   "scheduled time or immediately if that option was selected. The" +
 									   " contest prizes are paid at the conclusion of the competition " +
 									   "when you are ready to select and download the winning submissions";
+		    /**
+             * confirmation after activation of contest.
+             * @since Cockpit Spec Review - Stage 2
+             */					   
+			[Bindable] private var confirmation:String = "Your contest has been submitted to the TopCoder member community for review. " + 
+            			"The contest details will be reviewed by a certified review board member. The review must pass " + 
+            			"prior to the contest launching. Return to My Projects to access your spec review."						   
+									   
 			
 		        public var contentTitleStr:String;
 	        	public var contestTotal:String;
@@ -117,7 +126,7 @@
             	    
                     mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
-                    text2="";
+                    text2= confirmation;
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
                     mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
@@ -144,7 +153,7 @@
             	    
                     mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
-                    text2="";
+                    text2=confirmation;
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
                     mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
@@ -171,7 +180,7 @@
             	    
                     mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
-                    text2="";
+                    text2= confirmation;
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
                     mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
@@ -198,7 +207,7 @@
             	    
                     mainWidget.header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
-                    text2="";
+                    text2= confirmation;
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
                     mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;

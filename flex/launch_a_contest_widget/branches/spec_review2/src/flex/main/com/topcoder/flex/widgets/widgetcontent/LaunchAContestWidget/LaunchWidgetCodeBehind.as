@@ -93,8 +93,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * Version 1.0.11 (Cockpit Upload Attachment) Change Notes:
      *    - Added attachment page refresh call after software contest is created or updated
      *
+     * Version 1.0.12 (Cockpit Spec Review) change Notes:
+     *    - Will not retrieve the getSpecReviews for software contests now.
+     *
      * @author snow01, pulky
-     * @version 1.0.11
+     * @version 1.0.12
      * @since 1.0
      */
      public class LaunchWidgetCodeBehind extends VBox implements IWidget {
@@ -762,10 +765,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 //
                 // since Cockpit Launch Contest - Inline Spec Reviews Part 2
                 //
-                var getSpecReviewsOp:AbstractOperation=_csws.getOperation("getSpecReviews");
-                getSpecReviewsOp.addEventListener("result", getSpecReviewsHandler);
-                getSpecReviewsOp.send(parseInt(contestid), contestType.toLocaleLowerCase() == "studio");
-                
+                // for Cockpit Spec Review - Stage 2, remove the 'review/comment' function in this widget
+                // for software contest, so only retrieve the spec reviews for studio
+                if (contestType.toLocaleLowerCase() == "studio") {
+                    var getSpecReviewsOp:AbstractOperation = _csws.getOperation("getSpecReviews");
+                    getSpecReviewsOp.addEventListener("result", getSpecReviewsHandler);
+                    getSpecReviewsOp.send(parseInt(contestid), true);
+                }
                 showLoadingProgress();
             }
         }

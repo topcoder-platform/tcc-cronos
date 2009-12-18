@@ -21,8 +21,13 @@
             - Added file descriptions to attachment section.
             - Fixed file name (removed server's path) for already uploaded files
 
+    
+    Version 1.0.4 (Cockpit Spec Review - part 2 version 1.0)
+        - remove the review/comment functionality for software contest
+        -
+
     @author pulky
-    @version 1.0.3
+    @version 1.0.4
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -520,43 +525,42 @@
                             }
                         }
                     }
-                    
-                    // hide the review buttons on all sections.
-                    showReviewButton('contestSelection');
-                    showReviewButton('contestOverview');
-                    showReviewButton('contestDetails');
-                    
+
+                    //only the studio contest will have the 'review/comment' function here now.
+                    //from Spec Review Backend - 2
                     if (mainWidget.studioContestType) {
+                        showReviewButton('contestSelection');
+                        showReviewButton('contestOverview');
+                        showReviewButton('contestDetails');
                         showReviewButton('contestSpecs');
-                    }
-                    showReviewButton('attachedFiles');
-                    showReviewButton('contestSchedule');
-                    
-                    // if current user has write permission, then show the Resubmit for Review button.
-                    if (!mainWidget.isReadOnlyMode && mainWidget.isPaidContest()) {
-                       mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
-                       mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
-                       mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
-                       mainWidget.reviewWorkflowButton.label="Resubmit Review";
-                       isReadyForReview=true;
-                       specUserRoleType=WRITER;
-                    } else {
-                        if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId && mainWidget.isPaidContest()) {
-                            mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
-                            mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
-                            mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
-                            mainWidget.reviewWorkflowButton.label="I'm Done Reviewing";
-                            isReadyForReview=true;
-                            specUserRoleType=REVIEWER;
+                        showReviewButton('attachedFiles');
+                        showReviewButton('contestSchedule');
+
+                        // if current user has write permission, then show the Resubmit for Review button.
+                        if (!mainWidget.isReadOnlyMode && mainWidget.isPaidContest()) {
+                           mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                           mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                           mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                           mainWidget.reviewWorkflowButton.label="Resubmit Review";
+                           isReadyForReview=true;
+                           specUserRoleType=WRITER;
                         } else {
-                            mainWidget.reviewWorkflowButton.label="";
-                            mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=false;
-                            specUserRoleType=READER;
+                            if (specReview.reviewerId && mainWidget.userid == specReview.reviewerId && mainWidget.isPaidContest()) {
+                                mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
+                                mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
+                                mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
+                                mainWidget.reviewWorkflowButton.label="I'm Done Reviewing";
+                                isReadyForReview=true;
+                                specUserRoleType=REVIEWER;
+                            } else {
+                                mainWidget.reviewWorkflowButton.label="";
+                                mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=false;
+                                specUserRoleType=READER;
+                            }
                         }
+                        // initialize review controls.
+                        initializeReviewControls();
                     }
-                    
-                    // initialize review controls.
-                    initializeReviewControls();
                 } else {
                     // hide the review buttons on all sections.
                     hideReviewButton('contestSelection');
@@ -570,7 +574,8 @@
                     hideReviewButton('contestSchedule');
                     
                     // if current user has write permission, then show the Ready for Review button.
-                    if (!mainWidget.isReadOnlyMode && (mainWidget.competition || mainWidget.softwareCompetition) && mainWidget.isPaidContest()) {
+                    //only for studio contest
+                    if (!mainWidget.isReadOnlyMode && mainWidget.competition && mainWidget.isPaidContest() && mainWidget.studioContestType) {
                        mainWidget.reviewWorkflowButton.visible=mainWidget.reviewWorkflowButton.includeInLayout=true;
                        mainWidget.reviewWorkflowButton.removeEventListener("click", doReviewWorkflow);
                        mainWidget.reviewWorkflowButton.addEventListener("click", doReviewWorkflow);
