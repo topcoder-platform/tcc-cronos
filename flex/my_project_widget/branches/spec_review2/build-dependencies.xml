@@ -1,0 +1,34 @@
+<project name="Dependency Import" default="dist" basedir=".">
+
+	<!-- TCS dependencies 
+	<property name="flex_widget_base_services.swc" value="./lib/flex_widget_base_services.swc"/>-->
+
+	<property name="flex_widget_base_services.swc" value="${tcs_flex_libdir}/flex_widget_base_services/1.0.0/flex_widget_base_services.swc"/>
+	<property name="flex_widget_layout_framework.swc" value="${tcs_flex_libdir}/flex_widget_layout_framework/1.0.0/flex_widget_layout_framework.swc"/>
+	<property name="submission_viewer_widget.swc" value="${tcs_flex_libdir}/submission_viewer_widget/1.0.0/submission_viewer_widget.swc"/>
+
+	<!-- 3rd party dependencies -->
+	<property name="flexunit" value="${flexunitdir}/bin/FlexUnit.swc" />
+	<property name="FlexLib1.9" value="${ext_flex_libdir}/FlexLib/1.9/FlexLib1_9.swc" />
+	<property name="Degrafa" value="${ext_flex_libdir}/Degrafa/Degrafa_Beta3.1_Flex3.swc" />
+
+	<property name="flexunitoptional" value="${flexunitdir}/bin/FlexUnitOptional.swc" />
+
+	<!-- Path elements required in the master buiild file (they MUST be defined even if empty). -->
+	<path id="component.tcs-dependencies">
+		<pathelement location="${flex_widget_base_services.swc}"/>
+		<pathelement location="${flex_widget_layout_framework.swc}"/>
+		<pathelement location="${submission_viewer_widget.swc}"/>
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+		<pathelement location="${FlexLib1.9}" />
+		<pathelement location="${Degrafa}" />
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${flexunit}" />
+		<pathelement location="${flexunitoptional}" />
+	</path>
+
+</project>

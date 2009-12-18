@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render project details page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:Grid xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         borderStyle="solid"
+         borderColor="#a9a9a9"
+         paddingTop="20"
+         paddingBottom="20"
+         paddingLeft="20"
+         paddingRight="20">
+    <mx:Script>
+        <![CDATA[
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var parentWidget:ProjectWidget=null;
+        ]]>
+    </mx:Script>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="Project Name:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text id="prjName"
+                     textAlign="left"
+                     text="{parentWidget.model.currentProj.name}"
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="Project Description:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text textAlign="left"
+                     text="{parentWidget.model.currentProj.description}"
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="Start Date:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text textAlign="left"
+                     text="{parentWidget.model.currentProj.start.toDateString()}"
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="End Date:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text textAlign="left"
+                     text="{parentWidget.model.currentProj.end.toDateString()}"
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="Project Owner:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text textAlign="left"
+                     text=""
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem horizontalAlign="right">
+            <mx:Label textAlign="right"
+                      text="Users:"
+                      styleName="nameLabel"/>
+        </mx:GridItem>
+        <mx:GridItem width="100%"
+                     verticalAlign="middle">
+            <mx:Text textAlign="left"
+                     text="{parentWidget.model.currentProj.users}"
+                     width="100%"/>
+        </mx:GridItem>
+    </mx:GridRow>
+
+</mx:Grid>
