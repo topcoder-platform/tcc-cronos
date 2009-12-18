@@ -1,0 +1,367 @@
+/* CSS file */
+.NewWidgetPanel {
+     
+   borderColor: #B7BABC;
+   borderThicknessLeft: 0;
+   borderThicknessTop: 0;
+   borderThicknessBottom: 0;
+   borderThicknessRight: 0;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+.EditButton
+{
+    upSkin: Embed(source="../assets/EditButton_Up.png");
+    overSkin: Embed(source="../assets/EditButton_Over.png");
+    downSkin: Embed(source="../assets/EditButton_Over.png");
+    disabledSkin: Embed(source="../assets/EditButton_Up.png");
+    paddingLeft: 0;
+    paddingTop: 0;
+    paddingRight: 0;
+    paddingBottom: 0;
+}
+
+/* since BUGR-999*/
+.whiteBoldText {
+	color: #FFFFFF;
+	font-weight: bold;	
+	fontFamily: "Arial";
+	font-size: 14;
+	padding-top: 2; /* BUGR-1141 */
+}
+
+.boxStyle {
+	padding-left: 10;
+	padding-right: 10;
+	padding-bottom: 10;
+	padding-top: 10;
+}
+
+/* BUGR-1141 */
+.prevStep {
+	backgroundImage: Embed(source="../assets/step_prev.png");	
+}
+
+.curStep {
+	backgroundImage: Embed(source="../assets/step_cur.png");	
+}
+
+.nextStep {
+	backgroundImage: Embed(source="../assets/step_next.png");	
+}
+
+.curStepBgr {
+	background-color: #FFFFFF;
+}
+
+.prevStepBgr {
+	background-color: #EEEEEE;
+}
+
+.stepsBgr {
+	background-color: #EEEEEE;
+	border-thickness: 1;
+	border-sides: right;
+	border-style: solid;
+	border-color: #DBDBDB;
+}
+
+.stepsLabel {
+    font-family: Arial;
+	color: #FFFFFF;
+	font-size: 18;
+	border-thickness-left: 1;
+	border-color: #CCCCCC;
+}
+
+.stepsLabelBgr {
+	backgroundColor: #DBDBDB;
+}
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+.content {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #797979;
+}
+
+/* since BUGR-999 */
+.RedButton {
+	skin: Embed("../assets/redbtn_fixed.png");
+	over-skin: Embed("../assets/redbtn_fixed_over.png");
+	down-skin: Embed("../assets/redbtn_fixed.png");
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+/* since BUGR-1039*/
+.linkBtn {
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.clickableImage {
+	cursor: pointer;
+	cursor: hand;
+}
+
+/* BUGR-1204 */
+.redText {
+	font-family: Arial;
+	color: #CC0000;
+	font-weight: bold;
+	font-size: 11;
+}
+
+.smallBlackText {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: normal;
+}
+
+.boldBlackText {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+}
+	
+.greenBackButton {
+	upSkin: Embed('../assets/btn_Back.png');
+    overSkin: Embed('../assets/btn_Back_hover.png');
+    downSkin: Embed('../assets/btn_Back_hover.png');
+}
+
+.greenNextButton {
+	upSkin: Embed('../assets/btn_Next.png');
+    overSkin: Embed('../assets/btn_Next_hover.png');
+    downSkin: Embed('../assets/btn_Next_hover.png');
+}
+
+/* BUGR-1208 */
+.redCancelButton {
+	upSkin: Embed('../assets/btn_Cancel.png');
+	overSkin: Embed('../assets/btn_Cancel_hover.png');
+	downSkin: Embed('../assets/btn_Cancel_hover.png');
+}
+
+.panelStyle {
+   borderColor: #d6d6d6;
+   roundedBottomCorners: true;
+   backgroundAlpha: 1;
+   titleStyleName: "mypanelTitle";
+   background-image:"../assets/panelbg.png";
+   background-size:"100%";
+ }
+.mypanelTitle {
+   color: #000000;
+   fontFamily: Arial;
+   fontSize: 11;
+   fontWeight: bold;
+}
+/*BUGR-1089 */
+.arrowRightBtnStyle{
+    icon: Embed(source="../assets/arrow_right_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
+.arrowLeftBtnStyle{
+    icon: Embed(source="../assets/arrow_left_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
+
+/* BUGR-1503 */
+.sectionTitle {
+	font-family: Arial;
+	color: #CC0000;
+	font-weight: bold;
+	font-size: 18;
+}
+
+/* BUGR-1503 */
+.subsectionTitle {
+	font-family: Arial;
+	color: #666666;
+	font-weight: bold;
+	font-size: 13;
+}
+
+.projectTitle {
+	font-family: Arial;
+	color: #BB0000;
+	font-weight: bold;
+	font-size: 16;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.tabBtnClose {
+    skin: Embed("../assets/tab-open.png");
+	up-skin: Embed("../assets/tab-open.png");
+	over-skin: Embed("../assets/tab-open-hover.png");
+	down-skin: Embed("../assets/tab-open.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.tabBtnOpen {
+    skin: Embed("../assets/tab-close.png");
+	up-skin: Embed("../assets/tab-close.png");
+	over-skin: Embed("../assets/tab-close-hover.png");
+	down-skin: Embed("../assets/tab-close.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewPassedIcon {
+	skin: Embed("../assets/icon-review-passed.png");
+	up-skin: Embed("../assets/icon-review-passed.png");
+	over-skin: Embed("../assets/icon-review-passed.png");
+	down-skin: Embed("../assets/icon-review-passed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewFailedIcon {
+	skin: Embed("../assets/icon-review-failed.png");
+	up-skin: Embed("../assets/icon-review-failed.png");
+	over-skin: Embed("../assets/icon-review-failed.png");
+	down-skin: Embed("../assets/icon-review-failed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewNeededIcon {
+	skin: Embed("../assets/icon-review-needed.png");
+	up-skin: Embed("../assets/icon-review-needed.png");
+	over-skin: Embed("../assets/icon-review-needed.png");
+	down-skin: Embed("../assets/icon-review-needed.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewCommentIcon {
+	skin: Embed("../assets/icon-review-comment.png");
+	up-skin: Embed("../assets/icon-review-comment.png");
+	over-skin: Embed("../assets/icon-review-comment.png");
+	down-skin: Embed("../assets/icon-review-comment.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.newReviewCommentIcon {
+	skin: Embed("../assets/icon-review-comment-new.png");
+	up-skin: Embed("../assets/icon-review-comment-new.png");
+	over-skin: Embed("../assets/icon-review-comment-new.png");
+	down-skin: Embed("../assets/icon-review-comment-new.png");
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewModalWindow {
+    border-skin: Embed("../assets/review-modal-window.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.creatorConversationHeader {
+	font-family: Arial;
+	font-size: 10;
+	font-style: italic;
+	color: #000000;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.creatorConversationMsg {
+	font-family: Arial;
+	font-size: 10;
+	font-style: normal;
+	color: #000000;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewerConversationHeader {
+	font-family: Arial;
+	font-size: 10;
+	font-style: italic;
+	color: #003399;
+}
+
+/**
+ * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+ */
+.reviewerConversationMsg {
+	font-family: Arial;
+	font-size: 10;
+	font-style: normal;
+	color: #003399;
+}
+
+.helpPopupWindow {
+    border-skin: Embed("../assets/review-modal-window.png");
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 15;
+}
+
+.helpVideoIcon {
+	skin: Embed("../assets/video.png");
+	up-skin: Embed("../assets/video.png");
+	over-skin: Embed("../assets/video.png");
+	down-skin: Embed("../assets/video.png");
+}
