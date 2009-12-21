@@ -183,7 +183,7 @@
             <env-entry>
                 <env-entry-name>mockSubmissionFilePath</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.mockSubmissionFilePath@/</env-entry-value>
+                <env-entry-value>@build-rep.contest_service_facade.mockSubmissionFilePath@</env-entry-value>
             </env-entry>
 
             <ejb-ref>
