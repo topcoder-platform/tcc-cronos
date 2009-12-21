@@ -139,12 +139,9 @@
                     // set the config data.
                     setConfigData();
 
-                    //ns_detailedRequirements.htmlText="";
-                    //ns_submissionDeliverables.htmlText="";
-                    //ns_environmentSetupInstructions.htmlText="";
-                    //ns_finalSubmissionGuidelines.htmlText="";
-
-                    if (this.mainWidget.softwareCompetition.projectHeader.projectSpec) {
+                    if (this.mainWidget.softwareCompetition.projectHeader.projectSpec && 
+                        this.mainWidget.softwareCompetition.projectHeader.projectSpec.projectSpecId) {
+                    
                         ns_detailedRequirements.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
                         ns_submissionDeliverables.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.submissionDeliverables;
                         ns_environmentSetupInstructions.htmlText=this.mainWidget.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions;
