@@ -812,9 +812,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             } else if (categoryId == _projectCategoryIds['ASSEMBLY']) {
                 // calculate as per assembly reviewer calculator.
                 return getApplicationReviewCost(firstPlacePrize, STANDARD_SUBMISSION_COUNT, STANDARD_PASSED_SCREENING_COUNT) * 1.5;                                
+            } else if (categoryId == _projectCategoryIds['ARCHITECTURE']) {
+                return getArchitectureReviewCost(firstPlacePrize, STANDARD_SUBMISSION_COUNT, STANDARD_PASSED_SCREENING_COUNT);
             } else if (categoryId == _projectCategoryIds['CONCEPTUALIZATION'] 
                             || categoryId == _projectCategoryIds['SPECIFICATION']
-                            || categoryId == _projectCategoryIds['ARCHITECTURE']
                             || categoryId == _projectCategoryIds['TESTSUITES']
                             || categoryId == _projectCategoryIds['TESTSCENARIOS']
                             || categoryId == _projectCategoryIds['RIACOMPONENT'] 
@@ -873,6 +874,31 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
             var finalReviewerCost:Number=2 * actualBaseRate * 0.75;
             
             return screeningCost + 3 * reviewCost + aggregationCost + finalReviewerCost;
+        }
+
+
+        /**
+         * Calculates the arch review cost
+         * 
+         * @param firstPlacePrize the first place prize.
+         * @param submissionCount the count of submission.
+         * @param passedScreeningCount the passed screening count.
+         * @return the application review cost
+         */
+        private function getArchitectureReviewCost(firstPlacePrize:Number, submissionCount:Number, passedScreeningCount:Number):Number {
+
+            var multiplier = 1.5;
+            var standardPrize:Number = 750;
+            var calculatedBaseRate:Number=15 + (firstPlacePrize - standardPrize) * 0.01;
+            var actualBaseRate:Number=calculatedBaseRate;
+            var calculatedReviewCost:Number=26 * calculatedBaseRate;
+            
+            var screeningCost:Number=actualBaseRate * 0.5 * submissionCount;
+            var reviewCost:Number=(Math.max(0, submissionCount + 1 - passedScreeningCount) * 1.5 + 2 * passedScreeningCount) * actualBaseRate;
+            var aggregationCost:Number=2 * actualBaseRate * 0.25;
+            var finalReviewerCost:Number=2 * actualBaseRate * 0.75;
+            
+            return screeningCost * multiplier + 3 * reviewCost * multiplier + aggregationCost * multiplier + finalReviewerCost * multiplier;
         }
         
         /**
