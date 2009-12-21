@@ -165,14 +165,9 @@
                     } else {
                         greenWidth = yellowWidth = widthToday;
                     }
-
-          
                     greenWidth = Math.min(greenWidth, capacityWidth);
                     yellowWidth = Math.min(yellowWidth, capacityWidth);
-                }
-                // else reset
-                else
-                {
+                } else {
                     greenWidth = 0;
                     yellowWidth = 0;
                 }
@@ -405,30 +400,49 @@
                     navigateToURL(new URLRequest(softwareContentDetailUrlBase + contest.id), "_blank");
                 }
             }
-            
-           
-            /**
-             * Init the pop up button.
-             */           
-	     private function initActionPopBtn():void {
-		if (actionPopBtn == null) {
-		    return;
-		}
-	        actionMenu = new Menu();
-		BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");
-                var labels:Object;
-                if (editable()) {
-                    labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}, {label:"View Spec Review"}];        
-                } else {
-                    labels = [{label: "View"}, {label: "Submissions"}, {label:"View Spec Review"}];        
-                }
-                
-            
+
+
+        /**
+         * Init the pop up button.
+         *
+         * Add 'View Spec Review' in version 1.0.3.
+         */
+         private function initActionPopBtn():void {
+            if (actionPopBtn == null) {
+                return;
+            }
+            actionMenu = new Menu();
+            BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");            
+            var labels:Object;
+            var haveSRProject:Boolean = haveSpecReviewProject();
+            if (editable()) {
+            	if (haveSRProject) {
+            		labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}, {label:"View Spec Review"}];
+            	} else {
+            		labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}];
+            	}
+            } else {
+            	if (haveSRProject) {
+            		labels = [{label: "View"}, {label: "Submissions"}, {label:"View Spec Review"}];
+            	} else {
+            		labels = [{label: "View"}, {label: "Submissions"}];
+            	}
+            }
             actionMenu.dataProvider = labels;
             actionMenu.selectedIndex = 0;
             actionMenu.addEventListener("itemClick", itemClickHandler);
             actionPopBtn.popUp = actionMenu;
             actionPopBtn.label = actionMenu.dataProvider[actionMenu.selectedIndex].label;
+        }
+        
+        private function haveSpecReviewProject():Boolean {
+        	if (contest && contest.status && contest.status.toLocaleLowerCase() == 'scheduled' && contest.specReviewProjectId != null) {
+        		return true;
+        	}
+        	if (contest && contest.status && contest.status.toLocaleLowerCase() == 'draft'){
+        		return true;
+        	}
+        	return false;
         }
         /**
          * Handler for pop up button item selection.
