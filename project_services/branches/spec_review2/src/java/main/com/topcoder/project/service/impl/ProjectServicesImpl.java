@@ -545,6 +545,16 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String NOTES_PROJECT_PROPERTY_KEY = "Notes";
+
+
+    /**
+     * <p>
      * Represents the project properties that need to be cloned when creating a specification review project
      * </p>
      *
@@ -1995,20 +2005,30 @@ public class ProjectServicesImpl implements ProjectServices {
 			String[] templates = template.getAllTemplateNames();
 
 			String templateName = null;
+            boolean categoryMatch = false;
 			for (String t : templates )
 			{
 				if (category.equalsIgnoreCase(t))
 				{
 					templateName = t;
-					break;
-				}
-				else if (type.equalsIgnoreCase(t))
-				{
-					templateName = t;
+                    categoryMatch = true;
 					break;
 				}
 			}
 
+            if (!categoryMatch)
+            {
+                for (String t : templates )
+                {
+                    if (type.equalsIgnoreCase(t))
+                    {
+                        templateName = t;
+                        break;
+                    }
+                }
+
+            }
+            
 			if (templateName == null)
 			{
 				throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
@@ -2783,6 +2803,8 @@ public class ProjectServicesImpl implements ProjectServices {
             //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
             //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
             projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
+
+            projectHeader.setProperty(NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
             // create mock ProjectSpec object
             ProjectSpec projectSpec = new ProjectSpec();
