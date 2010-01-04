@@ -496,6 +496,10 @@
                 }
             }
         }
+        private function openSPStatus():void {
+        	navigateToURL(new URLRequest(softwareConetestORurl + contest.specReviewProjectId), "_blank");
+        }
+        
         /**
          *
          * Added for Cockpit Spec Review - Stage 2 v1.0.
@@ -872,7 +876,7 @@
             </degrafa:Surface>
 			<mx:Spacer height="2" />
 			<mx:HBox paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" horizontalAlign="center" width="100%">
-				<mx:Label id="specReviewStatusTxt" text="{getReviewStatus(contest.reviewStatus)}"
+				<mx:LinkButton id="specReviewStatusTxt" label="{getReviewStatus(contest.reviewStatus)}" click="openSPStatus()"
                           styleName="{getReviewStatusStyle(contest.reviewStatus)}" visible="false"/>	
 			</mx:HBox>
             
