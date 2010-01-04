@@ -678,18 +678,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "                          and linkp.link_type_id = 3 and re.resource_role_id = 4 "
             + "                          and re.project_id = linkp.source_project_id ) as srResult,"
             /* sepc review result to find the final fix 'fixed'. */
-            + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
+            + "(select count(*) from review r , review_item ri, review_item_comment ric, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'FIXED' "
-            + "                      and ri.comment_type_id = 3 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+            + "                      and ric.comment_type_id = 3 and r.resource_id = re.resource_id and ri.review_item_id = ric.review_item_id "
             + "                      and linkp.dest_project_Id = p.project_id "
             + "                      and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                      and re.project_id = linkp.source_project_id) as srfresult, "
             /* sepc review result to find the final fix 'fixed' in response. */
             + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
-            + "                     and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ri.extra_info, '')) == 'APPROVED' "
+            + "                     and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
             + "                     and linkp.dest_project_Id = p.project_id "
             + "                     and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                     and re.project_id = linkp.source_project_id) as srfrresult, "
@@ -702,7 +702,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "     and exists  "
            + "     (select * from review r , review_comment ri, resource re, linked_project_xref linkp "
            + "               where r.review_id = ri.review_id "
-           + "                   and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+           + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
@@ -778,19 +778,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "                          and linkp.dest_project_Id = p.project_id "
             + "                          and linkp.link_type_id = 3 and re.resource_role_id = 4 "
             + "                          and re.project_id = linkp.source_project_id ) as srResult,"
-            /* sepc review result to find the final fix 'fixed'. */
-            + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
+         /* sepc review result to find the final fix 'fixed'. */
+            + "(select count(*) from review r , review_item ri, review_item_comment ric, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'FIXED' "
-            + "                      and ri.comment_type_id = 3 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+            + "                      and ric.comment_type_id = 3 and r.resource_id = re.resource_id and ri.review_item_id = ric.review_item_id "
             + "                      and linkp.dest_project_Id = p.project_id "
             + "                      and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                      and re.project_id = linkp.source_project_id) as srfresult, "
             /* sepc review result to find the final fix 'fixed' in response. */
             + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
-            + "                     and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ri.extra_info, '')) == 'APPROVED' "
+            + "                     and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
             + "                     and linkp.dest_project_Id = p.project_id "
             + "                     and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                     and re.project_id = linkp.source_project_id) as srfrresult, "
@@ -803,7 +803,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "     and exists  "
            + "     (select * from review r , review_comment ri, resource re, linked_project_xref linkp "
            + "               where r.review_id = ri.review_id "
-           + "                   and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+           + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
@@ -3795,7 +3795,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                                             ret[i].setSpecReviewStatus("Spec Review Passed");
                                         } else {
                                             int notFixedFinalItems = ((Long)rows[i][24]).intValue();
-                                            if (notFixedFinalItems == 0) {
+                                            if (notFixedFinalItems > 0) {
                                                 ret[i].setSpecReviewStatus("Spec Review Passed");
                                             } else {
                                                 ret[i].setSpecReviewStatus("Spec Review Failed");
@@ -3984,7 +3984,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                                 ret[i].setSpecReviewStatus("Spec Review Passed");
                             } else {
                                 int notFixedFinalItems = ((Long)rows[i][24]).intValue();
-                                if (notFixedFinalItems == 0) {
+                                if (notFixedFinalItems > 0) {
                                     ret[i].setSpecReviewStatus("Spec Review Passed");
                                 } else {
                                     ret[i].setSpecReviewStatus("Spec Review Failed");
@@ -4100,23 +4100,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "(select count(*) from review r , review_item ri, review_item_comment ric, resource re, linked_project_xref linkp "
             + "                    where r.review_id = ri.review_id "
             + "                          and ri.review_item_id = ric.review_item_id and comment_type_id = 3 "
-            + "                          and r.review_id = re.resource_id "
+            + "                          and r.resource_id = re.resource_id "
             + "                          and linkp.dest_project_Id = p.project_id "
             + "                          and linkp.link_type_id = 3 and re.resource_role_id = 4 "
             + "                          and re.project_id = linkp.source_project_id ) as srResult,"
             /* sepc review result to find the final fix 'fixed'. */
-            + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
+            + "(select count(*) from review r , review_item ri, review_item_comment ric, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'FIXED' "
-            + "                      and ri.comment_type_id = 3 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ric.extra_info, '')) != 'FIXED' "
+            + "                      and ric.comment_type_id = 3 and r.resource_id = re.resource_id and ri.review_item_id = ric.review_item_id "
             + "                      and linkp.dest_project_Id = p.project_id "
             + "                      and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                      and re.project_id = linkp.source_project_id) as srfresult, "
             /* sepc review result to find the final fix 'fixed' in response. */
             + "(select count(*) from review r , review_comment ri, resource re, linked_project_xref linkp "
             + "                 where r.review_id = ri.review_id "
-            + "                     and upper(nvl(ri.extra_info, '')) != 'APPROVED' "
-            + "                     and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+            + "                     and upper(nvl(ri.extra_info, '')) == 'APPROVED' "
+            + "                     and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
             + "                     and linkp.dest_project_Id = p.project_id "
             + "                     and linkp.link_type_id = 3 and re.resource_role_id = 9 "
             + "                     and re.project_id = linkp.source_project_id) as srfrresult, "
@@ -4129,7 +4129,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "     and exists  "
            + "     (select * from review r , review_comment ri, resource re, linked_project_xref linkp "
            + "               where r.review_id = ri.review_id "
-           + "                   and ri.comment_type_id = 10 and r.review_id = re.resource_id "
+           + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
@@ -4254,7 +4254,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                                 ret[i].setSpecReviewStatus("Spec Review Passed");
                             } else {
                                 int notFixedFinalItems = ((Long)rows[i][24]).intValue();
-                                if (notFixedFinalItems == 0) {
+                                if (notFixedFinalItems > 0) {
                                     ret[i].setSpecReviewStatus("Spec Review Passed");
                                 } else {
                                     ret[i].setSpecReviewStatus("Spec Review Failed");
