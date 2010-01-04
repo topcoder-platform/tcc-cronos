@@ -491,6 +491,15 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the "Review Cost" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String REVIEW_COSTS_PROJECT_PROPERTY_KEY = "Review Cost";
+
+    /**
+     * <p>
      * Represents the "Autopilot option" project property key
      * </p>
      *
@@ -506,6 +515,26 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.3
      */
     private static final String PROJECT_NAME_PROJECT_PROPERTY_KEY = "Project Name";
+
+
+    /**
+     * <p>
+     * Represents the "Developer Forum ID" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String FORUM_ID_PROJECT_PROPERTY_KEY = "Developer Forum ID";
+
+
+    /**
+     * <p>
+     * Represents the "Root Catelog ID" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY = "Root Catalog ID";
 
     /**
      * <p>
@@ -563,7 +592,8 @@ public class ProjectServicesImpl implements ProjectServices {
     private static final String[] SPEC_REVIEW_PROJECT_PROPERTIES_TO_CLONE = new String[] {
         EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, COMPONENT_ID_PROJECT_PROPERTY_KEY,
         VERSION_ID_PROJECT_PROPERTY_KEY, CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
-        BILLING_PROJECT_PROJECT_PROPERTY_KEY, PROJECT_VERSION_PROJECT_PROPERTY_KEY};
+        BILLING_PROJECT_PROJECT_PROPERTY_KEY, PROJECT_VERSION_PROJECT_PROPERTY_KEY, 
+        ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, FORUM_ID_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -2802,7 +2832,8 @@ public class ProjectServicesImpl implements ProjectServices {
             // Dont turn on yet
             //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
             //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
-            projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
+            projectHeader.setProperty(REVIEW_COSTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
+            projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, "0");
 
             projectHeader.setProperty(NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
