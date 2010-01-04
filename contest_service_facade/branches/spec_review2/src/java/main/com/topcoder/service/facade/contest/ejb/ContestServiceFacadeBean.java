@@ -3297,8 +3297,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
 
+            boolean hasEligibility = contestEligibilityManager.haveEligibility(new Long[]{tobeUpdatedCompetition.getProjectHeader().getId()}, false).size() > 0;
+
             // no need for dev that has design, so all non-dev and dev only will have spec review 
-            if (!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId())) 
+            if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
+                  && !hasEligibility) 
             {
                  //create spec review project
                 FullProjectData specReview = this.createSpecReview(tobeUpdatedCompetition.getProjectHeader().getId());
