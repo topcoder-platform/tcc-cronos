@@ -5188,9 +5188,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("         from contest_type_lu  ");
             sb.append("         where contest_type_id = c.contest_type_id) as contest_type_desc, ");
             sb.append("     cast('STUDIO' as VARCHAR(254)) as category, ");
-            sb.append("     (select name  ");
+            sb.append("     (select ds.contest_detailed_status_id  ");
             sb.append("         from contest_detailed_status_lu as ds  ");
-            sb.append("         where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, ");
+            sb.append("         where ds.contest_detailed_status_id = c.contest_detailed_status_id) as statusId, ");
             sb.append("     c.start_time, ");
             sb.append("     c.end_time as end_time, ");
             sb.append("     c.start_time as duration_start_time, ");
@@ -5395,6 +5395,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             for (int i = 0; i < list.size(); i++) {
                 SimplePipelineData data = (SimplePipelineData) list.get(i);
                 if (data != null) {
+                    long statusId = data.getStatusId() !=  null ? data.getStatusId().longValue() : 0;
+                    if (statusId == 1 || statusId == 15) { 
+                        data.setSname("Draft");
+                    } else if (statusId == 9) {
+                        data.setSname("Scheduled");
+                    } else if (statusId == 2 || statusId == 5|| statusId == 6|| statusId == 10|| statusId == 12) {
+                        data.setSname("Active");
+                    } else if (statusId == 4 || statusId == 7|| statusId == 8|| statusId == 11|| statusId == 13|| statusId == 14) {
+                        data.setSname("Completed");
+                    }
                     result.add(data);
                 }
             }
