@@ -13,9 +13,13 @@
      - checkbox value is considered during filtering of results by date.
      - added handler for click on add new contest button.
 
+     Version 1.0.2 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - remove the overdue contests checkbox
+     - update some scroll bar setting and performance issue
+     
      @author snow01, TCSASSEMBLER
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     @version 1.0.1
+     @version 1.0.2
 -->
 <tc:PipelineManagerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                                     width="100%"
@@ -27,8 +31,7 @@
                                     paddingBottom="11"
                                     xmlns:mxeffects="com.adobe.ac.mxeffects.*"
                                     xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*"
-                                    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.pipeline.*"
-                                    horizontalScrollPolicy="off">
+                                    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.pipeline.*">
     <mx:Style source="./Style.css"/>
     <mx:Script>
         <![CDATA[
@@ -114,7 +117,7 @@
             /**
              * Update display list.
              */
-            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+        /*    override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
                 super.updateDisplayList(unscaledWidth, unscaledHeight);
                 if (cover && proDetail.contains(cover)) {
                     
@@ -132,7 +135,7 @@
                     left.height=left.measuredHeight;
                 }
             }
-            
+            */
             public function showHideNoResultPanel(show:Boolean):void {
                 if (show) {
                     switch (model.mode) {
@@ -347,7 +350,7 @@
                 }
                 // if loaded data did not have overdue contest included
                 // and now we want, then reload the data from backend.
-                if (model.overdueIncluded == overdueCheckBox.selected && start.value >= model.startDate && end.value <= model.endDate) {
+                if (/*model.overdueIncluded == overdueCheckBox.selected && */start.value >= model.startDate && end.value <= model.endDate) {
                     model.filter.start=start.value;
                     model.filter.end=end.value;
                     model.filter.startAdd=null;
@@ -356,7 +359,7 @@
                 } else {
                     model.startDate=start.value;
                     model.endDate=end.value;
-                    model.overdueIncluded=overdueCheckBox.selected;
+                    //model.overdueIncluded=overdueCheckBox.selected;
                     this.loadContests(model.startDate, model.endDate, model.overdueIncluded);
                 }
             }
@@ -500,8 +503,7 @@
                heightTo="{proDetail.height}"
                id="openEffect"
                target="{left}"/>
-    <mx:VBox height="100%"
-             width="160"
+    <mx:VBox width="160"
              paddingLeft="0"
              paddingRight="0"
              borderSides="right"
@@ -533,12 +535,7 @@
                      itemsChangeEffect="{myDTLE}"/>
   
     </mx:VBox>
-    <mx:VBox id="proDetail"
-             width="100%"
-             height="100%"
-             minWidth="650"
-             horizontalScrollPolicy="off"
-             verticalScrollPolicy="off">
+    <mx:VBox id="proDetail" width="100%">
         <mx:HBox id="buttonBar"
                  width="100%"
                  height="38"
@@ -554,12 +551,11 @@
                        styleName="arrowBtnStyle"
                        selected="true"
                        click="openCloseLeft()"/>
-            <mx:Spacer width="5"/>
+            
             <mx:Button id="backBtn"
-                       label="BACK"
+                       label="BACK" paddingLeft="5"
                        styleName="greyBtn"
                        click="model.goBack()"
-                       width="86"
                        height="24"
                        visible="false"/>
             <mx:Spacer width="100%"/>
@@ -589,27 +585,27 @@
             <tccomp:DatePicker id="end"
                                chooser="{endDateChooser}"
                                date="{model.filter.end ? model.filter.end : model.endDate}"/>
-             <!-- exclude for now -->
+             <!-- exclude for now 
             <mx:CheckBox id="overdueCheckBox"
                          label="Include Overdue"
                          includeInLayout="false"
                          selected="false"/>
+                         -->
             <mx:Spacer width="100%"/>
             <mx:Button label="UPDATE"
                        styleName="greyBtn"
-                       width="86"
                        height="24"
                        click="filterDate()"/>
         </mx:HBox>
-        <mx:VBox minHeight="368"
-                 height="100%"
+        <mx:VBox minHeight="368" verticalGap="2"
                  id="pnlContainer"
                  width="100%"
                  left="0"
                  top="96"
-                 right="0"
-                 horizontalScrollPolicy="off"
-                 verticalScrollPolicy="off">
+                 right="0">
+            <tccomp:FilterPanel width="100%" id="filter" puid="{uid}" />
+			<tccomp:FilterShower width="100%" puid="{uid}" filterPanel="{filter}"/>
+			<mx:Spacer width="100%" height="10" />
             <mx:ViewStack width="100%"
                           left="3"
                           minHeight="368"
@@ -620,39 +616,12 @@
                           paddingTop="15"
                           paddingBottom="0"
                           id="stack"
-                          horizontalScrollPolicy="off"
-                          verticalScrollPolicy="off"
                           resizeToContent="true">
-                <tc:DetailPanel width="100%"
-                                height="100%"
-                                minWidth="650"
-                                puid="{uid}"
-                                horizontalScrollPolicy="off"
-                                verticalScrollPolicy="off"/>
-                <tc:BreakDownPanel width="100%"
-                                   height="100%"
-                                   minWidth="650"
-                                   puid="{uid}"
-                                   horizontalScrollPolicy="off"
-                                   verticalScrollPolicy="off"/>
-                <tc:DatePanel width="100%"
-                              height="100%"
-                              minWidth="650"
-                              puid="{uid}"
-                              horizontalScrollPolicy="off"
-                              verticalScrollPolicy="off"/>
-                <tc:PricePanel width="100%"
-                               height="100%"
-                               minWidth="650"
-                               puid="{uid}"
-                               horizontalScrollPolicy="off"
-                               verticalScrollPolicy="off"/>
-                <tc:NoResultPanel width="100%"
-                                  height="100%"
-                                  minWidth="650"
-                                  puid="{uid}"
-                                  horizontalScrollPolicy="off"
-                                  verticalScrollPolicy="off"/>           
+                <tc:DetailPanel width="100%" puid="{uid}"/>
+                <tc:BreakDownPanel width="100%" puid="{uid}"/>
+                <tc:DatePanel width="100%" puid="{uid}"/>
+                <tc:PricePanel width="100%" puid="{uid}"/>
+                <tc:NoResultPanel width="100%" />           
             </mx:ViewStack>
         </mx:VBox>
     </mx:VBox>

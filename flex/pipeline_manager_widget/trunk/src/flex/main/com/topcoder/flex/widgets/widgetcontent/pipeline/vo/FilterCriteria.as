@@ -2,6 +2,8 @@
  * Copyright (c) 2009, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
+	import mx.collections.ArrayCollection;
+	
     
     /**
      * <p>
@@ -9,9 +11,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
-     *
+     * <p>
+     * Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     * - add new filter : excluded status
+     * </p>
      * @author snow01
-     * @version 1.0
+     * @version 1.0.1
      */
     [Bindable]
     public class FilterCriteria {
@@ -69,6 +74,10 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         public var resourceItem:String;
         
         public var resourceName:String;
+        /**
+         * @since 1.0.1
+        */
+        public var excludedStatus:ArrayCollection = new ArrayCollection([]);
     
     }
 }

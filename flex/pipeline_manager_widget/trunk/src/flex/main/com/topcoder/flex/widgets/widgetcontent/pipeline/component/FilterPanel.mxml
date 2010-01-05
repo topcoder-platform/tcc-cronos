@@ -5,16 +5,20 @@
 
 <!--
      The filter panel.
-     
+     Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Add the exclude status filter
+
      @author snow01
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     @version 1.0
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          creationComplete="init()"
          verticalGap="0">
     <mx:Script>
         <![CDATA[
+        	import mx.events.FlexEvent;
+        	import mx.collections.ArrayCollection;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.NumbericFilter;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
             
@@ -49,13 +53,31 @@
                 if (!open) return;
                 clientList.selectedItems=model.filter.excludeClients;
                 
+                if (model.filter.excludedStatus && model.filter.excludedStatus.length == 0) {
+                	draftStatusCB.selected = true;
+                	this.activeStatusCB.selected = true;
+                	this.scheduledStatusCB.selected = true;
+                	this.completedStatusCB.selected = true;
+                } else {
+                	for each(var s:String in model.filter.excludedStatus) {
+                		if (s.toLowerCase() == 'draft') {
+                			draftStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'scheduled') {
+                			scheduledStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'active') {
+                			activeStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'completed') {
+                			completedStatusCB.selected = false;
+                		}
+                	}
+                }
                 // we do not select anything on numeric filter - as it has multiple values.
                 combo2.selectedIndex=0;
                 less.text="";
                 more.text="";
 
 
-		shower.validateNow();
+		        //shower.validateNow();
             }
             
             private function resetShower():void {
@@ -142,6 +164,24 @@
                 //updateView();
                 model.filterDetail();
             }
+            
+            private function filterByStatus(event:Event):void {
+            	clearOrAddExcluded(model.filter.excludedStatus, CheckBox(event.currentTarget).label, !CheckBox(event.currentTarget).selected);
+            	model.filterDetail();
+            }
+            
+            private function clearOrAddExcluded(excludedSatus:ArrayCollection, status:String, exclude:Boolean):void {
+            	if (exclude) {
+            		excludedSatus.addItem(status);
+            		return;
+            	}
+            	for(var i:int = 0; i < excludedSatus.length; i++) {
+            		if (excludedSatus.getItemAt(i) == status) {
+            			excludedSatus.removeItemAt(i);
+            			break;
+            		}
+            	}
+            }
         ]]>
     </mx:Script>
     <mx:HBox styleName="titleBar"
@@ -176,6 +216,40 @@
              includeInLayout="false"
              visible="false"
              verticalGap="0">
+        
+        <!-- add the new filter status -->
+        
+        <mx:HBox width="100%" height="60" backgroundColor="#e3e3e3" horizontalScrollPolicy="off"
+                 borderStyle="solid" borderSides="left right bottom"
+                 borderColor="#cccccc" paddingTop="5" paddingLeft="17" paddingBottom="5" verticalAlign="bottom">
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+                <mx:Label text="Contest Status"
+                          styleName="listStyleBold"
+                          fontSize="14"/>
+                          <!--
+                <mx:Label text="unSelect status to exclude:"
+                          styleName="listStyle"
+                          fontSize="14"/> -->
+            </mx:VBox>
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+            	<mx:CheckBox id="draftStatusCB" selected="true" label="Draft" change="filterByStatus(event)"/>
+        		<mx:CheckBox id="scheduledStatusCB" selected="true" label="Scheduled" change="filterByStatus(event)"/>
+            </mx:VBox>
+        	<mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+	        	<mx:CheckBox id="activeStatusCB" selected="true" label="Active" change="filterByStatus(event)"/>
+	        	<mx:CheckBox id="completedStatusCB" selected="true" label="Completed" change="filterByStatus(event)"/>
+	        </mx:VBox>	
+        </mx:HBox>
+             
         <!--<mx:HBox width="100%"
                  height="70"
                  backgroundColor="#e3e3e3"

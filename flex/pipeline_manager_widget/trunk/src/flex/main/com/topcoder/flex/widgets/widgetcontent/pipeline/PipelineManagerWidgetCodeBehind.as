@@ -29,9 +29,13 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
      * </p>
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
-     *
+     * 
+     * <p>
+     * Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     * -implements the reload functionality.
+     * </p>
      * @author snow01
-     * @version 1.0
+     * @version 1.0.1
      */
     [Bindable]
     public class PipelineManagerWidgetCodeBehind extends HBox implements IWidget {
@@ -114,7 +118,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
          * This action will reload this widget.
          */
         public function reload():void {
-            //trigger to load the data
+        	//refresh
+        	loadData();
         }
         
         /**

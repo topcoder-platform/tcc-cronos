@@ -67,9 +67,11 @@
 		]]>
 	</mx:Script>
 	<mx:Binding source="model.breakList" destination="brkList" />
+	<!--
 	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
 	<tccomp:FilterShower width="100%" id="shower" puid="{_puid}" filterPanel="{filter}"/>
 	<mx:Spacer width="100%" height="20" />
+	-->
 	
 	<mx:HBox width="100%" height="45" id="content">
 		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" id="title" />

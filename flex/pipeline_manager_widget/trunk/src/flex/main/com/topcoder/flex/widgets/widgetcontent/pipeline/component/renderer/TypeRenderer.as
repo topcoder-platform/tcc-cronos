@@ -14,8 +14,9 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer {
      * @version 1.0
      */
     public class TypeRenderer extends RendererBase {
+    	    	
         override protected function renderLabel():void {
-            this.content.text=detail.type;
+            this.content.text = detail.type;
         }
         
         override protected function doFilter():void {

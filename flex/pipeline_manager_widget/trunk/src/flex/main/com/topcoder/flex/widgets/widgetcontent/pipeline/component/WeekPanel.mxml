@@ -8,18 +8,23 @@
      
      Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
         - removed the keyword test from the deadline label.
-     
+     Version 1.0.2(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Change from grid to DataGrid
+      - Fix all the sorting issue
+      - change the link to clicks the contest name
+      - Improve the performance issue of this widget
+      
      @author snow01, TCSASSEMBLER
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     @version 1.0.1
+     @version 1.0.2
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
-         creationComplete="init()"
-         verticalGap="0"
+         verticalGap="0" 
          width="100%"
          height="100%">
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.pipeline.DetailPanel;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CategoryRenderer;
             import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer;
@@ -58,256 +63,26 @@
             private function handleClick(event:Event):void {
                 open=!open;
                 winCtrlBut.source=(open) ? model.winMin : model.winMax;
-                shower.includeInLayout=shower.visible=open;
+                weeklyContestGrid.includeInLayout = open;
+                weeklyContestGrid.visible = open;
 
                 event.stopImmediatePropagation();
-            }
-            
-            private function init():void {
-            
             }
             
             public function doOpen(isOpen:Boolean):void {
                 open=isOpen;
                 winCtrlBut.source=(open) ? model.winMin : model.winMax;
                 
-                shower.includeInLayout=shower.visible=open;
+                weeklyContestGrid.includeInLayout = open;
+                weeklyContestGrid.visible = open;
             }
             
-            private var dp:ArrayCollection;
+            [Bindable] private var dp:ArrayCollection = new ArrayCollection();
             
-            private var wk:Summary;
-            
-            /**
-             * Renders a week in the pipeline details.
-             */ 
-            private function renderWeek():void {
-				var i:int = 0;
-				var index:int = 0;
-				for (i=0; i < dp.length; i++) {
-					var contest:Detail = dp.getItemAt(i) as Detail;
-					if (contest) {
-						index++;
-						var row:GridRow = null;
-						if (index >= 1 && index < grid.numChildren) {
-							row = grid.getChildAt(index) as GridRow;
-						} else {
-							row = new GridRow();
-							row.percentWidth = 100;
-							row.setStyle("borderStyle", "solid");
-							grid.addChildAt(row, index);
-						}
-						if (row.numChildren < 2) {
-							row.removeAllChildren();
-							createItem(new DateRenderer(), row, contest);
-							createItemByField("duration", row, contest);
-							createItemByField("prize", row, contest);
-							createItemByField("dr", row, contest);
-							createItemByField("fee", row, contest);
-							createItem(new TypeRenderer, row, contest);
-							createItem(new CategoryRenderer(), row, contest);
-							createItem(new ClientRenderer(), row, contest);
-							createItem(new ProjectRenderer(), row, contest);
-							createItem(new ContestNameRenderer(), row, contest);
-							createItem(new StatusRenderer(), row, contest);
-							createItem(new ResourceRenderer(), row, contest);
-							//createItemByField("notes", row, contest);
-							createItem(new AddedRenderer(), row, contest);
-							createItem(new ChangeRenderer(), row, contest);
-						} else {
-							updateItem(0, row, contest);
-							updateLabel(2, row, contest.duration.toString());
-							updateLabel(3, row, contest.prize.toString());
-							updateLabel(4, row, contest.dr.toString());
-							updateLabel(5, row, contest.fee.toString());
-							updateItem(6, row, contest);
-							updateItem(7, row, contest);
-							updateItem(8, row, contest);
-							updateItem(9, row, contest);
-							updateItem(10, row, contest);
-							updateItem(12, row, contest);
-							updateItem(13, row, contest);
-						//	updateLabel(14, row, contest.notes);
-							updateItem(15, row, contest);
-							updateItem(16, row, contest);
-						}
-						var hour:int = (new Date().getTime() - contest.date.getTime()) / 1000 / 3600;
-						if (hour > 48) {
-							if ((contest.vspec || contest.aclient || contest.apricing || contest.hasWikiSpec || contest.dependent) && contest.status != "Posted") {
-								row.setStyle("borderSides", "left right bottom");
-								row.setStyle("backgroundColor", null);
-							} else {
-								row.setStyle("backgroundColor", 0xfbaeae);
-								row.setStyle("borderSides", "left right");
-								index++;
-								var row2:GridRow = null;
-								if (index > 1 && index < grid.numChildren) {
-									row2 = grid.getChildAt(index) as GridRow;
-								} 
-								if (!row2) {
-									row2 = new GridRow();
-									row2.percentWidth = 100;
-									row2.setStyle("borderStyle", "solid");
-									grid.addChildAt(row2, index);
-								}
-								row2.removeAllChildren();
-								
-								var text:Button = new Button();
-								text.styleName = "lateBtn";
-								text.setStyle("fontSize", 15);
-								if (hour > 0) {
-									text.label = "deadline " + hour.toString() + " hour(s)";
-								} else {
-									text.label = "overdue deadline " + (Math.abs(hour)).toString() + " hour(s)";
-								}
-								var item:GridItem = new GridItem();
-								item.colSpan = 17;
-								item.addChild(text);
-								row2.addChild(item);
-								row2.setStyle("backgroundColor", 0xfbaeae);
-								row2.setStyle("borderStyle", "solid");
-								row2.setStyle("borderSides", "left right bottom");
-								
-							}
-						}
-
-					}
-				}
-				for (index++; index < grid.numChildren; index++) {
-					grid.removeChildAt(index);
-				}
-			}
-            
-            public function set week(value:Summary):void {
-                lb.text=formatter.format(value.week);
-                dp=value.details;
-                renderWeek();
-            
-            }
-            
-            private function updateItem(index:int, row:GridRow, contest:Detail):void {
-                var item:GridItem=row.getChildAt(index) as GridItem;
-                if (item && item.numChildren >= 1) {
-                    var renderer:IListItemRenderer=item.getChildAt(0) as IListItemRenderer;
-                    if (renderer) {
-                        renderer.data=contest;
-                    }
-                }
-            }
-            
-            private function updateLabel(index:int, row:GridRow, value:String):void {
-                var item:GridItem=row.getChildAt(index) as GridItem;
-                if (item && item.numChildren >= 1) {
-                    var text:Text=item.getChildAt(0) as Text;
-                    if (text) {
-                        text.text=value;
-                    }
-                }
-            }
-            
-            private function createItem(renderer:IListItemRenderer, row:GridRow, contest:Detail):void {
-                var item:GridItem=new GridItem();
-                item.percentWidth=100;
-                renderer.initialize();
-                renderer.data=contest;
-                item.addChild(renderer as DisplayObject);
-                row.addChild(item);
-            }
-            
-            private function createItemByField(field:String, row:GridRow, contest:Detail):void {
-                var item:GridItem=new GridItem();
-                item.percentWidth=100;
-                var text:Text=new Text();
-                text.styleName="listStyle";
-                text.text=contest[field];
-                item.addChild(text);
-                text.selectable=false;
-                row.addChild(item);
-            }
-            
-            private var descending:Boolean=false;
-            
-            private var sortIdx:int=-1;
-            
-            private function sort(index:int):void {
-                var sf:SortField=new SortField();
-                
-                if (sortIdx != index) {
-                    descending=false;
-                    if (sortIdx >= 0 && sortIdx < header.numChildren) {
-                        var org:GridItem=header.getChildAt(sortIdx) as GridItem;
-                        org.styleName="noSortStyle";
-                    }
-                    sortIdx=index;
-                } else {
-                    descending=!descending;
-                }
-                if (index >= 0 && index < header.numChildren && index != 13) {
-                    var curr:GridItem=header.getChildAt(index) as GridItem;
-                    
-                    if (descending) {
-                        curr.styleName="descStyle";
-                    } else {
-                        curr.styleName="ascStyle";
-                    }
-                }
-                var sort:Sort=new Sort();
-                switch (index) {
-                    case 0:
-                        sf.compareFunction=compareDate;
-                        sf.descending=descending;
-                        sort.fields=[sf];
-                        break;
-                    case 2:
-                        sort.fields=[new SortField("duration", true, descending, true)];
-                        break;
-                    case 3:
-                        sort.fields=[new SortField("prize", true, descending, true)];
-                        break;
-                    case 4:
-                        sort.fields=[new SortField("dr", true, descending, true)];
-                        break;
-                    case 5:
-                        sort.fields=[new SortField("fee", true, descending, true)];
-                        break;
-                    case 6:
-                        sort.fields=[new SortField("type", true, descending)];
-                        break;
-                    case 7:
-                        sort.fields=[new SortField("category", true, descending)];
-                        break;
-                    case 8:
-                        sort.fields=[new SortField("client", true, descending)];
-                        break;
-                    case 9:
-                        sort.fields=[new SortField("project", true, descending)];
-                        break;
-                    case 10:
-                        sort.fields=[new SortField("name", true, descending)];
-                        break;
-                    case 12:
-                        sort.fields=[new SortField("status", true, descending)];
-                        break;
-                    case 14:
-                        sort.fields=[new SortField("notes", true, descending)];
-                        break;
-                    case 15:
-                        sf.compareFunction=compareAdded;
-                        sf.descending=descending;
-                        sort.fields=[sf];
-                        break;
-                    case 16:
-                        sf.compareFunction=compareChange;
-                        sf.descending=descending;
-                        sort.fields=[sf];
-                        break;
-                }
-                dp.sort=sort;
-                
-                dp.refresh();
-                renderWeek();
-            
-            }
+            public function set week(value:Summary):void {  
+            	lb.text = formatter.format(value.week);
+                dp = value.details;             	
+            }            
             
             private function compareDate(obj1:Object, obj2:Object, fields:Array=null):int {
                 var c1:Detail=obj1 as Detail;
@@ -332,12 +107,18 @@
             }
             
             private function compareChange(obj1:Object, obj2:Object, fields:Array=null):int {
+                var c1:Detail=obj1 as Detail;
+                var c2:Detail=obj2 as Detail;
+                if (c1.changed.getTime() > c2.changed.getTime()) {
+                    return 1;
+                } else if (c1.changed.getTime() < c2.changed.getTime()) {
+                    return -1;
+                }
                 return 0;
-            }
+            }          
         ]]>
     </mx:Script>
-    <mx:DateFormatter id="formatter"
-                      formatString="MM-DD-YYYY"/>
+    <mx:DateFormatter id="formatter" formatString="MM-DD-YYYY"/>
     <mx:HBox styleName="titleBar"
              width="100%"
              height="27"
@@ -348,7 +129,7 @@
              paddingLeft="20"
              paddingRight="0"
              click="handleClick(event)"
-             buttonMode="true"
+             buttonMode="true" horizontalAlign="left"
              useHandCursor="true"
              verticalScrollPolicy="off"
              horizontalScrollPolicy="off">
@@ -361,116 +142,33 @@
                   useHandCursor="true"/>
         <mx:Label id="lb"
                   styleName="nameLabel"/>
-        <mx:Spacer width="100%"/>
     </mx:HBox>
-    <mx:VBox width="100%"
-             height="100%"
-             id="shower"
-             includeInLayout="false"
-             visible="false"
-             verticalGap="0"
-             horizontalScrollPolicy="off">
-        <mx:Grid width="100%"
-                 id="grid"
-                 horizontalGap="0"
-                 verticalGap="0"
-                 height="100%"
-                 horizontalScrollPolicy="off">
-            <mx:GridRow width="100%"
-                        id="header"
-                        backgroundColor="#000000">
-                <mx:GridItem click="sort(0)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Date"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(2)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Duration"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(3)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Prize"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(4)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="DR"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(5)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Contest fee"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(6)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Type"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(7)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Category"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(8)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Client"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(9)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Project"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(10)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Name"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(12)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Status"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(13)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Resources"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-           <!--     <mx:GridItem click="sort(14)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Notes"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>-->
-                <mx:GridItem click="sort(15)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Added"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-                <mx:GridItem click="sort(16)"
-                             paddingRight="20">
-                    <mx:Label width="100%"
-                              text="Changed"
-                              styleName="headerStyle2"/>
-                </mx:GridItem>
-            </mx:GridRow>
-        </mx:Grid>
-    </mx:VBox>
-    <mx:Spacer height="10"/>
+    <mx:DataGrid width="100%" id="weeklyContestGrid" dataProvider="{dp}" rowCount="{dp.length}" height="{(dp.length>6)?170:((dp.length*30)+ 26)}"
+    	         visible="false" includeInLayout="false" wordWrap="false" verticalScrollPolicy="auto">
+    	<mx:columns>
+    		<mx:DataGridColumn headerText="Date" dataField="date"  width="102"
+    			               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.DateRenderer" 
+    			               sortCompareFunction="compareDate"/>
+    		<mx:DataGridColumn headerText="Member Costs" dataField="prize" width="50" />
+			<mx:DataGridColumn headerText="Contest fee" dataField="fee"  width="50"/>
+			<mx:DataGridColumn headerText="Type" dataField="type" width="170"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer"  />
+			<mx:DataGridColumn headerText="Category" dataField="category" width="120"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CategoryRenderer"  />
+			<mx:DataGridColumn headerText="Client" dataField="client" width="80"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ClientRenderer"  />
+			<mx:DataGridColumn headerText="Project" dataField="project"  width="80"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ProjectRenderer"  />
+			<mx:DataGridColumn headerText="Name" dataField="name" width="170"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer"  />
+			<mx:DataGridColumn headerText="Status" dataField="status"  width="80"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.StatusRenderer"  />
+			<mx:DataGridColumn headerText="Resources" dataField="manager"  width="100"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ResourceRenderer"  />
+			<mx:DataGridColumn headerText="Added" dataField="added"  width="75" sortCompareFunction="compareAdded"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AddedRenderer"  />
+			<mx:DataGridColumn headerText="Changed" dataField="changed"  width="115" sortCompareFunction="compareChange"
+			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ChangeRenderer"  />        			               	               
+    	</mx:columns>
+    </mx:DataGrid>
 </mx:VBox>

@@ -6,15 +6,14 @@
 <!--
      A renderer for added view..
      
+     Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+
      @author snow01
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
      @version 1.0
 -->
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
-         paddingLeft="15"
-         verticalScrollPolicy="off"
-         horizontalScrollPolicy="off"
-         click="doFilter()">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
     <mx:Script>
         <![CDATA[
             import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
@@ -43,11 +42,10 @@
             }
         ]]>
     </mx:Script>
-    <mx:DateFormatter formatString="YYYY-MM-DD"
-                      id="formatter"/>
-    <mx:Text id="content"
+    <mx:DateFormatter formatString="YYYY-MM-DD" id="formatter"/>
+    <mx:Label id="content"
              styleName="listStyle"
-             width="100%"
+             width="100%" click="doFilter()"
              textDecoration="underline"
              buttonMode="true"
              useHandCursor="true"

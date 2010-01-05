@@ -6,9 +6,12 @@
 <!--
      The filter shower.
      
+     Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Add logic to filter 'excluded status'
+     
      @author snow01
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     @version 1.0
+     @version 1.0.1
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
          width="100%"
@@ -111,6 +114,13 @@
                 }
                 if (filter.ws != null && filter.ws != "N/A") {
                     createFilterLabel("Wiki Specification", filter.ws, removeWS);
+                }
+                if (filter.excludedStatus && filter.excludedStatus.length > 0) {
+                	var st:String = "";
+                	for each(var s:String in filter.excludedStatus) {
+                		st += s + " ";
+                	}
+                	createFilterLabel("Exclude Status", st, removeECS);
                 }
                 title.visible=(numChildren > 1);
             }
@@ -243,6 +253,11 @@
                         }
                     }
                 }
+            }
+            public function removeECS(event:MouseEvent):void {
+            	model.filter.excludedStatus.removeAll();
+				if (filterPanel) filterPanel.updateView();
+                model.filterDetail();            
             }
         ]]>
     </mx:Script>

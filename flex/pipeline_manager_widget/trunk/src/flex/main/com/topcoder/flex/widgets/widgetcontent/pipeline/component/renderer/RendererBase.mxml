@@ -6,13 +6,15 @@
 <!--
      The renderer base.
      
+     Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+     
+
      @author snow01
      @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     @version 1.0
+     @version 1.0.1
 -->
-<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml"
-        click="doFilter()"
-        width="100%">
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
             import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
@@ -40,9 +42,8 @@
             }
         ]]>
     </mx:Script>
-    <mx:Text id="content"
-             textDecoration="underline"
-             width="100%"
+    <mx:Label id="content"
+             textDecoration="underline" click="doFilter()" width="100%"
              styleName="listStyle"
              buttonMode="true"
              useHandCursor="true"

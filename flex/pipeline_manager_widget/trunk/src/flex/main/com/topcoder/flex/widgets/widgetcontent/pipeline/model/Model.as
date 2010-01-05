@@ -5,7 +5,6 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.util.date.DateUtil;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.PipelineManagerWidget;
-    import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.NewDateRenderer;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.log.TCLog;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.BreakDown;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.ChangeDate;
@@ -16,23 +15,16 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.NumbericFilter;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Project;
     import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
-    import com.topcoder.flex.Helper;
     
     import flash.events.Event;
     import flash.events.EventDispatcher;
-    import flash.net.URLLoader;
-    import flash.net.URLLoaderDataFormat;
-    import flash.net.URLRequest;
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
-    import mx.core.Application;
-    import mx.core.Repeater;
-    import mx.rpc.events.ResultEvent;
-    import mx.utils.ObjectUtil;
-    import mx.utils.XMLUtil;
-    import mx.collections.SortField;
     import mx.collections.Sort;
+    import mx.core.Application;
+    import mx.rpc.events.ResultEvent;
+    import mx.utils.StringUtil;
 
     
     /**
@@ -43,13 +35,18 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
      * Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
      *    - introduced new variable to hold whether overdue contests are included in loaded data or not.
      *    - added methods & variables to construct and retrieve ICAL and RSS feed urls.
-     * 
+     * <p>
+     * Version 1.0.2(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     * - Add logic to filter 'excluded status'
+     * - Change the logic of contest status for studio contests
+     * </p>
+     *
      * <p>Thread Safety: ActionScript 3 only executes in a single thread so thread
      * safety is not an issue.</p>
      *
      * @author snow01, TCSASSEMBLER
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-     * @version 1.0.1
+     * @version 1.0.2
      */
     [Bindable]
     public class Model extends EventDispatcher {
@@ -203,7 +200,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             TCLog.instance.timeStampLog("Load data", this.uid);
             
             TCLog.instance.debug("contests.children.length ---------> " + contests.children().length());
-            
+            var start:Date = new Date();
             clientList=new Array();
             confidenceList=new Array();
             detailsByContestId=new Dictionary();
@@ -221,7 +218,20 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 
                 p.type=o.contestType ? o.contestType[0] : "";
                 p.category=o.contestCategory ? o.contestCategory[0] : "";
-                p.status=o.sname ? o.sname[0] : "";
+                if (p.category && p.category.toUpperCase() == "STUDIO" && o.sname && o.sname[0]) {
+                	var statusId:Number = Number(o.sname[0]);
+                	if (statusId == 1 || statusId == 15) {
+                		p.status = "Draft";
+                	} else if (statusId == 9) {
+                		p.status = "Scheduled ";
+                	} else if (statusId == 2 || statusId == 5|| statusId == 6|| statusId == 10|| statusId == 12) {
+                		p.status = "Active";
+                	} else if (statusId == 4 || statusId == 7|| statusId == 8|| statusId == 11|| statusId == 13|| statusId == 14) {
+                		p.status = "Completed";
+                	}
+                } else {
+                	p.status=o.sname ? o.sname[0] : "";
+                }
                 
                 p.client=o.clientName[0];
                 
@@ -284,6 +294,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             cate=typeValues[0];
             filterDetail();
             TCLog.instance.timeStampLog("Calculate Data", this.uid);
+            var end:Date = new Date();
+            TCLog.instance.debug("Time used in paring in Model.loadData: " + (end.getTime()-start.getTime())/1000 + " seconds");
         }
         
         /**
@@ -346,8 +358,6 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             var detail:Detail=obj as Detail;
      
             if (detail) {
-                trace("Filter.type: " + filter.type);
-
                 if (filter.start)
                 {
                     filter.start.hours=0;
@@ -380,8 +390,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     filter.endAdd.milliseconds=0;
   
                 }
-
-                trace("detail.type: " + detail.category);
+                
                 if (filter.type && filter.type != typeValues[0]) {
                     if (filter.type && detail.category && filter.type.toLocaleLowerCase() != detail.category.toLocaleLowerCase()) {
                         return false;
@@ -457,6 +466,14 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     if (filter.status != detail.status) {
                         return false;
                     }
+                }
+                //exclude the status
+                if (filter.excludedStatus && filter.excludedStatus.length > 0) {
+                	for each(var s:String in filter.excludedStatus) {
+                		if (detail.status && s.toLocaleLowerCase() == StringUtil.trim(detail.status.toLocaleLowerCase())) {
+                			return false;
+                		}
+                	}
                 }
                 if (filter.category && filter.category.length > 0) {
                     if (filter.category != detail.category) {
@@ -629,12 +646,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                     p.scheduled++;
                     p.posted+=(detail.status != "Draft" && detail.status != "Scheduled") ? 1 : 0;
                 }
-                this.pList=tmp2;
-
                 var sort:Sort=new Sort();
                 sort.compareFunction=comparePersonContests;
-                pList.sort = sort;
-                pList.refresh();  
+                tmp2.sort = sort;
+                tmp2.refresh();  
+                this.pList=tmp2;
             }
         }
         
@@ -896,12 +912,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
             }
             updateRole(role);
             weekList=tmps;
-            cList=tmp2;
 
             var sort:Sort=new Sort();
             sort.compareFunction=compareClientContests;
-            cList.sort = sort;
-            cList.refresh();   
+            tmp2.sort = sort;
+            tmp2.refresh();  
+            cList=tmp2; 
         }
 
         /**
