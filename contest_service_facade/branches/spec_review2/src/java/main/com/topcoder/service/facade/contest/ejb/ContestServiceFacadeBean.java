@@ -4282,7 +4282,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contestEligibility.setDeleted(false);
                 contestEligibility.setGroupId(getEligibilityGroupId(clientId));
 
-                projectServices.createPrivateProjectRoleTermsOfUse(contest.getProjectHeader().getId(), clientId);
+                //projectServices.createPrivateProjectRoleTermsOfUse(contest.getProjectHeader().getId(), clientId);
                 
                 contestEligibilityManager.create(contestEligibility);
                
