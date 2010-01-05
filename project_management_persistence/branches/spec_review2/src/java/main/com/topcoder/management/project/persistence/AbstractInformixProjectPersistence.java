@@ -474,6 +474,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @sine 1.1.2
      */
     private static final String PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY = "Confidentiality Type";
+
+    /**
+     * Represents the project info property for Billing Project.
+     */
+    private static final String PROJECT_INFO_BILLING_PROJECT_PROPERTY = "Billing Project";
     
     /**
      * Represents the public confidentiality type value.
@@ -1340,6 +1345,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         */
     private static final String SELCT_PRIVATE_CONTEST_TERMS = 
         "select terms_of_user_id  from client_terms_mapping where client_project_id = ?";
+    /**
+     * Represents the sql statement to select client observe terms for a client project.
+     * @since BUGR-3039
+     */
+    private static final String SELCT_OBSERVE_CONTEST_TERMS = 
+        "select terms_of_user_id  from client_observer_terms_mapping where client_project_id = ?";
     /**
      * 'Active' status name
      */
@@ -2243,8 +2254,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             standardCCA=true;
         }
 
+        // get the standard cca value from project property. 
+        String billing = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY));
+        long billingProjectId = new Long(billing);
+
 		// generate new project role terms of use associations for the recently created project.
         generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
+
+        // check if any client/billing specific terms
+        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId);
 
         // create the project properties
         createProjectProperties(projectId, project, idValueMap, operator, conn);
@@ -2378,6 +2396,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 		// update project role terms of use associations for the recently created project.
         updateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
+
+
+        // get the standard cca value from project property. 
+        String billing = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY));
+        long billingProjectId = new Long(billing);
+
+        // check if any client/billing specific terms
+        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId);
 
         // update the project properties
         updateProjectProperties(project, idValueMap, operator, conn);
@@ -4567,17 +4593,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             StringBuffer query = new StringBuffer(1024);
             query.append("delete ");
             query.append("from project_role_terms_of_use_xref ");
-            query.append("where project_id = ? and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
+            query.append("where project_id = ? "); //and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
 
+            // delete all
             ps = conn.prepareStatement(query.toString());
             ps.setLong(1, projectId);
-            ps.setLong(2, submitterTermsId);
+           /* ps.setLong(2, submitterTermsId);
             ps.setLong(3, reviewerTermsId);
             ps.setLong(4, STANDARD_CCA_TERMS_ID);
-            ps.setLong(5, MANAGER_TERMS_ID);
+            ps.setLong(5, MANAGER_TERMS_ID); */
 
             ps.executeUpdate();
             generateProjectRoleTermsOfUseAssociations(projectId, projectCategoryId, standardCCA, conn);
+
         }
         catch (ConfigurationException e)
         {
@@ -5264,7 +5292,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @param clientId the clientId.
      * @throws PersistenceException if any error occurs
      */
-    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
+    public void createPrivateProjectRoleTermsOfUse(long projectId,  long billingProjectId)
             throws PersistenceException {
         Connection conn = null;
         PreparedStatement preparedStatement = null;
@@ -5276,7 +5304,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // build the statement
             
             Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
-                new Object[] {clientId}, new DataType[] {Helper.LONG_TYPE});
+                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE});
                 
             preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
             preparedStatement.setLong(1, projectId);
@@ -5291,6 +5319,22 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 }
             }
 
+            //CLOSE
+            preparedStatement.close();
+            //query term(s) for Observer role.
+            rows = Helper.doQuery(conn, SELCT_OBSERVE_CONTEST_TERMS,
+                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE});
+            //insert into the project_role_terms_of_use_xref table for observe role
+            preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+            preparedStatement.setLong(1, projectId);
+            if (rows.length > 0)
+            {
+                for (int index = 0; index < rows[0].length; index++) {
+                    preparedStatement.setInt(2, OBSERVER_ROLE_ID);
+                    preparedStatement.setObject(3, rows[0][index]);
+                    preparedStatement.execute(); 
+                }
+            }
         }
         catch (SQLException e)
         {
