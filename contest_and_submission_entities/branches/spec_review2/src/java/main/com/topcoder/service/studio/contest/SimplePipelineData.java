@@ -10,6 +10,7 @@ import javax.persistence.EntityResult;
 import javax.persistence.FieldResult;
 import javax.persistence.Id;
 import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Transient;
 
 /**
  * <p>
@@ -20,8 +21,13 @@ import javax.persistence.SqlResultSetMapping;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  * 
+ * <p>
+ * Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+ * - Change sname from string to long.
+ * </p>
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.0.1
  * @since Cockpit Pipeline Release Assembly 1 v1.0 
  */
 @SqlResultSetMapping(name = "SimplePipelineDataResults", entities = { @EntityResult(entityClass = SimplePipelineData.class, fields = {
@@ -33,7 +39,7 @@ import javax.persistence.SqlResultSetMapping;
         
         @FieldResult(name = "cversion", column = "cversion"),
         
-        @FieldResult(name = "sname", column = "sname"),
+        @FieldResult(name = "statusId", column = "statusId"),
         
         @FieldResult(name = "contestType", column = "contest_type_desc"),
         @FieldResult(name = "contestCategory", column = "category"),
@@ -110,6 +116,7 @@ public class SimplePipelineData {
     private Date durationEndTime;
 
     /** Represents the status name. */
+    @Transient
     private String sname;
 
     /** Represents the type of contest. */
@@ -189,6 +196,27 @@ public class SimplePipelineData {
 
     /** Represents the permission for project. */
     private String pperm;
+    
+    /**
+     * The status id.
+     */
+    private Long statusId;
+
+    /**
+     * Returns the value of status.
+     * @return the status
+     */
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    /**
+     * Set the value to  status field.
+     * @param status the status to set
+     */
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
 
     /**
      * Returns the contest name.
