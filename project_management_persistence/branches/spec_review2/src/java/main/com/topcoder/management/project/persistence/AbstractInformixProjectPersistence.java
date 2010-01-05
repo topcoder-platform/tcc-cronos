@@ -127,8 +127,14 @@ import com.topcoder.util.log.Log;
  *     - Create terms for private contest
  * </p>
  * <p>
- * Version 1.2.4 (Cockpit Spec Review - Stage 2 v1.0) changelog:
+ * Version 1.2.5 (Cockpit Spec Review - Stage 2 v1.0) changelog:
  *    - update the getSimpleProjectContestData methods for spec review backend update.
+ * </p>
+
+ * <p>
+ * Version 1.2.4 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+ * - streamline the software contest's status
+ * - Detail visits https://www.topcoder.com/bugs/browse/TCCC-1504
  * </p>
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -4962,26 +4968,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     c.setPperm(os[32].toString());
                 if (os[33] != null)
                     c.setCperm(os[33].toString());
-
-                // try to use phase if not null
-				if (rows[i][34] != null)
-				{
-					c.setSname((String)rows[i][34]);
-				}
-                // if active, and there is at least closed phase, treat as done
-                else if (rows[i][36] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
-				{
-					c.setSname("Pending Completion");
-				}
-				// else for active, use 'newstatus'
-				else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
-				{
+                
+                
+				if (rows[i][34] != null) {
+				 // any contest that has an open phase in Online Review
+					c.setSname("Active");
+				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE)) {
+				    //scheduled or draft
 					c.setSname((String)rows[i][35]);
-				}
-				// use status
-				else
-				{
-					c.setSname((String)rows[i][8]);
+				} else if(!((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE)) {
+					c.setSname("Completed");
 				}
 
                 
@@ -5294,7 +5290,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     }
                 }
             }
-            
+
         }
         catch (SQLException e)
         {
