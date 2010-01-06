@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="TopCoder Cronos Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -7,8 +7,8 @@
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
     <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="test_reflib/tcs"/>
-    <property name="ext_libdir" value="test_reflib/third_party"/>
+    <property name="tcs_libdir" value="${libdir}/tcs"/>
+    <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
@@ -35,12 +35,9 @@
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
 
-    <!-- Change this for custom component build -->
-    <!--
-    <property name="greekgod_libdir" value="../lib/greekgod"/>
-    <property name="target_libdir" value="${greekgod_libdir}"/>
-    -->
-    <property name="target_libdir" value="${tcs_libdir}"/>
+    <property name="cronos_libdir" value="../lib/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+ 
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -78,6 +75,9 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -93,8 +93,8 @@
         </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
-        <pathelement location="${configdir}"/>
         <pathelement location="${testfiles}"/>
+        <pathelement location="${configdir}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -187,7 +187,7 @@
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <classpath refid="cobertura.classpath"/>
-                <test name="${package}.UnitTests" todir="${testlogdir}">
+                <test name="${package}.AllTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
                 </test>
@@ -239,11 +239,28 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
+
+        <if>
+          <and>
+            <isset property="component.mainclass"/>
+            <length string="${component.mainclass}" when="greater" length="0" />
+          </and>
+          <then>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+              <attribute name="Main-Class" value="${component.mainclass}"/>
+            </manifest>
+          </then>
+          <else>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+            </manifest>
+          </else>
+        </if>
     </target>
 
     <target name="dist" depends="compile, manifest">
@@ -360,6 +377,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
+                       build.version,
                        README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
