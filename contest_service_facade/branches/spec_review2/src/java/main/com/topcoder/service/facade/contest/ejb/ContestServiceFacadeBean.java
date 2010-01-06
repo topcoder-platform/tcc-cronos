@@ -1888,30 +1888,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
     }
 
-    /**
-     * <p>
-     * Gets the list of existing contests associated with the client referenced
-     * by the specified ID.
-     * </p>
-     *
-     * @param clientId
-     *            a <code>long</code> providing the ID of a client to get the
-     *            associated contests for.
-     * @return a <code>List</code> providing the contests associated with the
-     *         requested client. Empty list is returned if there are no matching
-     *         contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     */
-    public List<StudioCompetition> getContestsForClient(long clientId)
-        throws PersistenceException {
-        logger.debug("getContestsForClient");
-
-        List<ContestData> studioContests = this.studioService.getContestsForClient(clientId);
-        logger.debug("Exit getContestsForClient");
-
-        return convertToCompetitions(CompetionType.STUDIO, studioContests);
-    }
+   
 
     /**
      * <p>

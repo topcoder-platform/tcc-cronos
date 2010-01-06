@@ -539,24 +539,7 @@ public interface ContestServiceFacade {
     public List<StudioCompetition> searchContests(ContestServiceFilter filter)
         throws PersistenceException;
 
-    /**
-     * <p>
-     * Gets the list of existing contests associated with the client referenced
-     * by the specified ID.
-     * </p>
-     *
-     * @param clientId
-     *            a <code>long</code> providing the ID of a client to get the
-     *            associated contests for.
-     * @return a <code>List</code> providing the contests associated with the
-     *         requested client. Empty list is returned if there are no matching
-     *         contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     * @tested
-     */
-    public List<StudioCompetition> getContestsForClient(long clientId)
-        throws PersistenceException;
+    
 
     /**
      * <p>
