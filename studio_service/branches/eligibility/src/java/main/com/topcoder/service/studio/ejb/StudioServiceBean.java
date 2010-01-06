@@ -3089,35 +3089,7 @@ public class StudioServiceBean implements StudioService {
         return null;
     }
 
-    /**
-     * Returns all contests for a particular client ID, provided as a long
-     *
-     * @param clientId client Id to search for.
-     * @return all contests for the given client ID.
-     * @throws PersistenceException if any error occurs when getting contest.
-     */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<ContestData> getContestsForClient(long clientId) throws PersistenceException {
-        logEnter("getContestsForClient");
-
-        try {
-            List<Contest> contests = contestManager.getAllContests();
-
-            ArrayList<ContestData> result = new ArrayList<ContestData>();
-            for (Contest contest : contests) {
-                if (clientId == contestManager.getClientForContest(contest.getContestId())) {
-                    result.add(convertContest(contest));
-                }
-            }
-
-            logExit("getContestsForClient", result.size());
-            return result;
-        } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
-        }
-
-        return null;
-    }
+    
 
     /**
      * <p>

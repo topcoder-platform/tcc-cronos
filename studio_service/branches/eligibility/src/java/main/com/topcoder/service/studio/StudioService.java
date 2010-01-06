@@ -374,14 +374,6 @@ public interface StudioService {
      */
     public List<ContestData> searchContests(Filter filter) throws PersistenceException;
 
-    /**
-     * Returns all contests for a particular client ID, provided as a long
-     *
-     * @param clientId client Id to search for.
-     * @return all contests for the given client ID.
-     * @throws PersistenceException if any error occurs when getting contest.
-     */
-    public List<ContestData> getContestsForClient(long clientId) throws PersistenceException;
 
     /**
      * <p>
