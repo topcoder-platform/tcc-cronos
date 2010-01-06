@@ -42,7 +42,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.project.Project;
+
 import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChangeHistory;
@@ -1004,99 +1004,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-    /**
-     * <p>
-     * Gets client for contest, the client id is returned.
-     * </p>
-     *
-     * @param contestId
-     *            the contest id
-     * @return the client id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding contest (or project) in
-     *             persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
-     */
-    @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public long getClientForContest(long contestId)
-            throws ContestManagementException {
-        try {
-            logEnter("getClientForContest()");
-            logOneParameter(contestId);
-
-            EntityManager em = getEntityManager();
-
-            Contest contest = em.find(Contest.class, new Long(contestId));
-
-            if (contest == null) {
-                throw wrapEntityNotFoundException("The contest with id '"
-                        + contestId + "' doesn't exist.");
-            }
-
-            Project project = em.find(Project.class, contest
-                    .getTcDirectProjectId());
-
-            if (project == null) {
-                throw wrapEntityNotFoundException("The project with id '"
-                        + contest.getTcDirectProjectId() + "' doesn't exist.");
-            }
-
-            return project.getUserId();
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e,
-                    "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e,
-                    "There are errors while persisting the entity.");
-        } finally {
-            logExit("getClientForContest()");
-        }
-    }
-
-    /**
-     * <p>
-     * Get client for project, and return the retrieved client id.
-     * </p>
-     *
-     * @param projectId
-     *            the project id
-     * @return the client id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding project in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
-     */
-    @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public long getClientForProject(long projectId)
-            throws ContestManagementException {
-        try {
-            logEnter("getClientForProject()");
-            logOneParameter(projectId);
-
-            EntityManager em = getEntityManager();
-
-            Project project = em.find(Project.class, new Long(projectId));
-
-            if (project == null) {
-                throw wrapEntityNotFoundException("The project with id '"
-                        + projectId + "' doesn't exist.");
-            }
-
-            return project.getUserId();
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e,
-                    "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e,
-                    "There are errors while persisting the entity.");
-        } finally {
-            logExit("getClientForProject()");
-        }
-    }
-
+    
     /**
      * <p>
      * Adds contest status, and return the added contest status.
