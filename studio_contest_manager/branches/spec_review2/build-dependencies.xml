@@ -29,7 +29,7 @@
 <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
 <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar"/>
 <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
-<property name="project_service.jar" value="${tcs_libdir}/project_service/1.0.1/project_service.jar"/>
+
  
 
 <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.2.0/contest_and_submission_entities.jar" />
