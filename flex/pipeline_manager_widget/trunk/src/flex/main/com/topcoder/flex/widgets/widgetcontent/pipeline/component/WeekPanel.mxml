@@ -98,6 +98,15 @@
             private function compareAdded(obj1:Object, obj2:Object, fields:Array=null):int {
                 var c1:Detail=obj1 as Detail;
                 var c2:Detail=obj2 as Detail;
+                if (c1.added == null && c2.added == null) {
+                	return 0;
+                }
+                if (c1.added == null && c2.added) {
+                	return -1;
+                }
+                if (c1.added != null && c2.added == null) {
+                	return 1;
+                }
                 if (c1.added.getTime() > c2.added.getTime()) {
                     return 1;
                 } else if (c1.added.getTime() < c2.added.getTime()) {
@@ -109,6 +118,15 @@
             private function compareChange(obj1:Object, obj2:Object, fields:Array=null):int {
                 var c1:Detail=obj1 as Detail;
                 var c2:Detail=obj2 as Detail;
+                if (c1.changed == null && c2.changed == null) {
+                	return 0;
+                }
+                if (c1.changed == null && c2.changed) {
+                	return -1;
+                }
+                if (c1.changed != null && c2.changed == null) {
+                	return 1;
+                }
                 if (c1.changed.getTime() > c2.changed.getTime()) {
                     return 1;
                 } else if (c1.changed.getTime() < c2.changed.getTime()) {

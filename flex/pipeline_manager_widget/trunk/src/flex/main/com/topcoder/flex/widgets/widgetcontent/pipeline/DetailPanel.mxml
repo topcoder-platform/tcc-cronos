@@ -121,6 +121,8 @@
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.FeeRenderer" />
 			<mx:DataGridColumn sortable="false" headerText="Actual" headerStyleName="headerStyle" id="aid"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ActualRenderer" />
+			<mx:DataGridColumn sortable="false" headerText="All Status" headerStyleName="headerStyle" 
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AllStatusRenderer" />
 		</mx:columns>
 	</mx:DataGrid>
 	

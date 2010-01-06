@@ -118,8 +118,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
          * This action will reload this widget.
          */
         public function reload():void {
-        	//refresh
-        	loadData();
+        	if (!model.startDate || !model.endDate) {
+                model.startDate = model.generateSundayTime(new Date());
+            	model.endDate = new Date(model.startDate.time + 4 * 7 * 24 * 3600 * 1000);
+            }
+        	loadContests(model.startDate, model.endDate, false);
         }
         
         /**

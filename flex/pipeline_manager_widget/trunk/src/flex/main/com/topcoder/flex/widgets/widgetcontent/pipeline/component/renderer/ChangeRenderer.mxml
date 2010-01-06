@@ -109,10 +109,9 @@
             }
         ]]>
     </mx:Script>
-    <mx:Text id="content"
+    <mx:Label id="content" width="114"
              styleName="listStyle"
              textDecoration="underline"
-             width="100%"
              buttonMode="true"
              useHandCursor="true"
              mouseChildren="false"/>
