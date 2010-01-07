@@ -1344,13 +1344,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         * @since 1.2.1
         */
     private static final String SELCT_PRIVATE_CONTEST_TERMS = 
-        "select terms_of_user_id  from client_terms_mapping where client_project_id = ?";
+        "select terms_of_use_id  from client_terms_mapping where client_project_id = ?";
     /**
      * Represents the sql statement to select client observe terms for a client project.
      * @since BUGR-3039
      */
     private static final String SELCT_OBSERVE_CONTEST_TERMS = 
-        "select terms_of_user_id  from client_observer_terms_mapping where client_project_id = ?";
+        "select terms_of_use_id  from client_observer_terms_mapping where client_project_id = ?";
     /**
      * 'Active' status name
      */
@@ -5334,7 +5334,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     preparedStatement.setObject(3, rows[0][index]);
                     preparedStatement.execute(); 
                 }
-            }
+            } 
         }
         catch (SQLException e)
         {
