@@ -84,6 +84,6 @@
             }
         ]]>
     </mx:Script>
-    <mx:Label id="wiki" width="168" text="{detail.name}" useHandCursor="true" buttonMode="true"
+    <mx:Label id="wiki" width="168" text="{detail.name}" useHandCursor="true" buttonMode="true" mouseChildren="false"
                    click="handleClick()"/>
 </mx:VBox>
