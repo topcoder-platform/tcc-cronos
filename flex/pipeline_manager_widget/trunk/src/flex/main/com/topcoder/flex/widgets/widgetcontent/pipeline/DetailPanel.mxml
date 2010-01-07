@@ -119,9 +119,9 @@
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CostRenderer" />
 			<mx:DataGridColumn sortable="false" headerText="Contest Fee" headerStyleName="headerStyle" id="cfid" width="115"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.FeeRenderer" />
-			<mx:DataGridColumn sortable="false" headerText="Actual" headerStyleName="headerStyle" id="aid"
+			<mx:DataGridColumn sortable="false" headerText="Launched" headerStyleName="headerStyle" id="aid"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ActualRenderer" />
-			<mx:DataGridColumn sortable="false" headerText="All Status" headerStyleName="headerStyle" 
+			<mx:DataGridColumn sortable="false" headerText="All" headerStyleName="headerStyle" 
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AllStatusRenderer" />
 		</mx:columns>
 	</mx:DataGrid>

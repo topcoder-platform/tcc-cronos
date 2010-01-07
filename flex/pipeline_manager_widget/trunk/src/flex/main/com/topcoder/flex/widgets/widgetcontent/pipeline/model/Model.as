@@ -218,20 +218,9 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 
                 p.type=o.contestType ? o.contestType[0] : "";
                 p.category=o.contestCategory ? o.contestCategory[0] : "";
-                if (p.category && p.category.toUpperCase() == "STUDIO" && o.sname && o.sname[0]) {
-                	var statusId:Number = Number(o.sname[0]);
-                	if (statusId == 1 || statusId == 15) {
-                		p.status = "Draft";
-                	} else if (statusId == 9) {
-                		p.status = "Scheduled ";
-                	} else if (statusId == 2 || statusId == 5|| statusId == 6|| statusId == 10|| statusId == 12) {
-                		p.status = "Active";
-                	} else if (statusId == 4 || statusId == 7|| statusId == 8|| statusId == 11|| statusId == 13|| statusId == 14) {
-                		p.status = "Completed";
-                	}
-                } else {
-                	p.status=o.sname ? o.sname[0] : "";
-                }
+               
+                p.status=o.sname ? o.sname[0] : "";
+                
                 
                 p.client=o.clientName[0];
                 
