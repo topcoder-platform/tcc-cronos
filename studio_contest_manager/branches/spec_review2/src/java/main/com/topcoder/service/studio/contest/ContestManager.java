@@ -171,34 +171,6 @@ public interface ContestManager {
      */
     public void updateContestStatus(long contestId, long newStatusId) throws ContestManagementException;
 
-    /**
-     * <p>
-     * Gets client for contest, the client id is returned.
-     * </p>
-     *
-     * @param contestId the contest id
-     * @return the id of the client for this contest
-     *
-     * @throws EntityNotFoundException if there is no corresponding contest (or
-     *         project) in persistence.
-     * @throws ContestManagementException if any error occurs when retrieving
-     *         the client id.
-     */
-    public long getClientForContest(long contestId) throws ContestManagementException;
-
-    /**
-     * <p>
-     * Gets client for project, and return the retrieved client id.
-     * </p>
-     *
-     * @param projectId the project id
-     * @return the client id
-     * @throws EntityNotFoundException if there is no corresponding project in
-     *         persistence.
-     * @throws ContestManagementException if any error occurs when retrieving
-     *         the client id.
-     */
-    public long getClientForProject(long projectId) throws ContestManagementException;
 
     /**
      * <p>
