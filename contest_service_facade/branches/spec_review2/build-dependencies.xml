@@ -158,6 +158,9 @@
     <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.1.0/email_engine.jar"/>
     <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.0.0/document_generator.jar"/>
     <property name="cockpit_phase_handlers.jar" value="${tcs_libdir}/cockpit_phase_handlers/1.1.0/cockpit_phase_handlers.jar"/>
+
+    <property name="User.jar" value="${tcs_libdir}/user/User.jar"/>
+    <property name="Project.jar" value="${tcs_libdir}/project/Project.jar"/>
     
     <!-- added for Cockpit Release Assembly 5 v1.0 -->
     <property name="client_project_entities_dao.version" value="1.0.0"/>
@@ -255,19 +258,22 @@
         <pathelement location="${user_project_data_store.jar}"/>
         <pathelement location="${db_connection_factory.jar}"/>
         <pathelement location="${database_abstraction.jar}"/>
-	<pathelement location="${forums.jar}"/>
+	    <pathelement location="${forums.jar}"/>
         <pathelement location="${jiveforums.jar}"/>
         <pathelement location="${jivebase_modified.jar}"/>
-	<pathelement location="${review_data_structure.jar}"/>
+	    <pathelement location="${review_data_structure.jar}"/>
 		
-	<pathelement location="${email_engine.jar}"/>
-	<pathelement location="${document_generator.jar}"/>
-	<pathelement location="${cockpit_phase_handlers.jar}"/>
+	    <pathelement location="${email_engine.jar}"/>
+	    <pathelement location="${document_generator.jar}"/>
+	    <pathelement location="${cockpit_phase_handlers.jar}"/>
         
         <!-- added for Cockpit Release Assembly 5 v1.0 -->
         <pathelement location="${client_project_entities_dao.jar}"/>
         <pathelement location="${contest_eligibility_persistence.jar}"/>
         <pathelement location="${contest_eligibility_validation.jar}"/>
+
+        <pathelement location="${User.jar}"/>
+        <pathelement location="${Project.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

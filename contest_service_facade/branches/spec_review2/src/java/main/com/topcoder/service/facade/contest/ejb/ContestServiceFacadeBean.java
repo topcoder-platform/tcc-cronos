@@ -149,6 +149,10 @@ import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
+import com.topcoder.web.ejb.user.UserTermsOfUse;
+import com.topcoder.web.ejb.user.UserTermsOfUseHome;
+import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
+import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.log.Level;
@@ -765,6 +769,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     private UploadExternalServices uploadExternalServices = null;
+
+    /**
+     * userBeanProviderUrl is used in the jndi context to get the user bean.
+     * It's injected, non-null and non-empty after set.
+     */
+    @Resource(name = "userBeanProviderUrl")
+    private String userBeanProviderUrl;
+
+    /**
+     * userBeanProviderUrl is used in the jndi context to get the user bean.
+     * It's injected, non-null and non-empty after set.
+     */
+    @Resource(name = "projectBeanProviderUrl")
+    private String projectBeanProviderUrl;
+
 
 
     /**
@@ -5247,9 +5266,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                 }
                             }
 
-                            // if not found, add resource
-                            if (!found)
+                            // if not found && user agreed terms (if any), add resource
+                            if (!found && checkTerms(pid, per.getUserId(), new int[]{(int)RESOURCE_ROLE_OBSERVER_ID}))
                             {
+                                 
                                  com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
                                  newRes.setId(com.topcoder.management.resource.Resource.UNSET_ID);
                                  newRes.setProject(pid);
@@ -5269,15 +5289,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                     RESOURCE_INFO_PAYMENT_STATUS_NA);
 
                                  projectServices.updateResource(newRes, String.valueOf(principal.getUserId()));
+
+                                 // create forum watch
+                                long forumId = projectServices.getForumId(pid);
+                                if (forumId > 0 && createForum)
+                                {
+                                    createForumWatch(forumId, per.getUserId());
+                                }
                             }
 
-                            // create forum watch
-                            long forumId = projectServices.getForumId(pid);
-                            if (forumId > 0 && createForum)
-                            {
-                                createForumWatch(forumId, per.getUserId());
-                            }
-                             
                         }
                         
                     }
@@ -6641,6 +6661,82 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         } catch (Exception e) {
             logger.error("*** Could not updateForumName for " + forumId + ", " + name );
             logger.error(e);
+        }
+    }
+
+
+    /**
+     * check if user agrees the term(s) associate with the project (if any)
+     * by role
+     *
+     * @param projectId
+     *            OR project id
+     * @param userId
+     *            userId The user id to use
+     * @param roleId
+     *            role id
+     * @return true if user agreed terms or no term associated with project
+     */
+    private boolean checkTerms(long projectId, long userId, int[] roleIds) {
+        logger.info("checkTerms (" + projectId + ", " + userId + ", " + roleIds + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, userBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            UserTermsOfUseHome userTermsOfUseHome = (UserTermsOfUseHome) c.lookup(UserTermsOfUseHome.EJB_REF_NAME);
+
+            UserTermsOfUse userTerm = userTermsOfUseHome.create();
+
+            Properties p2 = new Properties();
+            p2.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p2.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p2.put(Context.PROVIDER_URL, projectBeanProviderUrl);
+
+            Context c2 = new InitialContext(p2);
+            ProjectRoleTermsOfUseHome projectRoleTermsOfUseHome = (ProjectRoleTermsOfUseHome) c2.lookup(ProjectRoleTermsOfUseHome.EJB_REF_NAME);
+
+            ProjectRoleTermsOfUse projectTerm = projectRoleTermsOfUseHome.create();
+
+            List<Long>[] necessaryTerms = projectTerm.getTermsOfUse((int)projectId, roleIds, "java:/DS");
+
+            // if project does not have term
+            if (necessaryTerms == null || necessaryTerms.length == 0)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < necessaryTerms.length; i++) 
+            {
+                if (necessaryTerms[i] != null) 
+                {
+                    for (int j = 0; j < necessaryTerms[i].size(); j++) 
+                    {
+                        Long termId = necessaryTerms[i].get(j);
+                        // if user has not agreed
+                        if (!userTerm.hasTermsOfUse(userId, termId, "java:/DS"))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            logger.debug("checkTerms (" + projectId + ", " + userId + ", " + roleIds + ")");
+            return true;
+
+        } catch (Exception e) {
+            logger.error("*** eorr in checkTerms (" + projectId + ", " + userId + ", " + roleIds + ")");
+
+            logger.error(e);
+            return false;
         }
     }
 }
