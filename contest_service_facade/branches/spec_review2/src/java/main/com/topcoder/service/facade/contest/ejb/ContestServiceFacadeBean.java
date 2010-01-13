@@ -328,6 +328,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final long SALE_TYPE_TC_PURCHASE_ORDER = 2;
 
+    //TODO, please start move these constants to the right classes.
+
     /**
      * Private constant specifying payments project info type.
      *
@@ -406,6 +408,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager id
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final long RESOURCE_ROLE_MANAGER_ID = 13;
 
@@ -413,6 +416,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager name
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final String RESOURCE_ROLE_MANAGER_NAME = "Manger";
 
@@ -420,6 +424,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager desc
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final String RESOURCE_ROLE_MANAGER_DESC = "Manger";
 
@@ -428,6 +433,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager id
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final long RESOURCE_ROLE_OBSERVER_ID = 12;
 
@@ -435,6 +441,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager name
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final String RESOURCE_ROLE_OBSERVER_NAME = "Observer";
 
@@ -442,6 +449,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Private constant specifying resource role manager desc
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
      */
     private static final String RESOURCE_ROLE_OBSERVER_DESC = "Observer";
 
@@ -4171,20 +4179,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
 
                 ResourceRole manager_role = new ResourceRole();
-                manager_role.setId(RESOURCE_ROLE_MANAGER_ID);
-                manager_role.setName(RESOURCE_ROLE_MANAGER_NAME);
-                manager_role.setDescription(RESOURCE_ROLE_MANAGER_DESC);
+                manager_role.setId(ResourceRole.RESOURCE_ROLE_MANAGER_ID);
+                manager_role.setName(ResourceRole.RESOURCE_ROLE_MANAGER_NAME);
+                manager_role.setDescription(ResourceRole.RESOURCE_ROLE_MANAGER_DESC);
 
                 ResourceRole observer_role = new ResourceRole();
-                observer_role.setId(RESOURCE_ROLE_OBSERVER_ID);
-                observer_role.setName(RESOURCE_ROLE_OBSERVER_NAME);
-                observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
+                observer_role.setId(ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
+                observer_role.setName(ResourceRole.RESOURCE_ROLE_OBSERVER_NAME);
+                observer_role.setDescription(ResourceRole.RESOURCE_ROLE_OBSERVER_DESC);
+
+                ResourceRole clientmanager_role = new ResourceRole();
+                clientmanager_role.setId(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID);
+                clientmanager_role.setName(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_NAME);
+                clientmanager_role.setDescription(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_DESC);
 
                 boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
                 // tc staff add as manager, other as observer
-                if (tcstaff || clientId != 0)
+                if (tcstaff)
                 {
                     resources[0].setResourceRole(manager_role);
+                }
+                else if (clientId != 0)
+                {
+                    resources[0].setResourceRole(clientmanager_role);
                 }
                 else
                 {
