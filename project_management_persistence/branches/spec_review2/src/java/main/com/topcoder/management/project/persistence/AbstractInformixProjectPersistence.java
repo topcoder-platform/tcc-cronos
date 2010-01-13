@@ -1344,13 +1344,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         * @since 1.2.1
         */
     private static final String SELCT_PRIVATE_CONTEST_TERMS = 
-        "select terms_of_use_id  from client_terms_mapping where client_project_id = ?";
-    /**
-     * Represents the sql statement to select client observe terms for a client project.
-     * @since BUGR-3039
-     */
-    private static final String SELCT_OBSERVE_CONTEST_TERMS = 
-        "select terms_of_use_id  from client_observer_terms_mapping where client_project_id = ?";
+        "select terms_of_use_id, resource_role_id  from client_terms_mapping where client_project_id = ?";
+
     /**
      * 'Active' status name
      */
@@ -5304,37 +5299,36 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // build the statement
             
             Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
-                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE});
+                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE});
                 
             preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
             preparedStatement.setLong(1, projectId);
             if (rows.length > 0)
             {
-                for (int index = 0; index < rows[0].length; index++) {
-                    for (int roleId : ALL_ROLES_ID) { 
-                        preparedStatement.setInt(2, roleId);
-                        preparedStatement.setObject(3, rows[0][index]);
+                for (int i = 0; i < rows.length; i++) 
+                {
+                    Object[] os = rows[i];
+                    // if resource role id is 0 or null, insert for all
+                    if (os[1] == null || os[1].toString().equals("") || os[1].toString().equals("0"))
+                    {
+                        for (int roleId : ALL_ROLES_ID) 
+                        { 
+                            preparedStatement.setInt(2, roleId);
+                            preparedStatement.setObject(3, os[0]);
+                            preparedStatement.execute(); 
+                        }
+                    }
+                    // otherwise insert for specified role
+                    else
+                    {
+                        preparedStatement.setObject(2, os[1]);
+                        preparedStatement.setObject(3, os[0]);
                         preparedStatement.execute(); 
                     }
                 }
             }
 
-            //CLOSE
-            preparedStatement.close();
-            //query term(s) for Observer role.
-            rows = Helper.doQuery(conn, SELCT_OBSERVE_CONTEST_TERMS,
-                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE});
-            //insert into the project_role_terms_of_use_xref table for observe role
-            preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
-            preparedStatement.setLong(1, projectId);
-            if (rows.length > 0)
-            {
-                for (int index = 0; index < rows[0].length; index++) {
-                    preparedStatement.setInt(2, OBSERVER_ROLE_ID);
-                    preparedStatement.setObject(3, rows[0][index]);
-                    preparedStatement.execute(); 
-                }
-            } 
+            
         }
         catch (SQLException e)
         {
