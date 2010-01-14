@@ -205,7 +205,7 @@
                   styleName="nameLabel"/>
     </mx:HBox>
     <mx:DataGrid width="100%" id="weeklyContestGrid" dataProvider="{dp}" variableRowHeight="false" rowCount="{dp.length}"
-    	         height="{(dp.length>6)?165:((dp.length*30)+ 22)}" rowHeight="25"
+    	         height="{(dp.length>18)?495:((dp.length*30)+ 22)}" rowHeight="25"
     	         visible="false" includeInLayout="false" wordWrap="false" verticalScrollPolicy="auto">
     	<mx:columns>
     		<mx:DataGridColumn headerText="Date" dataField="date"  width="105"
