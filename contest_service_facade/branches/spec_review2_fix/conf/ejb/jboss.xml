@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>ContestServiceFacadeBean</ejb-name>
+            <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
+			
+
+            <ejb-ref>
+                <ejb-ref-name>ejb/StudioService</ejb-ref-name>
+                <jndi-name>StudioServiceBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ContestEligibilityValidation</ejb-ref-name>
+                <jndi-name>ContestEligibilityValidationBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ContestEligibilityPersistence</ejb-ref-name>
+                <jndi-name>ContestEligibilityPersistenceBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
+                <jndi-name>CatalogService/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectServicesBean</ejb-ref-name>
+                <jndi-name>ProjectServicesBean/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
+                <jndi-name>PermissionServiceBean/remote</jndi-name>
+            </ejb-ref>
+
+			 <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
+
+			<ejb-ref>
+                <ejb-ref-name>ejb/SpecReviewService</ejb-ref-name>
+                <jndi-name>SpecReviewServiceBean/remote</jndi-name>
+            </ejb-ref>
+            
+            <!-- added for Cockpit Release Assembly 5 v1.0 -->
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
+                <jndi-name>ProjectDAOBean/remote</jndi-name>
+            </ejb-ref>
+
+			<port-component>
+				<port-component-name>ContestServiceFacadeBean</port-component-name>
+				<port-component-uri>/ContestServiceFacadeBean</port-component-uri>
+				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+			</port-component>
+        </session>
+    </enterprise-beans>
+
+    <security-domain>java:/jaas/JBossLoginModule</security-domain>
+	<webservices> 
+		<context-root>/contestfacade</context-root> 
+		<webservice-description> 
+		<webservice-description-name />
+		<wsdl-publish-location />
+    </webservice-description>
+ </webservices>
+</jboss>
