@@ -1266,13 +1266,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      * @since 1.2.1
      */
-    private static final String FIND_CORRESPONDING_DEVELOPMENT_CONTEST = "select q1.project_id from project_info q1 "
+    private static final String FIND_CORRESPONDING_DEVELOPMENT_CONTEST = "select q1.project_id from project p, project_info q1 "
         + "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = ? "
         + "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 "
         + "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = ? "
         + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
         + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
-        + "where q1.project_info_type_id = 1 and q1.project_id <> ?";
+        + "where q1.project_info_type_id = 1 and p.project_id = q1.project_id and p.project_category_id = 2 "
+        + " and p.project_status_id in (1,2,7) and q1.project_id <> ?";
+
+    private static final String FIND_CORRESPONDING_DESIGN_CONTEST = "select q1.project_id from project p, project_info q1 "
+        + "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = ? "
+        + "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 "
+        + "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = ? "
+        + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 "
+        + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? "
+        + "where q1.project_info_type_id = 1 and p.project_id = q1.project_id and p.project_category_id = 1 "
+        + " and p.project_status_id in (1,2,7) and q1.project_id <> ?";
 
 
      /**
@@ -2257,7 +2267,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
 
         // check if any client/billing specific terms
-        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId);
+        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId, project.getProjectCategory().getId());
 
         // create the project properties
         createProjectProperties(projectId, project, idValueMap, operator, conn);
@@ -2398,7 +2408,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         long billingProjectId = new Long(billing);
 
         // check if any client/billing specific terms
-        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId);
+        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId, project.getProjectCategory().getId());
 
         // update the project properties
         updateProjectProperties(project, idValueMap, operator, conn);
@@ -4473,7 +4483,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
                 for (int roleId : ALL_ROLES_ID) {
                     // no manager or observer for cca
-                    if (roleId != MANAGER_ROLE_ID && roleId != OBSERVER_ROLE_ID)
+                    // for spec review, no submitter
+                    if (roleId != MANAGER_ROLE_ID && roleId != OBSERVER_ROLE_ID 
+                          && !(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
                     {
                         preparedStatement.setInt(2, roleId);
                         preparedStatement.execute(); 
@@ -4496,7 +4508,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                                      PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
                                             .toString(PUBLIC_REVIEWER_TERMS_ID)));
 
-            createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+            // no submitter for spec review
+            if (projectCategoryId != ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW)
+            {
+                createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+            }
 
             if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
                 int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
@@ -5236,8 +5252,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      /**
      * Get corresponding development contest's id for the design contest.
      *
-     * @param userId
-     *            The user id
+     * @param contestId
+     *            The design contestId id
      * @throws PersistenceException
      *             if any other error occurs
      * @since 1.2.2
@@ -5259,7 +5275,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 new DataType[] {Helper.LONG_TYPE});
 
             getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
-            long rst = -1;
+            long rst = 0;
             if (rows.length != 0) {
                 rst = ((Long)rows[0][0]).longValue();
             }
@@ -5267,6 +5283,51 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             closeConnection(conn);
             getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignComponents method."));
+            return rst;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                "Fails to retrieving development contest's id ", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+
+    /**
+     * Get corresponding design contest's id for the dev contest.
+     *
+     * @param contestId
+     *            The dev contestId id
+     * @throws PersistenceException
+     *             if any other error occurs
+     */
+    public long getDesignContestId(long contestId) throws PersistenceException {
+
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignContestId() method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            Object[][] rows = Helper.doQuery(conn,
+                FIND_CORRESPONDING_DESIGN_CONTEST, 
+                new Object[] {contestId, contestId, contestId, contestId},
+                new DataType[] {Helper.LONG_TYPE});
+
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Found "+rows.length + " records"));
+            long rst = 0;
+            if (rows.length != 0) {
+                rst = ((Long)rows[0][0]).longValue();
+            }
+            getLogger().log(Level.INFO, new LogMessage(null, null, "The id is: " + rst));
+
+            closeConnection(conn);
+            getLogger().log(Level.INFO, new LogMessage(null,null,"Exit getDesignContestId method."));
             return rst;
         } catch (PersistenceException e) {
             getLogger().log(Level.ERROR, new LogMessage(null, null,
@@ -5287,7 +5348,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @param clientId the clientId.
      * @throws PersistenceException if any error occurs
      */
-    public void createPrivateProjectRoleTermsOfUse(long projectId,  long billingProjectId)
+    public void createPrivateProjectRoleTermsOfUse(long projectId,  long billingProjectId, long projectCategoryId)
             throws PersistenceException {
         Connection conn = null;
         PreparedStatement preparedStatement = null;
@@ -5313,17 +5374,26 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     {
                         for (int roleId : ALL_ROLES_ID) 
                         { 
-                            preparedStatement.setInt(2, roleId);
-                            preparedStatement.setObject(3, os[0]);
-                            preparedStatement.execute(); 
+                            // no submitter for spec review
+                            if (!(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
+                            {
+                                preparedStatement.setInt(2, roleId);
+                                preparedStatement.setObject(3, os[0]);
+                                preparedStatement.execute();
+                            }
                         }
                     }
                     // otherwise insert for specified role
                     else
                     {
-                        preparedStatement.setObject(2, os[1]);
-                        preparedStatement.setObject(3, os[0]);
-                        preparedStatement.execute(); 
+                        int roleId = ((Long)os[1]).intValue();
+                         // no submitter for spec review
+                        if (!(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
+                        {
+                            preparedStatement.setObject(2, os[1]);
+                            preparedStatement.setObject(3, os[0]);
+                            preparedStatement.execute(); 
+                        }
                     }
                 }
             }
