@@ -4301,7 +4301,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                
             }
 
-	    if (creatingDevContest) {
+	        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+		        projectServices.linkDevelopmentToDesignContest(contest.getId());
+	        }
+
+			if (creatingDevContest) {
                 devContest.setAssetDTO(contest.getAssetDTO());
                 devContest.getProjectHeader().getProperties().putAll(
                     contest.getDevelopmentProjectHeader().getProperties());
@@ -4454,21 +4458,34 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     allPhases[i].clearDependencies();
                 }
 
-
-        // TODO: this causes problem for compForum, better way should just update project part since we only change that.
-       /*         if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+		        //BugRace3074
+                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
-                    if (rst != -1) {
+                    if (rst != 0) {
+                        Duration twoDay = DatatypeFactory.newInstance().newDurationDayTime(true, 2, 0, 0, 0);
+			            //Since they are already sorted, just get the latest one's end time.
+                        XMLGregorianCalendar twoDaysLater =
+                            (getXMLGregorianCalendar(allPhases[allPhases.length - 1].getScheduledEndDate()));
+                        twoDaysLater.add(twoDay);
+
                         SoftwareCompetition developmentContest = getSoftwareContestByProjectId(rst);
-                        Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
-                        XMLGregorianCalendar elevenDaysLater = 
-                            ((XMLGregorianCalendar)(productionDate.clone()));
-                        elevenDaysLater.add(elevenDay);
-                        developmentContest.getAssetDTO().setProductionDate(elevenDaysLater);
-                        developmentContest.setProjectHeaderReason("Casade update from corresponding design contest");
-                        updateSoftwareContest(developmentContest, tcDirectProjectId);
+                        developmentContest.getProjectPhases().setStartDate(getDate(twoDaysLater));
+                        phaseset = developmentContest.getProjectPhases().getPhases();
+                        phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
+                        // add back project on phase
+                        for (int i = 0; i < phases.length; i++) {
+                             phases[i].setProject(developmentContest.getProjectPhases());
+                        }
+                        developmentContest.setProjectHeaderReason("Cascade update from corresponding design contest");
+                        projectServices.updateProject(developmentContest.getProjectHeader(),
+                                developmentContest.getProjectHeaderReason(),
+                                developmentContest.getProjectPhases(),
+                                developmentContest.getProjectResources(),
+                                String.valueOf(p.getUserId()));
+
+
                     }
-                }    */        
+                }
             } 
 
             // set project start date in production date
