@@ -31,6 +31,7 @@ import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.project.link.ProjectLink;
 import com.topcoder.management.project.link.ProjectLinkManager;
+import com.topcoder.management.project.link.ProjectLinkType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
@@ -228,7 +229,10 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *     - Added method to get open phases names for a given project id.
  *     - Added method to add comments to an existing review.
  * </p>
- *
+ * <p>
+ * Version 1.3.1 (BR3074) changelog:
+ *     - Added method to link the design and development contests.
+ * </p>
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
@@ -2431,29 +2435,6 @@ public class ProjectServicesImpl implements ProjectServices {
 		return ret;
 	}
 
-   /**
-     * This method will create project role terms of use association for private contests.
-     *
-     * @param projectId the project id to associate
-     * @param clientId the clientId.
-     * @throws PersistenceException if any error occurs
-     * @since 1.2.1
-     */
-    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
-            throws ProjectServicesException {
-        String method = "ProjectServicesBean#createPrivateProjectRoleTermsOfUse(" + projectId
-		    + ", " + clientId + ") method.";
-
-        Util.log(logger, Level.INFO, "Enters " + method);
-        try {
-            projectManager.createPrivateProjectRoleTermsOfUse(projectId, clientId);
-        } catch (PersistenceException e) {
-            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
-            throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
-        } finally {
-            Util.log(logger, Level.INFO, "Exits " + method);
-        }        
-    } 
     
      /**
      * check contest permission, check if a user has permission (read or write) on a contest
@@ -3180,4 +3161,68 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+	
+	/**
+     * This method links the development contest to its design contest. It simply call a method in project link manager.
+     *
+     * @param developmentContestId the development contest id
+	 *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     *
+     * @since 1.3.1
+     */
+	public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException {
+		String method = "ProjectServicesImpl#linkDevelopmentToDesignContest(" + developmentContestId + ") method.";
+        log(Level.INFO, "Enters " + method);
+        log(Level.ERROR, "Enters1 " + developmentContestId);
+        log(Level.ERROR, "Enters2 " + getDevelopmentContestId(developmentContestId));
+        try {
+            long designId = getDesignContestId(developmentContestId);
+            if (designId != 0)
+            {
+                projectLinkManager.updateProjectLinks(developmentContestId, new long[] {designId}, new long[] {ProjectLinkType.DEPENDS_ON});
+            }
+			
+        } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating Rroject Link Manager.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+	}	
+
+
+    /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param contestId
+     *            The contest id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDesignContestId(long contestId)
+        throws ProjectServicesException {
+		log(Level.INFO,
+				"Enters ProjectServicesImpl#getDesignContestId method.");
+
+		long ret;
+		try {
+			ret = projectManager.getDesignContestId(contestId);
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getDesignContestId method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating ProjectManager.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getDesignContestId method.");
+		return ret;
+	}
+
+
+
+
 }

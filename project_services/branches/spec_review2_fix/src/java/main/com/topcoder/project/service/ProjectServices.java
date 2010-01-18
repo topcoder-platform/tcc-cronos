@@ -80,7 +80,10 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  *     - Added method to get open phases names for a given project id.
  *     - Added method to add comments to an existing review.
  * </p>
- *
+ * <p>
+ * Version 1.3.1 (BR3074) changelog:
+ *     - Added method to link the design and development contests.
+ * </p>
  * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
@@ -539,17 +542,6 @@ public interface ProjectServices {
      * @since 1.2.1
      */
     public long getDevelopmentContestId(long contestId) throws ProjectServicesException;
-
-    /**
-     * This method will create project role terms of use association for private contests.
-     *
-     * @param projectId the project id to associate
-     * @param clientId the clientId.
-     * @throws ProjectServicesException if any error occurs
-     * @since 1.2.1
-     */
-    public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
-            throws ProjectServicesException; 
     
      /**
      * check contest permission, check if a user has permission (read or write) on a contest
@@ -840,4 +832,26 @@ public interface ProjectServices {
      *
      */
     public boolean isDevOnly(long projectId) throws ProjectServicesException;
+
+	/**
+     * This method links the development contest to its design contest. It simply call a method in project link manager.
+     *
+     * @param developmentContestId the development contest id
+	 *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     *
+     * @since 1.3.1
+     */
+	public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException;		
+
+    /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param contestId
+     *            The design contestId
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDesignContestId(long contestId) throws ProjectServicesException;
 }

@@ -138,7 +138,10 @@ import com.topcoder.util.log.LogManager;
  *     - Added method to get open phases names for a given project id.
  *     - Added method to add comments to an existing review.
  * </p>
- *
+ * <p>
+ * Version 1.3.1 (BR3074) changelog:
+ *     - Added method to link the design and development contests.
+ * </p>
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
  * required to be thread safe.
@@ -1137,31 +1140,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
-    
-    
-   /**
-     * This method will create project role terms of use association for private contests.
-     *
-     * @param projectId the project id to associate
-     * @param clientId the clientId.
-     * @throws PersistenceException if any error occurs
-     * @since 1.2.1
-     */
-     public void createPrivateProjectRoleTermsOfUse(long projectId,  long clientId)
-            throws ProjectServicesException {
-        String method = "ProjectServicesBean#createPrivateProjectRoleTermsOfUse(" + projectId
-		    + ", " + clientId + ") method.";
-
-        Util.log(logger, Level.INFO, "Enters " + method);
-        try {
-            getProjectServices().createPrivateProjectRoleTermsOfUse(projectId, clientId);
-        } catch (ProjectServicesException e) {
-            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
-            throw e;
-        } finally {
-            Util.log(logger, Level.INFO, "Exits " + method);
-        }        
-    }
+   
 
     /**
      * check contest permission, check if a user has permission (read or write) on a contest
@@ -1646,5 +1625,53 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+	
+	/**
+     * This method links the design contest to its development contest.
+     *
+     * @param developmentContestId the development contest id
+	 *
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     *
+     * @since 1.3.1
+     */
+	public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException {
+		String method = "ProjectServicesImpl#linkDevelopmentToDesignContest(" + developmentContestId + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+			getProjectServices().linkDevelopmentToDesignContest(developmentContestId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "PersistenceException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+	}
+    
 
+    /**
+     * Get corresponding development contest's id for the design contest.
+     *
+     * @param contestId
+     *            The contest id
+     * @throws ProjectServicesException
+     *             if any other error occurs
+     * @since 1.2.1
+     */
+    public long getDesignContestId(long contestId) throws ProjectServicesException {
+        String method = "ProjectServicesBean#getDesignContestId() method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+
+            return getProjectServices().getDesignContestId(contestId);
+
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
 }
