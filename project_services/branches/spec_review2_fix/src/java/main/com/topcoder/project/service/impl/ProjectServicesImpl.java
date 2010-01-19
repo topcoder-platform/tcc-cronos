@@ -403,14 +403,6 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String RESOURCE_REVIEWER_PROPERTY = "reviewer";
 
-    /**
-     * <p>
-     * Represents the specification review for link type id
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final int SPEC_REVIEW_FOR_LINK_TYPE_ID = 3;
 
     /**
      * <p>
@@ -2853,8 +2845,8 @@ public class ProjectServicesImpl implements ProjectServices {
                 operator);
 
             // link it to the original project
-            projectLinkManager.updateProjectLinks(projectData.getProjectHeader().getId(), new long[] {projectId},
-                    new long[] {SPEC_REVIEW_FOR_LINK_TYPE_ID});
+            projectLinkManager.updateProjectLinks(projectId, new long[] {projectData.getProjectHeader().getId()},
+                    new long[] {ProjectLinkType.REQUIRES_SPEC_REVIEW});
 
             specReview = projectData.getProjectHeader();
         } catch (PersistenceException ex) {
@@ -2982,10 +2974,10 @@ public class ProjectServicesImpl implements ProjectServices {
         log(Level.INFO, "Enters " + method);
         long specReviewProjectId = -1;
         try {
-            ProjectLink[] projectLinks = projectLinkManager.getSourceProjectLinks(projectId);
+            ProjectLink[] projectLinks = projectLinkManager.getDestProjectLinks(projectId);
             for (int i = 0; i < projectLinks.length && specReviewProjectId < 0; i++) {
-                if (projectLinks[i].getType().getId() == SPEC_REVIEW_FOR_LINK_TYPE_ID) {
-                    specReviewProjectId = projectLinks[i].getSourceProject().getId();
+                if (projectLinks[i].getType().getId() == ProjectLinkType.REQUIRES_SPEC_REVIEW) {
+                    specReviewProjectId = projectLinks[i].getDestProject().getId();
                 }
             }
         } catch (PersistenceException ex) {
@@ -3180,7 +3172,7 @@ public class ProjectServicesImpl implements ProjectServices {
             long designId = getDesignContestId(developmentContestId);
             if (designId != 0)
             {
-                projectLinkManager.updateProjectLinks(developmentContestId, new long[] {designId}, new long[] {ProjectLinkType.DEPENDS_ON});
+                projectLinkManager.updateProjectLinks(developmentContestId, new long[] {designId}, new long[] {ProjectLinkType.FOR_DESIGN});
             }
 			
         } catch (PersistenceException ex) {
