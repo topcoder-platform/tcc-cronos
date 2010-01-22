@@ -17,6 +17,7 @@ import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
@@ -485,14 +486,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String PAYMENTS_PROJECT_PROPERTY_KEY = "Payments";
 
-    /**
-     * <p>
-     * Represents the "Review Cost" project property key
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final String REVIEW_COSTS_PROJECT_PROPERTY_KEY = "Review Cost";
+    
 
     /**
      * <p>
@@ -2805,7 +2799,8 @@ public class ProjectServicesImpl implements ProjectServices {
             // Dont turn on yet
             //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
             //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
-            projectHeader.setProperty(REVIEW_COSTS_PROJECT_PROPERTY_KEY, String.valueOf(specReviewPrize));
+            projectHeader.setProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, 
+                          project.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
             projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, "0");
 
             projectHeader.setProperty(NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
