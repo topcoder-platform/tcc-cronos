@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+
+<!--
+    This mxml component presents the attach files page for the launch contest widget.
+
+    Version 1.0.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Project name title is hidden if the summary is shown since it's already there
+
+    Version 1.0.2 (Cockpit Upload Attachment) Change Notes:
+        - Several changes for software file attachments were performed:
+            - Added checkbox to be able to specify Requirements Specification attachment
+            - Added description (with hint)
+            - Allow multiple files
+            - Forbidd duplicate file names and descriptions
+            - Fixed hint height
+            - Added file type and file desc attributes to CompUploadedFile
+            - Changed title wording
+
+    @author pulky
+    @version 1.0.2
+    @since 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+               import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompDocumentation;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.CompUploadedFile;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DocumentType;
+            import mx.collections.ArrayCollection;
+            import mx.controls.TextArea;
+            import mx.controls.HRule;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.soap.WebService;
+            import mx.rpc.events.ResultEvent;
+            import mx.containers.VBox;
+            import flash.text.engine.FontWeight;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import flash.events.MouseEvent;
+            import flash.net.FileReference;
+            import flash.events.Event;
+            import mx.containers.HBox;
+            import mx.controls.Label;
+            import mx.controls.Text;
+            import mx.controls.Spacer;
+
+            import flash.utils.ByteArray;
+
+            import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1505
+
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+            public var FileDescHint:String;
+
+            /**
+             * This variable represents the hint to show for software file description box. It is filled in LaunchWidget.
+             *
+             * @since 1.0.2
+             */
+            public var softwareFileDescHint:String;
+
+            /**
+             * Constant to store the requirements specification document type id
+             *
+             * @since 1.0.2
+             */
+            private static const REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID:Number=0;
+            
+            /**
+             * Constant to store the height that corresponds to a new upload box
+             *
+             * @since 1.0.2
+             */
+            private static const UPLOAD_BOX_HEIGHT:Number=100;
+
+            /**
+             * Constant to store the requirements specification document type id
+             *
+             * @since 1.0.2
+             */
+            private static const SUPPORTING_DOCUMENTATION_DOCUMENT_TYPE_ID:Number=24;
+
+            private var file:FileReference;
+
+            /**
+             * This variable represents wether the software contest has a requirements specification attached or not.
+             *
+             * @since 1.0.2
+             */
+            private var hasRequirementsSpecification:Boolean=false;
+
+            /**
+             * This constants represents the height added to show hints.
+             */
+            private static const ADDEDHEIGHT:Number=20;
+
+            private static const mimeTypes:Array=["application/msword", "application/rtf", "text/plain", "application/pdf", "application/postscript",
+
+                "text/html", "text/rtf", "image/jpeg", "image/gif", "image/png",
+
+                "image/bmp", "application/vnd.ms-excel", "image/pjpeg", "image/x-png", "application/zip",
+
+                "application/x-zip-compressed", "audio/mpeg", "audio/mp3", "application/x-zip", "application/java-archive",
+
+                "application/x-java-archive", "application/vnd.ms-powerpoint", "application/octet"];
+            private var extMimeMap:Dictionary;
+
+            [Bindable]
+            private var fileTypes:ArrayCollection=new ArrayCollection();
+
+            [Bindable]
+            [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument")]
+            private var docUploads:Array;
+
+            private var currentDoc:UploadedDocument;
+
+            /**
+             * This collection represents those file names that are already used.
+             *
+             * @since 1.0.2
+             */
+            [ArrayElementType("String")]
+            private var usedNames:ArrayCollection;
+
+            /**
+             * This collection represents those file descriptions that are already used.
+             *
+             * @since 1.0.2
+             */
+            [ArrayElementType("String")]
+            private var usedDescriptions:ArrayCollection;
+
+            // BUGR-1600
+            private var catalogFile:CompUploadedFile;
+            // BUGR-1735
+            private var catalogDocNum:int=0;
+
+            /**
+             * This method initializes data in this page
+             */
+            public function initData():void {
+                //
+                // Now handle attach files only for studio contest types.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (mainWidget.studioContestType) {
+	                uploadFilesVBox.removeAllChildren();
+	
+	                fileToUpload.htmlText="";
+
+                    docUploads=new Array();
+
+                    if (!this.mainWidget.competition) {
+                        return;
+                    }
+
+                    for each (var doc:UploadedDocument in this.mainWidget.competition.contestData.documentationUploads) {
+                        addDoc(doc);
+                    }
+
+                    this.mainWidget.competition.contestData.documentationUploads=docUploads;
+                } else { // BUGR-1600
+                    if (!this.mainWidget.softwareCompetition) {
+                        return;
+                    }
+
+                  if (!this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles 
+                       || this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.length == 0) {
+
+                        uploadFilesVBox.removeAllChildren();
+    
+                        fileToUpload.htmlText="";
+
+	                    // these collections will be used to avoid file name and description duplicates
+	                    usedNames = new ArrayCollection();
+	                    usedDescriptions = new ArrayCollection();
+	
+	                    for each(var x:CompDocumentation in this.mainWidget.softwareCompetition.assetDTO.documentation) {
+	                        addCatalogDoc(x);
+	                    }
+	                    this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles = new Array();
+	                }
+                }
+
+                this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler);
+
+                currentDoc=new UploadedDocument();
+
+                extMimeMap=new Dictionary();
+                extMimeMap["doc"]="application/msword";
+                extMimeMap["rtf"]= "application/rtf";
+                extMimeMap["txt"]=  "text/plain";
+                extMimeMap["pdf"]=  "application/pdf";
+                extMimeMap["ps"]= "application/postscript";
+
+                extMimeMap["htm"]=     "text/html";
+                extMimeMap["html"]=     "text/html";
+                extMimeMap["jpg"]=    "image/jpeg";
+                extMimeMap["jpeg"]=    "image/jpeg";
+                extMimeMap["gif"]=  "image/gif";
+                extMimeMap["png"]= "image/png";
+
+                extMimeMap["bmp"]=    "image/bmp";
+                extMimeMap["xsl"]=  "application/vnd.ms-excel";
+                extMimeMap["zip"]="application/zip";
+
+                extMimeMap["rar"]="application/x-zip-compressed";
+                extMimeMap["mpg"]="audio/mpeg";
+                extMimeMap["mp3"]="audio/mp3";
+                extMimeMap["jar"]="application/java-archive";
+                extMimeMap["ppt"]="application/vnd.ms-powerpoint";
+                extMimeMap["pps"]="application/vnd.ms-powerpoint";
+
+                loadDocumentTypes();
+            }
+
+            // TCCC-1023
+            private function loadDocumentTypes():void{
+                   if (!mainWidget._csws) {
+                    return;
+                   }
+                var getAllDocumentTypesOp:AbstractOperation = mainWidget._csws.getOperation("getAllDocumentTypes");
+                getAllDocumentTypesOp.addEventListener("result", getAllDocumentTypesHandler);
+                getAllDocumentTypesOp.send();
+                     mainWidget.showLoadingProgress();
+            }
+
+            // TCCC-1023
+            private function getAllDocumentTypesHandler(e:ResultEvent):void {
+                trace("getAllDocumentTypesHandler: " + e + ", " + e.result);
+
+                 mainWidget.hideLoadingProgress();
+
+                if (e && e.result) {
+                    var docTypes:ArrayCollection=ObjectTranslatorUtils.translateCollection(e.result, DocumentType);
+                    trace("getAllDocumentTypesHandler:: docTypes: " + docTypes);
+
+                    fileTypes=new ArrayCollection();
+
+                    for each (var dt:DocumentType in docTypes) {
+                        fileTypes.addItem({label: dt.description, data: dt.documentTypeId});
+                    }
+                }
+            }
+
+            // TCCC-1023
+            private function addDoc(doc:UploadedDocument):void {
+                var docVBox:VBox=new VBox();
+                docVBox.percentWidth=100;
+                docVBox.id=doc.documentId.toString();
+                docVBox.data=doc;
+
+                var hbox1:HBox=new HBox();
+                docVBox.addChild(hbox1);
+
+                var descLabel:Label=new Label();
+                hbox1.addChild(descLabel);
+                descLabel.text="File Description:";
+                descLabel.setStyle("fontWeight", "bold");
+
+                var descText:Text=new Text();
+                hbox1.addChild(descText);
+                descText.text=doc.description;
+
+                var hbox2:HBox=new HBox();
+                docVBox.addChild(hbox2);
+
+                var nameLabel:Label=new Label();
+                hbox2.addChild(nameLabel);
+                nameLabel.text="File Name:";
+                nameLabel.setStyle("fontWeight", "bold");
+
+                var nameText:LinkButton=new LinkButton();
+                nameText.label=doc.fileName;
+                nameText.data=doc;
+                nameText.addEventListener(MouseEvent.CLICK, downloadUploadedDoc);
+                hbox2.addChild(nameText);
+
+                var hbox3:HBox=new HBox();
+                docVBox.addChild(hbox3);
+                var removeBtn:LinkButton=new LinkButton();
+                removeBtn.label="remove";
+                removeBtn.data=docVBox;
+                removeBtn.addEventListener(MouseEvent.CLICK, removeDoc);
+                hbox3.addChild(removeBtn);
+
+                var hrule:HRule=new HRule();
+                hrule.percentWidth=100;
+                docVBox.addChild(hrule);
+
+                var spacer:Spacer=new Spacer();
+                spacer.height=5;
+                docVBox.addChild(spacer);
+
+                uploadFilesVBox.addChild(docVBox);
+                this.height=400+uploadFilesVBox.height>550?400+uploadFilesVBox.height:550;
+                this.mainWidget.height=this.height+50;
+                docUploads.push(doc);
+            }
+
+            /**
+             * This method checks if there is no requirement specification attached (to software competitions)
+             * and if it's missing, it shows a warning box.
+             *
+             * @since 1.0.2
+             */
+            public function checkRequirementSpecWarning():void {
+                if (!mainWidget.studioContestType && !hasRequirementsSpecification) {
+                    Helper.showAlertMessage("Warning: Requirements Specification document was not attached");
+                }
+            }
+
+            /**
+             * This method adds a software document.
+             *
+             * @param doc the file to be added
+             * @param existing wether we are adding an existing document (from persistence) or not
+             */
+            private function addCatalogDoc(doc:Object, existing:Boolean = true):void {
+                // BUGR-1735
+                catalogDocNum++;
+
+                var docVBox:VBox=new VBox();
+                docVBox.percentWidth=100;
+                if(existing) {
+                    docVBox.id=doc.id.toString();
+                }
+                docVBox.data=doc;
+
+                // description is also showed.
+                var hbox1:HBox=new HBox();
+                docVBox.addChild(hbox1);
+
+                var descLabel:Label=new Label();
+                hbox1.addChild(descLabel);
+                descLabel.text="File Description:";
+                descLabel.setStyle("fontWeight", "bold");
+
+                var descText:Text=new Text();
+                hbox1.addChild(descText);
+                descText.text= existing ? doc.documentName : doc.uploadedFileDesc;
+
+                if ((existing ? doc.documentTypeId : doc.uploadedFileType) == REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID) {
+	                var descType:Text=new Text();
+	                hbox1.addChild(descType);
+	                descType.text= "(Requirements Specification)";
+                }
+                
+                var hbox2:HBox=new HBox();
+                docVBox.addChild(hbox2);
+
+                var nameLabel:Label=new Label();
+                hbox2.addChild(nameLabel);
+                nameLabel.text="File Name:";
+                nameLabel.setStyle("fontWeight", "bold");
+
+                var nameText:LinkButton=new LinkButton();
+                nameText.label=existing ? doc.url.substr(doc.url.lastIndexOf("/") + 1) : doc.uploadedFileName;
+                nameText.data=doc;
+                nameText.addEventListener(MouseEvent.CLICK, downloadCatalogDoc);
+                hbox2.addChild(nameText);
+
+                //var nameText:Text=new Text();
+                //hbox2.addChild(nameText);
+                var x:String;
+
+                var hbox3:HBox=new HBox();
+                docVBox.addChild(hbox3);
+                var removeBtn:LinkButton=new LinkButton();
+                removeBtn.label="remove";
+                removeBtn.data=docVBox;
+                removeBtn.addEventListener(MouseEvent.CLICK, removeCatalogDoc);
+                hbox3.addChild(removeBtn);
+
+                var hrule:HRule=new HRule();
+                hrule.percentWidth=100;
+                docVBox.addChild(hrule);
+
+                var spacer:Spacer=new Spacer();
+                spacer.height=5;
+                docVBox.addChild(spacer);
+
+                hasRequirementsSpecification = hasRequirementsSpecification || 
+                    ((existing ? doc.documentTypeId : doc.uploadedFileType) == REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID);
+                requirementSpecificationLayoutUpdate();
+
+                uploadFilesVBox.addChild(docVBox);
+                if(!existing) {
+                    this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.push(doc);
+                }
+
+                this.mainWidget.height+=UPLOAD_BOX_HEIGHT;
+
+                // store used file name and descriptio to avoid duplicates
+                usedNames.addItem(nameText.label);
+                usedDescriptions.addItem(descText.text);
+            }
+
+            /**
+             * Helper method that updates requirements specification checkbox layout to force only one requirements specification.
+             *
+             * @since 1.0.2
+             */
+            private function requirementSpecificationLayoutUpdate():void {
+                // only one requirements specification
+                if (hasRequirementsSpecification) {
+                    // uncheck and disable
+                    isRequirementsSpecificationCheckBox.selected=false;
+                    isRequirementsSpecificationCheckBox.enabled=false;
+                } else {
+                    isRequirementsSpecificationCheckBox.enabled=true;
+                }
+            }
+
+            private function removeDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var box:VBox=button.data as VBox;
+                    var doc:UploadedDocument=box.data as UploadedDocument;
+
+                    var index:int=docUploads.indexOf(doc);
+                    if (index != -1) {
+                        docUploads.splice(index, 1);
+
+                        sendRemoveDocRequest(doc);
+                    }
+
+                    box.parent.removeChild(box);
+                }
+            }
+
+            // BUGR-1600
+             private function removeCatalogDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var box:VBox=button.data as VBox;
+                    // BUGR-1735
+                    catalogDocNum--;
+                    if(box.data is CompDocumentation) {
+                        var doc:CompDocumentation=box.data as CompDocumentation;
+                        var index:int=this.mainWidget.softwareCompetition.assetDTO.documentation.indexOf(doc);
+                        //mx.controls.Alert.show("removing comp docu file " + index);
+                        if (index != -1) {
+                            this.mainWidget.softwareCompetition.assetDTO.documentation.splice(index, 1);
+                        }
+
+                        trace("removed comp documentation");
+
+                        hasRequirementsSpecification = hasRequirementsSpecification && doc.documentTypeId != 1;
+
+                        usedNames.removeItemAt(usedNames.getItemIndex(doc.url.substr(doc.url.lastIndexOf("/") + 1)));
+                        usedDescriptions.removeItemAt(usedDescriptions.getItemIndex(doc.documentName));
+                    } else if(box.data is CompUploadedFile) {
+                        var x:CompUploadedFile=box.data as CompUploadedFile;
+
+                        var index:int=this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.indexOf(x);
+                        //mx.controls.Alert.show("removing uploaded file " + index);
+                        if (index != -1) {
+                            this.mainWidget.softwareCompetition.assetDTO.compUploadedFiles.splice(index, 1);
+                        }
+
+                        hasRequirementsSpecification = hasRequirementsSpecification && x.uploadedFileType != 1;
+
+                        usedNames.removeItemAt(usedNames.getItemIndex(x.uploadedFileName));
+                        usedDescriptions.removeItemAt(usedDescriptions.getItemIndex(x.uploadedFileDesc));
+
+                        trace("removed upload");
+                    }
+                    requirementSpecificationLayoutUpdate()
+
+                    box.parent.removeChild(box);
+                }
+            }
+
+            // TCCC-1023
+            private function sendRemoveDocRequest(doc:UploadedDocument):void {
+                if (!mainWidget.studioContestType) {
+                    return;
+                }
+
+                var contestId:Number=mainWidget.competition.contestData.contestId;
+                if (contestId == -1) {
+                    var removeDocumentOp:AbstractOperation=mainWidget._csws.getOperation("removeDocument");
+                    //removeDocumentOp.addEventListener("result", eventHandler);
+                    removeDocumentOp.send(doc.documentId);
+               } else {
+                    var removeDocumentFromContestOp:AbstractOperation = mainWidget._csws.getOperation("removeDocumentFromContest");
+                    //removeDocumentOp.addEventListener("result", eventHandler);
+                    doc.contestId=contestId;
+                    removeDocumentFromContestOp.send(doc);
+               }
+            }
+
+            /**
+             * This method shows / hides file description hint
+             *
+             * @param event the mouse event
+             */
+            private function showfileDecsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    fileDescHint.height = ADDEDHEIGHT;
+                    fileDescHint.text = mainWidget.studioContestType ? FileDescHint : softwareFileDescHint;
+                    fileDescHint.visible = true;
+                    this.height+=ADDEDHEIGHT;
+                    this.mainWidget.height+=ADDEDHEIGHT;
+                    //this.mainWidget.ATTACH_FILES_HEIGHT+=ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    fileDescHint.height = 0;
+                    fileDescHint.text = "";
+                    fileDescHint.visible = false;
+                    this.height-=ADDEDHEIGHT;
+                    this.mainWidget.height-=ADDEDHEIGHT;
+                    //this.mainWidget.ATTACH_FILES_HEIGHT-=ADDEDHEIGHT;
+                }
+            }
+
+            private function browseFile():void {
+                file= new FileReference();
+                file.addEventListener(Event.SELECT, selectHandler);
+                if(mainWidget.studioContestType) { //BUGR-1600
+                    file.addEventListener(Event.COMPLETE, loadCompleteHandler);
+                } else {
+                    file.addEventListener(Event.COMPLETE, loadCatalogCompleteHandler);
+                }
+                file.browse();
+            }
+
+            private function selectHandler(event:Event):void {
+                fileToUpload.text = file.name;
+            }
+
+            /**
+             * This method handles upload button click event
+             */
+            private function uploadFile():void {
+                if (file== null || file.name == ""){
+                    Helper.showAlertMessage("Please select a file to upload");
+                    return;
+                }
+                if (fileDescInput.text == ""){
+                    Helper.showAlertMessage("Please enter a description for the file");
+                    return;
+                }
+
+                // verify there are no file name or descriptiono dups (software contests)
+                if(!mainWidget.studioContestType) {
+                    // check file name
+                    if (usedNames.contains(file.name)) {
+                        Helper.showAlertMessage("File name '" + file.name + "' is already used.");
+                        return;
+                    }
+                    // check file description
+                    if (usedDescriptions.contains(fileDescInput.text)) {
+                        Helper.showAlertMessage("File description '" + fileDescInput.text + "' is already used.");
+                        return;
+                    }
+                }
+
+                file.load();
+
+                if(mainWidget.studioContestType) { // BUGR-1600
+                    //load mimetype id via WebService
+                    var getMimeTypeIdOp:AbstractOperation = mainWidget._csws.getOperation("getMimeTypeId");
+                    getMimeTypeIdOp.addEventListener("result", loadMimeTypeIdHandler);
+
+                    var dotpos:int=file.name.lastIndexOf('.');
+                    var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
+
+                    getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
+
+                    mainWidget.showLoadingProgress();
+                }
+            }
+
+            private function getMimetypeByFileName(ext:String):String{
+                var typename:String=extMimeMap[ext];
+                if(typename==null)
+                {
+                    typename="text/plain";
+                }
+
+                return typename;
+            }
+
+            private function loadCompleteHandler(event:Event):void{
+                currentDoc.file = file.data;
+                currentDoc.description = fileDescInput.text;
+                currentDoc.fileName = file.name;
+
+                // BUGR-1172
+                currentDoc.documentTypeId = -1;//this.filetypeCombo.selectedItem.data;
+                currentDoc.contestId = -1;
+                currentDoc.documentId = -1;
+
+                //mimetype id has been loaded
+                if (!isNaN(currentDoc.mimeTypeId)){
+                    this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+                }
+            }
+
+            /**
+             * This method handles catalog file browse completion
+             *
+             * @param event the corresponding Event
+             */
+            private function loadCatalogCompleteHandler(event:Event):void{
+                catalogFile = new CompUploadedFile();
+                catalogFile.fileData = file.data;
+                catalogFile.uploadedFileType = isRequirementsSpecificationCheckBox.selected ?
+                    REQUIREMENTS_SPECIFICATION_DOCUMENT_TYPE_ID : SUPPORTING_DOCUMENTATION_DOCUMENT_TYPE_ID;
+                catalogFile.uploadedFileDesc = fileDescInput.text;
+                catalogFile.uploadedFileName = file.name;
+
+                addCatalogDoc(catalogFile, false);
+                //clear up
+                fileDescInput.text = "";
+                fileToUpload.text = "";
+                file = null;
+            }
+
+            // TCCC-1023
+            private function loadMimeTypeIdHandler(e:ResultEvent):void{
+                trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
+
+                mainWidget.hideLoadingProgress();
+
+                if (e && e.result) {
+
+                    currentDoc.mimeTypeId = ObjectTranslatorUtils.translate(e.result, Number) as Number;
+                    trace("loadMimeTypeIdHandler:: currentDoc.mimeTypeId: " + currentDoc.mimeTypeId);
+
+                    //file content has been loaded
+                    if (currentDoc.file != null){
+                        this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+                    }
+                }
+            }
+
+            //This method is called when the metatypeId is returned and the file content is uploaded
+            private function allCompleteHandler(event:Event):void {
+                //
+                // Now handle attach files logic only for studio contest types.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (currentDoc == null || !mainWidget.studioContestType) {
+                    return; // the document has been sent
+                }
+
+                //invoke uploadDocumentForContest for existing contest
+                //for a new contest, the service will automatically upload the document
+                if (this.mainWidget.competition.contestData.contestId != -1) {
+                    currentDoc.contestId=this.mainWidget.competition.contestData.contestId;
+
+                    // TCCC-1023
+                    var uploadDocumentForContestOp:AbstractOperation=mainWidget._csws.getOperation("uploadDocumentForContest");
+                    uploadDocumentForContestOp.addEventListener("result", uploadDocumentForContestHandler);
+                    uploadDocumentForContestOp.send(currentDoc);
+
+                    mainWidget.showLoadingProgress();
+                } else {
+                    addDoc(currentDoc);
+                    //clear up
+                    currentDoc = new UploadedDocument();
+                    fileDescInput.text = "";
+                    fileToUpload.text = "";
+                }
+
+            }
+
+            // TCCC-1023
+            private function uploadDocumentForContestHandler(e:ResultEvent):void {
+
+                trace("getAllProjectsHandler: " + e + ", " + e.result);
+
+                mainWidget.hideLoadingProgress();
+
+                if(e && e.result){
+                    var docUploaded:UploadedDocument = ObjectTranslatorUtils.translate(e.result, UploadedDocument) as UploadedDocument;
+
+                    trace("uploadDocumentForContestHandler:: docUploaded: " + docUploaded);
+
+                    //Clear the content once the file has been uploaded to save memory
+                    docUploaded.file = null;
+                    addDoc(docUploaded);
+
+                    //clear up
+                    currentDoc = new UploadedDocument();
+                    fileDescInput.text = "";
+                    fileToUpload.text = "";
+
+                    file=null;
+                }
+            }
+
+            private function outFile(fileName:String, data:ByteArray):void {
+               var fref:FileReference= new FileReference();
+               fref.save(data, fileName);
+            }
+
+            private function downloadUploadedDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var doc:UploadedDocument=button.data as UploadedDocument;
+                    if (doc) {
+                        var fref:FileReference= new FileReference();
+                        fref.save(doc.file, doc.fileName);
+                    }
+                }
+            }
+
+            private function downloadCatalogDoc(e:MouseEvent):void {
+                if (e && e.target) {
+                    var button:LinkButton=e.target as LinkButton;
+                    var doc:CompUploadedFile=button.data as CompUploadedFile;
+                    var fref:FileReference= new FileReference();
+                    fref.save(doc.fileData, doc.uploadedFileName);
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:VBox width="100%" height="100%" styleName="boxStyle" >
+        <!-- Hide project name if the summary is shown since it's already there -->
+        <mx:HBox horizontalAlign="right" width="100%" visible="{!mainWidget.showSummary}"
+                     includeInLayout="{!mainWidget.showSummary}">
+            <mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
+            <mx:Spacer width="100%" />
+        </mx:HBox>
+        <mx:Text width="100%" id="attachFiles" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
+            <mx:htmlText>
+            <![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
+           </mx:htmlText>
+        </mx:Text>
+        <mx:Text width="100%" visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+            <mx:htmlText>
+            <![CDATA[Upload supporting documentation here. If you select "requirements specification" as the file type then that file will be provided as the contest specification to competitors. All other uploaded files will be available for download.]]>
+           </mx:htmlText>
+        </mx:Text>
+
+        <mx:Spacer height="5"/>
+        <mx:VBox paddingLeft="10">
+            <mx:VBox width="100%" id="uploadFilesVBox">
+
+
+            </mx:VBox>
+            <mx:HBox >
+                <mx:Label text="File to Upload:" fontWeight="bold"/>
+                <mx:TextInput id="fileToUpload" editable="false" />
+                               <mx:Button id="browse" buttonMode="true" label="BROWSE" click="browseFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+            </mx:HBox>
+
+            <mx:VBox width="100%" verticalGap="0"> <!-- BUGR-1600 -->
+                <mx:HBox >
+                    <mx:Label text="File Description:" fontWeight="bold"/>
+                    <mx:Spacer width="290"/>
+                    <mx:LinkButton label="[+ show hint]" click="showfileDecsHint(event)"/>
+                </mx:HBox>
+                <mx:Text id="fileDescHint" color="0x888888" width="500" height="0" visible="false">
+                    <mx:text>
+                    </mx:text>
+                </mx:Text>
+                <mx:TextArea id="fileDescInput" width="500" height="50" text=""/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox>
+                <mx:Button id="upload" buttonMode="true" label="UPLOAD FILE" click="uploadFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                <mx:CheckBox id="isRequirementsSpecificationCheckBox"
+                             visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}"
+                             selected="false"
+                             label="Requirements Specification"/>
+            </mx:HBox>
+        </mx:VBox>
+
+    </mx:VBox>
+</mx:VBox>
