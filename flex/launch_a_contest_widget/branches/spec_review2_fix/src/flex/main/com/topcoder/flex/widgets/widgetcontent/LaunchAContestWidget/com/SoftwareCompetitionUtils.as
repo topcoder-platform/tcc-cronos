@@ -320,7 +320,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com {
         public static var PROJECT_INFO_TYPE_DR_POINTS_KEY:String="DR points";
 
         public static var PROJECT_INFO_TYPE_ADMIN_FEE_KEY:String="Admin Fee";
-        
+        public static var PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY:String="Spec Review Cost";
+
         public static var PROJECT_INFO_TYPE_REVIEW_COST_KEY:String="Review Cost";
         
         /**

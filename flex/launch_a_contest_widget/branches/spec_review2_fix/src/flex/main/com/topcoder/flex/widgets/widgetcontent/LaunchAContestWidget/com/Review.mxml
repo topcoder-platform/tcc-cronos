@@ -83,6 +83,7 @@
             public var ns_digitalRunS:String;
             public var ns_contestFeeS:String;
             public var ns_contestTotalS:String;
+            public var ns_specReviewCostS:String;
 
             /**
              * Added for Cockpit Software Contest Payments v1.0
@@ -293,6 +294,7 @@
                         ns_contestTotalS=mainWidget.overView.ns_cntstTtl.text;
                         ns_reliabilityBonus=mainWidget.overView.ns_reliabilityBonus.text;
                         ns_milestoneBonus=mainWidget.overView.ns_milestoneBonus.text;
+                        ns_specReviewCostS = mainWidget.overView.ns_specReviewCost.text;
                     }
                     
                     if (mainWidget && mainWidget.details) {
@@ -391,6 +393,7 @@
                     ns_Total.text=ns_contestTotalS;
                     ns_reliabilityBonusTxt.text=ns_reliabilityBonus;
                     ns_milestoneBonusTxt.text=ns_milestoneBonus;
+                    ns_specReviewCostTxt.text = ns_specReviewCostS;
                 }
 
                 // step 2
@@ -1286,13 +1289,13 @@
                             <mx:Label text="1st Place: "
                                       fontWeight="bold"/>
                             <mx:Text id="ns_p1"
-                                     width="120"/>
+                                     width="80"/>
                         </mx:HBox>
                         <mx:HBox>
                             <mx:Label text="2nd Place:"
                                       fontWeight="bold"/>
                             <mx:Text id="ns_p2"
-                                     width="120"/>
+                                     width="80"/>
                         </mx:HBox>
                     </mx:VBox>
                     <mx:VBox>
@@ -1300,13 +1303,13 @@
                             <mx:Label text="Review Cost: "
                                       fontWeight="bold"/>
                             <mx:Text id="ns_reviewCost"
-                                     width="120"/>
+                                     width="80"/>
                         </mx:HBox>
                         <mx:HBox>
                             <mx:Label text="Digital Run:"
                                       fontWeight="bold"/>
                             <mx:Text id="ns_dr"
-                                     width="120"/>
+                                     width="80"/>
                         </mx:HBox>
                     </mx:VBox>
                     <mx:VBox>
@@ -1319,9 +1322,16 @@
                         <mx:HBox>
                             <mx:Label text="Milestone Bonus:"
                                       fontWeight="bold"/>
-                            <mx:Spacer width="7"/>
                             <mx:Text id="ns_milestoneBonusTxt"
                                      width="55"/>
+                        </mx:HBox>
+                    </mx:VBox>
+                    <mx:VBox>
+                        <mx:HBox>
+                            <mx:Label text="Spec Review Cost:"
+                                      fontWeight="bold"/>
+                            <mx:Label id="ns_specReviewCostTxt"
+                                     width="54"/>
                         </mx:HBox>
                     </mx:VBox>
                     <mx:VBox>
@@ -1334,7 +1344,6 @@
                         <mx:HBox>
                             <mx:Label text="Contest Total:"
                                       fontWeight="bold"/>
-                            <mx:Spacer width="7"/>
                             <mx:Text id="ns_Total"
                                      width="55"/>
                         </mx:HBox>

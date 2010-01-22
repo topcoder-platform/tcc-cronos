@@ -416,7 +416,13 @@
                             selCostData["ContestFee"]=adminFee;
                             ns_contestf.text=adminFee.toFixed(0);
                         }
-                        
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY)) {
+                            var specReviewCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition,
+                                                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY);
+                            selCostData["specReviewCost"]=specReviewCost;
+                            this.ns_specReviewCost.text=specReviewCost.toFixed(0);
+                        }
+
                         if (mainWidget.isEditMode && mainWidget.isPaidContest()) {
                             var dt:Date = SoftwareCompetitionUtils.instance().getUnclosedSubmissionPhaseEndDate(mainWidget.softwareCompetition);
                             var currentDt:Date = new Date();
@@ -562,7 +568,9 @@
                 {
                     mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
                 }
-                
+                ns_specReviewCost.text = StringUtil.trim(ns_specReviewCost.text);
+
+
                 var selCostData:Dictionary=null;
                 var level:String=currentCostLevel;
                 if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
@@ -601,12 +609,16 @@
                         
                     // TODO: ideally in payments property we should be storing total sw cost.
                     // but not sure how does TC / OR works - so for now storing first place cost.
-                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, firstPlaceCost/*getTotalSWCost(selCostData)*/, 
-                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY); 
-                        
-                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, 
-                        mainWidget.softwareCompetition.adminFee, 
-                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);                
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, firstPlaceCost/*getTotalSWCost(selCostData)*/,
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY);
+
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition,
+                        mainWidget.softwareCompetition.adminFee,
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition,
+                        new Number(ns_specReviewCost.text),
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY);
                 }
                 
                 return true;
@@ -837,7 +849,8 @@
                         if (!mainWidget.isEditMode) {
                             ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737
                         }
-                        
+                        this.ns_specReviewCost.text = contestFees.contestType.(@id == mainWidget.competitionType).specReviewCost;
+
                         trace("Low billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'low'));
                         trace("Medium billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'medium'));
                         trace("High billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high'));
@@ -1014,15 +1027,26 @@
                     Helper.showAlertMessage('Contest Fee should be valid numeric value');
                     return;
                 }
-                
-                trace("New contest fee: " + cf + ",currentCostLevel:" + currentCostLevel);
-                
+
+                var specReviewCost:Number=new Number(ns_specReviewCost.text);
+                if (isNaN(specReviewCost)) {
+                    Helper.showAlertMessage('Sepc Review Cost should be valid numeric value');
+                    return;
+                }
+
+                trace("New contest fee: " + cf + ",currentCostLevel:" + currentCostLevel + ", specReviewCost:" + specReviewCost);
+
                 // store contest fee data in all cost levels.
                 lowCostData["ContestFee"]=cf;
                 midCostData["ContestFee"]=cf;
                 highCostData["ContestFee"]=cf;
                 custCostData["ContestFee"]=cf;
-                
+
+                lowCostData["specReviewCost"]=specReviewCost;
+                midCostData["specReviewCost"]=specReviewCost;
+                highCostData["specReviewCost"]=specReviewCost;
+                custCostData["specReviewCost"]=specReviewCost;
+
                 trace("Low cost data: " + lowCostData);
                 trace("Mid cost data: " + midCostData);
                 trace("High cost data: " + highCostData);
@@ -1072,7 +1096,9 @@
                 var drCost:Number=data["DR"] as Number;
                 var milestoneBonus:Number=data["MilestoneBonus"] as Number;
                 var contestFee:Number=data["ContestFee"] as Number;
-                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee;
+                var specReviewCost:Number=data["specReviewCost"] as Number;
+                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee
+                                     + specReviewCost;
                 return totalCost;
             }
             
@@ -1127,7 +1153,8 @@
                 }
                 
                 var contestFee:Number=data["ContestFee"] as Number;
-                
+                var specReviewCost:Number=data["specReviewCost"] as Number
+
                 ns_firstPlace.text=firstPlaceCost.toFixed(0);
                 ns_secondPlace.text=secondPlaceCost.toFixed(2);
                 ns_reviewCost.text=reviewBoardCost.toFixed(2);
@@ -1138,6 +1165,7 @@
                     ns_milestoneBonus.text=milestoneBonus.toFixed(2);
                 }
                 ns_contestf.text=contestFee.toFixed(2);
+                ns_specReviewCost.text = specReviewCost.toFixed(2);
             }
             
             /**
@@ -1181,9 +1209,11 @@
                 }
                 
                 var contestFee:Number=new Number(ns_contestf.text);
-                
-                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee;
-                
+                var specReviewCost:Number=new Number(ns_specReviewCost.text);
+
+                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee
+                                    + specReviewCost;
+
                 currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
                 custCost.visible=custCost.includeInLayout=true;
                 custCost.selected=true;
@@ -1197,6 +1227,7 @@
                 
                 
                 selCostData["ContestFee"]=contestFee;
+                selCostData["specReviewCost"]=specReviewCost;
 
                 ns_updateAmount();
             }
@@ -1679,31 +1710,35 @@
                                           fontWeight="bold"/>
                                     <mx:Label text="Digital Run: "
                                           fontWeight="bold"/>
-                                </mx:VBox>
-                                <mx:VBox verticalGap="2">
-                                    <mx:Label id="ns_reviewCost"
-                                                  width="120"/>
-                                    
-                                    <mx:Label id="ns_dr"
-                                                  width="120"/>
-                                </mx:VBox>                                      
-                            </mx:HBox>
-                            <mx:HBox>
-                                <mx:VBox verticalGap="7">
-                                    <mx:Label text="Reliability Bonus: $"
-                                      fontWeight="bold"/>
                                     <mx:Label text="Milestone Bonus: $"
                                       fontWeight="bold"
                                       visible="{_showSWMilestonePrize}"
                                       includeInLayout="{_showSWMilestonePrize}"/>
                                 </mx:VBox>
                                 <mx:VBox verticalGap="2">
-                                    <mx:Label id="ns_reliabilityBonus"
-                                          width="120"/>
+                                    <mx:Label id="ns_reviewCost"
+                                                  width="120"/>
+
+                                    <mx:Label id="ns_dr"
+                                                  width="120"/>
                                     <mx:Label id="ns_milestoneBonus"
                                           width="120"
                                           visible="{_showSWMilestonePrize}"
                                           includeInLayout="{_showSWMilestonePrize}"/>
+                                </mx:VBox>
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:VBox verticalGap="7">
+                                    <mx:Label text="Reliability Bonus: $"
+                                      fontWeight="bold"/>
+                                    <mx:Label text="Spec Review Cost: $"
+                                          fontWeight="bold"/>
+                                </mx:VBox>
+                                <mx:VBox verticalGap="2">
+                                    <mx:Label id="ns_reliabilityBonus"
+                                          width="120"/>
+                                     <mx:Label id="ns_specReviewCost"
+                                              width="120"/>
                                 </mx:VBox>
                             </mx:HBox>
                         </mx:HBox>
