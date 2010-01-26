@@ -233,7 +233,7 @@
                     var tabDict:Dictionary=new Dictionary();
                     tabDict["columnNum"]=1;
                     
-                    parentWidget.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
+                    parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
                     
                     //trace(">>>>>>>> addContest end: " + new Date());
                 }
