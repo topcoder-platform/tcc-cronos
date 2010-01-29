@@ -111,7 +111,7 @@ import com.topcoder.catalog.entity.Technology;
         "detailedDescription", "functionalDescription", "rootCategory", "categories",
                                               "technologies", "productionDate", "isCurrentVersionAlsoLatestVersion",
                                               "compVersionId", "userIds", "informationComplete", "documentation",
-                                               "compUploadedFiles", "compComments", "phase", "dependencies"})
+                                               "compUploadedFiles", "compComments", "phase", "dependencies", "version"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -195,6 +195,14 @@ public class AssetDTO implements Serializable {
      * <p>The acceptance region: any <code>Date</code> value or <code>null</code>.</p>
      */
     private XMLGregorianCalendar productionDate;
+
+    /**
+     * <p>This field represents the number of the version.
+     * This property used only on fetching data.</p>
+     * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
+     * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
+     */
+    private Long version;
 
     /**
      * <p>This field represents the link of this version of the asset.</p>
@@ -784,6 +792,25 @@ public class AssetDTO implements Serializable {
      */
     public List<CompUploadedFile> getCompUploadedFiles() {
         return compUploadedFiles;
+    }
+
+
+    /**
+     * <p>Sets the number of the version.</p>
+     * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
+     * @param versionNumber the number of the version.
+     */
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    /**
+     * <p>Retrieves the number of the version.</p>
+     *
+     * @return the number of the version.
+     */
+    public Long getVersion() {
+        return version;
     }
 
 

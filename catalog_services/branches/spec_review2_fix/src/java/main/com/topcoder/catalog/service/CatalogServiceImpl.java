@@ -276,6 +276,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         asset.setId(entityComponent.getId());
         asset.setCompVersionId(compVersion.getId());
         asset.setVersionNumber(compVersion.getId());
+        asset.setVersionText(compVersion.getVersionText());
+        asset.setVersion(compVersion.getVersion());
 
         // and return it
         return asset;
@@ -330,7 +332,13 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         persistEntity(em, compVersion);
         // update the asset entity finally
         mergeEntity(em, entityComponent);
-        asset.setCompVersionId(compVersion.getId()); // populate the versionId
+
+        // populate with ids of just stored entities
+        asset.setId(entityComponent.getId());
+        asset.setCompVersionId(compVersion.getId());
+        asset.setVersionNumber(compVersion.getId());
+        asset.setVersionText(compVersion.getVersionText());
+        asset.setVersion(compVersion.getVersion());
         return asset;
     }
 
@@ -672,6 +680,10 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
         persistEntity(em, versionToUpdate);
 
+        asset.setVersionNumber(versionToUpdate.getId());
+        asset.setVersionText(versionToUpdate.getVersionText());
+        asset.setVersion(versionToUpdate.getVersion());
+
 
         return asset;
 
@@ -873,6 +885,8 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         final CompVersion latestVersion = component.getId() == null ? null : getLatestVersion(component);
         // if one exists, then increase the version, otherwise set to the first
         compVersion.setVersion(latestVersion == null ? 1L : latestVersion.getVersion() + 1);
+
+        compVersion.setVersionText(compVersion.getVersion()+".0");
 
         compVersion.setComponent(component);
         List<CompVersion> versions = component.getVersions();
