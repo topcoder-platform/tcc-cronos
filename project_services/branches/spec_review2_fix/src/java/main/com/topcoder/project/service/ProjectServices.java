@@ -85,13 +85,18 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  *     - Added method to link the design and development contests.
  * </p>
  * <p>
+ * Changes in v1.4 (Cockpit Release Assembly - Contest Repost and New Version v1.0):
+ * - Added method to re open failed software contest.
+ * - Added method to create new version for development or design contest.
+ * </p>
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog
- * @version 1.3
+ * @author fabrizyo, znyyddf, murphydog, waits
+ * @version 1.4
  * @since 1.0
  */
 public interface ProjectServices {
@@ -854,4 +859,25 @@ public interface ProjectServices {
      * @since 1.2.1
      */
     public long getDesignContestId(long contestId) throws ProjectServicesException;
+
+     /**
+     * Creates re-open contest for the given contest.
+     * since version 1.4.
+     * 
+     * @param contest the contest to repost
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    FullProjectData createReOpenContest(FullProjectData contest, String operator) throws ProjectServicesException;
+    /**
+     * Creates new version for development and design contest for the given contest.
+     * since version 1.4.
+     * 
+     * @param contest the contest to create new version
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException;
 }

@@ -139,16 +139,17 @@ import com.topcoder.util.log.LogManager;
  *     - Added method to add comments to an existing review.
  * </p>
  * <p>
- * Version 1.3.1 (BR3074) changelog:
- *     - Added method to link the design and development contests.
+ * Changes in v1.4 (Cockpit Release Assembly - Contest Repost and New Version v1.0):
+ * - Added method to re open failed software contest.
+ * - Added method to create new version for development or design contest.
  * </p>
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is
  * required to be thread safe.
  * </p>
  *
- * @author fabrizyo, znyyddf, pulky, murphydog
- * @version 1.3
+ * @author fabrizyo, znyyddf, pulky, murphydog, waits
+ * @version 1.4
  * @since 1.0
  */
 @RunAs("Cockpit Administrator")
@@ -1667,6 +1668,57 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
             return getProjectServices().getDesignContestId(contestId);
 
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+     /**
+     * Creates re-open contest for the given contest.
+     * Since version 1.4.
+     * 
+     * @param contest the contest to repost
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    public FullProjectData createReOpenContest(FullProjectData contest, String operator) throws ProjectServicesException {
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesBean#createReOpenContest(" + contest + ", " + operator + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().createReOpenContest(contest, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    /**
+     * Creates new version for development and design contest for the given contest.
+     * Since version 1.4.
+     * 
+     * @param contest the contest to create new version
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    public FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException {
+     // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesBean#createNewVersionContest(" + contest + ", " + operator + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().createNewVersionContest(contest, operator);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;

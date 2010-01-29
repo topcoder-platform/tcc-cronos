@@ -22,6 +22,7 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.ProjectSpec;
+import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
@@ -233,6 +234,9 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * <p>
  * Version 1.3.1 (BR3074) changelog:
  *     - Added method to link the design and development contests.
+ * Changes in v1.4 (Cockpit Release Assembly - Contest Repost and New Version v1.0):
+ * - Added method to re open failed software contest.
+ * - Added method to create new version for development or design contest.
  * </p>
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
@@ -240,8 +244,8 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog
- * @version 1.3
+ * @author fabrizyo, znyyddf, murphydog, waits
+ * @version 1.4
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -2852,6 +2856,122 @@ public class ProjectServicesImpl implements ProjectServices {
         }
 
         return projectData;
+    }
+    /**
+     * Creates re-open contest for the given contest. since version 1.4.
+     * 
+     * @param contest the contest to repost
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    public FullProjectData createReOpenContest(FullProjectData contest, String operator) throws ProjectServicesException {
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesImpl#createReOpenContest(" + contest + ", " + operator + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+        try {
+            //1. create the new re-open contest            
+            //1.1 copy the project header 
+            Project projectHeader = new Project();
+            projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
+            projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
+            ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
+            spec.setProjectSpecId(-1);
+            projectHeader.setProjectSpec(spec);
+            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
+            //make the fee to zero
+            projectHeader.setProperty("Admin Fee", "0");
+            projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
+            projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
+            
+            //1.2 clone resources:Only observers, managers, client managers and copilots should be copied in resources.
+            List<com.topcoder.management.resource.Resource> newResourcesList = new ArrayList<com.topcoder.management.resource.Resource>();
+            com.topcoder.management.resource.Resource[] resources = contest.getResources();
+            for (com.topcoder.management.resource.Resource resource : resources) {
+                if (resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_COPILOT_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_MANAGER_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_OBSERVER_ID){
+                    resource.setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                    newResourcesList.add(resource);
+                }
+            }
+            
+            //1.3 Set the start time to 1 day + current time.
+            com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
+            projectPhases.setStartDate(contest.getStartDate());
+            
+            //1.4 create the project here
+            FullProjectData reOpendedProject = 
+                createProjectWithTemplate(projectHeader, projectPhases, resources, operator);
+    
+            //1.5 link the project to the original one        
+            projectLinkManager.updateProjectLinks(reOpendedProject.getProjectHeader().getId(),
+                    new long[] {contest.getProjectHeader().getId()}, new long[] {ProjectLinkType.REPOST_FOR});
+            return reOpendedProject;
+        } catch (PersistenceException e) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    /**
+     * Creates new version for development and design contest for the given contest.since version 1.4.
+     * 
+     * @param contest the contest to create new version
+     * @param operator the operator
+     * @return new contest for the repost one
+     * @throws ProjectServicesException if any error occurs
+     */
+    public FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException {
+        // check operator
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesImpl#createNewVersionContest(" + contest + ", " + operator + ") method.";
+        log(Level.INFO, "Enters " + method);
+
+        try {              
+            //1.1 copy the project header 
+            Project projectHeader = new Project();
+            projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
+            projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
+            
+            ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
+            spec.setProjectSpecId(-1);
+            projectHeader.setProjectSpec(spec);
+            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
+            projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
+            projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
+            
+            //1.2 clone resources:Only observers, managers, client managers and copilots should be copied in resources.
+            List<com.topcoder.management.resource.Resource> newResourcesList = new ArrayList<com.topcoder.management.resource.Resource>();
+            com.topcoder.management.resource.Resource[] resources = contest.getResources();
+            for (com.topcoder.management.resource.Resource resource : resources) {
+                if (resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_COPILOT_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_MANAGER_ID
+                        ||resource.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_OBSERVER_ID){
+                    resource.setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                    newResourcesList.add(resource);
+                }
+            }
+            
+            //1.3 Set the start time to 1 day + current time.
+            com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
+            projectPhases.setStartDate(contest.getStartDate());
+            
+            //1.4 create the project here
+            FullProjectData reOpendedProject = 
+                createProjectWithTemplate(projectHeader, projectPhases, resources, operator);
+    
+            return reOpendedProject;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
     }
 
     /**
