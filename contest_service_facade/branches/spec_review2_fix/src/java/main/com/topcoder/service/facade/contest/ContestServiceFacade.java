@@ -121,8 +121,14 @@ import javax.jws.WebService;
  *   to make it ready for review.
  * - Added method to add comments to an existing review.
  * </p>
- * @author pulky, murphydog
- * @version 1.3
+ * <p>
+ * Changes in v1.5 (Cockpit Release Assembly - Contest Repost and New Version v1.0):
+ * - Added method to re open failed software contest.
+ * - Added method to create new version for development or design contest.
+ * </p>
+ *
+ * @author pulky, murphydog, waits
+ * @version 1.5
  */
 @WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
@@ -1884,4 +1890,27 @@ public interface ContestServiceFacade {
      * @since 1.4
      */
     public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException;
+    /**
+     * <p>
+     * Re-Open the software project in status of (project_status_id = 4-6, 8-10 in tcs_catalog:project_status_lu).
+     * </p>
+     *
+     * @param projectId the project id to open
+     * @param tcDirectProjectId the tc-direct-project-id
+     * @return returns the newly created contest id
+     * @throws ContestServiceException if any problem occurs
+     */
+    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException;
+    /**
+     * <p>
+     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * </p>
+     * @param projectId the project to create new version
+     * @param tcDirectProjectId tc direct project id
+     * @param autoDevCreating if it is true and it is design contest, then will create development too
+     * @return newly version contest id
+     * @throws ContestServiceException if any error occurs
+     */
+    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating)
+            throws ContestServiceException;
 }

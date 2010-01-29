@@ -67,6 +67,8 @@ import com.topcoder.configuration.persistence.ConfigurationFileManager;
 
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.message.email.EmailEngine;
@@ -254,8 +256,14 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * - Add spec review project id
  * - After activiation of contests, create spec review project
  * </p>
- * @author snow01, pulky, murphydog
- * @version 1.4.1
+ * <p>
+ * Changes in v1.5 (Cockpit Release Assembly - Contest Repost and New Version v1.0):
+ * - Added method to re open failed software contest.
+ * - Added method to create new version for development or design contest.
+ * - Refactor the create/update-software-contest methods
+ * </p>
+ * @author snow01, pulky, murphydog, waits
+ * @version 1.5
  */
 @Stateless
 @WebService
@@ -337,63 +345,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
     
-    /**
-     * Private constant specifying project type info's component id key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_COMPONENT_ID_KEY = "Component ID";
-
-    /**
-     * Private constant specifying project type info's version id key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_VERSION_ID_KEY = "Version ID";
-
-    /**
-     * Private constant specifying project type info's version id key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY = "External Reference ID";
-
-    /**
-     * Private constant specifying project type info's forum id key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_DEVELOPER_FORUM_ID_KEY = "Developer Forum ID";
-
-    /**
-     * Private constant specifying project type info's SVN Module key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_SVN_MODULE_KEY = "SVN Module";
-
-    /**
-     * Private constant specifying project type info's Notes key.
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     */
-    private static final String PROJECT_TYPE_INFO_NOTES_KEY = "Notes";
-
-    /**
-     * Private constant specifying project type info's project name key.
-     *
-     * @since Cockpit Release Assembly for Receipts
-     */
-    private static final String PROJECT_TYPE_INFO_PROJECT_NAME_KEY = "Project Name";
-
-    /**
-     * <p>
-     * Represents the "Autopilot option" project property key
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_KEY = "Autopilot Option";
+    
 
     /**
      * <p>
@@ -601,12 +553,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
 
-    /**
-     * Private constant specifying project type info's billing project key.
-     *
-     * @since 1.3.3
-     */
-    private static final String PROJECT_TYPE_INFO_BILLING_PROJECT_KEY = "Billing Project";
+
 
     /**
      * Private constant specifying project submission phase name.
@@ -3304,8 +3251,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             boolean hasEligibility = contestEligibilityManager.haveEligibility(new Long[]{tobeUpdatedCompetition.getProjectHeader().getId()}, false).size() > 0;
 
             // no need for dev that has design, so all non-dev and dev only will have spec review 
+            // and dont create for private
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility) 
+                  && !hasEligibility && clientId == 0) 
             {
                  //create spec review project
                 FullProjectData specReview = this.createSpecReview(tobeUpdatedCompetition.getProjectHeader().getId());
@@ -3350,7 +3298,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 projectServices.updatePhases(projectPhases, Long.toString(p.getUserId()));
 
                 //  now turn on auto pilot
-                specReview.getProjectHeader().setProperty(PROJECT_TYPE_INFO_AUTOPILOT_OPTION_KEY,
+                specReview.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
                     PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
                 projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot", Long.toString(p.getUserId()));  
 
@@ -3359,7 +3307,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getProjectHeader()
-                                      .getProperty(PROJECT_TYPE_INFO_PROJECT_NAME_KEY),
+                                      .getProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY),
                 projectName,
                 competition.getAssetDTO().getProductionDate()
                            .toGregorianCalendar().getTime(), fee, fee,
@@ -3994,6 +3942,79 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
 
     /**
+     * Checks the permission for the given tc-direct-project-id for the current caller.
+     * 
+     * @param tcDirectProjectId the project id
+     * @throws ContestServiceException if user(not admin) does not have the permission
+     */
+    private void checkSoftwareProjectPermission(long tcDirectProjectId, boolean readOnly) throws ContestServiceException {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!projectServices.checkProjectPermission(tcDirectProjectId, readOnly, userId)) {
+                if (readOnly)
+                {
+                    throw new ContestServiceException("No read permission on project");
+                }
+                else
+                {
+                    throw new ContestServiceException("No write permission on project");
+                }
+            }
+        }
+    }
+    /**
+     * Checks the permission for the given contestId for the current caller.
+     * 
+     * @param contestId the project id
+     * @throws ContestServiceException if user(not admin) does not have the permission
+     */
+    private void checkSoftwareContestPermission(long contestId, boolean readOnly) throws ContestServiceException {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!projectServices.checkContestPermission(contestId, readOnly, userId)) {
+                if (readOnly)
+                {
+                    throw new ContestServiceException("No read permission on project");
+                }
+                else
+                {
+                    throw new ContestServiceException("No write permission on project");
+                }
+            }
+        }
+    }
+    /**
+     * Checks the billing project permission of the given contest for the current caller.
+     * 
+     * @param contest the contest to check
+     * @throws ContestServiceException if user(not admin) does not have the permission
+     */
+    private void checkBillingProjectPermission(SoftwareCompetition contest) throws ContestServiceException, DAOException {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+            if (billingProject != null  && !billingProject.equals("") && !billingProject.equals("0")) {
+                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                String userName = principal.getName();
+                long clientProjectId = Long.parseLong(billingProject);
+                if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId)) {
+                    throw new ContestServiceException("No permission on billing project " + clientProjectId);
+                }
+            }
+        }
+    }
+    /**
+     * Checks if the contest is development contest.
+     * @param contest the contest
+     * @return true if yes
+     */
+    private boolean isDevContest(SoftwareCompetition contest) {
+        return contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;        
+    }
+    
+
+    /**
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
@@ -4001,6 +4022,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Updated for Version 1.0.1
      *      - BUGR-2185: For development contests, if asset (or component) exists from design contests then that is used
      *        to create a new contest. Otherwise a new asset is also created.
+     *
+     * Updated for Version1.5
+     *        the code is refactored by the logic:
+     *        1. check the permission
+     *        2. update or create the asset
+     *        3. set default resources
+     *        4. create project
+     *        5. prepare the return value
+     *        6. persist the eligility
      *
      * @param contest the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId the TC direct project id.
@@ -4020,335 +4050,290 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     public SoftwareCompetition createSoftwareContest(
         SoftwareCompetition contest, long tcDirectProjectId, long clientId)
         throws ContestServiceException {
-        logger.debug("createSoftwareContest");
+        logger.debug("createSoftwareContest with information : [tcDirectProjectId ="
+                + tcDirectProjectId + ", clientId = " + clientId + "]");
 
         try {
+            ExceptionUtils.checkNull(contest, null, null, "The contest to create is null.");
+            ExceptionUtils.checkNull(contest.getProjectHeader(), null, null, "The contest#ProjectHeader to create is null.");
+            
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            //check the permission
+            checkSoftwareProjectPermission(tcDirectProjectId, true);
+            //check the billing project permission
+            checkBillingProjectPermission(contest);
+            
+            //check whether we need to auto-create-development contest for design
+            boolean creatingDevContest = shouldAutoCreateDevContest(contest);
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!projectServices.checkProjectPermission(tcDirectProjectId, true, userId))
-                {
-                    throw new ContestServiceException("No read permission on project");
-                }
-
-                
-            }
-
-            boolean creatingDevContest = contest.getDevelopmentProjectHeader() != null
-                && contest.getDevelopmentProjectHeader().getProperties() != null
-                && contest.getDevelopmentProjectHeader().getProperties().size() != 0;
+            //copy the data from design to development if it is going to do auto-dev-creating
             SoftwareCompetition devContest = null;
             if (creatingDevContest) {
                 devContest = (SoftwareCompetition)contest.clone();
             }
 
-            AssetDTO assetDTO = contest.getAssetDTO();
-            long forumId = 0;
+            //update the AssetDTO and update corresponding properties
+            createUpdateAssetDTO(contest);
+            
+            //create contest resources
+            contest.setProjectResources(createContestResources(contest, clientId));
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            //set the tc-direct-project-id
+            contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 
-            XMLGregorianCalendar productionDate = null;
+            //create project now
+            FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
+                        contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
 
-            if (assetDTO != null) {
-                
-                boolean isDevContest = contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
-                boolean useExistingAsset=false;
-
-                if (isDevContest && assetDTO.getVersionNumber()!= null && assetDTO.getVersionNumber().longValue() != 1) {
-                    useExistingAsset=true;
-                    if (productionDate == null) {
-                        productionDate = assetDTO.getProductionDate();
-                    }
-                    assetDTO=this.catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
-                    // for dev, we need to insert a row in comp version dates
-                    this.catalogService.createDevComponent(assetDTO);
-                }
-                
-                if (!useExistingAsset) {
-                    if (assetDTO.getProductionDate() == null) { // BUGR-1445
-                        /*
-                         * - start: current time + 24 hour (round the minutes up to the nearest 15)
-                         */
-                        GregorianCalendar startDate = new GregorianCalendar();
-                        startDate.setTime(new Date());
-                        startDate.add(Calendar.HOUR, 24 * 14); // BUGR-1789
-                        int m = startDate.get(Calendar.MINUTE);
-                        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
-                        assetDTO.setProductionDate(getXMLGregorianCalendar(startDate.getTime()));
-                    }
-
-                    // product date is used to pass the project start date
-                    // bcoz we need to use XMLGregorianCalendar and project start
-                    // date
-                    // is Date and since it is not DTO and hard to change, we use
-                    // product date for now, but we need to set it null so it will
-                    // not
-                    // saved in catalog
-                    productionDate = assetDTO.getProductionDate();
-                    assetDTO.setProductionDate(null);
-
-                        if (contest.getProjectHeader() != null) {
-                            // comp development, set phase to dev
-                            if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
-                                assetDTO.setPhase("Development");
-                            }
-                            // else set to design
-                            else {
-                                assetDTO.setPhase("Design");
-                            }
-                        }
-
-                        assetDTO = this.catalogService.createAsset(assetDTO);
-                        contest.setAssetDTO(assetDTO);
-                }
-
-                // create forum
-                if (createForum) {
-                    if (useExistingAsset && assetDTO.getForum() != null) {
-                        forumId = assetDTO.getForum().getJiveCategoryId();
-                    } else {
-                        forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory()
-                            .getId());
-                    }
-                }
-
-                // if forum created
-                if (forumId > 0 && (!useExistingAsset || assetDTO.getForum() == null)) {
-                    // create a comp forum
-                    CompForum compForum = new CompForum();
-                    compForum.setJiveCategoryId(forumId);
-                    assetDTO.setForum(compForum);
-                    assetDTO = this.catalogService.updateAsset(assetDTO);
-                    // avoid cycle
-                    assetDTO.getForum().setCompVersion(null);
-                }
+            //preparing the result
+            com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+            // for now have to do these to avoid cycle
+            for (int i = 0; i < allPhases.length; i++) {
+                allPhases[i].setProject(null);
+                allPhases[i].clearDependencies();
             }
 
-            if (contest.getProjectHeader() != null) {
-                //
-                // since: Flex Cockpit Launch Contest - Integrate Software
-                // Contests v1.0
-                // set the project properties.
-                //
-                if (assetDTO != null) {
-                    /*
-                     * contest.getProjectHeader().setProperty(PROJECT_TYPE_INFO_VERSION_ID_KEY
-                     * , assetDTO.getVersionId().toString());
-                     */
-                    if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-                    {
-                            if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
-                              && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
-                              && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
-                            {
-                                    UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                                    String userName = principal.getName();
-                                    long clientProjectId = Long.parseLong((String) contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY));
-                                    if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId))
-                                    {
-                                        throw new ContestServiceException("No permission on billing project " + clientProjectId);
-                                    }
-                            }
-                    }
+            contest.setProjectHeader(projectData.getProjectHeader());
+            contest.setProjectPhases(projectData);
+            contest.setProjectResources(projectData.getResources());
+            contest.setProjectData(projectData);
+            contest.setId(projectData.getProjectHeader().getId());
 
-                    contest.getProjectHeader()
-                           .setProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY,
-                        assetDTO.getCompVersionId().toString());
-                    contest.getProjectHeader()
-                           .setProperty(PROJECT_TYPE_INFO_COMPONENT_ID_KEY,
-                        assetDTO.getId().toString());
-                    contest.getProjectHeader()
-                           .setProperty(PROJECT_TYPE_INFO_SVN_MODULE_KEY, "");
-                    contest.getProjectHeader()
-                           .setProperty(PROJECT_TYPE_INFO_NOTES_KEY, "");
-
-                    if (forumId > 0) {
-                        contest.getProjectHeader()
-                               .setProperty(PROJECT_TYPE_INFO_DEVELOPER_FORUM_ID_KEY,
-                            String.valueOf(forumId));
-                    }
-
-                    contest.getProjectPhases()
-                           .setStartDate(getDate(productionDate));
-                }
-
-                com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
-                resources[0] = new com.topcoder.management.resource.Resource();
-                resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-
-                ResourceRole manager_role = new ResourceRole();
-                manager_role.setId(ResourceRole.RESOURCE_ROLE_MANAGER_ID);
-                manager_role.setName(ResourceRole.RESOURCE_ROLE_MANAGER_NAME);
-                manager_role.setDescription(ResourceRole.RESOURCE_ROLE_MANAGER_DESC);
-
-                ResourceRole observer_role = new ResourceRole();
-                observer_role.setId(ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
-                observer_role.setName(ResourceRole.RESOURCE_ROLE_OBSERVER_NAME);
-                observer_role.setDescription(ResourceRole.RESOURCE_ROLE_OBSERVER_DESC);
-
-                ResourceRole clientmanager_role = new ResourceRole();
-                clientmanager_role.setId(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID);
-                clientmanager_role.setName(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_NAME);
-                clientmanager_role.setDescription(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_DESC);
-
-                boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
-                // tc staff add as manager, other as observer
-                if (tcstaff)
-                {
-                    resources[0].setResourceRole(manager_role);
-                }
-                else if (clientId != 0)
-                {
-                    resources[0].setResourceRole(clientmanager_role);
-                }
-                else
-                {
-                    resources[0].setResourceRole(observer_role);
-                }
-
-
-                resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
-                    String.valueOf(p.getUserId()));
-                resources[0].setProperty(RESOURCE_INFO_HANDLE,
-                    String.valueOf(p.getName()));
-                resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS,
-                    RESOURCE_INFO_PAYMENT_STATUS_NA);
-
-                if (contest.getProjectHeader() != null) 
-                {
-                    // design/dev, add Components
-                    if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID 
-                         || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
-
-                        resources[1] = new com.topcoder.management.resource.Resource();
-                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-                        resources[1].setResourceRole(manager_role);
-                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
-                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
-                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
-                    }
-                    // else add Applications
-                    else {
-                        resources[1] = new com.topcoder.management.resource.Resource();
-                        resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
-                        resources[1].setResourceRole(manager_role);
-                        resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
-                        resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
-                        resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
-                    }
-                }
-
-				
-
-				contest.setProjectResources(resources);
-
-                contest.getProjectHeader()
-                       .setTcDirectProjectId(tcDirectProjectId);
-
-                FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(),
-                        contest.getProjectResources(),
-                        String.valueOf(p.getUserId()));
-
-                com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
-
-                // TODO for now have to do these to avoid cycle
-                for (int i = 0; i < allPhases.length; i++) {
-                    allPhases[i].setProject(null);
-                    allPhases[i].clearDependencies();
-
-                    // allPhases[i].clearAttributes();
-                }
-
-                contest.setProjectHeader(projectData.getProjectHeader());
-                contest.setProjectPhases(projectData);
-                contest.setProjectResources(projectData.getResources());
-                contest.setProjectData(projectData);
-                contest.setId(projectData.getProjectHeader().getId());
-                contest.setAssetDTO(assetDTO);
-
-		           // set null to avoid cycle
+            if (contest.getAssetDTO() != null) {
+    	        // set null to avoid cycle
                 contest.getAssetDTO().setDependencies(null);
-                if (contest.getAssetDTO().getForum() != null)
-                {
+                if (contest.getAssetDTO().getForum() != null) {
                     contest.getAssetDTO().getForum().setCompVersion(null);
                 }
-                if (contest.getAssetDTO().getLink() != null)
-                {
+                if (contest.getAssetDTO().getLink() != null) {
                     contest.getAssetDTO().getLink().setCompVersion(null);
                 }
-
+    
                 // need to remove loops before returning
                 removeDocumentationLoops(contest);
-
+    
                 // set project start date in production date
-                contest.getAssetDTO()
-                       .setProductionDate(getXMLGregorianCalendar(
-                        contest.getProjectPhases().getStartDate()));
+                contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
+
             if (clientId != 0) {
-                GroupContestEligibility contestEligibility = new GroupContestEligibility();
-                contestEligibility.setContestId(contest.getProjectHeader().getId());
-                contestEligibility.setStudio(false);
-                contestEligibility.setDeleted(false);
-                contestEligibility.setGroupId(getEligibilityGroupId(clientId));
-
-                //projectServices.createPrivateProjectRoleTermsOfUse(contest.getProjectHeader().getId(), clientId);
-                
-                contestEligibilityManager.create(contestEligibility);
-               
+                persistContestEligility(contest.getProjectHeader().getId(), clientId, null);            
             }
 
-	        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
-		        projectServices.linkDevelopmentToDesignContest(contest.getId());
-	        }
-
-			if (creatingDevContest) {
-                devContest.setAssetDTO(contest.getAssetDTO());
-                devContest.getProjectHeader().getProperties().putAll(
-                    contest.getDevelopmentProjectHeader().getProperties());
-                devContest.setDevelopmentProjectHeader(null);
-                devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);
-                Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
-                XMLGregorianCalendar elevenDaysLater = 
-                    devContest.getAssetDTO().getProductionDate();
-                elevenDaysLater.add(elevenDay);
-                devContest.getAssetDTO().setProductionDate(elevenDaysLater);
-                devContest.setProjectHeaderReason("Create corresponding development contest");
-                createSoftwareContest(devContest, tcDirectProjectId, clientId);
+	        if (creatingDevContest) {
+                autoCreateDevContest(contest, tcDirectProjectId, clientId, devContest);
             }
 
-            logger.debug("Exit createSoftwareContest");
-
+            
             return contest;
-        } catch (com.topcoder.catalog.service.PersistenceException e) {
-            sessionContext.setRollbackOnly();
-            logger.error("Operation failed in the contest service facade.", e);
-            throw new ContestServiceException("Operation failed in the contest service facade.",
-                e);
-        } catch (ProjectServicesException e) {
-            sessionContext.setRollbackOnly();
-            logger.error("Operation failed in the contest service facade.", e);
-            throw new ContestServiceException("Operation failed in the contest service facade.",
-                e);
-	    } catch (ContestEligibilityPersistenceException e) {
-		    sessionContext.setRollbackOnly();
-		    logger.error("Operation failed in the contest service facade.", e);
-                throw new ContestServiceException ("Cannot save contest eligibility.", e) ;
         } catch (Exception e) {
             sessionContext.setRollbackOnly();
             logger.error("Operation failed in the contest service facade.", e);
             throw new ContestServiceException("Operation failed in the contest service facade.",
                 e);
+        } finally {
+            logger.debug("Exit createSoftwareContest, the newly create contest id = " + contest.getId());
         }
+    }
+
+    /**
+     * <p>
+     * Detects whether the auto creating development contest is on.
+     * </p>
+     * @param contest the contest
+     * @return true if yes
+     */
+    private boolean shouldAutoCreateDevContest(SoftwareCompetition contest) {
+        return contest.getDevelopmentProjectHeader() != null
+                                     && contest.getDevelopmentProjectHeader().getProperties() != null
+                                     && contest.getDevelopmentProjectHeader().getProperties().size() != 0;        
+    }
+
+    /**
+     * Create or updating the AssetDTO for the contest. If the AssetDTO already exists for development contest,
+     * we need to create dev-component. Also, creating forum if necessary.
+     * @param contest the contest
+     * @throws EntityNotFoundException if any error occurs
+     * @throws com.topcoder.catalog.service.PersistenceException if any error occurs
+     */
+    private void createUpdateAssetDTO(SoftwareCompetition contest) throws EntityNotFoundException,
+            com.topcoder.catalog.service.PersistenceException {
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        //check if it is going to create development contest
+        boolean isDevContest = isDevContest(contest);
+        XMLGregorianCalendar productionDate = null;
+        if (contest.getAssetDTO() != null) {
+            AssetDTO assetDTO = contest.getAssetDTO();
+            boolean useExistingAsset = false;
+            if (isDevContest && assetDTO.getVersionNumber()!= null && assetDTO.getVersionNumber().longValue() != 1) {
+                useExistingAsset = true;
+                productionDate = assetDTO.getProductionDate();                    
+                assetDTO = catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
+                // for dev, we need to insert a row in comp version dates
+                catalogService.createDevComponent(assetDTO);
+            }
+            
+            if (!useExistingAsset) {
+                productionDate = assetDTO.getProductionDate() == null ? nextDay():assetDTO.getProductionDate();
+                assetDTO.setProductionDate(null);
+                if (contest.getProjectHeader() != null) {
+                    // comp development, set phase to dev, otherwise to design
+                    assetDTO.setPhase(isDevContest?"Development":"Design");                            
+                }
+                assetDTO = this.catalogService.createAsset(assetDTO);
+                contest.setAssetDTO(assetDTO);
+            }
+            long forumId = 0;
+            // create forum
+            if (createForum) {
+                if (useExistingAsset && assetDTO.getForum() != null) {
+                    forumId = assetDTO.getForum().getJiveCategoryId();
+                } else {
+                    forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+                }
+            }
+
+            // if forum created
+            if (forumId > 0 && (!useExistingAsset || assetDTO.getForum() == null)) {
+                // create a comp forum
+                CompForum compForum = new CompForum();
+                compForum.setJiveCategoryId(forumId);
+                assetDTO.setForum(compForum);
+                assetDTO = this.catalogService.updateAsset(assetDTO);
+                // avoid cycle
+                assetDTO.getForum().setCompVersion(null);
+            }
+            contest.setAssetDTO(assetDTO);
+
+            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY, assetDTO.getCompVersionId().toString());
+            contest.getProjectHeader().setProperty(ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY, assetDTO.getId().toString());
+            contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
+
+            if (forumId > 0) {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
+            }
+
+            contest.getProjectPhases().setStartDate(getDate(productionDate));
+        }
+    }
+
+    /**
+     * <p>
+     * If the auto creating development contest is switch on, we need to prepare the contest here. 
+     * </p>
+     * @param designContest the design contest
+     * @param tcDirectProjectId tc-direct-project-id
+     * @param clientId the client id
+     * @param devContest the development contest to create
+     * @throws DatatypeConfigurationException if any error occurs
+     * @throws ContestServiceException if any error occurs
+     */
+    private void autoCreateDevContest(SoftwareCompetition designContest, long tcDirectProjectId, long clientId,
+            SoftwareCompetition devContest) throws DatatypeConfigurationException, ContestServiceException {
+        devContest.setAssetDTO(designContest.getAssetDTO());
+        devContest.getProjectHeader().getProperties().putAll(designContest.getDevelopmentProjectHeader().getProperties());
+        devContest.setDevelopmentProjectHeader(null);
+        devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);        
+        devContest.getAssetDTO().setProductionDate(nextDevProdDay(devContest.getAssetDTO().getProductionDate()));
+        devContest.setProjectHeaderReason("Create corresponding development contest");
+        createSoftwareContest(devContest, tcDirectProjectId, clientId);
+    }
+    /**
+     * <p>
+     * Persists the GroupContestEligibility for the contest and client. If the eligiblity is not null, then the
+     * information will be copied from it.
+     * </p>
+     * @param contestId the contest id
+     * @param clientId the client id
+     * @param eligiblity, the existing ContestEligibility, could be null
+     * @throws ContestEligibilityPersistenceException if any error occurs
+     */
+    private void persistContestEligility(long contestId, Long clientId, ContestEligibility eligiblity)
+        throws ContestEligibilityPersistenceException {
+        GroupContestEligibility contestEligibility = new GroupContestEligibility();
+        contestEligibility.setContestId(contestId);
+        contestEligibility.setStudio(false);
+        contestEligibility.setDeleted(eligiblity==null?false:eligiblity.isDeleted());
+        contestEligibility.setGroupId(eligiblity==null?getEligibilityGroupId(clientId):((GroupContestEligibility)eligiblity).getGroupId());
+        contestEligibilityManager.create(contestEligibility); 
+    }
+
+    /**
+     * <p>
+     * Adding the contest resources when creating contest. manager or observer or client-manager will be added.
+     * </p>
+     * @param contest the contest to create
+     * @param clientId the client id
+     * @return resource array
+     */
+    private com.topcoder.management.resource.Resource[] createContestResources(SoftwareCompetition contest, long clientId) {
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
+        resources[0] = new com.topcoder.management.resource.Resource();
+        resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+
+        ResourceRole managerRole = new ResourceRole();
+        managerRole.setId(ResourceRole.RESOURCE_ROLE_MANAGER_ID);
+        managerRole.setName(ResourceRole.RESOURCE_ROLE_MANAGER_NAME);
+        managerRole.setDescription(ResourceRole.RESOURCE_ROLE_MANAGER_DESC);
+
+        ResourceRole observerRole = new ResourceRole();
+        observerRole.setId(ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
+        observerRole.setName(ResourceRole.RESOURCE_ROLE_OBSERVER_NAME);
+        observerRole.setDescription(ResourceRole.RESOURCE_ROLE_OBSERVER_DESC);
+
+        ResourceRole clientManagerRole = new ResourceRole();
+        clientManagerRole.setId(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID);
+        clientManagerRole.setName(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_NAME);
+        clientManagerRole.setDescription(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_DESC);
+
+        boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
+        // tc staff add as manager, other as observer
+        if (tcstaff) {
+            resources[0].setResourceRole(managerRole);
+        } else if (clientId != 0) {
+            resources[0].setResourceRole(clientManagerRole);
+        } else {
+            resources[0].setResourceRole(observerRole);
+        }
+
+        resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(p.getUserId()));
+        resources[0].setProperty(RESOURCE_INFO_HANDLE, String.valueOf(p.getName()));
+        resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        
+        // design/dev, add Components
+        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID 
+             || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+
+            resources[1] = new com.topcoder.management.resource.Resource();
+            resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+            resources[1].setResourceRole(managerRole);
+            resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
+            resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
+            resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        }
+        // else add Applications
+        else {
+            resources[1] = new com.topcoder.management.resource.Resource();
+            resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+            resources[1].setResourceRole(managerRole);
+            resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
+            resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
+            resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        }
+        
+        return resources;
     }
 
     /**
      * <p>
      * Updates a <code>SoftwareCompetition</code> in the persistence.
      * </p>
+     * 
+     * <p>
+     * Update in version 1.5, reduce the code redundancy in permission checking.
+     * <p>
      *
      * @param contest
      *            the <code>SoftwareCompetition</code> to update as a contest
@@ -4382,42 +4367,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getAssetDTO().setProductionDate(null);
 
                 // TODO: for some reason, versionid is not passed
-                contest.getAssetDTO()
-                       .setCompVersionId(contest.getAssetDTO().getVersionNumber());
-                contest.setAssetDTO(this.catalogService.updateAsset(
-                        contest.getAssetDTO()));
+                contest.getAssetDTO().setCompVersionId(contest.getAssetDTO().getVersionNumber());
+                contest.setAssetDTO(this.catalogService.updateAsset(contest.getAssetDTO()));
             }
 
             if (contest.getProjectHeader() != null) {
 
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-                {
-
-                    long userId = p.getUserId();
-                    String userName = p.getName();
-                    if (!projectServices.checkContestPermission(contest.getProjectHeader().getId(), false, userId))
-                    {
-                        throw new ContestServiceException("No write permission on contest");
-                    }
-
-                    if (contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY) != null 
-                      && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("")
-                      && !((String)contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY)).equals("0"))
-                    {
-                        long clientProjectId = Long.parseLong((String) contest.getProjectHeader().getProperty(PROJECT_TYPE_INFO_BILLING_PROJECT_KEY));
-                        if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId))
-                        {
-                            throw new ContestServiceException("No permission on billing project " + clientProjectId);
-                        }
-                    }
-                }
-
+                //check the permissions
+                checkSoftwareContestPermission(contest.getProjectHeader().getId(), false);
+                checkBillingProjectPermission(contest);
                 
-
-                Set phaseset = contest.getProjectPhases().getPhases();
-                com.topcoder.project.phases.Phase[] phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
+                Set<com.topcoder.project.phases.Phase> phaseset = contest.getProjectPhases().getPhases();
+                com.topcoder.project.phases.Phase[] phases =  phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
 
                 // add back project on phase
                 for (int i = 0; i < phases.length; i++) {
@@ -5033,20 +4996,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         SoftwareCompetition contest = new SoftwareCompetition();
 
         try {
-
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!projectServices.checkContestPermission(projectId, true, userId))
-                {
-                    throw new ContestServiceException("No read permission on contest");
-                }
-            }
-
+            
+            checkSoftwareContestPermission(projectId, true);
+            
             FullProjectData fullProjectData = this.projectServices.getFullProjectData(projectId);
             Long compVersionId = Long.parseLong(fullProjectData.getProjectHeader()
-                                                               .getProperty(PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY));
+                                                               .getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
             contest.setAssetDTO(this.catalogService.getAssetByVersionId(
                     compVersionId));
             contest.setProjectHeader(fullProjectData.getProjectHeader());
@@ -6771,6 +6726,215 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             logger.error(e);
             return false;
+        }
+    }
+    /**
+     * The next day for production-date.
+     * @return new date
+     */
+    private XMLGregorianCalendar nextDay(){
+        GregorianCalendar startDate = new GregorianCalendar();
+        startDate.setTime(new Date());
+        startDate.add(Calendar.HOUR, 24 * 14); // BUGR-1789
+        int m = startDate.get(Calendar.MINUTE);
+        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+        return getXMLGregorianCalendar(startDate.getTime());
+    }
+    /**
+     * The next production-date for the re-open and new release contest.
+     * @return new date
+     */
+    private XMLGregorianCalendar nextReOpenNewReleaseDay(){
+        GregorianCalendar startDate = new GregorianCalendar();
+        startDate.setTime(new Date());
+        startDate.add(Calendar.HOUR, 24);
+        int m = startDate.get(Calendar.MINUTE);
+        startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+        return getXMLGregorianCalendar(startDate.getTime());
+    }
+    /**
+     * Finds the next development production date for the design.
+     * @param date date to calcuate base on
+     * @return the next development prod date
+     * @throws DatatypeConfigurationException if any error occurs
+     */
+    private XMLGregorianCalendar nextDevProdDay(XMLGregorianCalendar date) throws DatatypeConfigurationException{
+        Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);        
+        date.add(elevenDay);
+        return date;
+    }
+    /**
+     * <p>
+     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * </p>
+     * @param projectId the project to create new version
+     * @param tcDirectProjectId tc direct project id
+     * @param autoDevCreating if it is true and it is design contest, then will create development too
+     * @param startDate the start date for the new version contest
+     * @return newly version contest id
+     * @throws ContestServiceException if any error occurs
+     */
+    private long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, 
+            boolean autoDevCreating, XMLGregorianCalendar startDate) throws ContestServiceException {
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            //0.check the permission first
+            checkSoftwareProjectPermission(tcDirectProjectId, true);
+            //1. for now, only completed can create new version
+            FullProjectData contest = this.projectServices.getFullProjectData(projectId);  
+            // if auto dev creating, dont check, since we pass the new design project id
+            if (!autoDevCreating && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.COMPLETED_STATUS_ID) {
+                throw new ProjectServicesException("The design project or its corresponding development project is not completed."
+                        + " You can not create new version for it.");
+            }
+            boolean isDevContest = 
+                contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+            
+            //2.create new version
+            Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
+            AssetDTO dto = catalogService.getAssetByVersionId(compVersionId);
+            
+            //if it is dev only, or design, create new version here
+            if (!isDevContest || !autoDevCreating) {
+		//clear the version
+            	dto.setCompVersionId(null);
+
+                dto = catalogService.createVersion(dto);
+            }
+            //if it is auto-creating-dev and is creating dev now
+            else if (autoDevCreating && isDevContest) {
+                // need to get the latest verion by component id
+                dto = catalogService.getAssetById(dto.getId(), false);
+                dto = catalogService.createDevComponent(dto);                
+            }
+
+            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));    
+            contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));    
+            contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));    
+            
+            long forumId = 0;
+            // create forum
+            if (createForum) {
+                forumId = createForum(dto, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+            }
+
+            // if forum created
+            if (forumId > 0 && dto.getForum() == null)
+            {
+                // create a comp forum
+                CompForum compForum = new CompForum();
+                compForum.setJiveCategoryId(forumId);
+                dto.setForum(compForum);
+                dto = this.catalogService.updateAsset(dto);
+                // avoid cycle
+                dto.getForum().setCompVersion(null);
+            }
+
+            if (forumId > 0) {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
+            }
+
+            contest.setStartDate(getDate(startDate));
+            //3.create the project
+            FullProjectData newVersionORProject = projectServices.createNewVersionContest(contest, String.valueOf(p.getUserId()));
+
+            List<ContestEligibility> contestEligibilities = 
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
+            for (ContestEligibility ce:contestEligibilities){   
+                persistContestEligility(newVersionORProject.getProjectHeader().getId(), null, ce);
+            }
+            
+            //4.if also auto-dev-creating for design, create it
+            if (autoDevCreating && !isDevContest) {
+                long developmentProjectId = projectServices.getDevelopmentContestId(projectId);
+                if (developmentProjectId > 0){
+                    logger.debug("create new version development project, the dev project id is :" + developmentProjectId);
+                    createNewVersionForDesignDevContest(developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate));
+                }
+            }
+            logger.debug("Exit createNewVersionForDesignDevContest");
+            return newVersionORProject.getProjectHeader().getId();
+        } catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            logger.error("Operation failed in the contest service facade.", e);
+            throw new ContestServiceException("Operation failed in the contest service facade.",
+                e);
+        }
+    }
+    /**
+     * <p>
+     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * </p>
+     * <p>
+     * since version 1.5.
+     * </p>
+     * @param projectId the project to create new version
+     * @param tcDirectProjectId tc direct project id
+     * @param autoDevCreating if it is true and it is design contest, then will create development too
+     * @return newly version contest id
+     * @throws ContestServiceException if any error occurs
+     */
+    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating) throws ContestServiceException {
+        logger.debug("createNewVersionForDesignDevContest with parameter [projectId =" + projectId
+                     + ", tcDirectProjectId =" +tcDirectProjectId+", autoDevCreating="+ autoDevCreating +"].");
+       
+        return createNewVersionForDesignDevContest(projectId, tcDirectProjectId, autoDevCreating,nextReOpenNewReleaseDay());       
+    }
+
+    /**
+     * <p>
+     * Reopen the software contest.
+     * </p>
+     * <p>
+     * since version 1.5.
+     * </p>
+     * @param projectId the project to repost
+     * @param tcDirectProjectId the tc direct project id
+     * @return the newly created OR project id
+     * @throws ContestServiceException if any error occurs during repost
+     */
+    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException {
+        logger.debug("reOpenSoftwareContest with parameter [projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
+
+        long reOpenContestId = 0;
+        try {
+            
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            //0.check the permission first
+            checkSoftwareProjectPermission(tcDirectProjectId, true);
+            
+            //1.make sure it is failed status and can be re-opened.
+            FullProjectData contest = projectServices.getFullProjectData(projectId);
+            if (contest == null) {
+                throw new ContestServiceException("The project does not exist.");
+            }
+            if (contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_REVIEW
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_SCREENING
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_SUBMISSION
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE) {
+                throw new ProjectServicesException("The project is not failed. You can not re-open it.");
+            }
+            contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
+            //2.create the project
+            FullProjectData reOpendedProject = 
+                projectServices.createReOpenContest(contest, String.valueOf(p.getUserId()));
+            
+            //3. keep terms and eligibility
+            List<ContestEligibility> contestEligibilities = 
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
+            for (ContestEligibility ce:contestEligibilities){   
+                persistContestEligility(reOpendedProject.getProjectHeader().getId(), null, ce);
+            }
+
+            reOpenContestId = reOpendedProject.getProjectHeader().getId();
+            return reOpenContestId;
+        } catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            logger.error("Operation failed in the contest service facade.", e);
+            throw new ContestServiceException("Operation failed in the contest service facade.",
+                e);
+        } finally {
+            logger.debug("Exit reOpenSoftwareContest with the new contest " + reOpenContestId);
         }
     }
 }
