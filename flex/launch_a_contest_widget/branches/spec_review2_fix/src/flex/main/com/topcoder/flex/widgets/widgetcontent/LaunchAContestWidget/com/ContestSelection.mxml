@@ -96,10 +96,6 @@ xmlns:hc="com.hillelcoren.components.*"
             
             private var _currentHelpPopup:String;
 
-	    //Represent the client's id.
-	    //since 1.0.3
-	    private var _privateClientId:Number;
-
     	//The selected design component
         //@since 1.2
         private var correspondingDesignComponent:SoftwareCompetition = null;
@@ -223,6 +219,8 @@ xmlns:hc="com.hillelcoren.components.*"
                 CmbHourStart.dataProvider=hourData;
                 CmbMinuteStart.dataProvider=minuteData;
                 
+                mainWidget.showLoadingProgress();
+                
                 var getAllProjectsOp:AbstractOperation=mainWidget._pws.getOperation("getAllProjects");
                 getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
                 getAllProjectsOp.send();
@@ -233,8 +231,6 @@ xmlns:hc="com.hillelcoren.components.*"
 
                 
                 getClientProjectsByUser();
-                
-                mainWidget.showLoadingProgress();
                 
                 selectProjects.dataProvider=projectArray;
                 
@@ -329,51 +325,41 @@ xmlns:hc="com.hillelcoren.components.*"
     	     * 
     	     * @param e the webservice result event.
     	     */ 
-	        private function getClientProjectsHandler(e:ResultEvent):void {
-			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+	        private function getClientProjectsHandler(e:ResultEvent):void {			    
 			    mainWidget.hideLoadingProgress();
 			    
-            	if(e && e.result)
-            	{
-            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
-            	    trace("getClientProjectsHandler:: projects: " + projects);
-            	    
-            	    if (projects && projects.length > 0) {
-            	        for (var i:int = 0; i < projects.length; i++) {
-            	            var project:ClientProject = projects[i] as ClientProject;
-            	            var id:Number = project.id;
-            	            var name:String = project.name;
-                            var poNumber:String = project.pOBoxNumber;
-                            var clientId:Number = project.client.id;
-                            var clientName:String = project.client.name;
-                            var manualPrizeSetting:Boolean = project.manualPrizeSetting;
-            	            
-            	            trace("Adding client project name: " + name + "," + manualPrizeSetting);
-            	            // add client project name
-                	        var item:Object = new Object();
-    			            item.label= name;
-    			            item.data = new Object();
-    			            item.data.poNumber = poNumber;
-    			            item.data.projectName = name;
-    			            item.data.projectId = id;
-    			            item.data.clientId = clientId;
-    			            item.data.clientName = clientName;
-    			            item.data.manualPrizeSetting = manualPrizeSetting; 
-    			            
-                	        mainWidget.clientProjectNames.addItem(item);
-            	        }
-            	    }
-            	    
-            	    if (mainWidget.studioContestType && mainWidget.competition) {
-            	        selectBillingProject(mainWidget.competition.contestData.billingProject);
-            	    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
-            	        var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(mainWidget.softwareCompetition);
-            	        if (billingAccount) {
-            	            selectBillingProject(new Number(billingAccount));
-            	        }
-            	    }
-            	    
+            	if(!e || !e.result) {
+            		return;
             	}
+        	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+        	    trace("getClientProjectsHandler:: projects: " + projects);
+        	    
+        	    if (projects && projects.length > 0) {
+        	        for (var i:int = 0; i < projects.length; i++) {
+        	            var project:ClientProject = projects[i] as ClientProject;        	            
+        	            trace("Adding client project name: " + project.name + ", manualPrizeSetting :" + project.manualPrizeSetting);
+        	            // add client project name
+            	        var item:Object = new Object();
+			            item.label= project.name;
+			            item.data = new Object();
+			            item.data.poNumber = project.pOBoxNumber;
+			            item.data.projectName = project.name;
+			            item.data.projectId = project.id;
+			            item.data.clientId = project.client.id;
+			            item.data.clientName = project.client.name;
+			            item.data.manualPrizeSetting = project.manualPrizeSetting;
+            	        mainWidget.clientProjectNames.addItem(item);
+        	        }
+        	    }
+        	    
+        	    if (mainWidget.studioContestType && mainWidget.competition) {
+        	        selectBillingProject(mainWidget.competition.contestData.billingProject);
+        	    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
+        	        var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(mainWidget.softwareCompetition);
+        	        if (billingAccount) {
+        	            selectBillingProject(new Number(billingAccount));
+        	        }
+        	    }
 	        }
             
             
@@ -881,88 +867,46 @@ xmlns:hc="com.hillelcoren.components.*"
                 if (mainWidget) {
                     var val:Object=selectBillingAccount.selectedItem;
                     setBillingProjectProperties(val);
-
-                    var isNewProject:Boolean = false;
-                    if (mainWidget.studioContestType) {
-                        if (mainWidget == null ||
-                            mainWidget.competition == null ||
-                            mainWidget.competition.contestData == null ||
-                            isNaN(mainWidget.competition.contestData.contestId) || 
-                            mainWidget.competition.contestData.contestId <= 0) {
-                                isNewProject = true;
-                        }
-                    } else {
-                        if (mainWidget == null ||
-                            mainWidget.softwareCompetition == null ||
-                            mainWidget.softwareCompetition.projectHeader == null ||
-                            isNaN(mainWidget.softwareCompetition.projectHeader.id) || 
-                            mainWidget.softwareCompetition.projectHeader.id <= 0) {
-                                isNewProject = true;
-                        }
-                    }
                     
+                    if (val != null && val.data != null) {
+	                    var isNewProject:Boolean = false;
+	                    if (mainWidget.studioContestType) {
+	                        if (mainWidget == null ||
+	                            mainWidget.competition == null ||
+	                            mainWidget.competition.contestData == null ||
+	                            isNaN(mainWidget.competition.contestData.contestId) || 
+	                            mainWidget.competition.contestData.contestId <= 0) {
+	                                isNewProject = true;
+	                        }
+	                    } else {
+	                        if (mainWidget == null ||
+	                            mainWidget.softwareCompetition == null ||
+	                            mainWidget.softwareCompetition.projectHeader == null ||
+	                            isNaN(mainWidget.softwareCompetition.projectHeader.id) || 
+	                            mainWidget.softwareCompetition.projectHeader.id <= 0) {
+	                                isNewProject = true;
+	                        }
+	                    }
+	                    if (isNewProject) {                        
+	                        var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+	                        getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+	                        getEligibilityNameOp.send(val.data.projectId);
+	                        mainWidget.showLoadingProgress();
+	                    }
 
-                    if (isNewProject) {
-                        _privateClientId = val.data.clientId;
-                        var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
-                        getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
-                        getEligibilityNameOp.send(_privateClientId);
-                        mainWidget.showLoadingProgress();
-                    }
-
-		    // we also init overview to have default prizes.
-                    //mainWidget.overView.initData();
-                }
+                	} else {
+                		lblLCCOnly.text = "";
+                	}
+             }
 	    }
 
             private function getEligibilityNameOpHandler(e:ResultEvent):void {
-                if (e) {
-                    mainWidget.hideLoadingProgress();
-                    var isNewProject:Boolean = false;
-                    var projectId:Number;
-                    if (mainWidget.studioContestType) {
-                        if (mainWidget == null ||
-                            mainWidget.competition == null ||
-                            mainWidget.competition.contestData == null ||
-                            isNaN(mainWidget.competition.contestData.contestId) || 
-                            mainWidget.competition.contestData.contestId <= 0) {
-                                isNewProject = true;
-                        } else {
-                            projectId = mainWidget.competition.contestData.contestId;
-                        }
-                    } else {
-                        if (mainWidget == null ||
-                            mainWidget.softwareCompetition == null ||
-                            mainWidget.softwareCompetition.projectHeader == null ||
-                            isNaN(mainWidget.softwareCompetition.projectHeader.id) || 
-                            mainWidget.softwareCompetition.projectHeader.id <= 0) {
-                                isNewProject = true;
-                        } else {
-                            projectId = mainWidget.softwareCompetition.projectHeader.id;
-                        }
-                    }
-                    if (!isNewProject) {
-                        checkBoxLCCOnly.enabled = false;
-                        var isPrivateOp:AbstractOperation=mainWidget._csws.getOperation("isPrivate");
-                        isPrivateOp.addEventListener("result", isPrivateOpHandler);
-                        isPrivateOp.send(projectId, mainWidget.studioContestType);
-                        mainWidget.showLoadingProgress();
-                    }
-                    if (e.result.length != 0) {
-                        LCCBoxSpace.height = 5;
-                        LCCBox.percentHeight = 100;
-                        lblLCCOnly.text = e.result + " Only: ";
-                    } else {
-                        LCCBoxSpace.height = 0;
-                        LCCBox.height = 0;
-                        checkBoxLCCOnly.selected = false;
-                    }
-                }
-            }
-            private function isPrivateOpHandler(e:ResultEvent):void { 
-                if (e) {
-                    mainWidget.hideLoadingProgress();
-                    checkBoxLCCOnly.selected = e.result;
+            	mainWidget.hideLoadingProgress();
+                if (e && e.result.length != 0) {
+                	//this means it is
+                    lblLCCOnly.text = e.result + " Only";
+                } else {
+                	lblLCCOnly.text = "";
                 }
             }
 
@@ -1198,13 +1142,6 @@ xmlns:hc="com.hillelcoren.components.*"
             }
         }
 
-	    /**
-	     * Handle the select of check box.
-	     * since 1.0.3
-	     */
-	    private function handleCheckBoxLCC():void {
-	    	mainWidget.privateClientId = checkBoxLCCOnly.selected ? _privateClientId: 0;
-	    }
         ]]>
     </mx:Script>
     
@@ -1237,12 +1174,6 @@ xmlns:hc="com.hillelcoren.components.*"
                            click="gotoContestHelp();"/>
         </mx:HBox>
         <mx:Spacer height="5"/>
-
-	<mx:HBox id="LCCBox" height="0">
-	    <mx:Label id="lblLCCOnly" text="" />
-	    <mx:CheckBox id="checkBoxLCCOnly" click="handleCheckBoxLCC()"/>
-	</mx:HBox>
-        <mx:Spacer height="0" id="LCCBoxSpace" />
 
 	<mx:HBox>
             <mx:Label text="Give your contest a name."
@@ -1330,6 +1261,7 @@ xmlns:hc="com.hillelcoren.components.*"
                                  width="100%"
                                  dataProvider="{mainWidget.clientProjectNames}"
                                  change="handleBillingAccountChange(event)"/>
+                    <mx:Label id="lblLCCOnly" text="" />
                     <!-- <mx:LinkButton label="Help me choose"
                                    click="showHideHelpPopup(event, 'billingAccount', 'Help for Billing Projects');"/> -->
                 </mx:HBox>

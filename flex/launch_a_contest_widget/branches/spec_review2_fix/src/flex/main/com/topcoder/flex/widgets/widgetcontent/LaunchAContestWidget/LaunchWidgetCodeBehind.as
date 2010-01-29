@@ -214,7 +214,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
         * Current user id.
         */
-	[Bindable]
+	    [Bindable]
         private var _userid:Number=Application.application.parameters.userid;
         
         public var initWidgetCallbackFn:Function=null;
@@ -355,11 +355,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var detailsConfig:XML=null;
         
         private var bolckSaveAsDraft:Boolean = false;
-
-
-	// The private contest's client id.
-	// since 1.0.9
-	public var privateClientId:Number = 0;
         
         /**
         * @since BUGR-1737
@@ -926,7 +921,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(competition, creditCardPaymentData, privateClientId);
+                    processContestPaymentOp.send(competition, creditCardPaymentData);
                 } else {
                     
                     prepareSoftwareContest();
@@ -940,7 +935,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestCreditCardSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(softwareCompetition, creditCardPaymentData, privateClientId);
+                    processContestPaymentOp.send(softwareCompetition, creditCardPaymentData);
                 }
             } else {
                 var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
@@ -960,7 +955,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderPayment");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(competition, purchaseOrderPaymentData, privateClientId);
+                    processContestPaymentOp.send(competition, purchaseOrderPaymentData);
                 } else {
                     prepareSoftwareContest();
                     
@@ -974,7 +969,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                     processContestPaymentOp=_csws.getOperation("processContestPurchaseOrderSale");
                     processContestPaymentOp.addEventListener("result", eventHandler);
                     processContestPaymentOp.addEventListener("fault", faultEventHandler);
-                    processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData, privateClientId);
+                    processContestPaymentOp.send(softwareCompetition, purchaseOrderPaymentData);
                 }
             }
             
@@ -1048,7 +1043,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             var createContestOp:AbstractOperation=_csws.getOperation("createSoftwareContest");
             
             createContestOp.addEventListener("result", createSoftwareContestHandler);
-            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId, privateClientId);
+            createContestOp.send(softwareCompetition, softwareCompetition.projectHeader.tcDirectProjectId);
         }
 
         /**
@@ -1134,6 +1129,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	    // we need a reason for update
     	    this.softwareCompetition.projectHeaderReason = "user update";
             this.softwareCompetition.projectHeader.tcDirectProjectName=tcDirectProjectName;
+            this.softwareCompetition.projectHeader.tcDirectProjectId= new Number(tcDirectProjectId);
        
             if (enforcedCCA) {
                 SoftwareCompetitionUtils.instance().addConfidentialityTypeProp(this.softwareCompetition, SoftwareCompetitionUtils.CONFIDENTIALITY_TYPE_CCA);
@@ -1254,13 +1250,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             prepareStudioContestSave(true);
                         
             createContestOp.addEventListener("result", createStudioContestHandler);
-            createContestOp.send(competition, competition.contestData.tcDirectProjectId, privateClientId);
+            createContestOp.send(competition, competition.contestData.tcDirectProjectId);
             
             showLoadingProgress();
         }
         
         private function prepareStudioContestSave(inactive:Boolean):void {
             competition.contestData.contestTypeId = studioContestSubTypeId;
+            competition.contestData.tcDirectProjectId = new Number(tcDirectProjectId);
             
             if (inactive) {
                 competition.contestData.statusId=CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED;
@@ -1505,6 +1502,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             this._userid=id;
         }
         
+        [Bindable]
+        public function get tcDirectProjectId():String {
+            return _tcDirectProjectId;
+        }
+
         public function set tcDirectProjectId(projectID:String):void {
             _tcDirectProjectId=projectID;
         }
@@ -1518,10 +1520,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             _tcDirectProjectName = projectName;
         }
 
-        [Bindable]
-        public function get tcDirectProjectId():String {
-            return _tcDirectProjectId;
-        }
+        
         
         /**
          * Gets whether the current contest is invoiced or not
