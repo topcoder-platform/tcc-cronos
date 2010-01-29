@@ -19,9 +19,12 @@
         - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
      Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
         - Add the spec review project id
+     Version 1.0.4 (Cockpit Release Assembly - Contest Repost and New Version 1.0) Notes:
+        - Add two new ws-methods 'repost' and 'create new version'
+
      @author TCSDEVELOPER, TCSASSEMBLER
      @since My Project Widget Overhaul
-     @version 1.0.3
+     @version 1.0.4
 -->
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
                             width="100%"
@@ -659,6 +662,14 @@
                 <arg0>{pid}</arg0>
             </mx:request>
         </mx:operation>
+
+        <mx:operation name="createNewVersionForDesignDevContest"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('createNewVersionForDesignDevContest: ' + event.fault.faultString);" />
+
+        <mx:operation name="reOpenSoftwareContest"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('reOpenSoftwareContest: ' + event.fault.faultString);" />
     </mx:WebService>
     
     <mx:WebService id="ProjectServiceFacadeBean"

@@ -24,10 +24,12 @@
         - remove the 'spec review' column.
         - add the spec review status
         - add one more drop down option
+     Version 1.0.4 (Cockpit Release Assembly - Contest Repost and New Version 1.0) Notes:
+        - Add two new choice 'repost' and 'create new version'        
 
-     @author TCSDEVELOPER, TCSASSEMBLER
+     @author TCSDEVELOPER, TCSASSEMBLER, waits
      @since My Project Widget Overhaul
-     @version 1.0.3
+     @version 1.0.4
 -->
 <mx:VBox 
     xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -40,6 +42,9 @@
     backgroundSize="100%">
     <mx:Script>
         <![CDATA[
+            import mx.rpc.AbstractOperation;
+            import mx.events.CloseEvent;
+            import mx.core.Application;
             import mx.utils.StringUtil;
             import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
             import mx.controls.ButtonLabelPlacement;
@@ -53,6 +58,7 @@
             import com.topcoder.flex.Helper;
             import mx.controls.PopUpButton;
             import mx.controls.Alert;
+            import mx.rpc.events.ResultEvent;
             import mx.events.MenuEvent;
 	    import mx.controls.Menu;
 	    import mx.binding.utils.BindingUtils;
@@ -105,12 +111,8 @@
              * The base url for the link of contents;
              */
             private var softwareForumUrlBase:String="http://forums.topcoder.com/?module=Category&categoryID=";
-            
-            /**
-             * The selected index in popupbutton;
-             */
-            private var sltIndex:int = 0;
-            
+
+
             /**
              * The width of status bar;
              */
@@ -133,6 +135,45 @@
              */
             private static var STUDIO_TYPE:String = "Studio";
 
+            /////////////////////////////////////////////////////
+            //// the drop down options
+            ////////////////////////////////////////////////////
+            /**
+             * Const represents the view option of 'View'.
+             * @since 1.0.4
+             */
+            private static var VIEW_OPTION:String = "View";
+            /**
+             * Const represents the view option of 'edit'.
+             * @since 1.0.4
+             */
+			private static var EDIT_OPTION:String = "Edit";
+			/**
+             * Const represents the view option of 'submission'.
+             * @since 1.0.4
+             */
+			private static var SUBMISSIONS_OPTION:String = "Submissions";
+			/**
+             * Const represents the view option of 'View spec review'.
+             * @since 1.0.4
+             */
+			private static var SPEC_REVIEW_OPTION:String = "View Spec Review";
+			/**
+             * Const represents the view option of 'repost'.
+             * @since 1.0.4
+             */
+			private static var REPOST_OPTION:String = "Repost";
+			/**
+             * Const represents the view option of 'create new version'.
+             * @since 1.0.4
+             */
+			private static var NEW_VERSION_OPTION:String = "Create New Version";
+			/**
+             * Const represents the view option of 'create new version with dev'.
+             * @since 1.0.4
+             */
+			private static var NEW_VERSION_WITH_DEV_OPTION:String = "Create New Version with Dev";
+
             /**
              * Sets the data for this contest row.
              *
@@ -144,6 +185,8 @@
                 startDate=contest.startDate;
                 endDate=contest.endDate;
                 var midDate:Date = null;
+                this.reOpenContestId = null;
+                this.newVersionContestId = null;
 
                 // only show green/yellow if not draft or scheduled
                 if (contest.status.toLowerCase() != "draft" && contest.status.toLowerCase() != "scheduled")
@@ -406,77 +449,78 @@
          * Init the pop up button.
          *
          * Add 'View Spec Review' in version 1.0.3.
+         * Add 'Repost' and NEW_VERSION_OPTIONs in version 1.0.4
          */
          private function initActionPopBtn():void {
             if (actionPopBtn == null) {
                 return;
             }
             actionMenu = new Menu();
-            BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");            
-            var labels:Object;
-            var haveSRProject:Boolean = haveSpecReviewProject();
+            BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");
+            var labels:Array;
             if (editable()) {
-            	if (haveSRProject) {
-            		labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}, {label:"View Spec Review"}];
-            	} else {
-            		labels = [{label: "View"}, {label: "Edit"}, {label: "Submissions"}];
-            	}
+                labels = [{label: VIEW_OPTION}, {label: EDIT_OPTION}, {label: SUBMISSIONS_OPTION}];
             } else {
-            	if (haveSRProject) {
-            		labels = [{label: "View"}, {label: "Submissions"}, {label:"View Spec Review"}];
-            	} else {
-            		labels = [{label: "View"}, {label: "Submissions"}];
-            	}
+                labels = [{label: VIEW_OPTION}, {label: SUBMISSIONS_OPTION}];
+            }
+            if (haveSpecReviewProject()) {
+                labels.push({label:SPEC_REVIEW_OPTION});
+            }
+            var writePermission:Boolean = hasWritePermission(contest.permission);
+            if (isFailedSoftwareContest() && writePermission) {
+                labels.push({label:REPOST_OPTION});
+            }
+            if(isCompletedDesignComponent()&& writePermission) {
+                labels.push({label:NEW_VERSION_OPTION});
+                labels.push({label:NEW_VERSION_WITH_DEV_OPTION});
+            }
+            if(isCompletedDevComponent()&& writePermission) {
+                labels.push({label:NEW_VERSION_OPTION});
             }
             actionMenu.dataProvider = labels;
             actionMenu.selectedIndex = 0;
-            actionMenu.addEventListener("itemClick", itemClickHandler);
+            actionMenu.addEventListener(MenuEvent.ITEM_CLICK, itemClickHandler);
             actionPopBtn.popUp = actionMenu;
             actionPopBtn.label = actionMenu.dataProvider[actionMenu.selectedIndex].label;
         }
         
         private function haveSpecReviewProject():Boolean {
-        	if (contest && contest.status && contest.status.toLocaleLowerCase() == 'scheduled' && contest.specReviewProjectId != null) {
-        		return true;
-        	}
-        	if (contest && contest.status && contest.status.toLocaleLowerCase() == 'draft'){
-        		return true;
-        	}
-        	return false;
+            if (contest && contest.status && contest.status.toLowerCase() == 'scheduled' && contest.specReviewProjectId != null) {
+                return true;
+            }
+            if (contest && contest.status && contest.status.toLowerCase() == 'draft'){
+                return true;
+            }
+            return false;
         }
         /**
          * Handler for pop up button item selection.
          * Add 'View Spec Review' in version 1.0.3.
+         * Add 'repost' and NEW_VERSION_OPTIONs in version 1.0.4
          */
         private function itemClickHandler(event:MenuEvent):void {
             actionPopBtn.close();
+            var option:String = null;
             if (event != null) {
-               sltIndex = event.index;
+               option = event.label;
             }
-            var editable:Boolean = editable();
-            var canViewSpecReviewOption:Boolean = canViewSpecReview();            
-
-            if (!editable && sltIndex == 1) {
-                sltIndex = 2;
-            }
-            if (!editable && sltIndex == 2) {
-                sltIndex = 3;
-            }
-
-            if (sltIndex == 0) {
+            
+            var canViewSpecReviewOption:Boolean = canViewSpecReview();
+            
+            if (option == VIEW_OPTION) {
                 //View contest
                 handleClick();
-            } else if (sltIndex == 1) {
+            } else if (option == EDIT_OPTION) {
                 //Edit
                 editContest();
-            } else if (sltIndex == 2) {
+            } else if (option == SUBMISSIONS_OPTION) {
                 //View submisions
                 if (contest.type == "Studio") {
                     showSubmission(null);
                 } else {
                     navigateToURL(new URLRequest(softwareConetestORurl + contest.id), "_blank");
                 }
-            } else if (sltIndex == 3) {
+            } else if (option == SPEC_REVIEW_OPTION) {
                 if (contest.type == "Studio") {
                     if (canViewSpecReviewOption) {
                         //open review screen in launch contest widget
@@ -494,8 +538,170 @@
                                                 "Please Edit your contest and complete the activation process", 120);
                     }
                 }
+            } else if (option == REPOST_OPTION) {
+                var alertDlg:Alert=Alert.show("Are you sure to repost the failed contest?", "Confirmation", Alert.YES | Alert.NO, null, handleRepost);
+                alertDlg.height=110;
+            } else if (option == NEW_VERSION_OPTION) {
+                alertDlg = Alert.show("Are you sure to release a new version?", "Confirmation", Alert.YES |Alert.NO, null, handleNewVersion);
+                alertDlg.height=110;
+            } else if (option == NEW_VERSION_WITH_DEV_OPTION) {
+            	alertDlg = Alert.show("Are you sure to release a new design version and create the corresponding Component Development contest?", 
+            	"Confirmation", Alert.YES |Alert.NO, null, handleNewVersionWithDev);
+                alertDlg.height=130;
             }
         }
+
+		////////////////////////////////////////////////////////////////////////
+		/////////////// methods for reopen, new versions - start
+		/////////////// @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		////////////////////////////////////////////////////////////////////////
+		 /**
+         * Checks if the current contest is software and is failed.  
+         * @return true if it is failed software contest
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function isFailedSoftwareContest():Boolean {
+            return (contest && contest.type != STUDIO_TYPE &&
+                         (contest.status == 'Cancelled - Failed Review'
+                          || contest.status == 'Cancelled - Failed Screening'
+                          || contest.status == 'Cancelled - Zero Submissions'
+                          || contest.status == 'Cancelled - Winner Unresponsive'
+                          || contest.status == 'Cancelled - Client Request'
+                          || contest.status == 'Cancelled - Requirements Infeasible'));
+        }
+        /**
+         * Checks if the current contest is completed design.
+         * @return true if it is completed design or development contest
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function isCompletedDesignComponent():Boolean {
+            return contest && (contest.type == 'Design') && (contest.status == 'Completed');
+        }
+        /**
+         * Checks if the current contest is completed design.
+         * @return true if it is completed design or development contest
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function isCompletedDevComponent():Boolean {
+            return contest && (contest.type == 'Development') && (contest.status == 'Completed');
+        }
+		/**
+		 * <p>
+		 * If user confirms to create repost the contest, this method will try to call the backend to repost the contest.
+		 * </p>
+		 * @param event the alert confirm event
+		 * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		 */
+        private function handleRepost(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {
+            	parentWidget.showLoadingProgress();
+                var reOpenOperation:AbstractOperation  = parentWidget.ContestServiceFacadeBean.getOperation("reOpenSoftwareContest");
+                reOpenOperation.addEventListener(ResultEvent.RESULT, reOpenSuccessHandler);
+                reOpenOperation.send(parseInt(contest.id), parseInt(contest.projId));
+            }
+        }
+        /**
+         * the re-open contest id. the result value from the reOpenSoftwareContest.
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private var reOpenContestId:String = null;
+
+		/**
+		 * Handler for success repost the contest.
+		 * @param e the remote invoke result event
+		 * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		 */
+        private function reOpenSuccessHandler(e:ResultEvent):void {
+            parentWidget.hideLoadingProgress();
+            if (e && e.result) {
+               reOpenContestId = new String(e.result);
+               var alertDlg:Alert=Alert.show("The contest is already re-opened, do you want to go to Launch Contest Widget to check details?",
+                                           "Confirmation", Alert.YES |Alert.NO, null, visitReOpen);
+               alertDlg.height=150;
+            }
+        }
+        /**
+         * Handler user to review the re-open-contest in launch contest widget.
+         * @param event the alert confirm event
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function visitReOpen(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {
+                editContest(contest.type, reOpenContestId, contest.projId, contest.projName, contest.permission);
+            }  else {
+            	parentWidget.reload();
+            }
+        }
+        /**
+         * Handler when user clicks 'create new version' for the contest.
+         * @param event the alert confirm event
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function handleNewVersion(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {
+            	createNewVersion(false);
+            }
+        }
+        /**
+         * Post the request to create design and its corresponding development.
+         * @param event the alert confirm event
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function handleNewVersionWithDev(event:CloseEvent):void {        	
+        	if (event.detail == Alert.YES) {
+        		createNewVersion(true);
+        	}
+        }
+        /**
+         * <p>
+         * Invoke remote create new version contest.
+         * </p>
+         * @param true to create auto dev too
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function createNewVersion(autoDev:Boolean=false):void {
+        	parentWidget.showLoadingProgress();
+        	var newVersionContestOperation:AbstractOperation =
+                    	 parentWidget.ContestServiceFacadeBean.getOperation("createNewVersionForDesignDevContest");
+        	newVersionContestOperation.addEventListener(ResultEvent.RESULT, handleNewVersionSuccess);
+        	newVersionContestOperation.send(parseInt(contest.id), parseInt(contest.projId), autoDev);
+        }
+        /**
+         * The new version contest id. 
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private var newVersionContestId:String;
+        /**
+         * Handler for create new version success.
+         *
+         * @param e the result event from remote invoke
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */ 
+        private function handleNewVersionSuccess(e:ResultEvent):void {
+            parentWidget.hideLoadingProgress();
+            if (e && e.result) {
+               newVersionContestId = new String(e.result);
+               var alertDlg:Alert=Alert.show("New Version contest has been created, do you want to go to Launch Contest Widget to check details?",
+                                           "Confirmation", Alert.YES | Alert.NO, null, visitNewVersionContest);
+                alertDlg.height=150;
+            }
+        }
+        /**
+         * Handler to visit the new version contest in launch contest widget.
+         * @param event the alert confirm event 
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function visitNewVersionContest(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {            	
+                editContest(contest.type, newVersionContestId, contest.projId, contest.projName, contest.permission);
+            } else {
+            	parentWidget.reload();
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////
+		/////////////// methods for reopen, new versions - end
+		////////////////////////////////////////////////////////////////////////
+
         private function openSPStatus():void {
         	navigateToURL(new URLRequest(softwareConetestORurl + contest.specReviewProjectId), "_blank");
         }
@@ -591,29 +797,28 @@
              *    - earlier for read only contest (as per the permission), launch widget could not be launched.
              * </p>
              */
-            private function editContest():void {
-
+            private function editContest(contestType:String=null, contestId:String=null,
+                                         projectId:String=null, projectName:String=null, permission:String=null):void {
                 var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
-            var props:Dictionary=new Dictionary();
-            props["contestType"]=contest.type;
-            props["contestid"]=contest.id;
-            props["projectid"]=contest.projId;
-            props["projectName"]=contest.projName;
-                
-            var mode:String="READ";
-                
-            if(contest.permission=="contest_full" 
-                    || contest.permission=="contest_write"
-                    || (contest.permission==null && 
-                            (parentWidget.model.currentProj.permission=="project_full" 
-                                || parentWidget.model.currentProj.permission=="project_write"))) {
-                    mode="WRITE";				                
-                }
-                
+                var props:Dictionary=new Dictionary();
+                props["contestType"]=contestType?contestType:contest.type;
+                props["contestid"]=contestId?contestId:contest.id;
+                props["projectid"]=projectId?projectId:contest.projId;
+                props["projectName"]=projectName?projectName:contest.projName;
+
+                var mode:String = hasWritePermission(permission?permission:contest.permission)?"WRITE":"READ";
                 props["mode"]=mode;
-            
-            widget.setAttributes(props);
-            parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+
+                widget.setAttributes(props);
+                parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+
+            private function hasWritePermission(permission:String):Boolean {
+                return permission=="contest_full"
+                    || permission=="contest_write"
+                    || (permission==null &&
+                            (parentWidget.model.currentProj.permission=="project_full"
+                                || parentWidget.model.currentProj.permission=="project_write"));
             }
 
             /**
