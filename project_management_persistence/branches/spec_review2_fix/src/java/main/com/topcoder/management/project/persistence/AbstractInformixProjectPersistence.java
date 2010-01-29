@@ -143,7 +143,10 @@ import com.topcoder.util.log.Log;
  * [BUGR-2038]: the new logic for returned contest 'status' will be
  * if status is 'active' in db, and there is a row in contest_sale, then returned/shown status will be 'Scheduled',
  * if status is 'active' in db, and there is no row in contest_sale, then returned/shwon status will be 'Draft",
- * otherwise, show 'status' from db.  
+ * otherwise, show 'status' from db. 
+ * 
+ *  [ Cockpit Release Assembly - Contest Repost and New Version v1.0]
+ *  update the query used in the method getDevelopmentContestId, to remove the constraint on the project status.
  *
  * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits
  * @version 1.2.4
@@ -5260,7 +5263,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     public long getDevelopmentContestId(long contestId) throws PersistenceException {
 
-        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDesignComponents() method."));
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getDevelopmentContestId method."));
 
         Connection conn = null;
 
