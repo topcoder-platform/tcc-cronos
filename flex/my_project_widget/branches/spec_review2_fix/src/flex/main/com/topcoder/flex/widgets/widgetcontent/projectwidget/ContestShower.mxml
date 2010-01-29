@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render one group of contest data grid.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton.
+        
+     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - remove spec status column. 
+     Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
+        - Change the columns
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - remove the 'spec review' column.
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+     @version 1.0.3
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         horizontalScrollPolicy="off"
+         paddingTop="0"
+         paddingBottom="0"
+         verticalGap="0">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.renderer.ContestRow;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+            import mx.events.CollectionEventKind;
+            import mx.events.CollectionEvent;
+            import mx.core.ScrollPolicy;
+            import mx.collections.ArrayCollection;
+            
+            private var _maxCacheSize:int=50;
+            
+            private var _contestRowCache:ArrayCollection=new ArrayCollection();
+            
+            private var _currentCacheIndex:int=0;
+            
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var _parentWidget:ProjectWidget=null;
+            
+            /**
+             * Gets the reference to the instance of the parent Project Widget class.
+             * 
+             * @return  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public function get parentWidget():ProjectWidget {
+                return this._parentWidget;
+            }
+            
+            /**
+             * Sets the reference to the instance of the parent Project Widget class.
+             * 
+             * It additionally sets the parentWidget instance to the child elements.
+             * 
+             * @param p  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            public function set parentWidget(p:ProjectWidget):void {
+                this._parentWidget=p;
+                
+                if (this.container) {
+                    for each (var c:ContestRow in this.container.getChildren()) {
+                        if (c) {
+                            c.parentWidget=this._parentWidget;
+                        }
+                    }
+                }
+                
+                if (_contestRowCache) {
+                    for each (var cr:ContestRow in this._contestRowCache) {
+                        if (cr) {
+                            cr.parentWidget=this._parentWidget;
+                        }
+                    }
+                }
+            }
+            
+            /**
+             * Data provider for this contest shower.
+             */
+            private var _dataProvider:ArrayCollection;
+
+            /**
+             * Sets the data provider for this contest shower.
+             *
+             * @param value the array collection of contests.
+             */
+            [Bindable]
+            public function set dataProvider(value:ArrayCollection):void {
+                if (!value) {
+                    return;
+                }
+                _currentCacheIndex=0;
+                container.removeAllChildren();
+                for (var i:int=0; i < value.length; i++) {
+                    var cnt:Contest=value.getItemAt(i) as Contest;
+                    var prjRow:ContestRow=null;
+                    if (_contestRowCache.length > _currentCacheIndex) {
+                        prjRow=_contestRowCache.getItemAt(_currentCacheIndex) as ContestRow;
+                        prjRow.parentWidget=parentWidget;
+                        _currentCacheIndex++;
+                    } else {
+                        prjRow=new ContestRow();
+                        prjRow.parentWidget=parentWidget;
+                        
+                        if (_currentCacheIndex < _maxCacheSize) {
+                            _contestRowCache.addItem(prjRow);
+                            _currentCacheIndex++;
+                        }
+                    }
+                    
+                    trace("Adding row i: " + i + ", prj: " + prjRow);
+                    container.addChild(prjRow);
+                    prjRow.data=cnt;
+                    prjRow.rowNum=i;
+                }
+                this._dataProvider=value;
+                this._dataProvider.addEventListener(CollectionEvent.COLLECTION_CHANGE, handleChange);
+            }
+
+            /**
+             * Event handler for data provider collection change.
+             *
+             * @param event collection change event.
+             */
+            public function handleChange(event:CollectionEvent):void {
+                if (event.kind == CollectionEventKind.REFRESH) {
+                    container.removeAllChildren();
+                    for (var i:int; i < _dataProvider.length; i++) {
+                        var cnt:Contest=_dataProvider.getItemAt(i) as Contest;
+                        var prjRow:ContestRow=new ContestRow();
+                        prjRow.parentWidget=parentWidget;
+                        container.addChildAt(prjRow, 0);
+                        prjRow.data=cnt;
+                        prjRow.rowNum=i;
+                    }
+                }
+            }
+
+            /**
+             * Gets the data provider for this contest shower.
+             */
+            public function get dataProvider():ArrayCollection {
+                return _dataProvider;
+            }
+
+            /**
+             * Sets isTabMode of this contest shower.
+             *
+             * @param value a boolean value.
+             */
+            public function set isTabMode(value:Boolean):void {
+                if (value) {
+                    this.verticalScrollPolicy=ScrollPolicy.OFF;
+                    this.horizontalScrollPolicy=ScrollPolicy.OFF;
+                } else {
+                    this.verticalScrollPolicy=ScrollPolicy.AUTO;
+                    this.horizontalScrollPolicy=ScrollPolicy.AUTO;
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%"
+             height="15"
+             styleName="title"
+             id="Hbox1"
+             verticalScrollPolicy="off"
+             horizontalScrollPolicy="off">
+        <mx:Label width="30%"
+                  textAlign="center"
+                  id="lblContestName"
+                  text="Contest Name"/>
+       <mx:Label width="18%"
+                  textAlign="center"
+                  id="lblStartDate"
+                  text="Start"/>
+        <mx:Label width="18%"
+                  textAlign="center"
+                  id="lblEndDate"
+                  text="End"/>
+        <mx:Label width="10%"
+                  textAlign="center"
+                  id="lblType"
+                  text="Type"/>
+        <!--
+        <mx:Label width="10%"
+                  textAlign="center"
+                  id="lblSpecReview"
+                  text="Spec Review"/>
+        -->
+        <mx:Label width="15%"
+                  textAlign="center"
+                  id="lblPlaceHolder"
+                  text=""/>
+    </mx:HBox>
+    <mx:VBox id="container"
+             width="100%"
+             height="100%"
+             paddingLeft="2"
+             paddingRight="2"
+             verticalGap="0"/>
+</mx:VBox>
