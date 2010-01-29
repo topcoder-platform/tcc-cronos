@@ -144,9 +144,6 @@ public interface ContestServiceFacade {
      * @param tcDirectProjectId
      *            a <code>long</code> providing the ID of a project the new
      *            competition belongs to.
-     * @param clientId
-     *            a <code>long</code> providing the ID of a client the new
-     *            competition belongs to.
      * @return a <code>StudioCompetition</code> providing the data for created
      *         contest and having the ID auto-generated.
      * @throws PersistenceException
@@ -158,8 +155,8 @@ public interface ContestServiceFacade {
      *             if the specified <code>tcDirectProjectId</code> is negative.
      * @tested
      */
-    public StudioCompetition createContest(StudioCompetition contest,
-        long tcDirectProjectId, long clientId) throws PersistenceException;
+    public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId) 
+        throws PersistenceException;
 
     /**
      * <p>
@@ -1076,7 +1073,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(
-        SoftwareCompetition competition, CreditCardPaymentData paymentData, long clientId)
+        SoftwareCompetition competition, CreditCardPaymentData paymentData)
         throws ContestServiceException;
 
     /**
@@ -1099,7 +1096,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
         throws ContestServiceException;
 
     /**
@@ -1247,9 +1244,6 @@ public interface ContestServiceFacade {
      *            the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId
      *            the TC direct project id.
-     * @param clientId
-     *            a <code>long</code> providing the ID of a client the new
-     *            competition belongs to.
      *
      * @return the created <code>SoftwareCompetition</code> as a contest
      *
@@ -1260,8 +1254,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition createSoftwareContest(
-        SoftwareCompetition contest, long tcDirectProjectId, long clientId)
+    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException;
 
     /**
@@ -1831,13 +1824,13 @@ public interface ContestServiceFacade {
     /**
      * Find eligibility name for the client.
      * 
-     * @param clientId;
-     * 			The ID of the client.
+     * @param billingProjectId;
+     * 			The ID of the billingProject.
      * @return
      * 			The name of the eligibility group.
      * @since 1.2.1
      */
-    public String getEligibilityName(long clientId);
+    public String getEligibilityName(long billingProjectId);
 
     /**
      * This method creates a Specification Review project associated to a project determined by parameter.

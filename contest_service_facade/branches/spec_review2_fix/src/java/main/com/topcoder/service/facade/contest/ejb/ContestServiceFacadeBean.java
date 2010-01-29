@@ -1089,34 +1089,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *             if specified <code>competition</code> is <code>null</code> or
      *             if the specified <code>tcDirectProjectId</code> is negative.
      */
-    public StudioCompetition createContest(StudioCompetition contest,
-        long tcDirectProjectId, long clientId) throws PersistenceException {
+    public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId) 
+        throws PersistenceException {
         logger.debug("createContest");
 
         try
         {
 
             ContestData contestData = convertToContestData(contest);
-
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                String userName = p.getName();
-                if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
-                {
-                    throw new PersistenceException("No read permission on tc direct project");
-                }
-
-                if (contestData.getBillingProject() > 0)
-                { 
-                    if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject()))
-                    {
-                        throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
-                    }
-                }
-            }
-            
+            //checks the permission
+            checkStudioProjectPermission(tcDirectProjectId);
+            checkStudioBillingProjectPermission(contestData);            
 
             // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
             // contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
@@ -1175,20 +1158,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
                     winnerAnnouncementDeadlineDate));
 
-            ContestData createdContestData = this.studioService.createContest(contestData,
-                    tcDirectProjectId);
-            if (clientId != 0) {
-                GroupContestEligibility contestEligibility = new GroupContestEligibility();
-                contestEligibility.setContestId(createdContestData.getContestId());
-                contestEligibility.setStudio(true);
-                contestEligibility.setDeleted(false);
-                contestEligibility.setGroupId(getEligibilityGroupId(clientId));
-                
-                try {
-                    contestEligibilityManager.create(contestEligibility);
-                } catch (ContestEligibilityPersistenceException cepe) {
-                    throw new PersistenceException("Cannot save contest eligibility.", cepe, "Cannot save contest eligibility.") ;
-                }
+            ContestData createdContestData = studioService.createContest(contestData, tcDirectProjectId);
+
+            if (contestData.getBillingProject() > 0) {
+                persistContestEligility(createdContestData.getContestId(), contestData.getBillingProject(), null, true);
             }
 
             logger.debug("Exit createContest");
@@ -2834,7 +2807,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition = createContest(competition,
-                        competition.getContestData().getTcDirectProjectId(), clientId);
+                        competition.getContestData().getTcDirectProjectId());
             } else {
                 tobeUpdatedCompetition = competition;
             }
@@ -3029,11 +3002,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(
-        SoftwareCompetition competition, CreditCardPaymentData paymentData, long clientId)
+        SoftwareCompetition competition, CreditCardPaymentData paymentData)
         throws ContestServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(competition, paymentData, clientId);
+        return processContestSaleInternal(competition, paymentData);
     }
 
     /**
@@ -3057,11 +3030,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
         throws ContestServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(competition, paymentData, clientId);
+        return processContestSaleInternal(competition, paymentData);
     }
 
     /**
@@ -3096,7 +3069,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1682 changed return value
      */
     private SoftwareContestPaymentResult processContestSaleInternal(
-        SoftwareCompetition competition, PaymentData paymentData, long clientId)
+        SoftwareCompetition competition, PaymentData paymentData)
         throws ContestServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
@@ -3124,13 +3097,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             if (tobeUpdatedCompetition == null) {
-                tobeUpdatedCompetition = this.createSoftwareContest(competition,
-                        competition.getProjectHeader().getTcDirectProjectId(), clientId);
+                tobeUpdatedCompetition =
+                    createSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());
             } else {
                 competition.setProjectHeaderReason("User Update");
-                tobeUpdatedCompetition = this.updateSoftwareContest(competition,
-                        competition.getProjectHeader().getTcDirectProjectId());
-                ;
+                tobeUpdatedCompetition = 
+                    updateSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());                
             }
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
@@ -3249,11 +3221,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
 
             boolean hasEligibility = contestEligibilityManager.haveEligibility(new Long[]{tobeUpdatedCompetition.getProjectHeader().getId()}, false).size() > 0;
+    
+            // if creating contest, eligiblity is not commited, so above will not get back result
+            if (getBillingProjectId(tobeUpdatedCompetition) != 0
+                 && getEligibilityGroupId(getBillingProjectId(tobeUpdatedCompetition)) != null)
+            {
+                hasEligibility = true;
+            }
+            
 
             // no need for dev that has design, so all non-dev and dev only will have spec review 
             // and dont create for private
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility && clientId == 0) 
+                  && !hasEligibility) 
             {
                  //create spec review project
                 FullProjectData specReview = this.createSpecReview(tobeUpdatedCompetition.getProjectHeader().getId());
@@ -3963,6 +3943,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
         }
     }
+
+     /**
+     * Checks the permission for the given tc-direct-project-id for the current caller.
+     * 
+     * @param tcDirectProjectId the project id
+     * @throws PersistenceException if user(not admin) does not have the permission
+     */
+    private void checkStudioProjectPermission(long tcDirectProjectId) throws PersistenceException {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId)) {
+                throw new PersistenceException("No read permission on project");
+            }
+        }
+    }
+
     /**
      * Checks the permission for the given contestId for the current caller.
      * 
@@ -3985,10 +3982,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
         }
     }
+
+     /**
+     * Checks the billing project permission of the given contest for the current caller.
+     * 
+     * @param contest the contest to check
+     * @throws ContestServiceException if user(not admin) does not have the permission
+     */
+    private void checkStudioBillingProjectPermission(ContestData contestData) throws PersistenceException, DAOException {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String userName = principal.getName();
+            if (contestData.getBillingProject() > 0) {
+                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
+                    throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
+                }
+            }
+        }
+    }
+
     /**
      * Checks the billing project permission of the given contest for the current caller.
      * 
      * @param contest the contest to check
+     * @return billing project id, if it is -1, then no billing project
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
     private void checkBillingProjectPermission(SoftwareCompetition contest) throws ContestServiceException, DAOException {
@@ -4004,6 +4021,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
         }
     }
+
+     /**
+     * get billing project id
+     * 
+     * @param contest the contest to check
+     * @return billing project id, if it is 0, then no billing project
+     */
+    private long getBillingProjectId(SoftwareCompetition contest)  {
+
+        String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+        if (billingProject != null  && !billingProject.equals("") && !billingProject.equals("0")) {
+            long clientProjectId = Long.parseLong(billingProject);
+            return clientProjectId;
+        }
+        return 0;
+
+    }
+
     /**
      * Checks if the contest is development contest.
      * @param contest the contest
@@ -4047,11 +4083,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition createSoftwareContest(
-        SoftwareCompetition contest, long tcDirectProjectId, long clientId)
+    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException {
         logger.debug("createSoftwareContest with information : [tcDirectProjectId ="
-                + tcDirectProjectId + ", clientId = " + clientId + "]");
+                + tcDirectProjectId + "]");
 
         try {
             ExceptionUtils.checkNull(contest, null, null, "The contest to create is null.");
@@ -4061,7 +4096,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             //check the permission
             checkSoftwareProjectPermission(tcDirectProjectId, true);
             //check the billing project permission
-            checkBillingProjectPermission(contest);
+            long billingProjectId = getBillingProjectId(contest);
             
             //check whether we need to auto-create-development contest for design
             boolean creatingDevContest = shouldAutoCreateDevContest(contest);
@@ -4076,7 +4111,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             createUpdateAssetDTO(contest);
             
             //create contest resources
-            contest.setProjectResources(createContestResources(contest, clientId));
+            contest.setProjectResources(createContestResources(contest, billingProjectId));
 
             //set the tc-direct-project-id
             contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
@@ -4116,12 +4151,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
 
-            if (clientId != 0) {
-                persistContestEligility(contest.getProjectHeader().getId(), clientId, null);            
+            if (billingProjectId > 0) {
+                persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);            
             }
 
 	        if (creatingDevContest) {
-                autoCreateDevContest(contest, tcDirectProjectId, clientId, devContest);
+                autoCreateDevContest(contest, tcDirectProjectId, devContest);
             }
 
             
@@ -4229,7 +4264,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws DatatypeConfigurationException if any error occurs
      * @throws ContestServiceException if any error occurs
      */
-    private void autoCreateDevContest(SoftwareCompetition designContest, long tcDirectProjectId, long clientId,
+    private void autoCreateDevContest(SoftwareCompetition designContest, long tcDirectProjectId,
             SoftwareCompetition devContest) throws DatatypeConfigurationException, ContestServiceException {
         devContest.setAssetDTO(designContest.getAssetDTO());
         devContest.getProjectHeader().getProperties().putAll(designContest.getDevelopmentProjectHeader().getProperties());
@@ -4237,7 +4272,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);        
         devContest.getAssetDTO().setProductionDate(nextDevProdDay(devContest.getAssetDTO().getProductionDate()));
         devContest.setProjectHeaderReason("Create corresponding development contest");
-        createSoftwareContest(devContest, tcDirectProjectId, clientId);
+        createSoftwareContest(devContest, tcDirectProjectId);
     }
     /**
      * <p>
@@ -4245,18 +4280,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * information will be copied from it.
      * </p>
      * @param contestId the contest id
-     * @param clientId the client id
+     * @param billingProjectId the billingProjectId
      * @param eligiblity, the existing ContestEligibility, could be null
+     * @param isStudio true for studio
      * @throws ContestEligibilityPersistenceException if any error occurs
      */
-    private void persistContestEligility(long contestId, Long clientId, ContestEligibility eligiblity)
+    private void persistContestEligility(long contestId, long billingProjectId, ContestEligibility eligiblity, boolean isStudio)
         throws ContestEligibilityPersistenceException {
-        GroupContestEligibility contestEligibility = new GroupContestEligibility();
-        contestEligibility.setContestId(contestId);
-        contestEligibility.setStudio(false);
-        contestEligibility.setDeleted(eligiblity==null?false:eligiblity.isDeleted());
-        contestEligibility.setGroupId(eligiblity==null?getEligibilityGroupId(clientId):((GroupContestEligibility)eligiblity).getGroupId());
-        contestEligibilityManager.create(contestEligibility); 
+
+        Long eligibilityGroupId = null;
+        if (eligiblity == null)
+        {
+
+            eligibilityGroupId = getEligibilityGroupId(billingProjectId);
+        }
+        else 
+        {
+            eligibilityGroupId = ((GroupContestEligibility)eligiblity).getGroupId();
+        }
+           
+        if (eligibilityGroupId != null) {
+            GroupContestEligibility contestEligibility = new GroupContestEligibility();
+            contestEligibility.setContestId(contestId);
+            contestEligibility.setStudio(isStudio);
+            contestEligibility.setDeleted(eligiblity==null?false:eligiblity.isDeleted());
+            contestEligibility.setGroupId(eligibilityGroupId);
+            contestEligibilityManager.create(contestEligibility); 
+        }
     }
 
     /**
@@ -4264,10 +4314,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * Adding the contest resources when creating contest. manager or observer or client-manager will be added.
      * </p>
      * @param contest the contest to create
-     * @param clientId the client id
+     * @param billingProjectId the billing project id
      * @return resource array
      */
-    private com.topcoder.management.resource.Resource[] createContestResources(SoftwareCompetition contest, long clientId) {
+    private com.topcoder.management.resource.Resource[] createContestResources(SoftwareCompetition contest, 
+            long billingProjectId) {
         UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
         com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
         resources[0] = new com.topcoder.management.resource.Resource();
@@ -4292,7 +4343,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         // tc staff add as manager, other as observer
         if (tcstaff) {
             resources[0].setResourceRole(managerRole);
-        } else if (clientId != 0) {
+        } else if (getEligibilityName(billingProjectId).trim().length() > 0) {
             resources[0].setResourceRole(clientManagerRole);
         } else {
             resources[0].setResourceRole(observerRole);
@@ -4392,6 +4443,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getProjectHeader()
                        .setTcDirectProjectId(tcDirectProjectId);
 
+                // update name in project info in case name is changed.
+                contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, contest.getAssetDTO().getName());
+
                 FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(),
                         contest.getProjectHeaderReason(),
                         contest.getProjectPhases(),
@@ -4421,6 +4475,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     allPhases[i].clearDependencies();
                 }
 
+                // billing projct can change, set or unset
+                // so for now easy way is removing current, and add if any
+                List<ContestEligibility> contestEligibilities = 
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
+                for (ContestEligibility ce:contestEligibilities){   
+                    contestEligibilityManager.remove(ce);
+                }
+                long billingProjectId = getBillingProjectId(contest);
+                if (billingProjectId > 0) {
+                    persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);            
+                }
+
+
+
+
 		        //BugRace3074
                 if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
@@ -4439,6 +4508,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         for (int i = 0; i < phases.length; i++) {
                              phases[i].setProject(developmentContest.getProjectPhases());
                         }
+
+                        developmentContest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, contest.getAssetDTO().getName());
+
                         developmentContest.setProjectHeaderReason("Cascade update from corresponding design contest");
                         projectServices.updateProject(developmentContest.getProjectHeader(),
                                 developmentContest.getProjectHeaderReason(),
@@ -6305,23 +6377,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
 
     /**
-     * Find eligibility name for the client.
+     * Find eligibility name for the billing project.
      * 
-     * @param clientId;
-     * 			The ID of the client.
+     * @param billingProjectId;
+     * 			The ID of the billing project.
      * @return
      * 			The name of the eligibility group.
      * @since 1.2.3
      */
-    public String getEligibilityName(long clientId) {
-        String methodName = "getEligibilityName : "+clientId;
+    public String getEligibilityName(long billingProjectId) {
+        String methodName = "getEligibilityName : billing project id = "+ billingProjectId;
         logger.info("Enter: " + methodName);
         try {
             ConfigManager cfgMgr = ConfigManager.getInstance();
             Property rootProperty = cfgMgr.getPropertyObject(CONTEST_ELIGIBILITY_MAPPING_NAMESPACE,
                 CONTEST_ELIGIBILITY_MAPPING_PREFIX);
-            Property eligibility = rootProperty.getProperty(Long.toString(clientId));
-            if (eligibility != null) {
+            Property eligibility = rootProperty.getProperty(Long.toString(billingProjectId));
+            if (eligibility != null && !eligibility.equals("")) {
 
                 return (String)(eligibility.getValue(ELIGIBILITY_NAME));
             }
@@ -6344,18 +6416,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * 			The id of the eligibility group.
      * @since 1.2.3
      */
-    private long getEligibilityGroupId(long clientId) {
-        String methodName = "getEligibilityName";
+    private Long getEligibilityGroupId(long billingProjectId) {
+        String methodName = "getEligibilityGroupId";
         logger.info("Enter: " + methodName);
         try {
             ConfigManager cfgMgr = ConfigManager.getInstance();
             Property rootProperty = cfgMgr.getPropertyObject(CONTEST_ELIGIBILITY_MAPPING_NAMESPACE,
                 CONTEST_ELIGIBILITY_MAPPING_PREFIX);
-            Property eligibility = rootProperty.getProperty(Long.toString(clientId));
-            return Long.valueOf((String)(eligibility.getValue(ELIGIBILITY_ID)));
+            Property eligibility = rootProperty.getProperty(Long.toString(billingProjectId));
+            if (eligibility != null) {
+                return Long.valueOf((String)(eligibility.getValue(ELIGIBILITY_ID)));
+            }
+            return null;
         } catch (Exception e) {
             logger.error("Cannot retrieve eligibility id.");
-            return 0;
+            return null;
         } finally {
             logger.info("Exit: " + methodName);
         }
@@ -6841,7 +6916,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             List<ContestEligibility> contestEligibilities = 
                  contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
             for (ContestEligibility ce:contestEligibilities){   
-                persistContestEligility(newVersionORProject.getProjectHeader().getId(), null, ce);
+                persistContestEligility(newVersionORProject.getProjectHeader().getId(), 0, ce, false);
             }
             
             //4.if also auto-dev-creating for design, create it
@@ -6908,10 +6983,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             if (contest == null) {
                 throw new ContestServiceException("The project does not exist.");
             }
-            if (contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_REVIEW
-                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_SCREENING
-                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_SUBMISSION
-                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE) {
+            if (contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_REVIEW_ID
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_SCREENING_ID
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_SUBMISSION_ID
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE_ID) {
                 throw new ProjectServicesException("The project is not failed. You can not re-open it.");
             }
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
@@ -6923,7 +6998,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             List<ContestEligibility> contestEligibilities = 
                  contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
             for (ContestEligibility ce:contestEligibilities){   
-                persistContestEligility(reOpendedProject.getProjectHeader().getId(), null, ce);
+                persistContestEligility(reOpendedProject.getProjectHeader().getId(), 0, ce, false);
             }
 
             reOpenContestId = reOpendedProject.getProjectHeader().getId();
