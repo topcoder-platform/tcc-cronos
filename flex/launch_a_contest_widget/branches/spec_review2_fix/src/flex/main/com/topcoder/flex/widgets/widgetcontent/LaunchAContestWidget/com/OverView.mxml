@@ -274,6 +274,7 @@
                     
                     if (mainWidget.manualPrizeSetting) {
                         ns_firstPlace.editable=true;
+                        ns_specReviewCost.editable = true;
                     }
                     
                     if (!contestFees) {
@@ -361,6 +362,7 @@
                         custCost.visible=custCost.includeInLayout=true;
                         custCost.selected=true;
                         ns_firstPlace.editable=true;
+                        ns_specReviewCost.editable = true;
                     }
                     
                     currentCostLevel=level;
@@ -445,6 +447,7 @@
                                     lowCost.enabled=false;
                                     custCost.enabled=false;
                                     ns_firstPlace.editable=false;
+                                    ns_specReviewCost.editable = false;
                                 }
                             } 
                         }
@@ -1168,6 +1171,15 @@
                 ns_specReviewCost.text = specReviewCost.toFixed(2);
             }
             
+            private function handleSWSpecReviewPrizeChange():void {
+            	// no update happens if manual prize setting is not on.
+                if (!mainWidget && !mainWidget.manualPrizeSetting) {
+                    return;
+                }
+
+                ns_updateAmount();
+            }
+
             /**
              * Handles the change for software contest first place prize.
              * 
@@ -1210,9 +1222,6 @@
                 
                 var contestFee:Number=new Number(ns_contestf.text);
                 var specReviewCost:Number=new Number(ns_specReviewCost.text);
-
-                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee
-                                    + specReviewCost;
 
                 currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
                 custCost.visible=custCost.includeInLayout=true;
@@ -1737,8 +1746,10 @@
                                 <mx:VBox verticalGap="2">
                                     <mx:Label id="ns_reliabilityBonus"
                                           width="120"/>
-                                     <mx:Label id="ns_specReviewCost"
-                                              width="120"/>
+                                     <mx:TextInput id="ns_specReviewCost"
+                                              width="120"
+                                              editable="false"
+                                              change="handleSWSpecReviewPrizeChange()"/>
                                 </mx:VBox>
                             </mx:HBox>
                         </mx:HBox>
