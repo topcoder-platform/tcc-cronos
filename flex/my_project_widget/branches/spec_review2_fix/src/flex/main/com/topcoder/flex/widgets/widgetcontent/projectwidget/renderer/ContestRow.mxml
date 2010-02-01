@@ -539,8 +539,8 @@
                     }
                 }
             } else if (option == REPOST_OPTION) {
-                var alertDlg:Alert=Alert.show("Are you sure to repost the failed contest?", "Confirmation", Alert.YES | Alert.NO, null, handleRepost);
-                alertDlg.height=110;
+                var alertDlg:Alert=Alert.show("Are you sure you want to repost this contest?  You will not be charged a contest fee for the repost unless otherwise instructed by TopCoder.", "Confirmation", Alert.YES | Alert.NO, null, handleRepost);
+                alertDlg.height=150;
             } else if (option == NEW_VERSION_OPTION) {
                 alertDlg = Alert.show("Are you sure to release a new version?", "Confirmation", Alert.YES |Alert.NO, null, handleNewVersion);
                 alertDlg.height=110;
