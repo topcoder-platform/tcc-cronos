@@ -615,7 +615,7 @@
             parentWidget.hideLoadingProgress();
             if (e && e.result) {
                reOpenContestId = new String(e.result);
-               var alertDlg:Alert=Alert.show("The contest is already re-opened, do you want to go to Launch Contest Widget to check details?",
+               var alertDlg:Alert=Alert.show("The repost has been created.  Would you like to go to Launch Contest to view and edit the details?",
                                            "Confirmation", Alert.YES |Alert.NO, null, visitReOpen);
                alertDlg.height=150;
             }
