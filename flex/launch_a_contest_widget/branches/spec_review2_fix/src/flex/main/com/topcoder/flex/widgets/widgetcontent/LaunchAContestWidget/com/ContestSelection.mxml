@@ -869,31 +869,10 @@ xmlns:hc="com.hillelcoren.components.*"
                     setBillingProjectProperties(val);
                     
                     if (val != null && val.data != null) {
-	                    var isNewProject:Boolean = false;
-	                    if (mainWidget.studioContestType) {
-	                        if (mainWidget == null ||
-	                            mainWidget.competition == null ||
-	                            mainWidget.competition.contestData == null ||
-	                            isNaN(mainWidget.competition.contestData.contestId) || 
-	                            mainWidget.competition.contestData.contestId <= 0) {
-	                                isNewProject = true;
-	                        }
-	                    } else {
-	                        if (mainWidget == null ||
-	                            mainWidget.softwareCompetition == null ||
-	                            mainWidget.softwareCompetition.projectHeader == null ||
-	                            isNaN(mainWidget.softwareCompetition.projectHeader.id) || 
-	                            mainWidget.softwareCompetition.projectHeader.id <= 0) {
-	                                isNewProject = true;
-	                        }
-	                    }
-	                    if (isNewProject) {                        
-	                        var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
-	                        getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
-	                        getEligibilityNameOp.send(val.data.projectId);
-	                        mainWidget.showLoadingProgress();
-	                    }
-
+                        var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                        getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                        getEligibilityNameOp.send(val.data.projectId);
+                        mainWidget.showLoadingProgress();
                 	} else {
                 		lblLCCOnly.text = "";
                 	}
