@@ -6873,6 +6873,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             if (!isDevContest || !autoDevCreating) {
 		//clear the version
             	dto.setCompVersionId(null);
+                dto.setForum(null);
+                dto.setDocumentation(new ArrayList<CompDocumentation>());
 
                 dto = catalogService.createVersion(dto);
             }
