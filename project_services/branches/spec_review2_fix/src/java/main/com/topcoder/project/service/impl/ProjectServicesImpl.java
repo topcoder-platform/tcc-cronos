@@ -2903,10 +2903,12 @@ public class ProjectServicesImpl implements ProjectServices {
             //1.3 Set the start time to 1 day + current time.
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
             projectPhases.setStartDate(contest.getStartDate());
+            com.topcoder.management.resource.Resource[] newResources = 
+                 (com.topcoder.management.resource.Resource[]) newResourcesList.toArray(new com.topcoder.management.resource.Resource[newResourcesList.size()]);
             
             //1.4 create the project here
             FullProjectData reOpendedProject = 
-                createProjectWithTemplate(projectHeader, projectPhases, resources, operator);
+                createProjectWithTemplate(projectHeader, projectPhases, newResources, operator);
     
             //1.5 link the project to the original one        
             projectLinkManager.updateProjectLinks(reOpendedProject.getProjectHeader().getId(),
@@ -2963,10 +2965,13 @@ public class ProjectServicesImpl implements ProjectServices {
             //1.3 Set the start time to 1 day + current time.
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
             projectPhases.setStartDate(contest.getStartDate());
+
+            com.topcoder.management.resource.Resource[] newResources = 
+                 (com.topcoder.management.resource.Resource[]) newResourcesList.toArray(new com.topcoder.management.resource.Resource[newResourcesList.size()]);
             
             //1.4 create the project here
             FullProjectData reOpendedProject = 
-                createProjectWithTemplate(projectHeader, projectPhases, resources, operator);
+                createProjectWithTemplate(projectHeader, projectPhases, newResources, operator);
     
             return reOpendedProject;
         } finally {
