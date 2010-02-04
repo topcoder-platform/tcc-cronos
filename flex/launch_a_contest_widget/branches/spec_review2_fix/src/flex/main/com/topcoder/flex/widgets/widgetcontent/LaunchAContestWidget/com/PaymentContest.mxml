@@ -108,7 +108,7 @@
             
             private function paymentFaultEventHandler(e:FaultEvent):void {
                 mainWidget.hideLoadingProgress();
-    			
+    trace("error in payment::"+e.fault.getStackTrace());			
                 Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
                         "Please be sure to save your work and try again if you think you received this message by mistake.");        
             }
