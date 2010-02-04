@@ -42,6 +42,7 @@
     backgroundSize="100%">
     <mx:Script>
         <![CDATA[
+            import mx.managers.PopUpManager;
             import mx.rpc.AbstractOperation;
             import mx.events.CloseEvent;
             import mx.core.Application;
@@ -470,13 +471,10 @@
             if (isFailedSoftwareContest() && writePermission) {
                 labels.push({label:REPOST_OPTION});
             }
-            if(isCompletedDesignComponent()&& writePermission) {
-                labels.push({label:NEW_VERSION_OPTION});
-                labels.push({label:NEW_VERSION_WITH_DEV_OPTION});
-            }
-            if(isCompletedDevComponent()&& writePermission) {
+            if(isCompletedDesignDevComponent()&& writePermission) {
                 labels.push({label:NEW_VERSION_OPTION});
             }
+
             actionMenu.dataProvider = labels;
             actionMenu.selectedIndex = 0;
             actionMenu.addEventListener(MenuEvent.ITEM_CLICK, itemClickHandler);
@@ -542,12 +540,11 @@
                 var alertDlg:Alert=Alert.show("Are you sure you want to repost this contest?  You will not be charged a contest fee for the repost unless otherwise instructed by TopCoder.", "Confirmation", Alert.YES | Alert.NO, null, handleRepost);
                 alertDlg.height=150;
             } else if (option == NEW_VERSION_OPTION) {
-                alertDlg = Alert.show("Are you sure to release a new version?", "Confirmation", Alert.YES |Alert.NO, null, handleNewVersion);
-                alertDlg.height=110;
-            } else if (option == NEW_VERSION_WITH_DEV_OPTION) {
-            	alertDlg = Alert.show("Are you sure to release a new design version and create the corresponding Component Development contest?", 
-            	"Confirmation", Alert.YES |Alert.NO, null, handleNewVersionWithDev);
-                alertDlg.height=130;
+            	var popup:NewVersionPopUp = new NewVersionPopUp();
+            	popup.isDesignComponent = (contest.type == 'Design');
+            	popup.createFunction = createNewVersion;
+            	PopUpManager.addPopUp(popup, this, true,null);
+            	PopUpManager.centerPopUp(popup);
             }
         }
 
@@ -570,20 +567,12 @@
                           || contest.status == 'Cancelled - Requirements Infeasible'));
         }
         /**
-         * Checks if the current contest is completed design.
+         * Checks if the current contest is completed design/development.
          * @return true if it is completed design or development contest
          * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
          */
-        private function isCompletedDesignComponent():Boolean {
-            return contest && (contest.type == 'Design') && (contest.status == 'Completed');
-        }
-        /**
-         * Checks if the current contest is completed design.
-         * @return true if it is completed design or development contest
-         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
-         */
-        private function isCompletedDevComponent():Boolean {
-            return contest && (contest.type == 'Development') && (contest.status == 'Completed');
+        private function isCompletedDesignDevComponent():Boolean {
+            return contest && (contest.type == 'Design' || contest.type == 'Development') && (contest.status == 'Completed');
         }
 		/**
 		 * <p>
@@ -633,38 +622,18 @@
             }
         }
         /**
-         * Handler when user clicks 'create new version' for the contest.
-         * @param event the alert confirm event
-         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
-         */
-        private function handleNewVersion(event:CloseEvent):void {
-            if (event.detail == Alert.YES) {
-            	createNewVersion(false);
-            }
-        }
-        /**
-         * Post the request to create design and its corresponding development.
-         * @param event the alert confirm event
-         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
-         */
-        private function handleNewVersionWithDev(event:CloseEvent):void {        	
-        	if (event.detail == Alert.YES) {
-        		createNewVersion(true);
-        	}
-        }
-        /**
          * <p>
          * Invoke remote create new version contest.
          * </p>
          * @param true to create auto dev too
          * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
          */
-        private function createNewVersion(autoDev:Boolean=false):void {
+        private function createNewVersion(autoDev:Boolean=false, minorVersion:Boolean=true):void {
         	parentWidget.showLoadingProgress();
         	var newVersionContestOperation:AbstractOperation =
                     	 parentWidget.ContestServiceFacadeBean.getOperation("createNewVersionForDesignDevContest");
         	newVersionContestOperation.addEventListener(ResultEvent.RESULT, handleNewVersionSuccess);
-        	newVersionContestOperation.send(parseInt(contest.id), parseInt(contest.projId), autoDev);
+        	newVersionContestOperation.send(parseInt(contest.id), parseInt(contest.projId), autoDev, minorVersion);
         }
         /**
          * The new version contest id. 
