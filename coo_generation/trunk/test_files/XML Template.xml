@@ -1,0 +1,30 @@
+<report>
+<contestdata>
+	<componentName>%componentName%</componentName>
+	<contestEndDate>%contestEndDate%</contestEndDate>
+	<designWinner>%designWinner%</designWinner>
+	<designSecondPlace>%designSecondPlace%</designSecondPlace>
+	<designReviewer1>%designReviewer1%</designReviewer1>
+	<designReviewer2>%designReviewer2%</designReviewer2>
+	<designReviewer3>%designReviewer3%</designReviewer3>
+	<developmentWinner>%developmentWinner%</developmentWinner>
+	<developmentSecondPlace>%developmentSecondPlace%</developmentSecondPlace>
+	<developmentReviewer1>%developmentReviewer1%</developmentReviewer1>
+	<developmentReviewer2>%developmentReviewer2%</developmentReviewer2>
+	<developmentReviewer3>%developmentReviewer3%</developmentReviewer3>
+</contestdata>
+<hasdependency>
+%hasdependency%
+</hasdependency>
+<dependencies>
+%loop:dependencies%
+<dependency>
+	<name>%name%</name>
+	<version>%version%</version>
+	<description>%description%</description>
+	<url>%url%</url>
+	<license>%license%</license>
+</dependency>
+%endloop%
+</dependencies>
+</report>

@@ -1,0 +1,35 @@
+<report>
+<contestdata>
+	<componentName>HBS Singleton Process Manager 1.0</componentName>
+	<contestEndDate>September 4, 2009</contestEndDate>
+	<designWinner>Luca</designWinner>
+	<designSecondPlace>AleaActaEst</designSecondPlace>
+	<designReviewer1>Rica</designReviewer1>
+	<designReviewer2>Telly12</designReviewer2>
+	<designReviewer3>linwe</designReviewer3>
+	<developmentWinner>Sparemax</developmentWinner>
+	<developmentSecondPlace>EveningSun</developmentSecondPlace>
+	<developmentReviewer1>bbxiong</developmentReviewer1>
+	<developmentReviewer2>Veloerien</developmentReviewer2>
+	<developmentReviewer3>FireIce</developmentReviewer3>
+</contestdata>
+<hasdependency>
+Yes
+</hasdependency>
+<dependencies>
+<dependency>
+	<name>Antlr</name>
+	<version>2.7.6</version>
+	<description>Parser Generator</description>
+	<url>www.antlr.org</url>
+	<license>Antlr 3 License (BSD Style)</license>
+</dependency>
+<dependency>
+	<name>JUnit</name>
+	<version>3.8.2</version>
+	<description>Unit Testing Framework</description>
+	<url>www.junit.org</url>
+	<license>CPL</license>
+</dependency>
+</dependencies>
+</report>
