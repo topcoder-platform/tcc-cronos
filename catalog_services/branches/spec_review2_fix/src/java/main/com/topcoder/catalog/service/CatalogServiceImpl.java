@@ -886,7 +886,39 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // if one exists, then increase the version, otherwise set to the first
         compVersion.setVersion(latestVersion == null ? 1L : latestVersion.getVersion() + 1);
 
-        compVersion.setVersionText(compVersion.getVersion()+".0");
+        if (latestVersion == null)
+        {
+            compVersion.setVersionText(compVersion.getVersion()+".0");
+        }
+        else
+        {
+            String lastVersionText = latestVersion.getVersionText();
+            String[] versions =  lastVersionText.split("\\.");
+
+            // should not happen, 
+            if (versions.length < 2)
+            {
+                compVersion.setVersionText(compVersion.getVersion()+".0");
+            }
+            else
+            {
+                int major = Integer.parseInt(versions[0].trim());
+                int minor = Integer.parseInt(versions[1].trim());
+
+                if (assetDTO.getToCreateMinorVersion() == null || 
+                    (!assetDTO.getToCreateMinorVersion().booleanValue())) 
+                {
+                    major++;
+                    minor = 0;
+                }
+                else 
+                {
+                    minor++;
+                }
+                compVersion.setVersionText(major+"."+minor);
+            }
+
+        }
 
         compVersion.setComponent(component);
         List<CompVersion> versions = component.getVersions();

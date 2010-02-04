@@ -111,7 +111,8 @@ import com.topcoder.catalog.entity.Technology;
         "detailedDescription", "functionalDescription", "rootCategory", "categories",
                                               "technologies", "productionDate", "isCurrentVersionAlsoLatestVersion",
                                               "compVersionId", "userIds", "informationComplete", "documentation",
-                                               "compUploadedFiles", "compComments", "phase", "dependencies", "version"})
+                                               "compUploadedFiles", "compComments", "phase", "dependencies", "version",
+                                               "toCreateMinorVersion"})
 public class AssetDTO implements Serializable {
     /**
      * <p>This field represents the id of the asset.
@@ -299,6 +300,13 @@ public class AssetDTO implements Serializable {
      * </p>
      */
     private List<Long> dependencies = new ArrayList<Long>();
+    
+    /**
+     * to create minor or major version.
+     */
+    private Boolean toCreateMinorVersion;
+
+
 
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>
@@ -812,7 +820,21 @@ public class AssetDTO implements Serializable {
     public Long getVersion() {
         return version;
     }
+    /**
+     * Returns the value of toCreateMinorVersion.
+     * @return the toCreateMinorVersion
+     */
+    public Boolean getToCreateMinorVersion() {
+        return toCreateMinorVersion;
+    }
 
+    /**
+     * Set the value to  toCreateMinorVersion field.
+     * @param toCreateMinorVersion the toCreateMinorVersion to set
+     */
+    public void setToCreateMinorVersion(Boolean toCreateMinorVersion) {
+        this.toCreateMinorVersion = toCreateMinorVersion;
+    }
 
 }
 
