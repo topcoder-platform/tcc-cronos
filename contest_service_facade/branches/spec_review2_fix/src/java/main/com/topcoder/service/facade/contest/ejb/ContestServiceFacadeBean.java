@@ -1076,7 +1076,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param tcDirectProjectId
      *            a <code>long</code> providing the ID of a project the new
      *            competition belongs to.
-     * @param clientId
      *            a <code>long</code> providing the ID of a client the new
      *            competition belongs to.
      * @return a <code>StudioCompetition</code> providing the data for created
@@ -2691,14 +2690,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(
-        StudioCompetition competition, CreditCardPaymentData paymentData, long clientId)
+        StudioCompetition competition, CreditCardPaymentData paymentData)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.debug("processContestCreditCardPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.debug("Exit processContestCreditCardPayment");
 
-        return processContestPaymentInternal(competition, paymentData, clientId);
+        return processContestPaymentInternal(competition, paymentData);
     }
 
     /**
@@ -2734,13 +2733,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(
-        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData, long clientId)
+        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.debug("processContestPurchaseOrderPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
 
-        return processContestPaymentInternal(competition, paymentData, clientId);
+        return processContestPaymentInternal(competition, paymentData);
     }
 
     /**
@@ -2783,7 +2782,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     private ContestPaymentResult processContestPaymentInternal(
-        StudioCompetition competition, PaymentData paymentData, long clientId)
+        StudioCompetition competition, PaymentData paymentData)
         throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
@@ -4070,7 +4069,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @param contest the <code>SoftwareCompetition</code> to create as a contest
      * @param tcDirectProjectId the TC direct project id.
-     * @param clientId
      *            a <code>long</code> providing the ID of a client the new
      *            competition belongs to.
      *
@@ -4259,7 +4257,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </p>
      * @param designContest the design contest
      * @param tcDirectProjectId tc-direct-project-id
-     * @param clientId the client id
      * @param devContest the development contest to create
      * @throws DatatypeConfigurationException if any error occurs
      * @throws ContestServiceException if any error occurs
@@ -6410,8 +6407,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     /**
      * Find eligibility group id for the client.
      * 
-     * @param clientId;
-     * 			The ID of the client.
+     * @param billingProjectId;
+     * 			The ID of the billingProjectId.
      * @return
      * 			The id of the eligibility group.
      * @since 1.2.3
@@ -6850,7 +6847,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws ContestServiceException if any error occurs
      */
     private long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, 
-            boolean autoDevCreating, XMLGregorianCalendar startDate) throws ContestServiceException {
+            boolean autoDevCreating, XMLGregorianCalendar startDate, boolean minorVersion) throws ContestServiceException {
         try {
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             //0.check the permission first
@@ -6868,6 +6865,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             //2.create new version
             Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
             AssetDTO dto = catalogService.getAssetByVersionId(compVersionId);
+            //create minor or major version
+            dto.setToCreateMinorVersion(minorVersion);            
             
             //if it is dev only, or design, create new version here
             if (!isDevContest || !autoDevCreating) {
@@ -6926,7 +6925,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 long developmentProjectId = projectServices.getDevelopmentContestId(projectId);
                 if (developmentProjectId > 0){
                     logger.debug("create new version development project, the dev project id is :" + developmentProjectId);
-                    createNewVersionForDesignDevContest(developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate));
+                    createNewVersionForDesignDevContest(developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate), minorVersion);
                 }
             }
             logger.debug("Exit createNewVersionForDesignDevContest");
@@ -6951,11 +6950,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @return newly version contest id
      * @throws ContestServiceException if any error occurs
      */
-    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating) throws ContestServiceException {
+    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
+            boolean minorVersion) throws ContestServiceException {
         logger.debug("createNewVersionForDesignDevContest with parameter [projectId =" + projectId
                      + ", tcDirectProjectId =" +tcDirectProjectId+", autoDevCreating="+ autoDevCreating +"].");
        
-        return createNewVersionForDesignDevContest(projectId, tcDirectProjectId, autoDevCreating,nextReOpenNewReleaseDay());       
+        return createNewVersionForDesignDevContest(projectId, tcDirectProjectId, autoDevCreating,nextReOpenNewReleaseDay(), minorVersion);       
     }
 
     /**

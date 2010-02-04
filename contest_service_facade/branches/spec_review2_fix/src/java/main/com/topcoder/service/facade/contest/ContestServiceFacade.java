@@ -1036,7 +1036,7 @@ public interface ContestServiceFacade {
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(
-        StudioCompetition competition, CreditCardPaymentData paymentData, long clientId)
+        StudioCompetition competition, CreditCardPaymentData paymentData)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
@@ -1050,7 +1050,7 @@ public interface ContestServiceFacade {
      * @throws ContestNotFoundException
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(
-        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentDat, long clientId)
+        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentDat)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
@@ -1901,9 +1901,10 @@ public interface ContestServiceFacade {
      * @param projectId the project to create new version
      * @param tcDirectProjectId tc direct project id
      * @param autoDevCreating if it is true and it is design contest, then will create development too
+     * @param minorVersion true for minor, false for major
      * @return newly version contest id
      * @throws ContestServiceException if any error occurs
      */
-    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating)
-            throws ContestServiceException;
+    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
+                                                    boolean minorVersion) throws ContestServiceException;
 }
