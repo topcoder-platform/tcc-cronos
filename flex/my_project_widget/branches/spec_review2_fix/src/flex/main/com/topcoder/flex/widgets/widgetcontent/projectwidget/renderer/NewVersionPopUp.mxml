@@ -39,7 +39,7 @@
 			<mx:RadioButton label="Minor: Choose this if you are doing a minor upgrade to the component.  For example, version 1.1 to 1.2." value="MINOR" group="{versionsButtonGroup}" selected="true"/>			
 		</mx:HBox>
 		<mx:HBox>
-			<mx:RadioButton label="Major: Choose this if you are doing a minor upgrade to the component.  For example, version 1.1 to 1.2." value="MAJOR" group="{versionsButtonGroup}" labelPlacement="right"/>
+			<mx:RadioButton label="Major: Choose this if you are doing a minor upgrade to the component.  For example, version 1.1 to 2.0." value="MAJOR" group="{versionsButtonGroup}" labelPlacement="right"/>
 		</mx:HBox>
 		<mx:HBox>
 			<mx:CheckBox label="Create Corresponding Development contest?" id="ckb"
