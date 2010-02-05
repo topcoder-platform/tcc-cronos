@@ -5350,9 +5350,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                                  // create forum watch
                                 long forumId = projectServices.getForumId(pid);
+          
                                 if (forumId > 0 && createForum)
                                 {
-                                    createForumWatch(forumId, per.getUserId());
+                                    createForumWatchAndRole(forumId, per.getUserId());
                                 }
                             }
 
@@ -5428,7 +5429,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                     long forumId = projectServices.getForumId(pid);
                                     if (forumId > 0 && createForum)
                                     {
-                                        deleteForumWatch(forumId, per.getUserId());
+                                        deleteForumWatchAndRole(forumId, per.getUserId());
                                     }
                                 }
                             }
@@ -6623,7 +6624,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *            The project category id to
      * @return The long id of the created forum
      */
-    private void createForumWatch(long forumId, long userId) {
+    private void createForumWatchAndRole(long forumId, long userId) {
         logger.debug("createForumWatch (" + forumId + ", " + userId + ")");
 
         try {
@@ -6639,7 +6640,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             Forums forums = forumsHome.create();
 
+            String roleId = "Software_Users_" + forumId;
             forums.createCategoryWatch(userId, forumId);
+            forums.assignRole(userId, roleId);
+
             logger.debug("Exit createForumWatch (" + forumId + ", " + userId + ")");
 
         } catch (Exception e) {
@@ -6662,7 +6666,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *            The project category id to
      * @return The long id of the created forum
      */
-    private void deleteForumWatch(long forumId, long userId) {
+    private void deleteForumWatchAndRole(long forumId, long userId) {
         logger.info("deleteForumWatch (" + forumId + ", " + userId + ")");
 
         try {
@@ -6678,7 +6682,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             Forums forums = forumsHome.create();
 
+            String roleId = "Software_Users_" + forumId;
             forums.deleteCategoryWatch(userId, forumId);
+            forums.removeRole(userId, roleId);
             logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");
 
         } catch (Exception e) {
