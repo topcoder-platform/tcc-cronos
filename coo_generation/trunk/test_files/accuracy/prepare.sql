@@ -14,5 +14,5 @@ insert into submission_review values('FireIce',13);
 insert into submission_review values('Rica',14);
 insert into submission_review values('Telly12',14);
 insert into submission_review values('linwe',14);
-insert into project_info values(8,13,"http://localhost:8080/acc-builddependencies.xml");
-insert into project_info values(8,14,"http://localhost:8080/acc-builddependencies.xml");
+insert into project_info values(8,13,"http://localhost:8080/acc-build-dependencies.xml");
+insert into project_info values(8,14,"http://localhost:8080/acc-build-dependencies.xml");

@@ -266,16 +266,6 @@
         </if>
     </target>
 
-    <target name="dist" depends="compile, manifest">
-        <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
-    </target>
-
-    <target name="dist_tests" depends="compile_tests">
-        <mkdir dir="${dist_lib}"/>
-        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}"/>
-    </target>
-
     <target name="javadoc" depends="compile">
         <mkdir dir="${dist_javadocs}"/>
         <javadoc packagenames="${package}.*"
@@ -315,42 +305,6 @@
     <target name="deploy-lib" depends="deploy,test">
         <mkdir dir="${target_libdir}/${component_path}"/>
         <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
-    </target>
-
-    <target name="dist_tcs" depends="clean,dist,javadoc">
-        <!-- define tcs distribution format -->
-        <mkdir dir="${build_tcsdistdir}"/>
-        <copy todir="${build_tcsdistdir}">
-            <fileset dir="${basedir}">
-                <include name="${configdir}/**/*"/>
-                <include name="${docsdir}/**/*"/>
-                <include name="${srcdir}/**/*"/>
-                <include name="${testfiles}/**/*"/>
-                <include name="${test_reflib}/**/*"/>
-                <include name="build.version"/>
-                <include name="build-dependencies.xml"/>
-                <include name="README"/>
-                <include name="build.version"/>
-            </fileset>
-        </copy>
-        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
-
-        <mkdir dir="${dist_coverage}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
-        <copy todir="${dist_coverage}">
-            <fileset dir="${testlogdir}/coverage"/>
-        </copy>
-
-        <mkdir dir="${dist_javadocs}"/>
-        <copy todir="${dist_javadocs}">
-            <fileset dir="${javadocsdir}"/>
-        </copy>
-
-        <antcall target="package_docs"/>
-
-        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
-
-        <antcall target="move_to_tcs"/>
     </target>
 
     <target name="package_docs" depends="javadoc">
@@ -402,34 +356,6 @@
              includes="build-dependencies.xml,
                        ${configdir}/**,
                        ${javamain}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
-    </target>
-
-    <target name="dev_dist">
-        <!-- copy TCS Dependencies -->
-        <jar jarfile="${dev_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       README,
-                       build.version,
-                       build-dependencies.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
-    </target>
-
-    <target name="design_dist">
-        <jar jarfile="${design_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       build.version,
-                       build-dependencies.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
                        ${docsdir}/**,
                        ${testfiles}/**"
             />
