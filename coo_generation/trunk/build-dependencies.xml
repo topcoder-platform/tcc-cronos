@@ -31,7 +31,7 @@
 	<property name="object_factory_configuration_api_plugin.path" value="object_factory_configuration_api_plugin/${object_factory_configuration_api_plugin.version}" />
 	<property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/${object_factory_configuration_api_plugin.path}/${object_factory_configuration_api_plugin.jar.name}" />
 
-	<property name="db_connection_factory.version" value="1.1" />
+	<property name="db_connection_factory.version" value="1.1.0" />
 	<property name="db_connection_factory.jar.name" value="db_connection_factory.jar" />
 	<property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}" />
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}" />
@@ -51,7 +51,7 @@
 	<property name="object_formatter.path" value="object_formatter/${object_formatter.version}" />
 	<property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.path}/${object_formatter.jar.name}" />
 
-	<property name="configuration_persistence.version" value="1.0.2" />
+	<property name="configuration_persistence.version" value="1.0.1" />
 	<property name="configuration_persistence.jar.name" value="configuration_persistence.jar" />
 	<property name="configuration_persistence.path" value="configuration_persistence/${configuration_persistence.version}" />
 	<property name="configuration_persistence.jar" value="${tcs_libdir}/${configuration_persistence.path}/${configuration_persistence.jar.name}" />
