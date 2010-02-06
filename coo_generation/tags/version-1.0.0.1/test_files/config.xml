@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<CMConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">	
+		<Property name="templateFilename">
+			<value>out</value>
+		</Property>
+
+		<Property name="componentManagerKey">
+			<value>componentManager</value>
+		</Property>
+		
+		<Property name="javaComponentDependencyExtractorKey">
+			<value>java</value>
+		</Property>
+		
+		<Property name="dotNetComponentDependencyExtractorKey">
+			<value>dotNet</value>
+		</Property>
+		
+		<Property name="contestDataRetrieverKey">
+			<value>data_retriever</value>
+		</Property>
+		
+		<Config name="objectFactoryConfiguration">
+		
+		
+		<Property name="componentManager">
+			<!--com.topcoder.configuration.defaults.DefaultConfigurationObject-->
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.impl.componentmanager.DBComponentManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>DBConnector</Value>
+						</Property>
+					</Property>
+				</Property>
+		</Property>
+		
+		
+	
+			
+		<Property name="data_retriever">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.impl.contestdataretriever.DBContestDataRetriever</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>DBConnector</Value>
+						</Property>
+					</Property>
+				</Property>
+		</Property>
+
+		
+		
+		
+		<Property name="DBConnector">
+			<Property name="type">
+				<Value>com.topcoder.management.contest.coo.MockConfigurationObject</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>db_config</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		
+		
+		
+		<Property name="extractor">
+			<Property name="type">
+				<Value>com.topcoder.configuration.defaults.DefaultConfigurationObject</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>config_name</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		
+		
+			<Property name="java">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.dependencyextractor.JavaComponentDependencyExtractor</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>extractor</Value>
+						</Property>
+					</Property>
+					
+				</Property>
+			</Property>
+
+		
+			<Property name="dotNet">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.dependencyextractor.DotNetComponentDependencyExtractor</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>extractor</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			
+			
+		</Config>		
+			
+
+			
+
+			
+
+		
+	
+</CMConfig>

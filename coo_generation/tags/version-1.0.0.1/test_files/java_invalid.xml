@@ -1,0 +1,2 @@
+<project name="Dependency Import" default="dist" basedir=".">
+</project>

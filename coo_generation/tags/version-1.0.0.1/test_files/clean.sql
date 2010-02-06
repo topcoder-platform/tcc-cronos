@@ -1,0 +1,1 @@
+delete from third_party_library;delete from project;delete from project_result;delete from submission_review;delete from project_info;
