@@ -4118,6 +4118,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
                         contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
 
+            if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+		        projectServices.linkDevelopmentToDesignContest(projectData.getProjectHeader().getId());
+	        }
+
             //preparing the result
             com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
             // for now have to do these to avoid cycle
