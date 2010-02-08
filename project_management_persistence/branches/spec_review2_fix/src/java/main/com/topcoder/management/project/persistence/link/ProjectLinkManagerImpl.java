@@ -478,6 +478,41 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         }
     }
 
+
+    /**
+     * <p>
+     * Add a new project link
+     * </p>
+     *
+     * @param sourceProjectId the source project id
+     * @param destProjectId the destination project id
+     * @param linkTypeId the type id
+     * @throws IllegalArgumentException if any array is null or it is not equal in length for dest project id array
+     *             and link type array
+     * @throws PersistenceException if any persistence error occurs
+     */
+    public void addProjectLink(long sourceProjectId, long destProjectId, long linkTypeId)
+        throws PersistenceException {
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Enter updateProjectLinks method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // add link
+            addProjectLink(sourceProjectId, destProjectId, linkTypeId, conn);
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to updateProjectLinks.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
     /**
      * <p>
      * It is internal method and it updates the project links for given source project id.
@@ -509,6 +544,38 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             ps.executeBatch();
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing queries for update project links. ", e);
+        } finally {
+            Helper.closeStatement(ps);
+        }
+    }
+
+
+    /**
+     * <p>
+     * It is internal method and it add the project link for given source project id.
+     * </p>
+     *
+     * @param sourceProjectId the source project id
+     * @param destProjectId the destination project id
+     * @param linkTypeId the type id
+     * @param conn the db connection
+     * @throws PersistenceException if any persistence error occurs
+     */
+    private void addProjectLink(long sourceProjectId, long destProjectId, long linkTypeId, Connection conn)
+        throws PersistenceException {
+        PreparedStatement ps = null;
+        try {
+
+            ps = conn.prepareStatement(INSERT_PROJECT_LINK);
+
+            int idx = 1;
+            ps.setLong(idx++, sourceProjectId);
+            ps.setLong(idx++, destProjectId);
+            ps.setLong(idx++, linkTypeId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException("Error occurs while executing queries for adding project link. ", e);
         } finally {
             Helper.closeStatement(ps);
         }
