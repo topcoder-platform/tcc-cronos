@@ -9,6 +9,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.datatype.Duration;
 
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
@@ -2780,7 +2787,18 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // set project start date to current
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
-            projectPhases.setStartDate(new Date());
+
+            // spec review starts 48 hrs before project starts or now if 48 hrs earlier is past
+            Duration fotyEightHours = DatatypeFactory.newInstance().newDurationDayTime(false, 0, 48, 0, 0);
+
+            XMLGregorianCalendar fotyEightHoursEarlier = getXMLGregorianCalendar(fullProjectData.getStartDate());
+            fotyEightHoursEarlier.add(fotyEightHours);
+
+            projectPhases.setStartDate(getDate(fotyEightHoursEarlier));
+            if (projectPhases.getStartDate().before(new Date()))
+            {
+                projectPhases.setStartDate(new Date());
+            }
 
             // create project header
             Project projectHeader = new Project();
@@ -2844,11 +2862,15 @@ public class ProjectServicesImpl implements ProjectServices {
                 operator);
 
             // link it to the original project
-            projectLinkManager.updateProjectLinks(projectId, new long[] {projectData.getProjectHeader().getId()},
-                    new long[] {ProjectLinkType.REQUIRES_SPEC_REVIEW});
+            projectLinkManager.addProjectLink(projectId, projectData.getProjectHeader().getId(),
+                                                    ProjectLinkType.REQUIRES_SPEC_REVIEW);
 
             specReview = projectData.getProjectHeader();
         } catch (PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", ex);
+        }
+        catch (DatatypeConfigurationException ex) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", ex);
         } finally {
@@ -2911,8 +2933,8 @@ public class ProjectServicesImpl implements ProjectServices {
                 createProjectWithTemplate(projectHeader, projectPhases, newResources, operator);
     
             //1.5 link the project to the original one        
-            projectLinkManager.updateProjectLinks(reOpendedProject.getProjectHeader().getId(),
-                    new long[] {contest.getProjectHeader().getId()}, new long[] {ProjectLinkType.REPOST_FOR});
+            projectLinkManager.addProjectLink(reOpendedProject.getProjectHeader().getId(),
+                                                    contest.getProjectHeader().getId(), ProjectLinkType.REPOST_FOR);
             return reOpendedProject;
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
@@ -3292,7 +3314,7 @@ public class ProjectServicesImpl implements ProjectServices {
             long designId = getDesignContestId(developmentContestId);
             if (designId != 0)
             {
-                projectLinkManager.updateProjectLinks(developmentContestId, new long[] {designId}, new long[] {ProjectLinkType.FOR_DESIGN});
+                projectLinkManager.addProjectLink(developmentContestId, designId, ProjectLinkType.FOR_DESIGN);
             }
 			
         } catch (PersistenceException ex) {
@@ -3333,6 +3355,56 @@ public class ProjectServicesImpl implements ProjectServices {
 				"Exits ProjectServicesImpl#getDesignContestId method.");
 		return ret;
 	}
+
+
+    /**
+     * <p>
+     * Converts specified <code>XMLGregorianCalendar</code> instance into
+     * <code>Date</code> instance.
+     * </p>
+     *
+     * @param calendar
+     *            an <code>XMLGregorianCalendar</code> representing the date to
+     *            be converted.
+     * @return a <code>Date</code> providing the converted value of specified
+     *         calendar or <code>null</code> if specified <code>calendar</code>
+     *         is <code>null</code>.
+     */
+    private Date getDate(XMLGregorianCalendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+
+        return calendar.toGregorianCalendar().getTime();
+    }
+
+    /**
+     * <p>
+     * Converts specified <code>Date</code> instance into
+     * <code>XMLGregorianCalendar</code> instance.
+     * </p>
+     *
+     * @param date
+     *            a <code>Date</code> representing the date to be converted.
+     * @return a <code>XMLGregorianCalendar</code> providing the converted value
+     *         of specified date or <code>null</code> if specified
+     *         <code>date</code> is <code>null</code> or if it can't be
+     *         converted to calendar.
+     */
+    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            return null;
+        }
+    }
 
 
 
