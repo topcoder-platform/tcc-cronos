@@ -4900,9 +4900,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
             sb.append("        ) )  ");
             sb.append(" ) ");
-            // exclude contests that has eligibility
+ /*           // exclude contests that has eligibility
             sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
-            sb.append("           WHERE ce.is_studio = 0 AND ce.contest_id = c.project_id) ");
+            sb.append("           WHERE ce.is_studio = 0 AND ce.contest_id = c.project_id) "); */
             sb.append(" AND ");
             // not show inactive or deleted
             sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
