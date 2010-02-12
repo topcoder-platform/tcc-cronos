@@ -5257,9 +5257,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
             sb.append("        ) )  ");
             sb.append(" ) ");
-             // exclude contests that has eligibility
+   /*          // exclude contests that has eligibility
             sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
-            sb.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) ");
+            sb.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) "); */
 
             // not show inactive or cancelled or terminated
             sb.append(" AND ");
