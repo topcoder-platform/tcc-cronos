@@ -31,7 +31,7 @@
    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -406,8 +406,7 @@
                        ${test_reflib}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,
                        ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
+                       ${javatests}/${packagedir}/failuretests/*"
             />
     </target>
 
@@ -459,4 +458,5 @@
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->
     <import file="${basedir}/build-override.xml" optional="true"/>
+    <import file="D:/TopCoder/config/build-checkstyle.xml" optional="true"/>
 </project>

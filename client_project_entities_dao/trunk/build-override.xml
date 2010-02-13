@@ -73,6 +73,8 @@
         <copy file="${data_validation.jar}" todir="${component.ear.dir}" overwrite="true"/>
         <copy file="${class_associations.jar}" todir="${component.ear.dir}" overwrite="true"/>
         <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true"/>
+        <copy file="${id_generator.jar}" todir="${component.ear.dir}" overwrite="true"/>
+        <copy file="${db_connection_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
         <copy file="${SaveCoberturaData.jar}" todir="${component.ear.dir}" overwrite="true"/>
 
         <copy file="${testfiles}/META-INF/persistence.xml" todir="${component.ear.dir}" overwrite="true"/>

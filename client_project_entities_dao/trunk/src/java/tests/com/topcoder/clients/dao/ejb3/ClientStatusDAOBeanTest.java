@@ -63,7 +63,7 @@ public class ClientStatusDAOBeanTest extends TestBase {
      */
     public void testInheritance1() {
         assertTrue("ClientStatusDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO);
+                target instanceof GenericEJB3DAO<?, ?>);
     }
 
     /**
@@ -136,11 +136,10 @@ public class ClientStatusDAOBeanTest extends TestBase {
     public void testMethod_getClientsWithStatus_1() throws Exception {
         createClient(100);
         Client client = createClient(101);
-        List<Client> res = target
-                .getClientsWithStatus(client.getClientStatus());
+        List<Client> res = target.getClientsWithStatus(client.getClientStatus());
         assertEquals("The number of clients", 2, res.size());
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         assertTrue("should be returned with correct id", ids.contains(100L));

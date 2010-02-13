@@ -99,7 +99,7 @@ public class HelperTest extends TestCase {
     public void test_WrapExceptionWithDAOException_1() {
         Exception e = new Exception();
         String message = "msg";
-        DAOException res = Helper.WrapExceptionWithDAOException(e, message);
+        DAOException res = Helper.wrapWithDAOException(e, message);
         assertTrue("should be DAOException", res instanceof DAOException);
     }
 
@@ -110,7 +110,7 @@ public class HelperTest extends TestCase {
     public void test_WrapExceptionWithDAOException_2() {
         String message = "msg";
         DAOException e = new DAOException(message);
-        DAOException res = Helper.WrapExceptionWithDAOException(e, message);
+        DAOException res = Helper.wrapWithDAOException(e, message);
         assertTrue("should be DAOException", res instanceof DAOException);
     }
 }

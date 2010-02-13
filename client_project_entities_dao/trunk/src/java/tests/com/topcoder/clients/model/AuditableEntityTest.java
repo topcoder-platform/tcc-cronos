@@ -12,9 +12,13 @@ import junit.framework.TestCase;
  * <p>
  * Test class: <code>AuditableEntity</code>.
  * </p>
+ * <p>
+ * Some change to remove ambiguous asserts.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author TCSDEVELOPER, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class AuditableEntityTest extends TestCase {
     /**
@@ -192,7 +196,7 @@ public class AuditableEntityTest extends TestCase {
      */
     public void testMethodSetDeleted_boolean() throws Exception {
         target.setDeleted(true);
-        assertEquals("isDeleted", true, target.isDeleted());
+        assertTrue(target.isDeleted());
     }
 
     /**
@@ -246,7 +250,7 @@ public class AuditableEntityTest extends TestCase {
      */
     public void testMethodIsDeleted() throws Exception {
         target.setDeleted(true);
-        assertEquals("isDeleted", true, target.isDeleted());
+        assertTrue(target.isDeleted());
     }
 
     /**

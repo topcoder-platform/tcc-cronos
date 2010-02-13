@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * The super class of all persistence related class.
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
  */
 public abstract class TestBase extends TestCase {
     /**
@@ -35,8 +35,8 @@ public abstract class TestBase extends TestCase {
     /**
      * The clear table sql.
      */
-    private String[] clearSQLs = new String[] {"delete from project",
-        "delete from client", "delete from client_status",
+    private String[] clearSQLs = new String[] {"delete from project_contest_fee", "delete from project_manager",
+        "delete from user_account", "delete from project", "delete from client", "delete from client_status",
         "delete from project_status", "delete from company"};
 
     /**
@@ -121,11 +121,11 @@ public abstract class TestBase extends TestCase {
 
         // persist object
         Query query = entityManager
-                .createNativeQuery("insert into project (id, project_status_id, client_id, "
+                .createNativeQuery("insert into project (project_id, project_status_id, client_id, "
                         + "company_id,name,active,sales_tax,po_box_number,payment_terms_id,"
                         + "description,creation_date,creation_user,modification_date,"
-                        + "modification_user,is_deleted)"
-                        + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "modification_user,is_deleted,is_manual_prize_setting)"
+                        + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         int idx = 1;
         query.setParameter(idx++, project.getId());
         query.setParameter(idx++, project.getProjectStatus().getId());
@@ -142,6 +142,7 @@ public abstract class TestBase extends TestCase {
         query.setParameter(idx++, project.getModifyDate());
         query.setParameter(idx++, project.getModifyUsername());
         query.setParameter(idx++, 0);
+        query.setParameter(idx++, 0);
         query.executeUpdate();
 
         return project;
@@ -154,7 +155,7 @@ public abstract class TestBase extends TestCase {
      */
     protected void setChildProject(long parent, long child) {
         Query query = entityManager
-                .createNativeQuery("update project set parent_project_id=? where id=?");
+                .createNativeQuery("update project set parent_project_id=? where project_id=?");
         query.setParameter(1, parent);
         query.setParameter(2, child);
         query.executeUpdate();
@@ -207,7 +208,7 @@ public abstract class TestBase extends TestCase {
         // persist object
         Query query = entityManager
                 .createNativeQuery("insert into client "
-                        + "(id, client_status_id, is_deleted, payment_term_id,company_id"
+                        + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
                         + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
                         + "modification_user,code_name) "
                         + "values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -225,6 +226,55 @@ public abstract class TestBase extends TestCase {
         query.setParameter(idx++, client.getModifyDate());
         query.setParameter(idx++, client.getModifyUsername());
         query.setParameter(idx, client.getCodeName());
+        query.executeUpdate();
+
+        return client;
+    }
+
+    /**
+     * Create client.
+     * @param name the client name
+     * @param id client id
+     * @return client created
+     */
+    protected Client createClient(String name, long id) {
+        Client client = new Client();
+        setAuditableEntity(client);
+        ClientStatus clientStatus = createClientStatus(10);
+        client.setClientStatus(clientStatus);
+        client.setCodeName("codename");
+        Company company = createCompany(100);
+        client.setCompany(company);
+        client.setEndDate(new Date());
+        client.setPaymentTermsId(10);
+        client.setSalesTax(1.1);
+        client.setStartDate(new Date());
+        client.setId(id);
+        client.setDeleted(false);
+        client.setName(name);
+
+        // persist object
+        Query query = entityManager
+                .createNativeQuery("insert into client "
+                        + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
+                        + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
+                        + "modification_user,code_name, name) "
+                        + "values (?,?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+        int idx = 1;
+        query.setParameter(idx++, client.getId());
+        query.setParameter(idx++, client.getClientStatus().getId());
+        query.setParameter(idx++, 0);
+        query.setParameter(idx++, 10);
+        query.setParameter(idx++, company.getId());
+        query.setParameter(idx++, client.getSalesTax());
+        query.setParameter(idx++, client.getStartDate());
+        query.setParameter(idx++, client.getEndDate());
+        query.setParameter(idx++, client.getCreateDate());
+        query.setParameter(idx++, client.getCreateUsername());
+        query.setParameter(idx++, client.getModifyDate());
+        query.setParameter(idx++, client.getModifyUsername());
+        query.setParameter(idx++, client.getCodeName());
+        query.setParameter(idx, client.getName());
         query.executeUpdate();
 
         return client;

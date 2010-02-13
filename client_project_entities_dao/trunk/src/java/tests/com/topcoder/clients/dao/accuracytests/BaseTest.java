@@ -30,12 +30,12 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * Base test cases used for accuracy tests.
  * </p>
- * 
+ *
  * @param <T>
  *            the type param for ejb bean
  * @param <V>
  *            the type param for the entity
- * 
+ *
  * @author cyberjag
  * @version 1.0
  */
@@ -50,7 +50,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
      * The clear table sql.
      */
     private static final String[] clearSQLs = new String[] { "delete from project", "delete from client",
-            "delete from client_status", "delete from project_status", "delete from company" };
+        "delete from client_status", "delete from project_status", "delete from company" };
 
     /**
      * The searchBundleManagerNamespace used in tests.
@@ -79,7 +79,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Sets up the environment.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -102,7 +102,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Tears down the environment.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -114,7 +114,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Tests the {@link GenericEJB3DAO#save(AuditableEntity)} for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -127,19 +127,19 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Tests the {@link GenericEJB3DAO#retrieveAll()} for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
     public void testRetrieveAll() throws Exception {
         List<V> list = testBean.retrieveAll();
-        assertEquals("Failed to retrieveAll", list.size(), 1);
+        assertEquals("Failed to retrieveAll", 1, list.size());
         assertEntity(list.get(0), entity);
     }
 
     /**
      * Tests the {@link GenericEJB3DAO#retrieveById(java.io.Serializable)} for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -150,7 +150,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Tests the {@link GenericEJB3DAO#delete(AuditableEntity)} for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -171,7 +171,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Asserts the actual and expected entity properties.
-     * 
+     *
      * @param actual
      *            the actual entity
      * @param expected
@@ -202,7 +202,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Sets the bean.
-     * 
+     *
      * @param testBean
      *            the test bean
      */
@@ -212,7 +212,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Sets the entity.
-     * 
+     *
      * @param entity
      *            the entity
      */
@@ -222,7 +222,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Gets the testBean.
-     * 
+     *
      * @return the testBean
      */
     public T getTestBean() {
@@ -231,7 +231,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Gets the entity.
-     * 
+     *
      * @return the entity
      */
     public V getEntity() {
@@ -243,7 +243,9 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
      */
     private void clearDatabase() {
         EntityManager em = getEntityManager();
-        em.getTransaction().begin();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
         for (String sql : clearSQLs) {
             em.createNativeQuery(sql).executeUpdate();
         }
@@ -252,7 +254,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Create client.
-     * 
+     *
      * @param id
      *            client id
      * @return client created
@@ -272,7 +274,9 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         client.setId(id);
         client.setDeleted(false);
 
-        entityManager.getTransaction().begin();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         entityManager.persist(client);
         entityManager.getTransaction().commit();
         return client;
@@ -280,7 +284,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Create project with client.
-     * 
+     *
      * @param id
      *            the id of project
      * @param client
@@ -296,9 +300,12 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         project.setProjectStatus(projectStatus);
         project.setId(id);
         project.setCompany(client.getCompany());
+        project.setDeleted(false);
 
         // persist object
-        entityManager.getTransaction().begin();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         entityManager.persist(project);
         entityManager.getTransaction().commit();
 
@@ -307,7 +314,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Create ProjectStatus.
-     * 
+     *
      * @param id
      *            the ProjectStatus id
      * @return ProjectStatus created
@@ -323,7 +330,9 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         projectStatus.setId(id);
 
         // persist object
-        entityManager.getTransaction().begin();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         entityManager.persist(projectStatus);
         entityManager.getTransaction().commit();
 
@@ -333,7 +342,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Create company.
-     * 
+     *
      * @param id
      *            the company id
      * @return company created
@@ -350,7 +359,9 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         company.setPasscode("passcode");
 
         // persist object
-        entityManager.getTransaction().begin();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         entityManager.persist(company);
         entityManager.getTransaction().commit();
 
@@ -360,7 +371,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Set fields of auditableEntity.
-     * 
+     *
      * @param auditableEntity
      *            the auditableEntity to set
      */
@@ -374,7 +385,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Create ClientStatus.
-     * 
+     *
      * @param id
      *            the ClientStatus id
      * @return ClientStatus created
@@ -390,7 +401,9 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         clientStatus.setDescription("description");
         clientStatus.setId(id);
         // persist object
-        entityManager.getTransaction().begin();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         entityManager.persist(clientStatus);
         entityManager.getTransaction().commit();
 
@@ -399,7 +412,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Get EntityManager.
-     * 
+     *
      * @return EntityManager
      */
     protected EntityManager getEntityManager() {
@@ -417,13 +430,15 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         }
 
         entityManager.clear();
-
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
         return entityManager;
     }
 
     /**
      * Remove all the namespace.
-     * 
+     *
      * @throws Exception
      *             to JUnit
      */
@@ -439,7 +454,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Add the namespace.
-     * 
+     *
      * @param filename
      *            the config filename
      * @throws Exception
@@ -452,7 +467,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Sets the value of a private field in the given class.
-     * 
+     *
      * @param type
      *            the class which the private field belongs to
      * @param instance
@@ -489,7 +504,7 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
 
     /**
      * Invokes the function.
-     * 
+     *
      * @param type
      *            the class which the method belongs to
      * @param instance

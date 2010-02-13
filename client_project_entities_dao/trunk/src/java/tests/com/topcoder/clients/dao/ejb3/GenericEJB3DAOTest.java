@@ -30,7 +30,7 @@ public class GenericEJB3DAOTest extends TestBase {
     /**
      * An EntityManager instance used in tests.
      */
-    private EntityManager entityManager;
+    private EntityManager em;
 
     /**
      * <p>
@@ -65,12 +65,12 @@ public class GenericEJB3DAOTest extends TestBase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        entityManager = getEntityManager();
+        em = getEntityManager();
 
         target = new ProjectDAOBean();
 
         // inject data
-        target.setEntityManager(entityManager);
+        target.setEntityManager(em);
         TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                 "searchBundleManagerNamespace", searchBundleManagerNamespace);
         TestHelper.setPrivateField(GenericEJB3DAO.class, target,
@@ -92,8 +92,7 @@ public class GenericEJB3DAOTest extends TestBase {
      * </p>
      */
     public void testInheritance1() {
-        assertTrue("ClientDAOBean does not subclasses GenericDAO.",
-                target instanceof GenericDAO);
+        assertTrue("ClientDAOBean does not subclasses GenericDAO.", target instanceof GenericDAO<?, ?>);
     }
 
     /**
@@ -105,7 +104,6 @@ public class GenericEJB3DAOTest extends TestBase {
      * @throws Exception
      *                 to JUnit
      */
-    @SuppressWarnings("unchecked")
     public void testConstructor() throws Exception {
         Class<Project> type = target.getEntityBeanType();
         assertEquals("The type should be set.", Project.class, type);
@@ -138,7 +136,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_1() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "configFileName", configFileName);
@@ -164,7 +162,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_2() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace", "  ");
@@ -192,7 +190,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_3() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -219,7 +217,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_4() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -248,7 +246,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_5() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -275,7 +273,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_6() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -304,7 +302,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_7() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -333,7 +331,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_8() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -362,7 +360,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_initialize_failure_9() throws Exception {
         try {
             target = new ProjectDAOBean();
-            target.setEntityManager(entityManager);
+            target.setEntityManager(em);
 
             TestHelper.setPrivateField(GenericEJB3DAO.class, target,
                     "searchBundleManagerNamespace",
@@ -420,8 +418,8 @@ public class GenericEJB3DAOTest extends TestBase {
      */
     public void test_setEntityManager_1() throws Exception {
         target = new ProjectDAOBean();
-        target.setEntityManager(entityManager);
-        assertEquals("entityManager", entityManager, target.getEntityManager());
+        target.setEntityManager(em);
+        assertEquals("entityManager", em, target.getEntityManager());
     }
 
     /**
@@ -435,8 +433,8 @@ public class GenericEJB3DAOTest extends TestBase {
      */
     public void test_getEntityManager_1() throws Exception {
         target = new ProjectDAOBean();
-        target.setEntityManager(entityManager);
-        assertEquals("entityManager", entityManager, target.getEntityManager());
+        target.setEntityManager(em);
+        assertEquals("entityManager", em, target.getEntityManager());
     }
 
     /**
@@ -658,15 +656,13 @@ public class GenericEJB3DAOTest extends TestBase {
         createProjectWithClient(id++, client);
         createProjectWithClient(id, client);
         EntityManager entityManager = getEntityManager();
-        entityManager.createNativeQuery(
-                "update project set is_deleted=" + 1 + " where id=" + id)
+        entityManager.createNativeQuery("update project set is_deleted=" + 1 + " where project_id=" + id)
                 .executeUpdate();
 
         List<Project> res = target.retrieveAll();
-        assertEquals("Only not deleted project should be returned.", 3, res
-                .size());
+        assertEquals("Only not deleted project should be returned.", 3, res.size());
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         ids.add(res.get(1).getId());
@@ -722,15 +718,13 @@ public class GenericEJB3DAOTest extends TestBase {
         createProjectWithClient(id++, client);
         createProjectWithClient(id, client);
         EntityManager entityManager = getEntityManager();
-        entityManager.createNativeQuery(
-                "update project set is_deleted=" + 1 + " where id=" + id)
+        entityManager.createNativeQuery("update project set is_deleted=" + 1 + " where project_id=" + id)
                 .executeUpdate();
 
         List<Project> res = target.searchByName(project.getName());
-        assertEquals("Only not deleted project should be returned.", 3, res
-                .size());
+        assertEquals("Only not deleted project should be returned.", 3, res.size());
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         ids.add(res.get(1).getId());
@@ -857,14 +851,11 @@ public class GenericEJB3DAOTest extends TestBase {
         createProjectWithClient(111, client);
         createProjectWithClient(112, client);
         createProjectWithClient(113, client);
-        ProjectStatus status = createProjectStatus(project.getProjectStatus()
-                .getId() + 1);
+        ProjectStatus status = createProjectStatus(project.getProjectStatus().getId() + 1);
         EntityManager entityManager = getEntityManager();
         entityManager.createNativeQuery(
-                "update project set project_status_id=" + status.getId()
-                        + " where id=" + 110).executeUpdate();
-        entityManager.createNativeQuery(
-                "update project set is_deleted=" + 1 + " where id=" + 111)
+                "update project set project_status_id=" + status.getId() + " where project_id=" + 110).executeUpdate();
+        entityManager.createNativeQuery("update project set is_deleted=" + 1 + " where project_id=" + 111)
                 .executeUpdate();
         entityManager.getTransaction().commit();
 
@@ -874,7 +865,7 @@ public class GenericEJB3DAOTest extends TestBase {
         assertEquals("The number of search result", 2, res.size());
 
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         assertTrue("should be returned with correct id", ids.contains(112L));
@@ -911,7 +902,7 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_search_failure_2() throws Exception {
         target.initialize();
 
-        entityManager.getTransaction().commit();
+        em.getTransaction().commit();
 
         // do search
         Filter filter = new EqualToFilter("projectStatusxxx", 1);
@@ -938,7 +929,7 @@ public class GenericEJB3DAOTest extends TestBase {
         Client client = createClient(11);
         Project project = createProjectWithClient(110, client);
         String name = "new name";
-        project.setName(name );
+        project.setName(name);
         EntityManager entityManager = getEntityManager();
 
         Project res = target.save(project);
@@ -1009,9 +1000,9 @@ public class GenericEJB3DAOTest extends TestBase {
         Project project = createProjectWithClient(110, client);
 
         target.delete(project);
-        entityManager.getTransaction().commit();
-        List<Project> res = entityManager.createNativeQuery(
-                "select * from project where id = 110 and is_deleted=1")
+        em.getTransaction().commit();
+        List<Project> res = em.createNativeQuery(
+                "select * from project where project_id = 110 and is_deleted=1")
                 .getResultList();
         assertEquals("The is_deleted should be set true.", 1, res.size());
     }

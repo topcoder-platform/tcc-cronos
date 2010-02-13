@@ -90,7 +90,6 @@ public class ClientStatusDAOBean extends GenericEJB3DAO<ClientStatus, Long>
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<Client> getClientsWithStatus(ClientStatus status)
         throws EntityNotFoundException, DAOException {
         Helper.checkNull(status, "status");
@@ -101,7 +100,7 @@ public class ClientStatusDAOBean extends GenericEJB3DAO<ClientStatus, Long>
             retrieveById(status.getId());
             return Helper.getEntities("status", status, entityManager, QUERYSTRING);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to get Clients with Status.");
         }
     }

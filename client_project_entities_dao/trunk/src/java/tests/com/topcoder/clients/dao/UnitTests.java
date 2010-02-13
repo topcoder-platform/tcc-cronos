@@ -38,6 +38,7 @@ public class UnitTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
+
         suite.addTestSuite(EntityNotFoundExceptionTest.class);
         suite.addTestSuite(DAOExceptionTest.class);
         suite.addTestSuite(DAOConfigurationExceptionTest.class);
@@ -46,9 +47,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(ClientStatusDAOBeanTest.class);
         suite.addTestSuite(ProjectDAOBeanTest.class);
         suite.addTestSuite(ClientDAOBeanTest.class);
-        suite.addTestSuite(GenericEJB3DAOTest.class);
         suite.addTestSuite(ProjectStatusDAOBeanTest.class);
-        suite.addTestSuite(SearchByFilterUtilityImplTest.class);
         suite.addTestSuite(HelperTest.class);
 
         suite.addTestSuite(ProjectStatusTest.class);
@@ -57,7 +56,8 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(ProjectTest.class);
         suite.addTestSuite(AuditableEntityTest.class);
         suite.addTestSuite(ClientTest.class);
-
+        suite.addTestSuite(GenericEJB3DAOTest.class);
+        suite.addTestSuite(SearchByFilterUtilityImplTest.class);
         return suite;
     }
 

@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2009 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * <p>
  * This class represents the Project java bean. An Project can contain a
  * company, active, salesTax, pOBoxNumber, paymentTermsId, description,
- * projectStatus, client, childProjects, parentProjectId.
+ * projectStatus, client, childProjects, parentProjectId, manualPrizeSetting.
  * </p>
  * <p>
  * See base class for other available properties.
@@ -36,19 +35,25 @@ import javax.xml.bind.annotation.XmlType;
  * Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.
  * This class is Serializable (base class is Serializable).
  * </p>
+ *
+ * <p>
+ * Version 1.0.1 (Cockpit Release Assembly 7 v1.0) Change Notes:
+ *  - Added manual prize setting property.
+ * </p>
+ *
  * <p>
  * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so
  * therefore it is not thread safe.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @author Mafy, TCSDEVELOPER, TCSASSEMBLER
+ * @version 1.0.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "project", propOrder = { "company", "active", "salesTax",
         "pOBoxNumber", "paymentTermsId", "description", "projectStatus",
-        "client", "childProjects", "parentProjectId" })
-@Entity(name="ClientProject")
+        "client", "manualPrizeSetting", "childProjects", "parentProjectId" })
+@Entity
 @Table(name = "project")
 @javax.persistence.AttributeOverride(name = "id", column = @Column(name = "project_id"))
 public class Project extends AuditableEntity {
@@ -267,7 +272,16 @@ public class Project extends AuditableEntity {
     @Column(name = "parent_project_id")
     private Long parentProjectId;
 
-    
+    /**
+     * <p>
+     * Represents whether this project allows/requires manual prize setting.
+     * </p>
+     *
+     * @since 1.0.1
+     */
+    @Column(name = "is_manual_prize_setting")
+    private boolean manualPrizeSetting;
+
     /**
      * Default no-arg constructor. Constructs a new 'Project' instance.
      */
@@ -494,5 +508,24 @@ public class Project extends AuditableEntity {
         this.salesTax = salesTax;
     }
 
-	
+    /**
+     * Gets whether this project supports/requires manual prize setting.
+     *
+     * @return whether this project supports/requires manual prize setting.
+     * @since 1.0.1
+     */
+    public boolean isManualPrizeSetting() {
+        return this.manualPrizeSetting;
+    }
+
+    /**
+     * Sets whether this project supports/requires manual prize setting.
+     *
+     * @param manualPrizeSetting
+     *            whether this project supports/requires manual prize setting.
+     * @since 1.0.1
+     */
+    public void setManualPrizeSetting(boolean manualPrizeSetting) {
+        this.manualPrizeSetting = manualPrizeSetting;
+    }
 }

@@ -1,18 +1,15 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import junit.framework.TestCase;
 
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
-import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
-import com.topcoder.clients.model.ProjectStatus;
-import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 
@@ -22,9 +19,9 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
  */
-public class SearchByFilterUtilityImplTest extends TestBase {
+public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * An instance of <code>SearchByFilterUtilityImpl</code> which is tested.
@@ -44,7 +41,7 @@ public class SearchByFilterUtilityImplTest extends TestBase {
      * The searchBundle name used in tests.
      * </p>
      */
-    private String searchBundleName = "HibernateSearchBundle_Project";
+    private String searchBundleName = "TestSearchBundle";
 
     /**
      * <p>
@@ -57,8 +54,7 @@ public class SearchByFilterUtilityImplTest extends TestBase {
     protected void setUp() throws Exception {
         super.setUp();
         TestHelper.clearConfig();
-        TestHelper.addConfig("config.xml");
-        TestHelper.addConfig("hibernateSearchStrategyConfig.xml");
+        TestHelper.addConfig("config1.xml");
 
         target = new SearchByFilterUtilityImpl<Project, Long>(
                 searchBundleManagerNamespace, searchBundleName);
@@ -89,7 +85,7 @@ public class SearchByFilterUtilityImplTest extends TestBase {
     public void testInheritance() {
         assertTrue(
                 "SearchByFilterUtilityImpl does not implements SearchByFilterUtility.",
-                target instanceof SearchByFilterUtility);
+                target instanceof SearchByFilterUtility<?, ?>);
     }
 
     /**
@@ -307,29 +303,11 @@ public class SearchByFilterUtilityImplTest extends TestBase {
      * @throws Exception
      *                 to JUnit
      */
-    @SuppressWarnings("unchecked")
     public void testMethodSearch_Filter() throws Exception {
-        // prepare data
-        Client client = createClient(11);
-        Project project = createProjectWithClient(110, client);
-        createProjectWithClient(111, client);
-        createProjectWithClient(112, client);
-        createProjectWithClient(113, client);
-        ProjectStatus status = createProjectStatus(project.getProjectStatus()
-                .getId() + 1);
-        EntityManager entityManager = getEntityManager();
-        entityManager.createNativeQuery(
-                "update project set project_status_id=" + status.getId()
-                        + " where id=" + project.getId()).executeUpdate();
-        entityManager.getTransaction().commit();
-
         // do search
-        Filter filter = new EqualToFilter("projectStatus", status.getId() - 1);
-        EqualToFilter equalToFilter = new EqualToFilter("deleted", new Boolean(
-                false));
-        AndFilter resultedFilter = new AndFilter(filter, equalToFilter);
-        List<Project> res = target.search(resultedFilter);
-        assertEquals("The number of search result", 3, res.size());
+        EqualToFilter equalToFilter = new EqualToFilter("projectStatus", 1);
+        List<Project> res = target.search(equalToFilter);
+        assertEquals("The number of search result", 0, res.size());
     }
 
     /**
@@ -341,7 +319,6 @@ public class SearchByFilterUtilityImplTest extends TestBase {
      * @throws Exception
      *                 to JUnit
      */
-    @SuppressWarnings("unchecked")
     public void testMethodSearch_Filter_failure_1() throws Exception {
         try {
             target.search(null);
@@ -360,7 +337,6 @@ public class SearchByFilterUtilityImplTest extends TestBase {
      * @throws Exception
      *                 to JUnit
      */
-    @SuppressWarnings("unchecked")
     public void testMethodSearch_Filter_failure_2() throws Exception {
         try {
             Filter filter = new EqualToFilter("invalid", 12);

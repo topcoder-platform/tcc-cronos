@@ -63,6 +63,9 @@
 		<java>class_associations.jar</java>
 	</module>
 	<module>
-		<java>configuration_manager.jar</java>
+		<java>id_generator.jar</java>
+	</module>
+	<module>
+		<java>db_connection_factory.jar</java>
 	</module>
 </application>

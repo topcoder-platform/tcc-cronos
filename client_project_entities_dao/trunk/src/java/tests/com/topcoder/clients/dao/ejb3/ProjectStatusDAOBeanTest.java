@@ -61,7 +61,7 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      */
     public void testInheritance1() {
         assertTrue("ProjectStatusDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO);
+                target instanceof GenericEJB3DAO<?, ?>);
     }
 
     /**

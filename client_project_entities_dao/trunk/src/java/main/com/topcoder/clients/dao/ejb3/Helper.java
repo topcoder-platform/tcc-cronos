@@ -90,7 +90,7 @@ final class Helper {
      *                the message for DAOException wrapper
      * @return DAOException wrapper
      */
-    public static DAOException WrapExceptionWithDAOException(Exception e,
+    public static DAOException wrapWithDAOException(Exception e,
             String message) {
         if (e instanceof DAOException) {
             return (DAOException) e;
@@ -110,7 +110,7 @@ final class Helper {
      * @return The entity list find
      */
     @SuppressWarnings("unchecked")
-    static final <T extends AuditableEntity, S> List<T> getEntities(String queryName, 
+    static final <T extends AuditableEntity, S> List<T> getEntities(String queryName,
             S queryEntity, EntityManager entityManager, String queryString) {
         Query query = entityManager.createQuery(queryString);
         query.setParameter(queryName, queryEntity);

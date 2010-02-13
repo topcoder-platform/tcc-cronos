@@ -4,6 +4,7 @@
 
 package com.topcoder.clients.dao.accuracytests;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,16 +13,20 @@ import javax.persistence.Query;
 import com.topcoder.clients.dao.ejb3.ProjectDAOBean;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 /**
  * <p>
  * Tests the <code>{@link ProjectDAOBean}</code> for accuracy.
  * </p>
- * 
+ *
  * @author cyberjag
  * @version 1.0
  */
 public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
+
 
     /**
      * Tests the <code>{@link ProjectDAOBean#ProjectDAOBean()}</code> for accuracy.
@@ -32,7 +37,7 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
     /**
      * Tests the <code>{@link ProjectDAOBean#retrieveById(Long, boolean)}</code> for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -52,7 +57,7 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
     /**
      * Tests the <code>{@link ProjectDAOBean#retrieveById(Long, boolean)}</code> for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -72,7 +77,7 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
     /**
      * Set child project.
-     * 
+     *
      * @param parent
      *            the parent id
      * @param child
@@ -80,8 +85,10 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
      */
     protected void setChildProject(long parent, long child) {
         EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        Query query = em.createNativeQuery("update project set parent_project_id=? where id=?");
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+        Query query = em.createNativeQuery("update project set parent_project_id=? where project_id=?");
 
         query.setParameter(1, parent);
         query.setParameter(2, child);
@@ -92,7 +99,7 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
     /**
      * Tests the <code>{@link ProjectDAOBean#retrieveAll(boolean)}</code> for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -115,7 +122,7 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
     /**
      * Tests the <code>{@link ProjectDAOBean#retrieveAll(boolean)}</code> for accuracy.
-     * 
+     *
      * @throws Exception
      *             to junit
      */
@@ -152,5 +159,4 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
         bean.setEntityManager(getEntityManager());
         setTestBean(bean);
     }
-
 }

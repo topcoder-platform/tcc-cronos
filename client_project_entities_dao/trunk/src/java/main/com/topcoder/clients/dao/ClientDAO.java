@@ -61,7 +61,7 @@ public interface ClientDAO extends GenericDAO<Client, Long> {
      */
     public List<Project> getProjectsForClient(Client client)
         throws DAOException;
-    
+
 
 
 

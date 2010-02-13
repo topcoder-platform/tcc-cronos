@@ -64,7 +64,7 @@ public class CompanyDAOBeanTest extends TestBase {
      */
     public void testInheritance1() {
         assertTrue("CompanyDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO);
+                target instanceof GenericEJB3DAO<?, ?>);
     }
 
     /**
@@ -137,7 +137,7 @@ public class CompanyDAOBeanTest extends TestBase {
         List<Client> res = target.getClientsForCompany(client.getCompany());
         assertEquals("The number of clients", 2, res.size());
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         assertTrue("should be returned with correct id", ids.contains(100L));
@@ -222,7 +222,7 @@ public class CompanyDAOBeanTest extends TestBase {
         List<Project> res = target.getProjectsForCompany(client.getCompany());
         assertEquals("The number of Project", 3, res.size());
         // verify data
-        List<Long> ids=  new ArrayList<Long>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         ids.add(res.get(2).getId());

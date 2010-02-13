@@ -373,8 +373,11 @@ public class HibernateSearchStrategy implements SearchStrategy {
 
         synchronized (session) {
             try {
-                // since the query need transaction support
-                session.beginTransaction();
+                // since the query need transaction supported
+                if (!session.getTransaction().isActive()) {
+                    session.beginTransaction();
+                }
+
 
                 Query query = session.createQuery(searchContext.getSearchString()
                                                                .toString());
@@ -438,7 +441,9 @@ public class HibernateSearchStrategy implements SearchStrategy {
     private static void rollBack(Session session)
         throws PersistenceOperationException {
         try {
-            session.getTransaction().rollback();
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
         } catch (HibernateException e) {
             throw new PersistenceOperationException(
                 "Error occurred when closing the session: " + e.getMessage(), e);

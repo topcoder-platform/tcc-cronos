@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -50,7 +50,7 @@ import com.topcoder.clients.model.Project;
  * </p>
  *
  * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
  */
 @Local(CompanyDAOLocal.class)
 @Remote(CompanyDAORemote.class)
@@ -62,13 +62,13 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
      * The query string for method getClientsForCompany.
      */
     private static final String QUERY_CLIENTS = "select c from Client c"
-            + " where c.company = :company and c.deleted = false";
+            + " where c.company = :company and (c.deleted is null or c.deleted = false)";
 
     /**
      * The query string for method getProjectsForCompany.
      */
     private static final String QUERY_PROJECTS = "select p from Project p"
-            + " where p.company = :company and p.deleted = false";
+            + " where p.company = :company and (p.deleted is null or p.deleted = false)";
 
     /**
      * Default no-arg constructor. Constructs a new 'CompanyDAOBean' instance.
@@ -97,7 +97,6 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<Client> getClientsForCompany(Company company)
         throws EntityNotFoundException, DAOException {
         Helper.checkNull(company, "company");
@@ -108,7 +107,7 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
             retrieveById(company.getId());
             return Helper.getEntities("company", company, entityManager, QUERY_CLIENTS);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to get clients for company.");
         }
     }
@@ -134,7 +133,6 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<Project> getProjectsForCompany(Company company)
         throws EntityNotFoundException, DAOException {
         Helper.checkNull(company, "company");
@@ -145,7 +143,7 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
             retrieveById(company.getId());
             return Helper.getEntities("company", company, entityManager, QUERY_PROJECTS);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to get clients for company.");
         }
     }

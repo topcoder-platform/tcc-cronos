@@ -1,171 +1,273 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.failuretests;
+
+import com.topcoder.clients.dao.DAOConfigurationException;
+import com.topcoder.clients.dao.ejb3.ProjectDAOBean;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.topcoder.clients.dao.DAOConfigurationException;
-import com.topcoder.clients.dao.EntityNotFoundException;
-import com.topcoder.clients.dao.ejb3.ProjectDAOBean;
-
 /**
- * Failure test for ProjectDAOBean class.
+ * <p>
+ * Failure test for {@link ProjectDAOBean}.
+ * </p>
  *
- * @author AK_47
+ * @author Beijing2008
  * @version 1.0
  */
 public class ProjectDAOBeanFailureTest extends TestCase {
     /**
      * <p>
-     * An instance of <code>ProjectDAOBean</code> which is tested.
+     * Represents the ProjectDAOBean instance to test against.
      * </p>
      */
-    private ProjectDAOBean bean = null;
-
+    private ProjectDAOBean instance;
     /**
-     * Aggregates all tests in this class.
+     * <p>
+     * Represents an empty string.
+     * </p>
+     */
+    private String EMPTY = " \n\t";
+    /**
+     * <p>
+     * Creates a test suite for the tests in this test case.
+     * </p>
      *
-     * @return Test suite aggregating all tests.
+     * @return a TestSuite for this test case.
      */
     public static Test suite() {
-        return new TestSuite(ProjectDAOBeanFailureTest.class);
+        TestSuite suite = new TestSuite(ProjectDAOBeanFailureTest.class);
+        return suite;
     }
-
     /**
      * <p>
-     * setUp() routine.
+     * Sets up test environment.
      * </p>
      *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to jUnit.
      */
+    @Override
     protected void setUp() throws Exception {
-        super.setUp();
-
-        bean = new ProjectDAOBean();
-        bean.setEntityManager(TestHelper.getEntityManager());
+        instance = new ProjectDAOBean();
     }
 
     /**
-     * Failure test of <code>retrieveAll(boolean)</code> method.
-     *
      * <p>
-     * entityManager is null.
+     * Tears down test environment.
      * </p>
      *
-     * <p>
-     * Expect DAOConfigurationException.
-     * </p>
-     *
-     * @throws Exception to JUnit.
+     * @throws Exception to jUnit.
      */
-    public void testRetrieveAll_Null_EntityManager() throws Exception {
-        try {
-            bean = new ProjectDAOBean();
-
-            bean.retrieveAll(true);
-
-            fail("Expect DAOConfigurationException.");
-        } catch (DAOConfigurationException e) {
-            // expect
-        }
+    @Override
+    protected void tearDown() throws Exception {
+        instance = null;
     }
-
     /**
-     * Failure test of <code>retrieveById(Long, boolean)</code> method.
-     *
-     * <p>
-     * id is null.
-     * </p>
-     *
-     * <p>
-     * Expect IllegalArgumentException.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Failure test for method addUserToBillingProjects() with null username.
+     * Expects IAE.
      */
-    public void testRetrieveById_Null_Id() throws Exception {
+    public void test_addUserToBillingProjectsNull() throws Exception {
         try {
-            bean.retrieveById(null, false);
-            fail("Expect IllegalArgumentException.");
+            instance.addUserToBillingProjects(null, new long[]{1, 2} );
+            fail("Expects IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // expect
+            // good
         }
     }
-
     /**
-     * Failure test of <code>retrieveById(Long, boolean)</code> method.
-     *
-     * <p>
-     * id is negative.
-     * </p>
-     *
-     * <p>
-     * Expect IllegalArgumentException.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Failure test for method addUserToBillingProjects() with null id list.
+     * Expects IAE.
      */
-    public void testRetrieveById_Negative_Id() throws Exception {
+    public void test_addUserToBillingProjectsNullList() throws Exception {
         try {
-            bean.retrieveById(-1L, false);
-            fail("Expect IllegalArgumentException.");
+            instance.addUserToBillingProjects("username", null);
+            fail("Expects IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // expect
+            // good
         }
     }
-
     /**
-     * <p>
-     * Tests the <code>retrieveById(Long, boolean)</code> for proper
-     * behavior.
-     * </p>
-     *
-     * <p>
-     * Expect EntityNotFoundException.
-     * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * Failure test for method addUserToBillingProjects() with empty name.
+     * Expects IAE.
      */
-    public void testRetrieveById_Invalid_Client() throws Exception {
+    public void test_addUserToBillingProjectsEmptyName() throws Exception {
         try {
-            // Note: this id doesn't exist in db
-            bean.retrieveById(1L, false);
-            fail("EntityNotFoundException expected.");
-        } catch (EntityNotFoundException e) {
-            // expect
+            instance.addUserToBillingProjects(EMPTY, new long[]{1, 2} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
         }
     }
-
     /**
-     * Failure test of <code>retrieveById(Long, boolean)</code> method.
-     *
-     * <p>
-     * entityManager is null.
-     * </p>
-     *
-     * <p>
-     * Expect DAOConfigurationException.
-     * </p>
-     *
-     * @throws Exception to JUnit.
+     * Failure test for method addUserToBillingProjects() with empty list
+     * Expects IAE.
      */
-    public void testRetrieveById_Null_EntityManager() throws Exception {
+    public void test_addUserToBillingProjectsEmptyList() throws Exception {
         try {
-            bean = new ProjectDAOBean();
-
-            bean.retrieveById(1L, false);
-
-            fail("Expect DAOConfigurationException.");
+            instance.addUserToBillingProjects("username", new long[]{} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method addUserToBillingProjects() with id less than 0.
+     * Expects IAE.
+     */
+    public void test_addUserToBillingProjectsIdLessThan0() throws Exception {
+        try {
+            instance.addUserToBillingProjects("username", new long[]{3, 2, 0} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method addUserToBillingProjects() with id less than 0.
+     * Expects IAE.
+     */
+    public void test_addUserToBillingProjectsIdLessThan02() throws Exception {
+        try {
+            instance.addUserToBillingProjects("username", new long[]{3, -1, 2} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method addUserToBillingProjects() with null entity manager.
+     * Expects DAOConfigurationException.
+     */
+    public void test_addUserToBillingProjectsNullEntityManager() throws Exception {
+        try {
+            instance.addUserToBillingProjects("username", new long[]{1, 2} );
+            fail("Expects DAOConfigurationException");
         } catch (DAOConfigurationException e) {
-            // expect
+            // good
         }
     }
 
+    /**
+     * Failure test for method removeUserFromBillingProjects() with null username.
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsNull() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects(null, new long[]{1, 2} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with null id list.
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsNullList() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects("username", null);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with empty name.
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsEmptyName() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects(EMPTY, new long[]{1, 2} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with empty list
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsEmptyList() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects("username", new long[]{} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with id less than 0.
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsIdLessThan0() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects("username", new long[]{3, 2, 0} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with id less than 0.
+     * Expects IAE.
+     */
+    public void test_removeUserFromBillingProjectsIdLessThan02() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects("username", new long[]{3, -1, 2} );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method removeUserFromBillingProjects() with null entity manager.
+     * Expects DAOConfigurationException.
+     */
+    public void test_removeUserFromBillingProjectsNullEntityManager() throws Exception {
+        try {
+            instance.removeUserFromBillingProjects("username", new long[]{1, 2} );
+            fail("Expects DAOConfigurationException");
+        } catch (DAOConfigurationException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method getProjectsByClientId() with id = 0.
+     * Expects IAE.
+     */
+    public void test_getProjectsByClientIdIdEqualsZero() throws Exception {
+        try {
+            instance.getProjectsByClientId(0);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method getProjectsByClientId() with id less than 0.
+     * Expects IAE.
+     */
+    public void test_getProjectsByClientIdIdLessThan0() throws Exception {
+        try {
+            instance.getProjectsByClientId(-1);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method getProjectsByClientId() with null entity manager.
+     * Expects DAOConfigurationException.
+     */
+    public void test_getProjectsByClientIdNullEntityManager() throws Exception {
+        try {
+            instance.getProjectsByClientId(1);
+            fail("Expects DAOConfigurationException");
+        } catch (DAOConfigurationException e) {
+            // good
+        }
+    }
 }

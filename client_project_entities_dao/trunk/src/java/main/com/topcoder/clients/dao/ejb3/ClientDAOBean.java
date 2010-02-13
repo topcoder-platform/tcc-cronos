@@ -3,7 +3,6 @@
  */
 package com.topcoder.clients.dao.ejb3;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,7 +13,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import com.topcoder.clients.dao.ClientDAO;
 import com.topcoder.clients.dao.DAOConfigurationException;
@@ -49,7 +47,7 @@ import com.topcoder.clients.model.Project;
  * than once for the session beans and the EJB3 container ensure the thread
  * safety in this case.
  * </p>
- * 
+ *
  * @author Mafy, TCSDEVELOPER
  * @version 1.0
  */
@@ -59,14 +57,14 @@ import com.topcoder.clients.model.Project;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
         ClientDAO, ClientDAOLocal, ClientDAORemote {
-	
-	
 
-	/**
+
+
+    /**
      * The query string used to select projects.
      */
     private static final String QUERYSTRING = "select p from Project p "
-            + "where p.client = :client and p.deleted = false";
+            + "where p.client = :client and (p.deleted is null or p.deleted = false)";
 
     /**
      * Default no-arg constructor. Constructs a new 'ClientDAOBean' instance.
@@ -96,7 +94,6 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<Project> getProjectsForClient(Client client)
         throws DAOException {
         Helper.checkNull(client, "client");
@@ -107,13 +104,13 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
             retrieveById(client.getId());
             return Helper.getEntities("client", client, entityManager, QUERYSTRING);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to get project for client.");
         }
     }
 
-  
 
-	
+
+
 
 }

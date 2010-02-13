@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -33,76 +33,105 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
  * This abstract class represents the base GenericEJB3DAO class.
  * </p>
  * <p>
- * This base class implements the generic methods available for all the concrete
- * DAOs: retrieve entity by id, retrieve all entities, search entities by name,
- * search entities using the given filter, save an given entity, delete an given
+ * This base class implements the generic methods available for all the concrete DAOs: retrieve entity by id, retrieve
+ * all entities, search entities by name, search entities using the given filter, save an given entity, delete an given
  * entity.
  * </p>
  * <p>
- * It is configured with an EntityManager (initialized by the EJB container
- * through dependency injection) needed to perform operations on the persistence
- * and also uses TopCoder Search Builder 1.4 component to perform the search
- * using the given Filter.
+ * It is configured with an EntityManager (initialized by the EJB container through dependency injection) needed to
+ * perform operations on the persistence and also uses TopCoder Search Builder 1.4 component to perform the search using
+ * the given Filter.
  * </p>
  * <p>
  * NOTE: it is not an Stateless session bean.
  * </p>
  * <p>
  * <b>sample usage of EJBs:</b>
- * 
+ *
  * <pre>
  * // retrieve bean
  * InitialContext ctx = new InitialContext();
- * ProjectDAORemote bean = (ProjectDAORemote) ctx
- *         .lookup(&quot;client_project_entities_dao/ProjectDAOBean/remote&quot;);
- * 
- * Filter filter = new EqualToFilter(&quot;projectStatus&quot;, project.getProjectStatus()
- *         .getId());
- * 
+ * ProjectDAORemote bean = (ProjectDAORemote) ctx.lookup(&quot;client_project_entities_dao/ProjectDAOBean/remote&quot;);
+ *
+ * Filter filter = new EqualToFilter(&quot;projectStatus&quot;, project.getProjectStatus().getId());
+ *
  * List&lt;Project&gt; projects;
- * 
+ *
  * // get project for corresponding id
  * Project tempProject = bean.retrieveById(100L);
- * 
+ *
  * // get all projects
  * projects = bean.retrieveAll();
- * 
+ *
  * // get all projects with the name &quot;name&quot;
  * projects = bean.searchByName(&quot;name&quot;);
- * 
+ *
  * // get all that match the given filter
  * projects = bean.search(filter);
- * 
+ *
  * // save or update a project
  * bean.save(project);
- * 
+ *
  * // delete the project
  * bean.delete(project);
- * 
+ *
  * // get project for corresponding id without projectChildren
  * tempProject = bean.retrieveById(100L, false);
- * 
+ *
  * // get project for corresponding id with projectChildren
  * tempProject = bean.retrieveById(100L, true);
- * 
+ *
  * // get all projects without projectChildrens
  * projects = bean.retrieveAll(false);
- * 
+ *
  * // get all projects with projectChildrens
  * projects = bean.retrieveAll(true);
+ *
+ * // get projects by user
+ * projects = bean.getProjectsByUser(&quot;username&quot;);
+ *
+ * // get all projects only
+ * projects = bean.retrieveAllProjectsOnly();
+ *
+ * // search projects by project name
+ * projects = bean.searchProjectsByProjectName(&quot;projectname&quot;);
+ *
+ * // search projects by client name
+ * projects = bean.searchProjectsByClientName(&quot;clientname&quot;);
+ *
+ * // get contest fees by project
+ * List&lt;ProjectContestFee&gt; fees = bean.getContestFeesByProject(100L);
+ *
+ * // save contest fees
+ * bean.saveContestFees(fees, 100L);
+ *
+ * // check client project permission
+ * boolean clientProjectPermission = bean.checkClientProjectPermission(&quot;username&quot;, 100L);
+ *
+ * // check po number permission
+ * boolean poNumberPermission = bean.checkPoNumberPermission(&quot;username&quot;, &quot;123456A&quot;);
+ *
+ * // add user to billing projects.
+ * bean.addUserToBillingProjects(&quot;username&quot;, new long[] {100, 101, 102});
+ *
+ * // remove user from billing projects.
+ * bean.removeUserFromBillingProjects(&quot;ivern&quot;, new long[] {100, 201});
+ *
+ * // get the projects by the given client id.
+ * projects = bean.getProjectsByClientId(200);
  * </pre>
- * 
+ *
  * </p>
  * <p>
- * <strong>THREAD SAFETY:</strong> Implementations of this interface should be
- * thread safe.
+ * <strong>THREAD SAFETY:</strong> Implementations of this interface should be thread safe.
  * </p>
- * 
- * @param <T> The entity type to operate
- * @param <Id> The type of id of entity
  *
+ * @param <T>
+ *            The entity type to operate
+ * @param <Id>
+ *            The type of id of entity
  * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
  */
 public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Serializable>
         implements GenericDAO<T, Id> {
@@ -440,7 +469,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
 
         String queryString = "select e from "
                 + entityBeanType.getCanonicalName()
-                + " e where e.id = :id and e.deleted = false";
+                + " e where e.id = :id and (e.deleted is null or e.deleted = false)";
         Query query = entityManager.createQuery(queryString);
         query.setParameter("id", id);
 
@@ -472,7 +501,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
     public List<T> retrieveAll() throws DAOException {
         String queryString = "select e from "
                 + entityBeanType.getCanonicalName() + " as e"
-                + " where e.deleted = false";
+                + " where e.deleted is null or e.deleted = false";
         Query query = Helper.checkEntityManager(entityManager).createQuery(
                 queryString);
 
@@ -502,7 +531,6 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<T> searchByName(String name) throws DAOException {
         Helper.checkNullAndEmpty(name, "name");
         Helper.checkEntityManager(entityManager);
@@ -533,7 +561,6 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<T> search(Filter filter) throws DAOException {
         Helper.checkNull(filter, "filter");
         EqualToFilter equalToFilter = new EqualToFilter("deleted", new Boolean(
@@ -593,7 +620,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
             persitedEntity.setDeleted(true);
             entityManager.merge(persitedEntity);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to delete entity.");
         }
     }

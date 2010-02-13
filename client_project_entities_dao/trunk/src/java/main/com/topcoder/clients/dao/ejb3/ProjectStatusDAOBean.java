@@ -62,7 +62,7 @@ public class ProjectStatusDAOBean extends GenericEJB3DAO<ProjectStatus, Long>
      * The sql string for method getProjectsWithStatus.
      */
     private static final String QUERY = "select p from Project p"
-            + " where p.projectStatus = :status and p.deleted = false";
+            + " where p.projectStatus = :status and (p.deleted is null or p.deleted = false)";
 
     /**
      * Default no-arg constructor. Constructs a new 'ProjectStatusDAOBean'
@@ -91,7 +91,6 @@ public class ProjectStatusDAOBean extends GenericEJB3DAO<ProjectStatus, Long>
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    @SuppressWarnings("unchecked")
     public List<Project> getProjectsWithStatus(ProjectStatus status)
         throws EntityNotFoundException, DAOException {
         Helper.checkNull(status, "status");
@@ -102,7 +101,7 @@ public class ProjectStatusDAOBean extends GenericEJB3DAO<ProjectStatus, Long>
             retrieveById(status.getId());
             return Helper.getEntities("status", status, entityManager, QUERY);
         } catch (Exception e) {
-            throw Helper.WrapExceptionWithDAOException(e,
+            throw Helper.wrapWithDAOException(e,
                     "Failed to get get projects with status.");
         }
     }

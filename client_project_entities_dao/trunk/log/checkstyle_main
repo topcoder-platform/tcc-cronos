@@ -1,0 +1,87 @@
+Starting audit...
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientDAO.java:30:46: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientDAO.java:30:47: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientDAO.java:30:59: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientStatusDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientStatusDAO.java:30:52: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientStatusDAO.java:30:53: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ClientStatusDAO.java:30:71: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\CompanyDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\CompanyDAO.java:30:47: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\CompanyDAO.java:30:48: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\CompanyDAO.java:30:61: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\GenericDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\GenericDAO.java:33:28: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\GenericDAO.java:33:29: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\GenericDAO.java:33:79: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectDAO.java:41: warning: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectDAO.java:42:47: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectDAO.java:42:48: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectDAO.java:42:61: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectStatusDAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectStatusDAO.java:31:53: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectStatusDAO.java:31:54: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ProjectStatusDAO.java:31:73: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAOBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAOBean.java:58:50: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAOBean.java:58:51: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAOBean.java:58:63: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAOLocal.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientDAORemote.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAOBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAOBean.java:58:56: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAOBean.java:58:57: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAOBean.java:58:75: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAOLocal.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ClientStatusDAORemote.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAOBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAOBean.java:59:51: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAOBean.java:59:52: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAOBean.java:59:65: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAOLocal.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\CompanyDAORemote.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOConfigurationException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:136:37: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:136:38: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:136:88: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:137:30: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:137:31: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:137:36: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:244:24: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:244:25: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:244:26: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:265:34: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:265:35: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:265:40: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:275:32: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:275:33: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:275:34: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\GenericEJB3DAO.java:275:35: warning: '>' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\Helper.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOConfigurationException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOBean.java:87: warning: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOBean.java:90:51: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOBean.java:90:52: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOBean.java:90:65: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAOLocal.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectDAORemote.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAOBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'EntityNotFoundException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAOBean.java:58:57: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAOBean.java:58:58: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAOBean.java:58:77: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAOLocal.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\ProjectStatusDAORemote.java:30: warning: interfaces should describe a type and hence have methods.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtility.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtility.java:30:39: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtility.java:30:40: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtility.java:30:90: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'DAOConfigurationException'.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:38:39: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:38:40: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:38:90: warning: '>' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:39:41: warning: '<' is not preceded with whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:39:42: warning: '<' is not followed by whitespace.
+D:\Components\client_project_entities_dao\src\java\main\com\topcoder\clients\dao\ejb3\SearchByFilterUtilityImpl.java:39:47: warning: '>' is not preceded with whitespace.
+Audit done.
