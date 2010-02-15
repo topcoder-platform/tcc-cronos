@@ -493,7 +493,7 @@
                         break;
                     }
 
-		    sum = sum + amount;
+		            sum = sum + amount;
 
                     prizeData.place=i + 1;
                     prizeData.amount=amount;
