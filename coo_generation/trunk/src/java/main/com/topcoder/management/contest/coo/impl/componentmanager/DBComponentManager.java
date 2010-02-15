@@ -63,8 +63,13 @@ public class DBComponentManager extends BaseDBConnector implements
         ComponentManager {
 
     /** SQL query sentence to retrieve component from database. */
-    private static final String COMPONENT_QUERY = "SELECT url,license,usage_comments "
-            + "FROM third_party_library WHERE name=? AND version= ?";
+    private static final String COMPONENT_QUERY = "SELECT url,license,usage_comments,description, version "
+            + "FROM third_party_library WHERE LOWER(name)=LOWER(?) AND version=?";
+
+    /** SQL query sentence to retrieve component from database. */
+    private static final String COMPONENT_BY_NAME_QUERY = "SELECT url,license,usage_comments,description, version, "
+            + "(select count(*) from third_party_library WHERE LOWER(name)=LOWER(?)) as count "
+            + "FROM third_party_library WHERE LOWER(name)=LOWER(?)";
 
     /** SQL update sentence to insert component to database. */
     private static final String UPDATE_SQL = "INSERT INTO third_party_library "
@@ -107,7 +112,7 @@ public class DBComponentManager extends BaseDBConnector implements
         final String signature = "DBComponentManager#retrieveComponent";
         Helper.logEnter(getLogger(), signature);
         Helper.checkString(getLogger(), "name", name);
-        Helper.checkString(getLogger(), "version", version);
+        //Helper.checkString(getLogger(), "version", version);
         // retrieve component information from database.
         Connection connection = null;
         PreparedStatement select = null;
@@ -115,23 +120,35 @@ public class DBComponentManager extends BaseDBConnector implements
         try {
             connection = getDbConnectionFactory().createConnection(getConnectionName());
             select = connection.prepareStatement(COMPONENT_QUERY);
+   
             select.setString(1, name);
             select.setString(2, version);
             result = select.executeQuery();
             Component component = new Component();
-            if (result.next()) {
-                // get component from database.
-                component.setUrl(result.getString(1));
-                component.setLicense(result.getString(2));
-                component.setDescription(result.getString(3));
-            } else {
-                // not find component from database.
-                return null;
+            if (!result.next()) {
+            	select = connection.prepareStatement(COMPONENT_BY_NAME_QUERY);
+                select.setString(1, name);
+                select.setString(2, name);
+                result = select.executeQuery();
+                if (!result.next() || result.getInt(6) != 1) {
+                	return null;
+                }
+            }
+            
+            // get component from database.
+            component.setUrl(result.getString(1));
+            component.setLicense(result.getString(2));
+            component.setDescription(result.getString(3));
+            component.setFullName(result.getString(4));
+            component.setVersion(result.getString(5));
+
+            if (component.getFullName() == null || component.getFullName().trim().length() == 0) {
+            	component.setFullName(name);
             }
 
             // set the properties
             component.setName(name);
-            component.setVersion(version);
+            //component.setVersion(version);
 
             // log component information retrieved from database.
             Helper.logInfo(getLogger(), MessageFormat.format("retrieve Component from DB: name[{0}],version[{1}],"

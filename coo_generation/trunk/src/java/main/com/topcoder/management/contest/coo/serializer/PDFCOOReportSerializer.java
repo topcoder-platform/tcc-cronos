@@ -236,26 +236,27 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
         } else if (fieldCode.equals("designSecondPlace")) {
             value = report.getContestData().getDesignSecondPlace();
         } else if (fieldCode.equals("designReviewer1")) {
-            value = report.getContestData().getDesignReviewers().get(0);
+            value = getListElement(report.getContestData().getDesignReviewers(), 0);
         } else if (fieldCode.equals("designReviewer2")) {
-            value = report.getContestData().getDesignReviewers().get(1);
+            value = getListElement(report.getContestData().getDesignReviewers(), 1);
         } else if (fieldCode.equals("designReviewer3")) {
-            value = report.getContestData().getDesignReviewers().get(2);
+            value = getListElement(report.getContestData().getDesignReviewers(), 2);
         } else if (fieldCode.equals("developmentWinner")) {
             value = report.getContestData().getDevelopmentWinner();
         } else if (fieldCode.equals("developmentSecondPlace")) {
             value = report.getContestData().getDevelopmentSecondPlace();
         } else if (fieldCode.equals("developmentReviewer1")) {
-            value = report.getContestData().getDevelopmentReviewers().get(0);
+            value = getListElement(report.getContestData().getDevelopmentReviewers(), 0);
         } else if (fieldCode.equals("developmentReviewer2")) {
-            value = report.getContestData().getDevelopmentReviewers().get(1);
+        	value = getListElement(report.getContestData().getDevelopmentReviewers(), 1);
         } else if (fieldCode.equals("developmentReviewer3")) {
-            value = report.getContestData().getDevelopmentReviewers().get(2);
+        	value = getListElement(report.getContestData().getDevelopmentReviewers(), 2);
         } else if (fieldCode.equals("projectId")) {
             value = report.getProjectId() + "";
         } else if (fieldCode.equals("hasdependency")) {
-            if (dependencies.size() == 0) {
-                // if have no dependency,just break
+        	if (report.isDependenciesError()) {
+        		value = "Yes, but cannot get all the dependencies, please check the dependency file.";
+        	} else if (dependencies.size() == 0) {
                 value = "No";
             } else {
                 value = "Yes";
@@ -302,6 +303,19 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
     }
 
     /**
+     * Gets element from list.
+     * @param list the list of strings.
+     * @param index the index of element to get.
+     * @return element from list.
+     */
+    private String getListElement(List<String> list, int index) {
+    	if (list == null || index >= list.size()) {
+    		return "";
+    	}
+    	return list.get(index);
+    }
+
+    /**
      * generate component dependencies table for report.
      *
      * @param components to report.
@@ -340,7 +354,14 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
         // generate the component dependency row in table.
         int idx = 1;
         for (Component component : components) {
-            setValueForCell(xCellRange, component.getName(), idx, 0);
+            if (component.getFullName() != null && !component.getFullName().equals(""))
+            {
+                setValueForCell(xCellRange, component.getFullName(), idx, 0);
+            }
+            else
+            {
+                setValueForCell(xCellRange, component.getName(), idx, 0);
+            }
             setValueForCell(xCellRange, component.getVersion(), idx, 1);
             setValueForCell(xCellRange, component.getDescription(), idx, 2);
             setValueForCell(xCellRange, component.getUrl(), idx, 3);

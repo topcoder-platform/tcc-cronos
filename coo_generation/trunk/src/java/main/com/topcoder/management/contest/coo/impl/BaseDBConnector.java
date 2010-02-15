@@ -76,7 +76,9 @@ public abstract class BaseDBConnector {
         throws ConfigurationException {
         Helper.checkNull("configuration", configuration);
 
+
         try {
+
             configuration = Helper.getChild(configuration, "default");
 
             // get logger instance
@@ -92,6 +94,9 @@ public abstract class BaseDBConnector {
         } catch (UnknownConnectionException e) {
             throw new ConfigurationException("fail to create db connection factory.", e);
         } catch (com.topcoder.db.connectionfactory.ConfigurationException e) {
+            throw new ConfigurationException("connection factory configuration error occur", e);
+        }
+        catch (Exception e) {
             throw new ConfigurationException("connection factory configuration error occur", e);
         }
     }

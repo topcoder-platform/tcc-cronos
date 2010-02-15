@@ -9,7 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.db.connectionfactory.DBConnectionException;
@@ -56,38 +59,55 @@ public class DBContestDataRetriever extends BaseDBConnector implements
     /**
      * SQL query sentence to retrieve component information.
      */
-    private static final String COMPONENT_QUERY = "select component_name, version_id,category, "
-            + "end_date from project where project_id = ?";
-    /**
-     * SQL query sentence to retrieve SVN information.
-     */
-    private static final String SVN_QUERY = "select value from project_info "
-            + "where project_info_type_id = 8 and project_id = ?";
-    /**
-     * SQL query sentence to retrieve project phase information.
-     */
-    private static final String PROJECT_PHASE_QUERY = "select phase_desc from project where project_id = ?";
-    /**
-     * SQL query sentence to retrieve winner information.
-     */
-    private static final String WINNER_QUERY = "select user_id from project_result "
-            + "where project_id = ? and submit_ind = 1";
-    /**
-     * SQL query sentence to retrieve second place information.
-     */
-    private static final String SECOND_PLACE_QUERY = "select user_id from project_result "
-            + "where project_id = ? and submit_ind = 2";
+    private static final String PROJECT_INFO_QUERY = "select c.category_name, pcl.name as phase, "
+    	+ "(select max(actual_end_time) from project_phase where project_id = ?) as end_time, "
+    	+ "pi6.value as component_name, pi7.value as verion, pi8.value as svn, "
+    	+ "u1.handle as first_winner, "
+        + " (select handle from project_info, user where project_id = ? and project_info_type_id = 24 and user_id=value) as second_winner "
+    	+ "from categories c, comp_catalog cc, project_info pi2, project_category_lu pcl, project p, "
+    	+ "project_info pi6, project_info pi7, project_info pi8, project_info pi23, user u1 "
+    	+ "where c.category_id=cc.root_category_id and cc.component_id=pi2.value and pi2.project_id=? "
+    	+ "and pcl.project_category_id = p.project_category_id and pi2.project_info_type_id=2 and p.project_id = pi2.project_id "
+    	+ "and pi6.project_id = p.project_id and pi6.project_info_type_id = 6 "
+    	+ "and pi7.project_id = p.project_id and pi7.project_info_type_id = 7 "
+    	+ "and pi8.project_id = p.project_id and pi8.project_info_type_id = 8 "
+    	+ "and pi23.project_id = p.project_id and pi23.project_info_type_id = 23 and u1.user_id = pi23.value ";
+
     /**
      * SQL query sentence to retrieve component information.
      */
-    private static final String REVIEWS_QUERY = "select reviewer_id from submission_review where project_id = ?";
+    private static final String REVIEWS_QUERY = "select ri.value from resource_info ri, resource r "
+    	+ "where r.project_id=? and r.resource_role_id in (4, 5, 6, 7) and ri.resource_id=r.resource_id "
+    	+ "and ri.resource_info_type_id=2";
 
     /**
      * SQL query sentence to retrieve design project id when this is a
      * development project.
      */
-    private static final String DESIGN_PROJECT_ID_QUERY = "select project_id from project "
-            + "where component_name = ? AND version_id = ?";
+    private static final String FIND_CORRESPONDING_DESIGN_CONTEST = "select q1.project_id from project p, project_info q1 " 
+        + "join project_info p1 on p1.value = q1.value and p1.project_info_type_id = 1 and p1.project_id = ? " 
+        + "join project_info q2 on q2.project_id = q1.project_id and q2.project_info_type_id = 2 " 
+        + "join project_info p2 on p2.value = q2.value and p2.project_info_type_id = 2 and p2.project_id = ? " 
+        + "join project_info q3 on q3.project_id = q1.project_id and q3.project_info_type_id = 3 " 
+        + "join project_info p3 on p3.value = q3.value and p3.project_info_type_id = 3 and p3.project_id = ? " 
+        + "where q1.project_info_type_id = 1 and p.project_id = q1.project_id and p.project_category_id = 1 " 
+        + " and p.project_status_id in (1,2,7) and q1.project_id <> ?";
+
+    /** Type id of component name. */
+    private static final int COMPONENT_NAME_TYPE_ID = 6;
+    /** Type id of version. */
+    private static final int VERSION_TYPE_ID = 7;
+    /** Type id of svn path. */
+    private static final int SVN_PATH_TYPE_ID = 8;
+    /** Type id of first place user. */
+    private static final int FIRST_PLACE_USER_TYPE_ID = 23;
+    /** Type id of second place user. */
+    private static final int SECOND_PLACE_USER_TYPE_ID = 24;
+
+    /** Design category id. */
+    private static final String DESIGN_CATEGORY_ID = "Design";
+    /** Development category id. */
+    private static final String DEVELOPMENT_CATEGORY_ID = "Development";
 
     /**
      * Constructor.
@@ -127,45 +147,30 @@ public class DBContestDataRetriever extends BaseDBConnector implements
             connection = this.getDbConnectionFactory().createConnection(getConnectionName());
             ContestData contestData = new ContestData();
 
-            String componentName;
-            String versionId;
-            rs = executeQuery(connection, stmt, projectId, COMPONENT_QUERY);
-            if (rs.next()) {
-                componentName = rs.getString(1);
-                versionId = rs.getString(2);
-                contestData.setComponentName(componentName + " " + versionId);
-                contestData.setCategory(rs.getString(3));
-                contestData.setContestEndDate(rs.getDate(4));
-            } else {
-                throw new ContestDataRetrieverException("project with id["
+            // get project information
+            ProjectInfo projectInfo = getProjectInfo(connection, projectId, COMPONENT_NAME_TYPE_ID,
+            		VERSION_TYPE_ID, FIRST_PLACE_USER_TYPE_ID, SECOND_PLACE_USER_TYPE_ID, SVN_PATH_TYPE_ID);
+            if (projectInfo.componentName == null || projectInfo.versionId == null) {
+            	throw new ContestDataRetrieverException("project with id["
                         + projectId + "] doesn't exist in DB.");
             }
-            // retrieve svnPath
-            String svnPath = retrieveOneColumnFromQuery(connection, stmt, rs, projectId,
-                SVN_QUERY, false, "svnPath");
-            contestData.setSvnPath(svnPath);
-            // get the phase of the project
-            String phase = retrieveOneColumnFromQuery(connection, stmt, rs, projectId,
-                PROJECT_PHASE_QUERY, false, "phase");
+            contestData.setComponentName(projectInfo.componentName + " " + projectInfo.versionId);
+            contestData.setSvnPath(projectInfo.svnPath);
+            String winner = projectInfo.winner;
+            String secondPlace = projectInfo.secondPlace;
+            contestData.setCategory(projectInfo.category);
+            String phase = projectInfo.phase;
+            contestData.setContestEndDate(projectInfo.endTime);
             // log contest data retrieved from DB.
             Helper.logInfo(getLogger(), MessageFormat.format("retrieve ContestData from DB: componentName[{0}],"
                     + " contestEndDate[{1}], category[{2}],svnPath[{3}] ,"
                     + " phase[{4}].", contestData.getComponentName(), contestData.getContestEndDate(),
                     contestData.getCategory(), contestData.getSvnPath(), phase));
-            String winner = retrieveOneColumnFromQuery(connection, stmt, rs, projectId, WINNER_QUERY, true, null);
-            String secondPlace = retrieveOneColumnFromQuery(connection, stmt, rs, projectId,
-                SECOND_PLACE_QUERY, true, null);
-            // get reviewers as follow
-            List<String> reviewers = new ArrayList<String>();
-            rs = executeQuery(connection, stmt, projectId, REVIEWS_QUERY);
-            while (rs.next()) {
-                reviewers.add(rs.getString(1));
-            }
-            setContestDataField(phase, contestData, winner, secondPlace, reviewers);
-            if (phase.equals("development")) {
-                // set design field for the contest data if this is in
-                // development phase.
-                setDesignFieldForDevelopment(connection, stmt, rs, componentName, versionId, projectId, contestData);
+
+            setContestDataField(phase, contestData, winner, secondPlace, getReviewersList(connection, projectId));
+            if (phase.equals(DEVELOPMENT_CATEGORY_ID)) {
+                // set design field for the contest data if this is in development phase.
+                setDesignFieldForDevelopment(connection, projectId, contestData);
             }
             return contestData;
         } catch (DBConnectionException e) {
@@ -177,6 +182,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
             Helper.logExit(getLogger(), signature);
         }
     }
+
     /**
      * <p>
      * set winner, second place, reviews for contest data.
@@ -188,10 +194,9 @@ public class DBContestDataRetriever extends BaseDBConnector implements
      * @param secondPlace the second place.
      * @param reviewers the reviewer
      */
-
     private void setContestDataField(String phase, ContestData contestData,
             String winner, String secondPlace, List<String> reviewers) {
-        if (phase.equals("design")) {
+        if (phase.equals(DESIGN_CATEGORY_ID)) {
             contestData.setDesignWinner(winner);
             contestData.setDesignSecondPlace(secondPlace);
             contestData.setDesignReviewers(reviewers);
@@ -199,7 +204,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
             Helper.logInfo(getLogger(), MessageFormat.format("retrieve ContestData from DB:"
                     + " componentName[{0}], designWinner[{1}], designSecondPlace[{2}],"
                     + " phase[{3}] " + getReviewers(reviewers), contestData.getComponentName(), winner, secondPlace));
-        } else if (phase.equals("development")) {
+        } else if (phase.equals(DEVELOPMENT_CATEGORY_ID)) {
             contestData.setDevelopmentWinner(winner);
             contestData.setDevelopmentSecondPlace(secondPlace);
             contestData.setDevelopmentReviewers(reviewers);
@@ -209,40 +214,62 @@ public class DBContestDataRetriever extends BaseDBConnector implements
                     + " phase[{3}] " + getReviewers(reviewers), contestData.getComponentName(), winner, secondPlace));
         }
     }
+
     /**
-     * <p>
-     * retrieve the result only one row returned with string column (like
-     * winner, second place, SVN path...) from query.
-     * </p>
+     * Gets project info from database.
      *
      * @param connection the database connection.
-     * @param stmt the prepared statement.
-     * @param rs the result set.
      * @param projectId the project id.
-     * @param query the SQL query sentence.
-     * @param nullable whether can be null,
-     * @param name for exception message, if can not be null,
-     * @return the one string column (like winner, second place, SVN path...),if
-     *         not found (winner,second place), return null, if (SVN path,phase)
-     *         throw exception.
-     * @throws SQLException if fail to retrieve data,delegate dealing to caller
-     *             method.
-     * @throws ContestDataRetrieverException if the value is required
+     * @param fields the fields to get.
+     * @throws SQLException if fail to retrieve data,delegate dealing to caller method.
+     * @return project info.
      */
-    private String retrieveOneColumnFromQuery(Connection connection,
-            PreparedStatement stmt, ResultSet rs, long projectId, String query,
-            boolean nullable, String name)
-        throws SQLException, ContestDataRetrieverException {
-        rs = executeQuery(connection, stmt, projectId, query);
-        String rt = null;
-        if (rs.next()) {
-            rt = rs.getString(1);
-        }
-        if (!nullable && rt == null) {
-            throw new ContestDataRetrieverException("project [" + name
-                    + " doesn't exist in DB.");
-        }
-        return rt;
+    private ProjectInfo getProjectInfo(Connection connection, long projectId, int ... fields)
+    	throws SQLException {
+    	ResultSet rs = null;
+    	try {
+	    	ProjectInfo projectInfo = new ProjectInfo();
+	    	rs = executeQuery(connection, PROJECT_INFO_QUERY, projectId, projectId, projectId);
+	        if (rs.next()) {
+	        	projectInfo.category = rs.getString(1);
+	        	projectInfo.phase = rs.getString(2);
+	        	projectInfo.endTime = rs.getDate(3);
+	        	projectInfo.componentName = rs.getString(4);
+	        	projectInfo.versionId = rs.getString(5);
+	        	projectInfo.svnPath = rs.getString(6);
+	        	projectInfo.winner = rs.getString(7);
+	        	projectInfo.secondPlace = rs.getString(8);
+	        }
+	    	return projectInfo;
+    	} finally {
+    		if (rs != null) {
+    			rs.close();
+    		}
+    	}
+    }
+
+    /**
+     * Gets reviewers for project from database.
+     *
+     * @param conn the database connection.
+     * @param projectId the project id.
+     * @return list of reviewers.
+     * @throws SQLException if fail to retrieve data,delegate dealing to caller method.
+     */
+    private List<String> getReviewersList(Connection conn, long projectId) throws SQLException {
+    	ResultSet rs = null;
+    	try {
+	    	Set<String> reviewers = new HashSet<String>();
+	    	rs = executeQuery(conn, REVIEWS_QUERY, projectId);
+	        while (rs.next()) {
+	            reviewers.add(rs.getString(1));
+	        }
+	        return new ArrayList<String>(reviewers);
+    	} finally {
+    		if (rs != null) {
+    			rs.close();
+    		}
+    	}
     }
 
     /**
@@ -250,11 +277,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
      * set design field for the contest data if this is in development phase.
      * </p>
      *
-     * @param conn the database connection
-     * @param stmt prepared statement.
-     * @param rs the result set.
-     * @param componentName the component name of development.
-     * @param versionId the version id of development
+     * @param conn the database connection.
      * @param projectId the development project id.
      * @param contestData the contest data to set.
      * @throws SQLException if fail to retrieve data,delegate dealing to caller
@@ -262,39 +285,53 @@ public class DBContestDataRetriever extends BaseDBConnector implements
      * @throws ContestDataRetrieverException if fail to retrieve data.
      */
     private void setDesignFieldForDevelopment(Connection conn,
-            PreparedStatement stmt, ResultSet rs, String componentName,
-            String versionId, long projectId, ContestData contestData)
+            long projectId, ContestData contestData)
         throws SQLException, ContestDataRetrieverException {
-        long designProjectId = 0;
-        // get designWinner as follow
-        stmt = conn.prepareStatement(DESIGN_PROJECT_ID_QUERY);
-        stmt.setString(1, componentName);
-        stmt.setString(2, versionId);
-        rs = stmt.executeQuery();
-        // This would return 2 project_ids, let designProjectId be the
-        // project_id that is different from projectId argument
-        while (rs.next()) {
-            if (rs.getLong(1) != projectId) {
-                designProjectId = rs.getLong(1);
-            }
-        }
-        String designWinner = retrieveOneColumnFromQuery(conn, stmt, rs, designProjectId, WINNER_QUERY, true, null);
-        String designSecond = retrieveOneColumnFromQuery(conn, stmt, rs, designProjectId,
-            SECOND_PLACE_QUERY, true, null);
+    	ResultSet rs = null;
+    	try {
+	        // get designWinner as follow
+	        rs = executeQuery(conn, FIND_CORRESPONDING_DESIGN_CONTEST, projectId, projectId, projectId, projectId);
+	        if (rs.next()) {
+	            long designProjectId = rs.getLong(1);
+	            ProjectInfo projectInfo = getProjectInfo(conn, designProjectId, FIRST_PLACE_USER_TYPE_ID, SECOND_PLACE_USER_TYPE_ID);
+	            String designWinner = projectInfo.winner;
+	            String designSecond = projectInfo.secondPlace;
 
-        // get reviewers as follow
-        List<String> reviewer = new ArrayList<String>();
-        rs = executeQuery(conn, stmt, designProjectId, REVIEWS_QUERY);
-        while (rs.next()) {
-            reviewer.add(rs.getString(1));
-        }
-        contestData.setDesignWinner(designWinner);
-        contestData.setDesignSecondPlace(designSecond);
-        contestData.setDesignReviewers(reviewer);
-        // log design information retrieved from DB.
-        Helper.logInfo(getLogger(), MessageFormat.format("retrieve design information for development phase:"
-                + " componentName[{0} {1}], designWinner[{2}], designSecondPlace[{3}]"
-                + getReviewers(reviewer), componentName, versionId, designWinner, designSecond));
+	            contestData.setDesignWinner(designWinner);
+	            contestData.setDesignSecondPlace(designSecond);
+	            List<String> reviewer = getReviewersList(conn, designProjectId);
+	            contestData.setDesignReviewers(reviewer);
+	            
+	            // log design information retrieved from DB.
+	            Helper.logInfo(getLogger(), MessageFormat.format("retrieve design information for development phase:"
+	                    + " designWinner[{0}], designSecondPlace[{1}]"
+	                    + getReviewers(reviewer), designWinner, designSecond));
+	        }
+    	} finally {
+    		if (rs != null) {
+    			rs.close();
+    		}
+    	}
+    }
+
+    /** Class to contain information about project. */ 
+    private class ProjectInfo {
+    	/** Component name. */
+    	private String componentName = null;
+    	/** Component version. */
+    	private String versionId = null;
+    	/** Winner user. */
+    	private String winner = null;
+    	/** Second palace user */
+    	private String secondPlace = null;
+    	/** SVN path of component */
+    	private String svnPath = null;
+    	/** Component category. */
+    	private String category = null;
+    	/** Component phase. */
+    	private String phase = null;
+    	/** Component end time. */
+    	private Date endTime = null;
     }
 
     /**
@@ -316,18 +353,19 @@ public class DBContestDataRetriever extends BaseDBConnector implements
      * execute SQL query to get <code>ResultSet</code>.
      *
      * @param connection the database connection
-     * @param stmt database statement.
-     * @param projectId the project id.
      * @param query the SQL query sentence.
+     * @param params query parameters.
      * @return the result set.
      * @throws SQLException if fail to execute query,caller method will catch
      *             this.
      */
-    private ResultSet executeQuery(Connection connection,
-            PreparedStatement stmt, long projectId, String query)
+    private ResultSet executeQuery(Connection connection, String query, Object ... params)
         throws SQLException {
-        stmt = connection.prepareStatement(query);
-        stmt.setLong(1, projectId);
+    	PreparedStatement stmt = connection.prepareStatement(query);
+    	for (int i = 0; i < params.length; i++) {
+    		stmt.setObject(i+1, params[i]);
+    	}
         return stmt.executeQuery();
     }
 }
+

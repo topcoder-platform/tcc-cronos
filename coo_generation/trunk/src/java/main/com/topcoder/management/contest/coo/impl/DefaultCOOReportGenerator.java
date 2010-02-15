@@ -3,10 +3,13 @@
  */
 package com.topcoder.management.contest.coo.impl;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.topcoder.configuration.ConfigurationObject;
@@ -208,37 +211,59 @@ public class DefaultCOOReportGenerator implements COOReportGenerator {
             ContestData contestData = contestDataRetriever.retrieveContestData(projectId);
             report.setContestData(contestData);
 
-            ComponentDependencyExtractor componentDependencyExtractor;
-
             // get the URL connection from SVN URL
-            URLConnection connection = new URL(svnBaseUrl + contestData.getSvnPath()).openConnection();
-            connection.setRequestProperty("Authorization", "Basic " + svnAuthentication);
+            if (contestData.getSvnPath() != null) {
+            	ComponentDependencyExtractor componentDependencyExtractor;
+            	String dependenciesfile;
+            	if (contestData.getCategory().equals("Java") || contestData.getCategory().equals("Java Custom")) {
+	                componentDependencyExtractor = javaComponentDependencyExtractor;
+	                dependenciesfile = "build-dependencies.xml";
+	            } else if (contestData.getCategory().equals(".NET") || contestData.getCategory().equals(".NET Custom")) {
+	                componentDependencyExtractor = dotNetComponentDependencyExtractor;
+	                dependenciesfile = "Build.dependencies";
+	            } else {
+	                throw new InvalidContestCategoryException("only support Java and .NET component now.");
+	            }
+	            URLConnection connection = new URL(svnBaseUrl + contestData.getSvnPath() + "/" + dependenciesfile).openConnection();
+	            if (svnAuthentication != null) {
+	            	connection.setRequestProperty("Authorization", "Basic " + svnAuthentication);
+	            }
+	            InputStream in = null;
+	            try {
+	            	in = connection.getInputStream();
+	            } catch (FileNotFoundException e) {
+					// skip file
+				}
+	            if (in != null) {
+		            //extract from input stream.
+		            List<ComponentDependency> dependencies = componentDependencyExtractor.
+		                   extractDependencies(in);
+		            List<ComponentDependency> externalDependencies = new ArrayList<ComponentDependency>();
+		            for (ComponentDependency dependency : dependencies) {
+		            	if (dependency == null) {
+		            		report.setDependenciesError(true);
+		            	} else if (dependency.getType().equals(DependencyType.EXTERNAL)) {
+		            		externalDependencies.add(dependency);
+		            	}
+		            }
+		            report.setComponentDependencies(externalDependencies);
 
-            if (contestData.getCategory().equals("Java")) {
-                componentDependencyExtractor = javaComponentDependencyExtractor;
-            } else if (contestData.getCategory().equals(".NET")) {
-                componentDependencyExtractor = dotNetComponentDependencyExtractor;
-            } else {
-                throw new InvalidContestCategoryException("only support Java and .NET component now.");
+		            // fully populate the component property of each dependency
+		            for (ComponentDependency dependency : externalDependencies) {
+		                Component component = dependency.getComponent();
+		                // for external dependency where the version can be determined,
+		                // get the full info of the component.
+		               // if (component.getVersion() != null) {
+		                    Component fullComponent = componentManager.retrieveComponent(component.getName(),
+		                        component.getVersion());
+		                    if (fullComponent != null) {
+		                        dependency.setComponent(fullComponent);
+		                    }
+		               // }
+		            }
+	            }
             }
-            //extract from input stream.
-            List<ComponentDependency> dependencies = componentDependencyExtractor.
-            extractDependencies(connection.getInputStream());
-            report.setComponentDependencies(dependencies);
 
-            // fully populate the component property of each dependency
-            for (ComponentDependency dependency : dependencies) {
-                Component component = dependency.getComponent();
-                // for external dependency where the version can be determined,
-                // get the full info of the component.
-                if (component.getVersion() != null && dependency.getType().equals(DependencyType.EXTERNAL)) {
-                    Component fullComponent = componentManager.retrieveComponent(component.getName(),
-                        component.getVersion());
-                    if (fullComponent != null) {
-                        dependency.setComponent(fullComponent);
-                    }
-                }
-            }
             // return the result
             return report;
         } catch (MalformedURLException e) {

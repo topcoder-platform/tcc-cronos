@@ -80,7 +80,11 @@ public abstract class BaseCOOReportSerializer implements COOReportSerializer {
      */
     public BaseCOOReportSerializer(ConfigurationObject configuration)
         throws ConfigurationException {
-        Helper.checkNull("configuration", configuration);
+
+        Helper.checkNull("configuration", configuration); 
+
+        configuration = Helper.getChild(configuration, "default");
+        
         // get logger instance
         logger = Helper.getLogger(configuration);
 

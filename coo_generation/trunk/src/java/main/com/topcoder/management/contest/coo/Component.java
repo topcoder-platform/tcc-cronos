@@ -49,6 +49,11 @@ public class Component {
     private String license;
 
     /**
+     * Represents the full name of the component. can be null or empty.
+     */
+    private String fullName;
+
+    /**
      * Empty constructor.
      */
     public Component() {
@@ -148,4 +153,22 @@ public class Component {
     public void setLicense(String license) {
         this.license = license;
     }
+
+    /**
+     * Getter for the fullName field.
+     *
+     * @return The value of the fullName field.
+     */
+	public String getFullName() {
+		return fullName;
+	}
+
+	/**
+     * Setter for the fullName field. can be null or empty.
+     * @param fullName The component fullName.
+     */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
 }

@@ -199,7 +199,7 @@ public class JavaComponentDependencyExtractor implements
     private void extractNameAndVersion(String path, Component component) {
         // parse path to get name and version.
         // regular express match version
-        String regex = "([0-9]+)[\\.-]([0-9]+)([\\.-][0-9]+)*";
+        String regex = "([0-9]+)[\\.-]([0-9]+)([\\.-][0-9]+)*(.GA)?";
         String[] strs = path.split("/");
 
         // now path is something like "mysql-connector-java-5.1.7-bin.jar",
@@ -246,19 +246,20 @@ public class JavaComponentDependencyExtractor implements
         // we need confirm whether the version is extracted successfully from
         // file name.
         if (!Pattern.compile(regex).matcher(version).matches()) {
-            // if version doesn't exist in the file name.we need get it from
-            // path.
-            int i;
-            for (i = 0; i < strs.length - 1; i++) {
-                if (Pattern.compile(regex).matcher(strs[i]).matches()) {
-                    version = strs[i];
-                    break;
+        	version = path.substring(path.lastIndexOf('-') + 1, path.lastIndexOf('.'));
+        	if (!Pattern.compile(regex).matcher(version).matches()) {
+        		version = null;
+        		// if version doesn't exist in the file name.we need get it from path.
+                for (int i = 0; i < strs.length - 1; i++) {
+                    if (Pattern.compile(regex).matcher(strs[i]).matches()) {
+                        version = strs[i];
+                        break;
+                    }
                 }
-            }
-            // if doesn't find in path either, set null value.
-            if (i == (strs.length - 1)) {
-                version = null;
-            }
+        	}
+        }
+        if (name.endsWith("-")) {
+        	name = name.substring(0, name.length() - 1);
         }
         component.setName(name);
         component.setVersion(version);
@@ -292,7 +293,14 @@ public class JavaComponentDependencyExtractor implements
                     } else {
                         path = loc;
                     }
-                    list.add(getComponentDependency(path, category, type));
+                    if (path != null && !path.equals(""))
+                    {
+                        list.add(getComponentDependency(path, category, type));
+                    } else {
+                    	list.add(null);
+                    }
+                } else {
+                	list.add(null);
                 }
             }
         }

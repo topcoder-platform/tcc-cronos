@@ -42,6 +42,11 @@ public class COOReport {
     private long projectId;
 
     /**
+     * Represents the presents of error in dependencies.
+     */
+    private boolean dependenciesError = false;
+
+    /**
      * Empty constructor.
      */
     public COOReport() {
@@ -114,4 +119,23 @@ public class COOReport {
         Helper.checkId(null, "projectId", projectId);
         this.projectId = projectId;
     }
+
+    /**
+     * Getter for dependenciesError field.
+     *
+     * @return The value of the dependenciesError field.
+     */
+	public boolean isDependenciesError() {
+		return dependenciesError;
+	}
+
+	/**
+	 * Setter for the dependenciesError field.
+	 * @param dependenciesError is any error presents.
+	 */
+	public void setDependenciesError(boolean dependenciesError) {
+		this.dependenciesError = dependenciesError;
+	}
+    
 }
+
