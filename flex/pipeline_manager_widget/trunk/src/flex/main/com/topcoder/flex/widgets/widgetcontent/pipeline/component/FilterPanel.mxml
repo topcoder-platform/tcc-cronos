@@ -58,6 +58,7 @@
                 	this.activeStatusCB.selected = true;
                 	this.scheduledStatusCB.selected = true;
                 	this.completedStatusCB.selected = true;
+                    this.canceledStatusCB.selected = true;
                 } else {
                 	for each(var s:String in model.filter.excludedStatus) {
                 		if (s.toLowerCase() == 'draft') {
@@ -68,6 +69,8 @@
                 			activeStatusCB.selected = false;
                 		} else if (s.toLowerCase() == 'completed') {
                 			completedStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'canceled') {
+                			canceledStatusCB.selected = false;
                 		}
                 	}
                 }
@@ -247,6 +250,12 @@
                      verticalGap="0">
 	        	<mx:CheckBox id="activeStatusCB" selected="true" label="Active" change="filterByStatus(event)"/>
 	        	<mx:CheckBox id="completedStatusCB" selected="true" label="Completed" change="filterByStatus(event)"/>
+	        </mx:VBox>	
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+	        	<mx:CheckBox id="canceledStatusCB" selected="true" label="Canceled" change="filterByStatus(event)"/>
 	        </mx:VBox>	
         </mx:HBox>
              
