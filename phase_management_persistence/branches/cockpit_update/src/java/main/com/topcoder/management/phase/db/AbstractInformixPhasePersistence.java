@@ -670,7 +670,6 @@ public abstract class AbstractInformixPhasePersistence extends
         Connection conn = getConnection();
 
 		long projectId = phases[0].getProject().getId();
-		Map phasesMap = new HashMap();
 
 		
 
@@ -685,25 +684,6 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // start the transaction
             startTransaction(context);
-
-
-			// recalcuate phase dates in case project start date changes
-			for (Phase p : phases) {
-						phasesMap.put(new Long(p.getId()), p);
-						p.setScheduledStartDate(null);
-						p.setScheduledEndDate(null);
-						p.setFixedStartDate(null);
-
-			 }	
-
-			fillDependencies(conn, phasesMap, new long[]{projectId});
-
-			for (Phase p : phases) {
-						p.setScheduledStartDate(p.calcStartDate());
-						p.setScheduledEndDate(p.calcEndDate());
-						p.setFixedStartDate(p.calcStartDate());
-
-				}	
 
             // get the phases criteria lookups
             Map lookUps = getCriteriaTypes(conn);
@@ -937,6 +917,31 @@ public abstract class AbstractInformixPhasePersistence extends
                 // ignore
             }
         }
+    }
+
+
+    /**
+     * This method selects all the dependencies for phases.
+     * @param conn the database connection.
+     * @param phases the map of already retrieved phases.
+     * @param projectIds all the project ids.
+     * @throws PhasePersistenceException if the phase dependencies cannot be
+     *             filled.
+     */
+    public void fillDependencies(Map phases, long[] projectIds)
+        throws PhasePersistenceException {
+
+         Connection conn = getConnection();
+
+        try {
+            fillDependencies(conn, phases, projectIds);
+        } catch (SQLException ex) {
+            throw new PhasePersistenceException(
+                    "Error occurs while fill Dependencies.", ex);
+        } finally {
+            disposeConnection(conn);
+        }
+
     }
 
     /**
