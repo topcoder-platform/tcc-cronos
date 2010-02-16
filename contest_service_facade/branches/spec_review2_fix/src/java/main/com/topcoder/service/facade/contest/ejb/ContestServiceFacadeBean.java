@@ -4492,7 +4492,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
 
 		        //BugRace3074
-                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+/**                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
                     if (rst != 0) {
                         Duration twoDay = DatatypeFactory.newInstance().newDurationDayTime(true, 2, 0, 0, 0);
@@ -4521,7 +4521,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
 
                     }
-                }
+                } */
             } 
 
             // set project start date in production date
