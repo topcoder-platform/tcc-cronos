@@ -6,6 +6,8 @@ package com.topcoder.project.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +22,7 @@ import javax.xml.datatype.Duration;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
@@ -1571,13 +1574,40 @@ public class ProjectServicesImpl implements ProjectServices {
                 throw pde;
             }
 
-			
-
 
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#updateProject method.");
             projectManager.updateProject(projectHeader, projectHeaderReason, operator);
             Util.log(logger, Level.DEBUG, "Finished calling ProjectManager#updateProject method.");
+
+
+            // recalcuate phase dates in case project start date changes
+            Phase[] phases = projectPhases.getAllPhases();
+            Map phasesMap = new HashMap();
+			for (Phase p : phases) {
+						phasesMap.put(new Long(p.getId()), p);
+						p.setScheduledStartDate(null);
+						p.setScheduledEndDate(null);
+						p.setFixedStartDate(null);
+			 }	
+			phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+			for (Phase p : phases) {
+						p.setScheduledStartDate(p.calcStartDate());
+						p.setScheduledEndDate(p.calcEndDate());
+						p.setFixedStartDate(p.calcStartDate());
+
+		    }		
+
+             // Adjust the depending projects timelines if necessary
+            ContestDependencyAutomation auto
+                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
+            if (template != null)
+            {
+                auto
+                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
+            }
+            adjustDependentProjects(projectPhases, phaseManager, auto, operator);
+
 
             // call phaseManager.updatePhases(projectPhases,operator)
             Util.log(logger, Level.DEBUG, "Starts calling PhaseManager#updatePhases method.");
@@ -1592,7 +1622,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.DEBUG, "Finished calling ResourceManager#updateResources method.");
             }
 
-
+            
 			// creates an instance of FullProjectData with phaseProject
             FullProjectData projectData = new FullProjectData(projectPhases.getStartDate(), projectPhases.getWorkdays());
             projectData.setId(projectPhases.getId());
@@ -2935,10 +2965,19 @@ public class ProjectServicesImpl implements ProjectServices {
             //1.5 link the project to the original one        
             projectLinkManager.addProjectLink(reOpendedProject.getProjectHeader().getId(),
                                                     contest.getProjectHeader().getId(), ProjectLinkType.REPOST_FOR);
+
+            //set original project to completed
+            Project original = contest.getProjectHeader();
+            original.setProjectStatus(ProjectStatus.COMPLETED);
+            projectManager.updateProject(original, "Repost", operator);
             return reOpendedProject;
+
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
+        }catch (ValidationException e) {
+            log(Level.ERROR, "ValidationException occurred in " + method);
+            throw new ProjectServicesException("ValidationException occurred when operating ProjectLinkManager.", e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
@@ -3406,7 +3445,28 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
-
+    /**
+     * <p>Adjusts the timelines for projects depending on specified project if necessary.</p>
+     *
+     * @param mainProject a <code>Project</code> providing the project details.
+     * @param phaseManager a <code>PhaseManager</code> to be used for managing phases.
+     * @param auto a <code>ContestDependencyAutomation</code> to be used for processing dependencies.
+     * @param operator a <code>String</code> providing the operator for audit.
+     * @throws PhaseManagementException if an unexpected error occurs.
+     * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs.
+     * @since 1.3
+     */
+    static void adjustDependentProjects(com.topcoder.project.phases.Project mainProject, PhaseManager phaseManager,
+                                        ContestDependencyAutomation auto, String operator)
+        throws PhaseManagementException, com.topcoder.management.project.PersistenceException {
+        List<Phase[]> phases = auto.adjustDependingProjectPhases(mainProject.getAllPhases());
+        for (Phase[] p : phases) {
+            if (p.length > 0) {
+                com.topcoder.project.phases.Project projectPhases = p[0].getProject();		
+                phaseManager.updatePhases(projectPhases, operator);
+            }
+        }
+    }
 
 
 }
