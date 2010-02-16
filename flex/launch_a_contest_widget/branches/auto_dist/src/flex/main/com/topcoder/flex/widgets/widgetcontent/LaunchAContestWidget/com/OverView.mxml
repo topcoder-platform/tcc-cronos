@@ -1,0 +1,1783 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+<!--
+    This mxml component presents the overview page for the launch contest widget.
+
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to use the type name instead of id for contest sub type.
+        - For invoiced contest, even admin can not edit the contest fee.
+        - For invoiced contest, contest fee is loaded from webservice.
+
+    Version 1.0.2 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Project name title is hidden if the summary is shown since it's already there
+        - Added radiobuttons to select contest format for studio contests
+        - Added milestone prize fields for studio multi-round contests.
+
+    Version 1.0.3 (Cockpit Release Assembly 6 v1.0) Change Notes:
+        - Introduced "Contest Privacy" section.
+        - Added Enforce CCA checkbox.
+
+    Version 1.0.4 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
+        - Changed the way restricted dates are handled for start date (pipeline web service is now used)
+     Version 1.0.3 (Cockpit Software Contest Payments v1.0) Change Notes (all updates for s/w contest only):
+        - contest fees include cost level and costs for various items viz: 
+                1st place,2nd place,Review Board,Reliability Bonus,DR,Milestone Bonus
+        - radio box to select cost level is provided.
+        - new fields for reliability bonus and milestone bonus are added.
+        - all cost fields are marked read only.
+        
+    Version 1.0.4 (Cockpit Release Assembly 7 v1.0) Change Notes (all updates for s/w contest only):
+        - mainWidget.manualPrizeSetting value is used to determine whether first place prize is editable or not.
+        - if value is true, then it is editable. Else not.
+        - In case of manualPrizeSetting as true, following properties are calculated as per the logic as defined in SoftwareCompetitionUtils
+            - 2ndPlace Prize
+            - Reliability
+            - DR Points
+        - Cost breakdown is put in expanable panel. 1st Place, 2nd Place, Contest Fee and Contest Total are always made visible.
+        - Milestone bonus is shown only for Conceptualization contest.
+        - A few text is also updated.
+
+    @author pulky
+
+    
+    @author pulky, snow01
+    @version 1.0.4
+    @since 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         horizontalScrollPolicy="off"
+         verticalScrollPolicy="off">
+
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestOverviewData"
+                    url="/i/cockpit/data/launch_a_contest/overview.xml"
+                    resultFormat="e4x"
+                    result="loadOverviewData(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+    <mx:HTTPService id="requestContestFees"
+                    url="/i/cockpit/data/launch_a_contest/contestFees.xml"
+                    resultFormat="e4x"
+                    result="loadContestFees(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+    <mx:HTTPService id="requestReliabilityBonus"
+                    url="/i/cockpit/data/launch_a_contest/reliabilityBonus.xml"
+                    resultFormat="e4x"
+                    result="loadReliabilityBonus(event)"
+                    fault="Helper.showAlertMessage('Error loading reliabilityBonus.xml: ' + event.fault.faultString);">
+    </mx:HTTPService>
+    <!-- BUGR-1737 -->
+    <mx:Script>
+        <![CDATA[
+            import mx.effects.effectClasses.ResizeInstance;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MilestonePrizeData;
+            import mx.rpc.AbstractOperation;
+            import mx.effects.easing.Back;
+            import mx.collections.ArrayCollection;
+            import mx.controls.RadioButton;
+            import mx.rpc.events.ResultEvent;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import mx.containers.Panel;
+            import mx.utils.StringUtil;
+            import mx.events.FlexEvent;
+            import com.topcoder.flex.Helper;
+            import mx.events.ItemClickEvent;
+            import mx.formatters.NumberFormatter;
+            import mx.controls.Alert;
+            import mx.managers.PopUpManager;
+            import mx.utils.StringUtil;
+            import mx.core.Application;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501		
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            
+            private static var s_inputs:Array=["firstPlace", "secondPlace", "thirdPlace", "fourthPlace", "fifthPlace"];
+            
+            private static var ns_inputs:Array=["ns_firstPlace", "ns_secondPlace"];
+            
+            //private static var s_inputsMap:Object={1: "firstPlace", 2: "secondPlace", 3: "thirdPlace", 4: "fourthPlace", 5: "fifthPlace"};
+            //private static var ns_inputsMap:Object={1: "ns_firstPlace", 2: "ns_secondPlace"};
+
+            /**
+             * A static constant Collection indication possible number of milestone prizes
+             *
+             * @since 1.0.2
+             */
+            private static const numMilestonePrizes:ArrayCollection=
+                new ArrayCollection([{label: "0", data: 0}, {label: "1", data: 1},
+                                    {label: "2", data: 2}, {label: "3", data: 3},
+                                    {label: "4", data: 4}, {label: "5", data: 5}]);
+
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+
+            [Bindable]
+            private var contestOverview:XML;
+
+            [Bindable]
+            public var contestFees:XML;
+            
+            /**
+             * Reliability Bonus XML
+             * 
+             * @since 1.0.4
+             */ 
+            [Bindable]
+            private var reliabilityBonusXML:XML;
+            
+            //
+            // Updated for Cockpit Release Assembly 1 v1.0
+            //    - To avoid binding can not detect error.
+            //
+            [Bindable]
+            private var SW_PRIZE_AMOUNT_DESCRIPTION:String="Please select the prize structure for your contest by choosing one of the options below.";
+            
+            /**
+             * Indicates whether example one should be shown or not.
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable]
+            private var showExampleOne:Boolean=false;
+            
+            /**
+             * Indicates whether example two should be shown or not.
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable]
+            private var showExampleTwo:Boolean=false;
+	    
+	                
+            /**
+             * Stores cost items for low cost level.
+             * Loaded through contestFees.xml
+             * 
+             * @since 1.0.3
+             */ 
+            private var lowCostData:Dictionary=new Dictionary();
+            
+            /**
+             * Stores cost items for medium cost level.
+             * Loaded through contestFees.xml
+             * 
+             * @since 1.0.3
+             */
+            private var midCostData:Dictionary=new Dictionary();
+            
+            /**
+             * Stores cost items for high cost level.
+             * Loaded through contestFees.xml
+             * 
+             * @since 1.0.3
+             */
+            private var highCostData:Dictionary=new Dictionary();
+
+    	    /**
+    	     * Stores the cost items for custom cost data.
+             * Initializes when user changes the values for manual prize setting.
+             *
+    	     * @since 1.0.4
+    	     */
+            private var custCostData:Dictionary=new Dictionary();
+            
+            /**
+             * Represents the name of the current cost level.
+             * 
+             * @since 1.0.3
+             */ 
+            private var currentCostLevel:String="";
+            
+            [Bindable]
+            private var _showSWMilestonePrize:Boolean=false;
+            
+            private var _firstReadFromPersistence:Boolean=true;
+            
+            private var _swContestTotalCostAsPersisted:Number=0;
+            
+            private var _currentSWFirstPlaceCustomPrize:String="0";
+            
+            /**
+             * This method initializes the corresponding data necessary to show this page
+             *
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+             * 
+             * Updated for Version 1.0.1
+             *    - for invoiced contest even admin can not edit contest fee.
+             * 
+             * Updated for Version 1.0.4
+             *    - identifies whether to show milestone prize for sw contest or not.
+             */
+            public function initData():void {
+                
+                //
+                // For now contest types need to be loaded only for studio contests.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+
+                if (!mainWidget)
+                {
+                    return;
+                }
+                
+                contestFees=null;
+                
+                if (mainWidget.studioContestType) {
+                    for each (var inptName:String in s_inputs) {
+                        this[inptName].text="";
+                    }
+                    
+                    //firstPlace.text="800";
+                    //secondPlace.text="300";
+                    
+                    // sets multi round contest flag
+                    if (mainWidget.competition && mainWidget.competition.contestData) {
+                        mainWidget.multiRoundContest = mainWidget.competition.contestData.multiRound;
+                    }
+                    // request overview data after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    if (!contestOverview) {
+                        requestOverviewData.send();
+                    }
+                    
+                    //
+                    // request contest fees after studio contest types has been loaded.
+                    // @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                    //
+                    if (!contestFees) {
+                        requestContestFees.send();
+                    }
+                    
+                    adminf.editable = mainWidget.isAdmin; // BUGR-1737
+                    s_setPrizes();
+                } else {
+                    // load reliability bonus xml.
+                    requestReliabilityBonus.send();
+                    
+                    if (mainWidget.softwareCompetition
+                            && mainWidget.softwareCompetition.projectHeader
+                            && mainWidget.softwareCompetition.projectHeader.projectCategory
+                            && mainWidget.softwareCompetition.projectHeader.projectCategory.id 
+                                == SoftwareCompetitionUtils.instance().getProjectCategoryId("CONCEPTUALIZATION")) {
+                        _showSWMilestonePrize=true;        
+                    } else {
+                        _showSWMilestonePrize=false;
+                    }
+                    
+                    if (mainWidget.manualPrizeSetting) {
+                        ns_firstPlace.editable=true;
+                        ns_specReviewCost.editable = true;
+                    }
+                    
+                    if (!contestFees) {
+                        requestContestFees.send(); // BUGR-1737
+                    }
+                    
+                    //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737
+                    enforceCCAChkBox.selected = mainWidget.enforcedCCA;
+                }
+                
+                trace("INIT DATA For OverView - _showSWMilestonePrize: " + _showSWMilestonePrize + ", manualPrizeSetting: " + mainWidget.manualPrizeSetting);
+            }
+
+            /**
+             * This method set the prizes for studio contests.
+             *
+             * Note: milestone prizes were added for multi-round contests
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            private function s_setPrizes():void {
+                if (mainWidget && mainWidget.competition && mainWidget.competition.contestData) {
+                    if (mainWidget.competition.contestData.prizes) {
+                        for (var i:int=0; i < mainWidget.competition.contestData.prizes.length; i++) {
+                            var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
+                            var p:int=prize.place as int;
+                            if (p <= 5) {
+                                var input:TextInput=this[s_inputs[p - 1]] as TextInput;
+                                input.text=prize.amount.toString();
+                            }
+                        }
+                    }
+
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestId > 0) {
+                    adminf.text=mainWidget.competition.contestData.contestAdministrationFee.toString();
+                    
+                }
+
+                    // set milestone prizes
+                    if (mainWidget.competition.contestData.milestonePrizeData) {
+                        if (mainWidget.competition.contestData.milestonePrizeData.amount) {
+                            milestonePrizeAmonutTextInput.text = mainWidget.competition.contestData.milestonePrizeData.amount.toString();
+                        }
+                        if (mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions) {
+                            numMilestonePrizesComboBox.selectedIndex = mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions;
+                        }
+                    }
+                }
+                s_updateAmount(true);
+            }
+
+            /**
+             * Set the prizes for non studio contests.
+             * 
+             * Updated for Version 1.0.3
+             *    - cost properties are read from project header, if they exist.
+             * 
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            private function ns_setPrizes():void {
+                trace("IN NS_SETPRIZES: " + mainWidget.softwareCompetition);
+                if (mainWidget.softwareCompetition) {
+                    /* 
+                    && SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY)
+                    && SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY) > 0
+                    */
+                    // get the level first.
+                    var level:String=SoftwareCompetitionUtils.instance().getCostLevelProp(mainWidget.softwareCompetition);
+                    if (!level || level == "") {
+                        level = SoftwareCompetitionUtils.COST_LEVEL_B;
+                    }
+                    
+                    var selCostData:Dictionary=null;
+                    if (level == SoftwareCompetitionUtils.COST_LEVEL_A) {
+                        selCostData=lowCostData;
+                        lowCost.selected=true;
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_B) {
+                        selCostData=midCostData;
+                        mediumCost.selected=true;
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_C) {
+                        selCostData=highCostData;
+                        highCost.selected=true;
+                    } else if (level == SoftwareCompetitionUtils.COST_LEVEL_M) {
+                        selCostData=custCostData;
+                        custCost.visible=custCost.includeInLayout=true;
+                        custCost.selected=true;
+                        ns_firstPlace.editable=true;
+                        ns_specReviewCost.editable = true;
+                    }
+                    
+                    currentCostLevel=level;
+                    
+                    trace("Current cost level: " + currentCostLevel);           
+                    
+                    // update the selected cost data.
+                    if (selCostData) {
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY)) {
+                            var firstPlaceCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);
+                            selCostData["FirstPlace"]=firstPlaceCost;
+                        } else if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY)) {
+                            var firstPlaceCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY);
+                            selCostData["FirstPlace"]=firstPlaceCost;
+                        }
+                                
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY)) {                                                            
+                            var secondPlaceCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+                            selCostData["SecondPlace"]=secondPlaceCost;
+                        }
+                         
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_REVIEW_COST_KEY)) {                                            
+                            var reviewBoardCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_REVIEW_COST_KEY);
+                            selCostData["ReviewBoard"]=reviewBoardCost;
+                        }
+                         
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_RELIABILITY_BONUS_COST_KEY)) {                                            
+                            var reliabilityBonus:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_RELIABILITY_BONUS_COST_KEY);
+                            selCostData["ReliabilityBonus"]=reliabilityBonus;
+                        }
+                        
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_DR_POINTS_KEY)) {
+                            var drCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_DR_POINTS_KEY);
+                            selCostData["DR"]=drCost;
+                        }
+                        
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_MILESTONE_BONUS_COST_KEY)) {
+                            var milestoneBonus:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_MILESTONE_BONUS_COST_KEY);
+                                                        
+                            selCostData["MilestoneBonus"]=milestoneBonus;
+                        }
+                        
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY)) {
+                            var adminFee:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition, 
+                                                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+                            selCostData["ContestFee"]=adminFee;
+                            ns_contestf.text=adminFee.toFixed(0);
+                        }
+                        if (SoftwareCompetitionUtils.instance().hasCostProp(mainWidget.softwareCompetition, SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY)) {
+                            var specReviewCost:Number=SoftwareCompetitionUtils.instance().getCostProp(mainWidget.softwareCompetition,
+                                                    SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY);
+                            selCostData["specReviewCost"]=specReviewCost;
+                            this.ns_specReviewCost.text=specReviewCost.toFixed(0);
+                        }
+
+                        if (mainWidget.isEditMode && mainWidget.isPaidContest()) {
+                            var dt:Date = SoftwareCompetitionUtils.instance().getUnclosedSubmissionPhaseEndDate(mainWidget.softwareCompetition);
+                            var currentDt:Date = new Date();
+                            if (dt != null) {
+                                if (dt.getTime() - 24 * 3600 * 1000 >= currentDt.getTime()) {
+                                    if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_C) {
+                                        lowCost.enabled=false;
+                                        mediumCost.enabled=false;
+                                    } else if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_B) {
+                                        lowCost.enabled=false;
+                                    } else if (currentCostLevel == SoftwareCompetitionUtils.COST_LEVEL_M) {
+                                        lowCost.enabled=false;
+                                        mediumCost.enabled=false;
+                                        highCost.enabled=false;
+                                    }
+                                } else {
+                                    // do not allow prize to be changed if less than 24 hrs for submission.
+                                    lowCost.enabled=false;
+                                    mediumCost.enabled=false;
+                                    lowCost.enabled=false;
+                                    custCost.enabled=false;
+                                    ns_firstPlace.editable=false;
+                                    ns_specReviewCost.editable = false;
+                                }
+                            } 
+                        }
+                    }
+                }
+
+                ns_updateAmount();
+            }
+
+            //
+            // Update result based on type of contest.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function updateResult():Boolean {
+                if (mainWidget.studioContestType) {
+                    return s_updateResult();
+                } else {
+                    trace("--------------- Overview:: Updating software contest");
+                    return ns_updateResult();
+                }
+
+                return true;
+            }
+
+            /**
+             * This method update competition and review data for studio contests.
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * @return true always
+             */
+            private function s_updateResult():Boolean {
+                var prizes:Array=new Array();
+		var sum:Number = 0;
+                mainWidget.competition.contestData.prizes=prizes;
+                for (var i:int=0; i < s_inputs.length; i++) {
+                    var prizeData:PrizeData=new PrizeData();
+		    
+
+                    var input:TextInput=this[s_inputs[i]] as TextInput;
+                    var amount:Number=Number(input.text);
+                    if (amount <= 0) {
+                        break;
+                    }
+
+		            sum = sum + amount;
+
+                    prizeData.place=i + 1;
+                    prizeData.amount=amount;
+                    prizes.push(prizeData);
+                }
+
+                mainWidget.competition.prizes=prizes;
+                mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+               
+
+                // sets multi round specific information
+                mainWidget.competition.contestData.multiRound = mainWidget.multiRoundContest;
+                if (mainWidget.multiRoundContest) {
+                    if (mainWidget.competition.contestData.milestonePrizeData == null) {
+                        mainWidget.competition.contestData.milestonePrizeData = new MilestonePrizeData();
+                    }
+
+                    mainWidget.competition.contestData.milestonePrizeData.amount = new Number(milestonePrizeAmonutTextInput.text);
+                    mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions = new Number(numMilestonePrizesComboBox.selectedItem.data);
+
+                    sum = sum + mainWidget.competition.contestData.milestonePrizeData.amount * mainWidget.competition.contestData.milestonePrizeData.numberOfSubmissions
+                } else {
+                    if (mainWidget.competition.contestData.milestonePrizeData != null &&
+                        mainWidget.competition.contestData.milestonePrizeData.id == -1) {
+                        mainWidget.competition.contestData.milestonePrizeData=null;
+                    }
+                }
+
+                mainWidget.competition.contestData.drPoints = new Number(new Number(sum * 0.25).toFixed(2));
+                mainWidget.competition.drPoints = new Number(new Number(sum * 0.25).toFixed(2));
+
+                // update summary box
+                mainWidget.updateSummary();
+
+                return true;
+            }
+
+            /**
+             * Update competition and review data for software contests.
+             * 
+             * Updated for Version 1.0.3
+             *    - cost properties are saved.
+             * 
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            private function ns_updateResult():Boolean {
+                var prizes:Array=new Array();
+                mainWidget.softwareCompetition.prizes=prizes;
+                for (var i:int=0; i < ns_inputs.length; i++) {
+                    var prizeData:PrizeData=new PrizeData();
+
+                    var amount:Number = 0; 
+                    if (i == 0)
+                    {
+                        var input:TextInput=this[ns_inputs[i]] as TextInput;
+                        amount=Number(input.text);
+                    }
+                    else
+                    {
+                        var input2:Label=this[ns_inputs[i]] as Label;
+                        amount=Number(input2.text);
+                    }
+                    if (amount <= 0) {
+                        break;
+                    }
+
+                    prizeData.place=i + 1;
+                    prizeData.amount=amount;
+                    prizes.push(prizeData);
+                }
+
+                mainWidget.softwareCompetition.prizes=prizes;
+                ns_contestf.text=StringUtil.trim(ns_contestf.text);
+                if (!isNaN(Number(ns_contestf.text)))
+                {
+                    mainWidget.softwareCompetition.adminFee=Number(ns_contestf.text);
+                }
+                ns_specReviewCost.text = StringUtil.trim(ns_specReviewCost.text);
+
+
+                var selCostData:Dictionary=null;
+                var level:String=currentCostLevel;
+                if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
+                    selCostData=lowCostData;
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_B) {
+                    selCostData=midCostData;
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_C) {
+                    selCostData=highCostData;
+                } else if (level==SoftwareCompetitionUtils.COST_LEVEL_M) {
+                    selCostData=custCostData;
+                }
+                
+                if (selCostData) {
+                    
+                    SoftwareCompetitionUtils.instance().addCostLevelProp(mainWidget.softwareCompetition, level);
+                    
+                    var firstPlaceCost:Number=selCostData["FirstPlace"] as Number;
+                    var secondPlaceCost:Number=selCostData["SecondPlace"] as Number;
+                    var reviewBoardCost:Number=selCostData["ReviewBoard"] as Number;
+                    var reliabilityBonus:Number=selCostData["ReliabilityBonus"] as Number;
+                    var drCost:Number=selCostData["DR"] as Number;
+                    var milestoneBonus:Number=selCostData["MilestoneBonus"] as Number;
+                    
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, firstPlaceCost, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_FIRST_PLACE_COST_KEY);    
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, secondPlaceCost, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SECOND_PLACE_COST_KEY);
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, reviewBoardCost, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_REVIEW_COST_KEY);
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, reliabilityBonus, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_RELIABILITY_BONUS_COST_KEY);
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, drCost, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_DR_POINTS_KEY);
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, milestoneBonus, 
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_MILESTONE_BONUS_COST_KEY);                
+                        
+                    // TODO: ideally in payments property we should be storing total sw cost.
+                    // but not sure how does TC / OR works - so for now storing first place cost.
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition, firstPlaceCost/*getTotalSWCost(selCostData)*/,
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_PAYMENT_KEY);
+
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition,
+                        mainWidget.softwareCompetition.adminFee,
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_ADMIN_FEE_KEY);
+
+                    SoftwareCompetitionUtils.instance().addCostProp(mainWidget.softwareCompetition,
+                        new Number(ns_specReviewCost.text),
+                        SoftwareCompetitionUtils.PROJECT_INFO_TYPE_SPEC_REVIEW_COST_KEY);
+                }
+                
+                return true;
+            }
+            
+            /**
+             * This method updates contest format when the corresponding radiobutton is selected
+             *
+             * @param multi the flag to set
+             *
+             * @since 1.0.2
+             */
+            private function contestFormatSelect(multi:Boolean):void {
+                mainWidget.multiRoundContest = multi;
+            }
+
+            /**
+             * This method updates amount for studio contests.
+             *
+             * Note: added summary update
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            private function s_updateAmount(updateSummary:Boolean):void {
+                var sum:int=0;
+                for each (var name:String in s_inputs) {
+
+                    var input:TextInput=this[name] as TextInput;
+                    var val:int=Number(input.text);
+
+                    if (isNaN(val)) {
+                        input.text="";
+                    }
+
+                    sum=sum + val;
+                }
+
+                if (sum > 0) {
+                    if(isNaN(Number(adminf.text))) { // BUGR-1737
+                        adminf.text="";
+                    }
+                    // adminf.text=new Number(sum * 0.2).toFixed(2); BUGR-1737
+
+                    if (mainWidget.multiRoundContest) {
+                        sum += new Number(milestonePrizeAmonutTextInput.text) * 
+                            new Number(numMilestonePrizesComboBox.selectedItem.data);
+                    }                
+                    
+                    cntstTtl.text= (sum + Number(adminf.text)).toFixed(2); // BUGR-1737
+                } else {
+                    // adminf.text=""; BUGR-1737
+                    cntstTtl.text="";
+                }
+
+                if (updateSummary) {
+                    if(!isNaN(Number(adminf.text)) && mainWidget.competition && mainWidget.competition.contestData) {
+                        mainWidget.competition.contestData.contestAdministrationFee = Number(adminf.text);
+                    }
+
+                    // update summary box
+                    mainWidget.updateSummary();
+                   }
+            }
+	    /**
+             * Updated for version 1.0.3
+             *    - Now since fields are readonly - no more validations is required.
+             */ 
+            public function ns_validateFields():Boolean { // BUGR-1067
+	    	if(mainWidget.isAdmin && isNaN(Number(ns_contestf.text)) || Number(ns_contestf.text) < 0) { // BUGR-1737
+		    Helper.showAlertMessage("Contest Fee not set");
+                    ns_reviewCost.setFocus();
+                    return false;
+				}
+                
+                if (mainWidget.isEditMode && mainWidget.isPaidContest() && Number(ns_cntstTtl.text) < _swContestTotalCostAsPersisted) {
+                    Helper.showAlertMessage("Can not decrease prize, can just increase!");
+                    ns_firstPlace.text=_currentSWFirstPlaceCustomPrize;
+                    return false;
+                }
+                
+                //
+                // Update competition and review data for studio contests.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                updateResult();
+
+                return true;
+            }
+
+            public function validateFields():Boolean { // BUGR-1067
+                return mainWidget.studioContestType ? s_validateFields() : ns_validateFields();
+            }
+
+            /**
+             * This method validates fields for studio contests and sets the corresponding data in contest data object
+             *
+             * @return true if valid, false otherwise
+             *
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             */
+            public function s_validateFields():Boolean { // BUGR-1067
+                for (var i:int=0; i < s_inputs.length - 1; i++) {
+
+                    var input:TextInput=this[s_inputs[i]] as TextInput;
+                    var val:int=Number(input.text);
+
+                    var nextInput:TextInput=this[s_inputs[i + 1]] as TextInput;
+
+                    if (isNaN(Number(input.text)) || (Number(input.text) == 0 && Number(nextInput.text) > 0)) {
+                        Helper.showAlertMessage("Prize amount not set");
+                        input.setFocus();
+                        return false;
+                    }
+
+                    if (Number(input.text) > 0 && Number(nextInput.text) > Number(input.text)) {
+                        Helper.showAlertMessage("Prize " + (i + 1) + " is incorrect");
+                        nextInput.setFocus();
+                        return false;
+                    }
+
+                    if (Number(cntstTtl.text) == 0) {
+                        Helper.showAlertMessage("No prize set");
+                        return false;
+                    }
+                }
+
+                var firstInput:TextInput=this[s_inputs[0]] as TextInput;
+                var secondInput:TextInput=this[s_inputs[1]] as TextInput;
+                if (isNaN(Number(firstInput.text)) || firstInput.text == "" || isNaN(Number(secondInput.text)) || secondInput.text == "") {
+
+                    Helper.showAlertMessage("Atleast first & second place prizes should be set!");
+
+                    return false;
+                }
+
+                if (Number(secondInput.text) < (0.20 * Number(firstInput.text))) {
+                    Helper.showAlertMessage("Second place prize should atleast be 20% of first place prize!");
+
+                    return false;
+                }
+                
+             	if(mainWidget.isAdmin && isNaN(Number(adminf.text)) || Number(adminf.text) < 0) { // BUGR-1737
+					Helper.showAlertMessage("Contest Fee not set");
+                    adminf.setFocus();
+                    return false;
+				}
+                // BUGR-1363
+                var diff:Number=mainWidget.getExtraContestFee();
+                if (diff < 0) {
+                    var formatter:NumberFormatter=new NumberFormatter();
+                    formatter.precision=2;
+                    formatter.useThousandsSeparator=true;
+                    formatter.thousandsSeparatorTo=",";
+                    formatter.decimalSeparatorTo=".";
+                    Helper.showAlertMessage("Decreasing the total prize amount is not permitted at this time. If you would like to decrease the overall prize amounts please contact directassist@topcoder.com." + "Your total prize amount must be at least equal to $" + formatter.format(mainWidget.getPaidContestFee() / 0.2), 160);
+                    return false;
+                }
+
+                // validate multi round contest specific fields
+                if (mainWidget.multiRoundContest) {
+                    // if number of milestone prizes is greater than zero, validate the amount
+                    if (numMilestonePrizesComboBox.selectedItem.data > 0) {
+                        var valid:Boolean = true;
+                        if (isNaN(Number(milestonePrizeAmonutTextInput.text)) || milestonePrizeAmonutTextInput.text == "") {
+                            Helper.showAlertMessage("Please enter a valid, non empty milestone prize amount.");
+                            valid = false;
+                        } else if (Number(milestonePrizeAmonutTextInput.text) <= 0) {
+                            Helper.showAlertMessage("Milestone prize amount should be greater than zero.");
+                            valid = false;
+                        }
+                        if (!valid) {
+                            milestonePrizeAmonutTextInput.setFocus();
+                            return false;
+                        }
+                    }
+                }
+
+                // check if we need step 8
+                (mainWidget.step8box.parent as HBox).visible=diff > 0;
+                (mainWidget.step8box.parent as HBox).includeInLayout=diff > 0;
+                mainWidget.save.label=diff == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
+                updateResult();
+
+                return true;
+            }
+            
+            /**
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             *    - Changed the name to more generic 'overview data' rather than 'examples'
+             */
+            private function loadOverviewData(e:ResultEvent):void {
+                // Do not need to change it as this is not coming through webservice. 
+                if (e != null && e.result != null && e.result is XML) {
+                    contestOverview=e.result as XML;
+                    
+                    if (mainWidget.studioContestType) {
+                        showExampleOne=isPresentXml('example1');
+                        showExampleTwo=isPresentXml('example2');
+                    } else {
+                        showExampleOne=false;
+                        showExampleTwo=false;
+                    }
+                    
+                    //
+                    // once data is loaded fire curContestTypeChanged event
+                    // so that ui gets updated with description etc.
+                    //
+                    dispatchEvent(new Event("curContestTypeChanged"));
+                }
+            }
+
+            /**
+             * This method loads contst fees
+             *
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1816]
+             * 
+             * Updated for Version 1.0.3
+             *    - sets the prizes once contest fee has been loaded.
+             *    - loads the cost level data from the xml.
+             * 
+             * @since BUGR-1737
+             */
+            private function loadContestFees(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    contestFees=e.result as XML;
+                    
+                    if (!mainWidget.studioContestType) {
+                        if (!mainWidget.isEditMode) {
+                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737
+                        }
+                        this.ns_specReviewCost.text = contestFees.contestType.(@id == mainWidget.competitionType).specReviewCost;
+
+                        trace("Low billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'low'));
+                        trace("Medium billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'medium'));
+                        trace("High billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high'));
+                        
+                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'low')[0] as XML, 
+                            lowCostData);
+                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'medium')[0] as XML, 
+                            midCostData);
+                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high')[0] as XML, 
+                            highCostData);
+
+			            ns_setPrizes();
+                        //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
+                               					
+                    } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee; // BUGR-1737
+                        firstPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).firstPlaceCost;
+                        secondPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).secondPlaceCost;
+			            s_updateAmount(true);
+                    }
+                }
+                
+                // TODO: in case of invoiced contests there are various scenarios where the fee should be loaded from backend.
+                // and sometime from the getContest data.
+                // like someone changes the billing project then the value should be as getContestFeesByBillingProject, otherwise from contest data.
+                if (mainWidget.isInvoicedContest) {
+                    getContestFeesByBillingProject();
+                } else {
+                    mainWidget.dispatchEvent(new Event("OverviewFeesLoaded"));
+                }
+                
+                //
+                // Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+                //    - Changed the name to more generic 'overview data' rather than 'examples'
+                //
+                if (!contestOverview) {
+                    requestOverviewData.send();
+                }
+            }
+            
+            /**
+             * Loads the cost level data from the specified xml in specified data object.
+             * 
+             * Updated for 1.0.4 - milestone bonus is not available for all contest types.
+             * 
+             * @param xml the cost level xml node.
+             * @param data the data object in which to load the cost data.
+             * @since 1.0.3
+             */ 
+            public function loadCostLevelData(xml:XML, data:Dictionary):void {
+                if (!xml || !data) {
+                    return;
+                }
+                
+                data["FirstPlace"]=new Number(xml.firstPlaceCost);
+                data["SecondPlace"]=new Number(xml.secondPlaceCost);
+                data["ReviewBoard"]=new Number(xml.reviewBoardCost);
+                data["ReliabilityBonus"]=new Number(xml.reliabilityBonusCost);
+                data["DR"]=new Number(xml.drCost);
+                
+                if (xml.milestoneBonusCost && !isNaN(Number(xml.milestoneBonusCost))) {
+                    data["MilestoneBonus"]=new Number(xml.milestoneBonusCost);
+                } else {
+                    data["MilestoneBonus"]=0;
+                }
+                
+                trace("Loaded data is: " + data["FirstPlace"] + "," + data["SecondPlace"]);
+            }
+            
+            /**
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             *
+             * Determines whether the current contest type xml has the specified property or not.
+             * It returns true if it has, otherwise it returns false.
+             *
+             * @return whether the current contest type xml has the specified property or not.
+             */
+            [Bindable(event="curContestTypeChanged")]
+            private function isPresentXml(prop:String):Boolean {
+                var xml:XML=getCurrentContestTypeXml();
+                if (xml) {
+                    return xml.hasOwnProperty(prop);
+                } else {
+                    return false;
+                }
+            }
+            
+            /**
+             * Gets the current contest type's config xml node.
+             *
+             * If the contest type is studio then the path is STUDIO/contest-type-id.
+             * Otherwise the path is contest-type-name (or competition type name).
+             *
+             * @return whether the current contest type xml has the specified property or not.
+             *
+             * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+             */
+            [Bindable(event="curContestTypeChanged")]
+            private function getCurrentContestTypeXml():XML {
+                if (mainWidget.studioContestType) {
+                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId)[0];
+                } else {
+                    return contestOverview.contestType.(@id == mainWidget.competitionType)[0];
+                }
+            }
+
+            /**
+             * Gets the contest fees by billing project.
+             * 
+             * @since 1.0.1
+             */ 
+            private function getContestFeesByBillingProject():void {
+                trace("Getting contest fees by billing project...");
+                var getContestFeesByProject:AbstractOperation=mainWidget._csws.getOperation("getContestFeesByProject");
+                getContestFeesByProject.addEventListener("result", handleGetContestFeesByProject);
+                getContestFeesByProject.send(mainWidget.invoicedProjectId);
+                mainWidget.showLoadingProgress();
+            }
+            
+            /**
+             * Handler for getting contest fees by project.
+             * 
+             * @param e the webservice result event.
+             * @since 1.0.1
+             */ 
+            private function handleGetContestFeesByProject(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                trace("E --> " + e);
+                if (e && e.result && contestFees) {
+                    // convert e.result into contestFees.xml
+                    trace("getContestFeesByProject:: e.result: " + e.result);
+                    
+                    var pcfArray:ArrayCollection=e.result as ArrayCollection;
+                    for each (var pcf:Object in pcfArray) {
+                        var contestType:String=pcf.contestType;
+                        var subType:String=pcf.subType;
+                        var contestFee:String=pcf.contestFee;
+                        
+                        if (contestType && contestType == "STUDIO") {
+                            contestFees.contestType.(@id == contestType).subType.(@id == subType).contestFee[0]=contestFee;
+                        } else {
+                            contestFees.contestType.(@id == contestType).contestFee[0]=contestFee;
+                        }
+                    }
+                }
+
+                if (contestFees) {
+                    if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
+                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
+                        ns_updateAmount();
+                    } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee[0]; // BUGR-1737
+                        s_updateAmount(true);
+                    }
+                }
+                
+                mainWidget.dispatchEvent(new Event("OverviewFeesLoaded"));
+            }
+
+            private function goToUrl(url:String):void {
+                navigateToURL(new URLRequest(url), "_blank");
+            }
+
+            /**
+             * Handles the update of total amount for software contest.
+             * 
+             * Updated for Version 1.0.3
+             *    - labels for low/medium/high radio are updated.
+             *    - total cost is calculated.
+             */ 
+            private function ns_updateAmount():void {
+                var cf:Number=new Number(ns_contestf.text);
+                if (isNaN(cf)) {
+                    Helper.showAlertMessage('Contest Fee should be valid numeric value');
+                    return;
+                }
+
+                var specReviewCost:Number=new Number(ns_specReviewCost.text);
+                if (isNaN(specReviewCost)) {
+                    Helper.showAlertMessage('Sepc Review Cost should be valid numeric value');
+                    return;
+                }
+
+                trace("New contest fee: " + cf + ",currentCostLevel:" + currentCostLevel + ", specReviewCost:" + specReviewCost);
+
+                // store contest fee data in all cost levels.
+                lowCostData["ContestFee"]=cf;
+                midCostData["ContestFee"]=cf;
+                highCostData["ContestFee"]=cf;
+                custCostData["ContestFee"]=cf;
+
+                lowCostData["specReviewCost"]=specReviewCost;
+                midCostData["specReviewCost"]=specReviewCost;
+                highCostData["specReviewCost"]=specReviewCost;
+                custCostData["specReviewCost"]=specReviewCost;
+
+                trace("Low cost data: " + lowCostData);
+                trace("Mid cost data: " + midCostData);
+                trace("High cost data: " + highCostData);
+                
+                // re-calculate the label for each radio button.
+                lowCost.label="Low ($" + getTotalSWCost(lowCostData).toFixed(2) + ")";
+                mediumCost.label="Medium ($" + getTotalSWCost(midCostData).toFixed(2) + ")";
+                highCost.label="High ($" + getTotalSWCost(highCostData).toFixed(2) + ")";
+                if (custCost && custCost.visible) {
+                    custCost.label="Custom ($" + getTotalSWCost(custCostData).toFixed(2) + ")";
+                }
+                
+                var selCostData:Dictionary=null;
+                if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_A) {
+                    selCostData=lowCostData;
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_B) {
+                    selCostData=midCostData;
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_C) {
+                    selCostData=highCostData;
+                } else if (currentCostLevel==SoftwareCompetitionUtils.COST_LEVEL_M) {
+                    selCostData=custCostData;
+                }
+                
+                if (selCostData) {
+                    ns_cntstTtl.text=getTotalSWCost(selCostData).toFixed(2);
+                    if (mainWidget.isEditMode && _firstReadFromPersistence) {
+                        _swContestTotalCostAsPersisted=new Number(ns_cntstTtl.text);
+                        _currentSWFirstPlaceCustomPrize=ns_firstPlace.text;
+                        _firstReadFromPersistence=false;
+                    }
+                    showSoftwareCosts(selCostData);
+                }
+            }
+	    
+	        /**
+             * Gets the total cost of software contest for given cost level data.
+             * 
+             * @param data the specified cost level data.
+             * @return the total cost of software contest for given cost level data.
+             * @since 1.0.3
+             */ 
+            private function getTotalSWCost(data:Dictionary):Number {
+                var firstPlaceCost:Number=data["FirstPlace"] as Number;
+                var secondPlaceCost:Number=data["SecondPlace"] as Number;
+                var reviewBoardCost:Number=data["ReviewBoard"] as Number;
+                var reliabilityBonus:Number=data["ReliabilityBonus"] as Number;
+                var drCost:Number=data["DR"] as Number;
+                var milestoneBonus:Number=data["MilestoneBonus"] as Number;
+                var contestFee:Number=data["ContestFee"] as Number;
+                var specReviewCost:Number=data["specReviewCost"] as Number;
+                var totalCost:Number=firstPlaceCost+secondPlaceCost+reviewBoardCost+reliabilityBonus+drCost+milestoneBonus+contestFee
+                                     + specReviewCost;
+                return totalCost;
+            }
+            
+            /**
+             * Handles the change of cost level.
+             *
+             * @since 1.0.3
+             */
+            private function changeCostLevel(event:ItemClickEvent):void {
+                var item:RadioButton=(event.currentTarget as RadioButtonGroup).selection as RadioButton;
+                
+                var selCostData:Dictionary=null;
+                if (item == lowCost) {
+                    selCostData=lowCostData;
+                    currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_A;
+                } else if (item == mediumCost) {
+                    selCostData=midCostData;
+                    currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_B;
+                } else if (item == highCost) {
+                    selCostData=highCostData;
+                    currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_C;
+                } else if (custCost && custCost.visible && item == custCost) {
+                    selCostData=custCostData;
+                    currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
+                }
+                
+                if (selCostData) {
+                    showSoftwareCosts(selCostData);
+                    ns_cntstTtl.text=getTotalSWCost(selCostData).toFixed(2);
+                }
+            }
+            
+            /**
+             * Displays the software contests in various ui elements.
+             * 
+             * Updated for 1.0.4
+             *    - assignes milestone bonus only if milestone prize to be shown.
+             * 
+             * @param data the specified cost level data.
+             * @since 1.0.3
+             */
+            private function showSoftwareCosts(data:Dictionary):void {
+                var firstPlaceCost:Number=data["FirstPlace"] as Number;
+                var secondPlaceCost:Number=data["SecondPlace"] as Number;
+                var reviewBoardCost:Number=data["ReviewBoard"] as Number;
+                var reliabilityBonus:Number=data["ReliabilityBonus"] as Number;
+                var drCost:Number=data["DR"] as Number;
+                var milestoneBonus:Number=0;
+                
+                if (_showSWMilestonePrize) {
+                    milestoneBonus=data["MilestoneBonus"] as Number;
+                }
+                
+                var contestFee:Number=data["ContestFee"] as Number;
+                var specReviewCost:Number=data["specReviewCost"] as Number
+
+                ns_firstPlace.text=firstPlaceCost.toFixed(0);
+                ns_secondPlace.text=secondPlaceCost.toFixed(2);
+                ns_reviewCost.text=reviewBoardCost.toFixed(2);
+                ns_reliabilityBonus.text=reliabilityBonus.toFixed(2);
+                ns_dr.text=drCost.toFixed(2);
+                
+                if (_showSWMilestonePrize) {
+                    ns_milestoneBonus.text=milestoneBonus.toFixed(2);
+                }
+                ns_contestf.text=contestFee.toFixed(2);
+                ns_specReviewCost.text = specReviewCost.toFixed(2);
+            }
+            
+            private function handleSWSpecReviewPrizeChange():void {
+            	// no update happens if manual prize setting is not on.
+                if (!mainWidget && !mainWidget.manualPrizeSetting) {
+                    return;
+                }
+
+                ns_updateAmount();
+            }
+
+            /**
+             * Handles the change for software contest first place prize.
+             * 
+             * @since 1.0.4
+             */ 
+            private function handleSWFirstPlacePrizeChange():void {
+                // no update happens if manual prize setting is not on.
+                if (!mainWidget && !mainWidget.manualPrizeSetting) {
+                    return;
+                } 
+                
+                if (isNaN(Number(ns_firstPlace.text))) {
+                    Helper.showAlertMessage("Please specify a valid numeric value for first place prize");
+                    return;
+                }
+                
+                var firstPlaceCost:Number=new Number(ns_firstPlace.text);
+                var secondPlaceCost:Number=SoftwareCompetitionUtils.instance().calculateSecondPlacePrize(firstPlaceCost);
+                var reviewBoardCost:Number=SoftwareCompetitionUtils.instance().calculateReviewCost(firstPlaceCost, 
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.id);
+                var reliabilityBonus:Number=SoftwareCompetitionUtils.instance().calculateReliabilityPrize(firstPlaceCost,
+                    secondPlaceCost, 
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.id,
+                    reliabilityBonusXML);
+                var drCost:Number=SoftwareCompetitionUtils.instance().calculateDRPoint(firstPlaceCost,
+                    secondPlaceCost,
+                    reliabilityBonus);
+                
+                var selCostData:Dictionary=custCostData;
+                   
+                var milestoneBonus:Number=0;
+                
+                if (_showSWMilestonePrize) {
+        		    if (selCostData && !isNaN(Number(selCostData["MilestoneBonus"]))) {
+	                    milestoneBonus=selCostData["MilestoneBonus"] as Number;
+		            } else {
+			            milestoneBonus=midCostData["MilestoneBonus"] as Number;
+		            }
+                }
+                
+                var contestFee:Number=new Number(ns_contestf.text);
+                var specReviewCost:Number=new Number(ns_specReviewCost.text);
+
+                currentCostLevel=SoftwareCompetitionUtils.COST_LEVEL_M;
+                custCost.visible=custCost.includeInLayout=true;
+                custCost.selected=true;
+
+                selCostData["FirstPlace"]=firstPlaceCost;
+                selCostData["SecondPlace"]=secondPlaceCost;
+                selCostData["ReviewBoard"]=reviewBoardCost;
+                selCostData["ReliabilityBonus"]=reliabilityBonus;
+                selCostData["DR"]=drCost;
+                selCostData["MilestoneBonus"]=milestoneBonus;
+                
+                
+                selCostData["ContestFee"]=contestFee;
+                selCostData["specReviewCost"]=specReviewCost;
+
+                ns_updateAmount();
+            }
+            
+            /**
+             * Show / hide the expandable tab.
+             * 
+             * @param sectionId the specified section id. 
+             * @since 1.0.4
+             */
+            private function showHideTab(sectionId:String):void {
+                var content:Object=this[sectionId + "_content"];
+                var show:Boolean=content.height == 0;
+                
+                var height:Number=content.measuredHeight;
+                if (height <= 0) {
+                    height=50;
+                }
+                
+                if (show) {
+                    var showEffect:ResizeInstance=tabShowEffect.createInstance(content) as ResizeInstance;
+                    showEffect.heightFrom=0;
+                    showEffect.heightTo=height;
+                    showEffect.widthFrom=content.width;
+                    showEffect.widthTo=content.width;
+                    showEffect.play();
+                } else {
+                    var hideEffect:ResizeInstance=tabHideEffect.createInstance(content) as ResizeInstance;
+                    hideEffect.heightFrom=height;
+                    hideEffect.heightTo=0;
+                    hideEffect.widthFrom=content.width;
+                    hideEffect.widthTo=content.width;
+                    hideEffect.play();
+                }
+                
+                this[sectionId + "_tabBtn"].styleName=(show) ? "tabBtnOpen" : "tabBtnClose";
+            }
+            
+            /**
+             * Loads reliability bonus from the xml config file.
+             */
+            private function loadReliabilityBonus(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    reliabilityBonusXML=e.result as XML;
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:VBox width="100%"
+             styleName="boxStyle"
+             height="100%">
+        <mx:VBox width="100%">
+
+            <!-- Hide project name if the summary is shown since it's already there -->
+            <mx:HBox horizontalAlign="right"
+                     width="100%" visible="{!mainWidget.showSummary}"
+                     includeInLayout="{!mainWidget.showSummary}">
+                <mx:Label text="Project: {mainWidget.tcDirectProjectName}"
+                          styleName="projectTitle"
+                          width="80%"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <!-- New contest format radiobuttons -->
+            <mx:VBox width="100%"
+                     visible="{mainWidget.studioContestType}"
+                     includeInLayout="{mainWidget.studioContestType}">
+                <mx:Label text="Do you want to run a single-round or multi-round contest?"
+                          styleName="boldBlackText"/>
+                <mx:HBox horizontalGap="25"
+                         styleName="smallBlackText">
+                    <mx:RadioButtonGroup id="ContestFormatRadioGroup"/>
+		            <mx:VBox verticalGap="0">
+                        <mx:RadioButton label="Single-Round" groupName="ContestFormatRadioGroup" selected="{!mainWidget.multiRoundContest}" click="contestFormatSelect(false)"/>
+                        <mx:Label text="Submissions and Awarding is in single step."/>
+                    </mx:VBox>
+                    <mx:VBox verticalGap="0">
+                        <mx:RadioButton label="Multi-Round" groupName="ContestFormatRadioGroup" selected="{mainWidget.multiRoundContest}" click="contestFormatSelect(true)"/>
+                        <mx:Label text="Contest will be run in two rounds. You will view submissions "/>
+                        <mx:Label text="and award milestone prizes at a midpoint date."/>
+                    </mx:VBox>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:Spacer height="10"/>
+            <mx:HRule width="100%"/>
+            <!-- BUGR-1204 -->
+            <mx:Label id="typeName"
+                      text="{mainWidget.studioContestSubTypeLabel}"
+                      styleName="subsectionTitle"/>
+            <!-- BUGR-1503 -->
+            <mx:Text width="100%"
+                     id="description"
+                     styleName="smallBlackText">
+                <mx:htmlText>
+					{getCurrentContestTypeXml().description}
+	            </mx:htmlText>
+            </mx:Text>
+            <mx:Spacer height="5"/>
+            <!-- BUGR-1204 -->
+            <mx:HRule width="100%"/>
+            <!-- BUGR-1204 -->
+            <mx:Label id="ExamplesLabel"
+                      text="Examples:"
+                      styleName="subsectionTitle"
+                      visible="{showExampleOne || showExampleTwo}"
+                      includeInLayout="{showExampleOne || showExampleTwo}"/>
+            <mx:HBox id="ExamplesBox"
+                     verticalAlign="top"
+                     horizontalGap="0"
+                     visible="{showExampleOne || showExampleTwo}"
+                     includeInLayout="{showExampleOne || showExampleTwo}"
+                     width="100%">
+                <mx:VBox verticalGap="0"
+                         width="50%"
+                         visible="{showExampleOne}"
+                         includeInLayout="{showExampleOne}">
+                    <mx:HBox width="100%">
+                        <mx:Image source="{showExampleOne ? getCurrentContestTypeXml().example1.thumbImage : ''}"
+                                  click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.fullsizeImage : '')}"
+                                  width="150"
+                                  height="150"/>
+                        <mx:VBox verticalGap="0"
+                                 horizontalGap="0"
+                                 width="100%">
+                            <mx:Text text="{showExampleOne ? getCurrentContestTypeXml().example1.name : ''}"
+                                     styleName="boldBlackText"
+                                     width="100%"/>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Contest"
+                                          width="82"
+                                          styleName="smallBlackText"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.contestLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Submissions"
+                                          width="82"
+                                          styleName="smallBlackText"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.submissionsLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Winners"
+                                          styleName="smallBlackText"
+                                          width="82"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleOne ? getCurrentContestTypeXml().example1.winnersLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <!--<mx:Spacer height="17" /> -->
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Prizes"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.prizes : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Duration"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.duration : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Registrants"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.registrants : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Submissions"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleOne ? getCurrentContestTypeXml().example1.submissions : ''}"/>
+                            </mx:HBox>
+                        </mx:VBox>
+                    </mx:HBox>
+                </mx:VBox>
+                <mx:Spacer width="40"/>
+                <mx:VBox horizontalGap="0"
+                         verticalGap="0"
+                         width="50%"
+                         visible="{showExampleTwo}"
+                         includeInLayout="{showExampleTwo}">
+                    <mx:HBox width="100%">
+                        <mx:Image source="{showExampleTwo ? getCurrentContestTypeXml().example2.thumbImage : ''}"
+                                  click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.fullsizeImage : '')}"
+                                  styleName="clickableImage"
+                                  width="150"
+                                  height="150"/>
+                        <mx:VBox verticalGap="0"
+                                 horizontalGap="0"
+                                 paddingBottom="0"
+                                 paddingLeft="0"
+                                 paddingRight="0"
+                                 paddingTop="0"
+                                 verticalAlign="top"
+                                 width="100%">
+                            <!-- BUGR-1204 -->
+                            <mx:Label text="{showExampleTwo ? getCurrentContestTypeXml().example2.name : ''}"
+                                      styleName="boldBlackText"
+                                      width="100%"/>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Contest"
+                                          width="82"
+                                          styleName="smallBlackText"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.contestLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Submissions"
+                                          width="82"
+                                          styleName="smallBlackText"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.submissionsLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <mx:HBox horizontalGap="0">
+                                <mx:Label text="Winners"
+                                          width="82"
+                                          styleName="smallBlackText"/>
+                                <mx:LinkButton styleName="linkBtn"
+                                               label="link"
+                                               click="{goToUrl(showExampleTwo ? getCurrentContestTypeXml().example2.winnersLink : '')}"/>
+                                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                            </mx:HBox>
+                            <!--<mx:Spacer height="17" />-->
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Prizes"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.prizes : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Duration"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.duration : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Registrants"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.registrants : ''}"/>
+                            </mx:HBox>
+                            <mx:HBox styleName="smallBlackText">
+                                <mx:Label text="Submissions"
+                                          width="80"/>
+                                <mx:Label text=": {showExampleTwo ? getCurrentContestTypeXml().example2.submissions : ''}"/>
+                            </mx:HBox>
+                        </mx:VBox>
+                    </mx:HBox>
+                </mx:VBox>
+            </mx:HBox>
+         
+            
+            <mx:Spacer height="5"/>
+            
+            <mx:VBox width="100%"
+                     verticalGap="0"
+                     visible="{!mainWidget.studioContestType}"
+                     includeInLayout="{!mainWidget.studioContestType}">
+                <mx:Label text="Contest Privacy:"
+                          styleName="subsectionTitle"/>
+                <mx:HBox width="100%"
+                    height="100%">
+                    <mx:CheckBox
+                        id="enforceCCAChkBox" 
+                        label="Enforce CCA"
+                        labelPlacement="right"
+                        change="{mainWidget.enforcedCCA=enforceCCAChkBox.selected}"
+                        selected="{mainWidget.enforcedCCA}">
+                    </mx:CheckBox>
+                </mx:HBox>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         styleName="smallBlackText">
+                    <mx:htmlText><![CDATA[If this option is selected, competitors will be required to download, sign and submit a <a href="http://www.topcoder.com/tc?module=Terms&tuid=20713" target="_blank"><u>Confidentiality Agreement</u></a> to the TopCoder legal department prior to gaining access to information in the contest forum.  Please note that they <b>will</b> see information that is on the public contest page.  This includes any information you enter into the "3 - Details" step as well as any file attachments you upload in "4 - Attach Files".  Please upload all private contest information into your contest forum.  Competitors gain access to the contest forum only after submitting a signed <a href="http://www.topcoder.com/tc?module=Terms&tuid=20713" target="_blank"><u>Confidentiality Agreement</u></a>.]]>
+                    </mx:htmlText>
+                </mx:Text>
+            </mx:VBox>
+
+
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%"
+                     verticalGap="0">
+                <mx:Label text="Your Prize Amounts:"
+                          styleName="subsectionTitle"/>
+                <mx:Text width="100%"
+                         paddingTop="0"
+                         styleName="smallBlackText">
+                    <mx:text>{mainWidget.studioContestType ? 'When entering prizes, please note that each prize amount must be the same or lower than the amount in the places above it.' : SW_PRIZE_AMOUNT_DESCRIPTION}
+		            </mx:text>
+                </mx:Text>
+            </mx:VBox>
+            <!-- <mx:Spacer height="10"/> -->
+            <mx:HBox verticalAlign="top"
+                     visible="{mainWidget.studioContestType}"
+                     includeInLayout="{mainWidget.studioContestType}">
+                <mx:HBox>
+                    <mx:VBox verticalGap="7"
+                             styleName="smallBlackText">
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; 1st Place"
+                                      width="60"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; 2nd Place"
+                                      width="60"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; 3rd Place"
+                                      width="60"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                    </mx:VBox>
+                    <mx:VBox verticalGap="2"
+                             horizontalGap="0">
+                        <mx:TextInput id="firstPlace"
+                                      width="120"
+                                      text=""
+                                      change="s_updateAmount(false)"
+                                      maxChars="4"/>
+                        <mx:TextInput id="secondPlace"
+                                      width="120"
+                                      text=""
+                                      change="s_updateAmount(false)"
+                                      maxChars="4"/>
+                        <mx:TextInput id="thirdPlace"
+                                      width="120"
+                                      text=""
+                                      change="s_updateAmount(false)"
+                                      maxChars="4"/>
+                    </mx:VBox>
+                </mx:HBox>
+
+                <mx:HBox>
+                    <mx:VBox verticalGap="7"
+                             styleName="smallBlackText">
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; 4th Place"
+                                      width="60"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; 5th Place"
+                                      width="60"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                    </mx:VBox>
+                    <mx:VBox verticalGap="2"
+                             horizontalGap="0">
+                        <mx:TextInput id="fourthPlace"
+                                      width="120"
+                                      text=""
+                                      change="s_updateAmount(false)"
+                                      maxChars="4"/>
+                        <mx:TextInput id="fifthPlace"
+                                      width="120"
+                                      text=""
+                                      change="s_updateAmount(false)"
+                                      maxChars="4"/>
+                    </mx:VBox>
+                </mx:HBox>
+
+                <mx:HBox>
+                    <mx:VBox verticalGap="7"
+                             styleName="smallBlackText">
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; Contest Fee"
+                                      width="90"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                        <mx:HBox horizontalGap="0">
+                            <mx:Label text="&#8226; Contest Total"
+                                      width="90"
+                                      fontSize="11"/>
+                            <mx:Label text=":$"/>
+                        </mx:HBox>
+                    </mx:VBox>
+                    <mx:VBox verticalGap="2">
+                        <mx:TextInput id="adminf"
+                                      text=""
+                                      width="55"
+                                      change="s_updateAmount(false)"
+                                      editable="{mainWidget &amp;&amp; mainWidget.isAdmin}"/> <!-- BUGR-1737 -->
+                        <mx:TextInput id="cntstTtl"
+                                      text=""
+                                      width="55"
+                                      editable="false"/>
+                    </mx:VBox>
+                </mx:HBox>
+            </mx:HBox>
+            <!-- BUGR-1067 -->
+            <mx:HBox verticalAlign="top"
+                     visible="{!mainWidget.studioContestType}"
+                     includeInLayout="{!mainWidget.studioContestType}">
+                <mx:VBox>
+                    <mx:HBox>
+                        <mx:RadioButtonGroup id="costLevelRGrp" labelPlacement="right" itemClick="changeCostLevel(event)"/>
+                        <mx:RadioButton id="lowCost" label="Low" group="{costLevelRGrp}"/>
+                        <mx:RadioButton id="mediumCost" label="Medium" group="{costLevelRGrp}" selected="true"/>
+                        <mx:RadioButton id="highCost" label="High" group="{costLevelRGrp}"/>
+                        <mx:RadioButton id="custCost" label="Custom" group="{costLevelRGrp}" visible="false" includeInLayout="false"/>
+                    </mx:HBox>   
+                    <mx:HBox>
+                        <mx:HBox>
+                            <mx:VBox verticalGap="7">
+                                <mx:Label text="1st Place: $"
+                                          fontWeight="bold"/>
+                                <mx:Label text="2nd Place: $"
+                                          fontWeight="bold"/>
+                            </mx:VBox>
+                            <mx:VBox verticalGap="2">
+                                <mx:TextInput id="ns_firstPlace"
+                                              width="120"
+                                              editable="false"
+                                              change="handleSWFirstPlacePrizeChange()"/>
+                                <mx:Label id="ns_secondPlace"
+                                              width="120"/>
+                            </mx:VBox>
+                        </mx:HBox>
+        
+                        <mx:HBox>
+                            <mx:VBox verticalGap="7">
+                                <mx:Label text="Contest Fee: $"
+                                          fontWeight="bold"/>
+                                <mx:Label text="Contest Total: $"
+                                          fontWeight="bold"/>
+                            </mx:VBox>
+                            <mx:VBox verticalGap="2">
+                                <mx:Label id="ns_contestf"
+                                              width="120"/> <!-- BUGR-1737 -->
+                                <mx:Label id="ns_cntstTtl"
+                                              width="120"/>
+                            </mx:VBox>
+                        </mx:HBox>
+                    </mx:HBox>
+                    <!-- expandable contest fee breakdown details -->
+                    <mx:VBox width="100%"
+                         height="100%"
+                         id="ns_contestFeeBreakdown"
+                         backgroundColor="#f0f0f0"
+                         verticalScrollPolicy="off"
+                         horizontalScrollPolicy="off"
+                         verticalGap="0"
+                         borderStyle="solid"
+                         borderColor="#d5d5d5"
+                         borderThickness="1"
+                         borderSides="top bottom">
+                        <mx:HBox width="100%"
+                                 id="ns_contestFeeBreakdown_header">
+                            <mx:Button id="ns_contestFeeBreakdown_tabBtn"
+                                       styleName="tabBtnClose"
+                                       width="35"
+                                       height="23"
+                                       click="showHideTab('ns_contestFeeBreakdown')"/>
+                            <mx:Spacer width="100%"/>
+                        </mx:HBox>
+                        <mx:Spacer height="5"/>
+                        <mx:HBox width="100%"
+                                 id="ns_contestFeeBreakdown_content"
+                                 height="0"
+                                 verticalScrollPolicy="off"
+                                 horizontalScrollPolicy="off"
+                                 paddingLeft="10"
+                                 paddingRight="10"
+                                 paddingBottom="10">
+                            <mx:HBox>
+                                <mx:VBox verticalGap="7">
+                                    <mx:Label text="Review Cost: $"
+                                          fontWeight="bold"/>
+                                    <mx:Label text="Digital Run: "
+                                          fontWeight="bold"/>
+                                    <mx:Label text="Milestone Bonus: $"
+                                      fontWeight="bold"
+                                      visible="{_showSWMilestonePrize}"
+                                      includeInLayout="{_showSWMilestonePrize}"/>
+                                </mx:VBox>
+                                <mx:VBox verticalGap="2">
+                                    <mx:Label id="ns_reviewCost"
+                                                  width="120"/>
+
+                                    <mx:Label id="ns_dr"
+                                                  width="120"/>
+                                    <mx:Label id="ns_milestoneBonus"
+                                          width="120"
+                                          visible="{_showSWMilestonePrize}"
+                                          includeInLayout="{_showSWMilestonePrize}"/>
+                                </mx:VBox>
+                            </mx:HBox>
+                            <mx:HBox>
+                                <mx:VBox verticalGap="7">
+                                    <mx:Label text="Reliability Bonus: $"
+                                      fontWeight="bold"/>
+                                    <mx:Label text="Spec Review Cost: $"
+                                          fontWeight="bold"/>
+                                </mx:VBox>
+                                <mx:VBox verticalGap="2">
+                                    <mx:Label id="ns_reliabilityBonus"
+                                          width="120"/>
+                                     <mx:TextInput id="ns_specReviewCost"
+                                              width="120"
+                                              editable="false"
+                                              change="handleSWSpecReviewPrizeChange()"/>
+                                </mx:VBox>
+                            </mx:HBox>
+                        </mx:HBox>
+                    </mx:VBox>
+                </mx:VBox>
+            </mx:HBox>
+            <mx:Spacer height="10"/>            
+            <!-- New milestone prizes information -->            
+            <mx:VBox width="100%"                     
+                verticalGap="0" 
+                visible="{mainWidget.multiRoundContest}"                     
+                includeInLayout="{mainWidget.multiRoundContest}">                
+                <mx:Label text="Milestone Prizes:"                          
+                    styleName="subsectionTitle"/>                
+                    <mx:HBox width="100%"                         
+                        verticalGap="0">                    
+                        <mx:Label text="Pay $"/>                    
+                        <mx:TextInput id="milestonePrizeAmonutTextInput" change="s_updateAmount(false)"/>                    
+                        <mx:Label text="for each submission up to"/>                    
+                        <mx:ComboBox id="numMilestonePrizesComboBox" editable="false" dataProvider="{numMilestonePrizes}" change="s_updateAmount(false)" selectedIndex="0"></mx:ComboBox>                    
+                        <mx:Label text="submissions."/>                
+                    </mx:HBox>                
+                    <mx:Label text="Note: Typical bonus prizes are $50, $75 or $100."/>            
+            </mx:VBox>        
+        </mx:VBox>
+    </mx:VBox>
+     <mx:Resize id="tabShowEffect"
+               duration="500"/>
+    <mx:Resize id="tabHideEffect"
+               duration="500"/>
+</mx:VBox>
