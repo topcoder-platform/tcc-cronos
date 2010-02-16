@@ -1360,16 +1360,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "select terms_of_use_id, resource_role_id  from client_terms_mapping where client_project_id = ?";
 
     /**
-     * 'Active' status name
-     */
-    private static final String PROJECT_STATUS_ACTIVE = "Active";
-
-    /**
-	 * 'Completed' status name
-	 */
-	private static final String PROJECT_STATUS_COMPLETED = "Completed";
-
-    /**
 	 * 'final review' phase name
 	 */
 	private static final String PROJECT_PHASE_FINAL_REVIEW = "Final Review";
@@ -3760,7 +3750,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setSname((String)rows[i][1]);
 				}
 				// else for active, use 'newstatus'
-				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][15]);
 				}
@@ -3935,7 +3925,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setSname((String)rows[i][1]);
 				}
 				// else for active, use 'newstatus'
-				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][15]);
 				}
@@ -4205,7 +4195,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					ret[i].setSname((String)rows[i][1]);
 				}
 				// else for active, use 'newstatus'
-				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE))
+				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][15]);
 				}
@@ -5015,11 +5005,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				if (rows[i][34] != null) {
 				 // any contest that has an open phase in Online Review
 					c.setSname("Active");
-				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE)) {
+				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
 				    //scheduled or draft
 					c.setSname((String)rows[i][35]);
-				} else if(!((String)rows[i][8]).equalsIgnoreCase(PROJECT_STATUS_ACTIVE)) {
-					c.setSname("Completed");
+				} else if(!((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
+
+                    if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
+                          || ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getName()))
+                    {
+                        c.setSname("Canceled");
+                    }
+					else 
+                    {
+                        c.setSname("Completed");
+                    }
 				}
 
                 

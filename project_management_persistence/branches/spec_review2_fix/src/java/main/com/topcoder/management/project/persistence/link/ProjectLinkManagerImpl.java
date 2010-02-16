@@ -6,7 +6,11 @@ package com.topcoder.management.project.persistence.link;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -24,6 +28,7 @@ import com.topcoder.util.log.LogManager;
 import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.project.link.ProjectLink;
 import com.topcoder.management.project.link.ProjectLinkType;
+import com.topcoder.management.project.link.ProjectLinkCycleException;
 
 
 /**
@@ -37,6 +42,9 @@ import com.topcoder.management.project.link.ProjectLinkType;
  * <p>
  * Changes in v1.1 (Cockpit Spec Review Backend Service Update v1.0):
  * - added flag so that container transaction demarcation can be used.
+ * Change log for version 1.1: Updated the code for initializing the retrieved project link types with value of
+ * allow_overlap flag; update {@link #updateProjectLinks(long, long[], long[])} method to validate the project links
+ * against cycle.
  * </p>
  *
  * @author BeBetter, pulky
@@ -69,7 +77,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * The SQL to get all project link types.
      * </p>
      */
-    private static final String QUERY_ALL_PROJECT_LINK_TYPES_SQL = "SELECT link_type_id, link_type_name "
+    private static final String QUERY_ALL_PROJECT_LINK_TYPES_SQL = "SELECT link_type_id, link_type_name, allow_overlap "
         + " FROM link_type_lu";
 
     /**
@@ -78,7 +86,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * </p>
      */
     private static final DataType[] QUERY_ALL_PROJECT_LINK_TYPES_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
-        Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * <p>
@@ -266,7 +274,8 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             Object[] row = rows[i];
 
             // create a new instance of ProjectLinkType class
-            projectLinkTypes[i] = new ProjectLinkType(((Long) row[0]).longValue(), (String) row[1]);
+            projectLinkTypes[i] = new ProjectLinkType(((Long) row[0]).longValue(), (String) row[1], 
+                                                      Boolean.valueOf("1".equals((String) row[2])));
         }
 
         return projectLinkTypes;
@@ -451,6 +460,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * @throws IllegalArgumentException if any array is null or it is not equal in length for dest project id array
      *             and link type array
      * @throws PersistenceException if any persistence error occurs
+     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
      */
     public void updateProjectLinks(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds)
         throws PersistenceException {
@@ -460,6 +470,10 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         if (destProjectIds.length != linkTypeIds.length) {
             throw new IllegalArgumentException("destProjectIds must have same length as linkTypeIds");
         }
+
+        checkForCycle(sourceProjectId, destProjectIds, linkTypeIds);
+
+        // Update the links
         Connection conn = null;
 
         try {
@@ -478,6 +492,26 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         }
     }
 
+    /**
+     * <p>Checks if specified project is a part of cycle in project dependencies.</p>
+     *
+     * @param sourceProjectId a <code>long</code> providing the ID of a project.
+     * @throws PersistenceException if any persistence error occurs.
+     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
+     */
+    public void checkForCycle(long sourceProjectId) throws PersistenceException {
+        ProjectLink[] destProjectLinks = getDestProjectLinks(sourceProjectId);
+        long[] destProjectIds = new long[destProjectLinks.length];
+        long[] linkTypeIds = new long[destProjectLinks.length];
+
+        for (int i = 0; i < destProjectLinks.length; i++) {
+            ProjectLink link = destProjectLinks[i];
+            destProjectIds[i] = link.getDestProject().getId();
+            linkTypeIds[i] = link.getType().getId(); 
+        }
+        
+        checkForCycle(sourceProjectId, destProjectIds, linkTypeIds);
+    }
 
     /**
      * <p>
@@ -510,6 +544,99 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
                 closeConnectionOnError(conn);
             }
             throw e;
+        }
+    }
+
+    
+    /**
+     * <p>Checks if specified project referring to specified projects is a part of a cycle.</p>
+     *
+     * @param sourceProjectId the source project id.
+     * @param destProjectIds the destination project ids.
+     * @param linkTypeIds the type ids.
+     * @throws PersistenceException if any persistence error occurs.
+     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
+     */
+    private void checkForCycle(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds)
+        throws PersistenceException {
+
+        // Build project link types map
+        Map<Long, ProjectLinkType> typesMap = new HashMap<Long, ProjectLinkType>();
+        ProjectLinkType[] types = getAllProjectLinkTypes();
+        for (int i = 0; i < linkTypeIds.length; i++) {
+            long linkTypeId = linkTypeIds[i];
+            for (int j = 0; j < types.length; j++) {
+                ProjectLinkType type = types[j];
+                if (type.getId() == linkTypeId) {
+                    typesMap.put(linkTypeId, type);
+                    break;
+                }
+            }
+        }
+
+        // Validate for cycles using BFS algorithm
+
+        // Current candidates for cycle
+        Project currentProject = this.projectManager.getProject(sourceProjectId);
+        Map<Long, LinkedList<Project>> cycles = new HashMap<Long, LinkedList<Project>>();
+
+        // A list of projects to be visited
+        LinkedHashMap<Long, Project> open = new LinkedHashMap<Long, Project>();
+        for (int i = 0; i < destProjectIds.length; i++) {
+            long linkTypeId = linkTypeIds[i];
+            ProjectLinkType type = typesMap.get(linkTypeId);
+            if (type != null) {
+                if (!type.isAllowOverlap()) {
+                    open.put(destProjectIds[i], this.projectManager.getProject(destProjectIds[i]));
+                    cycles.put(destProjectIds[i],
+                               new LinkedList(Arrays.asList(currentProject)));
+                }
+            }
+        }
+
+        // A list of projects already visited
+        Map<Long, Project> closed = new HashMap<Long, Project>();
+        closed.put(sourceProjectId, currentProject);
+
+        // Do BFS
+        while (!open.isEmpty()) {
+            Iterator<Map.Entry<Long,Project>> iterator = open.entrySet().iterator();
+            Project project = iterator.next().getValue();
+            iterator.remove();
+            
+            Long projectId = project.getId();
+
+            if (!closed.containsKey(projectId)) {
+                closed.put(projectId, project);
+                ProjectLink[] links = getDestProjectLinks(projectId);
+                for (int i = 0; i < links.length; i++) {
+                    ProjectLink link = links[i];
+                    long nextProjectId = link.getDestProject().getId();
+                    if (!link.getType().isAllowOverlap()) {
+                        if (!closed.containsKey(nextProjectId)) {
+                            if (!open.containsKey(nextProjectId)) {
+                                open.put(nextProjectId, link.getDestProject());
+                                if (cycles.containsKey(nextProjectId)) {
+                                    cycles.get(nextProjectId).add(project);
+                                } else {
+                                    LinkedList<Project> currentCycle = cycles.get(projectId);
+                                    LinkedList newCycle = new LinkedList(currentCycle);
+                                    newCycle.add(project);
+                                    cycles.put(nextProjectId, newCycle);
+                                }
+                            }
+                        } else {
+                            LinkedList<Project> cycle = cycles.get(projectId);
+                            cycle.addLast(project);
+                            throw new ProjectLinkCycleException(cycle);
+                        }
+                    }
+                }
+            } else {
+                throw new ProjectLinkCycleException(cycles.get(projectId));
+            }
+
+            closed.put(project.getId(), project);
         }
     }
 
@@ -576,6 +703,38 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing queries for adding project link. ", e);
+        } finally {
+            Helper.closeStatement(ps);
+        }
+    }
+
+    /**
+     * <p>
+     * It is internal method and it updates the project links for given source project id.
+     * </p>
+     *
+     * @param sourceProjectId the source project id
+     * @param destProjectIds the destination project ids
+     * @param linkTypeIds the type ids
+     * @param conn the db connection
+     * @throws PersistenceException if any persistence error occurs
+     */
+    private void addProjectLinks(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds, Connection conn)
+        throws PersistenceException {
+        PreparedStatement ps = null;
+        try {
+
+            ps = conn.prepareStatement(INSERT_PROJECT_LINK);
+            for (int i = 0; i < destProjectIds.length; i++) {
+                int idx = 1;
+                ps.setLong(idx++, sourceProjectId);
+                ps.setLong(idx++, destProjectIds[i]);
+                ps.setLong(idx++, linkTypeIds[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new PersistenceException("Error occurs while executing queries for add project links. ", e);
         } finally {
             Helper.closeStatement(ps);
         }
