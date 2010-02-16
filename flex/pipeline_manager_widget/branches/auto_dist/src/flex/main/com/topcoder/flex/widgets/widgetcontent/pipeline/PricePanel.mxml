@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is price panel for the widget
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*">
+	<mx:Script>
+		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.BreakDown;
+			import mx.collections.ArrayCollection;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+			
+			/**
+			  * Reference to the data model class for this widget.
+			  */ 
+			[Bindable]
+			private var model:Model;
+			
+			/**
+			  * This is the parent widget unique id.
+			  */ 
+			[Bindable]
+			private var _puid:String;
+			
+			/**
+			  * Sets the parent widget unique id.
+			  */
+			public function set puid(value:String):void {
+				this._puid = value;
+				model = Model.getInstance(value);
+			}
+			
+		]]>
+	</mx:Script>
+	<!--
+	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
+	<tccomp:FilterShower width="100%" puid="{_puid}" filterPanel="{filter}"/>
+	<mx:Spacer width="100%" height="20" />
+	-->
+	
+	<mx:HBox width="100%" height="45" id="content">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Price Change History" />
+		<!--<mx:Spacer width="100%" />
+		<mx:Button label="Back" styleName="btn" click="model.goBack()" />-->
+	</mx:HBox>
+	<mx:DataGrid id="grid" width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"
+			verticalGridLines="false" rowCount="{model.priceList &amp;&amp; model.priceList.length > 0 ? model.priceList.length : 1}" resizableColumns="false" rowHeight="30"
+			headerColors="[#FF0000, #FF0000]" dataProvider="{model.priceList}"
+			verticalScrollPolicy="off" horizontalScrollPolicy="auto"
+			height="100%">
+		<mx:columns>
+			<mx:DataGridColumn width="90" sortable="false" headerText="Contest Name" headerStyleName="headerStyle" dataField="name" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Manager" headerStyleName="headerStyle" dataField="manager" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Client" headerStyleName="headerStyle" dataField="client" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Type" headerStyleName="headerStyle" dataField="type" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="New Price" headerStyleName="headerStyle" dataField="newPrice" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Old Price" headerStyleName="headerStyle" dataField="oldPrice" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Initial Price" headerStyleName="headerStyle" dataField="init" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Change Time" headerStyleName="headerStyle" dataField="change" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="No. Times Changed" headerStyleName="headerStyle" dataField="times" />
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>
