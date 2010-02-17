@@ -15,6 +15,7 @@ import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistence;
 import com.topcoder.management.resource.search.NotificationFilterBuilder;
@@ -48,6 +49,15 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  *      &lt;/Property&gt;
  *      &lt;Property name="Namespace"&gt;
  *          &lt;Value&gt;com.topcoder.management.project.ProjectManagerImpl&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *  &lt;/Property&gt;
+ *
+ *  &lt;Property name="ProjectLinkManager"&gt;
+ *      &lt;Property name="ClassName"&gt;
+ *          &lt;Value&gt;com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name="Namespace"&gt;
+ *          &lt;Value&gt;com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
  *
@@ -174,8 +184,8 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * &lt;/Config&gt;
  * </pre></p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * @author tuenm, bose_java, TCSDEVELOPER
+ * @version 1.1
  */
 public class ManagerHelper {
     /** The default configuration namespace of this class. It is used in the default constructor. */
@@ -184,8 +194,14 @@ public class ManagerHelper {
     /** Property name constant for project manager implementation class name. */
     private static final String PROP_PROJECT_MGR_CLASS_NAME = "ProjectManager.ClassName";
 
+    /** Property name constant for project link manager implementation class name. */
+    private static final String PROP_PROJECT_LINK_MGR_CLASS_NAME = "ProjectLinkManager.ClassName";
+
     /** Property name constant for namespace to be passed to project manager implementation constructor. */
     private static final String PROP_PROJECT_MGR_NAMESPACE = "ProjectManager.Namespace";
+
+    /** Property name constant for namespace to be passed to project link manager implementation constructor. */
+    private static final String PROP_PROJECT_LINK_MGR_NAMESPACE = "ProjectLinkManager.Namespace";
 
     /** Property name constant for phase manager implementation class name. */
     private static final String PROP_PHASE_MGR_CLASS_NAME = "PhaseManager.ClassName";
@@ -294,10 +310,27 @@ public class ManagerHelper {
     private static final Class[] MANAGER_PARAM_TYPES = new Class[] {String.class};
 
     /**
+     * ProjectyLinkManager all use same constructor signature which is the one that takes a String and ProjectManager
+     * parameter. This constant array is used as parameter types array when instantiating using reflection in the
+     * initManager() method.
+     *
+     * @since Contest Dependency Automation assembly
+     */
+    private static final Class[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class, ProjectManager.class};
+
+    /**
      * Represents the ProjectManager instance. It is initialized in the constructor and never changed after
      * that. It is never null.
      */
     private final ProjectManager projectManager;
+
+    /**
+     * Represents the ProjectLinkManager instance. It is initialized in the constructor and never changed after
+     * that. It is never null.
+     *
+     * @since Contest Dependency Automation assembly
+     */
+    private final ProjectLinkManager projectLinkManager;
 
     /**
      * Represents the PhaseManager instance. It is initialized in the constructor and never changed after
@@ -376,6 +409,8 @@ public class ManagerHelper {
 
         this.projectManager = (ProjectManager) initManager(namespace, PROP_PROJECT_MGR_CLASS_NAME,
                 PROP_PROJECT_MGR_NAMESPACE, ProjectManager.class, false);
+        this.projectLinkManager
+                = initProjectLinkManager(namespace, PROP_PROJECT_LINK_MGR_CLASS_NAME, PROP_PROJECT_LINK_MGR_NAMESPACE);
         this.phaseManager = (PhaseManager) initManager(namespace, PROP_PHASE_MGR_CLASS_NAME,
                 PROP_PHASE_MGR_NAMESPACE, PhaseManager.class, false);
         this.reviewManager = (ReviewManager) initManager(namespace, PROP_REVIEW_MGR_CLASS_NAME,
@@ -397,6 +432,16 @@ public class ManagerHelper {
      */
     public ProjectManager getProjectManager() {
         return projectManager;
+    }
+
+    /**
+     * Gets the non-null ProjectLinkManager instance.
+     *
+     * @return The non-null ProjectLinkManager instance.
+     * @since Contest Dependency Automation assembly
+     */
+    public ProjectLinkManager getProjectLinkManager() {
+        return projectLinkManager;
     }
 
     /**
@@ -816,6 +861,28 @@ public class ManagerHelper {
         }
 
         return createObject(mgrClassName, expectedType, params, paramTypes);
+    }
+
+    /**
+     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval
+     * instances since all use the same constructor signature.
+     *
+     * @param namespace the namespace to load configuration settings from.
+     * @param classPropName name of property which holds the class name to instantiate.
+     * @param nsPropName name of property which holds namespace argument for constructor.
+     * @return either a ScorecardManager, ReviewManager, ProjectManager, or UserRetrieval instance.
+     * @throws ConfigurationException if a required property is missing or if a problem occurs during instantiation.
+     * @since Contest Dependency Automation assembly
+     */
+    private ProjectLinkManager initProjectLinkManager(String namespace, String classPropName, String nsPropName)
+            throws ConfigurationException {
+        String mgrClassName = PhasesHelper.getPropertyValue(namespace, classPropName, true);
+        String mgrNamespace = PhasesHelper.getPropertyValue(namespace, nsPropName, true);
+
+        Object[] params = new Object[]{mgrNamespace, this.projectManager};
+
+        return (ProjectLinkManager) createObject(mgrClassName, ProjectLinkManager.class, params,
+                                                 PROJECT_LINK_MANAGER_PARAM_TYPES);
     }
 
     /**

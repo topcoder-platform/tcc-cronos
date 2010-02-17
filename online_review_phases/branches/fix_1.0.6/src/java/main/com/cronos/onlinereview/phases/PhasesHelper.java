@@ -32,6 +32,8 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.link.ProjectLink;
+import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -71,8 +73,16 @@ import com.topcoder.util.config.UnknownNamespaceException;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, pulky
- * @version 1.1
+ * <p>
+ * Version 1.2 (Contest Dependency Automation Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added a method for checking if all projects which requested project depends on are completed to the project
+ *     could start.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, isv
+ * @version 1.2
  */
 final class PhasesHelper {
 
@@ -1445,5 +1455,32 @@ final class PhasesHelper {
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("Problem with search builder", e);
         }
+    }
+
+    /**
+     * <p>Checks if all direct parent projects for specified project are completed or not. The check is performed only
+     * for those parent projects which are linked with links which have <code>allow_overlap</code> flag set to
+     * <code>false</code>.</p>
+     *
+     * @param projectId a <code>long</code> providing the ID of a project to check the completeness of parent projects
+     *        for.
+     * @param linkManager a <code>ProjectLinkManager</code> to be used for getting the links to parent projects.
+     * @return <code>true</code> if all parent projects for specified project are completed or there are no parent
+     *         projects at all; <code>false</code> otherwise.
+     * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs while accessing the
+     *         persistent data store.
+     */
+    static boolean areParentProjectsCompleted(long projectId, ProjectLinkManager linkManager)
+        throws com.topcoder.management.project.PersistenceException {
+        ProjectLink[] links = linkManager.getDestProjectLinks(projectId);
+        for (ProjectLink link : links) {
+            if (!link.getType().isAllowOverlap()) {
+                com.topcoder.management.project.Project parentProject = link.getDestProject();
+                if (parentProject.getProjectStatus().getId() != 7) { // project status is not Completed
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

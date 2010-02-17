@@ -46,7 +46,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.SubmissionPhaseHandler";
 
     /** constant for appeals phase type. */
-    private static final String PHASE_TYPE_SUBMISSION = "Submission";
+    public static final String PHASE_TYPE_SUBMISSION = "Submission";
 
     /**
      * Create a new instance of SubmissionPhaseHandler using the default namespace for loading configuration settings.

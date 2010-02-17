@@ -5,9 +5,13 @@ package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
@@ -26,7 +30,14 @@ import com.topcoder.search.builder.filter.Filter;
  * input namespace. The configurable parameters include database connection, email sending and the required number of
  * registrators. This class handle the registration phase. If the input is of other phase types,
  * PhaseNotSupportedException will be thrown.</p>
- *  <p>The registration phase can start whenever the dependencies are met and can stop when:
+ *  <p>The registration phase can start whenever:
+ *  <ul>
+ *      <li>The dependencies are met</li>
+ *      <li>The period has passed</li>
+ *      <li>The parent projects (if any) are completed.</li>
+ *  </ul>
+ *  </p>
+ *  <p>The registration phase can stop whenever:
  *  <ul>
  *      <li>The dependencies are met</li>
  *      <li>The period has passed</li>
@@ -36,8 +47,8 @@ import com.topcoder.search.builder.filter.Filter;
  *  <p>There is no additional logic for executing this phase.</p>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * @author tuenm, bose_java, isv
+ * @version 1.1
  */
 public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -47,7 +58,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.RegistrationPhaseHandler";
 
     /** constant for registration phase type. */
-    private static final String PHASE_TYPE_REGISTRATION = "Registration";
+    public static final String PHASE_TYPE_REGISTRATION = "Registration";
 
     /**
      * Create a new instance of RegistrationPhaseHandler using the default namespace for loading configuration settings.
@@ -99,13 +110,37 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         //will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        if (toStart) {
-            //return true if all dependencies have stopped and start time has been reached.
-            return PhasesHelper.canPhaseStart(phase);
-        } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && PhasesHelper.reachedPhaseEndTime(phase)
-                    && areRegistrationsEnough(phase));
+        long projectId = phase.getProject().getId();
+        try {
+            if (toStart) {
+                //return true if all dependencies have stopped and start time has been reached.
+                ProjectLinkManager linkManager = getManagerHelper().getProjectLinkManager();
+                boolean canStart = PhasesHelper.canPhaseStart(phase);
+                boolean allParentProjectsCompleted = PhasesHelper.areParentProjectsCompleted(projectId, linkManager);
+                if (canStart) {
+                    if (allParentProjectsCompleted) {
+                        return true;
+                    } else {
+                        // Extend phase start time with 24 hours from now to wait for parent projects completion
+                        Date newScheduledStartTime = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000L);
+                        phase.setScheduledStartDate(newScheduledStartTime);
+                        phase.setScheduledEndDate(new Date(newScheduledStartTime.getTime() + phase.getLength()));
+                        phase.getProject().setStartDate(newScheduledStartTime);
+                        recalculateScheduledDates(phase.getProject().getAllPhases());
+                        getManagerHelper().getPhaseManager().updatePhases(phase.getProject(), "0");
+                    }
+                }
+                // Either project start time hasn't been reached yet or not all parent projects are completed
+                return false;
+            } else {
+                return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                        && PhasesHelper.reachedPhaseEndTime(phase)
+                        && areRegistrationsEnough(phase));
+            }
+        } catch (PersistenceException e) {
+            throw new PhaseHandlingException("Failed to get the links to parent projects for project: " + projectId, e);
+        } catch (PhaseManagementException e) {
+            throw new PhaseHandlingException("Failed to get the links to parent projects for project: " + projectId, e);
         }
     }
 
@@ -180,6 +215,22 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("error when looking up resource id.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
+        }
+    }
+
+    /**
+     * <p>Recalculates scheduled start date and end date for all phases when a phase is moved.</p>
+     *
+     * @param allPhases all the phases for the project.
+     * @since 1.1
+     */
+    private void recalculateScheduledDates(Phase[] allPhases) {
+        for (int i = 0; i < allPhases.length; ++i) {
+            Phase phase = allPhases[i];
+            Date newStartDate = phase.calcStartDate();
+            Date newEndDate = phase.calcEndDate();
+            phase.setScheduledStartDate(newStartDate);
+            phase.setScheduledEndDate(newEndDate);
         }
     }
 }
