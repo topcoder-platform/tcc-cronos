@@ -1,4 +1,0 @@
-The test [ProjectDAOBean#addUserToBillingProjects] run 100 times, took time: 297 ms
-The test [ProjectDAOBean#removeUserFromBillingProjects] run 100 times, took time: 281 ms
-The test [ProjectDAOBean#getProjectsByClientId] run 100 times, took time: 360 ms
-
