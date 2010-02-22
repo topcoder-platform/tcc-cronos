@@ -2966,18 +2966,11 @@ public class ProjectServicesImpl implements ProjectServices {
             projectLinkManager.addProjectLink(reOpendedProject.getProjectHeader().getId(),
                                                     contest.getProjectHeader().getId(), ProjectLinkType.REPOST_FOR);
 
-            //set original project to completed
-            Project original = contest.getProjectHeader();
-            original.setProjectStatus(ProjectStatus.COMPLETED);
-            projectManager.updateProject(original, "Repost", operator);
             return reOpendedProject;
 
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
-        }catch (ValidationException e) {
-            log(Level.ERROR, "ValidationException occurred in " + method);
-            throw new ProjectServicesException("ValidationException occurred when operating ProjectLinkManager.", e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
