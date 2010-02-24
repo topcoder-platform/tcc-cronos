@@ -15,6 +15,15 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class Phase implements Serializable {
+
+    public static final long COLLABORATION_PHASE_ID = 111L;
+
+    public static final long DEVELOPMENT_PHASE_ID = 113L;
+
+    public static final long DESIGN_PHASE_ID = 112L;
+
+    public static final long COMPLETED_PHASE_ID = 114L;
+
     /**
      * <p>This field represents the id of the entity.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
