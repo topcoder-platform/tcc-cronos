@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collection;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -81,11 +82,6 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
     /**
      * <p>Collaboration phase ID.</p>
      */
-    private static final long COLLABORATION_PHASE_ID = 111L;
-
-    private static final long DEVELOPMENT_PHASE_ID = 113L;
-
-    private static final long DESIGN_PHASE_ID = 112L;
 
 
     /**
@@ -388,6 +384,25 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
         entityComponent.setCurrentVersion(versionToUpdate);
 
+        // if phase is complted, udpate comp version and comp version dates
+        if (asset.getPhase().equals("Completed"))
+        {
+            Phase phase = getEntityManager().find(Phase.class, Phase.COMPLETED_PHASE_ID);
+            versionToUpdate.setPhase(phase);
+            
+            if (versionToUpdate.getVersionDates().get(Phase.COMPLETED_PHASE_ID) == null)
+            {
+                final Date zeroPointDate = buildDate(1976, 5, 5);
+                final Date stubDate = buildDate(2000, 1, 1);
+                final CompVersionDates compVersionDates = createInitialCompVersionDates(asset, zeroPointDate, stubDate);
+                compVersionDates.setPhase(phase);
+                compVersionDates.setCompVersion(versionToUpdate);
+                compVersionDates.setProductionDate(getDate(asset.getProductionDate()));
+                versionToUpdate.getVersionDates().put(Phase.COMPLETED_PHASE_ID, compVersionDates);
+            }
+           
+        }
+
         // update the asset entity
         updateAsset(asset, entityComponent, versionToUpdate);
 
@@ -667,7 +682,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         final Date zeroPointDate = buildDate(1976, 5, 5);
         //final Phase collaborationPhase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
 
-        Phase phase =  getEntityManager().find(Phase.class, DEVELOPMENT_PHASE_ID);
+        Phase phase =  getEntityManager().find(Phase.class, Phase.DEVELOPMENT_PHASE_ID);
 
         // populate with CompVersionDates
         final Date stubDate = buildDate(2000, 1, 1);
@@ -676,7 +691,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersionDates.setPhase(phase);
         compVersionDates.setCompVersion(versionToUpdate);
 
-        versionToUpdate.getVersionDates().put(DEVELOPMENT_PHASE_ID, compVersionDates);
+        versionToUpdate.getVersionDates().put(Phase.DEVELOPMENT_PHASE_ID, compVersionDates);
 
         persistEntity(em, versionToUpdate);
 
@@ -1202,14 +1217,14 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         final Date zeroPointDate = buildDate(1976, 5, 5);
         //final Phase collaborationPhase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
 
-        Phase phase = getEntityManager().find(Phase.class, COLLABORATION_PHASE_ID);
+        Phase phase = getEntityManager().find(Phase.class, Phase.COLLABORATION_PHASE_ID);
         if (assetDTO.getPhase().equals("Development"))
         {
-            phase = getEntityManager().find(Phase.class, DEVELOPMENT_PHASE_ID);
+            phase = getEntityManager().find(Phase.class, Phase.DEVELOPMENT_PHASE_ID);
         }
         else if (assetDTO.getPhase().equals("Design"))
         {
-            phase = getEntityManager().find(Phase.class, DESIGN_PHASE_ID);
+            phase = getEntityManager().find(Phase.class, Phase.DESIGN_PHASE_ID);
         }
 
         compVersion.setPhase(phase);
@@ -1225,15 +1240,15 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         compVersionDates.setCompVersion(compVersion);
         if (assetDTO.getPhase().equals("Development"))
         {
-            versionDates.put(DEVELOPMENT_PHASE_ID, compVersionDates);
+            versionDates.put(Phase.DEVELOPMENT_PHASE_ID, compVersionDates);
         }
         else if (assetDTO.getPhase().equals("Design"))
         {
-            versionDates.put(DESIGN_PHASE_ID, compVersionDates);
+            versionDates.put(Phase.DESIGN_PHASE_ID, compVersionDates);
         }
         else
         {
-            versionDates.put(COLLABORATION_PHASE_ID, compVersionDates);
+            versionDates.put(Phase.COLLABORATION_PHASE_ID, compVersionDates);
         }
     }
 

@@ -601,7 +601,7 @@ public class AssetDTO implements Serializable {
      * <p>Sets the id of the asset's version.
      * Should be null when creating a new version or an asset.</p>
      * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
-     * @param versionId the id of the asset's version.
+     * @param compVersionId the id of the asset's version.
      */
     public void setCompVersionId(Long compVersionId) {
         this.compVersionId = compVersionId;
@@ -684,7 +684,7 @@ public class AssetDTO implements Serializable {
      *  A new field add in bug fix.
      * </p>
      *
-     * @param comments the comments of the compVersion.
+     * @param compComments the comments of the compVersion.
      */
     public void setCompComments(String compComments) {
         this.compComments = compComments;
@@ -780,7 +780,7 @@ public class AssetDTO implements Serializable {
      *  A new field add in bug fix.
      * </p>
      *
-     * @param dependencies the list of the technologies of the version.
+     * @param compUploadedFiles the list of the technologies of the version.
      */
     public void setCompUploadedFiles(List<CompUploadedFile> compUploadedFiles) {
         this.compUploadedFiles = compUploadedFiles;
@@ -806,7 +806,7 @@ public class AssetDTO implements Serializable {
     /**
      * <p>Sets the number of the version.</p>
      * <p>The acceptance region: any <code>Long</code> value or <code>null</code>.</p>
-     * @param versionNumber the number of the version.
+     * @param version the number of the version.
      */
     public void setVersion(Long version) {
         this.version = version;
