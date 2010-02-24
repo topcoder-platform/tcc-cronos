@@ -6875,8 +6875,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             //2.create new version
             Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
             AssetDTO dto = catalogService.getAssetByVersionId(compVersionId);
+            // close current version
+            dto.setPhase("Completed");
+            com.topcoder.project.phases.Phase[] phases = contest.getAllPhases();
+            dto.setProductionDate(getXMLGregorianCalendar(phases[phases.length-1].getActualEndDate()));
+            catalogService.updateAsset(dto);
+
             //create minor or major version
-            dto.setToCreateMinorVersion(minorVersion);            
+            dto.setToCreateMinorVersion(minorVersion);  
+            dto.setProductionDate(null);
             
             //if it is dev only, or design, create new version here
             if (!isDevContest || !autoDevCreating) {
@@ -6884,7 +6891,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             	dto.setCompVersionId(null);
                 dto.setForum(null);
                 dto.setDocumentation(new ArrayList<CompDocumentation>());
-
+                dto.setPhase("Design");
                 dto = catalogService.createVersion(dto);
             }
             //if it is auto-creating-dev and is creating dev now
@@ -6998,7 +7005,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             if (contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_REVIEW_ID
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_FAILED_SCREENING_ID
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_SUBMISSION_ID
-                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE_ID) {
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE_ID
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_CLIENT_REQUEST.getId()
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getId()) {
                 throw new ProjectServicesException("The project is not failed. You can not re-open it.");
             }
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
