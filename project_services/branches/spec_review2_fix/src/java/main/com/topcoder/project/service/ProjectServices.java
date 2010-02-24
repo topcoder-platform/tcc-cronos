@@ -540,8 +540,8 @@ public interface ProjectServices {
     /**
      * Get corresponding development contest's id for the design contest.
      *
-     * @param userId
-     *            The user id
+     * @param contestId
+     *            The contest id
      * @throws ProjectServicesException
      *             if any other error occurs
      * @since 1.2.1
@@ -564,7 +564,7 @@ public interface ProjectServices {
      /**
      * check contest permission, check if a user has permission (read or write) on a project
      *
-     * @param projectId the tc direct project id
+     * @param tcprojectId the tc direct project id
      * @param readonly check read or write permission
      * @param userId user id
      *
@@ -580,7 +580,7 @@ public interface ProjectServices {
      * get project ids by tc direct id
      * </p>
      *
-     * @tcDirectId tc direct project id
+     * @param tcprojectId tc direct project id
      *
      * @return list of project ids
      *
@@ -653,7 +653,7 @@ public interface ProjectServices {
      * get forum id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return forum id
      *
@@ -708,7 +708,7 @@ public interface ProjectServices {
      * get tc direct project id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return tc direct project id
      *
@@ -753,7 +753,7 @@ public interface ProjectServices {
      * This method retrieves the corresponding specification review project id of a given project.
      * The code will rely on the project links to retrieve the specification project id.
      *
-     * @param projectId the project id to search for
+     * @param destProjectId the project id to search for
      *
      * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
      *
@@ -795,8 +795,8 @@ public interface ProjectServices {
      * update phases
      * </p>
      *
-     * @project project 
-     * @operator operator
+     * @param project project 
+     * @oaran operator operator
      *
      *
      * @throws PersistenceException if any other error occurs.
@@ -829,7 +829,7 @@ public interface ProjectServices {
      * check if it is dev only 
      * </p>
      *
-     * @projectId  project id
+     * @param projectId  project id
      *
      * @return boolean
      *

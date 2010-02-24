@@ -1063,7 +1063,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * <p>
      * This method finds all given user tc direct projects . Returns empty array if no projects found.
      * </p
-     * @param operator 
+     * @param user 
      * 				The user to search for projects
      * @return   Project array with project info, or empty array if none found
      */
@@ -2493,7 +2493,7 @@ public class ProjectServicesImpl implements ProjectServices {
      /**
      * check contest permission, check if a user has permission (read or write) on a project
      *
-     * @param projectId the tc direct project id
+     * @param tcprojectId the tc direct project id
      * @param readonly check read or write permission
      * @param userId user id
      *
@@ -2522,7 +2522,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * get project ids by tc direct id
      * </p>
      *
-     * @tcDirectId tc direct project id
+     * @param tcprojectId tc direct project id
      *
      * @return list of project ids
      *
@@ -2636,7 +2636,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * get forum id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return forum id
      *
@@ -2745,7 +2745,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * get tc direct project id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return tc direct project id
      *
@@ -3234,8 +3234,8 @@ public class ProjectServicesImpl implements ProjectServices {
      * update phases
      * </p>
      *
-     * @project project 
-     * @operator operator
+     * @param project project 
+     * @param operator operator
      *
      *
      * @throws PersistenceException if any other error occurs.
@@ -3303,7 +3303,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * check if it is dev only 
      * </p>
      *
-     * @projectId  project id
+     * @param projectId  project id
      *
      * @return boolean
      *
