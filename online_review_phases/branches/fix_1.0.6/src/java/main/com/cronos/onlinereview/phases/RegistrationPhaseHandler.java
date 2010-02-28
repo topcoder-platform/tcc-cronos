@@ -48,7 +48,7 @@ import com.topcoder.search.builder.filter.Filter;
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
  * @author tuenm, bose_java, isv
- * @version 1.1
+ * @version 1.3
  */
 public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -222,7 +222,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * <p>Recalculates scheduled start date and end date for all phases when a phase is moved.</p>
      *
      * @param allPhases all the phases for the project.
-     * @since 1.1
+     * @since 1.3
      */
     private void recalculateScheduledDates(Phase[] allPhases) {
         for (int i = 0; i < allPhases.length; ++i) {
