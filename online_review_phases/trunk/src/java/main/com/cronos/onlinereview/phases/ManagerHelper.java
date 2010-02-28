@@ -182,7 +182,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * </p>
  *
  * @author tuenm, bose_java, waits
- * @version 1.1
+ * @version 1.3
  */
 public class ManagerHelper {
     /**
@@ -385,7 +385,7 @@ public class ManagerHelper {
      * parameter. This constant array is used as parameter types array when instantiating using reflection in the
      * initManager() method.
      *
-     * @since Contest Dependency Automation assembly
+     * @since 1.3
      */
     private static final Class[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class, ProjectManager.class};
 
@@ -399,7 +399,7 @@ public class ManagerHelper {
      * Represents the ProjectLinkManager instance. It is initialized in the constructor and never changed after
      * that. It is never null.
      *
-     * @since Contest Dependency Automation assembly
+     * @since 1.3
      */
     private final ProjectLinkManager projectLinkManager;
 
@@ -521,7 +521,7 @@ public class ManagerHelper {
      * Gets the non-null ProjectLinkManager instance.
      *
      * @return The non-null ProjectLinkManager instance.
-     * @since Contest Dependency Automation assembly
+     * @since 1.3
      */
     public ProjectLinkManager getProjectLinkManager() {
         return projectLinkManager;
@@ -1029,7 +1029,7 @@ public class ManagerHelper {
      * @param nsPropName name of property which holds namespace argument for constructor.
      * @return either a ScorecardManager, ReviewManager, ProjectManager, or UserRetrieval instance.
      * @throws ConfigurationException if a required property is missing or if a problem occurs during instantiation.
-     * @since Contest Dependency Automation assembly
+     * @since 1.3
      */
     private ProjectLinkManager initProjectLinkManager(String namespace, String classPropName, String nsPropName)
             throws ConfigurationException {

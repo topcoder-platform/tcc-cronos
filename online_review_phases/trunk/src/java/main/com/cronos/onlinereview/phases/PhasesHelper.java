@@ -77,14 +77,14 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * </p>
  *
  * <p>
- * Version 1.2 (Contest Dependency Automation Release Assembly 1.0) Change notes:
+ * Version 1.3 (Contest Dependency Automation Release Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Added a method for checking if all projects which requested project depends on are completed to the project
  *     could start.</li>
  *   </ol>
  * </p>
  * @author tuenm, bose_java, pulky, aroglite, waits, isv
- * @version 1.2
+ * @version 1.3
  */
 final class PhasesHelper {
     /**
@@ -1929,6 +1929,8 @@ final class PhasesHelper {
      *         projects at all; <code>false</code> otherwise.
      * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs while accessing the
      *         persistent data store.
+     *
+     * @since 1.3
      */
     static boolean areParentProjectsCompleted(long projectId, ProjectLinkManager linkManager)
         throws com.topcoder.management.project.PersistenceException {

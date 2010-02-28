@@ -153,6 +153,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         long projectId = phase.getProject().getId();
         try {
             if (toStart) {
+                // version 1.3
                 //return true if all dependencies have stopped and start time has been reached.
                 ProjectLinkManager linkManager = getManagerHelper().getProjectLinkManager();
                 boolean canStart = PhasesHelper.canPhaseStart(phase);
@@ -354,7 +355,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * <p>Recalculates scheduled start date and end date for all phases when a phase is moved.</p>
      *
      * @param allPhases all the phases for the project.
-     * @since 1.1
+     * @since 1.3
      */
     private void recalculateScheduledDates(Phase[] allPhases) {
         for (int i = 0; i < allPhases.length; ++i) {
