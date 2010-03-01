@@ -564,7 +564,8 @@
                           || contest.status == 'Cancelled - Zero Submissions'
                           || contest.status == 'Cancelled - Winner Unresponsive'
                           || contest.status == 'Cancelled - Client Request'
-                          || contest.status == 'Cancelled - Requirements Infeasible'));
+                          || contest.status == 'Cancelled - Requirements Infeasible'
+                          || contest.status == 'Cancelled - Zero Registrations'));
         }
         /**
          * Checks if the current contest is completed design/development.
