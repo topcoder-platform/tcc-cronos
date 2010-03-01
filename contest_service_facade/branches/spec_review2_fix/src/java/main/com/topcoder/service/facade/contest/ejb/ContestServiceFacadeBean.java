@@ -7007,7 +7007,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_SUBMISSION_ID
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE_ID
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_CLIENT_REQUEST.getId()
-                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getId()) {
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getId()
+                && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_REGISTRATIONS.getId()) {
                 throw new ProjectServicesException("The project is not failed. You can not re-open it.");
             }
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
