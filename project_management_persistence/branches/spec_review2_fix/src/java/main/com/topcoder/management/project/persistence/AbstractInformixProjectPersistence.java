@@ -3725,7 +3725,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				  or 'Draft' or from the DB as done previously.*/
 
 				// try to use phase if not null
-				if (rows[i][1] != null)
+				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
@@ -3900,7 +3900,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				  or 'Draft' or from the DB as done previously.*/
 
 				// try to use phase if not null
-				if (rows[i][1] != null)
+				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
@@ -4170,7 +4170,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				  or 'Draft' or from the DB as done previously.*/
 
 				// try to use phase if not null
-				if (rows[i][1] != null)
+				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
 					ret[i].setSname((String)rows[i][1]);
 				}
@@ -4798,8 +4798,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			sb.append("    where ph.phase_status_id = 2 and ph.project_id=c.project_id)) as current_phase,  ");
             sb.append("  (select case when(count(*)>=1) then 'Scheduled' when(count(*)=0) then 'Draft' end  ");
 	        sb.append("     from contest_sale cs where c.project_id = cs.contest_id and upper(psl.name)='ACTIVE' ) as newstatus, ");
-            sb.append("  (select ptl.name from phase_type_lu ptl where phase_type_id = (select max(phase_type_id) from project_phase ph  ");
-	        sb.append("     where ph.phase_status_id = 3 and ph.project_id=c.project_id))  as close_phase ");
+            sb.append("  NVL((select unique ttp.name ");
+            sb.append("     from project_info as pi ");
+            sb.append("     left outer join tt_project as ttp  ");
+            sb.append("     on pi.value::DECIMAL(10,2) = ttp.project_id ");
+            sb.append("     left outer join tt_client_project cpx ");
+            sb.append("     on ttp.project_id = cpx.project_id   ");
+            sb.append("     left outer join tt_client as cl ");
+            sb.append("     on cpx.client_id = cl.client_id ");
+            sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), '') as cpname ");			
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -4977,13 +4984,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
                           || ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getName()))
                     {
-                        c.setSname("Canceled");
+                        c.setSname("Cancelled");
                     }
 					else 
                     {
                         c.setSname("Completed");
                     }
 				}
+
+                if (os[36] != null)
+                    c.setCpname(os[36].toString());
 
                 
                 result.add(c);
