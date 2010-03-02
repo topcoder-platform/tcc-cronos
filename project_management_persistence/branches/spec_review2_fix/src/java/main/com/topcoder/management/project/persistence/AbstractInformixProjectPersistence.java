@@ -1650,8 +1650,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Long newId;
       
         
-        Date specCreateDate;
-
         getLogger().log(Level.INFO, new LogMessage(null, operator, 
         		"creating new project: " + project.getAllProperties()));
 
@@ -2247,21 +2245,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // get the standard cca value from project property. 
         String value = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY));
 
-        boolean standardCCA=false;
-        if (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC)) {
-            standardCCA=true;
-        }
-
         // get the standard cca value from project property. 
-        String billing = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY));
-        long billingProjectId = new Long(billing);
+        boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
 
-		// generate new project role terms of use associations for the recently created project.
-        generateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
+        // get the billing project id
+        long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
 
-        // check if any client/billing specific terms
-        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId, project.getProjectCategory().getId());
-
+        //insert the term of use for the project
+        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, conn);
+        
         // create the project properties
         createProjectProperties(projectId, project, idValueMap, operator, conn);
     }
@@ -2377,32 +2369,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
 
-
-        Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
-        
+        Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));        
         // get the property id - property value map from the project.
         Map idValueMap = makePropertyIdPropertyValueMap(project
                 .getAllProperties(), conn, nameIdMap);
-        
+        // clean project role terms of use associations for the recently created project.
+        cleanProjectRoleTermsOfUseAssociations(projectId, conn);        
         // get the standard cca value from project property. 
         String value = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY));
-
-        boolean standardCCA=false;
-        if (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC)) {
-            standardCCA=true;
-        }
-
-		// update project role terms of use associations for the recently created project.
-        updateProjectRoleTermsOfUseAssociations(projectId, project.getProjectCategory().getId(), standardCCA, conn);
-
-
-        // get the standard cca value from project property. 
-        String billing = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY));
-        long billingProjectId = new Long(billing);
-
-        // check if any client/billing specific terms
-        createPrivateProjectRoleTermsOfUse(projectId, billingProjectId, project.getProjectCategory().getId());
-
+        boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
+        // get the standard cca value from project property.         
+        long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));        
+        //insert the term of use for the project
+        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, conn);
+        
         // update the project properties
         updateProjectProperties(project, idValueMap, operator, conn);
 
@@ -4449,117 +4429,149 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     }
 
 
-	/**
-     * Private helper method to generate default Project Role Terms of Use associations for a given project.
-     * 
-     * Updated for version 1.1.2
+    private static boolean isSpecReviewSubmitter(int roleId, long projectCategoryId) {
+        return roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW;
+    }
+    /**
+     * 1. if there are client terms defined, insert these terms.
+     * 2. if CCA, insert CCA terms
+     * 3. insert standard terms if a role is not defined in 1.
      *
-     * @param projectId the project id for the associations
-     * @param projectCategoryId the project category id of the provided project id
-     * @param conn the database connection
-     * @param standardCCA whether standardCCA is chosen or normal/public.
-     * 
-     * @throws ConfigManagerException if Configuration Manager fails to retrieve the configurations
-     * @throws PersistenceException if any errors occur during EJB lookup
+     * @param projectId the project id to associate
+     * @param billingProjectId the client project id
+     * @param projectCategoryId the project category
+     * @param standardCCA true for cca
+     * @throws PersistenceException if any error occurs
      */
-    private void generateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId,  boolean standardCCA, Connection conn
-           ) throws PersistenceException {
-
+    private void createRoleTermOfUse(long projectId, long billingProjectId, long projectCategoryId, boolean standardCCA,
+            Connection conn) throws PersistenceException {        
         PreparedStatement preparedStatement = null;
         try {
-
-            // get the instance of ConfigManager
-            ConfigManager cm = ConfigManager.getInstance();
+            //hold the role ids that has client's terms of use
+            Set<Integer> privateTermOfUseRoleIds = new HashSet<Integer>();
+            // build the statement            
+            Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
+                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE});
+                
+            //1. step 1, insert client defined terms
+            preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+            preparedStatement.setLong(1, projectId);
+            
+            if (rows.length > 0) {
+                for (int i = 0; i < rows.length; i++) {
+                    Object[] os = rows[i];
+                    // if resource role id is 0 or null, insert for all
+                    if (os[1] == null || os[1].toString().equals("") || os[1].toString().equals("0")) {
+                        for (int roleId : ALL_ROLES_ID) { 
+                            // no submitter for spec review
+                            if (!isSpecReviewSubmitter(roleId, projectCategoryId)) {
+                                preparedStatement.setInt(2, roleId);
+                                preparedStatement.setObject(3, os[0]);
+                                preparedStatement.execute();
+                                privateTermOfUseRoleIds.add(roleId);
+                            }
+                        }
+                    } else { // otherwise insert for specified role                        
+                        int roleId = ((Long)os[1]).intValue();
+                         // no submitter for spec review
+                        if (!isSpecReviewSubmitter(roleId, projectCategoryId)) {
+                            preparedStatement.setObject(2, os[1]);
+                            preparedStatement.setObject(3, os[0]);
+                            preparedStatement.execute();
+                            privateTermOfUseRoleIds.add(roleId);
+                        }
+                    }
+                }
+            }
+            
+            //2. insert cca terms
             if (standardCCA) {
                 preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
                 preparedStatement.setLong(1, projectId);
                 preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
                 for (int roleId : ALL_ROLES_ID) {
-                    // no manager or observer for cca
-                    // for spec review, no submitter
-                    if (roleId != MANAGER_ROLE_ID && roleId != OBSERVER_ROLE_ID 
-                          && !(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
-                    {
+                    // no manager or observer for cca, for spec review, no submitter
+                    if (roleId != MANAGER_ROLE_ID && roleId != OBSERVER_ROLE_ID  
+                            && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
                         preparedStatement.setInt(2, roleId);
                         preparedStatement.execute(); 
                     }
                 }
             } 
 
+            //3. insert stardard terms
+
             // always insert for manager
-            createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);
-            
+            createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);            
+            // get the instance of ConfigManager
+            ConfigManager cm = ConfigManager.getInstance();
             // always insert standard
             long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
                 PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
                 getLogger(), Long.toString(PUBLIC_SUBMITTER_TERMS_ID)));
             int submitterRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                     SUBMITTER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(SUBMITTER_ROLE_ID)));
-            long reviewerTermsId = Long
-                    .parseLong(Helper
-                            .getConfigurationParameterValue(cm, namespace,
-                                     PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
-                                            .toString(PUBLIC_REVIEWER_TERMS_ID)));
+            long reviewerTermsId = Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
+                    PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long.toString(PUBLIC_REVIEWER_TERMS_ID)));
 
-            // no submitter for spec review
-            if (projectCategoryId != ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW)
-            {
+            // no submitter for spec review and submitter is not inserted in step 1 yet
+            if (projectCategoryId != ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW 
+                    && ! privateTermOfUseRoleIds.contains(submitterRoleId)) {
                 createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
             }
 
             if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
-                int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
-                int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
-                int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
-
+                int accuracyReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                        ACCURACY_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(ACCURACY_REVIEWER_ROLE_ID)));
+                int failureReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                        FAILURE_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FAILURE_REVIEWER_ROLE_ID)));
+                int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                        STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
                 // if it's a development project there are several reviewer roles
-                createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+                if (!privateTermOfUseRoleIds.contains(accuracyReviewerRoleId)) {
+                    createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
+                }
+                if (!privateTermOfUseRoleIds.contains(failureReviewerRoleId)) {
+                    createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
+                }
+                if (!privateTermOfUseRoleIds.contains(stressReviewerRoleId)) {
+                    createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+                }                
             } else {
-                int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
-
+                int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                        REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
                 // if it's not development there is a single reviewer role
-                createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
+                if (!privateTermOfUseRoleIds.contains(reviewerRoleId)) {
+                    createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
+                }
             }
 
             // also add terms for the rest of the reviewer roles
-            int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
-            int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
-            int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(
-                                                    cm, namespace, FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
-
-            createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-            createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
-            createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
-
-        }
-        catch (ConfigurationException e)
-        {
-            throw new PersistenceException(e.getMessage());
-        }
-        catch (SQLException e)
-        {
-            throw(new PersistenceException(e.getMessage()));
-        }
-         finally {
-            if (preparedStatement != null)
-            {
-                try
-                {
-                    preparedStatement.close();
-                }
-                catch (Exception ee)
-                {
-                }
-                
+            int primaryScreenerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    PRIMARY_SCREENER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(PRIMARY_SCREENER_ROLE_ID)));
+            int aggregatorRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
+            int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
+                    FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
+            if (!privateTermOfUseRoleIds.contains(primaryScreenerRoleId)) {
+                createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
             }
+            if (!privateTermOfUseRoleIds.contains(aggregatorRoleId)) {
+                createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);  
+            }
+            if (!privateTermOfUseRoleIds.contains(finalReviewerRoleId)) {
+                createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+            }
+        } catch (ConfigurationException e) {
+            throw new PersistenceException(e.getMessage(), e);
+        } catch (SQLException e) {
+            getLogger().log(
+                    Level.ERROR, new LogMessage(null, null,
+                            "Fails to create the private project role terms of use ", e));      
+            throw new PersistenceException(e.getMessage(), e);
+                  
+        } finally {
+            Helper.closeStatement(preparedStatement);
         }
     }
 
@@ -4577,60 +4589,24 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @throws ConfigManagerException if Configuration Manager fails to retrieve the configurations
      * @throws PersistenceException if any errors occur during EJB lookup
      */
-    private void updateProjectRoleTermsOfUseAssociations(long projectId, long projectCategoryId, boolean standardCCA, Connection conn
-            ) throws PersistenceException {
+    private void cleanProjectRoleTermsOfUseAssociations(long projectId, Connection conn)throws PersistenceException {
 
         PreparedStatement ps = null;
-
-        try
-        {
-            ConfigManager cm = ConfigManager.getInstance();
-
-            long submitterTermsId =  Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
-                PUBLIC_SUBMITTER_TERMS_ID_PARAMETER,
-                getLogger(), Long.toString(PUBLIC_SUBMITTER_TERMS_ID)));
-            long reviewerTermsId = Long
-                    .parseLong(Helper
-                            .getConfigurationParameterValue(cm, namespace,
-                                     PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long
-                                            .toString(PUBLIC_REVIEWER_TERMS_ID)));
+        try {
             StringBuffer query = new StringBuffer(1024);
             query.append("delete ");
             query.append("from project_role_terms_of_use_xref ");
-            query.append("where project_id = ? "); //and (terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ? or terms_of_use_id = ?)");
+            query.append("where project_id = ? ");
 
             // delete all
             ps = conn.prepareStatement(query.toString());
             ps.setLong(1, projectId);
-           /* ps.setLong(2, submitterTermsId);
-            ps.setLong(3, reviewerTermsId);
-            ps.setLong(4, STANDARD_CCA_TERMS_ID);
-            ps.setLong(5, MANAGER_TERMS_ID); */
-
             ps.executeUpdate();
-            generateProjectRoleTermsOfUseAssociations(projectId, projectCategoryId, standardCCA, conn);
 
-        }
-        catch (ConfigurationException e)
-        {
-            throw new PersistenceException(e.getMessage());
-        }
-        catch (SQLException e)
-        {
-            throw(new PersistenceException(e.getMessage()));
-        }
-         finally {
-			if (ps != null)
-			{
-				try
-				{
-					ps.close();
-				}
-				catch (Exception ee)
-				{
-				}
-				
-			}
+        } catch (SQLException e) {
+            throw new PersistenceException(e.getMessage(), e);
+        } finally {
+			Helper.closeStatement(ps);
         }
         
     }
@@ -4645,15 +4621,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @param dataSource the datasource.
      * @throws PersistenceException if any error occurs
      */
-    public void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
+    private void createProjectRoleTermsOfUse(long projectId, int resourceRoleId, long termsOfUseId, Connection conn)
             throws PersistenceException {
 
         PreparedStatement ps = null;
 
         try
         {
-            
-
             StringBuffer query = new StringBuffer(1024);
             query.append("INSERT ");
             query.append("INTO project_role_terms_of_use_xref (project_id, resource_role_id, terms_of_use_id) ");
@@ -4676,17 +4650,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw(new PersistenceException(e.getMessage()));
         }
          finally {
-            if (ps != null)
-            {
-                try
-                {
-                    ps.close();
-                }
-                catch (Exception ee)
-                {
-                }
-                
-            }
+            Helper.closeStatement(ps);
         }
         
     }
@@ -5341,95 +5305,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
     
-    
-    
-    /**
-     * This method will create project role terms of use association for private contests.
-     *
-     * @param projectId the project id to associate
-     * @param clientId the clientId.
-     * @throws PersistenceException if any error occurs
-     */
-    public void createPrivateProjectRoleTermsOfUse(long projectId,  long billingProjectId, long projectCategoryId)
-            throws PersistenceException {
-        Connection conn = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            // create the connection
-            conn = openConnection();
-
-            // build the statement
-            
-            Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
-                new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE});
-                
-            preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
-            preparedStatement.setLong(1, projectId);
-            if (rows.length > 0)
-            {
-                for (int i = 0; i < rows.length; i++) 
-                {
-                    Object[] os = rows[i];
-                    // if resource role id is 0 or null, insert for all
-                    if (os[1] == null || os[1].toString().equals("") || os[1].toString().equals("0"))
-                    {
-                        for (int roleId : ALL_ROLES_ID) 
-                        { 
-                            // no submitter for spec review
-                            if (!(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
-                            {
-                                preparedStatement.setInt(2, roleId);
-                                preparedStatement.setObject(3, os[0]);
-                                preparedStatement.execute();
-                            }
-                        }
-                    }
-                    // otherwise insert for specified role
-                    else
-                    {
-                        int roleId = ((Long)os[1]).intValue();
-                         // no submitter for spec review
-                        if (!(roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW))
-                        {
-                            preparedStatement.setObject(2, os[1]);
-                            preparedStatement.setObject(3, os[0]);
-                            preparedStatement.execute(); 
-                        }
-                    }
-                }
-            }
-
-            
-        }
-        catch (SQLException e)
-        {
-            getLogger().log(
-                    Level.ERROR,
-                    new LogMessage(null, null,
-                            "Fails to create the private project role terms of use ", e));      
-            throw(new PersistenceException(e.getMessage()));
-                  
-        }
-        finally {
-            if (preparedStatement != null)
-            {
-                try
-                {
-                    preparedStatement.close();
-                }
-                catch (Exception ee)
-                {
-                    //ignore it
-                }
-                
-            }
-            if (conn != null) {
-                closeConnectionOnError(conn);
-            }
-        }
-        
-    }  
     
 
     /**
