@@ -78,6 +78,9 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
          * @since 1.0.1
         */
         public var excludedStatus:ArrayCollection = new ArrayCollection([]);
+
+        public var cpname:String;
+
     
     }
 }

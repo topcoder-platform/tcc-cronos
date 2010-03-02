@@ -58,7 +58,7 @@
                 	this.activeStatusCB.selected = true;
                 	this.scheduledStatusCB.selected = true;
                 	this.completedStatusCB.selected = true;
-                    this.canceledStatusCB.selected = true;
+                    this.cancelledStatusCB.selected = true;
                 } else {
                 	for each(var s:String in model.filter.excludedStatus) {
                 		if (s.toLowerCase() == 'draft') {
@@ -69,11 +69,12 @@
                 			activeStatusCB.selected = false;
                 		} else if (s.toLowerCase() == 'completed') {
                 			completedStatusCB.selected = false;
-                		} else if (s.toLowerCase() == 'canceled') {
-                			canceledStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'cancelled') {
+                			cancelledStatusCB.selected = false;
                 		}
                 	}
                 }
+                this.repostRBG.selectedValue = model.filter.repost;
                 // we do not select anything on numeric filter - as it has multiple values.
                 combo2.selectedIndex=0;
                 less.text="";
@@ -166,8 +167,14 @@
 
                 //updateView();
                 model.filterDetail();
+            }           
+           
+
+            private function filterByRepost(event:Event):void {                     		
+            	model.filter.repost = repostRBG.selectedValue.toString();            			
+            	model.filterDetail();
             }
-            
+
             private function filterByStatus(event:Event):void {
             	clearOrAddExcluded(model.filter.excludedStatus, CheckBox(event.currentTarget).label, !CheckBox(event.currentTarget).selected);
             	model.filterDetail();
@@ -255,7 +262,7 @@
                      paddingTop="0"
                      paddingLeft="0"
                      verticalGap="0">
-	        	<mx:CheckBox id="canceledStatusCB" selected="true" label="Canceled" change="filterByStatus(event)"/>
+	        	<mx:CheckBox id="cancelledStatusCB" selected="true" label="Cancelled" change="filterByStatus(event)"/>
 	        </mx:VBox>	
         </mx:HBox>
              
@@ -404,12 +411,37 @@
                           color="#afafaf"
                           styleName="listStyle"
                           fontSize="14"/>
+
             </mx:VBox>
             <mx:Spacer width="100%"/>
             <mx:Button styleName="greyBtn"
                        label="UPDATE"
                        click="filterField()"/>
         </mx:HBox>
-       
+       <mx:HBox width="100%" height="90" backgroundColor="#e3e3e3" horizontalScrollPolicy="off"
+                 borderStyle="solid" borderSides="left right bottom"
+                 borderColor="#cccccc" paddingTop="5" paddingLeft="17" paddingBottom="5" verticalAlign="bottom">
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+                <mx:Label text="Repost"
+                          styleName="listStyleBold"
+                          fontSize="14"/>                          
+            </mx:VBox>
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+            	<mx:RadioButtonGroup id="repostRBG" selectedValue="All" itemClick="filterByRepost(event)"/>        		
+		        <mx:RadioButton groupName="repostRBG" id="repost_all" value="N/A" 
+		            label="All" width="150" />
+		        <mx:RadioButton groupName="repostRBG" id="repost_new" value="NO" 
+		            label="New" width="150" />
+		        <mx:RadioButton groupName="repostRBG" id="repost_repost" value="YES" 
+		            label="Repost" width="150" />
+
+            </mx:VBox>        	
+        </mx:HBox>
     </mx:VBox>
 </mx:VBox>

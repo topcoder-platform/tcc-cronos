@@ -198,7 +198,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          */ 
         public function loadData(contests:XMLList):void {
             TCLog.instance.timeStampLog("Load data", this.uid);
-            
+            trace(contests.toXMLString());
             TCLog.instance.debug("contests.children.length ---------> " + contests.children().length());
             var start:Date = new Date();
             clientList=new Array();
@@ -238,7 +238,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 p.apricing=o.pricingApproval ? o.pricingApproval[0] : false;
                 p.vspec=o.passedSpecReview ? o.passedSpecReview[0] : false;
                 p.dependent=o.hasDependentCompetitions ? o.hasDependentCompetitions[0] : false;
-                p.repost=o.wasReposted ? o.wasReposted[0] : false;
+
+                p.repost=(o.wasReposted ? o.wasReposted[0] : false) as Boolean;
+trace(o.wasReposted);
+trace(o.wasReposted ? o.wasReposted[0] : false);
+trace(o.wasReposted[0]);
+			trace(p.repost);
                 p.hasWikiSpec=o.hasWikiSpecification ? o.hasWikiSpecification[0] : false;
                 
                 p.notes=o.notes ? o.notes[0] : "";
@@ -260,7 +265,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 p.specer=o.salesPerson ? o.salesPerson[0] : "";
                 
                 p.uid=uid;
-                
+                p.cpname = o.cpname ? o.cpname[0] : "";
                 // add client
                 var clFound:Boolean=false;
                 for each (var cl:String in clientList) {
@@ -474,6 +479,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                         return false;
                     }
                 }
+                if (filter.cpname && filter.cpname.length > 0) {
+                    if (filter.cpname != detail.cpname) {
+                        return false;
+                    }
+                }
+
                 if (filter.project && filter.project.length > 0) {
                     if (filter.project != detail.project) {
                         return false;
@@ -896,7 +907,7 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 var c:Client=tmp4[detail.client] as Client;
                 c.client=detail.client;
                 c.contests++;
-                c.launched+= (detail.status != "Draft" && detail.status != "Scheduled") ? 1 : 0;
+                c.launched+= (detail.status != "Draft" && detail.status != "Scheduled" && detail.status != "Cancelled") ? 1 : 0;
                 
             }
             updateRole(role);

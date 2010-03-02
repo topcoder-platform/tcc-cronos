@@ -94,6 +94,10 @@
                 if (filter.category != null && filter.category.length > 0) {
                     createFilterLabel("Category", filter.category, removeCategory);
                 }
+                  if (filter.cpname != null && filter.cpname.length > 0) {
+                    createFilterLabel("Billing", filter.cpname, removeBilling);
+                }
+
                 if (filter.name != null && filter.name.length > 0) {
                     createFilterLabel("Name", filter.name, removeName);
                 }
@@ -123,6 +127,7 @@
                 	createFilterLabel("Exclude Status", st, removeECS);
                 }
                 title.visible=(numChildren > 1);
+	               if (filterPanel) filterPanel.updateView();
             }
             
             private function removeProject(event:MouseEvent):void {
@@ -149,7 +154,12 @@
 		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }
-            
+            private function removeBilling(event:MouseEvent):void {
+                model.filter.cpname=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+
             private function removeStatus(event:MouseEvent):void {
                 model.filter.status=null;
 		if (filterPanel) filterPanel.updateView();
@@ -188,6 +198,7 @@
             
             private function removeREPOST(event:MouseEvent):void {
                 model.filter.repost="N/A";
+                
 		if (filterPanel) filterPanel.updateView();
                 model.filterDetail();
             }

@@ -93,6 +93,8 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.vo {
         
         public var widgetFramework:IWidgetFramework;
         
+        public var cpname:String;
+        
         public function Detail() {
             super();
         }

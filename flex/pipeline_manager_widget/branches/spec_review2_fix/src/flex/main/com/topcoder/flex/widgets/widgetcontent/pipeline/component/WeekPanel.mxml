@@ -177,8 +177,8 @@
                 		return -1;
                 	}
                 	return -1;
-                } else if (c1 == 'canceled') {
-                	if (c2 == 'canceled') {
+                } else if (c1 == 'cancelled') {
+                	if (c2 == 'cancelled') {
                 		return 0;
                 	}
                 	return -1;
@@ -221,24 +221,29 @@
     			               sortCompareFunction="compareDate"/>
     		<mx:DataGridColumn headerText="Member Costs" dataField="prize" width="50" />
 			<mx:DataGridColumn headerText="Contest fee" dataField="fee"  width="50"/>
-			<mx:DataGridColumn headerText="Type" dataField="type" width="170"
-				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer"  />
+			<!--mx:DataGridColumn headerText="Type" dataField="type" width="170"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer"  /-->
 			<mx:DataGridColumn headerText="Category" dataField="category" width="120"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CategoryRenderer"  />
 			<mx:DataGridColumn headerText="Client" dataField="client" width="80"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ClientRenderer"  />
-			<mx:DataGridColumn headerText="Project" dataField="project"  width="80"
+			<mx:DataGridColumn headerText="Billing" dataField="cpname" width="80"			                   
+                                           itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.BillingRenderer"  /> 			
+                     <mx:DataGridColumn headerText="Project" dataField="project"  width="80"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ProjectRenderer"  />
 			<mx:DataGridColumn headerText="Name" dataField="name" width="170"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer"  />
 			<mx:DataGridColumn headerText="Status" dataField="status"  width="80" sortCompareFunction="compareStatus"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.StatusRenderer"  />
+			<mx:DataGridColumn headerText="Repost" dataField="repost"  width="50"
+			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.RepostRenderer"  />             	
 			<mx:DataGridColumn headerText="Resources" dataField="manager"  width="100"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ResourceRenderer"  />
 			<mx:DataGridColumn headerText="Added" dataField="added"  width="75" sortCompareFunction="compareAdded"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AddedRenderer"  />
 			<mx:DataGridColumn headerText="Changed" dataField="changed"  width="115" sortCompareFunction="compareChange"
-			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ChangeRenderer"  />        			               	               
+			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ChangeRenderer"  />   
+					               	               
     	</mx:columns>
     </mx:DataGrid>
 </mx:VBox>
