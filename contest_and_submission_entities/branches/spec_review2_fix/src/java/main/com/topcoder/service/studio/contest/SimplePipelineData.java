@@ -77,13 +77,17 @@ import javax.persistence.Transient;
         @FieldResult(name = "notes", column = "notes"),
         
         @FieldResult(name = "cperm", column = "cperm"),
-        @FieldResult(name = "pperm", column = "pperm") }) })
+        @FieldResult(name = "pperm", column = "pperm"),
+        @FieldResult(name = "cpname", column = "cpname")}) })
 @Entity
 public class SimplePipelineData {
 
     /** Generated serial version id. */
     private static final long serialVersionUID = 1L;
 
+	/** Represents the client project name. */
+    private String cpname;
+	
     /** Represents the pipeline info id. */
     private Long pipelineInfoId;
 
@@ -202,6 +206,24 @@ public class SimplePipelineData {
      */
     private Long statusId;
 
+	/**
+     * Returns the client project name.
+     * 
+     * @return the client project name.
+     */
+    public String getCpname() {
+        return cpname;
+    }
+	/**
+     * Updates the client project name with the specified value.
+     * 
+     * @param cpname
+     *            the client project name to set.
+     */
+    public void setCpname(String cpname) {
+        this.cpname = cpname;
+    }
+	
     /**
      * Returns the value of status.
      * @return the status
