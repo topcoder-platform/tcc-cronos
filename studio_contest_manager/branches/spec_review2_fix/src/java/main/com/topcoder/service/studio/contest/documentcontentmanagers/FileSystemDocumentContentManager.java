@@ -207,10 +207,9 @@ public class FileSystemDocumentContentManager implements DocumentContentManager 
      * /studiofiles/documents and contestId is 2011.
      * </p>
      *
-     * @param path
+     * @param filePath
      *            the document path
-     * @return true if the document content identified by the path exists,
-     *         returns false otherwise
+     * @param contestId contest id
      *
      * @throws IllegalArgumentException
      *             if the argument is null or empty string. If contestId is

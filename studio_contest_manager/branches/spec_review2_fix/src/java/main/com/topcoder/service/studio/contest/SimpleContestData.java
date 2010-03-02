@@ -240,7 +240,7 @@ public class SimpleContestData implements Serializable {
 	/**
      * Updates the num_reg.
      *
-     * @return the num_reg.
+     * @param num_reg the num_reg.
      */
 	public void setNum_reg(int num_reg) {
 		this.num_reg = num_reg;
@@ -258,7 +258,7 @@ public class SimpleContestData implements Serializable {
 	/**
      * Updates the num_sub.
      *
-     * @return the num_sub.
+     * @param num_sub the num_sub.
      */
 	public void setNum_sub(int num_sub) {
 		this.num_sub = num_sub;
@@ -324,10 +324,9 @@ public class SimpleContestData implements Serializable {
 
     /**
      * <p>
-     * Sets the permission.
+     * Gets the permission.
      * </p>
      * 
-     * @param permission user permission to set
      * 
      * @since BUGR-1797.
      */
@@ -340,7 +339,7 @@ public class SimpleContestData implements Serializable {
      * Sets the permission.
      * </p>
      * 
-     * @return permission user permission to set
+     * @param permission user permission to set
      * 
      * @since BUGR-1797.
      */

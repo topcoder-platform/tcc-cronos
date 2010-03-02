@@ -630,7 +630,7 @@ public interface ContestManager {
      * given project.
      * </p>
      *
-     * @param the given project id;
+     * @param pid the given project id;
      * @return the list of all available contents (or empty if none found)
      *
      * @throws ContestManagementException if any error occurs when getting
@@ -695,7 +695,7 @@ public interface ContestManager {
      * given projects.
      * </p>
      *
-     * @param the given project id
+     * @param pid - the given project id
      * @return the list of all available contents (or empty if none found)
      *
      * @throws ContestManagementException if any error occurs when getting
@@ -1092,7 +1092,7 @@ public interface ContestManager {
      * Loads and returns the concrete payment type
      *
      * @since BUGR-1076
-     * @param id the id of paymentTypeId
+     * @param paymentTypeId  the id of paymentTypeId
      * @return list of payment types
      * @throws PersistenceException if any error occurs
      */
@@ -1119,7 +1119,7 @@ public interface ContestManager {
      *
      * Comment added for Cockpit Project Admin Release Assembly v1.0
      *
-     * @param specified key to search for.
+     * @param key specified key to search for.
      * @return the list of users.
      */
     public List<User> searchUser(String key) throws ContestManagementException;
@@ -1199,7 +1199,7 @@ public interface ContestManager {
      /**
      * check submission permission, check if a user has permission (read or write) on a submission's contest
      *
-     * @param contestId the contest id
+     * @param submissionId the submission id
      * @param readonly check read or write permission
      * @param userId user id
      *

@@ -95,8 +95,9 @@ public interface DocumentContentManager {
      * called after contest is created. [BUG TCCC-134]
      * </p>
      *
-     * @param path
-     *            the document path
+     * @param filename
+     *            the file name
+     * @param contestId contes id 
      * @return true if the document content identified by the path exists,
      *         returns false otherwise
      *

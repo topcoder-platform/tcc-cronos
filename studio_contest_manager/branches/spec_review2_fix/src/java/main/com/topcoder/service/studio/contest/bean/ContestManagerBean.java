@@ -2924,7 +2924,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * given project.
      * </p>
      *
-     * @param the
+     * @param pid
      *            given project id;
      * @return the list of all available contents (or empty if none found)
      *
@@ -3098,8 +3098,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
      *
-     * @param the
-     *            given project id
      * @return the list of all available contents (or empty if none found)
      *
      * @throws ContestManagementException
@@ -3220,7 +3218,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
      *
-     * @param the
+     * @param pid
      *            given project id
      * @return the list of all available contents (or empty if none found)
      *
@@ -3344,8 +3342,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
      *
-     * @param the
-     *            given project id
+     * @param createdUser
+     *            created User
      * @return the list of all available contents (or empty if none found)
      *
      * @throws ContestManagementException
@@ -4944,7 +4942,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * Comment added for Cockpit Project Admin Release Assembly v1.0
      *
-     * @param specified
+     * @param key
      *            key to search for.
      * @return the list of users.
      */
@@ -5216,7 +5214,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("                         from user_permission_grant as upg   ");
             sb.append("                         where resource_id=c.contest_id   ");
             sb.append("                         and is_studio=1 ");
-            sb.append("                         and upg.user_id = :userId),0)) as cperm   ");
+            sb.append("                         and upg.user_id = :userId),0)) as cperm,   ");
+            sb.append("    NVL((select unique ttp.name      from contest_config as cf   ");
+            sb.append("     left outer join tt_project as ttp       on CAST (cf.property_value as DECIMAL(10,2)) = ttp.project_id      left outer join tt_client_project cpx");
+            sb.append("     on ttp.project_id = cpx.project_id        left outer join tt_client as cl      on cpx.client_id = cl.client_id");
+            sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), '') as cpname ");
             sb.append(" from contest as c ");
             sb.append(" left outer join tc_direct_project as p ");
             sb.append(" on c.tc_direct_project_id = p.project_id ");
@@ -5537,7 +5539,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      /**
      * check submission permission, check if a user has permission (read or write) on a submission's contest
      *
-     * @param contestId the contest id
+     * @param submissionId the submission id
      * @param readonly check read or write permission
      * @param userId user id
      *
