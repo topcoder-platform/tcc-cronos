@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is breakdown panel for the widget
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*">
+	<mx:Script>
+		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.BreakDown;
+			import mx.collections.ArrayCollection;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+
+			[Bindable]
+			private var model:Model;
+			[Bindable]
+			private var _list:ArrayCollection;
+			[Bindable]
+			private var _puid:String;
+			
+			public function set puid(value:String):void {
+				model = Model.getInstance(value);
+				_puid = value;
+			}
+			public function set brkList(value:ArrayCollection):void {
+				_list = new ArrayCollection();
+				var total:BreakDown = new BreakDown();
+				total.isTotal = true;
+				total.name = "Total";
+				for each (var wk:BreakDown in model.breakList) {
+					total.contest += wk.contest;
+					_list.addItem(wk);
+				}
+				_list.addItem(total);
+
+                
+                var sort:Sort=new Sort();
+                sort.compareFunction=compareContests;
+                _list.sort = sort;
+                _list.refresh();   
+				title.text = model.breakCate[model.breakIdx];
+			}
+
+        /**
+         * sort client by contests 
+         *
+         */
+        private function compareContests(a:Object, b:Object, fields:Array=null):int {
+            var ca:BreakDown = a as BreakDown;
+            var cb:BreakDown = b as BreakDown;
+            if (a.contest > b.contest)
+              return -1;
+            if (a.contest < b.contest)
+              return 1;
+            else return 0;
+        }
+		]]>
+	</mx:Script>
+	<mx:Binding source="model.breakList" destination="brkList" />
+	<!--
+	<tccomp:FilterPanel width="100%" id="filter" puid="{_puid}" />
+	<tccomp:FilterShower width="100%" id="shower" puid="{_puid}" filterPanel="{filter}"/>
+	<mx:Spacer width="100%" height="20" />
+	-->
+	
+	<mx:HBox width="100%" height="45" id="content">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" id="title" />
+		<!--<mx:Spacer width="100%" />
+		<mx:Button label="Back" styleName="btn" click="model.goBack()" />-->
+	</mx:HBox>
+	<mx:DataGrid id="grid" width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"
+			verticalGridLines="false" rowCount="{_list.length}" resizableColumns="false" rowHeight="30"
+			headerColors="[#FF0000, #FF0000]" dataProvider="{_list}"
+			verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:columns>
+			<mx:DataGridColumn width="90" sortable="false" headerText="Name" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.BrkNameRenderer" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Contests" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestRenderer" />
+			<mx:DataGridColumn width="115" sortable="false" headerText="Percentage" headerStyleName="headerStyle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.PercentageRenderer" />
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

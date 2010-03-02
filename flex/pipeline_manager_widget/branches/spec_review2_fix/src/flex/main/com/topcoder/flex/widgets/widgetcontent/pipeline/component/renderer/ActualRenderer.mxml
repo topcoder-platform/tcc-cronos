@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for actual value in pipeline summary.
+     
+      Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+     - add the tooltip
+     
+ 
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         paddingLeft="15"
+         verticalAlign="middle">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+            
+            [Bindable]
+            private var summaryData:Summary;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Summary) {
+                    summaryData=data as Summary;
+                    if (summaryData.isTotal) {
+                        content.styleName="listStyleBold";
+                        content.setStyle("fontSize", 14);
+                    } else {
+                        content.styleName="listStyle";
+                        content.setStyle("fontSize", 12);                       
+                        
+                        if (summaryData.actualB >= 3 && summaryData.actualB <= 4) {
+                            //mark.setStyle("backgroundColor", 0xff9900); // orange 0xff4800
+                            content.setStyle("color", 0xff1200);
+                        } else if (summaryData.actualB >= 5 && summaryData.actualB <= 6) {
+                            //mark.setStyle("backgroundColor", 0xffff00);
+                            content.setStyle("color", 0xf5ed09);
+                        } else if (summaryData.actualB >= 7) {
+                            //mark.setStyle("backgroundColor", 0x00ff00);
+                            content.setStyle("color", 0xc2ef0c);
+                        } else {
+                            //mark.setStyle("backgroundColor", 0xffcdff);
+                            content.setStyle("color", 0xea21a5);
+                        }
+                        
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="content"
+              styleName="listStyle"
+              text="{summaryData.actualA}"/>
+</mx:HBox>

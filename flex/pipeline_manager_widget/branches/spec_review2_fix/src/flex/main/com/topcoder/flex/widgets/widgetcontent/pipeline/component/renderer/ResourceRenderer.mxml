@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for resource.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         paddingLeft="15"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off"
+         horizontalAlign="center"
+         verticalAlign="top">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import flash.net.navigateToURL;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            
+            [Bindable]
+            private var detail:Detail;
+            
+            private var model:Model;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                    lb1.text=truncate(detail.manager);
+                    lb1.toolTip="Manager:" + detail.manager;
+                /*    lb2.text=truncate(detail.arch);
+                    lb2.toolTip="Architects:" + detail.arch;
+                    lb3.text=truncate(detail.reviewer);
+                    lb3.toolTip="Reviewers:" + detail.reviewer;
+                    lb4.text=truncate(detail.specer);
+                    lb4.toolTip="Salesperson:" + detail.specer;  */
+                    model=Model.getInstance(detail.uid);
+                }
+            }
+            
+            public function truncate(input:String):String {
+                var i:int=input.indexOf(",");
+                if (i >= 0) {
+                    return input.substr(0, i);
+                } else {
+                    return input;
+                }
+            }
+            
+            public function filterResource(item:String):void {
+                if (model) {
+                    model.filter.resourceItem=item;
+                    if (item && item.length > 0 && detail.hasOwnProperty(item)) {
+                        model.filter.resourceName=detail[item];
+                        model.filterDetail();
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Text click="filterResource('manager')"
+             styleName="listStyle"
+             id="lb1"
+             width="100%"
+             textDecoration="underline"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/>
+  <!--  <mx:Text click="filterResource('arch')"
+             styleName="listStyle"
+             id="lb2"
+             width="100%"
+             textDecoration="underline"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/>
+    <mx:Text click="filterResource('reviewer')"
+             styleName="listStyle"
+             id="lb3"
+             width="100%"
+             textDecoration="underline"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/>
+    <mx:Text click="filterResource('specer')"
+             styleName="listStyle"
+             id="lb4"
+             width="100%"
+             textDecoration="underline"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/> -->
+</mx:VBox>

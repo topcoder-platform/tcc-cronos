@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The client list view.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         creationComplete="init()"
+         verticalGap="0"
+         verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            
+            [Bindable]
+            private var model:Model;
+            
+            [Bindable]
+            private var open:Boolean=false;
+            
+            public function set puid(value:String):void {
+                model=Model.getInstance(value);
+            }
+            
+            private function handleClick(event:Event):void {
+                if (model) {
+                    open=!open;
+                    winCtrlBut.source=(open) ? model.winMin : model.winMax;
+                    
+                    shower.includeInLayout=shower.visible=open;
+                }
+                event.stopImmediatePropagation();
+            }
+            
+            private function init():void {
+                //lb1.text = "(Hold down \"Control\" to select more than one)";
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox styleName="titleBar"
+             width="100%"
+             height="27"
+             backgroundSize="100%"
+             id="title"
+             paddingTop="0"
+             paddingBottom="0"
+             paddingLeft="20"
+             paddingRight="0"
+             click="handleClick(event)"
+             buttonMode="true"
+             useHandCursor="true"
+             verticalScrollPolicy="off"
+             horizontalScrollPolicy="off">
+        <mx:Image width="16"
+                  height="16"
+                  id="winCtrlBut"
+                  click="handleClick(event)"
+                  source="{model.winMax}"
+                  buttonMode="true"
+                  useHandCursor="true"/>
+        <mx:Label text="List of clients that have scheduled contests"
+                  id="lb"
+                  styleName="nameLabel"/>
+        <mx:Spacer width="100%"/>
+    </mx:HBox>
+    <mx:VBox width="100%"
+             height="100%"
+             id="shower"
+             includeInLayout="false"
+             visible="false"
+             verticalGap="0">
+        <mx:DataGrid id="grid"
+                     width="100%"
+                     borderStyle="solid"
+                     borderSides="left top right"
+                     verticalGridLines="false"
+                     wordWrap="true"
+                     styleName="grid"
+                     headerHeight="30"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     rowHeight="30"
+                     headerColors="[#575657, #101010]"
+                     dataProvider="{model.cList}"
+                     rowCount="{model.cList.length}">
+            <mx:columns>
+                <mx:DataGridColumn width="350"
+                                   sortable="true"
+                                   headerText="Client"
+                                   paddingLeft="10"
+                                   headerStyleName="headerStyle2"
+                                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ClientTbRenderer"/>
+                <mx:DataGridColumn width="180"
+                                   sortable="true"
+                                   headerText="Contests"
+                                   paddingLeft="10"
+                                   headerStyleName="headerStyle2"
+                                   dataField="contests"/>
+                <mx:DataGridColumn width="150"
+                                   sortable="true"
+                                   headerText="Launched"
+                                   paddingLeft="10"
+                                   headerStyleName="headerStyle2"
+                                   dataField="launched"/>
+            </mx:columns>
+        </mx:DataGrid>
+    </mx:VBox>
+</mx:VBox>

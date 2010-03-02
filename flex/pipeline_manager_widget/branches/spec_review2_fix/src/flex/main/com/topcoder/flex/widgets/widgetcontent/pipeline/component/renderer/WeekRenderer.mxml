@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for week value.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml"
+        paddingLeft="15"
+        click="navigateToWeek()">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+            
+            [Bindable]
+            private var summaryData:Summary;
+            
+            [Bindable]
+            public var model:Model;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Summary) {
+                    summaryData=data as Summary;
+                    model=Model.getInstance(summaryData.uid);
+                    if (summaryData.isTotal) {
+                        content.styleName="listStyleBold";
+                        content.setStyle("fontSize", 14);
+                        content.setStyle("textDecoration", "none");
+                        content.text="Totals";
+                    } else {
+                        content.styleName="listStyle";
+                        content.setStyle("fontSize", 12);
+                        content.setStyle("color", 0xfe4646);
+                        content.setStyle("textDecoration", "underline");
+                        content.text=formatter.format(summaryData.week);
+                    }
+                }
+            }
+            
+            private function navigateToWeek():void {
+                if (summaryData && summaryData.week && model) {
+                    var sunday:Date=model.generateSundayTime(summaryData.week);
+                    model.filter.start=sunday;
+                    var sat:Date=new Date();
+                    sat.setTime(sunday.getTime() + 1000 * 3600 * 24 * 6);
+                    model.filter.end=sat;
+                    model.filter.startAdd=null;
+                    model.filter.endAdd=null;
+                    model.filterDetail();
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:DateFormatter formatString="YYYY-MM-DD"
+                      id="formatter"/>
+    <mx:Label id="content"
+              buttonMode="{!summaryData.isTotal}"
+              useHandCursor="{!summaryData.isTotal}"
+              mouseChildren="{summaryData.isTotal}"/>
+</mx:Box>
