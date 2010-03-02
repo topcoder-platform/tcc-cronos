@@ -3,8 +3,11 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 
@@ -15,6 +18,8 @@ import com.topcoder.project.phases.Project;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -160,7 +165,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
         try {
             conn = createConnection();
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, getManagerHelper(), phase.getId());
+            ManagerHelper managerHelper = getManagerHelper();
+            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, managerHelper, phase.getId());
 
             //check for approved/rejected comments.
             Comment[] comments = finalWorksheet.getAllComments();
@@ -191,34 +197,48 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                     }
                 }
 
-                PhaseType finalFixPhaseType = PhasesHelper.getPhaseType(
-                        getManagerHelper().getPhaseManager(), "Final Fix");
-                PhaseType finalReviewPhaseType = PhasesHelper.getPhaseType(
-                        getManagerHelper().getPhaseManager(), "Final Review");
-                PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(
-                        getManagerHelper().getPhaseManager(), "Scheduled");
+                PhaseManager phaseManager = managerHelper.getPhaseManager();
+                PhaseType finalFixPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Fix");
+                PhaseType finalReviewPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Review");
+                PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager, "Scheduled");
 
                 //find current phase index and also the lengths of 'final fix' and 'final review' phases.
                 Project currentPrj = phase.getProject();
 
                 //use helper method to create the new phases
                 int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, phase,
-                        new PhaseType[] {finalFixPhaseType, finalReviewPhaseType}, phaseStatus,
-                        getManagerHelper().getPhaseManager(), operator);
+                        new PhaseType[] {finalFixPhaseType, finalReviewPhaseType}, phaseStatus, phaseManager, operator);
 
                 //save the phases
-                getManagerHelper().getPhaseManager().updatePhases(currentPrj, operator);
+                phaseManager.updatePhases(currentPrj, operator);
+
+                // Since new Final Review phases was added adjust the timelines for depending projects accordingly
+                // by amount of time equal to difference between the end times for current processed Final Review phase
+                // and newly added Final Review phase
+                Date currentPhaseEndDate = phase.getScheduledEndDate();
+                Date newPhaseEndDate = currentPrj.getAllPhases()[currentPhaseIndex + 2].getScheduledEndDate();
+                long diff = newPhaseEndDate.getTime() - currentPhaseEndDate.getTime();
+                ContestDependencyAutomation auto
+                    = new ContestDependencyAutomation(phaseManager,
+                                                      managerHelper.getProjectManager(),
+                                                      managerHelper.getProjectLinkManager());
+                List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(currentPrj.getId(), diff);
+                for (Phase[] affectedProjectPhases : affectedPhases) {
+                    phaseManager.updatePhases(affectedProjectPhases[0].getProject(), operator);
+                }
 
                 //get the id of the newly created final review phase
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
                 PhasesHelper.createAggregatorOrFinalReviewer(phase,
-                        getManagerHelper(), conn, "Final Reviewer", finalReviewPhaseId, operator);
+                        managerHelper, conn, "Final Reviewer", finalReviewPhaseId, operator);
             }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
+        } catch (PersistenceException e) {
+            throw new PhaseHandlingException("Problem when reading phases", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
