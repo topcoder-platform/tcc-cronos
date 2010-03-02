@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Date;
 
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
+import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
@@ -155,9 +157,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
             if (toStart) {
                 // version 1.3
                 //return true if all dependencies have stopped and start time has been reached.
-                ProjectLinkManager linkManager = getManagerHelper().getProjectLinkManager();
                 boolean canStart = PhasesHelper.canPhaseStart(phase);
-                boolean allParentProjectsCompleted = PhasesHelper.areParentProjectsCompleted(projectId, linkManager);
+                boolean allParentProjectsCompleted = PhasesHelper.areParentProjectsCompleted(projectId, getManagerHelper(), createConnection());
                 if (canStart) {
                     if (allParentProjectsCompleted) {
                         return true;
@@ -168,6 +169,18 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                         phase.setScheduledEndDate(new Date(newScheduledStartTime.getTime() + phase.getLength()));
                         phase.getProject().setStartDate(newScheduledStartTime);
                         recalculateScheduledDates(phase.getProject().getAllPhases());
+
+			           // Adjust timelines for depending projects as well
+                        PhaseManager phaseManager = getManagerHelper().getPhaseManager();
+                        ContestDependencyAutomation auto
+                            = new ContestDependencyAutomation(phaseManager,
+                                getManagerHelper().getProjectManager(), getManagerHelper().getProjectLinkManager());
+                        List<Phase[]> affectedChildProjectPhases
+                            = auto.adjustDependingProjectPhases(phase.getProject().getAllPhases());
+                        for (Phase[] affectedProjectPhases : affectedChildProjectPhases) {
+                            phaseManager.updatePhases(affectedProjectPhases[0].getProject(), "0");
+                        }
+
                         getManagerHelper().getPhaseManager().updatePhases(phase.getProject(), "0");
                     }   
                 }
@@ -186,6 +199,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Failed to get the links to parent projects for project: " + projectId, e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Failed to get the links to parent projects for project: " + projectId, e);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when connecting to database", e);
         }
     }
 

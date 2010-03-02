@@ -1932,17 +1932,78 @@ final class PhasesHelper {
      *
      * @since 1.3
      */
-    static boolean areParentProjectsCompleted(long projectId, ProjectLinkManager linkManager)
-        throws com.topcoder.management.project.PersistenceException {
-        ProjectLink[] links = linkManager.getDestProjectLinks(projectId);
+    static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper, Connection conn)
+        throws com.topcoder.management.project.PersistenceException, 
+               com.topcoder.management.phase.PhaseManagementException, SQLException {
+        ProjectLink[] links = managerHelper.getProjectLinkManager().getDestProjectLinks(projectId);
         for (ProjectLink link : links) {
             if (!link.getType().isAllowOverlap()) {
                 com.topcoder.management.project.Project parentProject = link.getDestProject();
                 if (parentProject.getProjectStatus().getId() != 7) { // project status is not Completed
-                    return false;
+
+                    // if not active
+                    if (parentProject.getProjectStatus().getId() != 1)
+                    {
+                        return false;
+                    }
+
+                    // check if last phase is Final Review and if that is approved
+                    Phase[] phases = managerHelper.getPhaseManager().getPhases(parentProject.getId()).getAllPhases();
+                    Phase lastPhase = getLastPhase(phases);
+                    // if last phase is not FR, or not closed
+                    if (lastPhase == null || lastPhase.getPhaseStatus().getId() != 3)
+                    {
+                        return false;
+                    }
+
+                    Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, managerHelper, lastPhase.getId());
+
+                    //check for approved/rejected comments.
+                    Comment[] comments = finalWorksheet.getAllComments();
+                    boolean rejected = false;
+
+                    for (int i = 0; i < comments.length; i++) {
+                        String value = (String) comments[i].getExtraInfo();
+
+                        if (comments[i].getCommentType().getName().equals("Final Review Comment")) {
+                            if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
+                                continue;
+                            } else if ("Rejected".equalsIgnoreCase(value)) {
+                                rejected = true;
+
+                                break;
+                            } else {
+                                throw new PhaseHandlingException("Comment can either be Approved or Rejected.");
+                            }
+                        }
+                    }
+
+                    if (rejected)
+                    {
+                        return false;
+                    }
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * <p>Gets the last phase from specified list of project phase. Current implementation looks up for the <code>Final
+     * Review</code> phase but this may change later.</p>
+     *
+     * @param phases a <code>Phase</code> array providing current project phases.
+     * @return a <code>Phase</code> providing the last phase or <code>null</code> if there is no such phase found,
+     */
+    static Phase getLastPhase(Phase[] phases) {
+        Phase lastPhase = null;
+        for (int i = 0; i < phases.length; i++) {
+            Phase phase = phases[i];
+            PhaseType phaseType = phase.getPhaseType();
+            if ((phaseType != null) && phaseType.getName().equalsIgnoreCase("Final Review")) {
+                lastPhase = phase;
+            }
+        }
+        return lastPhase;
     }
 }
