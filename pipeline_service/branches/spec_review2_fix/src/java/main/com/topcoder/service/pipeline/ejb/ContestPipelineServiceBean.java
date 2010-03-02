@@ -1304,6 +1304,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
                 for (com.topcoder.service.studio.contest.SimplePipelineData p : studioPipelineDatas) {
                     CommonPipelineData cp = new CommonPipelineData();
+                    cp.setCpname(p.getCpname());
                     cp.setCname(p.getCname());
                     cp.setContestId(p.getContestId());
                     cp.setPname(p.getPname());
@@ -1353,6 +1354,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
                 for (com.topcoder.management.project.SimplePipelineData p : swPipelineDatas) {
                     CommonPipelineData cp = new CommonPipelineData();
+                    cp.setCpname(p.getCpname());
                     cp.setCname(p.getCname());
                     cp.setContestId(p.getContestId());
                     cp.setPname(p.getPname());

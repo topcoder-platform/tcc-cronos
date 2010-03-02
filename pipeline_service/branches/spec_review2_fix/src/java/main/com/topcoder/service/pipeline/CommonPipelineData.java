@@ -26,6 +26,9 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
     /** Generated serial version id. */
     private static final long serialVersionUID = 1154431097193493913L;
 
+    /** Represents the client project name. */
+    private String cpname;
+
     /** Represents the pipeline info id. */
     private Long pipelineInfoId;
 
@@ -139,6 +142,26 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
 
     /** Represents the permission for project. */
     private String pperm;
+
+
+     /**
+     * Returns the client project name.
+     * 
+     * @return the client project name.
+     */
+    public String getCpname() {
+        return cpname;
+    }
+
+    /**
+     * Updates the client project name with the specified value.
+     * 
+     * @param pname
+     *            the client project name to set.
+     */
+    public void setCpname(String cpname) {
+        this.cpname = cpname;
+    }
 
     /**
      * Returns the contest name.
