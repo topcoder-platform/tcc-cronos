@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Contest And Submission Entities
+component.distfilename=contest_and_submission_entities
+component.package=com.topcoder.service.studio
+component.packagedir=com/topcoder/service/studio
+component.version.major=1
+component.version.minor=2
+component.version.micro=0
+component.version.build=1
