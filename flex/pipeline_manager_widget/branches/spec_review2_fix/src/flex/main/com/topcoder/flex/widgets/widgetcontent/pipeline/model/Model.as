@@ -197,9 +197,9 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
          * @param the XMLList of the contest data.
          */ 
         public function loadData(contests:XMLList):void {
-            TCLog.instance.timeStampLog("Load data", this.uid);
-            trace(contests.toXMLString());
-            TCLog.instance.debug("contests.children.length ---------> " + contests.children().length());
+            //TCLog.instance.timeStampLog("Load data", this.uid);
+            //trace(contests.toXMLString());
+            //TCLog.instance.debug("contests.children.length ---------> " + contests.children().length());
             var start:Date = new Date();
             clientList=new Array();
             confidenceList=new Array();
@@ -238,12 +238,12 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline.model {
                 p.apricing=o.pricingApproval ? o.pricingApproval[0] : false;
                 p.vspec=o.passedSpecReview ? o.passedSpecReview[0] : false;
                 p.dependent=o.hasDependentCompetitions ? o.hasDependentCompetitions[0] : false;
+                
+                if (o.wasReposted && o.wasReposted[0] && o.wasReposted[0] == true)
+                {
+                    p.repost=true;
+                }
 
-                p.repost=(o.wasReposted ? o.wasReposted[0] : false) as Boolean;
-trace(o.wasReposted);
-trace(o.wasReposted ? o.wasReposted[0] : false);
-trace(o.wasReposted[0]);
-			trace(p.repost);
                 p.hasWikiSpec=o.hasWikiSpecification ? o.hasWikiSpecification[0] : false;
                 
                 p.notes=o.notes ? o.notes[0] : "";
@@ -289,7 +289,7 @@ trace(o.wasReposted[0]);
             filterDetail();
             TCLog.instance.timeStampLog("Calculate Data", this.uid);
             var end:Date = new Date();
-            TCLog.instance.debug("Time used in paring in Model.loadData: " + (end.getTime()-start.getTime())/1000 + " seconds");
+            //TCLog.instance.debug("Time used in paring in Model.loadData: " + (end.getTime()-start.getTime())/1000 + " seconds");
         }
         
         /**

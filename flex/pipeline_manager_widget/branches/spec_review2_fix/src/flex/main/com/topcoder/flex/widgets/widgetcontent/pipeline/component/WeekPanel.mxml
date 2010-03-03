@@ -235,7 +235,7 @@
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer"  />
 			<mx:DataGridColumn headerText="Status" dataField="status"  width="80" sortCompareFunction="compareStatus"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.StatusRenderer"  />
-			<mx:DataGridColumn headerText="Repost" dataField="repost"  width="50"
+			<mx:DataGridColumn headerText="Repost" dataField="repost"  width="60"
 			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.RepostRenderer"  />             	
 			<mx:DataGridColumn headerText="Resources" dataField="manager"  width="100"
 				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ResourceRenderer"  />
