@@ -59,6 +59,7 @@ import com.topcoder.management.team.TeamManager;
 import com.topcoder.management.team.TeamPersistenceException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.template.PhaseTemplate;
 import com.topcoder.project.phases.template.PhaseTemplateException;
 import com.topcoder.project.service.ConfigurationException;
@@ -2966,12 +2967,76 @@ public class ProjectServicesImpl implements ProjectServices {
             projectLinkManager.addProjectLink(reOpendedProject.getProjectHeader().getId(),
                                                     contest.getProjectHeader().getId(), ProjectLinkType.REPOST_FOR);
 
+            // update links
+            // get all dependents
+            ProjectLink[] dependents = projectLinkManager.getSourceProjectLinks(contest.getProjectHeader().getId());
+            if (dependents != null && dependents.length > 0)
+            {
+                for (ProjectLink link : dependents)
+                {
+                    //ignore repost link
+                    if (link.getType().getId() != ProjectLinkType.REPOST_FOR)
+                    {
+                        // delete existing link
+                    projectLinkManager.removeProjectLink(link.getSourceProject().getId(), 
+                                                      link.getDestProject().getId(), link.getType().getId());
+
+                    // depenpends link to reposted
+                    projectLinkManager.addProjectLink(link.getSourceProject().getId(), 
+                                                      reOpendedProject.getProjectHeader().getId(), link.getType().getId());
+
+                    // existing link changes to related_to
+                    projectLinkManager.addProjectLink(link.getSourceProject().getId(), 
+                                                      contest.getProjectHeader().getId(), ProjectLinkType.IS_RELATED_TO);
+
+                    }
+                    
+                    
+                }
+
+                // adjust dependents dates if necessary
+                Phase[] originalPhases = phaseManager.getPhases(contest.getProjectHeader().getId()).getAllPhases();
+                Phase[] reopenedPhases = phaseManager.getPhases(reOpendedProject.getProjectHeader().getId()).getAllPhases();
+
+
+                Phase originalLastPhase = getLastPhase(originalPhases);
+                Phase reopenedLastPhase = getLastPhase(reopenedPhases);
+
+                // check diff between orignal end date and reopened end date
+                if (originalLastPhase != null && reopenedLastPhase != null) {
+                    Date originalEndDate = originalLastPhase.getScheduledEndDate();
+                    Date reopenedEndDate = reopenedLastPhase.getScheduledEndDate();
+                    if (reopenedEndDate.compareTo(originalEndDate) != 0) 
+                    {
+                        long diff = reopenedEndDate.getTime() - originalEndDate.getTime();
+                        if (diff != 0)
+                        {
+                             ContestDependencyAutomation auto
+                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
+                             if (template != null)
+                             {
+                                 auto
+                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
+                             }
+                             List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(reOpendedProject.getProjectHeader().getId(), diff);
+                             for (Phase[] affectedProjectPhases : affectedPhases) 
+                             {
+                                phaseManager.updatePhases(affectedProjectPhases[0].getProject(), operator);
+                             }
+                        }
+                    }
+                }
+            }
+
             return reOpendedProject;
 
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
-        } finally {
+        } catch (PhaseManagementException e) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating ProjectLinkManager.", e);
+        }finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
@@ -3460,6 +3525,26 @@ public class ProjectServicesImpl implements ProjectServices {
             }
         }
     }
+
+    /**
+     * <p>Gets the last phase from specified list of project phase. Current implementation looks up for the <code>Final
+     * Review</code> phase but this may change later.</p>
+     *
+     * @param phases a <code>Phase</code> array providing current project phases.
+     * @return a <code>Phase</code> providing the last phase or <code>null</code> if there is no such phase found,
+     */
+    private Phase getLastPhase(Phase[] phases) {
+        Phase lastPhase = null;
+        for (int i = 0; i < phases.length; i++) {
+            Phase phase = phases[i];
+            PhaseType phaseType = phase.getPhaseType();
+            if ((phaseType != null) && phaseType.getName().equalsIgnoreCase("Final Review")) {
+                lastPhase = phase;
+            }
+        }
+        return lastPhase;
+    }
+
 
 
 }
