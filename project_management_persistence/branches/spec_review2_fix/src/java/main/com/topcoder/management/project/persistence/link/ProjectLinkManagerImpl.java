@@ -138,6 +138,14 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
 
     /**
      * <p>
+     * The SQL to delete project link
+     * </p>
+     */
+    private static final String DELETE_PROJECT_LINK = "DELETE FROM linked_project_xref "
+        + "WHERE source_project_id = ? and dest_project_id = ? and link_type_id = ? ";
+
+    /**
+     * <p>
      * The factory instance used to create connection to the database. It is initialized in the constructor using
      * DBConnectionFactory component and never changed after that. It will be used in various persistence methods of
      * this project.
@@ -547,6 +555,41 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         }
     }
 
+
+    /**
+     * <p>
+     * Remvoe a new project link
+     * </p>
+     *
+     * @param sourceProjectId the source project id
+     * @param destProjectId the destination project id
+     * @param linkTypeId the type id
+     * @throws IllegalArgumentException if any array is null or it is not equal in length for dest project id array
+     *             and link type array
+     * @throws PersistenceException if any persistence error occurs
+     */
+    public void removeProjectLink(long sourceProjectId, long destProjectId, long linkTypeId)
+        throws PersistenceException {
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Enter updateProjectLinks method."));
+
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // add link
+            removeProjectLink(sourceProjectId, destProjectId, linkTypeId, conn);
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to updateProjectLinks.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
     
     /**
      * <p>Checks if specified project referring to specified projects is a part of a cycle.</p>
@@ -703,6 +746,38 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing queries for adding project link. ", e);
+        } finally {
+            Helper.closeStatement(ps);
+        }
+    }
+
+
+    /**
+     * <p>
+     * It is internal method and it remove the project link for given source project id.
+     * </p>
+     *
+     * @param sourceProjectId the source project id
+     * @param destProjectId the destination project id
+     * @param linkTypeId the type id
+     * @param conn the db connection
+     * @throws PersistenceException if any persistence error occurs
+     */
+    private void removeProjectLink(long sourceProjectId, long destProjectId, long linkTypeId, Connection conn)
+        throws PersistenceException {
+        PreparedStatement ps = null;
+        try {
+
+            ps = conn.prepareStatement(DELETE_PROJECT_LINK);
+
+            int idx = 1;
+            ps.setLong(idx++, sourceProjectId);
+            ps.setLong(idx++, destProjectId);
+            ps.setLong(idx++, linkTypeId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException("Error occurs while executing queries for removing project link. ", e);
         } finally {
             Helper.closeStatement(ps);
         }
