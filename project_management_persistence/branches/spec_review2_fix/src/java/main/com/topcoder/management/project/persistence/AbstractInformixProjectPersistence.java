@@ -1262,7 +1262,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to find the corresponding develop contest for the design contest.
@@ -4806,7 +4806,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     on ttp.project_id = cpx.project_id   ");
             sb.append("     left outer join tt_client as cl ");
             sb.append("     on cpx.client_id = cl.client_id ");
-            sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), '') as cpname ");			
+            sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), '') as cpname, ");	
+            sb.append("  (select 'Repost' from linked_project_xref where link_type_id = 5 and source_project_id = c.project_id) as repost ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -4994,6 +4995,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
                 if (os[36] != null)
                     c.setCpname(os[36].toString());
+
+                if (os[37] != null)
+                    c.setWasReposted(Boolean.TRUE);
 
                 
                 result.add(c);
