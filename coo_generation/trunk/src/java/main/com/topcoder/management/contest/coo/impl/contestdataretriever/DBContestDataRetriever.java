@@ -167,7 +167,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
                     + " phase[{4}].", contestData.getComponentName(), contestData.getContestEndDate(),
                     contestData.getCategory(), contestData.getSvnPath(), phase));
 
-            setContestDataField(phase, contestData, winner, secondPlace, getReviewersList(connection, projectId));
+            setContestDataField(projectId, phase, contestData, winner, secondPlace, getReviewersList(connection, projectId));
             if (phase.equals(DEVELOPMENT_CATEGORY_ID)) {
                 // set design field for the contest data if this is in development phase.
                 setDesignFieldForDevelopment(connection, projectId, contestData);
@@ -188,15 +188,17 @@ public class DBContestDataRetriever extends BaseDBConnector implements
      * set winner, second place, reviews for contest data.
      * </p>
      *
+     * @param projectId the projectId.
      * @param phase the phase.
      * @param contestData the contest data.
      * @param winner the winner
      * @param secondPlace the second place.
      * @param reviewers the reviewer
      */
-    private void setContestDataField(String phase, ContestData contestData,
+    private void setContestDataField(long projectId, String phase, ContestData contestData,
             String winner, String secondPlace, List<String> reviewers) {
         if (phase.equals(DESIGN_CATEGORY_ID)) {
+        	contestData.setDesignProjectId(Long.toString(projectId));
             contestData.setDesignWinner(winner);
             contestData.setDesignSecondPlace(secondPlace);
             contestData.setDesignReviewers(reviewers);
@@ -205,6 +207,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
                     + " componentName[{0}], designWinner[{1}], designSecondPlace[{2}],"
                     + " phase[{3}] " + getReviewers(reviewers), contestData.getComponentName(), winner, secondPlace));
         } else if (phase.equals(DEVELOPMENT_CATEGORY_ID)) {
+        	contestData.setDevelopmentProjectId(Long.toString(projectId));
             contestData.setDevelopmentWinner(winner);
             contestData.setDevelopmentSecondPlace(secondPlace);
             contestData.setDevelopmentReviewers(reviewers);
@@ -297,6 +300,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
 	            String designWinner = projectInfo.winner;
 	            String designSecond = projectInfo.secondPlace;
 
+	            contestData.setDesignProjectId(Long.toString(designProjectId));
 	            contestData.setDesignWinner(designWinner);
 	            contestData.setDesignSecondPlace(designSecond);
 	            List<String> reviewer = getReviewersList(conn, designProjectId);

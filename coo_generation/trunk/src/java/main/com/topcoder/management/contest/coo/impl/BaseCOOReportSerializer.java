@@ -6,6 +6,8 @@ package com.topcoder.management.contest.coo.impl;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.management.contest.coo.COOReport;
@@ -126,8 +128,7 @@ public abstract class BaseCOOReportSerializer implements COOReportSerializer {
         try {
 
             if (filename == null) {
-                filename = defaultOutputFilename.replace("#contestId", report.getProjectId()
-                        + "");
+                filename = getOutputFileName(report);
             } else if (filename.trim().length() == 0) {
                 throw new IllegalArgumentException("file name can not be empty");
             }
@@ -149,6 +150,32 @@ public abstract class BaseCOOReportSerializer implements COOReportSerializer {
             }
             Helper.logExit(logger, signature);
         }
+    }
+
+    /**
+     * Returns output file name.
+     * @param report coo report.
+     * @return output file name.
+     */
+    private String getOutputFileName(COOReport report) {
+    	String desProjectId = report.getContestData().getDesignProjectId();
+    	String devProjectId = report.getContestData().getDevelopmentProjectId();
+    	String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+    	String name = defaultOutputFilename;
+    	if (desProjectId == null) {
+    		desProjectId = "";
+    	} else {
+    		desProjectId = "_" + desProjectId;
+    	}
+    	if (devProjectId == null) {
+    		devProjectId = "";
+    	} else {
+    		devProjectId = "_" + devProjectId;
+    	}
+    	name = name.replace("#DESID", desProjectId);
+    	name = name.replace("#DEVID", devProjectId);
+    	name = name.replace("#DATE", "_" + date);
+    	return name;
     }
 
     /**

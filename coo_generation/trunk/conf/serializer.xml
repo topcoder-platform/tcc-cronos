@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<Config>
-	
+<Config>	
 		<Property name="loggerName">
 			<Value>serializer_log</Value>
 		</Property>
@@ -8,7 +7,7 @@
 			<Value>WordTemplate.dot</Value>
 		</Property>
 		<Property name="defaultOutputFilename">
-			<Value>output.txt</Value>
+			<Value>COO#DESID#DEVID#DATE.pdf</Value>
 		</Property>
 	
 </Config>

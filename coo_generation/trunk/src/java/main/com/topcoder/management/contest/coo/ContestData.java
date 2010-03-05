@@ -42,6 +42,16 @@ public class ContestData {
     private Date contestEndDate;
     /**
      * <p>
+     * Represents the design project id.
+     * </p>
+     * <p>
+     * Initialized to default value of the data type, has getter and setter,
+     * once set: will not be empty.
+     * </p>
+     */
+    private String designProjectId;
+    /**
+     * <p>
      * Represents the winning designer.
      * </p>
      * <p>
@@ -70,6 +80,16 @@ public class ContestData {
      * </p>
      */
     private List<String> designReviewers;
+    /**
+     * <p>
+     * Represents the development project id.
+     * </p>
+     * <p>
+     * Initialized to default value of the data type, has getter and setter,
+     * once set: will not be empty.
+     * </p>
+     */
+    private String developmentProjectId;
     /**
      * <p>
      * Represents the development winner.
@@ -172,6 +192,27 @@ public class ContestData {
     }
 
     /**
+     * Getter for the design project id.
+     *
+     * @return The value of the design project id.
+     */
+    public String getDesignProjectId() {
+        return designProjectId;
+    }
+
+    /**
+     * Setter for the design project id.
+     *
+     * @param designProjectId The design project id. must not be null.
+     * @throws IllegalArgumentException if any argument is invalid.
+     *
+     */
+    public void setDesignProjectId(String designProjectId) {
+        Helper.checkNull("designProjectId", designProjectId);
+        this.designProjectId = designProjectId;
+    }
+
+    /**
      * Getter for the design winner.
      *
      * @return The value of the design winner.
@@ -240,6 +281,27 @@ public class ContestData {
             }
         }
         this.designReviewers = designReviewers;
+    }
+
+    /**
+     * Getter for the development project id.
+     *
+     * @return The value of the development project id.
+     */
+    public String getDevelopmentProjectId() {
+        return developmentProjectId;
+    }
+
+    /**
+     * Setter for the development project id.
+     *
+     * @param developmentProjectId The development project id. must not be null.
+     * @throws IllegalArgumentException if any argument is invalid.
+     *
+     */
+    public void setDevelopmentProjectId(String developmentProjectId) {
+        Helper.checkNull("developmentProjectId", developmentProjectId);
+        this.developmentProjectId = developmentProjectId;
     }
 
     /**

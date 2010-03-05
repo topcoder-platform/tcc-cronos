@@ -258,6 +258,12 @@ public class DefaultCOOReportGenerator implements COOReportGenerator {
 		                        component.getVersion());
 		                    if (fullComponent != null) {
 		                        dependency.setComponent(fullComponent);
+		                    } else {
+		                    	component.setDescription("Not Found");
+		                    	component.setLicense("Not Found");
+		                    	component.setUrl("Not Found");
+		                    	Helper.logInfo(logger, "Component [" + component.getName() + " " + component.getVersion() + "]"
+		                    			+ " not found in database.");
 		                    }
 		               // }
 		            }
