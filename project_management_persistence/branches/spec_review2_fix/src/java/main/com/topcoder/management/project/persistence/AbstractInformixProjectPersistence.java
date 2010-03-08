@@ -4456,8 +4456,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             //1. step 1, insert client defined terms
             preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
             preparedStatement.setLong(1, projectId);
-            
+
+
+            boolean hasClientTerm = false;
             if (rows.length > 0) {
+
+                hasClientTerm = true;
                 for (int i = 0; i < rows.length; i++) {
                     Object[] os = rows[i];
                     // if resource role id is 0 or null, insert for all
@@ -4514,9 +4518,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             long reviewerTermsId = Long.parseLong(Helper.getConfigurationParameterValue(cm, namespace,
                     PUBLIC_REVIEWER_TERMS_ID_PARAMETER, getLogger(), Long.toString(PUBLIC_REVIEWER_TERMS_ID)));
 
-            // no submitter for spec review and submitter is not inserted in step 1 yet
+            // no submitter for spec review and no any client term
             if (projectCategoryId != ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW 
-                    && ! privateTermOfUseRoleIds.contains(submitterRoleId)) {
+                    && !hasClientTerm) {
                 createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
             }
 
@@ -4528,20 +4532,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 int stressReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                         STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
                 // if it's a development project there are several reviewer roles
-                if (!privateTermOfUseRoleIds.contains(accuracyReviewerRoleId)) {
+                if (!hasClientTerm) {
                     createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
-                }
-                if (!privateTermOfUseRoleIds.contains(failureReviewerRoleId)) {
                     createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
-                }
-                if (!privateTermOfUseRoleIds.contains(stressReviewerRoleId)) {
                     createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
-                }                
+                }
+               
             } else {
                 int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                         REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
                 // if it's not development there is a single reviewer role
-                if (!privateTermOfUseRoleIds.contains(reviewerRoleId)) {
+                if (!hasClientTerm) {
                     createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
                 }
             }
@@ -4554,14 +4555,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                     FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
             if (!privateTermOfUseRoleIds.contains(primaryScreenerRoleId)) {
+                
+            }
+            if (!hasClientTerm) {
                 createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-            }
-            if (!privateTermOfUseRoleIds.contains(aggregatorRoleId)) {
                 createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);  
-            }
-            if (!privateTermOfUseRoleIds.contains(finalReviewerRoleId)) {
                 createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
             }
+
         } catch (ConfigurationException e) {
             throw new PersistenceException(e.getMessage(), e);
         } catch (SQLException e) {
