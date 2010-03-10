@@ -1,0 +1,40 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.x"/>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit-4.4.jar"/>
+     <property name="struts2.home" value="${ext_libdir}/struts/2.1.8.1" />
+     <property name="servlet-api.jar" value="C:/AppServers/tomcat/apache-tomcat-5.5.27/common/lib/servlet-api.jar"/>
+     
+    <path id="component.tcs-dependencies"/>
+
+    <path id="component.3rdParty-dependencies">
+    	<pathelement location="test_files/lib/mock_structs_framework.jar"/>
+    	<pathelement location="test_files/lib/mock_studio_service.jar"/>
+    	<pathelement location="test_files/lib/mockclasses.jar"/>
+    	<pathelement location="${servlet-api.jar}" />
+    	<pathelement location="${ext_libdir}/json-lib-2.3-jdk15.jar"/>
+      <pathelement location="${struts2.home}/lib/commons-lang-2.3.jar"/>    	                                                                           
+      <pathelement location="${struts2.home}/lib/commons-collections-3.2.jar"/>
+      <pathelement location="${struts2.home}/lib/ezmorph-1.0.3.jar"/>
+      <pathelement location="${struts2.home}/lib/spring-test-2.5.6.jar"/>
+      <pathelement location="${struts2.home}/lib/xwork-core-2.1.6.jar"/>
+      <pathelement location="${struts2.home}/lib/struts2-core-2.1.8.1.jar"/>
+      <pathelement location="${struts2.home}/lib/commons-logging-1.0.4.jar"/>
+      <pathelement location="${struts2.home}/lib/commons-beanutils-1.7.0.jar"/>
+      <pathelement location="${struts2.home}/lib/spring-core-2.5.6.jar"/>
+      
+      
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+</project>

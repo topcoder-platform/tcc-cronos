@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName">
+<!-- A custom serializer -->
+	<bean id="dataSerializer" class="com.topcoder.service.actions.ajax.serializers.JSONDataSerializer" scope="prototype">
+		<property name="jsonResultTemplate" value="It's a demo : {result: {name: $[action], return: $[result]}}"></property>
+	</bean>
+<!-- AJAXResult. Note the scope is "prototype". -->
+	<bean id="ajaxresult" class="com.topcoder.service.actions.ajax.CustomFormatAJAXResult" scope="prototype">
+		<property name="enabledGzip" value="true"></property>
+		<property name="noCache" value="false"></property>
+		<property name="contentType" value="application/json"></property>
+		<property name="charset" value="UTF-8"></property>
+		<property name="dataSerializer">
+			<ref local="dataSerializer"/>
+		</property>
+	</bean>
+
+	<bean id="pj" class="com.topcoder.service.actions.ajax.Project" scope="prototype">
+	  <property name="id" value="100"></property>
+	  <property name="name" value="project_name"></property>
+		<property name="description" value="project_description"></property>
+	</bean>
+
+	<bean id="mockAction" class="com.topcoder.service.actions.ajax.MockAction" scope="prototype">
+		<property name="ajaxResult">
+			<ref local="ajaxresult"/>
+		</property>
+		<property name="project">
+			<ref local="pj"/>
+		</property>
+	</bean>
+
+</beans>
+
