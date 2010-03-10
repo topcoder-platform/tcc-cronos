@@ -4242,7 +4242,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
             contest.setAssetDTO(assetDTO);
 
-            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY, assetDTO.getCompVersionId().toString());
+            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, assetDTO.getCompVersionId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY, assetDTO.getId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
@@ -5074,7 +5074,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             
             FullProjectData fullProjectData = this.projectServices.getFullProjectData(projectId);
             Long compVersionId = Long.parseLong(fullProjectData.getProjectHeader()
-                                                               .getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
+                                                               .getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY));
             contest.setAssetDTO(this.catalogService.getAssetByVersionId(
                     compVersionId));
             contest.setProjectHeader(fullProjectData.getProjectHeader());
@@ -6873,12 +6873,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
             
             //2.create new version
-            Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY));
+            Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY));
             AssetDTO dto = catalogService.getAssetByVersionId(compVersionId);
             // close current version
             dto.setPhase("Completed");
             com.topcoder.project.phases.Phase[] phases = contest.getAllPhases();
             dto.setProductionDate(getXMLGregorianCalendar(phases[phases.length-1].getActualEndDate()));
+            dto.setForum(null);
             catalogService.updateAsset(dto);
 
             //create minor or major version
@@ -6901,10 +6902,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 dto = catalogService.createDevComponent(dto);                
             }
 
-            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));    
+            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));    
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));    
             contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));    
-            
+
             long forumId = 0;
             // create forum
             if (createForum) {
