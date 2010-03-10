@@ -2847,9 +2847,12 @@ public class ProjectServicesImpl implements ProjectServices {
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
-            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
+            // clone some original project properties
+            for (String key : NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE) {
+                projectHeader.setProperty(key, contest.getProjectHeader().getProperty(key));
+            }
             //make the fee to zero
-            projectHeader.setProperty("Admin Fee", "0");
+            projectHeader.setProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "0");
             projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
             projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
             
