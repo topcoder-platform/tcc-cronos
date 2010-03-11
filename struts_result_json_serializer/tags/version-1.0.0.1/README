@@ -1,0 +1,16 @@
+a) I provide a jboss demo, here it the steps to run the demo.
+1. Put all the files in tests_files/struts_result_json_serializer.war into %JBOSS_HOME_PATH%/server/default/deploy/struts_result_json_serializer.war
+2. run jboss.
+3. input http://127.0.0.1:8080/struts_result_json_serializer/demo.action in your explorer to see the demo :  the result should be :  
+It's a demo : {result: {name: tc, return: {"description":"project_description","id":100,"name":"project_name"}}}
+4. you can change the java been set in application.xml to see different result.
+5. stop jboss
+
+b) the $[] is used for the token name, for the spring requiremnet
+
+
+in final fix :
+1. the function name of setDataPreprocessor is changed to setDataPreProcessor
+2. The results in the model are to be found under key "return", not "result"  see :
+http://forums.topcoder.com/?module=Thread&threadID=666736&start=0, 
+so please change the test case if necessary
