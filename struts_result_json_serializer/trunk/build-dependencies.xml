@@ -10,7 +10,7 @@
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit-4.4.jar"/>
      <property name="struts2.home" value="${ext_libdir}/struts/2.1.8.1" />
-     <property name="servlet-api.jar" value="C:/AppServers/tomcat/apache-tomcat-5.5.27/common/lib/servlet-api.jar"/>
+     <property name="servlet-api.jar" value="${ext_libdir}/servlet-api/2.4/servlet-api.jar"/>
      
     <path id="component.tcs-dependencies"/>
 
@@ -19,7 +19,7 @@
     	<pathelement location="test_files/lib/mock_studio_service.jar"/>
     	<pathelement location="test_files/lib/mockclasses.jar"/>
     	<pathelement location="${servlet-api.jar}" />
-    	<pathelement location="${ext_libdir}/json-lib-2.3-jdk15.jar"/>
+    	<pathelement location="${ext_libdir}/json/json-lib-2.3-jdk15.jar"/>
       <pathelement location="${struts2.home}/lib/commons-lang-2.3.jar"/>    	                                                                           
       <pathelement location="${struts2.home}/lib/commons-collections-3.2.jar"/>
       <pathelement location="${struts2.home}/lib/ezmorph-1.0.3.jar"/>
