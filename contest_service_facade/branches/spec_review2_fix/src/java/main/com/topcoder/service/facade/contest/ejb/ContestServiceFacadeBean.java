@@ -2945,7 +2945,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
             
             //mark ready for spec review
-            markReadyForReview(tobeUpdatedCompetition.getId(), true);
+            markReadyForReview(tobeUpdatedCompetition.getContestData().getContestId(), true);
 
 
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
