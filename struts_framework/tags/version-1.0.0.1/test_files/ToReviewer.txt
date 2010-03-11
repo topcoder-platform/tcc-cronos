@@ -1,0 +1,32 @@
+** Please refer to FinalFix.txt for notes about the final fix.
+
+=====================================================
+Setup:
+
+- Follow the required steps to test the component in section 4.1 of the CS (in docs folder),
+  as it has all the instructions you need to setup your environment and run the tests.
+
+- IMPORTANT: Note that LoggingInterceptorException was removed (http://forums.topcoder.com/?module=Thread&threadID=666457&start=0)
+   **** I have updated the CS to reflect this change (1.5.1)
+
+=====================================================
+Improvements/Enhancements:
+
+- I made several enhancements to the documentation. Refer to the class docs in the java code for details
+  (ex. see AggregateDataModel.java).
+
+- The biggest challenge was in writing really thorough tests. Please consider the following:
+
+  - Note that I used JWebUnit (http://jwebunit.sourceforge.net) for true GUI testing to make
+    sure the interceptors work properly, and this is in addition to my standard unit tests.
+    Refer to InterceptorWebTest class for details.
+
+  - I provided comprehensive demos using ActionProxy and GuiDemo using real web navigation through
+    the tomcat web site.
+
+  - I used a CustomAppender class to capture the logged messages, to ensure that I could validate
+    that the logging interceptor works properly (refer to LoggingInterceptorUnitTest.java).
+
+  - I used the StrutsSpringTestCase to validate the actions/interceptors in a true struts2 environment
+    rather than just creating mock objects.
+  

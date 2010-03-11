@@ -1,0 +1,77 @@
+<project name="Dependency Import" basedir=".">
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <path id="all_libs">
+        <fileset dir="test_reflib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="test_reflib/junit-4.4.jar"/>
+    <property name="xalan.jar" value="${ext_libdir}/xalan/2.7.0/xalan.jar"/>
+    <property name="spring.jar" value="${ext_libdir}/spring/2.5.5/dist/spring.jar"/>
+    <property name="xwork.jar" value="${ext_libdir}/struts/2.1.8.1/lib/xwork-core-2.1.6.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <path refid="all_libs"/>
+        <pathelement location="${xalan.jar}" />
+    </path>
+
+    <path id="component.3rdParty-dependencies"/>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit4.jar}"/>
+    </path>
+
+    <!-- deployment targets for tomcat -->
+    <property name="tomcat_home" value="C:/apache-tomcat-6.0.18" />
+    <property name="build_war_dir" value="${testfiles}/demo" />
+
+    <target name="war" depends="compile, compile_tests">
+        <mkdir dir="${build_war_dir}/WEB-INF/classes" />
+
+        <copy todir="${build_war_dir}/WEB-INF/classes">
+            <fileset dir="${build_testclassdir}">
+                <include name="**/*.class" />
+            </fileset>
+            <fileset dir="${build_classdir}">
+                <include name="**/*.class" />
+            </fileset>
+        </copy>
+
+<!--
+        <delete dir="${build_war_dir}/WEB-INF/lib"/>
+        <copy todir="${build_war_dir}/WEB-INF/lib">
+            <fileset dir="test_reflib">
+                <include name="**/*.jar" />
+                <exclude name="**/servlet-api*.jar" />
+                <exclude name="**/jsp-api*.jar" />
+            </fileset>
+        </copy>
+-->
+
+        <copy file="${testfiles}/log4j.xml" todir="${build_war_dir}/WEB-INF/classes" overwrite="true" />
+        <copy file="${testfiles}/log4j.dtd" todir="${build_war_dir}/WEB-INF/classes" overwrite="true" />
+        <copy file="${testfiles}/applicationContext.xml" todir="${build_war_dir}/WEB-INF/" overwrite="true" />
+        <copy file="${testfiles}/struts.xml" todir="${build_war_dir}/WEB-INF/classes" overwrite="true" />
+        <copy file="${testfiles}/struts.properties" todir="${build_war_dir}/WEB-INF/classes" overwrite="true" />
+    </target>
+
+    <target name="deployToTomcat" depends="war,undeployToTomcat" description="(For dev environments only!) - deploys the app to the dev tomcat server">
+        <!-- Copy war to server -->
+        <copy todir="${tomcat_home}/webapps">
+            <fileset dir="${testfiles}">
+                <include name="demo/**/*.*" />
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="undeployToTomcat">
+        <delete dir="${tomcat_home}/webapps/demo" />
+    </target>
+</project>
