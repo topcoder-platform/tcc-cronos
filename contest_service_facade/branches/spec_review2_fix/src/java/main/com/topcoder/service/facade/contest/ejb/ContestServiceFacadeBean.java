@@ -5328,8 +5328,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                 }
                             }
 
-                            // if not found && user agreed terms (if any), add resource
-                            if (!found && checkTerms(pid, per.getUserId(), new int[]{(int)RESOURCE_ROLE_OBSERVER_ID}))
+                            // if not found && user agreed terms (if any) && is eligible, add resource
+                            if (!found && checkTerms(pid, per.getUserId(), new int[]{(int)RESOURCE_ROLE_OBSERVER_ID})
+                                 && isEligible(per.getUserId().longValue(), pid.longValue(), false))
                             {
                                  
                                  com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
@@ -5451,6 +5452,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             throw new PermissionServiceException(e.getMessage(), e);
         }
         catch (UserServiceException e)
+        {
+            sessionContext.setRollbackOnly();
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (ContestServiceException e)
         {
             sessionContext.setRollbackOnly();
             throw new PermissionServiceException(e.getMessage(), e);
