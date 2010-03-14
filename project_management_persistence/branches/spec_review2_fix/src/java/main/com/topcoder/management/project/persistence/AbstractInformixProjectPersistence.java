@@ -4504,9 +4504,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             } 
 
             //3. insert stardard terms
-
-            // always insert for manager
-            createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);            
+            if (!hasClientTerm)
+            {
+                createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);  
+            }
             // get the instance of ConfigManager
             ConfigManager cm = ConfigManager.getInstance();
             // always insert standard
