@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="softwarePipelinePersistenceUnit"
+		transaction-type="JTA">
+
+		<!-- Hibernate persistence provider -->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<!-- The JTA data source -->
+		<jta-data-source>java:InformixDS</jta-data-source>
+		
+		<mapping-file>META-INF/mappings/studio_mapping.xml</mapping-file>
+
+		<class>com.topcoder.service.pipeline.entities.SoftwareCompetitionChangeHistory</class>
+		<class>com.topcoder.service.pipeline.entities.SoftwareCompetitionPipelineInfo</class>
+		<class>com.topcoder.service.pipeline.entities.CompetitionChangeType</class>
+
+		<properties>
+
+			<!-- Informix Dialect -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+
+			<!-- JBoss transction manager -->
+			<property name="hibernate.transaction.manager_lookup_class"
+				value="org.hibernate.transaction.JBossTransactionManagerLookup" />
+
+			<!-- Show SQL for dev purpose -->
+			<property name="hibernate.show_sql" value="false" />
+
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="studioPipelinePersistenceUnit"
+		transaction-type="JTA">
+
+		<!-- Hibernate persistence provider -->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<!-- The JTA data source -->
+		<jta-data-source>java:StudioDS</jta-data-source>
+		
+		<!-- The xml mapping file -->
+    	<mapping-file>META-INF/mappings/studio_mapping.xml</mapping-file>
+
+		<class>com.topcoder.service.pipeline.entities.StudioCompetitionChangeHistory</class>
+		<class>com.topcoder.service.pipeline.entities.StudioCompetitionPipelineInfo</class>
+		<class>com.topcoder.service.pipeline.entities.CompetitionChangeType</class>
+
+		<properties>
+
+			<!-- Informix Dialect -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+
+			<property name="hibernate.transaction.factory_class"
+                      value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory"/>
+			<!-- JBoss transction manager -->
+			<property name="hibernate.transaction.manager_lookup_class"
+				value="org.hibernate.transaction.JBossTransactionManagerLookup" />
+
+			<!-- Show SQL for dev purpose -->
+			<property name="hibernate.show_sql" value="true" />
+
+		</properties>
+	</persistence-unit>
+</persistence>
