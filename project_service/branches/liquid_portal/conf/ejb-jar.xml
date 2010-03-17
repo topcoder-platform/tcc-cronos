@@ -321,6 +321,56 @@
             <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>
       </persistence-context-ref>
     </session>
+
+    <session>
+            <ejb-name>PermissionServiceBean</ejb-name>
+            <remote>com.topcoder.service.permission.PermissionServiceRemote</remote>
+			 <local>com.topcoder.service.permission.PermissionServiceLocal</local>
+            <ejb-class>com.topcoder.service.permission.ejb.PermissionServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>permissionService</env-entry-value>
+            </env-entry>
+			 <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
+            </env-entry>
+			
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
+            </persistence-context-ref>
+    </session>
+
+
+    <session>
+            <ejb-name>SpecReviewServiceBean</ejb-name>
+            <remote>com.topcoder.service.specreview.SpecReviewServiceRemote</remote>
+			<local>com.topcoder.service.specreview.SpecReviewServiceLocal</local>
+            <ejb-class>com.topcoder.service.specreview.ejb.SpecReviewServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>specReviewService</env-entry-value>
+            </env-entry>
+			 <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
+            </env-entry>
+			
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>                     
+            </persistence-context-ref>
+     </session>
+
   </enterprise-beans>
 
   <assembly-descriptor>
