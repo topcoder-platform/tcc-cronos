@@ -93,7 +93,7 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
-    <property name="project_service.version" value="1.0.1"/>
+    <property name="project_service.version" value="1.1.0"/>
     <property name="project_service.jar.name" value="project_service.jar"/>
     <property name="project_service.path" value="project_service/${project_service.version}"/>
     <property name="project_service.jar" value="${tcs_libdir}/${project_service.path}/${project_service.jar.name}"/>
@@ -163,7 +163,7 @@
     <property name="Project.jar" value="${tcs_libdir}/project/Project.jar"/>
     
     <!-- added for Cockpit Release Assembly 5 v1.0 -->
-    <property name="client_project_entities_dao.version" value="1.0.0"/>
+    <property name="client_project_entities_dao.version" value="1.1.0"/>
     <property name="client_project_entities_dao.jar.name" value="client_project_entities_dao.jar"/>
     <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
     <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
