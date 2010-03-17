@@ -20,6 +20,12 @@ import java.util.Random;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+
 /**
  * <p>
  * This phase handler will be used by the <code>PhaseManager</code> implementations.
@@ -118,6 +124,8 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
     private static final String PROJECT_ATTR_CONTEST = "contest";
     
     private Random randomizer = new Random(System.currentTimeMillis());
+
+    private static final long ONE_DAY = 24*60*60*1000;
 
     /**
      * <p>
@@ -279,7 +287,7 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
 
         //Start case: The Active phase can start as soon as a contest with "Scheduled" status has its startDate property
         //time reached.
-        return isStartDateReached(contest) && isContestStatusMatch(contest, CockpitPhase.SCHEDULED);
+        return isStartDateReached(contest) && isContestStatusMatch(contest, CockpitPhase.SCHEDULED) && passedSpecReview(contest);
     }
 
     /**
@@ -397,4 +405,69 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
 			return -1;
 		}
 	}
+
+
+    /**
+     * check if spec review is passed
+     *
+     * @param contest contest
+     * @return boolean whether spec review passed
+     */
+    private boolean passedSpecReview(Contest contest) throws PhaseHandlingException
+    {
+
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            conn = createConnection();
+            
+            StringBuffer queryBuffer = new StringBuffer();
+            queryBuffer.append("select 'passed' from spec_review  ");
+            queryBuffer.append(" where contest_id = ").append(contest.getContestId()).append(" and is_studio = 1 and review_status_type_id = 1 ");
+
+            preparedStatement = conn.prepareStatement(queryBuffer.toString());
+         
+            // execute the query and build the result into a list
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                return true;
+            }
+            alertLog.log(Level.INFO, "Spec Review is not completed for "+contest.getContestId());
+
+            // spec review not passed, push dates 24 hrs
+            if (isStartDateReached(contest) && !isEndDateReached(contest))
+            {
+                contest.getStartDate().setTime(contest.getStartDate().getTime() + ONE_DAY);
+                contest.getEndDate().setTime(contest.getEndDate().getTime() + ONE_DAY);
+                contest.getWinnerAnnoucementDeadline().setTime(contest.getWinnerAnnoucementDeadline().getTime() + ONE_DAY);
+
+                try {
+                    getContestManager().updateContest(contest, this.randomizer.nextInt(), "AutoPilot", false);
+                } catch (ContestManagementException e) {
+                    alertLog.log(Level.SEVERE, "Failed to update timeline for contest " + "[" + contest.getContestId() + "]", e);
+                }
+            }
+            
+            return false;
+        
+        } catch (SQLException e) {
+            throw new PhaseHandlingException(
+                    "Error occurs while executing query ");
+        } 
+        finally {
+            closeResultSet(resultSet);
+            closeStatement(preparedStatement);
+            if (conn != null) {
+                closeConnection(conn);
+            }
+        }
+        
+    }
+
+    
 }

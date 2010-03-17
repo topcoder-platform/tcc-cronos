@@ -14,6 +14,12 @@ import java.util.logging.Level;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.sql.DataSource;
+
 import com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator;
 import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -43,6 +49,11 @@ import com.topcoder.util.log.LogManager;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.log4j.Log4jLogFactory;
 
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.db.connectionfactory.UnknownConnectionException;
+import com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer;
 
 /**
  * <p>
@@ -438,6 +449,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
      */
     private static final String FORUM_BEAN_PROVIDER_URL = "forum_bean_provider_url";
 
+    /** Property name constant for studio jndi name. */
+    private static final String STUDIO_JNDI_NAME = "studio_jndi_name";
+
     /**
      * <p>
      * The bean used to retrieve information regarding contests.
@@ -674,6 +688,16 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
     private String forumBeanProviderUrl;
 
     /**
+     * Data Source
+     */
+    private final DataSource dataSource;
+
+      /**
+     * <p>A <code>String</code> providing studio jndi name</p>
+     */
+    private String studioJndiName;
+
+    /**
      * <p>A <code>Log</code> to be used for logging the events occurred while advancing the projects to phases.</p>
      */
     private transient Log log;
@@ -797,6 +821,23 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
                     "Object created by ObjectFactory is not type of EmailMessageGenerator.", e);
             }
         }
+
+        // initialize connectionName with property value if provided.
+        String studioJndiName = loadProperty(namespace, STUDIO_JNDI_NAME, true);
+
+        try
+        {
+             InitialContext cxt = new InitialContext();
+             this.dataSource = (DataSource)cxt.lookup(studioJndiName);
+
+        }
+        catch (Exception e)
+        {
+             throw new PhaseHandlerConfigurationException("Error lookup studio ds", e);
+        }
+       
+
+
     }
 
     /**
@@ -1231,7 +1272,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
     protected void sendTwentyFourHoursReminderEmail(Phase phase) throws PhaseHandlingException {
         validatePhase(phase, null);
         this.sendEmail(this.eightHoursReminderEmailTemplateSource, "templates/contest24HoursLeft.txt",
-                       "[TopCoder Cockpit] You Have 24 Hours to Pick Winners", this.eightHoursReminderEmailFromAddress,
+                       "[TopCoder Cockpit] Your Contest is in Danger", this.eightHoursReminderEmailFromAddress,
                        phase);
     }
 
@@ -1721,4 +1762,119 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
     protected boolean canEnd(Phase phase, Contest contest) throws PhaseHandlingException {
         return true;
     }
+
+    /**
+     * <p>
+     * This method is used by the subclass to create the connection to access database. The connection needs to be
+     * closed after use.
+     * </p>
+     *
+     * @return The database connection.
+     *
+     * @throws PhaseHandlingException if connection could not be created.
+     */
+    protected Connection createConnection() throws PhaseHandlingException {
+        try {
+
+                return dataSource.getConnection();
+        } catch (SQLException ex) {
+            throw new PhaseHandlingException("Could not create connection", ex);
+        }
+    }
+
+    
+    /**
+     * Returns true if given string is either null or empty, false otherwise.
+     *
+     * @param str string to check.
+     *
+     * @return true if given string is either null or empty, false otherwise.
+     */
+    protected boolean isStringNullOrEmpty(String str) {
+        return ((str == null) || (str.trim().length() == 0));
+    }
+
+
+    /**
+     * A helper method to create an instance of DBConnectionFactory. This method
+     * retrieves the value for connection factory namespace from the given
+     * property name and namespace and uses the same to create an instance of
+     * DBConnectionFactoryImpl.
+     *
+     * @param namespace configuration namespace to use.
+     * @param connFactoryNSPropName name of property which holds connection
+     *        factory namespace value.
+     *
+     * @return DBConnectionFactory instance.
+     *
+     * @throws ConfigurationException if property is missing or if there was an
+     *         error when instantiating DBConnectionFactory.
+     */
+    protected DBConnectionFactory createDBConnectionFactory(String namespace,
+                    String connFactoryNSPropName) throws PhaseHandlingException {
+        String connectionFactoryNS = loadProperty(namespace, connFactoryNSPropName, true);
+
+        try {
+            return new DBConnectionFactoryImpl(connectionFactoryNS);
+        } catch (UnknownConnectionException ex) {
+            throw new PhaseHandlingException(
+                            "Could not instantiate DBConnectionFactoryImpl", ex);
+        } catch (com.topcoder.db.connectionfactory.ConfigurationException ex) {
+            throw new PhaseHandlingException(
+                            "Could not instantiate DBConnectionFactoryImpl", ex);
+        }
+    }
+
+
+
+    /**
+     * Close the connection.
+     * @param conn the connection to close
+     * @throws PersistenceException if error occurs when closing the connection
+     */
+    protected void closeConnection(Connection conn) throws PhaseHandlingException {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new PhaseHandlingException(
+                        "Error occurs when closing the connection.", e);
+            }
+        }
+    }
+
+    /**
+     * Close the prepared statement.
+     * @param ps the prepared statement to close
+     * @throws PersistenceException error occurs when closing the prepared
+     *             statement
+     */
+    protected void closeStatement(PreparedStatement ps)
+        throws PhaseHandlingException {
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                throw new PhaseHandlingException(
+                        "Error occurs when closing the prepared statement.", e);
+            }
+        }
+    }
+
+    /**
+     * Close the result set.
+     * @param rs the result set to close
+     * @throws PersistenceException error occurs when closing the result set.
+     */
+    protected void closeResultSet(ResultSet rs) throws PhaseHandlingException {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new PhaseHandlingException(
+                        "Error occurs when closing the result set.", e);
+            }
+        }
+    }
+
 }
