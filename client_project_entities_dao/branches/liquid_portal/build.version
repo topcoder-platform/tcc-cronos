@@ -2,7 +2,7 @@
 component.name=Client Project Entities DAO
 component.distfilename=client_project_entities_dao
 component.package=com.topcoder.clients.dao
-component.packagedir=com/topcoder/clients/dao
+component.packagedir=com/topcoder/clients
 component.version.major=1
 component.version.minor=1
 component.version.micro=0

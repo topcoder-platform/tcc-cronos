@@ -406,7 +406,8 @@
                        ${test_reflib}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,
                        ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*"
+                       ${javatests}/${packagedir}/failuretests/*,
+                       ${javatests}/${packagedir}/accuracytests/*"
             />
     </target>
 
