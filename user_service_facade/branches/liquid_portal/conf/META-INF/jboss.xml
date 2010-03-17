@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<jboss>
+    <enterprise-beans>
+        <!-- Commented for Jira and Confluence User Sync Widget 1.0 -->
+        <!-- Now the real UserServiceBean exist in project_service component. -->
+        <!--<session>
+            <ejb-name>UserServiceBean</ejb-name>
+            <jndi-name>remote/UserServiceBean</jndi-name>			
+        </session>-->
+        <session>
+            <ejb-name>UserServiceFacadeBean</ejb-name>
+            <jndi-name>remote/UserServiceFacadeBean</jndi-name>
+			
+            <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
+        </session>
+    </enterprise-beans>
+
+    <security-domain>java:/jaas/JBossLoginModule</security-domain>
+	<webservices> 
+		<context-root>/userfacade</context-root> 
+		<webservice-description> 
+		<webservice-description-name />
+		<wsdl-publish-location />
+    </webservice-description>
+ </webservices>
+</jboss>
