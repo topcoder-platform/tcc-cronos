@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "projectStatus", propOrder = { "description" })
+@XmlType(name = "clientProjectStatus", propOrder = { "description" })
 @Entity
 @Table(name = "project_status")
 @javax.persistence.AttributeOverride(name = "id", column = @Column(name = "project_status_id"))

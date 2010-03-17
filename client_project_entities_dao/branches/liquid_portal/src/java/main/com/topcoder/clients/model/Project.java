@@ -50,7 +50,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "project", propOrder = { "company", "active", "salesTax",
+@XmlType(name = "clientProject", propOrder = { "company", "active", "salesTax",
         "pOBoxNumber", "paymentTermsId", "description", "projectStatus",
         "client", "manualPrizeSetting", "childProjects", "parentProjectId" })
 @Entity
