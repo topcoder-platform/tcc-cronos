@@ -75,7 +75,6 @@
 		<pathelement location="${object_formatter.jar}"/>
 		<pathelement location="${typesafe_enum.jar}"/>
 		<pathelement location="${db_connection_factory.jar}"/>
-		<pathelement location="${project_service.jar}"/>
 		<pathelement location="${contest_and_submission_entities.jar}"/>
 	</path>
 	
@@ -146,7 +145,6 @@
 			<copy file="${object_formatter.jar}" todir="${ear_dir}" overwrite="true"/>  
 			<copy file="${object_factory.jar}" todir="${ear_dir}" overwrite="true"/> 
 			<copy file="${object_factory_configuration_api_plugin.jar}" todir="${ear_dir}" overwrite="true"/> 
-			<copy file="${project_service.jar}" todir="${ear_dir}" overwrite="true"/>  
 			<copy file="${contest_and_submission_entities.jar}" todir="${ear_dir}" overwrite="true"/>
 
 		</target>
