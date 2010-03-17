@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss>
+  <enterprise-beans>
+    <session>
+        <ejb-name>LiquidPortalServiceBean</ejb-name>
+        <jndi-name>remote/LiquidPortalServiceBean</jndi-name>
+        
+        <ejb-ref>
+        	<ejb-ref-name>ejb/pipelineServiceFacade</ejb-ref-name>
+        	<jndi-name>remote/PipelineServiceFacadeBean</jndi-name>
+        </ejb-ref>
+		<ejb-ref>
+        	<ejb-ref-name>ejb/contestServiceFacade</ejb-ref-name>
+        	<jndi-name>remote/ContestServiceFacadeBean</jndi-name>
+        </ejb-ref>
+		<ejb-ref>
+        	<ejb-ref-name>ejb/userService</ejb-ref-name>
+        	<jndi-name>UserServiceBean/remote</jndi-name>
+        </ejb-ref>
+		<ejb-ref>
+        	<ejb-ref-name>ejb/projectService</ejb-ref-name>
+        	<jndi-name>remote/ProjectServiceBean</jndi-name>
+        </ejb-ref>
+		<ejb-ref>
+        	<ejb-ref-name>ejb/billingProjectDAO</ejb-ref-name>
+        	<jndi-name>ProjectDAOBean/remote</jndi-name>
+        </ejb-ref>
+    </session>
+  </enterprise-beans>
+</jboss>

@@ -1,0 +1,1232 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<definitions name="LiquidPortalServiceBeanService" targetNamespace="http://service.portal.liquid.com/" xmlns:ns2="com.topcoder.service.project" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://service.portal.liquid.com/" xmlns:ns4="com.topcoder.management.project" xmlns:ns3="com.topcoder.project.phases" xmlns:tns="http://bean.service.portal.liquid.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns5="clientsmodel.clients.topcoder.com">
+  <types>
+    <xs:schema targetNamespace="com.topcoder.management.project" version="1.0" xmlns:ns1="http://service.portal.liquid.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://service.portal.liquid.com/"/>
+   <xs:complexType name="project">
+    <xs:complexContent>
+     <xs:extension base="ns1:auditableObject">
+      <xs:sequence>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element minOccurs="0" name="projectCategory" type="ns1:projectCategory"/>
+       <xs:element minOccurs="0" name="projectSpec" type="ns1:projectSpec"/>
+       <xs:element minOccurs="0" name="projectStatus" type="ns1:projectStatus"/>
+       <xs:element name="properties">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+           <xs:complexType>
+            <xs:sequence>
+             <xs:element minOccurs="0" name="key" type="xs:string"/>
+             <xs:element minOccurs="0" name="value" type="xs:string"/>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+         </xs:sequence>
+        </xs:complexType>
+       </xs:element>
+       <xs:element name="tcDirectProjectId" type="xs:long"/>
+       <xs:element minOccurs="0" name="tcDirectProjectName" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+  </xs:schema>
+    <xs:schema targetNamespace="com.topcoder.project.phases" version="1.0" xmlns:ns1="http://service.portal.liquid.com/" xmlns:tns="com.topcoder.project.phases" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://service.portal.liquid.com/"/>
+   <xs:complexType name="project">
+    <xs:complexContent>
+     <xs:extension base="ns1:attributableObject">
+      <xs:sequence>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="phases" nillable="true" type="tns:phase"/>
+       <xs:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="workdays" type="ns1:defaultWorkdays"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="phase">
+    <xs:complexContent>
+     <xs:extension base="ns1:attributableObject">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="actualEndDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="actualStartDate" type="xs:dateTime"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="dependencies" nillable="true" type="tns:dependency"/>
+       <xs:element minOccurs="0" name="fixedStartDate" type="xs:dateTime"/>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element name="length" type="xs:long"/>
+       <xs:element minOccurs="0" name="phaseStatus" type="ns1:phaseStatus"/>
+       <xs:element minOccurs="0" name="phaseType" type="ns1:phaseType"/>
+       <xs:element minOccurs="0" name="project" type="tns:project"/>
+       <xs:element minOccurs="0" name="scheduledEndDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="scheduledStartDate" type="xs:dateTime"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="dependency">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="dependency" type="tns:phase"/>
+     <xs:element name="dependencyStart" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="dependent" type="tns:phase"/>
+     <xs:element name="dependentStart" type="xs:boolean"/>
+     <xs:element name="lagTime" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:schema>
+    <xs:schema targetNamespace="com.topcoder.service.project" version="1.0" xmlns:ns1="http://service.portal.liquid.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://service.portal.liquid.com/"/>
+   <xs:complexType name="project">
+    <xs:complexContent>
+     <xs:extension base="ns1:projectData">
+      <xs:sequence>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="competitions" nillable="true" type="ns1:competition"/>
+       <xs:element minOccurs="0" name="createDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="modifyDate" type="xs:dateTime"/>
+       <xs:element name="userId" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+  </xs:schema>
+    <xs:schema targetNamespace="http://service.portal.liquid.com/" version="1.0" xmlns:ns1="clientsmodel.clients.topcoder.com" xmlns:ns2="com.topcoder.service.project" xmlns:ns3="com.topcoder.management.project" xmlns:ns4="com.topcoder.project.phases" xmlns:tns="http://service.portal.liquid.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="clientsmodel.clients.topcoder.com"/>
+   <xs:import namespace="com.topcoder.service.project"/>
+   <xs:import namespace="com.topcoder.management.project"/>
+   <xs:import namespace="com.topcoder.project.phases"/>
+   <xs:element name="ActionNotPermittedException" type="tns:ActionNotPermittedException"/>
+   <xs:element name="ContestNotFoundException" type="tns:ContestNotFoundException"/>
+   <xs:element name="HandleCreationException" type="tns:HandleCreationException"/>
+   <xs:element name="HandleNotFoundException" type="tns:HandleNotFoundException"/>
+   <xs:element name="InvalidHandleException" type="tns:InvalidHandleException"/>
+   <xs:element name="LiquidPortalIllegalArgumentException" type="tns:LiquidPortalIllegalArgumentException"/>
+   <xs:element name="LiquidPortalServicingException" type="tns:LiquidPortalServicingException"/>
+   <xs:element name="createCompetition" type="tns:createCompetition"/>
+   <xs:element name="createCompetitionResponse" type="tns:createCompetitionResponse"/>
+   <xs:element name="decommissionUser" type="tns:decommissionUser"/>
+   <xs:element name="decommissionUserResponse" type="tns:decommissionUserResponse"/>
+   <xs:element name="deleteCompetition" type="tns:deleteCompetition"/>
+   <xs:element name="deleteCompetitionResponse" type="tns:deleteCompetitionResponse"/>
+   <xs:element name="provisionProject" type="tns:provisionProject"/>
+   <xs:element name="provisionProjectResponse" type="tns:provisionProjectResponse"/>
+   <xs:element name="provisionUser" type="tns:provisionUser"/>
+   <xs:element name="provisionUserResponse" type="tns:provisionUserResponse"/>
+   <xs:element name="registerUser" type="tns:registerUser"/>
+   <xs:element name="registerUserResponse" type="tns:registerUserResponse"/>
+   <xs:element name="validateUser" type="tns:validateUser"/>
+   <xs:element name="validateUserResponse" type="tns:validateUserResponse"/>
+   <xs:complexType name="registerUser">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="tns:user"/>
+     <xs:element minOccurs="0" name="arg1" type="xs:dateTime"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="user">
+    <xs:complexContent>
+     <xs:extension base="tns:userInfo">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="address" type="tns:address"/>
+       <xs:element minOccurs="0" name="password" type="xs:string"/>
+       <xs:element minOccurs="0" name="phone" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="userInfo">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="emailAddress" type="xs:string"/>
+     <xs:element minOccurs="0" name="firstName" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="groupIds" nillable="true" type="xs:long"/>
+     <xs:element minOccurs="0" name="handle" type="xs:string"/>
+     <xs:element minOccurs="0" name="lastName" type="xs:string"/>
+     <xs:element name="userId" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="address">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="address1" type="xs:string"/>
+     <xs:element minOccurs="0" name="address2" type="xs:string"/>
+     <xs:element minOccurs="0" name="address3" type="xs:string"/>
+     <xs:element minOccurs="0" name="city" type="xs:string"/>
+     <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+     <xs:element minOccurs="0" name="province" type="xs:string"/>
+     <xs:element minOccurs="0" name="stateCode" type="xs:string"/>
+     <xs:element minOccurs="0" name="zip" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="registerUserResponse">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="return" type="tns:registerUserResult"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="registerUserResult">
+    <xs:complexContent>
+     <xs:extension base="tns:result">
+      <xs:sequence>
+       <xs:element name="userId" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="result">
+    <xs:sequence>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="warnings" nillable="true" type="tns:warning"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="warning">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LiquidPortalIllegalArgumentException">
+    <xs:sequence>
+     <xs:element name="errorCode" type="xs:int"/>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="HandleCreationException">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="handle" type="xs:string"/>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LiquidPortalServicingException">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="validateUser">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="tns:userInfo"/>
+     <xs:element name="arg1" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="validateUserResponse">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="return" type="tns:result"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="HandleNotFoundException">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="handle" type="xs:string"/>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="provisionUser">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+     <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+     <xs:element name="arg2" type="xs:boolean"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="arg3" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="arg4" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="provisionUserResponse">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="return" type="tns:provisionUserResult"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="provisionUserResult">
+    <xs:complexContent>
+     <xs:extension base="tns:result">
+      <xs:sequence>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="billingProjects" nillable="true" type="tns:project"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="cockpitProjects" nillable="true" type="tns:projectData"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="project">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableEntity">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="company" type="tns:company"/>
+       <xs:element name="active" type="xs:boolean"/>
+       <xs:element name="salesTax" type="xs:double"/>
+       <xs:element minOccurs="0" name="pOBoxNumber" type="xs:string"/>
+       <xs:element name="paymentTermsId" type="xs:long"/>
+       <xs:element minOccurs="0" name="description" type="xs:string"/>
+       <xs:element minOccurs="0" name="projectStatus" type="ns1:projectStatus"/>
+       <xs:element minOccurs="0" name="client" type="tns:client"/>
+       <xs:element name="manualPrizeSetting" type="xs:boolean"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="childProjects" nillable="true" type="tns:project"/>
+       <xs:element minOccurs="0" name="parentProjectId" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="auditableEntity">
+    <xs:sequence>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="createUsername" type="xs:string"/>
+     <xs:element minOccurs="0" name="createDate" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="modifyUsername" type="xs:string"/>
+     <xs:element minOccurs="0" name="modifyDate" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="deleted" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="company">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableEntity">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="passcode" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="client">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableEntity">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="company" type="tns:company"/>
+       <xs:element name="paymentTermsId" type="xs:long"/>
+       <xs:element minOccurs="0" name="clientStatus" type="tns:clientStatus"/>
+       <xs:element name="salesTax" type="xs:double"/>
+       <xs:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="endDate" type="xs:dateTime"/>
+       <xs:element minOccurs="0" name="codeName" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="clientStatus">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableEntity">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="description" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="projectData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="projectId" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="InvalidHandleException">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="handle" type="xs:string"/>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="createCompetition">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+     <xs:element minOccurs="0" name="arg1" type="tns:competitionData"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="competitionData">
+    <xs:sequence>
+     <xs:element name="autoReschedule" type="xs:boolean"/>
+     <xs:element name="billingProjectId" type="xs:long"/>
+     <xs:element name="cca" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="cockpitProjectName" type="xs:string"/>
+     <xs:element minOccurs="0" name="contestName" type="xs:string"/>
+     <xs:element minOccurs="0" name="contestTypeName" type="xs:string"/>
+     <xs:element minOccurs="0" name="requestedStartDate" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="subContestTypeName" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="createCompetitionResponse">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="return" type="tns:createCompetitonResult"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="createCompetitonResult">
+    <xs:complexContent>
+     <xs:extension base="tns:result">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="competition" type="tns:competition"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="competition">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="adminFee" type="xs:double"/>
+     <xs:element name="clientApproval" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="clientName" type="xs:string"/>
+     <xs:element minOccurs="0" name="competitionId" type="xs:long"/>
+     <xs:element name="confidence" type="xs:int"/>
+     <xs:element name="contestFee" type="xs:double"/>
+     <xs:element name="creatorUserId" type="xs:long"/>
+     <xs:element name="drPoints" type="xs:double"/>
+     <xs:element minOccurs="0" name="eligibility" type="xs:string"/>
+     <xs:element minOccurs="0" name="endTime" type="xs:anySimpleType"/>
+     <xs:element name="hasDependentCompetitions" type="xs:boolean"/>
+     <xs:element name="hasWikiSpecification" type="xs:boolean"/>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="notes" type="xs:string"/>
+     <xs:element name="passedSpecReview" type="xs:boolean"/>
+     <xs:element name="pricingApproval" type="xs:boolean"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="prizes" nillable="true" type="tns:competitionPrize"/>
+     <xs:element minOccurs="0" name="project" type="ns2:project"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="resources" nillable="true" type="tns:resource"/>
+     <xs:element name="reviewPayment" type="xs:double"/>
+     <xs:element minOccurs="0" name="shortSummary" type="xs:string"/>
+     <xs:element name="specificationReviewPayment" type="xs:double"/>
+     <xs:element minOccurs="0" name="startTime" type="xs:anySimpleType"/>
+     <xs:element minOccurs="0" name="type" type="tns:competionType"/>
+     <xs:element name="wasReposted" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="competitionPrize">
+    <xs:sequence>
+     <xs:element name="amount" type="xs:double"/>
+     <xs:element name="place" type="xs:int"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="resource">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableResourceStructure">
+      <xs:sequence>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element minOccurs="0" name="name" type="xs:string"/>
+       <xs:element minOccurs="0" name="phase" type="xs:long"/>
+       <xs:element minOccurs="0" name="project" type="xs:long"/>
+       <xs:element name="properties">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+           <xs:complexType>
+            <xs:sequence>
+             <xs:element minOccurs="0" name="key" type="xs:string"/>
+             <xs:element minOccurs="0" name="value" type="xs:string"/>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+         </xs:sequence>
+        </xs:complexType>
+       </xs:element>
+       <xs:element minOccurs="0" name="resourceRole" type="tns:resourceRole"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="submissions" nillable="true" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="auditableResourceStructure">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="creationTimestamp" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="creationUser" type="xs:string"/>
+     <xs:element minOccurs="0" name="modificationTimestamp" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="modificationUser" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="resourceRole">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableResourceStructure">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="description" type="xs:string"/>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element minOccurs="0" name="name" type="xs:string"/>
+       <xs:element minOccurs="0" name="phaseType" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="studioCompetition">
+    <xs:complexContent>
+     <xs:extension base="tns:competition">
+      <xs:sequence>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element minOccurs="0" name="contestData" type="tns:contestData"/>
+       <xs:element minOccurs="0" name="type" type="tns:competionType"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="resources" nillable="true" type="tns:resource"/>
+       <xs:element name="clientApproval" type="xs:boolean"/>
+       <xs:element minOccurs="0" name="clientName" type="xs:string"/>
+       <xs:element name="reviewPayment" type="xs:double"/>
+       <xs:element name="specificationReviewPayment" type="xs:double"/>
+       <xs:element name="contestFee" type="xs:double"/>
+       <xs:element minOccurs="0" name="status" type="tns:contestStatusData"/>
+       <xs:element minOccurs="0" name="category" type="xs:string"/>
+       <xs:element name="confidence" type="xs:int"/>
+       <xs:element name="pricingApproval" type="xs:boolean"/>
+       <xs:element name="hasWikiSpecification" type="xs:boolean"/>
+       <xs:element name="passedSpecReview" type="xs:boolean"/>
+       <xs:element name="hasDependentCompetitions" type="xs:boolean"/>
+       <xs:element name="wasReposted" type="xs:boolean"/>
+       <xs:element minOccurs="0" name="notes" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="contestData">
+    <xs:sequence>
+     <xs:element name="contestId" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element name="projectId" type="xs:long"/>
+     <xs:element name="tcDirectProjectId" type="xs:long"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="prizes" nillable="true" type="tns:prizeData"/>
+     <xs:element minOccurs="0" name="launchDateAndTime" type="xs:anySimpleType"/>
+     <xs:element minOccurs="0" name="winnerAnnoucementDeadline" type="xs:anySimpleType"/>
+     <xs:element name="durationInHours" type="xs:double"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="documentationUploads" nillable="true" type="tns:uploadedDocument"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="contestPayloads" nillable="true" type="tns:contestPayload"/>
+     <xs:element minOccurs="0" name="shortSummary" type="xs:string"/>
+     <xs:element minOccurs="0" name="contestDescriptionAndRequirements" type="xs:string"/>
+     <xs:element minOccurs="0" name="requiredOrRestrictedColors" type="xs:string"/>
+     <xs:element minOccurs="0" name="requiredOrRestrictedFonts" type="xs:string"/>
+     <xs:element minOccurs="0" name="sizeRequirements" type="xs:string"/>
+     <xs:element minOccurs="0" name="otherRequirementsOrRestrictions" type="xs:string"/>
+     <xs:element name="creatorUserId" type="xs:long"/>
+     <xs:element minOccurs="0" name="finalFileFormat" type="xs:string"/>
+     <xs:element minOccurs="0" name="otherFileFormats" type="xs:string"/>
+     <xs:element name="statusId" type="xs:long"/>
+     <xs:element name="detailedStatusId" type="xs:long"/>
+     <xs:element name="submissionCount" type="xs:long"/>
+     <xs:element name="contestTypeId" type="xs:long"/>
+     <xs:element name="contestChannelId" type="xs:long"/>
+     <xs:element minOccurs="0" name="eligibility" type="xs:string"/>
+     <xs:element minOccurs="0" name="notesOnWinnerSelection" type="xs:string"/>
+     <xs:element minOccurs="0" name="prizeDescription" type="xs:string"/>
+     <xs:element name="forumPostCount" type="xs:int"/>
+     <xs:element name="forumId" type="xs:long"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="media" nillable="true" type="tns:mediumData"/>
+     <xs:element name="drPoints" type="xs:double"/>
+     <xs:element name="contestAdministrationFee" type="xs:double"/>
+     <xs:element name="launchImmediately" type="xs:boolean"/>
+     <xs:element name="requiresPreviewImage" type="xs:boolean"/>
+     <xs:element name="requiresPreviewFile" type="xs:boolean"/>
+     <xs:element name="maximumSubmissions" type="xs:long"/>
+     <xs:element name="numberOfRegistrants" type="xs:long"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="payments" nillable="true" type="tns:contestPaymentData"/>
+     <xs:element minOccurs="0" name="tcDirectProjectName" type="xs:string"/>
+     <xs:element name="billingProject" type="xs:long"/>
+     <xs:element name="multiRound" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="milestonePrizeData" nillable="true" type="tns:milestonePrizeData"/>
+     <xs:element minOccurs="0" name="multiRoundData" nillable="true" type="tns:contestMultiRoundInformationData"/>
+     <xs:element minOccurs="0" name="generalInfo" type="tns:contestGeneralInfoData"/>
+     <xs:element minOccurs="0" name="specifications" type="tns:contestSpecificationsData"/>
+     <xs:element name="nonWinningSubmissionsPurchased" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="prizeData">
+    <xs:sequence>
+     <xs:element name="amount" type="xs:double"/>
+     <xs:element name="place" type="xs:int"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="uploadedDocument">
+    <xs:sequence>
+     <xs:element name="documentId" type="xs:long"/>
+     <xs:element name="contestId" type="xs:long"/>
+     <xs:element minOccurs="0" name="file" type="xs:base64Binary"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+     <xs:element name="documentTypeId" type="xs:long"/>
+     <xs:element name="mimeTypeId" type="xs:long"/>
+     <xs:element minOccurs="0" name="path" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestPayload">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="value" type="xs:string"/>
+     <xs:element name="required" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element name="contestTypeId" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="mediumData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="mediumId" type="xs:long"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestPaymentData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="contestId" type="xs:long"/>
+     <xs:element minOccurs="0" name="paymentStatusId" type="xs:long"/>
+     <xs:element minOccurs="0" name="price" type="xs:double"/>
+     <xs:element minOccurs="0" name="paypalOrderId" type="xs:string"/>
+     <xs:element minOccurs="0" name="createDate" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="paymentTypeId" type="xs:long"/>
+     <xs:element minOccurs="0" name="paymentReferenceId" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="milestonePrizeData">
+    <xs:sequence>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="createDate" type="xs:anySimpleType"/>
+     <xs:element minOccurs="0" name="amount" type="xs:double"/>
+     <xs:element minOccurs="0" name="numberOfSubmissions" type="xs:int"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestMultiRoundInformationData">
+    <xs:sequence>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="milestoneDate" type="xs:anySimpleType"/>
+     <xs:element minOccurs="0" name="submittersLockedBetweenRounds" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="roundOneIntroduction" type="xs:string"/>
+     <xs:element minOccurs="0" name="roundTwoIntroduction" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestGeneralInfoData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="goals" type="xs:string"/>
+     <xs:element minOccurs="0" name="targetAudience" type="xs:string"/>
+     <xs:element minOccurs="0" name="brandingGuidelines" type="xs:string"/>
+     <xs:element minOccurs="0" name="dislikedDesignsWebsites" type="xs:string"/>
+     <xs:element minOccurs="0" name="otherInstructions" type="xs:string"/>
+     <xs:element minOccurs="0" name="winningCriteria" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestSpecificationsData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="colors" type="xs:string"/>
+     <xs:element minOccurs="0" name="fonts" type="xs:string"/>
+     <xs:element minOccurs="0" name="layoutAndSize" type="xs:string"/>
+     <xs:element minOccurs="0" name="additionalRequirementsAndRestrictions" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="contestStatusData">
+    <xs:sequence>
+     <xs:element name="statusId" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="allowableNextStatus" nillable="true" type="xs:long"/>
+     <xs:element minOccurs="0" name="displayIcon" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="softwareCompetition">
+    <xs:complexContent>
+     <xs:extension base="tns:competition">
+      <xs:sequence>
+       <xs:element name="id" type="xs:long"/>
+       <xs:element minOccurs="0" name="assetDTO" type="tns:assetDTO"/>
+       <xs:element minOccurs="0" name="projectHeader" type="ns3:project"/>
+       <xs:element minOccurs="0" name="developmentProjectHeader" type="ns3:project"/>
+       <xs:element minOccurs="0" name="projectHeaderReason" type="xs:string"/>
+       <xs:element minOccurs="0" name="projectPhases" type="ns4:project"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="projectResources" nillable="true" type="tns:resource"/>
+       <xs:element minOccurs="0" name="projectData" type="tns:fullProjectData"/>
+       <xs:element minOccurs="0" name="type" type="tns:competionType"/>
+       <xs:element minOccurs="0" name="adminFee" type="xs:double"/>
+       <xs:element name="clientApproval" type="xs:boolean"/>
+       <xs:element minOccurs="0" name="clientName" type="xs:string"/>
+       <xs:element name="reviewPayment" type="xs:double"/>
+       <xs:element name="specificationReviewPayment" type="xs:double"/>
+       <xs:element name="contestFee" type="xs:double"/>
+       <xs:element minOccurs="0" name="status" type="tns:status"/>
+       <xs:element minOccurs="0" name="category" type="tns:category"/>
+       <xs:element name="confidence" type="xs:int"/>
+       <xs:element name="pricingApproval" type="xs:boolean"/>
+       <xs:element name="hasWikiSpecification" type="xs:boolean"/>
+       <xs:element name="passedSpecReview" type="xs:boolean"/>
+       <xs:element name="hasDependentCompetitions" type="xs:boolean"/>
+       <xs:element name="wasReposted" type="xs:boolean"/>
+       <xs:element minOccurs="0" name="notes" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="assetDTO">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="clientIds" nillable="true" type="xs:long"/>
+     <xs:element minOccurs="0" name="versionText" type="xs:string"/>
+     <xs:element minOccurs="0" name="versionNumber" type="xs:long"/>
+     <xs:element minOccurs="0" name="shortDescription" type="xs:string"/>
+     <xs:element minOccurs="0" name="detailedDescription" type="xs:string"/>
+     <xs:element minOccurs="0" name="functionalDescription" type="xs:string"/>
+     <xs:element minOccurs="0" name="rootCategory" type="tns:category"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="categories" nillable="true" type="tns:category"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="technologies" nillable="true" type="tns:technology"/>
+     <xs:element minOccurs="0" name="productionDate" type="xs:anySimpleType"/>
+     <xs:element name="isCurrentVersionAlsoLatestVersion" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="compVersionId" type="xs:long"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="userIds" nillable="true" type="xs:long"/>
+     <xs:element name="informationComplete" type="xs:boolean"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="documentation" nillable="true" type="tns:compDocumentation"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="compUploadedFiles" nillable="true" type="tns:compUploadedFile"/>
+     <xs:element minOccurs="0" name="compComments" type="xs:string"/>
+     <xs:element minOccurs="0" name="phase" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="dependencies" nillable="true" type="xs:long"/>
+     <xs:element minOccurs="0" name="version" type="xs:long"/>
+     <xs:element minOccurs="0" name="toCreateMinorVersion" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="category">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="catalogName" type="xs:string"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element minOccurs="0" name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="parentCategory" type="tns:category"/>
+     <xs:element minOccurs="0" name="status" type="tns:status"/>
+     <xs:element name="viewable" type="xs:boolean"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="technology">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element minOccurs="0" name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="status" type="tns:status"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="compDocumentation">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="documentName" type="xs:string"/>
+     <xs:element minOccurs="0" name="documentType" type="xs:string"/>
+     <xs:element minOccurs="0" name="documentTypeId" type="xs:long"/>
+     <xs:element minOccurs="0" name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="url" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="compUploadedFile">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="fileData" type="xs:base64Binary"/>
+     <xs:element minOccurs="0" name="uploadedFileName" type="xs:string"/>
+     <xs:element minOccurs="0" name="uploadedFileDesc" type="xs:string"/>
+     <xs:element minOccurs="0" name="uploadedFileType" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="auditableObject">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="creationTimestamp" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="creationUser" type="xs:string"/>
+     <xs:element minOccurs="0" name="modificationTimestamp" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="modificationUser" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="projectCategory">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element minOccurs="0" name="projectType" type="tns:projectType"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="projectType">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="projectSpec">
+    <xs:complexContent>
+     <xs:extension base="tns:auditableObject">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="detailedRequirements" type="xs:string"/>
+       <xs:element minOccurs="0" name="environmentSetupInstructions" type="xs:string"/>
+       <xs:element minOccurs="0" name="finalSubmissionGuidelines" type="xs:string"/>
+       <xs:element name="projectId" type="xs:long"/>
+       <xs:element name="projectSpecId" type="xs:long"/>
+       <xs:element minOccurs="0" name="submissionDeliverables" type="xs:string"/>
+       <xs:element name="version" type="xs:long"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="projectStatus">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="attributableObject">
+    <xs:sequence>
+     <xs:element name="attributes">
+      <xs:complexType>
+       <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+         <xs:complexType>
+          <xs:sequence>
+           <xs:element minOccurs="0" name="key" type="xs:anyType"/>
+           <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="phaseStatus">
+    <xs:sequence>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="phaseType">
+    <xs:sequence>
+     <xs:element name="id" type="xs:long"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="defaultWorkdays">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="fileFormat" type="xs:string"/>
+     <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+     <xs:element name="saturdayWorkday" type="xs:boolean"/>
+     <xs:element name="sundayWorkday" type="xs:boolean"/>
+     <xs:element name="workdayEndTimeHours" type="xs:int"/>
+     <xs:element name="workdayEndTimeMinutes" type="xs:int"/>
+     <xs:element name="workdayStartTimeHours" type="xs:int"/>
+     <xs:element name="workdayStartTimeMinutes" type="xs:int"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="fullProjectData">
+    <xs:complexContent>
+     <xs:extension base="ns4:project">
+      <xs:sequence>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="contestSales" nillable="true" type="tns:contestSaleData"/>
+       <xs:element minOccurs="0" name="projectHeader" type="ns3:project"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="resources" nillable="true" type="tns:resource"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="teams" nillable="true" type="tns:teamHeader"/>
+       <xs:element maxOccurs="unbounded" minOccurs="0" name="technologies" nillable="true" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="contestSaleData">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="contestId" type="xs:long"/>
+     <xs:element name="contestSaleId" type="xs:long"/>
+     <xs:element minOccurs="0" name="createDate" type="xs:dateTime"/>
+     <xs:element minOccurs="0" name="paypalOrderId" type="xs:string"/>
+     <xs:element minOccurs="0" name="price" type="xs:double"/>
+     <xs:element minOccurs="0" name="saleReferenceId" type="xs:string"/>
+     <xs:element minOccurs="0" name="saleStatusId" type="xs:long"/>
+     <xs:element minOccurs="0" name="saleTypeId" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="teamHeader">
+    <xs:sequence>
+     <xs:element name="captainPaymentPercentage" type="xs:int"/>
+     <xs:element name="captainResourceId" type="xs:long"/>
+     <xs:element minOccurs="0" name="description" type="xs:string"/>
+     <xs:element name="finalized" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="name" type="xs:string"/>
+     <xs:element name="projectId" type="xs:long"/>
+     <xs:element name="teamId" type="xs:long"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ActionNotPermittedException">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="provisionProject">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+     <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+     <xs:element maxOccurs="unbounded" minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="provisionProjectResponse">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="return" type="tns:result"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="deleteCompetition">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+     <xs:element name="arg1" type="xs:long"/>
+     <xs:element name="arg2" type="xs:boolean"/>
+     <xs:element minOccurs="0" name="arg3" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="deleteCompetitionResponse">
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="ContestNotFoundException">
+    <xs:sequence>
+     <xs:element name="contestId" type="xs:long"/>
+     <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="decommissionUser">
+    <xs:sequence>
+     <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+     <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="decommissionUserResponse">
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:simpleType name="competionType">
+    <xs:restriction base="xs:string">
+     <xs:enumeration value="STUDIO"/>
+     <xs:enumeration value="CONCEPTUALIZATION"/>
+     <xs:enumeration value="SPECIFICATION"/>
+     <xs:enumeration value="ARCHITECTURE"/>
+     <xs:enumeration value="COMPONENT_DESIGN"/>
+     <xs:enumeration value="COMPONENT_DEVELOPMENT"/>
+     <xs:enumeration value="ASSEMBLY"/>
+     <xs:enumeration value="TESTING"/>
+     <xs:enumeration value="SOFTWARE"/>
+    </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="status">
+    <xs:restriction base="xs:string">
+     <xs:enumeration value="DELETED"/>
+     <xs:enumeration value="ACTIVE"/>
+     <xs:enumeration value="REQUESTED"/>
+     <xs:enumeration value="APPROVED"/>
+     <xs:enumeration value="DUPLICATE"/>
+     <xs:enumeration value="DECLINED"/>
+     <xs:enumeration value="PENDING_ACTIVATION"/>
+     <xs:enumeration value="NEW_POST"/>
+     <xs:enumeration value="REPOST"/>
+     <xs:enumeration value="TOURNAMENT"/>
+    </xs:restriction>
+   </xs:simpleType>
+  </xs:schema>
+    <xs:schema targetNamespace="clientsmodel.clients.topcoder.com" version="1.0" xmlns:ns1="http://service.portal.liquid.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://service.portal.liquid.com/"/>
+   <xs:complexType name="projectStatus">
+    <xs:complexContent>
+     <xs:extension base="ns1:auditableEntity">
+      <xs:sequence>
+       <xs:element minOccurs="0" name="description" type="xs:string"/>
+      </xs:sequence>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+  </xs:schema>
+  </types>
+  <message name="LiquidPortalService_createCompetition">
+    <part name="createCompetition" element="ns1:createCompetition">
+    </part>
+  </message>
+  <message name="HandleNotFoundException">
+    <part name="HandleNotFoundException" element="ns1:HandleNotFoundException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_deleteCompetition">
+    <part name="deleteCompetition" element="ns1:deleteCompetition">
+    </part>
+  </message>
+  <message name="LiquidPortalService_provisionProjectResponse">
+    <part name="provisionProjectResponse" element="ns1:provisionProjectResponse">
+    </part>
+  </message>
+  <message name="LiquidPortalService_validateUserResponse">
+    <part name="validateUserResponse" element="ns1:validateUserResponse">
+    </part>
+  </message>
+  <message name="LiquidPortalServicingException">
+    <part name="LiquidPortalServicingException" element="ns1:LiquidPortalServicingException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_provisionUserResponse">
+    <part name="provisionUserResponse" element="ns1:provisionUserResponse">
+    </part>
+  </message>
+  <message name="LiquidPortalService_provisionUser">
+    <part name="provisionUser" element="ns1:provisionUser">
+    </part>
+  </message>
+  <message name="LiquidPortalService_decommissionUser">
+    <part name="decommissionUser" element="ns1:decommissionUser">
+    </part>
+  </message>
+  <message name="LiquidPortalIllegalArgumentException">
+    <part name="LiquidPortalIllegalArgumentException" element="ns1:LiquidPortalIllegalArgumentException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_deleteCompetitionResponse">
+    <part name="deleteCompetitionResponse" element="ns1:deleteCompetitionResponse">
+    </part>
+  </message>
+  <message name="LiquidPortalService_createCompetitionResponse">
+    <part name="createCompetitionResponse" element="ns1:createCompetitionResponse">
+    </part>
+  </message>
+  <message name="InvalidHandleException">
+    <part name="InvalidHandleException" element="ns1:InvalidHandleException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_provisionProject">
+    <part name="provisionProject" element="ns1:provisionProject">
+    </part>
+  </message>
+  <message name="HandleCreationException">
+    <part name="HandleCreationException" element="ns1:HandleCreationException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_validateUser">
+    <part name="validateUser" element="ns1:validateUser">
+    </part>
+  </message>
+  <message name="LiquidPortalService_decommissionUserResponse">
+    <part name="decommissionUserResponse" element="ns1:decommissionUserResponse">
+    </part>
+  </message>
+  <message name="ActionNotPermittedException">
+    <part name="ActionNotPermittedException" element="ns1:ActionNotPermittedException">
+    </part>
+  </message>
+  <message name="LiquidPortalService_registerUserResponse">
+    <part name="registerUserResponse" element="ns1:registerUserResponse">
+    </part>
+  </message>
+  <message name="LiquidPortalService_registerUser">
+    <part name="registerUser" element="ns1:registerUser">
+    </part>
+  </message>
+  <message name="ContestNotFoundException">
+    <part name="ContestNotFoundException" element="ns1:ContestNotFoundException">
+    </part>
+  </message>
+  <portType name="LiquidPortalService">
+    <operation name="createCompetition" parameterOrder="createCompetition">
+      <input message="ns1:LiquidPortalService_createCompetition">
+    </input>
+      <output message="ns1:LiquidPortalService_createCompetitionResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="ActionNotPermittedException" message="ns1:ActionNotPermittedException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+      <fault name="InvalidHandleException" message="ns1:InvalidHandleException">
+    </fault>
+    </operation>
+    <operation name="decommissionUser" parameterOrder="decommissionUser">
+      <input message="ns1:LiquidPortalService_decommissionUser">
+    </input>
+      <output message="ns1:LiquidPortalService_decommissionUserResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="ActionNotPermittedException" message="ns1:ActionNotPermittedException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+    </operation>
+    <operation name="deleteCompetition" parameterOrder="deleteCompetition">
+      <input message="ns1:LiquidPortalService_deleteCompetition">
+    </input>
+      <output message="ns1:LiquidPortalService_deleteCompetitionResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="ActionNotPermittedException" message="ns1:ActionNotPermittedException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+      <fault name="ContestNotFoundException" message="ns1:ContestNotFoundException">
+    </fault>
+    </operation>
+    <operation name="provisionProject" parameterOrder="provisionProject">
+      <input message="ns1:LiquidPortalService_provisionProject">
+    </input>
+      <output message="ns1:LiquidPortalService_provisionProjectResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="ActionNotPermittedException" message="ns1:ActionNotPermittedException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+    </operation>
+    <operation name="provisionUser" parameterOrder="provisionUser">
+      <input message="ns1:LiquidPortalService_provisionUser">
+    </input>
+      <output message="ns1:LiquidPortalService_provisionUserResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+      <fault name="InvalidHandleException" message="ns1:InvalidHandleException">
+    </fault>
+    </operation>
+    <operation name="registerUser" parameterOrder="registerUser">
+      <input message="ns1:LiquidPortalService_registerUser">
+    </input>
+      <output message="ns1:LiquidPortalService_registerUserResponse">
+    </output>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+      <fault name="HandleCreationException" message="ns1:HandleCreationException">
+    </fault>
+    </operation>
+    <operation name="validateUser" parameterOrder="validateUser">
+      <input message="ns1:LiquidPortalService_validateUser">
+    </input>
+      <output message="ns1:LiquidPortalService_validateUserResponse">
+    </output>
+      <fault name="HandleNotFoundException" message="ns1:HandleNotFoundException">
+    </fault>
+      <fault name="LiquidPortalServicingException" message="ns1:LiquidPortalServicingException">
+    </fault>
+      <fault name="LiquidPortalIllegalArgumentException" message="ns1:LiquidPortalIllegalArgumentException">
+    </fault>
+    </operation>
+  </portType>
+  <binding name="LiquidPortalServiceBinding" type="ns1:LiquidPortalService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="createCompetition">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="ActionNotPermittedException">
+        <soap:fault name="ActionNotPermittedException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+      <fault name="InvalidHandleException">
+        <soap:fault name="InvalidHandleException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="decommissionUser">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="ActionNotPermittedException">
+        <soap:fault name="ActionNotPermittedException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="deleteCompetition">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="ActionNotPermittedException">
+        <soap:fault name="ActionNotPermittedException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+      <fault name="ContestNotFoundException">
+        <soap:fault name="ContestNotFoundException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="provisionProject">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="ActionNotPermittedException">
+        <soap:fault name="ActionNotPermittedException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="provisionUser">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+      <fault name="InvalidHandleException">
+        <soap:fault name="InvalidHandleException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="registerUser">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+      <fault name="HandleCreationException">
+        <soap:fault name="HandleCreationException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="validateUser">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="HandleNotFoundException">
+        <soap:fault name="HandleNotFoundException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalServicingException">
+        <soap:fault name="LiquidPortalServicingException" use="literal"/>
+      </fault>
+      <fault name="LiquidPortalIllegalArgumentException">
+        <soap:fault name="LiquidPortalIllegalArgumentException" use="literal"/>
+      </fault>
+    </operation>
+  </binding>
+</definitions>
