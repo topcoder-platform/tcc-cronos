@@ -7,10 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.topcoder.service.project.BaseUnitTestCase;
+import com.topcoder.service.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.StudioCompetition;
 
 /**
  * <p>
@@ -181,7 +182,7 @@ public class ProjectServiceWSTestAcc extends BaseUnitTestCase {
 
         // The competitions should be ignored
         Set < Competition > competitions = new HashSet();
-        Competition competition = new Competition();
+        Competition competition = new StudioCompetition();
         competition.setProject(project);
         competitions.add(competition);
         project.setCompetitions(competitions);

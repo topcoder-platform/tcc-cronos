@@ -24,6 +24,86 @@
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>Cockpit Administrator</env-entry-value>
       </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
+      <!-- Tells the container for which persistence unit to inject an EntityManager -->
+      <persistence-context-ref>
+            <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
+            <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>
+      </persistence-context-ref>
+    </session>
+    
+    <session>
+      <ejb-name>UserServiceBean</ejb-name>
+      <remote>com.topcoder.service.user.UserServiceRemote</remote>
+      <local>com.topcoder.service.user.UserServiceLocal</local>
+      <ejb-class>com.topcoder.service.user.impl.UserServiceBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+      <env-entry>
+        <description>The name of the log to use</description>
+        <env-entry-name>log_name</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>TopCoderLog</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the administrator role</description>
+        <env-entry-name>administrator_role</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Cockpit Administrator</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The email status id used in the registerUser method</description>
+        <env-entry-name>emailStatusId</env-entry-name>
+        <env-entry-type>java.lang.Long</env-entry-type>
+        <env-entry-value>1</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the phone id generator</description>
+        <env-entry-name>phoneIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>PHONE_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the email id generator</description>
+        <env-entry-name>emailIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>EMAIL_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the address id generator</description>
+        <env-entry-name>addressIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>ADDRESS_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the user id generator</description>
+        <env-entry-name>userIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>USER_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the security user id generator</description>
+        <env-entry-name>securityUserIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>SECURITY_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the user-group id generator</description>
+        <env-entry-name>userGroupIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>USER_GROUP_SEQ</env-entry-value>
+      </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
             <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
@@ -51,6 +131,12 @@
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>Cockpit Administrator</env-entry-value>
       </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
             <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
@@ -76,6 +162,12 @@
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>Cockpit Administrator</env-entry-value>
       </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
             <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
@@ -95,6 +187,12 @@
         <env-entry-name>log_name</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>TC</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
       </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
@@ -122,6 +220,12 @@
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value></env-entry-value>
       </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
             <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
@@ -146,6 +250,12 @@
         <env-entry-name>administrator_role</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value> </env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
       </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
@@ -172,6 +282,12 @@
         <env-entry-type>java.lang.Integer</env-entry-type>
         <env-entry-value>1</env-entry-value>
       </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
+      </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>
             <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
@@ -192,6 +308,12 @@
         <env-entry-name>administrator_role</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>Admin</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+         <env-entry-value>catalog_manager</env-entry-value>
       </env-entry>
       <!-- Tells the container for which persistence unit to inject an EntityManager -->
       <persistence-context-ref>

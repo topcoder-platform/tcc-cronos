@@ -7,7 +7,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.topcoder.service.project.BaseUnitTestCase;
+import com.topcoder.service.BaseUnitTestCase;
 
 /**
  * <p>

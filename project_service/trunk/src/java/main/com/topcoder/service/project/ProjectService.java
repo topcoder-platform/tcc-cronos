@@ -33,6 +33,10 @@ import javax.jws.WebService;
  *               role-based authorization in code. It should rely instead (as always did) on EJB declarative
  *               security.</li>
  *             </ul>
+ *         <li>Modified in version 1.1:</li>
+ *             <ul>
+ *               <li>Added the <code>getProjectByName(String,long)</code> method.</li>
+ *             </ul>
  *     </ul>
  * </p>
  *
@@ -42,6 +46,7 @@ import javax.jws.WebService;
  *
  * @author humblefool, FireIce
  * @author ThinMan, TCSDEVELOPER
+ * @author woodjhon, ernestobf
  * @version 1.1
  * @since 1.0
  */
@@ -99,6 +104,31 @@ public interface ProjectService {
      */
     ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault;
+
+    /**
+     * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @param userId
+     *            The ID of the user whose project is to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault,
+        ProjectNotFoundFault, AuthorizationFailedFault, IllegalArgumentFault;
 
     /**
      * <p>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.project.stresstests;
 
@@ -8,11 +8,11 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Stress tests for Project Service.
- *
- * @author TCSDEVELOPER
+ * <p>
+ * This test case aggregates all stress test cases.
+ * </p>
+ * @author moon.river
  * @version 1.1
- * @since 1.0
  */
 public class StressTests extends TestCase {
 
@@ -25,16 +25,14 @@ public class StressTests extends TestCase {
      * Represents double value of one thousand.
      */
     public static final double ONE_THOUSAND = 1000;
-
     /**
-     * Runs all stress tests.
-     *
-     * @return instance of Test
+     * Return all stress test cases.
+     * @return all stress test cases.
      */
     public static Test suite() {
-        TestSuite suite = new TestSuite();
-
-        suite.addTestSuite(ProjectServiceBeanStressTests.class);
+        final TestSuite suite = new TestSuite();
+        suite.addTest(ProjectServiceBeanTestsV11.suite());
         return suite;
     }
+
 }

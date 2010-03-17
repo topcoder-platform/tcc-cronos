@@ -33,6 +33,7 @@ import com.topcoder.service.project.UserNotFoundFault;
  *
  * @author TCSDEVELOPER
  * @version 1.1
+ * @since 1.1
  */
 @Stateless
 @Remote(ProjectServiceLocalBridge.class)
@@ -70,6 +71,7 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *             If the given <code>ProjectData</code> is illegal.
      * @throws PersistenceFault
      *             If a generic persistence error occurs.
+     * @since 1.1
      */
     public ProjectData createProject(ProjectData projectData)
         throws PersistenceFault, IllegalArgumentFault {
@@ -99,6 +101,7 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *             If the project cannot be deleted since it has competitions associated with it.
      * @throws PersistenceFault
      *             If a generic persistence error.
+     * @since 1.1
      */
     public boolean deleteProject(long projectId)
         throws PersistenceFault, AuthorizationFailedFault,
@@ -125,6 +128,7 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *
      * @throws PersistenceFault
      *             If a generic persistence error occurs.
+     * @since 1.1
      */
     public List < ProjectData > getAllProjects() throws PersistenceFault {
         return projectService.getAllProjects();
@@ -154,6 +158,7 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *             If no project with the given ID exists.
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
+     * @since 1.1
      */
     public ProjectData getProject(long projectId)
         throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault {
@@ -198,6 +203,7 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *             If a generic persistence error occurs.
      * @throws AuthorizationFailedFault
      *             Should not be thrown from version1.1. It is here only to leave the web interface unchanged.
+     * @since 1.1
      */
     public List < ProjectData > getProjectsForUser(long userId)
         throws PersistenceFault, UserNotFoundFault, AuthorizationFailedFault {
@@ -230,10 +236,38 @@ public class ProjectServiceLocalBridgeBean implements ProjectServiceLocalBridge 
      *             If the calling principal is not authorized to update the project.
      * @throws PersistenceFault
      *             If a generic persistence error.
+     * @since 1.1
      */
     public void updateProject(ProjectData projectData)
         throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault,
             IllegalArgumentFault {
         projectService.updateProject(projectData);
+    }
+    
+    /**
+     * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     * 
+     * @param projectName 
+     *            the name of the project to be retrieved.
+     * @param userId 
+     *            The ID of the user whose project is to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.2
+     */
+    public ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault, ProjectNotFoundFault,
+            AuthorizationFailedFault, IllegalArgumentFault {
+        return projectService.getProjectByName(projectName, userId);
     }
 }

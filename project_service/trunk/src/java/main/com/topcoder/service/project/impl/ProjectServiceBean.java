@@ -20,7 +20,8 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -101,6 +102,13 @@ import com.topcoder.util.log.LogManager;
  *               <li>Annotated with "@TransactionAttribute(TransactionAttributeType.REQUIRED)" to indicate each business
  *               method expects to have EJB transaction attribute "REQUIRED".</li>
  *             </ul>
+ *         <li>Modified in version 1.1:</li>
+ *             <ul>
+ *               <li>Added <code>getProjectByName(String,long)</code> method.</li>
+ *               <li>Added <code>checkAuthorization(Project)</code> method.</li>
+ *               <li>Modified <code>getProjectById(long)</code> method. It now uses the <code>checkAuthorization</code>
+ *               method instead of verifying the authorization itself</li>
+ *            </ul>
  *     </ul>
  * </p>
  *
@@ -216,6 +224,7 @@ import com.topcoder.util.log.LogManager;
  *
  * @author humblefool, FireIce
  * @author ThinMan, TCSDEVELOPER
+ * @author woodjhon, ernestobf
  * @version 1.1
  * @since 1.0
  */
@@ -234,16 +243,35 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY = "SELECT p FROM Project p";
+    private static final String QUERY_ALL_PROJECTS =
+        "SELECT project_id, name, description FROM tc_direct_project p";
 
     /**
      * <p>
      * The "where" clause used to retrieve <code>Project</code> entities by user id.
      * </p>
      *
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - also need to fetch users who has read, write, full permissions on the project other than the creator.
+     * </p>
+     *
      * @since 1.1
      */
-    private static final String WHERE_CLAUSE = " WHERE p.userId=:userId";
+    private static final String QUERY_PROJECTS_BY_USER =
+        "SELECT project_id, name, description FROM tc_direct_project p, user_permission_grant per "
+        + " where p.project_id = per.resource_id and per.user_id = ";
+
+    /**
+     * <p>
+     * JPQL query used to retrieve the project with the specified name and user id. It contains the named parameters
+     * <code>projectName</code> and <code>userId</code>.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String QUERY_PROJECT_BY_NAME =
+        "SELECT p FROM Project p WHERE p.name = :projectName and p.userId = :userId";
 
     /**
      * <p>
@@ -354,8 +382,18 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    @PersistenceContext
-    private EntityManager entityManager;
+    //@PersistenceContext
+    //private EntityManager entityManager;
+
+    /**
+     * <p>
+     * This field represents the persistence unit name to lookup the <code>EntityManager</code> from the
+     * <code>SessionContext</code>. It is initialized in the <code>initialize</code> method, and never changed
+     * afterwards. It must be non-null, non-empty string.
+     * </p>
+     */
+    @Resource(name = "unitName")
+    private String unitName;
 
     /**
      * <p>
@@ -401,7 +439,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         if (logName != null) {
             log = LogManager.getLog(logName);
         } else {
-        	log = LogManager.getLog(ProjectServiceBean.class.getName());
+            log = LogManager.getLog(ProjectServiceBean.class.getName());
         }
 
         administratorRole = getConfigString("administrator_role", true);
@@ -599,11 +637,74 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @param userId
+     *            The ID of the user whose projects are to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    public ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault,
+        ProjectNotFoundFault, AuthorizationFailedFault, IllegalArgumentFault {
+
+        logEnter("getProjectByName(String,long)");
+        logParameters("project name: {0}, user id: {1}", projectName, userId);
+
+        try {
+
+            if ((projectName == null) || (projectName.trim().length() == 0)) {
+                throw logException(new IllegalArgumentFault("projectName cannot be null or empty"));
+            } else if (userId <= 0) {
+                throw logException(new IllegalArgumentFault("userId must be a positive number"));
+            }
+
+            Query q = getEntityManager().createQuery(QUERY_PROJECT_BY_NAME);
+            q.setParameter("projectName", projectName);
+            q.setParameter("userId", userId);
+            Project project = (Project) q.getSingleResult();
+
+            checkAuthorization(project);
+
+            ProjectData projectData = copyProjectData(project);
+
+            logReturn(formatProjectData(projectData));
+
+            return projectData;
+        } catch (NoResultException e) {
+            throw logException(new ProjectNotFoundFault(
+                    MessageFormat.format("Project with name {0} and userId {1} does not exist", projectName,
+                            userId)));
+        } catch (NonUniqueResultException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } catch (PersistenceException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } finally {
+            logExit("getProjectByName(String,long)");
+        }
+    }
+
+    /**
+     * <p>
      * Gets the project data for all projects of the given user.
      * </p>
      *
      * <p>
-     * Notes, only administrator can do this.
+     * Updated for Cockpit Project Admin Release Assembly v1.0 - now all users can do this.
      * </p>
      *
      * <p>
@@ -635,9 +736,8 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.0
      */
-    @RolesAllowed({"Cockpit Administrator" })
-    public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault {
-
+    //@RolesAllowed({"Cockpit Administrator" })
+    public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault {
         logEnter("getProjectsForUser(long)");
         logParameters("user id: {0}", userId);
 
@@ -645,11 +745,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             List < ProjectData > projectDatas = doGetProjects(userId);
 
             // If there is no project linked to user, throw UserNotFoundFault
-            if (projectDatas.isEmpty()) {
-                throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
-            }
+            //if (projectDatas.isEmpty()) {
+            //    throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
+           // }
 
-            logReturn(projectDatas.size() + " projects found. ");// formatProjectDatas(projectDatas));
+            logReturn(projectDatas.size() + " projects found. "); // formatProjectDatas(projectDatas))
             return projectDatas;
         } finally {
             logExit("getProjectsForUser(long)");
@@ -686,20 +786,20 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
         try {
             if (userId != null) {
-                query = entityManager.createQuery(QUERY + WHERE_CLAUSE);
-                query.setParameter("userId", userId);
+                query = getEntityManager().createNativeQuery(QUERY_PROJECTS_BY_USER + userId, "GetProjectsResult");
+
             } else {
-                query = entityManager.createQuery(QUERY);
+                query = getEntityManager().createNativeQuery(QUERY_ALL_PROJECTS, "GetProjectsResult");
             }
 
-            // Invoke an unchecked conversion
-            List < Project > resultList = query.getResultList();
+            List list = query.getResultList();
 
             // Copy each Project
             List < ProjectData > projectDatas = new ArrayList();
 
-            for (Project project : resultList) {
-                projectDatas.add(copyProjectData(project));
+            for (int i = 0; i < list.size(); i++) {
+                ProjectData data = (ProjectData) list.get(i);
+                projectDatas.add(data);
             }
 
             return projectDatas;
@@ -736,6 +836,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @return The project data for all projects viewable from the calling principal. The returned collection will not
      *         be null or contain nulls. Possibly empty.
      *
+     * <p>
+     * Updated for Cockpit Project Admin Release Assembly v1.0
+     *      - Removed check for admin.
+     * </p>
+     *
      * @throws PersistenceFault
      *             If a generic persistence error occurs.
      * @throws NullPointerException
@@ -750,17 +855,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         logEnter("getAllProjects()");
 
         try {
-            List < ProjectData > projectDatas = null;
-            if (!sessionContext.isCallerInRole(getAdministratorRole())) {
-                // Not administrator, retrieve the projects associated with him
-                // Obtain the user id of caller
-                long callerUserId = getCallerUserId();
-                projectDatas = doGetProjects(callerUserId);
-            } else {
-                // Administrator, retrieve all the projects
-                projectDatas = doGetProjects(null);
-            }
-
+            List < ProjectData > projectDatas = doGetProjects(null);
             logReturn(projectDatas.size() + " projects found");
             return projectDatas;
         } finally {
@@ -922,6 +1017,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
     private void manageEntity(Project project, Action action) throws PersistenceFault {
 
         try {
+            EntityManager entityManager = getEntityManager();
             if (action == Action.CREATE) {
                 // Persist entity
                 entityManager.persist(project);
@@ -1028,6 +1124,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             <ul>
      *               <li>Use container managed <code>EntityManager</code> to find project.</li>
      *             </ul>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Calls <code>checkAuthorization</code> to check if the
+     *               user is authorized to retrieve the project.</li>
+     *             </ul>
      *     </ul>
      * </p>
      *
@@ -1052,29 +1153,47 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
     private Project getProjectById(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault {
         try {
-            Project project = entityManager.find(Project.class, projectId);
+           Project project = getEntityManager().find(Project.class, projectId);
 
             if (project == null) {
                 throw logException(new ProjectNotFoundFault(
                         MessageFormat.format("Project with id {0} does not exist", projectId + "")));
             }
 
-            // Obtain the user id of caller
-            long callerUserId = getCallerUserId();
-
-            // The user can only retrieve his own projects
-            // The administrator can retrieve any projects
-            if (callerUserId != project.getUserId() && !sessionContext.isCallerInRole(getAdministratorRole())) {
-                throw logException(new AuthorizationFailedFault(
-                    MessageFormat.format(
-                        "User [userId = {0}] is not administrator and does not own the project [projectId = {1}]",
-                            callerUserId, project.getProjectId())));
-            }
+            checkAuthorization(project);
 
             return project;
         } catch (PersistenceException e) {
             logException(e);
             throw new PersistenceFault(e.getMessage());
+        }
+    }
+
+    /**
+     * Checks whether the caller user is authorized to retrieve the given project.
+     *
+     * @param project
+     *          The project to check if the caller user is authorized to retrieve.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     * @throws AuthorizationFailedFault
+     *             If the calling principal is not authorized to retrieve the project.
+     * @since 1.1
+     */
+    private void checkAuthorization(Project project) throws AuthorizationFailedFault {
+
+        // Obtain the user id of caller
+        long callerUserId = getCallerUserId();
+
+        // The user can only retrieve his own projects
+        // The administrator can retrieve any projects
+        if (callerUserId != project.getUserId() && !sessionContext.isCallerInRole(getAdministratorRole())) {
+            throw logException(new AuthorizationFailedFault(
+                MessageFormat.format(
+                    "User [userId = {0}] is not administrator and does not own the project [projectId = {1}]",
+                        callerUserId, project.getProjectId())));
         }
     }
 
@@ -1342,55 +1461,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Formats the <code>ProjectData</code> instances list into string representation.
-     * </p>
-     *
-     * <p>
-     *     <strong>Version History:</strong>
-     *     <ul>
-     *         <li>Introduced since version 1.0.</li>
-     *         <li>Modified in version 1.1:</li>
-     *             <ul>
-     *               <li>Return fast if can not perform logging.</li>
-     *             </ul>
-     *     </ul>
-     * </p>
-     *
-     * @param projectDatas
-     *            The <code>ProjectData</code> instances list to format.
-     * @return The string representation of the <code>ProjectData</code> instances list.
-     *
-     * @since 1.0
-     */
-    private String formatProjectDatas(List < ProjectData > projectDatas) {
-        // The list of projectDatas never null.
-
-        // Return fast
-        if (0 == projectDatas.size() || !canPerformLogging(getLog(), Level.INFO)) {
-            return "[]";
-        }
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-
-        boolean first = true;
-        for (ProjectData projectData : projectDatas) {
-            if (first) {
-                first = false;
-            } else {
-                builder.append(", ");
-            }
-
-            builder.append(formatProjectData(projectData));
-        }
-
-        builder.append("]");
-
-        return builder.toString();
-    }
-
-    /**
-     * <p>
      * The enum represents the action to create/update/delete entity. It is only used within this class and
      * is not exposed to external.
      * </p>
@@ -1421,5 +1491,31 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
          * </p>
          */
         DELETE
+    }
+
+
+    /**
+     * <p>
+     * Returns the <code>EntityManager</code> looked up from the session context.
+     * </p>
+     *
+     * @return the EntityManager looked up from the session context
+     * @throws PersistenceFault
+     *             if fail to get the EntityManager from the sessionContext.
+     */
+    private EntityManager getEntityManager() throws PersistenceFault {
+        try {
+            Object obj = sessionContext.lookup(unitName);
+
+            if (obj == null) {
+                throw new PersistenceFault("The object for jndi name '" + unitName + "' doesn't exist.");
+            }
+
+            return (EntityManager) obj;
+        } catch (ClassCastException e) {
+            throw new PersistenceFault(
+                    "The jndi name for '" + unitName
+                    + "' should be EntityManager instance." + e.getMessage());
+        }
     }
 }

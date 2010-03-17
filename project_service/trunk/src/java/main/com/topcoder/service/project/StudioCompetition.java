@@ -16,7 +16,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import com.topcoder.management.resource.Resource;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.PrizeData;
 
 /**
@@ -32,7 +34,10 @@ import com.topcoder.service.studio.PrizeData;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "studioCompetition",
-        propOrder = {"id", "contestData", "type"})
+        propOrder = {"id", "contestData", "type", "resources", "clientApproval", "clientName", "reviewPayment",
+		"specificationReviewPayment", "contestFee", "status",
+	    "category", "confidence", "pricingApproval", "hasWikiSpecification", "passedSpecReview", "hasDependentCompetitions",
+	    "wasReposted", "notes"})
 public class StudioCompetition extends Competition {
 
     /**
@@ -56,6 +61,78 @@ public class StudioCompetition extends Competition {
      * </p>
      */
     private CompetionType type;
+    /**
+     * <p>Represents the contest status data.</p>
+    */
+    private ContestStatusData status;
+    /**
+     * <p>Represents the contest category data.</p>
+    */
+    private String category;
+    /**
+     * <p>Represents the resource array.</p>
+    */
+    private Resource [] resources;
+    /**
+     * <p>Represents the flag for client approval.</p>
+     */
+    private boolean clientApproval;
+
+    /**
+     * <p>Represents the name of the client.</p>
+     */
+    private String clientName;
+
+    /**
+     * <p>Represents the review payment.</p>
+    */
+    private double reviewPayment;
+
+    /**
+     * <p>Represents the specification review payment.</p>
+    */
+    private double specificationReviewPayment;
+
+    /**
+     * <p>Represents the contest fee.</p>
+    */
+    private double contestFee;
+
+
+    /**
+     * <p>Represents the confidence.</p>
+    */
+    private int confidence;
+
+    /**
+     * <p>Represents the pricing approval flag.</p>
+    */
+    private boolean pricingApproval;
+
+    /**
+     * <p>Represents has wiki specification flag.</p>
+    */
+    private boolean hasWikiSpecification;
+
+    /**
+     * <p>Represents the passed specification review flag.</p>
+    */
+    private boolean passedSpecReview;
+
+    /**
+     * <p>Represents the has dependent competition flag.</p>
+    */
+    private boolean hasDependentCompetitions;
+
+    /**
+     * <p>Represents the was reposted flag.</p>
+    */
+    private boolean wasReposted;
+
+    /**
+     * <p>Represents the notes.</p>
+    */
+    private String notes;
 
     /**
      * <p>
@@ -82,7 +159,7 @@ public class StudioCompetition extends Competition {
 
         this.contestData = contestData;
     }
-    
+
 	/**
      * <p>
      * Returns the Contest data.
@@ -101,7 +178,7 @@ public class StudioCompetition extends Competition {
      * @return the admin fee for the competition.
      */
     @Override
-    public double getAdminFee() {
+    public Double getAdminFee() {
         return contestData.getContestAdministrationFee();
     }
 
@@ -278,7 +355,7 @@ public class StudioCompetition extends Competition {
         }
 
         contestData.setDurationInHours(durationInHours);
-        
+
         // BUGR- 1312
         // contestData.setWinnerAnnoucementDeadline(endTime);
     }
@@ -339,7 +416,7 @@ public class StudioCompetition extends Competition {
      */
     @Override
     public void setStartTime(XMLGregorianCalendar startTime) {
-        contestData.setLaunchDateAndTime(startTime); 
+        contestData.setLaunchDateAndTime(startTime);
     }
 
 	 /**
@@ -349,7 +426,7 @@ public class StudioCompetition extends Competition {
      * @return the admin fee for the competition.
      */
     @Override
-    public void setAdminFee(double fee) {
+    public void setAdminFee(Double fee) {
         contestData.setContestAdministrationFee(fee);
     }
 
@@ -403,5 +480,169 @@ public class StudioCompetition extends Competition {
         } catch (DatatypeConfigurationException ex) {
             return null;
         }
+    }
+    /**
+     * <p>
+     * Gets the client approval flag.
+     * </p>
+     * @param true if it is client approval competition
+     */
+    @Override
+    public boolean getClientApproval() {
+        return this.clientApproval;
+    }
+
+    @Override
+    public String getClientName() {
+        return clientName;
+    }
+
+    @Override
+    public int getConfidence() {
+        return this.confidence;
+    }
+
+    @Override
+    public double getContestFee() {
+        return this.contestFee;
+    }
+
+    @Override
+    public boolean getHasDependentCompetitions() {
+        return hasDependentCompetitions;
+    }
+
+    @Override
+    public boolean getHasWikiSpecification() {
+        return hasWikiSpecification;
+    }
+
+    @Override
+    public String getNotes() {
+        return notes;
+    }
+
+    @Override
+    public boolean getPassedSpecReview() {
+        return passedSpecReview;
+    }
+
+    @Override
+    public boolean getPricingApproval() {
+        return this.pricingApproval;
+    }
+
+    @Override
+    public Resource[] getResources() {
+        return resources;
+    }
+
+    @Override
+    public double getReviewPayment() {
+        return this.reviewPayment;
+    }
+
+    @Override
+    public double getSpecificationReviewPayment() {
+        return this.specificationReviewPayment;
+    }
+
+    @Override
+    public boolean getWasReposted() {
+        return this.wasReposted;
+    }
+
+    @Override
+    public void setClientApproval(boolean clientApproval) {
+        this.clientApproval = clientApproval;
+    }
+
+    @Override
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    @Override
+    public void setConfidence(int confidence) {
+        this.confidence = confidence;
+    }
+
+    @Override
+    public void setContestFee(double contestFee) {
+        this.contestFee = contestFee;
+    }
+
+    @Override
+    public void setHasDependentCompetitions(boolean hasDependentCompetitions) {
+        this.hasDependentCompetitions = hasDependentCompetitions;
+    }
+
+    @Override
+    public void setHasWikiSpecification(boolean hasWikiSpecification) {
+        this.hasWikiSpecification = hasWikiSpecification;
+    }
+
+    @Override
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public void setPassedSpecReview(boolean passedSpecReview) {
+        this.passedSpecReview = passedSpecReview;
+    }
+
+    @Override
+    public void setPricingApproval(boolean pricingApproval) {
+    	this.pricingApproval = pricingApproval;
+    }
+
+    @Override
+    public void setResources(Resource[] resources) {
+        this.resources = resources;
+    }
+
+    @Override
+    public void setReviewPayment(double reviewPayment) {
+        this.reviewPayment = reviewPayment;
+    }
+
+    @Override
+    public void setSpecificationReviewPayment(double specificationReviewPayment) {
+        this.specificationReviewPayment = specificationReviewPayment;
+    }
+
+    @Override
+    public void setWasReposted(boolean wasReposted) {
+    	this.wasReposted = wasReposted;
+    }
+
+	/**
+	 * Returns the value of status.
+	 * @return the status
+	 */
+	public ContestStatusData getStatus() {
+		return status;
+	}
+
+	/**
+	 * Set the value to  status field.
+	 * @param status the status to set
+	 */
+	public void setStatus(ContestStatusData status) {
+		this.status = status;
+	}
+    /**
+     * @return return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

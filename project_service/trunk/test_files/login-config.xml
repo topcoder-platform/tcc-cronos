@@ -159,7 +159,7 @@ $Revision: 64598 $
 	    <authentication>
 	      <login-module code="com.topcoder.security.auth.module.JBossLoginModule"
 	        flag="required">
-	        <module-option name="fileName">C:\tcs\java\ws\project_service\test_files\demoConfigs.properties</module-option>
+	        <module-option name="fileName">C:/topcoder/project_service_1.0.1/test_files/demoConfigs.properties</module-option>
 	        <module-option name="password-stacking">useFirstPass</module-option>
 	      </login-module>
 	    </authentication>

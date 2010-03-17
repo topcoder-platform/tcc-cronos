@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 
 import org.jboss.ws.core.StubExt;
 
+import com.topcoder.service.BaseUnitTestCase;
 import com.topcoder.service.project.impl.ProjectServiceLocalBridge;
 
 /**
@@ -118,9 +119,9 @@ public class Demo extends BaseUnitTestCase {
 
         /* We assume DesignCompetition and StudioCompetition are subclasses of Competition */
         Set < Competition > competitions = new HashSet();
-        competitions.add(new DesignCompetition("GUI design"));
-        competitions.add(new DesignCompetition("Backend design"));
-        competitions.add(new StudioCompetition("Arena skins"));
+        competitions.add(new StudioCompetition());
+        competitions.add(new StudioCompetition());
+        competitions.add(new SoftwareCompetition());
         for (Competition c : competitions) {
             c.setProject(project);
         }

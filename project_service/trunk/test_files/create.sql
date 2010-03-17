@@ -18,3 +18,14 @@ FOREIGN KEY(project_id) REFERENCES tc_direct_project(project_id) -- foreign key 
 CREATE SEQUENCE project_sequence MINVALUE 1 START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE competition_sequence MINVALUE 1 START WITH 1 INCREMENT BY 1;
 
+-- comment if an entry with the same name already exists
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('PHONE_SEQ', 1, 10, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('EMAIL_SEQ', 1, 10, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('ADDRESS_SEQ', 1, 10, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('USER_SEQ', 1, 10, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('USER_GROUP_SEQ', 1, 10, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('SECURITY_SEQ', 1, 10, 0);
+
+-- a default timezone assumed to exist by UserServiceBean#registerUser
+-- comment if a timezone with the same timezone_id already exists
+INSERT INTO timezone_lu (timezone_id, timezone_desc) VALUES (1, 'Default Timezone');

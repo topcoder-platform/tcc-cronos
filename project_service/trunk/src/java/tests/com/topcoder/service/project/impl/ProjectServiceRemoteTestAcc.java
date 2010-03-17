@@ -7,11 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.topcoder.service.project.BaseUnitTestCase;
+import com.topcoder.service.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
+import com.topcoder.service.project.StudioCompetition;
 
 
 /**
@@ -57,7 +58,7 @@ public class ProjectServiceRemoteTestAcc extends BaseUnitTestCase {
             // need to invoke one business method to make the ejb initialized.
             projectService.getAllProjects();
         } catch (RuntimeException e) {
-            fail("ConfigurationException not expected");
+            fail("Exception not expected: " + e);
         }
     }
 
@@ -220,7 +221,7 @@ public class ProjectServiceRemoteTestAcc extends BaseUnitTestCase {
 
         // The competitions should be ignored
         Set < Competition > competitions = new HashSet();
-        Competition competition = new Competition();
+        Competition competition = new StudioCompetition();
         competition.setProject(project);
         competitions.add(competition);
         project.setCompetitions(competitions);
@@ -398,6 +399,7 @@ public class ProjectServiceRemoteTestAcc extends BaseUnitTestCase {
      *             pass any unexpected exception to JUnit.
      */
     public void testGetAllProjects_ByUser() throws Exception {
+
         ProjectData projectData1 = new ProjectData();
         projectData1.setName("Project Service1");
         projectData1.setDescription("Hello1");

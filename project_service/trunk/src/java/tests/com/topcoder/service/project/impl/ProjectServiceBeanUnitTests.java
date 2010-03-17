@@ -824,10 +824,29 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
 
     /**
      * <p>
+     * Unit test for the <code>{@link ProjectServiceBean#getProjectByName(String, long)}</code> method.
+     * </p>
+     * <p>
+     * If the project is not found the method should throw <code>ProjectNotFoundFault</code>.
+     * </p>
+     *
+     * @throws Exception pass any unexpected exception to JUnit
+     */
+    public void testGetProjectByNameNotFound() throws Exception {
+        try {
+            projectService.getProjectByName("foo", 1);
+            fail("ProjectNotFoundFault expected.");
+        } catch (ProjectNotFoundFault e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
      * Unit test for <code>{@link ProjectServiceBean#getProject(long)}</code> method.
      * </p>
      * <p>
-     * If the project is not present in persistence, should throw AuthorizationFailedFault.
+     * If the project is not present in persistence, should throw ProjectNotFoundFault.
      * </p>
      *
      * @throws Exception

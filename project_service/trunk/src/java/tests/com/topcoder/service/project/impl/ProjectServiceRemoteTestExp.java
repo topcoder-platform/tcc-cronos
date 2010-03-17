@@ -5,8 +5,8 @@ package com.topcoder.service.project.impl;
 
 import javax.ejb.EJBAccessException;
 
+import com.topcoder.service.BaseUnitTestCase;
 import com.topcoder.service.project.AuthorizationFailedFault;
-import com.topcoder.service.project.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.ConfigurationException;
 import com.topcoder.service.project.IllegalArgumentFault;
@@ -17,6 +17,7 @@ import com.topcoder.service.project.ProjectHasCompetitionsFault;
 import com.topcoder.service.project.ProjectNotFoundFault;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.project.ProjectServiceRemote;
+import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
 
 /**
@@ -574,7 +575,7 @@ public class ProjectServiceRemoteTestExp extends BaseUnitTestCase {
         projectData = this.lookupProjectServiceRemoteWithAdminRole().createProject(projectData);
 
         // Persist a competition within project
-        Competition competition = new Competition();
+        Competition competition = new StudioCompetition();
         competition.setProject(getEntityManager().find(Project.class, projectData.getProjectId()));
         persist(competition);
 
