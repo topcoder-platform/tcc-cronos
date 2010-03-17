@@ -116,7 +116,7 @@
     <property name="jira-service-axis-client.jar" value="${ext_libdir}/${jira-service-axis-client.path}/${jira-service-axis-client.jar.name}"/>
     
     <!-- Added for Jira and Confluence User Sync Widget 1.0 -->
-    <property name="project_service.version" value="1.1.0"/>
+    <property name="project_service.version" value="1.0.1"/>
     <property name="project_service.jar.name" value="project_service.jar"/>
     <property name="project_service.path" value="project_service/${project_service.version}"/>
     <property name="project_service.jar" value="${tcs_libdir}/${project_service.path}/${project_service.jar.name}"/>
