@@ -41,7 +41,7 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
-	 <property name="client_project_entities_dao.version" value="1.0.0"/>
+	 <property name="client_project_entities_dao.version" value="1.1.0"/>
     <property name="client_project_entities_dao.jar.name" value="client_project_entities_dao.jar"/>
     <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
     <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
