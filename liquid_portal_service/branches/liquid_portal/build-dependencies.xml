@@ -1,0 +1,153 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+	<!--
+	<property name="jboss_home" value="E:/jboss-4.2.2.GA"/>
+	-->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <property name="base_exception.version" value="2.0.0"/>
+    <property name="base_exception.jar.name" value="base_exception.jar"/>
+    <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
+
+    <property name="configuration_api.version" value="1.0"/>
+    <property name="configuration_api.jar.name" value="configuration_api.jar"/>
+    <property name="configuration_api.path" value="configuration_api/${configuration_api.version}"/>
+    <property name="configuration_api.jar"
+              value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
+
+    <property name="configuration_manager.version" value="2.1.5"/>
+    <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
+    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
+
+    <property name="configuration_persistence.version" value="1.0"/>
+    <property name="configuration_persistence.jar.name" value="configuration_persistence.jar"/>
+    <property name="configuration_persistence.path"
+              value="configuration_persistence/${configuration_persistence.version}"/>
+    <property name="configuration_persistence.jar"
+              value="${tcs_libdir}/${configuration_persistence.path}/${configuration_persistence.jar.name}"/>
+
+    <property name="logging_wrapper.version" value="2.0.0"/>
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
+
+    <property name="typesafe_enum.version" value="1.1.0"/>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
+    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
+
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+
+    <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar"/>
+
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.0.0/document_generator.jar"/>
+    <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.1.0/email_engine.jar"/>
+
+    <property name="client_project_entities_dao.version" value="1.1.0"/>
+    <property name="client_project_entities_dao.jar.name" value="client_project_entities_dao.jar"/>
+    <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
+    <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
+
+    <property name="studio_service.version" value="1.3.0"/>
+    <property name="studio_service.jar.name" value="studio_service.jar"/>
+    <property name="studio_service.path" value="studio_service/${studio_service.version}"/>
+    <property name="studio_service.jar" value="${tcs_libdir}/${studio_service.path}/${studio_service.jar.name}"/>
+
+    <property name="pipeline_service.version" value="1.0.0"/>
+    <property name="pipeline_service.jar.name" value="pipeline_service.jar"/>
+    <property name="pipeline_service.path" value="pipeline_service/${pipeline_service.version}"/>
+    <property name="pipeline_service.jar" value="${tcs_libdir}/${pipeline_service.path}/${pipeline_service.jar.name}"/>
+
+    <property name="project_service.version" value="1.1.0"/>
+    <property name="project_service.jar.name" value="project_service.jar"/>
+    <property name="project_service.path" value="project_service/${project_service.version}"/>
+    <property name="project_service.jar" value="${tcs_libdir}/${project_service.path}/${project_service.jar.name}"/>
+
+    <property name="pipeline_service_facade.version" value="1.0.0"/>
+    <property name="pipeline_service_facade.jar.name" value="pipeline_service_facade.jar"/>
+    <property name="pipeline_service_facade.path" value="pipeline_service_facade/${pipeline_service_facade.version}"/>
+    <property name="pipeline_service_facade.jar" value="${tcs_libdir}/${pipeline_service_facade.path}/${pipeline_service_facade.jar.name}"/>
+
+    <property name="contest_service_facade.version" value="1.1.0"/>
+    <property name="contest_service_facade.jar.name" value="topcoder_contest_service_facade.jar"/>
+    <property name="contest_service_facade.path" value="topcoder_contest_service_facade/${contest_service_facade.version}"/>
+    <property name="contest_service_facade.jar" value="${tcs_libdir}/${contest_service_facade.path}/${contest_service_facade.jar.name}"/>
+
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
+    <property name="jboss-jaxws.jar" value="${jboss.home}/server/${server.name}/lib/jboss-jaxws.jar"/>
+        <property name="log4j.jar" value="${jboss.home}/server/${server.name}/lib/log4j.jar"/>
+
+        <property name="jboss-ejb3x.jar" value="${jboss.home}/client/jboss-ejb3x.jar"/>
+        <property name="ejb3-persistence.jar" value="${jboss.home}/client/ejb3-persistence.jar"/>
+        <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
+        <property name="antlr.jar" value="${jboss.home}/client/antlr.jar"/>
+        <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
+        <property name="activation.jar" value="${jboss.home}/client/activation.jar"/>
+        
+        <property name="jaxb-api.jar" value="${jboss.home}/client/jaxb-api.jar"/>
+        <property name="jaxb-impl.jar" value="${jboss.home}/client/jaxb-impl.jar"/>
+
+        <property name="xercesImpl.jar" value="${jboss.home}/lib/endorsed/xercesImpl.jar"/>
+
+    <path id="component.tcs-dependencies">
+
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+
+        <pathelement location="${configuration_manager.jar}"/>
+
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${project_service.jar}"/>
+        <pathelement location="${studio_service.jar}"/>
+        <pathelement location="${catalog_entities.jar}"/>
+		
+	    <pathelement location="${email_engine.jar}"/>
+	    <pathelement location="${document_generator.jar}"/>
+        
+        <!-- added for Cockpit Release Assembly 5 v1.0 -->
+        <pathelement location="${client_project_entities_dao.jar}"/>
+
+        <pathelement location="${pipeline_service_facade.jar}"/>
+        <pathelement location="${contest_service_facade.jar}"/>
+        <pathelement location="${pipeline_service.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+		
+
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+         <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${jboss-jaxws.jar}"/>
+        <pathelement location="${paypal_base.jar}"/>
+        <pathelement location="${paypal_stubs.jar}"/>
+		<pathelement location="${payflow.jar}"/>
+        <pathelement location="${axis.jar}"/>
+        <pathelement location="${commons-discovery.jar}"/>
+        
+        <pathelement location="${xerces.jar}"/>
+        <pathelement location="${ext_libdir}/xerces/xercesImpl.jar"/>
+        
+        <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${jaxb-impl.jar}"/>
+        
+    
+     </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+</project>

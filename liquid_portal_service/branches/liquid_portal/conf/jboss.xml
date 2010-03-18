@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss>
+  <enterprise-beans>
+    <session>
+        <ejb-name>LiquidPortalServiceBean</ejb-name>
+        <jndi-name>remote/LiquidPortalServiceBean</jndi-name>
+
+    </session>
+  </enterprise-beans>
+
+	<webservices> 
+		<context-root>/liquidportalservice</context-root> 
+		<webservice-description> 
+		<webservice-description-name />
+		<wsdl-publish-location />
+    </webservice-description>
+ </webservices>
+</jboss>
