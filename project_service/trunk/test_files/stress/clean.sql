@@ -1,0 +1,12 @@
+delete from competition;
+delete from tc_direct_project;
+delete from security_user where user_id in ('moon.river');
+delete from address;
+delete from email;
+delete from phone;
+delete from user_group_xref where login_id in (10001);
+delete from user;
+delete from security_groups where group_id in (1000001, 1000002, 1000003);
+delete from user_terms_of_use_xref where terms_of_use_id = 10001;
+delete from terms_of_use where terms_of_use_id = 10001;
+delete from terms_of_use_type where terms_of_use_type_id = 10001;
