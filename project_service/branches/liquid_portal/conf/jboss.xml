@@ -9,6 +9,15 @@
       <ejb-name>UserServiceBean</ejb-name>
       <jndi-name>remote/UserServiceBean</jndi-name>   
     </session>
+     <session>
+            <ejb-name>PermissionServiceBean</ejb-name>
+            <jndi-name>PermissionServiceBean/remote</jndi-name>
+        </session>
+
+        <session>
+			<ejb-name>SpecReviewServiceBean</ejb-name>
+			<jndi-name>SpecReviewServiceBean/remote</jndi-name>
+		</session>
   </enterprise-beans>
-  <security-domain>java:/jaas/JBossLoginModule</security-domain>
+
 </jboss>
