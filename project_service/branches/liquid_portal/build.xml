@@ -1,14 +1,31 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Project Service" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
+
+	<!-- Import common task definition -->
+	<import file="${basedir}/build-common-tasks.xml" />
 
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+	<!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<property name="libdir" value="lib"/>
+			<property name="tcs_libdir" value="${libdir}/tcs"/>
+			<property name="ext_libdir" value="${libdir}/third_party"/>
+		</then>
+	</if>
+
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
@@ -48,6 +65,7 @@
     <property name="javatests" value="${javasrc}/tests"/>
 
     <property name="builddir" value="build"/>
+    <property name="build_conf" value="${builddir}/conf"/>
     <property name="build_classdir" value="${builddir}/classes"/>
     <property name="build_testclassdir" value="${builddir}/testClasses"/>
     <property name="build_targetclassdir" value="${builddir}/targetclasses"/>
@@ -267,8 +285,21 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
+
+		<property name="build.properties" location="${basedir}/build.properties" />
+        <property name="global_build.properties" location="${build.properties}"/>
+
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+		 <copy todir="${build_conf}">
+            <fileset dir="${basedir}/conf"/>
+            <filterset>
+              <filtersfile file="${build.properties}"/>
+              <filtersfile file="${global_build.properties}"/>
+            </filterset>
+        </copy>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
+			<metainf dir="${build_conf}" includes="**"/>
+		</jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
