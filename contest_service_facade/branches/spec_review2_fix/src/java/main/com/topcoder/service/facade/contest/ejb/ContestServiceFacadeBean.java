@@ -2878,7 +2878,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             tobeUpdatedCompetition.getContestData()
-                                  .setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
+                                  .setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
             tobeUpdatedCompetition.getContestData()
                                   .setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
 
