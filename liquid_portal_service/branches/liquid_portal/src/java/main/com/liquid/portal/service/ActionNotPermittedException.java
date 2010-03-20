@@ -8,14 +8,14 @@ import javax.ejb.ApplicationException;
 /**
  * <p>
  * This exception is thrown by the service if the user does not have permission
- * to perform the action. It extends LiquidPortalServicingException.
+ * to perform the action. It extends LiquidPortalServiceException.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 @ApplicationException(rollback = true)
-public class ActionNotPermittedException extends LiquidPortalServicingException {
+public class ActionNotPermittedException extends LiquidPortalServiceException {
     /**
      * <p>
      * Represents the serial version unique id.

@@ -8,14 +8,14 @@ import javax.ejb.ApplicationException;
 /**
  * <p>
  * This exception is thrown by the service if it cannot create the given handle.
- * It extends LiquidPortalServicingException.
+ * It extends LiquidPortalServiceException.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 @ApplicationException(rollback = true)
-public class HandleCreationException extends LiquidPortalServicingException {
+public class HandleCreationException extends LiquidPortalServiceException {
     /**
      * <p>
      * Represents the serial version unique id.

@@ -3,6 +3,12 @@
  */
 package com.liquid.portal.service;
 
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
@@ -16,7 +22,10 @@ package com.liquid.portal.service;
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
-public class RegisterUserResult extends Result {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "registerUserResult", propOrder = { "userId"})
+public class RegisterUserResult extends Result implements Serializable {
+
     /**
      * <p>
      * Represents the serial version unique id.
@@ -38,6 +47,12 @@ public class RegisterUserResult extends Result {
      * <p> Default empty constructor. </p>
      */
     public RegisterUserResult() {
+    }
+     /**
+     * Default constructor.
+     */
+    public RegisterUserResult(String message, int resultCode) {
+        super(message, resultCode);
     }
 
     /**

@@ -38,7 +38,7 @@ import com.liquid.portal.service.HandleNotFoundException;
 import com.liquid.portal.service.InvalidHandleException;
 import com.liquid.portal.service.LiquidPortalIllegalArgumentException;
 import com.liquid.portal.service.LiquidPortalServiceConfigurationException;
-import com.liquid.portal.service.LiquidPortalServicingException;
+import com.liquid.portal.service.LiquidPortalServiceException;
 import com.liquid.portal.service.ProvisionUserResult;
 import com.liquid.portal.service.RegisterUserResult;
 import com.liquid.portal.service.Result;
@@ -541,12 +541,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             </ul>
      * @throws HandleCreationException
      *             If unable to create the user handle
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public RegisterUserResult registerUser(User user, Date termsAgreedDate)
-            throws LiquidPortalIllegalArgumentException, HandleCreationException, LiquidPortalServicingException {
+            throws LiquidPortalIllegalArgumentException, HandleCreationException, LiquidPortalServiceException {
         final String methodName = "registerUser";
         logEntrance(methodName);
 
@@ -614,12 +614,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             </ul>
      * @throws HandleNotFoundException
      *             If unable to find the given user handle
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Result validateUser(UserInfo user, boolean force) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, LiquidPortalServicingException {
+            HandleNotFoundException, LiquidPortalServiceException {
         final String methodName = "validateUser";
         logEntrance(methodName);
 
@@ -683,13 +683,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If unable to find the given requester or user handle
      * @throws InvalidHandleException
      *             If the handle is invalid
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
             String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, InvalidHandleException, LiquidPortalServicingException {
+            HandleNotFoundException, InvalidHandleException, LiquidPortalServiceException {
         final String methodName = "provisionUser";
         logEntrance(methodName);
 
@@ -739,7 +739,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (type == null) {
                 // can not get the full control permission type
                 sessionContext.setRollbackOnly();
-                throw logError(new LiquidPortalServicingException("Can not get the full control permission type"),
+                throw logError(new LiquidPortalServiceException("Can not get the full control permission type"),
                         methodName);
             }
 
@@ -806,23 +806,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             return result;
         } catch (AuthorizationFailedFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Authorization failed when provision user:" + userHandle,
+            throw logError(new LiquidPortalServiceException("Authorization failed when provision user:" + userHandle,
                     e), methodName);
         } catch (UserNotFoundFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("can not find user with userId notusClientId", e),
+            throw logError(new LiquidPortalServiceException("can not find user with userId notusClientId", e),
                     methodName);
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when provision user:" + userHandle, e),
+            throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when provision user:" + userHandle, e),
+            throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when provision user:" + userHandle, e),
+            throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
         }
     }
@@ -870,13 +870,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @throws ActionNotPermittedException
      *             If the user with the handle does not have the permissions to
      *             perform this action
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public CreateCompetitonResult createCompetition(String requestorHandle, CompetitionData competitionData,
             String[] supportHandles) throws LiquidPortalIllegalArgumentException, HandleNotFoundException,
-            ActionNotPermittedException, InvalidHandleException, LiquidPortalServicingException {
+            ActionNotPermittedException, InvalidHandleException, LiquidPortalServiceException {
         final String methodName = "createCompetition";
         logEntrance(methodName);
 
@@ -971,7 +971,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (type == null) {
                 // can not get the full control permission type
                 sessionContext.setRollbackOnly();
-                throw logError(new LiquidPortalServicingException("Can not get the full control permission type"),
+                throw logError(new LiquidPortalServiceException("Can not get the full control permission type"),
                         methodName);
             }
 
@@ -1041,23 +1041,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             return result;
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (DAOConfigurationException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (IllegalArgumentWSException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (AuthorizationFailedFault e) {
             // have no permissions
@@ -1066,21 +1066,21 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     requestorHandle + " has no permission to perform the action", e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (ContestPipelineServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when creating competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
-        } catch (LiquidPortalServicingException e) {
+        } catch (LiquidPortalServiceException e) {
             sessionContext.setRollbackOnly();
             throw e;
         }
@@ -1118,13 +1118,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @throws ActionNotPermittedException
      *             If the user with the handle does not have the permissions to
      *             perform this action
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Result provisionProject(String requestorHandle, String cockpitProjectName, String[] handles)
             throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
-            LiquidPortalServicingException {
+            LiquidPortalServiceException {
         final String methodName = "provisionProject";
         logEntrance(methodName);
 
@@ -1172,7 +1172,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             ProjectData proj = projectService.getProjectByName(cockpitProjectName, notusClientId);
             if (proj == null) {
                 sessionContext.setRollbackOnly();
-                throw logError(new LiquidPortalServicingException(
+                throw logError(new LiquidPortalServiceException(
                         "Can not find project:" + cockpitProjectName), methodName);
             }
             if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, proj.getProjectId())) {
@@ -1185,7 +1185,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (type == null) {
                 // can not get the full control permission type
                 sessionContext.setRollbackOnly();
-                throw logError(new LiquidPortalServicingException("Can not get the full control permission type"),
+                throw logError(new LiquidPortalServiceException("Can not get the full control permission type"),
                         methodName);
             }
 
@@ -1199,27 +1199,27 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             return result;
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when provision project", e), methodName);
         } catch (ProjectNotFoundFault e) {
             // project does not exist
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Can not find project:" + cockpitProjectName, e), methodName);
         } catch (AuthorizationFailedFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new ActionNotPermittedException("requestor doesn't have permissions", e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when provision project", e), methodName);
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when provision project", e), methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when provision project", e), methodName);
         }
     }
@@ -1252,13 +1252,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @throws ActionNotPermittedException
      *             If the user with the handle does not have the permissions to
      *             perform this action
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteCompetition(String requestorHandle, long contestId, boolean isStudio, String reason)
             throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ContestNotFoundException,
-            ActionNotPermittedException, LiquidPortalServicingException {
+            ActionNotPermittedException, LiquidPortalServiceException {
         final String methodName = "deleteCompetition";
         logEntrance(methodName);
 
@@ -1328,11 +1328,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     e), methodName);
         } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when deleting competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
                     methodName);
         } catch (IllegalArgumentWSException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when deleting competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
                     methodName);
         } catch (UserNotAuthorizedException e) {
             // have no permissions
@@ -1341,15 +1341,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     requestorHandle + " has no permission to perform the action", e), methodName);
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when deleting competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
                     methodName);
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when deleting competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
                     methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when deleting competition", e),
+            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
                     methodName);
         }
     }
@@ -1375,13 +1375,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @throws ActionNotPermittedException
      *             If the user with the handle does not have the permissions to
      *             perform this action
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void decommissionUser(String requestorHandle, String userHandle)
             throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
-            LiquidPortalServicingException {
+            LiquidPortalServiceException {
         final String methodName = "decommissionUser";
         logEntrance(methodName);
 
@@ -1447,13 +1447,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             logExit(methodName);
         } catch (UserServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when decommission user", e), methodName);
+            throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when decommission user", e), methodName);
+            throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
         } catch (UserNotFoundFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when decommission user", e), methodName);
+            throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
         } catch (AuthorizationFailedFault e) {
             // have no permissions
             sessionContext.setRollbackOnly();
@@ -1461,10 +1461,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     requestorHandle + " has no permission to perform the action", e), methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when decommission user", e), methodName);
+            throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServicingException("Error occurs when decommission user", e), methodName);
+            throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
         }
     }
 
@@ -1475,12 +1475,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *
      * @param handle
      *            the handle we could not add to terms and groups
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             If there is an error during the creation and sending of the
      *             notification
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    private void sendJiraNotification(String handle) throws LiquidPortalServicingException {
+    private void sendJiraNotification(String handle) throws LiquidPortalServiceException {
         String methodName = "sendJiraNotification";
         logEntrance(methodName);
 
@@ -1497,22 +1497,22 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             logExit(methodName);
         } catch (TemplateSourceException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         } catch (TemplateFormatException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         } catch (TemplateDataFormatException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         } catch (AddressException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         } catch (ConfigManagerException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         } catch (SendingException e) {
-            throw logError(new LiquidPortalServicingException(
+            throw logError(new LiquidPortalServiceException(
                     "Error occurs when sending JIRA notification to handle:" + handle, e), methodName);
         }
     }
@@ -1944,12 +1944,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @return an instance of UserInfo whose name is handle
      * @throws HandleNotFoundException
      *             if there is no such user info
-     * @throws LiquidPortalServicingException
+     * @throws LiquidPortalServiceException
      *             if any error occurs
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private UserInfo getUserInfo(String handle, String methodName) throws HandleNotFoundException,
-            LiquidPortalServicingException {
+            LiquidPortalServiceException {
         try {
             // get user info for requester
             UserInfo userInfo = userService.getUserInfo(handle);
@@ -2024,7 +2024,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             failed to create a DatatypeFactory
      */
     private XMLGregorianCalendar getNextAvailableStartDate(Date requestedStartDate, List<CapacityData> capacityDates,
-            boolean autoSchedule, String methodName) throws LiquidPortalServicingException {
+            boolean autoSchedule, String methodName) throws LiquidPortalServiceException {
         GregorianCalendar c = new GregorianCalendar();
         c.setTime(requestedStartDate);
 
@@ -2043,10 +2043,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
             } else {
                 // date was unavailable
-                throw logError(new LiquidPortalServicingException("Project start date is unavailable"), methodName);
+                throw logError(new LiquidPortalServiceException("Project start date is unavailable"), methodName);
             }
         } catch (DatatypeConfigurationException e) {
-            throw logError(new LiquidPortalServicingException(e), methodName);
+            throw logError(new LiquidPortalServiceException(e), methodName);
         }
     }
 
@@ -2103,7 +2103,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
-        LiquidPortalServicingException{
+        LiquidPortalServiceException{
         try {
             userService.addUserToGroups(userInfo.getHandle(), notusEligibilityGroupIds);
         } catch (IllegalArgumentException e) {
@@ -2134,7 +2134,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToTermsGroup(UserInfo userInfo, Date termsAgreedDate,
-            List<Warning> warnings, String methodName) throws LiquidPortalServicingException {
+            List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
         try {
             userService.addUserTerm(userInfo.getHandle(), notusObserverTermsId, termsAgreedDate);

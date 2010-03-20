@@ -5,6 +5,12 @@ package com.liquid.portal.service;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+
 /**
  * <p>
  * Represents a non-fatal warning regarding something that went wrong during
@@ -17,6 +23,8 @@ import java.io.Serializable;
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "warning", propOrder = { "message"})
 public class Warning implements Serializable {
     /**
      * <p>

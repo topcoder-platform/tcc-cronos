@@ -8,14 +8,14 @@ import javax.ejb.ApplicationException;
 /**
  * <p>
  * This exception is thrown by the service if it cannot find the given contest.
- * It extends LiquidPortalServicingException.
+ * It extends LiquidPortalServiceException.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 @ApplicationException(rollback = true)
-public class ContestNotFoundException extends LiquidPortalServicingException {
+public class ContestNotFoundException extends LiquidPortalServiceException {
     /**
      * <p>
      * Represents the serial version unique id.

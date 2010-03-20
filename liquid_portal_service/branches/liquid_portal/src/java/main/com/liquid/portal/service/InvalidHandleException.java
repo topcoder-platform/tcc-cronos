@@ -8,14 +8,14 @@ import javax.ejb.ApplicationException;
 /**
  * <p>
  * This exception is thrown by the service if the handle is invalid. It extends
- * LiquidPortalServicingException.
+ * LiquidPortalServiceException.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 @ApplicationException(rollback = true)
-public class InvalidHandleException extends LiquidPortalServicingException {
+public class InvalidHandleException extends LiquidPortalServiceException {
     /**
      * <p>
      * Represents the serial version unique id.
