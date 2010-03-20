@@ -27,6 +27,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.jboss.ws.annotation.EndpointConfig;
+
 import com.liquid.portal.service.ActionNotPermittedException;
 import com.liquid.portal.service.CompetitionData;
 import com.liquid.portal.service.ContestNotFoundException;
@@ -113,6 +115,7 @@ import com.topcoder.util.log.LogManager;
  */
 @Stateless
 @WebService(endpointInterface = "com.liquid.portal.service.LiquidPortalService")
+@EndpointConfig(configName = "Standard WSSecurity Endpoint")
 @DeclareRoles({"Cockpit User", "Cockpit Administrator" })
 @RolesAllowed({"Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
