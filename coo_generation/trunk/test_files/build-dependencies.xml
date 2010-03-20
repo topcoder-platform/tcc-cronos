@@ -1,0 +1,32 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.5" />
+	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+	<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.0.2/search_builder.jar" />
+	
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar" />
+	<property name="log4j.jar" value="${ext_libdir}/log4j/log4j-1.2.15.jar" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+		<pathelement location="${log4j.jar}" />
+		<pathelement location="E:/jars/2.0/sqljdbc.jar"/>
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+	</path>
+	
+	<path id="component.test.dependencies">
+		<pathelement location="${search_builder.jar}" />
+	</path>
+</project>

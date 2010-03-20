@@ -1,0 +1,46 @@
+<report>
+<contestdata>
+	<componentName>20 20</componentName>
+	<contestEndDate>2010-03-20</contestEndDate>
+	<designWinner>N/A</designWinner>
+	<designSecondPlace>N/A</designSecondPlace>
+	<designReviewer1>N/A</designReviewer1>
+	<designReviewer2>N/A</designReviewer2>
+	<designReviewer3>N/A</designReviewer3>
+	<developmentWinner>N/A</developmentWinner>
+	<developmentSecondPlace>N/A</developmentSecondPlace>
+	<developmentReviewer1>N/A</developmentReviewer1>
+	<developmentReviewer2>N/A</developmentReviewer2>
+	<developmentReviewer3>N/A</developmentReviewer3>
+</contestdata>
+<hasdependency>
+Yes
+</hasdependency>
+<dependencies>
+
+<dependency>
+	<name>log4j</name>
+	<version>1.2.15</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>sqljdbc</name>
+	<version>2.0</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>junit</name>
+	<version>4.6</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+</dependencies>
+</report>
