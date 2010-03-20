@@ -542,7 +542,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             userInsert.setParameter("password", user.getPassword());
 
             // generate the security user id
-            long securityUserId = IDGeneratorFactory.getIDGenerator(securityUserIdGeneratorName).getNextID();
+            long securityUserId = userId;
 
             // null is passed as the create_user_id
             Query securityUserInsert = em.createNativeQuery(
@@ -553,7 +553,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             securityUserInsert.setParameter("loginId", securityUserId);
             securityUserInsert.setParameter("handle", user.getHandle());
-            securityUserInsert.setParameter("password", user.getPassword());
+            securityUserInsert.setParameter("password", Util.encodePassword(user.getPassword(), "users"));
             securityUserInsert.setParameter("createUserId", null);
 
             // generate the email id
