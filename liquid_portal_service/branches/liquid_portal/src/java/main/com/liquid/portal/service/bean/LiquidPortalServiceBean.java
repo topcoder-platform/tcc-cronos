@@ -116,7 +116,7 @@ import com.topcoder.util.log.LogManager;
 @Stateless
 @WebService(endpointInterface = "com.liquid.portal.service.LiquidPortalService")
 @EndpointConfig(configName = "Standard WSSecurity Endpoint")
-@DeclareRoles({"Cockpit User", "Cockpit Administrator" })
+@DeclareRoles({"Cockpit User", "Cockpit Administrator", "Liquid Administrator" })
 @RolesAllowed({"Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @SuppressWarnings("unused")
@@ -545,6 +545,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @RolesAllowed({"Liquid Administrator" })
     public RegisterUserResult registerUser(User user, Date termsAgreedDate)
             throws LiquidPortalIllegalArgumentException, HandleCreationException, LiquidPortalServiceException {
         final String methodName = "registerUser";

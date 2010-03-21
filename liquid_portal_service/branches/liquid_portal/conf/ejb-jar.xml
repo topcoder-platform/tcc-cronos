@@ -51,4 +51,18 @@
        	</ejb-ref>
     </session>
   </enterprise-beans>
+
+
+  <assembly-descriptor>
+  	<security-role>
+  		<role-name>Liquid Administrator</role-name>
+  	</security-role>
+  	<method-permission>
+  		<role-name>Liquid Administrator</role-name>
+  		<method>
+  			<ejb-name>LiquidPortalServiceBean</ejb-name>
+  			<method-name>registerUser</method-name>
+  		</method>
+  	</method-permission>
+  </assembly-descriptor>
 </ejb-jar>
