@@ -29,13 +29,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.jboss.ws.annotation.EndpointConfig;
 
-import com.liquid.portal.service.ActionNotPermittedException;
 import com.liquid.portal.service.CompetitionData;
-import com.liquid.portal.service.ContestNotFoundException;
 import com.liquid.portal.service.CreateCompetitonResult;
-import com.liquid.portal.service.HandleCreationException;
-import com.liquid.portal.service.HandleNotFoundException;
-import com.liquid.portal.service.InvalidHandleException;
 import com.liquid.portal.service.LiquidPortalIllegalArgumentException;
 import com.liquid.portal.service.LiquidPortalServiceConfigurationException;
 import com.liquid.portal.service.LiquidPortalServiceException;
@@ -547,7 +542,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @RolesAllowed({"Liquid Administrator" })
     public RegisterUserResult registerUser(User user, Date termsAgreedDate)
-            throws LiquidPortalIllegalArgumentException, HandleCreationException, LiquidPortalServiceException {
+            throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
+    	//TODO 2009 and 2010
         final String methodName = "registerUser";
         logEntrance(methodName);
 
@@ -574,11 +570,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (UserServiceException e) {
             sessionContext.setRollbackOnly();
             // can not create the handle
-            throw logError(new HandleCreationException(user.getHandle(), "can not create the handle", e), methodName);
+            throw logError(new LiquidPortalServiceException("can not create the handle", e), methodName);
         } catch (IllegalArgumentException e) {
             sessionContext.setRollbackOnly();
             // can not create the handle
-            throw logError(new HandleCreationException(user.getHandle(), "can not create the handle", e), methodName);
+            throw logError(new LiquidPortalServiceException("can not create the handle", e), methodName);
         }
 
         // add user to notusEligibilityGroup
@@ -619,8 +615,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Result validateUser(UserInfo user, boolean force) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, LiquidPortalServiceException {
+    public Result validateUser(UserInfo user, boolean force) throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
         final String methodName = "validateUser";
         logEntrance(methodName);
 
@@ -637,7 +632,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         List<Warning> warnings = new ArrayList<Warning>();
         if (!demoMatched) {
             // demographic information doesn't match (Email, First or Last Name)
-            warnings.add(getWarning("user info doesn't math with persisted user info", null));
+            warnings.add(getWarning("user info doesn't math with persisted user info", 5002, null));
         }
 
         if (force || demoMatched) {
@@ -690,7 +685,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
             String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, InvalidHandleException, LiquidPortalServiceException {
+            LiquidPortalServiceException {
         final String methodName = "provisionUser";
         logEntrance(methodName);
 
@@ -721,15 +716,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         // ensure requestorUserInfo has Notus Eligibility groups
         if (!userBelongNotusElibilityGroups(requestorUserInfo)) {
             sessionContext.setRollbackOnly();
-            throw logError(new InvalidHandleException(requestorHandle,
-                    "requestor handle is not in Notus Eligibility Groups"), methodName);
+            throw logError(new LiquidPortalServiceException("requestor handle is not in Notus Eligibility Groups", 5004), methodName);
         }
 
         // ensure userInfo has Notus Eligibility groups
         if (!userBelongNotusElibilityGroups(userInfo)) {
             sessionContext.setRollbackOnly();
             throw logError(
-                    new InvalidHandleException(requestorHandle, "user handle is not in Notus Eligibility Groups"),
+                    new LiquidPortalServiceException("user handle is not in Notus Eligibility Groups", 5011),
                     methodName);
         }
 
@@ -794,12 +788,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             List<Warning> warnings = new ArrayList<Warning>();
             for (String name : cockpitProjectNames) {
                 if (!stringInArray(name, targetCockpitProjectNames)) {
-                    warnings.add(getWarning("Cockpit project name '" + name + "' is invalid", null));
+                    warnings.add(getWarning("Cockpit project name '" + name + "' is invalid", 5006, null));
                 }
             }
             for (long id : billingProjectIds) {
                 if (!longInArray(id, targetBillingProjectIds)) {
-                    warnings.add(getWarning("Billing Project id '" + id + "' is invalid", null));
+                    warnings.add(getWarning("Billing Project id '" + id + "' is invalid", 5007, null));
                 }
             }
             result.setWarnings(warnings);
@@ -876,8 +870,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public CreateCompetitonResult createCompetition(String requestorHandle, CompetitionData competitionData,
-            String[] supportHandles) throws LiquidPortalIllegalArgumentException, HandleNotFoundException,
-            ActionNotPermittedException, InvalidHandleException, LiquidPortalServiceException {
+            String[] supportHandles) throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
         final String methodName = "createCompetition";
         logEntrance(methodName);
 
@@ -940,8 +933,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             UserInfo user = getUserInfo(supportHandle, methodName);
             if (!userBelongNotusElibilityGroups(user)) {
                 sessionContext.setRollbackOnly();
-                throw logError(new InvalidHandleException(supportHandle,
-                        "support handle is not in Notus Eligibility Groups"), methodName);
+                throw logError(new LiquidPortalServiceException(
+                        "support handle is not in Notus Eligibility Groups", 5004), methodName);
             }
         }
 
@@ -952,8 +945,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (userBelongNotusElibilityGroups(requestorInfo)) {
                 // requester does not have Notus Eligibility Groups
                 sessionContext.setRollbackOnly();
-                throw logError(new InvalidHandleException(requestorHandle,
-                        "requestor handle is not in Notus Eligibility Groups"), methodName);
+                throw logError(new LiquidPortalServiceException(
+                        "requestor handle is not in Notus Eligibility Groups", 5011), methodName);
             }
 
             // check billing project permission
@@ -961,8 +954,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     competitionData.getBillingProjectId())) {
                 // have no permissions
                 sessionContext.setRollbackOnly();
-                throw logError(new ActionNotPermittedException(requestorHandle
-                        + " has no permission to perform the action"), methodName);
+                throw logError(new LiquidPortalServiceException(requestorHandle
+                        + " has no permission to perform the action", 5003), methodName);
             }
 
             ProjectData proj;
@@ -989,8 +982,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 if (!checkPermission(contestServiceFacade
                         .getPermissions(requestorInfo.getUserId(), proj.getProjectId()))) {
                     sessionContext.setRollbackOnly();
-                    throw logError(new ActionNotPermittedException(String.format(
-                            "User {0} does not has permission to project {1}", requestorHandle, proj.getName())),
+                    throw logError(new LiquidPortalServiceException(String.format(
+                            "User {0} does not has permission to project {1}", requestorHandle, proj.getName()), 5003),
                             methodName);
                 }
             } else {
@@ -1002,7 +995,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         type) });
                 // add waring, project had to be created
                 warnings.add(getWarning(String.format("Project <{0}> does not exist", competitionData
-                        .getCockpitProjectName()), null));
+                        .getCockpitProjectName()), 5008, null));
             }
 
             CreateCompetitonResult result = new CreateCompetitonResult();
@@ -1063,8 +1056,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (AuthorizationFailedFault e) {
             // have no permissions
             sessionContext.setRollbackOnly();
-            throw logError(new ActionNotPermittedException(
-                    requestorHandle + " has no permission to perform the action", e), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    requestorHandle + " has no permission to perform the action", 5003, e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
@@ -1124,7 +1117,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Result provisionProject(String requestorHandle, String cockpitProjectName, String[] handles)
-            throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
+            throws LiquidPortalIllegalArgumentException,
             LiquidPortalServiceException {
         final String methodName = "provisionProject";
         logEntrance(methodName);
@@ -1153,8 +1146,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (!userBelongNotusElibilityGroups(userInfo)) {
                 sessionContext.setRollbackOnly();
                 throw logError(
-                        new InvalidHandleException(requestorHandle, "handle: " + handle
-                                + " is not in Notus Eligibility Groups"), methodName);
+                        new LiquidPortalServiceException("handle: " + handle
+                                + " is not in Notus Eligibility Groups", 5004),  methodName);
             }
             userInfos.add(userInfo);
         }
@@ -1164,8 +1157,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         if (!userBelongNotusElibilityGroups(requestorInfo)) {
             // user does not have notus eligibility groups
             sessionContext.setRollbackOnly();
-            throw logError(new InvalidHandleException(requestorHandle,
-                    "requestor handle is not in Notus Eligibility Groups"), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    "requestor handle is not in Notus Eligibility Groups", 5011), methodName);
         }
 
         try {
@@ -1178,7 +1171,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             }
             if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, proj.getProjectId())) {
                 sessionContext.setRollbackOnly();
-                throw logError(new ActionNotPermittedException("requestor doesn't have permissions"), methodName);
+                throw logError(new LiquidPortalServiceException("requestor doesn't have permissions", 5003), methodName);
             }
 
             // get full control permission type
@@ -1209,7 +1202,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     "Can not find project:" + cockpitProjectName, e), methodName);
         } catch (AuthorizationFailedFault e) {
             sessionContext.setRollbackOnly();
-            throw logError(new ActionNotPermittedException("requestor doesn't have permissions", e), methodName);
+            throw logError(new LiquidPortalServiceException("requestor doesn't have permissions", 5003, e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException(
@@ -1258,8 +1251,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteCompetition(String requestorHandle, long contestId, boolean isStudio, String reason)
-            throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ContestNotFoundException,
-            ActionNotPermittedException, LiquidPortalServiceException {
+            throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
         final String methodName = "deleteCompetition";
         logEntrance(methodName);
 
@@ -1277,8 +1269,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         if (!userBelongNotusElibilityGroups(requestorInfo)) {
             // user does not have notus eligibility groups
             sessionContext.setRollbackOnly();
-            throw logError(new InvalidHandleException(requestorHandle,
-                    "requestor handle is not in Notus Eligibility Groups"), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    "requestor handle is not in Notus Eligibility Groups", 5004), methodName);
         }
 
         try {
@@ -1286,23 +1278,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 StudioCompetition comp = contestServiceFacade.getContest(contestId);
                 if (comp == null) {
                     sessionContext.setRollbackOnly();
-                    throw logError(new ContestNotFoundException(contestId, "can not find contest with contestId:"
-                            + contestId), methodName);
+                    throw logError(new LiquidPortalServiceException("can not find contest with contestId:"
+                            + contestId, 5010), methodName);
                 }
                 // check billing account permission for requester
                 if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, comp.getContestData()
                         .getBillingProject())) {
                     sessionContext.setRollbackOnly();
-                    throw logError(new ActionNotPermittedException(
-                            "the user has no permissions for the billing account associated to the competition"),
+                    throw logError(new LiquidPortalServiceException(
+                            "the user has no permissions for the billing account associated to the competition", 5003),
                             methodName);
                 }
                 if (!checkPermission(contestServiceFacade.getPermissions(requestorInfo.getUserId(), comp.getProject()
                         .getProjectId()))) {
                     sessionContext.setRollbackOnly();
-                    throw logError(new ActionNotPermittedException(String.format(
+                    throw logError(new LiquidPortalServiceException(String.format(
                             "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
-                                    .getName())), methodName);
+                                    .getName()), 5003), methodName);
                 }
                 contestServiceFacade.deleteContest(contestId);
             } else {
@@ -1312,9 +1304,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 if (!checkPermission(contestServiceFacade.getPermissions(requestorInfo.getUserId(), comp.getProject()
                         .getProjectId()))) {
                     sessionContext.setRollbackOnly();
-                    throw logError(new ActionNotPermittedException(String.format(
+                    throw logError(new LiquidPortalServiceException(String.format(
                             "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
-                                    .getName())), methodName);
+                                    .getName()), 5003), methodName);
                 }
                 // mark software contest as deleted
                 comp.setStatus(Status.DELETED);
@@ -1325,7 +1317,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             logExit(methodName);
         } catch (com.topcoder.service.studio.ContestNotFoundException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new ContestNotFoundException(contestId, "can not find contest with contestId:" + contestId,
+            throw logError(new LiquidPortalServiceException("can not find contest with contestId:" + contestId, 5010,
                     e), methodName);
         } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
@@ -1338,8 +1330,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (UserNotAuthorizedException e) {
             // have no permissions
             sessionContext.setRollbackOnly();
-            throw logError(new ActionNotPermittedException(
-                    requestorHandle + " has no permission to perform the action", e), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    requestorHandle + " has no permission to perform the action", 5003, e), methodName);
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
@@ -1381,7 +1373,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void decommissionUser(String requestorHandle, String userHandle)
-            throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
+            throws LiquidPortalIllegalArgumentException,
             LiquidPortalServiceException {
         final String methodName = "decommissionUser";
         logEntrance(methodName);
@@ -1400,8 +1392,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         if (!userBelongNotusElibilityGroups(requestorInfo)) {
             // user does not have notus eligibility groups
             sessionContext.setRollbackOnly();
-            throw logError(new InvalidHandleException(requestorHandle,
-                    "requestor handle is not in Notus Eligibility Groups"), methodName);
+            throw logError(new LiquidPortalServiceException("requestor handle is not in Notus Eligibility Groups", 5004), methodName);
         }
         // check the userHandle argument
         UserInfo userInfo = getUserInfo(userHandle, methodName);
@@ -1409,7 +1400,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // user does not have notus eligibility groups
             sessionContext.setRollbackOnly();
             throw logError(
-                    new InvalidHandleException(requestorHandle, "user handle is not in Notus Eligibility Groups"),
+                    new LiquidPortalServiceException("user handle is not in Notus Eligibility Groups", 5011),
                     methodName);
         }
 
@@ -1458,8 +1449,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (AuthorizationFailedFault e) {
             // have no permissions
             sessionContext.setRollbackOnly();
-            throw logError(new ActionNotPermittedException(
-                    requestorHandle + " has no permission to perform the action", e), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    requestorHandle + " has no permission to perform the action", 5003, e), methodName);
         } catch (PermissionServiceException e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when decommission user", e), methodName);
@@ -1781,9 +1772,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the given exception
      * @return the instance of Warning
      */
-    private static Warning getWarning(String message, Throwable exception) {
+    private static Warning getWarning(String message, int errorCode, Throwable exception) {
         Warning warning = new Warning();
         warning.setMessage(message);
+        warning.setErrorCode(errorCode);
         return warning;
     }
 
@@ -1949,19 +1941,18 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             if any error occurs
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    private UserInfo getUserInfo(String handle, String methodName) throws HandleNotFoundException,
-            LiquidPortalServiceException {
+    private UserInfo getUserInfo(String handle, String methodName) throws LiquidPortalServiceException {
         try {
             // get user info for requester
             UserInfo userInfo = userService.getUserInfo(handle);
             if (userInfo == null) {
                 sessionContext.setRollbackOnly();
-                throw logError(new HandleNotFoundException(handle, "can not find handle:" + handle), methodName);
+                throw logError(new LiquidPortalServiceException("can not find handle:" + handle, 5002), methodName);
             }
             return userInfo;
         } catch (UserServiceException e) {
             sessionContext.setRollbackOnly();
-            throw logError(new HandleNotFoundException(handle, "can not find handle:" + handle, e), methodName);
+            throw logError(new LiquidPortalServiceException("can not find handle:" + handle, 5002), methodName);
         }
     }
 
@@ -2112,13 +2103,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             logError(e, methodName);
             // send JIRA email
             sendJiraNotification(userInfo.getHandle());
-            warnings.add(getWarning("Can not add user to notusEligibilityGroup", e));
+            warnings.add(getWarning("Can not add user to notusEligibilityGroup", 5000, e));
         } catch (UserServiceException e) {
             // can not add user to the notusEligibilityGroupIds
             logError(e, methodName);
             // send JIRA email
             sendJiraNotification(userInfo.getHandle());
-            warnings.add(getWarning("Can not add user to notusEligibilityGroup", e));
+            warnings.add(getWarning("Can not add user to notusEligibilityGroup", 5001, e));
         }
     }
 
@@ -2144,13 +2135,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             logError(e, methodName);
             // send JIRA email
             sendJiraNotification(userInfo.getHandle());
-            warnings.add(getWarning("Can not add user to terms group", e));
+            warnings.add(getWarning("Can not add user to terms group", 5001, e));
         } catch (UserServiceException e) {
             // can not add user to the Terms groups
             logError(e, methodName);
             // send JIRA email
             sendJiraNotification(userInfo.getHandle());
-            warnings.add(getWarning("Can not add user to terms group", e));
+            warnings.add(getWarning("Can not add user to terms group", 5001, e));
         }
     }
 
@@ -2170,7 +2161,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             contestServiceFacade.updatePermissions(new Permission[] { permission });
         } catch (PermissionServiceException e) {
             warnings.add(getWarning(String.format("Failed to assign permission to user <{0}>",
-                    userInfo.getHandle()), e));
+                    userInfo.getHandle()), 5013, e));
         }
     }
 }

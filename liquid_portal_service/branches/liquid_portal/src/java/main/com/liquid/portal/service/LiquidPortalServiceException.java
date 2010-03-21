@@ -77,7 +77,11 @@ public class LiquidPortalServiceException extends Exception {
         super(cause);
     }
 
-
+    public LiquidPortalServiceException(String message, int errorCode, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+    
     public int getErrorCode()
     {
         return this.errorCode;

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "warning", propOrder = { "message"})
+@XmlType(name = "warning", propOrder = { "message", "errorCode"})
 public class Warning implements Serializable {
     /**
      * <p>
@@ -42,6 +42,8 @@ public class Warning implements Serializable {
      * </p>
      */
     private String message;
+    
+    private int errorCode;
 
     /**
      * <p>
@@ -71,4 +73,12 @@ public class Warning implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public int getErrorCode() {
+		return errorCode;
+	}
 }

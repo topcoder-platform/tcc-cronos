@@ -55,7 +55,7 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public RegisterUserResult registerUser(User user, Date termsAgreedDate)
-        throws LiquidPortalIllegalArgumentException, HandleCreationException, LiquidPortalServiceException;
+        throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException;
 
     /**
      * <p>
@@ -85,7 +85,7 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public Result validateUser(UserInfo user, boolean force) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, LiquidPortalServiceException;
+             LiquidPortalServiceException;
 
     /**
      * <p>
@@ -124,7 +124,7 @@ public interface LiquidPortalService {
      */
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
             String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalIllegalArgumentException,
-            HandleNotFoundException, InvalidHandleException, LiquidPortalServiceException;
+            LiquidPortalServiceException;
 
     /**
      * <p>
@@ -168,9 +168,7 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public CreateCompetitonResult createCompetition(String requestorHandle, CompetitionData competitionData,
-            String[] supportHandles) throws LiquidPortalIllegalArgumentException, HandleNotFoundException,
-            ActionNotPermittedException, InvalidHandleException, LiquidPortalServiceException,
-            InvalidHandleException;
+            String[] supportHandles) throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException;
 
     /**
      * <p>
@@ -208,7 +206,7 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public Result provisionProject(String requestorHandle, String cockpitProjectName, String[] handles)
-        throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
+        throws LiquidPortalIllegalArgumentException,
             LiquidPortalServiceException;
 
     /**
@@ -243,8 +241,7 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public void deleteCompetition(String requestorHandle, long contestId, boolean isStudio, String reason)
-        throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ContestNotFoundException,
-            ActionNotPermittedException, LiquidPortalServiceException;
+        throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException;
 
     /**
      * <p>
@@ -271,6 +268,5 @@ public interface LiquidPortalService {
      *             If an error occurs while performing the operation
      */
     public void decommissionUser(String requestorHandle, String userHandle)
-        throws LiquidPortalIllegalArgumentException, HandleNotFoundException, ActionNotPermittedException,
-            LiquidPortalServiceException;
+        throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException;
 }
