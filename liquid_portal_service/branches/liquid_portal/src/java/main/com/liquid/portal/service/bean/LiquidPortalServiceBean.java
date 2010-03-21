@@ -1686,7 +1686,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @return true if array is not null or empty, false otherwise
      */
     private static boolean checkArray(Object[] data) {
-        return (data == null || data.length == 0);
+        return (data != null && data.length != 0);
     }
 
     /**
@@ -1699,7 +1699,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @return true if array is not null or empty, false otherwise
      */
     private static boolean checkArray(long[] data) {
-        return (data == null || data.length == 0);
+        return (data != null && data.length != 0);
     }
 
     /**
