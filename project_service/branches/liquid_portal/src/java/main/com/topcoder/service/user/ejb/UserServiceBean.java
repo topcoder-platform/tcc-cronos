@@ -188,6 +188,11 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
     private Log logger;
 
     /**
+     * default timezone id
+     */
+    private long DEFAULT_TIMEZONE_ID = 143;
+
+    /**
      * A default empty constructor.
      */
     public UserServiceBean() {
@@ -533,7 +538,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                     + "activation_code, middle_name, timezone_id, last_site_hit_date) "
                     + "values "
                     + "(:userId, :firstName, :lastName, :handle, NULL, 'A', :password, "
-                    + "NULL, NULL, 1, NULL)");
+                    + "NULL, NULL, " + DEFAULT_TIMEZONE_ID + " , NULL)");
 
             userInsert.setParameter("userId", userId);
             userInsert.setParameter("firstName", user.getFirstName());
@@ -553,7 +558,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             securityUserInsert.setParameter("loginId", securityUserId);
             securityUserInsert.setParameter("handle", user.getHandle());
-            securityUserInsert.setParameter("password", Util.encodePassword(user.getPassword(), "users"));
+            securityUserInsert.setParameter("password", Util.encodePassword(user.getPassword()));
             securityUserInsert.setParameter("createUserId", null);
 
             // generate the email id
@@ -641,7 +646,9 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             throw wrapUserServiceException(e, "An error occurred while generating an id.");
         } catch (PersistenceException e) {
             throw wrapUserServiceException(e, "An persitence error occurred while registering the user.");
-        } finally {
+        } catch (Exception e) {
+            throw wrapUserServiceException(e, "An persitence error occurred while registering the user.");
+        }finally {
             logExit("registerUser(User)");
         }
     }
