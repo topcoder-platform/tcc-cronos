@@ -738,24 +738,33 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         methodName);
             }
 
-            // get cockpit projects for client
-            List<ProjectData> cockpitProjects = projectService.getProjectsForUser(notusClientId);
             List<Permission> permissions = new ArrayList<Permission>();
-            for (ProjectData project : cockpitProjects) {
-                if (hasAccountAccess || stringInArray(project.getName(), cockpitProjectNames)) {
-                    // the project is in the submitted list, add the user to the project
-                    permissions.add(getPermission(userInfo, project, type));
-                } else {
-                    // the project is not in the submitted list, remove the user's permission
-                    List<Permission> perms = contestServiceFacade.getPermissions(userInfo.getUserId(), project
-                            .getProjectId());
-                    for (Permission perm : perms) {
-                        // set PermissionType to null to remove the permission
-                        perm.setPermissionType(null);
+            List<ProjectData> cockpitProjects = new ArrayList<ProjectData>();
+
+            for (String projectName :  cockpitProjectNames)
+            {
+                List<ProjectData> tcProjects = projectService.getProjectsByName(projectName);
+                if (tcProjects != null && tcProjects.size() > 0)
+                {
+                    for (ProjectData project : tcProjects) {
+                        if (hasAccountAccess) {
+                            // the project is in the submitted list, add the user to the project
+                            permissions.add(getPermission(userInfo, project, type));
+                        } else {
+                            // the project is not in the submitted list, remove the user's permission
+                            List<Permission> perms = contestServiceFacade.getPermissions(userInfo.getUserId(), project
+                                    .getProjectId());
+                            for (Permission perm : perms) {
+                                // set PermissionType to null to remove the permission
+                                perm.setPermissionType(null);
+                            }
+                            permissions.addAll(perms);
+                        }
                     }
-                    permissions.addAll(perms);
+                    cockpitProjects.addAll(tcProjects);
                 }
             }
+            
             contestServiceFacade.updatePermissions(permissions.toArray(new Permission[0]));
 
             // get billing projects
@@ -799,14 +808,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             result.setWarnings(warnings);
             logExit(methodName);
             return result;
-        } catch (AuthorizationFailedFault e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Authorization failed when provision user:" + userHandle,
-                    e), methodName);
-        } catch (UserNotFoundFault e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("can not find user with userId notusClientId", e),
-                    methodName);
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
@@ -816,6 +817,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
         } catch (DAOException e) {
+            sessionContext.setRollbackOnly();
+            throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
+                    methodName);
+        } catch (ProjectNotFoundFault e) {
+            sessionContext.setRollbackOnly();
+            throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
+                    methodName);
+        } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
@@ -1966,14 +1975,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If any error occurs
      */
     private PermissionType getFullControlPermissionType() throws PermissionServiceException {
-        PermissionType type = null;
-        List<PermissionType> types = contestServiceFacade.getAllPermissionType();
-        for (PermissionType t : types) {
-            if (t.getPermissionTypeId().longValue() == fullControlPermissionTypeId) {
-                type = t;
-                break;
-            }
-        }
+        PermissionType type = new PermissionType();
+        type.setPermissionTypeId(PermissionType.PERMISSION_TYPE_PROJECT_FULL);
+        type.setName("project_full");
         return type;
     }
 
