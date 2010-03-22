@@ -615,7 +615,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Result validateUser(UserInfo user, boolean force) throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
+    public Result validateUser(UserInfo user, boolean force) throws LiquidPortalServiceException {
         final String methodName = "validateUser";
         logEntrance(methodName);
 
@@ -684,29 +684,28 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
-            String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalIllegalArgumentException,
-            LiquidPortalServiceException {
+            String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalServiceException {
         final String methodName = "provisionUser";
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(userHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USERHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkArray(cockpitProjectNames)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAMES_NULL_EMPTY), methodName);
         }
         if (!checkStringArray(cockpitProjectNames)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAMES_CONTAINS_NULL_EMPTY), methodName);
         }
         if (!checkArray(billingProjectIds)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_BILLINGPROJECTIDS_NULL_EMPTY), methodName);
         }
 
@@ -879,60 +878,60 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public CreateCompetitonResult createCompetition(String requestorHandle, CompetitionData competitionData,
-            String[] supportHandles) throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
+            String[] supportHandles) throws LiquidPortalServiceException {
         final String methodName = "createCompetition";
         logEntrance(methodName);
 
         // check argument
         if (!checkString(requestorHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (competitionData == null) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_COMPETITIONDATA_NULL), methodName);
         }
         if (supportHandles == null) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_SUPPORTHANDLES_NULL), methodName);
         }
         if (!checkStringArray(supportHandles)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_SUPPORTHANDLES_CONTAINS_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getContestTypeName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_CONTESTTYPENAME_NULL_EMPTY), methodName);
         }
         if (competitionData.getContestTypeName().equals("studio")
                 && !checkString(competitionData.getSubContestTypeName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_SUBCONTESTTYPENAME_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getContestName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_CONTESTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getCockpitProjectName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
         }
         if (competitionData.getRequestedStartDate() == null) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTEDSTARTDATE_NULL), methodName);
         }
         if (competitionData.getRequestedStartDate().compareTo(new Date()) < 0) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTEDSTARTDATE_IN_PAST), methodName);
         }
         if (competitionData.getContestTypeName().equals("studio")
                 && !studioContestTypes.containsKey(competitionData.getSubContestTypeName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_INVALID_SUBCONTESTTYPENAME), methodName);
         }
         if (!competitionData.getContestTypeName().equals("studio")
                 && !projectCategories.containsKey(competitionData.getContestTypeName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_INVALID_CONTESTTYPENAME), methodName);
         }
 
@@ -1132,19 +1131,19 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(cockpitProjectName)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
         }
         if (!checkArray(handles)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_HANDLES_NULL_EMPTY), methodName);
         }
         if (!checkStringArray(handles)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_HANDLES_CONTAINS_NULL_EMPTY), methodName);
         }
 
@@ -1265,11 +1264,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (reason != null && reason.trim().length() == 0) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REASON_EMPTY), methodName);
         }
 
@@ -1388,11 +1387,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(userHandle)) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USERHANDLE_NULL_EMPTY), methodName);
         }
 
@@ -1877,25 +1876,25 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             <li>user.handle is null/empty -- 2005</li>
      *             </ul>
      */
-    private void checkUserInfo(UserInfo user, String methodName) throws LiquidPortalIllegalArgumentException {
+    private void checkUserInfo(UserInfo user, String methodName) throws LiquidPortalServiceException {
         if (user == null) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_NULL), methodName);
         }
         if (!checkString(user.getFirstName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_FIRSTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getLastName())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_LASTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getEmailAddress())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_EMAIL_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getHandle())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_HANDLE_NULL_EMPTY), methodName);
         }
     }
@@ -1922,14 +1921,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             <li>user.phone is null/empty -- 2006</li>
      *             </ul>
      */
-    private void checkUser(User user, String methodName) throws LiquidPortalIllegalArgumentException {
+    private void checkUser(User user, String methodName) throws LiquidPortalServiceException {
         checkUserInfo(user, methodName);
         if (!checkString(user.getPassword())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getPhone())) {
-            throw logError(new LiquidPortalIllegalArgumentException(
+            throw logError(new LiquidPortalServiceException(
                     LiquidPortalIllegalArgumentException.EC_USER_PHONE_NULL_EMPTY), methodName);
         }
     }
