@@ -79,6 +79,12 @@
     <property name="contest_service_facade.path" value="topcoder_contest_service_facade/${contest_service_facade.version}"/>
     <property name="contest_service_facade.jar" value="${tcs_libdir}/${contest_service_facade.path}/${contest_service_facade.jar.name}"/>
 
+    <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar"/>
+    <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar"/>
+    <property name="resource_management.jar" value="${tcs_libdir}/resource_management/1.1.1/resource_management.jar"/>
+    <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar"/>
+    <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar"/>
+
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
@@ -116,6 +122,8 @@
         <pathelement location="${project_service.jar}"/>
         <pathelement location="${studio_service.jar}"/>
         <pathelement location="${catalog_entities.jar}"/>
+        <pathelement location="${catalog_services.jar}"/>
+        <pathelement location="${project_phases.jar}"/>
 		
 	    <pathelement location="${email_engine.jar}"/>
 	    <pathelement location="${document_generator.jar}"/>
@@ -127,6 +135,9 @@
         <pathelement location="${contest_service_facade.jar}"/>
         <pathelement location="${pipeline_service.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${project_management.jar}"/>
+        <pathelement location="${resource_management.jar}"/>
+        
 
         <pathelement location="${jbossws-client.jar}"/>
         <pathelement location="${activation.jar}"/>

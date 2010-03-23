@@ -22,6 +22,14 @@ import java.util.Date;
  * @version 1.0
  */
 public class CompetitionData implements Serializable {
+
+    public static final String DESIGN = "Design";
+
+
+    public static final String DEVELOPEMENT = "Development";
+
+    public static final String STUDIO = "Studio";
+
     /**
      * <p>
      * Represents the serial version unique id.
