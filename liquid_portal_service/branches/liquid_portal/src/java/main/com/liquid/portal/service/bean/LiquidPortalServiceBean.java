@@ -31,7 +31,6 @@ import org.jboss.ws.annotation.EndpointConfig;
 
 import com.liquid.portal.service.CompetitionData;
 import com.liquid.portal.service.CreateCompetitonResult;
-import com.liquid.portal.service.LiquidPortalIllegalArgumentException;
 import com.liquid.portal.service.LiquidPortalServiceConfigurationException;
 import com.liquid.portal.service.LiquidPortalServiceException;
 import com.liquid.portal.service.ProvisionUserResult;
@@ -75,6 +74,7 @@ import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.UserNotAuthorizedException;
@@ -547,7 +547,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param termsAgreedDate
      *            the date of the terms agreement
      * @return the result of the registration attempt
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             If argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -569,21 +569,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @RolesAllowed({"Liquid Administrator" })
     public RegisterUserResult registerUser(User user, Date termsAgreedDate)
-            throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
-    	//TODO 2009 and 2010
+            throws LiquidPortalServiceException {
         final String methodName = "registerUser";
         logEntrance(methodName);
 
         // check the argument
         checkUser(user, methodName);
         if (termsAgreedDate == null) {
-            throw logError(new LiquidPortalIllegalArgumentException(
-                    LiquidPortalIllegalArgumentException.EC_TERMSAGREEDDATE_NULL), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_TERMSAGREEDDATE_NULL), methodName);
         }
         if (termsAgreedDate.compareTo(new Date()) > 0) {
             // date is in the future
-            throw logError(new LiquidPortalIllegalArgumentException(
-                    LiquidPortalIllegalArgumentException.EC_TERMSAGREEDDATE_IN_FUTURE), methodName);
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_TERMSAGREEDDATE_IN_FUTURE), methodName);
+        }
+        if (this.handleExists(user.getHandle())) {
+        	throw logError(new LiquidPortalServiceException(2009), methodName);
         }
 
         RegisterUserResult result;
@@ -597,11 +599,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (UserServiceException e) {
             sessionContext.setRollbackOnly();
             // can not create the handle
-            throw logError(new LiquidPortalServiceException("can not create the handle", e), methodName);
+            throw logError(new LiquidPortalServiceException("Can not create the handle", e), methodName);
         } catch (IllegalArgumentException e) {
             sessionContext.setRollbackOnly();
             // can not create the handle
-            throw logError(new LiquidPortalServiceException("can not create the handle", e), methodName);
+            throw logError(new LiquidPortalServiceException("Can not create the handle", e), methodName);
         }
 
         // add user to notusEligibilityGroup
@@ -626,7 +628,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            If true, it will ignore warnings and add user to terms &
      *            eligibility groups
      * @return the validation result
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             If argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -659,7 +661,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         List<Warning> warnings = new ArrayList<Warning>();
         if (!demoMatched) {
             // demographic information doesn't match (Email, First or Last Name)
-            warnings.add(getWarning("user info doesn't math with persisted user info", 5002, null));
+            warnings.add(getWarning("User info doesn't math with persisted user info", 5002, null));
         }
 
         if (force || demoMatched) {
@@ -692,7 +694,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param userHandle
      *            the handle of the user getting setup
      * @return the provisioning result
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             It argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -712,28 +714,29 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
             String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalServiceException {
+
         final String methodName = "provisionUser";
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(userHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USERHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USERHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkArray(cockpitProjectNames)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAMES_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_COCKPITPROJECTNAMES_NULL_EMPTY), methodName);
         }
         if (!checkStringArray(cockpitProjectNames)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAMES_CONTAINS_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_COCKPITPROJECTNAMES_CONTAINS_NULL_EMPTY), methodName);
         }
         if (!checkArray(billingProjectIds)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_BILLINGPROJECTIDS_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_BILLINGPROJECTIDS_NULL_EMPTY), methodName);
         }
 
         UserInfo requestorUserInfo = getUserInfo(requestorHandle, methodName);
@@ -742,14 +745,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         // ensure requestorUserInfo has Notus Eligibility groups
         if (!userBelongNotusElibilityGroups(requestorUserInfo)) {
             sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("requestor handle is not in Notus Eligibility Groups", 5004), methodName);
+            throw logError(new LiquidPortalServiceException("Requestor handle is not in Notus Eligibility Groups", 5004), methodName);
         }
 
         // ensure userInfo has Notus Eligibility groups
         if (!userBelongNotusElibilityGroups(userInfo)) {
             sessionContext.setRollbackOnly();
             throw logError(
-                    new LiquidPortalServiceException("user handle is not in Notus Eligibility Groups", 5011),
+                    new LiquidPortalServiceException("User handle is not in Notus Eligibility Groups", 5011),
                     methodName);
         }
 
@@ -872,7 +875,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the handles that will perform contest support, such as forum
      *            monitoring
      * @return the competition creation result
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             It argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -906,60 +909,61 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public CreateCompetitonResult createCompetition(String requestorHandle, CompetitionData competitionData,
             String[] supportHandles) throws LiquidPortalServiceException {
+
         final String methodName = "createCompetition";
         logEntrance(methodName);
 
         // check argument
         if (!checkString(requestorHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (competitionData == null) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_COMPETITIONDATA_NULL), methodName);
+                    LiquidPortalServiceException.EC_COMPETITIONDATA_NULL), methodName);
         }
         if (supportHandles == null) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_SUPPORTHANDLES_NULL), methodName);
+                    LiquidPortalServiceException.EC_SUPPORTHANDLES_NULL), methodName);
         }
         if (!checkStringArray(supportHandles)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_SUPPORTHANDLES_CONTAINS_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_SUPPORTHANDLES_CONTAINS_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getContestTypeName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_CONTESTTYPENAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_CONTESTTYPENAME_NULL_EMPTY), methodName);
         }
         if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)
                 && !checkString(competitionData.getSubContestTypeName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_SUBCONTESTTYPENAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_SUBCONTESTTYPENAME_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getContestName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_CONTESTNAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_CONTESTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(competitionData.getCockpitProjectName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
         }
         if (competitionData.getRequestedStartDate() == null) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTEDSTARTDATE_NULL), methodName);
+                    LiquidPortalServiceException.EC_REQUESTEDSTARTDATE_NULL), methodName);
         }
         if (competitionData.getRequestedStartDate().compareTo(new Date()) < 0) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTEDSTARTDATE_IN_PAST), methodName);
+                    LiquidPortalServiceException.EC_REQUESTEDSTARTDATE_IN_PAST), methodName);
         }
         if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)
                 && !studioContestTypes.containsKey(competitionData.getSubContestTypeName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_INVALID_SUBCONTESTTYPENAME), methodName);
+                    LiquidPortalServiceException.EC_INVALID_SUBCONTESTTYPENAME), methodName);
         }
         if (!competitionData.getContestTypeName().equals(CompetitionData.STUDIO)
                 && !projectCategories.containsKey(competitionData.getContestTypeName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_INVALID_CONTESTTYPENAME), methodName);
+                    LiquidPortalServiceException.EC_INVALID_CONTESTTYPENAME), methodName);
         }
 
         List<UserInfo> supportInfos = new ArrayList<UserInfo>();
@@ -1226,7 +1230,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the handles of the users to be given full control of the
      *            cockpit project
      * @return the provisioning result
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             It argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -1248,26 +1252,25 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Result provisionProject(String requestorHandle, String cockpitProjectName, String[] handles)
-            throws LiquidPortalIllegalArgumentException,
-            LiquidPortalServiceException {
+            throws LiquidPortalServiceException {
         final String methodName = "provisionProject";
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(cockpitProjectName)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_COCKPITPROJECTNAME_NULL_EMPTY), methodName);
         }
         if (!checkArray(handles)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_HANDLES_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_HANDLES_NULL_EMPTY), methodName);
         }
         if (!checkStringArray(handles)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_HANDLES_CONTAINS_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_HANDLES_CONTAINS_NULL_EMPTY), methodName);
         }
 
         // check the handles argument
@@ -1363,7 +1366,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the reason for the deletion
      * @param isStudio
      *            flag whether the contest is a studio competition
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             It argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -1382,17 +1385,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteCompetition(String requestorHandle, long contestId, boolean isStudio, String reason)
-            throws LiquidPortalIllegalArgumentException, LiquidPortalServiceException {
+            throws LiquidPortalServiceException {
         final String methodName = "deleteCompetition";
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (reason != null && reason.trim().length() == 0) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REASON_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REASON_EMPTY), methodName);
         }
 
         // check the requestorHandle argument
@@ -1487,7 +1490,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the TopCoder handle of the user that requested the delete
      * @param userHandle
      *            the handle of the user to be decommisioned
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             It argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -1504,18 +1507,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void decommissionUser(String requestorHandle, String userHandle)
-            throws LiquidPortalIllegalArgumentException,
-            LiquidPortalServiceException {
+            throws LiquidPortalServiceException {
         final String methodName = "decommissionUser";
         logEntrance(methodName);
 
         if (!checkString(requestorHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_REQUESTORHANDLE_NULL_EMPTY), methodName);
         }
         if (!checkString(userHandle)) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USERHANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USERHANDLE_NULL_EMPTY), methodName);
         }
 
         // check the requestorHandle argument
@@ -1988,7 +1990,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the UserInfo object to be checked
      * @param methodName
      *            the method name which to check the object
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             If the object is invalid, the error details are provided by
      *             the errorCode in the exception:
      *             <ul>
@@ -2002,23 +2004,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     private void checkUserInfo(UserInfo user, String methodName) throws LiquidPortalServiceException {
         if (user == null) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_NULL), methodName);
+                    LiquidPortalServiceException.EC_USER_NULL), methodName);
         }
         if (!checkString(user.getFirstName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_FIRSTNAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_FIRSTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getLastName())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_LASTNAME_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_LASTNAME_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getEmailAddress())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_EMAIL_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_EMAIL_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getHandle())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_HANDLE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_HANDLE_NULL_EMPTY), methodName);
         }
     }
 
@@ -2031,7 +2033,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *            the User object to be checked
      * @param methodName
      *            the method name which to check the object
-     * @throws LiquidPortalIllegalArgumentException
+     * @throws LiquidPortalServiceException
      *             If argument is invalid, the error details are provided by the
      *             errorCode in the exception:
      *             <ul>
@@ -2048,11 +2050,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         checkUserInfo(user, methodName);
         if (!checkString(user.getPassword())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
         }
         if (!checkString(user.getPhone())) {
             throw logError(new LiquidPortalServiceException(
-                    LiquidPortalIllegalArgumentException.EC_USER_PHONE_NULL_EMPTY), methodName);
+                    LiquidPortalServiceException.EC_USER_PHONE_NULL_EMPTY), methodName);
         }
     }
 
@@ -2094,15 +2096,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *
      * @param handle
      *            the handle name
-     * @param methodName
-     *            the method name which calls this method
-     * @return an instance of UserInfo whose name is handle
-     * @throws HandleNotFoundException
-     *             if there is no such user info
-     * @throws LiquidPortalServiceException
-     *             if any error occurs
+     * @return an boolean show if name is handle
      */
-    private boolean handleExists(String handle, String methodName) throws LiquidPortalServiceException {
+    private boolean handleExists(String handle) {
         try {
             // get user info for requester
             UserInfo userInfo = userService.getUserInfo(handle);

@@ -1,16 +1,5 @@
 package com.liquid.portal.service;
 
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.ConfigManagerException;
-import com.topcoder.util.config.ConfigManagerInterface;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.SecretKeySpec;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,11 +7,16 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.Certificate;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Vector;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.SecretKeySpec;
+
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.ConfigManagerInterface;
 
 /**
  * A bunch of static methods used in various com.topcoder.security (and subpackage)
@@ -32,12 +26,16 @@ import java.util.Vector;
  *
  * The methods in this class are only intended to be used by classes within
  * the Security Manager component.  It is only public because the package
- * heirarchy requires it to be public in order for classes in subpackages of
+ * Hierarchy requires it to be public in order for classes in subpackages of
  * com.topcoder.security to access it.
  */
 public class Util implements ConfigManagerInterface {
 
-    private static String PROPERTIES_NAMESPACE = "com.topcoder.security.Util";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4454750230990321060L;
+	private static String PROPERTIES_NAMESPACE = "com.topcoder.security.Util";
     private static String PROPERTIES_FORMAT = ConfigManager.CONFIG_PROPERTIES_FORMAT;
     private static String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

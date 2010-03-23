@@ -23,11 +23,25 @@ import java.util.Date;
  */
 public class CompetitionData implements Serializable {
 
+    /**
+     * <p>
+     * Represents design contest
+     * <p>
+     */
     public static final String DESIGN = "Design";
 
-
+    /**
+     * <p>
+     * Represents dev contest
+     * <p>
+     */
     public static final String DEVELOPEMENT = "Development";
 
+    /**
+     * <p>
+     * Represents studio contest
+     * <p>
+     */
     public static final String STUDIO = "Studio";
 
     /**
