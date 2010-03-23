@@ -195,7 +195,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    /////////////TO FIX@EJB(name = "ejb/CatalogService")
+    @EJB(name = "ejb/CatalogService")
     private CatalogService catalogService = null;
 
     /**
@@ -594,7 +594,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         try {
             // register user
             long userId = userService.registerUser(user);
-            result = new RegisterUserResult();
+            result = new RegisterUserResult("Registration is successful for user "+user.getHandle(), 1);
             result.setUserId(userId);
         } catch (UserServiceException e) {
             sessionContext.setRollbackOnly();
@@ -672,6 +672,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         }
 
         result.setWarnings(warnings);
+        result.setMessage("Validation is successful for user "+user.getHandle());
         logExit(methodName);
         return result;
     }

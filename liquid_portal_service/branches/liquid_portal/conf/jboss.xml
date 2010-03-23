@@ -5,6 +5,11 @@
         <ejb-name>LiquidPortalServiceBean</ejb-name>
         <jndi-name>remote/LiquidPortalServiceBean</jndi-name>
 
+        <ejb-ref>
+                <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
+                <jndi-name>CatalogService/remote</jndi-name>
+            </ejb-ref>
+
         <port-component>
 				<port-component-name>LiquidPortalServiceBean</port-component-name>
 				<port-component-uri>/LiquidPortalServiceBean</port-component-uri>
