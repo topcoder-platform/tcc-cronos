@@ -728,12 +728,22 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
 
         Long userAccountId = getUserAccountId(entityManager, userName, true);
-
+        String queryStr = "select project_id from project_manager "
+		        + "where project_id =:projectId and user_account_id=:userAccountId";
+        Query searchQuery=entityManager.createNativeQuery(queryStr);
         try {
             // Insert a record to project_manager table for each specified project id
             Query projectManagerInsertQuery = entityManager.createNativeQuery(INSERT_PROJECT_MANAGER);
 
             for (long projectId : billingProjectIds) {
+                // add checking, if user/project is already in the table, we DO NOT insert.
+                searchQuery.setParameter("projectId", projectId);
+                searchQuery.setParameter("userAccountId", userAccountId);
+                List result = searchQuery.getResultList();
+                if(result != null && result.size() > 0){
+                    continue;
+                }
+
                 projectManagerInsertQuery.setParameter("projectId", projectId);
                 projectManagerInsertQuery.setParameter("userAccountId", userAccountId);
                 projectManagerInsertQuery.executeUpdate();
