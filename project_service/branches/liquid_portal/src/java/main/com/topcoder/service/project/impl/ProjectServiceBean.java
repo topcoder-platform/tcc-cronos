@@ -275,6 +275,17 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
+     * JPQL query used to retrieve the project with the specified name and user id. It contains the named parameters
+     * <code>projectName</code> and <code>userId</code>.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String QUERY_PROJECT_BY_NAME_ONLY =
+        "SELECT p FROM Project p WHERE p.name = :projectName";
+
+    /**
+     * <p>
      * Represents the log used to log useful information.
      * </p>
      *
@@ -998,6 +1009,67 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             return false;
         } finally {
             logExit("deleteProject(long)");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    public List <ProjectData> getProjectsByName(String projectName) throws PersistenceFault,
+        ProjectNotFoundFault, IllegalArgumentFault {
+
+        logEnter("getProjectByName(String,long)");
+        logParameters("project name: {0} ", projectName);
+
+        try {
+
+            if ((projectName == null) || (projectName.trim().length() == 0)) {
+                throw logException(new IllegalArgumentFault("projectName cannot be null or empty"));
+            } 
+
+            Query query = getEntityManager().createQuery(QUERY_PROJECT_BY_NAME_ONLY);
+            query.setParameter("projectName", projectName);
+
+            List list = query.getResultList();
+
+            // Copy each Project
+            List < ProjectData > projectDatas = new ArrayList();
+
+            for (int i = 0; i < list.size(); i++) {
+                ProjectData data = (ProjectData) list.get(i);
+                projectDatas.add(data);
+            }
+
+            return projectDatas;
+        } catch (NoResultException e) {
+            throw logException(new ProjectNotFoundFault(
+                    MessageFormat.format("Project with name {0} does not exist", projectName)));
+        } catch (NonUniqueResultException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } catch (PersistenceException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } finally {
+            logExit("getProjectByName(String,long)");
         }
     }
 

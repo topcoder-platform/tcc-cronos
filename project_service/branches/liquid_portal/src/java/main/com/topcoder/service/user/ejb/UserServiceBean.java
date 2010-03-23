@@ -966,11 +966,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             query1.setParameter("termsId", userId);
 
             if (!query1.getResultList().isEmpty()) {
-                // the association already exists, throw UserServiceException
-                throw wrapUserServiceException(
-                        "The user with id " + userId
-                        + " is already associated to the terms with id "
-                        + termsId + ".");
+                return;
             }
 
             // now check if the terms exist in the terms_of_use table
