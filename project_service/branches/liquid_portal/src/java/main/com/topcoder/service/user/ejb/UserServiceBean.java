@@ -513,14 +513,14 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Helper.checkNullEmpty(logger, user.getFirstName(), "user.firstName");
             Helper.checkNullEmpty(logger, user.getLastName(), "user.lastName");
             Helper.checkNullEmpty(logger, user.getEmailAddress(), "user.emailAddress");
-            Helper.checkNullEmpty(logger, user.getPhone(), "user.phone");
+            //Helper.checkNullEmpty(logger, user.getPhone(), "user.phone");
             Helper.checkNullEmpty(logger, user.getPassword(), "user.password");
-            Helper.checkNull(logger, user.getAddress(), "user.address");
-            Helper.checkNullEmpty(logger, user.getAddress().getAddress1(), "user.address.address1");
-            Helper.checkNullEmpty(logger, user.getAddress().getCountryCode(), "user.address.countryCode");
-            Helper.checkNullEmpty(logger, user.getAddress().getCity(), "user.address.city");
-            Helper.checkNullEmpty(logger, user.getAddress().getProvince(), "user.address.province");
-            Helper.checkNullEmpty(logger, user.getAddress().getZip(), "user.address.zip");
+            //Helper.checkNull(logger, user.getAddress(), "user.address");
+            //Helper.checkNullEmpty(logger, user.getAddress().getAddress1(), "user.address.address1");
+            //Helper.checkNullEmpty(logger, user.getAddress().getCountryCode(), "user.address.countryCode");
+            //Helper.checkNullEmpty(logger, user.getAddress().getCity(), "user.address.city");
+            //Helper.checkNullEmpty(logger, user.getAddress().getProvince(), "user.address.province");
+            //Helper.checkNullEmpty(logger, user.getAddress().getZip(), "user.address.zip");
 
             EntityManager em = getEntityManager();
 
@@ -579,58 +579,85 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             emailInsert.setParameter("emailAddress", user.getEmailAddress());
             emailInsert.setParameter("statusId", emailStatusId);
 
-            long phoneId = IDGeneratorFactory.getIDGenerator(phoneIdGeneratorName).getNextID();
+            Query phoneInsert = null;
+            long phoneId = 0;
 
-            // 1 is assumed to be a valid phone type id.
-            // 1 is used as a dummy value for primary_ind.
-            // create_date and modify_date are omitted because they have a default value (the current date).
-            Query phoneInsert = em.createNativeQuery(
+            if (user.getPhone() != null)
+            {
+                phoneId = IDGeneratorFactory.getIDGenerator(phoneIdGeneratorName).getNextID();
+
+                // 1 is assumed to be a valid phone type id.
+                // 1 is used as a dummy value for primary_ind.
+                // create_date and modify_date are omitted because they have a default value (the current date).
+                phoneInsert = em.createNativeQuery(
                     "insert into phone "
                     + "(user_id, phone_id, phone_type_id, phone_number, "
                     + "primary_ind) "
                     + "values "
                     + "(:userId, :phoneId, 1, :phoneNumber, 1)");
 
-            phoneInsert.setParameter("userId", userId);
-            phoneInsert.setParameter("phoneId", phoneId);
-            phoneInsert.setParameter("phoneNumber", user.getPhone());
+                phoneInsert.setParameter("userId", userId);
+                phoneInsert.setParameter("phoneId", phoneId);
+                phoneInsert.setParameter("phoneNumber", user.getPhone());
+            }
+            
+            long addressId = 0;
+            Query addressInsert = null;
+            Query userAddressInsert = null;
+            
+            if (user.getAddress() != null)
+            {
+                 Helper.checkNullEmpty(logger, user.getAddress().getAddress1(), "user.address.address1");
+                 Helper.checkNullEmpty(logger, user.getAddress().getCountryCode(), "user.address.countryCode");
+                 Helper.checkNullEmpty(logger, user.getAddress().getCity(), "user.address.city");
+                 Helper.checkNullEmpty(logger, user.getAddress().getProvince(), "user.address.province");
+                 Helper.checkNullEmpty(logger, user.getAddress().getZip(), "user.address.zip");
 
-            long addressId = IDGeneratorFactory.getIDGenerator(addressIdGeneratorName).getNextID();
+                addressId = IDGeneratorFactory.getIDGenerator(addressIdGeneratorName).getNextID();
 
-            // 1 is assumed to be a valid address type id.
-            Query addressInsert = em.createNativeQuery(
-                    "insert into address "
-                    + "(address_id, address_type_id, address1, address2, "
-                    + "city, state_code, zip, country_code, address3, province) "
-                    + "values "
-                    + "(:addressId, 1, :address1, :address2, "
-                    + ":city, :stateCode, :zip, :countryCode, :address3, :province)");
+                // 1 is assumed to be a valid address type id.
+                addressInsert = em.createNativeQuery(
+                        "insert into address "
+                        + "(address_id, address_type_id, address1, address2, "
+                        + "city, state_code, zip, country_code, address3, province) "
+                        + "values "
+                        + "(:addressId, 1, :address1, :address2, "
+                        + ":city, :stateCode, :zip, :countryCode, :address3, :province)");
 
-            addressInsert.setParameter("addressId", addressId);
-            addressInsert.setParameter("address1", user.getAddress().getAddress1());
-            addressInsert.setParameter("address2", user.getAddress().getAddress2());
-            addressInsert.setParameter("address3", user.getAddress().getAddress3());
-            addressInsert.setParameter("countryCode", user.getAddress().getCountryCode());
-            addressInsert.setParameter("province", user.getAddress().getProvince());
-            addressInsert.setParameter("city", user.getAddress().getCity());
-            addressInsert.setParameter("stateCode", user.getAddress().getStateCode());
-            addressInsert.setParameter("zip", user.getAddress().getZip());
+                addressInsert.setParameter("addressId", addressId);
+                addressInsert.setParameter("address1", user.getAddress().getAddress1());
+                addressInsert.setParameter("address2", user.getAddress().getAddress2());
+                addressInsert.setParameter("address3", user.getAddress().getAddress3());
+                addressInsert.setParameter("countryCode", user.getAddress().getCountryCode());
+                addressInsert.setParameter("province", user.getAddress().getProvince());
+                addressInsert.setParameter("city", user.getAddress().getCity());
+                addressInsert.setParameter("stateCode", user.getAddress().getStateCode());
+                addressInsert.setParameter("zip", user.getAddress().getZip());
 
-            // Finally the association between user and address
-            Query userAddressInsert = em.createNativeQuery(
-                    "insert into user_address_xref (user_id, address_id) "
-                    + "values (:userId, :addressId)");
+                // Finally the association between user and address
+                userAddressInsert = em.createNativeQuery(
+                        "insert into user_address_xref (user_id, address_id) "
+                        + "values (:userId, :addressId)");
 
-            userAddressInsert.setParameter("userId", userId);
-            userAddressInsert.setParameter("addressId", addressId);
+                userAddressInsert.setParameter("userId", userId);
+                userAddressInsert.setParameter("addressId", addressId);
+            }
 
             // execute the statements
             userInsert.executeUpdate();
             securityUserInsert.executeUpdate();
             emailInsert.executeUpdate();
-            phoneInsert.executeUpdate();
-            addressInsert.executeUpdate();
-            userAddressInsert.executeUpdate();
+            if (user.getPhone() != null)
+            {
+                phoneInsert.executeUpdate();
+            }
+            
+            if (user.getAddress() != null)
+            {
+                addressInsert.executeUpdate();
+                userAddressInsert.executeUpdate();
+            }
+            
 
             // if user.groupIds is specified add the user to those groups
             if ((user.getGroupIds() != null) && (user.getGroupIds().length > 0)) {
@@ -963,7 +990,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                     + "where user_id  = :userId and terms_of_use_id = :termsId");
 
             query1.setParameter("userId", userId);
-            query1.setParameter("termsId", userId);
+            query1.setParameter("termsId", termsId);
 
             if (!query1.getResultList().isEmpty()) {
                 return;
