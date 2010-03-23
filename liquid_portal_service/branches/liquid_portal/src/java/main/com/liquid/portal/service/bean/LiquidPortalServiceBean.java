@@ -113,6 +113,7 @@ import com.topcoder.util.log.LogManager;
 @EndpointConfig(configName = "Standard WSSecurity Endpoint")
 @DeclareRoles({"Cockpit User", "Cockpit Administrator", "Liquid Administrator" })
 @RolesAllowed({"Cockpit User", "Cockpit Administrator" })
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @SuppressWarnings("unused")
 public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, LiquidPortalServiceRemote {
@@ -1966,6 +1967,34 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
     /**
      * <p>
+     * Check if handle exists
+     * </p>
+     *
+     * @param handle
+     *            the handle name
+     * @param methodName
+     *            the method name which calls this method
+     * @return an instance of UserInfo whose name is handle
+     * @throws HandleNotFoundException
+     *             if there is no such user info
+     * @throws LiquidPortalServiceException
+     *             if any error occurs
+     */
+    private boolean handleExists(String handle, String methodName) throws LiquidPortalServiceException {
+        try {
+            // get user info for requester
+            UserInfo userInfo = userService.getUserInfo(handle);
+            if (userInfo == null) {
+                return false;
+            }
+            return true;
+        } catch (UserServiceException e) {
+            return false;
+        }
+    }
+
+    /**
+     * <p>
      * Get a PermissionType that has full control permission.
      * </p>
      *
@@ -2096,7 +2125,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
         LiquidPortalServiceException{
         try {
@@ -2127,7 +2155,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToTermsGroup(UserInfo userInfo, Date termsAgreedDate,
             List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
@@ -2158,7 +2185,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param userInfo the user info
      * @param warnings the warning list
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void updatePermission(Permission permission, UserInfo userInfo, List<Warning> warnings) {
         try {
             contestServiceFacade.updatePermissions(new Permission[] { permission });
@@ -2167,4 +2193,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     userInfo.getHandle()), 5013, e));
         }
     }
+
+
+    
 }
