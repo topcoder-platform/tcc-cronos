@@ -553,6 +553,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
 
+    /**
+     * Private constant specifying liquid administrator role.
+     */
+    private static final String LIQUID_ADMIN_ROLE = "Liquid Administrator";
+
 
 
     /**
@@ -5243,7 +5248,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         try
         {
                 UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                if (!sessionContext.isCallerInRole(ADMIN_ROLE) && !sessionContext.isCallerInRole(LIQUID_ADMIN_ROLE))
                 {
                     long userId = principal.getUserId();
 
