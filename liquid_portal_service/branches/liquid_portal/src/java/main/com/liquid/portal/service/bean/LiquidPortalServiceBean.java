@@ -195,7 +195,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    @EJB(name = "ejb/CatalogService")
+    /////////////TO FIX@EJB(name = "ejb/CatalogService")
     private CatalogService catalogService = null;
 
     /**
@@ -2243,6 +2243,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
         LiquidPortalServiceException{
         try {
@@ -2273,6 +2274,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToTermsGroup(UserInfo userInfo, Date termsAgreedDate,
             List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
@@ -2290,6 +2292,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // send JIRA email
             sendJiraNotification(userInfo.getHandle());
             warnings.add(getWarning("Can not add user to terms group", 5001, e));
+
         }
     }
 
