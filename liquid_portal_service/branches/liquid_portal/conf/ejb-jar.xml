@@ -69,5 +69,12 @@
   			<method-name>registerUser</method-name>
   		</method>
   	</method-permission>
+    <method-permission>
+  		<role-name>Liquid Administrator</role-name>
+  		<method>
+  			<ejb-name>LiquidPortalServiceBean</ejb-name>
+  			<method-name>provisionUser</method-name>
+  		</method>
+  	</method-permission>
   </assembly-descriptor>
 </ejb-jar>

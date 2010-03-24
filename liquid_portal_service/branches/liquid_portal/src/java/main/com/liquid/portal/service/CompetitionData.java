@@ -35,7 +35,7 @@ public class CompetitionData implements Serializable {
      * Represents dev contest
      * <p>
      */
-    public static final String DEVELOPEMENT = "Development";
+    public static final String DEVELOPMENT = "Development";
 
     /**
      * <p>

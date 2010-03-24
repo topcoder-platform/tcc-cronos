@@ -258,7 +258,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * It is set in the initialize method. It is used in the business methods.
      * </p>
      */
-    private Map<String, Integer> projectCategories;
+    private Map<String, Long> projectCategories = new HashMap<String, Long>();
 
     /**
      * <p>
@@ -268,7 +268,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * It is set in the initialize method. It is used in the business methods.
      * <p>
      */
-    private Map<String, Integer> studioContestTypes;
+    private Map<String, Integer> studioContestTypes = new HashMap<String, Integer>();
 
     /**
      * <p>
@@ -492,7 +492,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             // Parse projectCategories into name,key values, create
             // HashMap<String,Integer> and add each key/value entry
-            projectCategories = getConfigurationMapValue("projectCategories", configObject);
+            //projectCategories = getConfigurationMapValue("projectCategories", configObject);
+
+            projectCategories.put(CompetitionData.DESIGN, new Long(ProjectCategory.DESIGN.getId()));
+            projectCategories.put(CompetitionData.DEVELOPMENT, new Long(ProjectCategory.DEVELOPMENT.getId()));
 
             // Parse studioContestTypes into name,key values, create
             // HashMap<String,Integer> and add each key/value entry
@@ -713,6 +716,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @RolesAllowed({"Liquid Administrator" })
     public ProvisionUserResult provisionUser(String requestorHandle, String userHandle, boolean hasAccountAccess,
             String[] cockpitProjectNames, long[] billingProjectIds) throws LiquidPortalServiceException {
 
@@ -982,7 +986,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // get user info
             UserInfo requestorInfo = getUserInfo(requestorHandle, methodName);
             // ensure requestorInfo has Notus Eligibility Groups
-            if (userBelongNotusElibilityGroups(requestorInfo)) {
+            if (!userBelongNotusElibilityGroups(requestorInfo)) {
                 // requester does not have Notus Eligibility Groups
                 sessionContext.setRollbackOnly();
                 throw logError(new LiquidPortalServiceException(
@@ -1042,7 +1046,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)) {
                 // get capacity full dates
                 List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(studioContestTypes
-                        .get(competitionData.getSubContestTypeName()), true);
+                        .get(competitionData.getSubContestTypeName()).intValue(), true);
                 // create studio competition with nextAvaliableStartDate, name, contest type etc
                 ContestData data = new ContestData();
                 data.setBillingProject(competitionData.getBillingProjectId());
@@ -1057,7 +1061,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             } else {
                 // get capacity full dates
                 List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(projectCategories
-                        .get(competitionData.getContestTypeName()), false);
+                        .get(competitionData.getContestTypeName()).intValue(), false);
                 // create with nextAvailableStartDate, name, project category etc
                 SoftwareCompetition comp = new SoftwareCompetition();
                 comp.setType(CompetionType.SOFTWARE);
@@ -1090,7 +1094,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.setProjectCategory(ProjectCategory.DESIGN);
                     devHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPEMENT))
+                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
@@ -1140,7 +1144,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     devHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     devHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPEMENT))
+                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
                 {
                     projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
@@ -2244,7 +2248,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
         LiquidPortalServiceException{
         try {
@@ -2275,7 +2278,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToTermsGroup(UserInfo userInfo, Date termsAgreedDate,
             List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
