@@ -2053,10 +2053,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
         }
-        if (!checkString(user.getPhone())) {
+        /*if (!checkString(user.getPhone())) {
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PHONE_NULL_EMPTY), methodName);
-        }
+        }*/
     }
 
     /**
