@@ -1057,8 +1057,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
              // pass request user in context
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            principal.setName(requestorHandle.getHandle());
-            principal.setUserId(requestorHandle.getUserId());
+            principal.setName(requestorInfo.getHandle());
+            principal.setUserId(requestorInfo.getUserId());
 
             ProjectData proj = null;
             List<Warning> warnings = new ArrayList<Warning>();
@@ -1111,18 +1111,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 proj = projectService.createProject(projectData);
                 permissionService.updatePermissions(new Permission[] { getPermission(requestorInfo, proj, type) });
 
-                //FOR NOW, add caller too
-                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long callerId = principal.getUserId();
-                String callerName = principal.getName();
-
-                 Permission permission = new Permission();
-                 permission.setResourceId(proj.getProjectId());
-                 permission.setResourceName(proj.getName());
-                 permission.setUserId(callerId);
-                 permission.setUserHandle(callerName);
-                 permission.setPermissionType(type);
-                 permissionService.updatePermissions(new Permission[] { permission});
 
                 // add waring, project had to be created
                 warnings.add(getWarning(String.format("Project <{0}> does not exist", competitionData
@@ -1737,8 +1725,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
          // pass request user in context
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            principal.setName(requestorHandle.getHandle());
-            principal.setUserId(requestorHandle.getUserId());
+            principal.setName(requestorInfo.getHandle());
+            principal.setUserId(requestorInfo.getUserId());
 
 
         try {
