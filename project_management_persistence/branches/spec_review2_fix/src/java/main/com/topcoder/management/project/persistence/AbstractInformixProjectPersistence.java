@@ -5410,8 +5410,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             queryBuffer.append("select 'has permssion' from user_permission_grant ");
             queryBuffer.append(" where  resource_id =  ").append(tcprojectId).append(" and permission_type_id >= ");
             queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(" "); 
-        
+            queryBuffer.append(" and user_id = ").append(userId).append(" ");  
             preparedStatement = conn.prepareStatement(queryBuffer.toString());
          
             // execute the query and build the result into a list
@@ -5426,7 +5425,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error occurs while executing query ");
+                    "Error occurs while executing query " + e, e);
         } catch (PersistenceException e) {
             
             throw new PersistenceException("There are errors while retrieving the information.", e);
