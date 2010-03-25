@@ -86,6 +86,13 @@
     <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar"/>
 
 
+    <property name="jboss_login_module.version" value="2.1.0"/>
+    <property name="jboss_login_module.jar.name" value="jboss_login_module.jar"/>
+    <property name="jboss_login_module.path" value="jboss_login_module/${jboss_login_module.version}"/>
+    <property name="jboss_login_module.jar"
+              value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}"/>
+
+
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
    <property name="jboss-jaxws.jar" value="${jboss.home}/server/${server.name}/lib/jboss-jaxws.jar"/>
@@ -137,7 +144,8 @@
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${project_management.jar}"/>
         <pathelement location="${resource_management.jar}"/>
-        
+
+        <pathelement location="${jboss_login_module.jar}"/>
 
         <pathelement location="${jbossws-client.jar}"/>
         <pathelement location="${activation.jar}"/>
