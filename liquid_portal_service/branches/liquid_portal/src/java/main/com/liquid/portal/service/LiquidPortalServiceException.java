@@ -47,6 +47,7 @@ package com.liquid.portal.service;
  * @author TCSDEVELOPER
  * @version 1.0
  */
+
 public class LiquidPortalServiceException extends Exception {
 
     /**
@@ -248,6 +249,11 @@ public class LiquidPortalServiceException extends Exception {
      * </p>
      */
     public static final int EC_TERMSAGREEDDATE_IN_FUTURE = 2008;    
+    public static final int EC_HANDLE_TOO_SHORT_OR_TOO_LONG = 2009;
+    public static final int EC_PASSWORD_TOO_SHORT_OR_TOO_LONG = 2010;
+    public static final int EC_HANDLE_CONTAINS_SPECIAL_CHAR = 2011;
+    public static final int EC_PASSWORD_CONTAINS_SPECIAL_CHAR = 2012;
+    
 
     private int errorCode;
 

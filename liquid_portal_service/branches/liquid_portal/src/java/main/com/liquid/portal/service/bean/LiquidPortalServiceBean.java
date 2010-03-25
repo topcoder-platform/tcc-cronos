@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -432,6 +433,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * </p>
      */
     private DocumentGenerator documentGenerator;
+    
+    private Pattern allowedCharacters;
 
     /**
      * <p>
@@ -545,6 +548,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         + " : document_generator_configuration");
             }
             documentGenerator = DocumentGeneratorFactory.getDocumentGenerator(documentGeneratorConfigObject);
+            allowedCharacters = Pattern.compile("[a-zA-Z0-9\\-_\\.\\{\\}\\[\\]\\(\\)]+");
         } catch (DocumentGeneratorConfigurationException e) {
             throw logError(new LiquidPortalServiceConfigurationException(
                     "Error occurs when creating DocumentGenerator", e), methodName);
@@ -871,7 +875,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             String[] targetCockpitProjectNames = new String[cockpitProjects.size()];
             long[] targetBillingProjectIds = new long[billingProjects.size()];
+            System.out.println("before");
             for (int i = 0; i < cockpitProjects.size(); i++) {
+            	System.out.println(cockpitProjects.get(i).getName());
                 targetCockpitProjectNames[i] = cockpitProjects.get(i).getName();
             }
             for (int i = 0; i < billingProjects.size(); i++) {
@@ -1335,6 +1341,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     devHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
                 else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.DEVELOPMENT))
+
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
@@ -1730,17 +1737,33 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
 
         try {
-            // get cockpit project
-            ProjectData proj = projectService.getProjectByName(cockpitProjectName, notusClientId);
-            if (proj == null) {
+
+             // get cockpit project
+            List<ProjectData> tcProjects = projectService.getProjectsByName(cockpitProjectName);
+
+            if (tcProjects == null || tcProjects.size() == 0) {
                 sessionContext.setRollbackOnly();
                 throw logError(new LiquidPortalServiceException(
                         "Can not find project:" + cockpitProjectName), methodName);
             }
-            if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, proj.getProjectId())) {
-                sessionContext.setRollbackOnly();
-                throw logError(new LiquidPortalServiceException("requestor doesn't have permissions", 5003), methodName);
+
+            
+            List<ProjectData> premittedProjects = new ArrayList<ProjectData>();
+
+            for (ProjectData project : tcProjects) {
+
+                if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, project.getProjectId())) {
+                    premittedProjects.add(project);
+                }
             }
+
+            if (premittedProjects.size() == 0)
+            {
+                 sessionContext.setRollbackOnly();
+                    throw logError(new LiquidPortalServiceException("requestor doesn't have permissions", 5003), methodName);
+            }
+
+
 
             // get full control permission type
             PermissionType type = getFullControlPermissionType();
@@ -1753,7 +1776,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             List<Warning> warnings = new ArrayList<Warning>();
             for (UserInfo userInfo : userInfos) {
-                updatePermission(getPermission(userInfo, proj, type), userInfo, warnings);
+                for (ProjectData proj : premittedProjects)
+                {
+                    updatePermission(getPermission(userInfo, proj, type), userInfo, warnings);
+                }
+                
             }
             Result result = new Result();
             result.setWarnings(warnings);
@@ -1768,9 +1795,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException(
                     "Can not find project:" + cockpitProjectName, e), methodName);
-        } catch (AuthorizationFailedFault e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("requestor doesn't have permissions", 5003, e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException(
@@ -2488,7 +2512,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
         }
-
+        if (user.getHandle().length() > 15) {
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_HANDLE_TOO_SHORT_OR_TOO_LONG), methodName);
+        }
+        if (user.getPassword().length() > 30 || user.getPassword().length() < 7) {
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_PASSWORD_TOO_SHORT_OR_TOO_LONG), methodName);
+        }
+        if (!allowedCharacters.matcher(user.getHandle()).matches()) {
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_HANDLE_CONTAINS_SPECIAL_CHAR), methodName);
+        }
+        if (!allowedCharacters.matcher(user.getPassword()).matches()) {
+            throw logError(new LiquidPortalServiceException(
+                    LiquidPortalServiceException.EC_PASSWORD_CONTAINS_SPECIAL_CHAR), methodName);
+        }
+        	
         /*if (!checkString(user.getPhone())) {
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PHONE_NULL_EMPTY), methodName);
