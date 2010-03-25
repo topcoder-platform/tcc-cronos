@@ -29,6 +29,18 @@ import java.util.List;
 @XmlType(name = "contestStatusData", propOrder = { "statusId", "name", "description", "allowableNextStatus",
         "displayIcon" })
 public class ContestStatusData implements Serializable {
+
+
+    /**
+     * Private constant specifying non-active not yet published status id.
+     */
+    public static final long CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED = 1;
+
+    /**
+     * Private constant specifying draft status id.
+     */
+    public static final long CONTEST_DETAILED_STATUS_DRAFT = 15;
+
     /**
      * <p>
      * Represents the status Id.
