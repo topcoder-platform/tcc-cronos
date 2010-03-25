@@ -28,6 +28,24 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "contestTypeData", propOrder = { "contestTypeId", "description", "requirePreviewFile",
         "requirePreviewImage", "config" })
 public class ContestTypeData {
+
+
+    public static final Long WEB_PAGE_DESIGN = new Long(1);
+
+    public static final Long APPLICATION_FRONT_END_DESIGN = new Long(5);
+
+    public static final Long WEB_ELEMENTS = new Long(4);
+
+    public static final Long LOGO_DESIGN = new Long(3);
+
+    public static final Long ICONS = new Long(14);
+
+    public static final Long PRINT_DESIGN = new Long(12);
+
+    public static final Long POWERPOINT_PRESENTATION = new Long(21);
+
+    public static final Long OTHER_STATIC_DESIGN = new Long(18);
+
     /**
      * Represents contestType id.
      */
