@@ -26,6 +26,7 @@ import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.security.auth.login.LoginContext;
 
 import org.jboss.ws.annotation.EndpointConfig;
 
@@ -60,6 +61,7 @@ import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.PipelineServiceFacade;
@@ -105,6 +107,7 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectPropertyType;
+import com.liquid.portal.service.Util;
 
 /**
  * <p>
@@ -125,7 +128,7 @@ import com.topcoder.management.project.ProjectPropertyType;
 @WebService(endpointInterface = "com.liquid.portal.service.LiquidPortalService")
 @EndpointConfig(configName = "Standard WSSecurity Endpoint")
 @DeclareRoles({"Cockpit User", "Cockpit Administrator", "Liquid Administrator" })
-@RolesAllowed({"Cockpit User", "Cockpit Administrator" })
+@RolesAllowed({"Cockpit User", "Cockpit Administrator", "Liquid Administrator" })
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @SuppressWarnings("unused")
@@ -197,6 +200,18 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @EJB(name = "ejb/CatalogService")
     private CatalogService catalogService = null;
+
+    /**
+     * <p>
+     * A <code>PermissionService</code> providing access to available
+     * <code>Permission Service EJB</code>. This bean is delegated to process
+     * the calls for CRUD on permissions.
+     * </p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/PermissionService")
+    private PermissionService permissionService = null;
 
     /**
      * <p>
@@ -496,6 +511,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             projectCategories.put(CompetitionData.DESIGN, new Long(ProjectCategory.DESIGN.getId()));
             projectCategories.put(CompetitionData.DEVELOPMENT, new Long(ProjectCategory.DEVELOPMENT.getId()));
+            projectCategories.put(CompetitionData.ARCHITECTURE, new Long(ProjectCategory.ARCHITECTURE.getId()));
+            projectCategories.put(CompetitionData.TEST_SUITES, new Long(ProjectCategory.TEST_SUITES.getId()));
+            projectCategories.put(CompetitionData.ASSEMBLY, new Long(ProjectCategory.ASSEMBLY.getId()));
+            projectCategories.put(CompetitionData.UI_PROTOTYPES, new Long(ProjectCategory.UI_PROTOTYPES.getId()));
+            projectCategories.put(CompetitionData.SPECIFICATION, new Long(ProjectCategory.SPECIFICATION.getId()));
+            projectCategories.put(CompetitionData.CONCEPTUALIZATION, new Long(ProjectCategory.CONCEPTUALIZATION.getId()));
+            projectCategories.put(CompetitionData.RIA_BUILD, new Long(ProjectCategory.RIA_BUILD.getId()));
+            projectCategories.put(CompetitionData.RIA_COMPONENT, new Long(ProjectCategory.RIA_COMPONENT.getId()));
+            projectCategories.put(CompetitionData.TEST_SCENARIOS, new Long(ProjectCategory.TEST_SCENARIOS.getId()));
 
             // Parse studioContestTypes into name,key values, create
             // HashMap<String,Integer> and add each key/value entry
@@ -651,6 +675,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         final String methodName = "validateUser";
         logEntrance(methodName);
 
+        //LoginContext lc = Util.login();
+
         // check the argument
         checkUserInfo(user, methodName);
 
@@ -676,7 +702,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         result.setWarnings(warnings);
         result.setMessage("Validation is successful for user "+user.getHandle());
+
+        //Util.logout(lc);
         logExit(methodName);
+
         return result;
     }
 
@@ -778,6 +807,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             for (String projectName :  cockpitProjectNames)
             {
                 List<ProjectData> tcProjects = projectService.getProjectsByName(projectName);
+
                 if (tcProjects != null && tcProjects.size() > 0)
                 {
                     for (ProjectData project : tcProjects) {
@@ -1015,7 +1045,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             try {
                 // get cockpit project
-                proj = projectService.getProjectByName(competitionData.getCockpitProjectName(), notusClientId);
+                List<ProjectData> tcProjects = projectService.getProjectsByName(competitionData.getCockpitProjectName());
+
+                if (tcProjects == null || tcProjects.size() == 0)
+                {
+                    proj = null;
+                }
+                else
+                {
+                    //TODO same name???
+                    proj = tcProjects.get(0);
+                }
             } catch (ProjectNotFoundFault e) {
                 // the cockpit project doesn't exist
                 proj = null;
@@ -1033,10 +1073,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             } else {
                 ProjectData projectData = new ProjectData();
                 projectData.setName(competitionData.getCockpitProjectName());
-                projectData.setProjectId(competitionData.getBillingProjectId());
                 proj = projectService.createProject(projectData);
-                contestServiceFacade.updatePermissions(new Permission[] { getPermission(requestorInfo, projectData,
-                        type) });
+                permissionService.updatePermissions(new Permission[] { getPermission(requestorInfo, proj, type) });
+
+
                 // add waring, project had to be created
                 warnings.add(getWarning(String.format("Project <{0}> does not exist", competitionData
                         .getCockpitProjectName()), 5008, null));
@@ -1089,6 +1129,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project();
                 // default to create dev too
                 com.topcoder.management.project.Project devHeader = new com.topcoder.management.project.Project();
+
                 if (competitionData.getContestTypeName().equals(CompetitionData.DESIGN))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DESIGN);
@@ -1098,6 +1139,48 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.ARCHITECTURE))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.ARCHITECTURE);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SUITES))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.TEST_SUITES);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.ASSEMBLY))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.ASSEMBLY);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.UI_PROTOTYPES))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.UI_PROTOTYPES);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.SPECIFICATION))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.SPECIFICATION);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.CONCEPTUALIZATION))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.CONCEPTUALIZATION);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_BUILD))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.RIA_BUILD);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_COMPONENT))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.RIA_COMPONENT);
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SCENARIOS))
+                {
+                    projectHeader.setProjectCategory(ProjectCategory.TEST_SCENARIOS);
+                }
+
+
                 projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
 
                 ProjectSpec spec = new ProjectSpec();
@@ -1118,6 +1201,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 projectHeader.getProperties().put(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
                 projectHeader.getProperties().put(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
                 projectHeader.getProperties().put(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
+                projectHeader.getProperties().put(ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, String.valueOf(asset.getRootCategory()));
+                if (competitionData.getCca())
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "CCA");
+                }
+                else
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "public");
+                }
 
                 if (competitionData.getContestTypeName().equals(CompetitionData.DESIGN))
                 {
@@ -1131,6 +1223,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
 
                     devHeader.setProperties(projectHeader.getProperties());
                     devHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
@@ -1143,6 +1236,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     devHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     devHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     devHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    devHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
                 {
@@ -1156,10 +1250,141 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.ARCHITECTURE))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SUITES))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.ASSEMBLY))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.UI_PROTOTYPES))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.SPECIFICATION))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.CONCEPTUALIZATION))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_BUILD))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_COMPONENT))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }
+                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SCENARIOS))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
                 }
 
+
                 comp.setProjectHeader(projectHeader);
-                comp.setDevelopmentProjectHeader(devHeader);
+                if (competitionData.getAutoCreateDev())
+                {
+                    comp.setDevelopmentProjectHeader(devHeader);
+                }
 
                 comp.setProjectPhases(new com.topcoder.project.phases.Project());
                 comp.setProjectResources(new com.topcoder.management.resource.Resource[0]);
@@ -1193,11 +1418,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
-        } catch (AuthorizationFailedFault e) {
-            // have no permissions
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException(
-                    requestorHandle + " has no permission to perform the action", 5003, e), methodName);
         } catch (IllegalArgumentFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
@@ -2027,6 +2247,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_HANDLE_NULL_EMPTY), methodName);
         }
+        
+
     }
 
     /**
@@ -2057,6 +2279,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PASSWORD_NULL_EMPTY), methodName);
         }
+
         /*if (!checkString(user.getPhone())) {
             throw logError(new LiquidPortalServiceException(
                     LiquidPortalServiceException.EC_USER_PHONE_NULL_EMPTY), methodName);
@@ -2177,6 +2400,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         try {
             XMLGregorianCalendar requestDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+
+            if (capacityDates == null || capacityDates.size() == 0)
+            {
+                return requestDate;
+            }
 
             if (!isContains(capacityDates, requestDate)) {
                 return requestDate;
@@ -2346,7 +2574,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             List<Category> cats = catalogService.getActiveCategories();
             for (Category cat : cats )
             {
-                if (cat.getParentCategory() == null 
+                if (cat.getParentCategory() != null 
                         && cat.getParentCategory().getId() == parent.getId()
                         && cat.getName().equals("Not Set"))
                 {

@@ -49,11 +49,7 @@
         	 <ejb-ref-type>Session</ejb-ref-type>
         	 <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
        	</ejb-ref>
-      <!--  <ejb-ref>
-        	 <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
-        	 <ejb-ref-type>Session</ejb-ref-type>
-        	 <remote>com.topcoder.catalog.service.CatalogServiceRemote</remote>
-       	</ejb-ref>-->
+     
     </session>
   </enterprise-beans>
 

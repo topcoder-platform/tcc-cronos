@@ -14,6 +14,11 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
+import javax.security.auth.login.*;
+import org.jboss.security.auth.callback.*;
+import javax.security.auth.*;
+import java.security.*;
+
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.ConfigManagerInterface;
@@ -278,6 +283,42 @@ public class Util implements ConfigManagerInterface {
         } catch (ConfigManagerException e) {
             e.printStackTrace();
             throw new LiquidPortalServiceException("ConfigManagerException in com.topcoder.security.Util.encodePassword: " + e.getMessage());
+        }
+    }
+
+    public static LoginContext login() throws LiquidPortalServiceException
+    {
+        System.out.println("------------------------------------------------------------------------------");
+        try
+        {
+            String username = "heffan";        
+            String password  = "password";        
+            UsernamePasswordHandler handler = new UsernamePasswordHandler(username, password.toCharArray());        
+            LoginContext lc = new LoginContext("JBossLoginModule", handler);        
+            lc.login();
+            System.out.println("-------------subject "+lc.getSubject());
+            for (Principal  p: lc.getSubject().getPrincipals() )
+            {
+                System.out.println("-----------principal "+ p);
+            }
+            return lc;
+        }
+        catch (LoginException le)
+        {
+            throw new LiquidPortalServiceException("login error " + le);
+        }
+        
+    }
+
+    public static void logout(LoginContext lc) throws LiquidPortalServiceException
+    {       
+        try
+        {
+            lc.logout();
+        }
+        catch (LoginException le)
+        {
+            throw new LiquidPortalServiceException("login error " + le);
         }
     }
 

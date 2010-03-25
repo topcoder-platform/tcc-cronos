@@ -39,10 +39,136 @@ public class CompetitionData implements Serializable {
 
     /**
      * <p>
+     * Represents arch
+     * <p>
+     */
+    public static final String ARCHITECTURE = "Architecture";
+
+    /**
+     * <p>
+     * Represents Test Suites
+     * <p>
+     */
+    public static final String TEST_SUITES = "Test Suites";
+
+
+
+    /**
+     * <p>
+     * Represents Assembly Competition
+     * <p>
+     */
+    public static final String ASSEMBLY = "Assembly Competition";
+
+    /**
+     * <p>
+     * Represents UI Prototypes
+     * <p>
+     */
+    public static final String UI_PROTOTYPES = "UI Prototypes";
+
+    /**
+     * <p>
+     * Represents Specification
+     * <p>
+     */
+    public static final String SPECIFICATION = "Specification";
+
+    /**
+     * <p>
+     * Represents Conceptualization
+     * <p>
+     */
+    public static final String CONCEPTUALIZATION = "Conceptualization";
+
+    /**
+     * <p>
+     * Represents RIA Build
+     * <p>
+     */
+    public static final String RIA_BUILD = "RIA Build";
+
+    /**
+     * <p>
+     * Represents RIA Component
+     * <p>
+     */
+    public static final String RIA_COMPONENT = "RIA Component";
+
+    /**
+     * <p>
+     * Represents Test Scenarios
+     * <p>
+     */
+    public static final String TEST_SCENARIOS = "Test Scenarios";
+
+    /**
+     * <p>
      * Represents studio contest
      * <p>
      */
     public static final String STUDIO = "Studio";
+
+
+    /**
+     * <p>
+     * Represents studio Web Page Design
+     * <p>
+     */
+    public static final String STUDIO_WEB_PAGE_DESIGN = "Web Page Design";
+
+    /**
+     * <p>
+     * Represents studio Application Front End Design
+     * <p>
+     */
+    public static final String STUDIO_APPLICATION_FRONT_END_DESIGN = "Application Front End Design";
+
+    /**
+     * <p>
+     * Represents studio Web Elements
+     * <p>
+     */
+    public static final String STUDIO_WEB_ELEMENTS = "Web Elements";
+
+
+    /**
+     * <p>
+     * Represents studio Logo Design
+     * <p>
+     */
+    public static final String STUDIO_LOGO_DESIGN = "Logo Design";
+
+
+    /**
+     * <p>
+     * Represents studio Icons
+     * <p>
+     */
+    public static final String STUDIO_ICONS = "Icons";
+
+     /**
+     * <p>
+     * Represents studio Print Design
+     * <p>
+     */
+    public static final String STUDIO_PRINT_DESIGN = "Print Design";
+
+
+    /**
+     * <p>
+     * Represents studio Logo Design
+     * <p>
+     */
+    public static final String STUDIO_POWERPOINT_PRESENTATION = "PowerPoint Presentation";
+
+
+    /**
+     * <p>
+     * Represents studio Other Static Design
+     * <p>
+     */
+    public static final String STUDIO_OTHER_STATIC_DESIGN = "Other Static Design";
 
     /**
      * <p>
@@ -133,6 +259,28 @@ public class CompetitionData implements Serializable {
      * </p>
      */
     private boolean cca;
+
+    /**
+     * <p>
+     * Represents the flag whether creating design should auto create dev
+     * </p>
+     * <p>
+     * It is set in the setter. It can be retrieved in the getter.
+     * </p>
+     */ 
+     private boolean autoCreateDev;
+
+
+     /**
+     * <p>
+     * Represents the flag whether dev contest is dev only
+     * </p>
+     * <p>
+     * It is set in the setter. It can be retrieved in the getter.
+     * </p>
+     */ 
+     private boolean devOnly;
+
 
     /**
      * <p> Default empty constructor. </p>
@@ -326,5 +474,52 @@ public class CompetitionData implements Serializable {
      */
     public void setCca(boolean cca) {
         this.cca = cca;
+    }
+
+
+    /**
+     * <p>
+     * Gets the flag whether to auto create dev
+     * </p>
+     *
+     * @return the flag whether the contest should be created with CCA terms
+     */
+    public boolean getAutoCreateDev() {
+        return autoCreateDev;
+    }
+
+    /**
+     * <p>
+     * Gets the flag whether to auto create dev
+     * </p>
+     *
+     * @param autoCreateDev
+     *            the flag whether the contest should be created with CCA terms
+     */
+    public void setAutoCreateDev(boolean autoCreateDev) {
+        this.autoCreateDev = autoCreateDev;
+    }
+
+     /**
+     * <p>
+     * Gets the flag whether it is dev only
+     * </p>
+     *
+     * @return the flag whether the contest should be created with CCA terms
+     */
+    public boolean getDevOnly() {
+        return devOnly;
+    }
+
+    /**
+     * <p>
+     * Gets the flag whether it is dev only
+     * </p>
+     *
+     * @param autoCreateDev
+     *            the flag whether the contest should be created with CCA terms
+     */
+    public void setDevOnly(boolean devOnly) {
+        this.devOnly = devOnly;
     }
 }

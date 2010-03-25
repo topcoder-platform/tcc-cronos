@@ -8,7 +8,11 @@
         <ejb-ref>
                 <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
                 <jndi-name>CatalogService/remote</jndi-name>
-            </ejb-ref>
+       </ejb-ref>
+       <ejb-ref>
+               <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
+                <jndi-name>PermissionServiceBean/remote</jndi-name>
+       </ejb-ref>
 
         <port-component>
 				<port-component-name>LiquidPortalServiceBean</port-component-name>
