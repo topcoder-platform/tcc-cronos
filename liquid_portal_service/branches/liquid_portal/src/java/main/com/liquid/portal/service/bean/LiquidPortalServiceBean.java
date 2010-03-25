@@ -107,7 +107,12 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectPropertyType;
+import com.topcoder.service.studio.ContestTypeData;
+import com.topcoder.service.studio.PrizeData;
+import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.MediumData;
 import com.liquid.portal.service.Util;
+import com.topcoder.security.auth.module.UserProfilePrincipal;
 
 /**
  * <p>
@@ -283,7 +288,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * It is set in the initialize method. It is used in the business methods.
      * <p>
      */
-    private Map<String, Integer> studioContestTypes = new HashMap<String, Integer>();
+    private Map<String, Long> studioContestTypes = new HashMap<String, Long>();
 
     /**
      * <p>
@@ -523,7 +528,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             // Parse studioContestTypes into name,key values, create
             // HashMap<String,Integer> and add each key/value entry
-            studioContestTypes = getConfigurationMapValue("studioContestTypes", configObject);
+            //studioContestTypes = getConfigurationMapValue("studioContestTypes", configObject);
+
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_PAGE_DESIGN, ContestTypeData.WEB_PAGE_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN, ContestTypeData.APPLICATION_FRONT_END_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_ELEMENTS, ContestTypeData.WEB_ELEMENTS);
+            studioContestTypes.put(CompetitionData.STUDIO_LOGO_DESIGN, ContestTypeData.LOGO_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_ICONS, ContestTypeData.ICONS);
+            studioContestTypes.put(CompetitionData.STUDIO_PRINT_DESIGN, ContestTypeData.PRINT_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_POWERPOINT_PRESENTATION, ContestTypeData.POWERPOINT_PRESENTATION);
+            studioContestTypes.put(CompetitionData.STUDIO_OTHER_STATIC_DESIGN, ContestTypeData.OTHER_STATIC_DESIGN);
+
             ConfigurationObject documentGeneratorConfigObject = config.getChild("document_generator_configuration");
             if (documentGeneratorConfigObject == null) {
                 throw new LiquidPortalServiceConfigurationException("Failed to get child configuration object "
@@ -1010,6 +1025,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 throw logError(new LiquidPortalServiceException(
                         "support handle is not in Notus Eligibility Groups", 5004), methodName);
             }
+            supportInfos.add(user);
         }
 
         try {
@@ -1032,7 +1048,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         + " has no permission to perform the action", 5003), methodName);
             }
 
-            ProjectData proj;
+            ProjectData proj = null;
             List<Warning> warnings = new ArrayList<Warning>();
             // get full control permission type which type id is fullControlPermissionTypeId
             PermissionType type = getFullControlPermissionType();
@@ -1053,8 +1069,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else
                 {
-                    //TODO same name???
-                    proj = tcProjects.get(0);
+                    for (ProjectData pjj :  tcProjects)
+                    {
+                        if (checkPermission(contestServiceFacade
+                            .getPermissions(requestorInfo.getUserId(), pjj.getProjectId())))
+                        {
+                            proj = pjj;
+                            break;
+                        }
+                    }
                 }
             } catch (ProjectNotFoundFault e) {
                 // the cockpit project doesn't exist
@@ -1076,6 +1099,18 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 proj = projectService.createProject(projectData);
                 permissionService.updatePermissions(new Permission[] { getPermission(requestorInfo, proj, type) });
 
+                //FOR NOW, add caller too
+                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                long callerId = principal.getUserId();
+                String callerName = principal.getName();
+
+                 Permission permission = new Permission();
+                 permission.setResourceId(proj.getProjectId());
+                 permission.setResourceName(proj.getName());
+                 permission.setUserId(callerId);
+                 permission.setUserHandle(callerName);
+                 permission.setPermissionType(type);
+                 permissionService.updatePermissions(new Permission[] { permission});
 
                 // add waring, project had to be created
                 warnings.add(getWarning(String.format("Project <{0}> does not exist", competitionData
@@ -1088,16 +1123,180 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(studioContestTypes
                         .get(competitionData.getSubContestTypeName()).intValue(), true);
                 // create studio competition with nextAvaliableStartDate, name, contest type etc
+
                 ContestData data = new ContestData();
                 data.setBillingProject(competitionData.getBillingProjectId());
                 data.setName(competitionData.getContestName());
                 data.setProjectId(proj.getProjectId());
-                StudioCompetition comp = new StudioCompetition(data);
-                comp.setType(CompetionType.STUDIO);
+                data.setTcDirectProjectId(proj.getProjectId());
+                data.setTcDirectProjectName(proj.getName());
+
+                List<PrizeData> prizes = new ArrayList<PrizeData>();
+                if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_PAGE_DESIGN))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(1250.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(250.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.WEB_PAGE_DESIGN);
+                    
+                }
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(1250.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(250.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.APPLICATION_FRONT_END_DESIGN);
+                    
+                }
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(350.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(70.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(250);
+                    data.setContestTypeId(ContestTypeData.WEB_ELEMENTS);
+                    
+                }
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(350.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(70.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(250);
+                    data.setContestTypeId(ContestTypeData.LOGO_DESIGN);
+                    
+                }
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_ICONS))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(350.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(70.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(250);
+                    data.setContestTypeId(ContestTypeData.ICONS);
+                    
+                }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(750.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(150.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(250);
+                    data.setContestTypeId(ContestTypeData.PRINT_DESIGN);
+                    
+                }
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(500.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(100.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(250);
+                    data.setContestTypeId(ContestTypeData.POWERPOINT_PRESENTATION);
+                    
+                }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(750.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(100.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.OTHER_STATIC_DESIGN);
+                    
+                }
+                
+                data.setPrizes(prizes);
+                data.setContestChannelId(2);
+                data.setShortSummary("NA");
+                data.setContestDescriptionAndRequirements("NA");
+                    //data.setCreatorUserId();
+                data.setMaximumSubmissions(3);
+                data.setRequiresPreviewImage(true);
+                data.setRequiresPreviewFile(false);
+                data.setSubmissionCount(0);
+                data.setEligibility("NA");
+                data.setMedia(new ArrayList<MediumData>());
+                data.setFinalFileFormat("");
+                data.setForumId(-1);
+                data.setStatusId(ContestStatusData.CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
+                data.setDetailedStatusId(ContestStatusData.CONTEST_DETAILED_STATUS_DRAFT);
+                
+
                 XMLGregorianCalendar nextAvailableStartDate = getNextAvailableStartDate(competitionData
                         .getRequestedStartDate(), capacityDatas, competitionData.getAutoReschedule(), methodName);
+
+                data.setLaunchDateAndTime(nextAvailableStartDate);
+                data.setDurationInHours(24 * 3);  
+                data.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(new Date((long) (getDate(nextAvailableStartDate).getTime() +
+                                (2 * 60L * 60 * 1000 * data.getDurationInHours())))));  
+
+                StudioCompetition comp = new StudioCompetition(data);
+                comp.setType(CompetionType.STUDIO);
                 comp.setStartTime(nextAvailableStartDate);
-                result.setCompetition(contestServiceFacade.createContest(comp, proj.getProjectId()));
+
+                comp = contestServiceFacade.createContest(comp, proj.getProjectId());
+
+                result.setCompetition(comp);
+                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId());
+
             } else {
                 // get capacity full dates
                 List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(projectCategories
@@ -1130,52 +1329,52 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 // default to create dev too
                 com.topcoder.management.project.Project devHeader = new com.topcoder.management.project.Project();
 
-                if (competitionData.getContestTypeName().equals(CompetitionData.DESIGN))
+                if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.DESIGN))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DESIGN);
                     devHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.DEVELOPMENT))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.DEVELOPMENT))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.DEVELOPMENT);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.ARCHITECTURE))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.ARCHITECTURE))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.ARCHITECTURE);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SUITES))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.TEST_SUITES))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.TEST_SUITES);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.ASSEMBLY))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.ASSEMBLY))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.ASSEMBLY);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.UI_PROTOTYPES))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.UI_PROTOTYPES))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.UI_PROTOTYPES);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.SPECIFICATION))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.SPECIFICATION))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.SPECIFICATION);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.CONCEPTUALIZATION))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.CONCEPTUALIZATION))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.CONCEPTUALIZATION);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_BUILD))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.RIA_BUILD))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.RIA_BUILD);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_COMPONENT))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.RIA_COMPONENT))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.RIA_COMPONENT);
                 }
-                else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SCENARIOS))
+                else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.TEST_SCENARIOS))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.TEST_SCENARIOS);
                 }
@@ -1389,12 +1588,16 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp.setProjectPhases(new com.topcoder.project.phases.Project());
                 comp.setProjectResources(new com.topcoder.management.resource.Resource[0]);
 
-                result.setCompetition(contestServiceFacade.createSoftwareContest(comp, proj.getProjectId()));
+                comp = contestServiceFacade.createSoftwareContest(comp, proj.getProjectId());
+
+                result.setCompetition(comp);
+                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId());
             }
 
             for (UserInfo supportInfo : supportInfos) {
                 updatePermission(getPermission(supportInfo, proj, type), supportInfo, warnings);
             }
+
             result.setWarnings(warnings);
             logExit(methodName);
             return result;
@@ -2588,6 +2791,57 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         }
         return null;
     }
+
+
+    /**
+     * <p>
+     * Converts specified <code>XMLGregorianCalendar</code> instance into
+     * <code>Date</code> instance.
+     * </p>
+     *
+     * @param calendar
+     *            an <code>XMLGregorianCalendar</code> representing the date to
+     *            be converted.
+     * @return a <code>Date</code> providing the converted value of specified
+     *         calendar or <code>null</code> if specified <code>calendar</code>
+     *         is <code>null</code>.
+     */
+    private Date getDate(XMLGregorianCalendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+
+        return calendar.toGregorianCalendar().getTime();
+    }
+
+    /**
+     * <p>
+     * Converts specified <code>Date</code> instance into
+     * <code>XMLGregorianCalendar</code> instance.
+     * </p>
+     *
+     * @param date
+     *            a <code>Date</code> representing the date to be converted.
+     * @return a <code>XMLGregorianCalendar</code> providing the converted value
+     *         of specified date or <code>null</code> if specified
+     *         <code>date</code> is <code>null</code> or if it can't be
+     *         converted to calendar.
+     */
+    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            return null;
+        }
+    }
+
 
     
 }
