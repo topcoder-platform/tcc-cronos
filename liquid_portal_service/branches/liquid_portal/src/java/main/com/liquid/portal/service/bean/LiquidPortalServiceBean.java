@@ -805,6 +805,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     methodName);
         }
 
+            // pass request user in context
+            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            principal.setName(requestorUserInfo.getHandle());
+            principal.setUserId(requestorUserInfo.getUserId());
+
+
         try {
             // get full control permission type which type id is
             // fullControlPermissionTypeId
@@ -1047,6 +1053,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 throw logError(new LiquidPortalServiceException(requestorHandle
                         + " has no permission to perform the action", 5003), methodName);
             }
+
+
+             // pass request user in context
+            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            principal.setName(requestorHandle.getHandle());
+            principal.setUserId(requestorHandle.getUserId());
 
             ProjectData proj = null;
             List<Warning> warnings = new ArrayList<Warning>();
@@ -1722,6 +1734,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException(
                     "requestor handle is not in Notus Eligibility Groups", 5011), methodName);
         }
+
+         // pass request user in context
+            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            principal.setName(requestorHandle.getHandle());
+            principal.setUserId(requestorHandle.getUserId());
+
 
         try {
             // get cockpit project
