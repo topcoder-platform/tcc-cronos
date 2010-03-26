@@ -1484,25 +1484,25 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.ARCHITECTURE))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
-                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "682.5");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "300");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SUITES))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "325");
                     projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
                     projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
@@ -1514,7 +1514,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 {
                     projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
                     projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
@@ -1526,81 +1526,81 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.UI_PROTOTYPES))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
                     projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.SPECIFICATION))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
-                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "455");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "300");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.CONCEPTUALIZATION))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
-                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "455");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "300");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_BUILD))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
-                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "455");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "300");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_COMPONENT))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
-                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "455");
+                    projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "300");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
-                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
-                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                    projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1000");
+                    projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
-                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                    projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1000");
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SCENARIOS))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
-                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
+                    projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
+                    projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "325");
                     projectHeader.getProperties().put(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, "150");
                     projectHeader.getProperties().put(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, "0");
                     projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "500");
