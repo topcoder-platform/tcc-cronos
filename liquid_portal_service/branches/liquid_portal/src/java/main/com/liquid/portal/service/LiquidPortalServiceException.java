@@ -3,6 +3,9 @@
  */
 package com.liquid.portal.service;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * <p>
  * This exception is the base exception for all exceptions raised from operations from LiquidPortalService.
@@ -102,7 +105,7 @@ public class LiquidPortalServiceException extends Exception {
      * Error code for user.phone is null/empty.
      * </p>
      */
-    public static final int EC_USER_PHONE_NULL_EMPTY = 2006;
+    //public static final int EC_USER_PHONE_NULL_EMPTY = 2006;
 
     /**
      * <p>
@@ -248,14 +251,92 @@ public class LiquidPortalServiceException extends Exception {
      * Error code for termsAgreedDate in the future.
      * </p>
      */
-    public static final int EC_TERMSAGREEDDATE_IN_FUTURE = 2008;    
-    public static final int EC_HANDLE_TOO_SHORT_OR_TOO_LONG = 2009;
-    public static final int EC_PASSWORD_TOO_SHORT_OR_TOO_LONG = 2010;
-    public static final int EC_HANDLE_CONTAINS_SPECIAL_CHAR = 2011;
-    public static final int EC_PASSWORD_CONTAINS_SPECIAL_CHAR = 2012;
+    public static final int EC_TERMSAGREEDDATE_IN_FUTURE = 2008;  
+    
+    public static final int EC_HANDLE_TOO_SHORT_OR_TOO_LONG = 2010;
+    public static final int EC_PASSWORD_TOO_SHORT_OR_TOO_LONG = 2011;
+    public static final int EC_HANDLE_CONTAINS_SPECIAL_CHAR = 2012;
+    public static final int EC_PASSWORD_CONTAINS_SPECIAL_CHAR = 2013;
+
+    public static final int EC_HANDLE_NOT_UNIQUE = 2009;   
     
 
+    public static final int EC_CANNOT_ADD_USER_TO_GROUPS = 5000;   
+
+    public static final int EC_CANNOT_ADD_USER_TO_TERMS = 5001;   
+
+    public static final int EC_USER_INFO_DOESNOT_MATCH_WITH_PERSISTENCE = 5002;  
+    
+    public static final int EC_INVALID_REQUESTOR_HANDLE = 5004;  
+
+    public static final int EC_INVALID_USER_HANDLES = 5011;  
+
+    public static final int EC_INVALID_COCKPIT_PROJECT = 5006;  
+
+    public static final int EC_INVALID_BILLING_PROJECT = 5007;  
+
+    public static final int EC_ACTION_NOT_PERMITTED = 5003; 
+
+    public static final int EC_PROJECT_DOESNOT_EXIST = 5008; 
+
+    public static final int EC_START_DATE_NOT_AVAILABLE = 5009; 
+
+    public static final int EC_FAIL_TO_ASSIGN_PERMISSION = 5013; 
+
+    public static final int EC_HANDLE_DOESNOT_EXIST = 5014; 
+
+
     private int errorCode;
+
+    private static Map<Integer, String> errorMessages = new HashMap<Integer, String>();
+
+    static {
+
+        errorMessages.put(EC_USER_NULL, "User is null.");
+        errorMessages.put(EC_USER_FIRSTNAME_NULL_EMPTY, "First Name is null or emtpy.");
+        errorMessages.put(EC_USER_LASTNAME_NULL_EMPTY, "Last Name is null or emtpy.");
+        errorMessages.put(EC_USER_EMAIL_NULL_EMPTY, "User email is null or empty.");
+        errorMessages.put(EC_USER_PASSWORD_NULL_EMPTY, "Password is null or emtpy.");
+        errorMessages.put(EC_USER_HANDLE_NULL_EMPTY, "User.Handle is null or emtpy.");
+        errorMessages.put(EC_REQUESTORHANDLE_NULL_EMPTY, "Requestor Handle is null or empty.");
+        errorMessages.put(EC_USERHANDLE_NULL_EMPTY, "User Handle is null or emtpy.");
+        errorMessages.put(EC_COCKPITPROJECTNAMES_NULL_EMPTY, "Cockpit Project Names is null or emtpy.");
+        errorMessages.put(EC_BILLINGPROJECTIDS_NULL_EMPTY, "Billing Projects is null or empty.");
+        errorMessages.put(EC_COMPETITIONDATA_NULL, "Competition Data is null or emtpy.");
+        errorMessages.put(EC_SUPPORTHANDLES_NULL, "Support Hanldes is null or emtpy.");
+        errorMessages.put(EC_CONTESTTYPENAME_NULL_EMPTY, "Contest Type Name is null.");
+        errorMessages.put(EC_CONTESTTYPENAME_NULL_EMPTY, "Support Hanldes contains null or emtpy element.");
+        errorMessages.put(EC_CONTESTNAME_NULL_EMPTY, "Contest Name is null or emtpy.");
+        errorMessages.put(EC_COCKPITPROJECTNAME_NULL_EMPTY, "Cockpit Project Name is null or empty.");
+        errorMessages.put(EC_REQUESTEDSTARTDATE_IN_PAST, "Request Start Date is null or emtpy.");
+        errorMessages.put(EC_INVALID_CONTESTTYPENAME, "Invalid Contest Type Name.");
+        errorMessages.put(EC_INVALID_SUBCONTESTTYPENAME, "Invalid Studio SubContest Type Name.");
+        errorMessages.put(EC_HANDLES_NULL_EMPTY, "Handles is null or empty.");
+        errorMessages.put(EC_HANDLES_CONTAINS_NULL_EMPTY, "Hanldes contains null or emtpy element.");
+        errorMessages.put(EC_REASON_EMPTY, "Reason is null or emtpy.");
+        errorMessages.put(EC_TERMSAGREEDDATE_NULL, "Terms Agreed Date is null or empty.");
+        errorMessages.put(EC_TERMSAGREEDDATE_IN_FUTURE, "Terms Agreed Date is in the future.");
+        errorMessages.put(EC_HANDLE_TOO_SHORT_OR_TOO_LONG, "Handle length must be less than or equal to 15.");
+        errorMessages.put(EC_PASSWORD_TOO_SHORT_OR_TOO_LONG, "Password length must be between 7 and 30.");
+        errorMessages.put(EC_HANDLE_CONTAINS_SPECIAL_CHAR, "Handle contains special characters.");
+        errorMessages.put(EC_PASSWORD_CONTAINS_SPECIAL_CHAR, "Password contains special characters.");
+        errorMessages.put(EC_CANNOT_ADD_USER_TO_GROUPS, "Can not add user to notusEligibilityGroup.");
+        errorMessages.put(EC_CANNOT_ADD_USER_TO_TERMS, "Can not add user to terms group.");
+        errorMessages.put(EC_HANDLE_NOT_UNIQUE, "Handle is not unique.");
+        errorMessages.put(EC_USER_INFO_DOESNOT_MATCH_WITH_PERSISTENCE, "User info doesn't math with persisted user info.");
+        errorMessages.put(EC_INVALID_REQUESTOR_HANDLE, "Requestor handle is not in Notus Eligibility Groups.");
+        errorMessages.put(EC_INVALID_USER_HANDLES, "User Handle is not in Notus Eligibility Groups.");
+        errorMessages.put(EC_INVALID_COCKPIT_PROJECT, "Invalid Cockpit Project.");
+        errorMessages.put(EC_INVALID_BILLING_PROJECT, "Invalid Billing Project.");
+        errorMessages.put(EC_ACTION_NOT_PERMITTED, "Action is not permitted.");
+        errorMessages.put(EC_PROJECT_DOESNOT_EXIST, "Project does not exist.");
+        errorMessages.put(EC_START_DATE_NOT_AVAILABLE, "Start date is not available.");
+        errorMessages.put(EC_FAIL_TO_ASSIGN_PERMISSION, "Fail to assign permission.");
+        errorMessages.put(EC_HANDLE_DOESNOT_EXIST, "Handle doset not exist.");
+
+        
+
+    }
 
     /**
      * <p>
@@ -325,9 +406,32 @@ public class LiquidPortalServiceException extends Exception {
         this.errorCode = errorCode;
     }
 
+    @Override public String getMessage()
+    {
+
+        if (super.getMessage() != null)
+        {
+            return super.getMessage();
+        }
+
+        return getMessage(this.errorCode);
+    }
+
     
     public int getErrorCode()
     {
         return this.errorCode;
+    }
+
+    public String getMessage(int errorCode)
+    {
+        String msg = errorMessages.get(errorCode);
+
+        if (msg != null)
+        {
+            return msg;
+        }
+
+        return "Liquid Portal Service Error.";
     }
 }
