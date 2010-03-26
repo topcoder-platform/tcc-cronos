@@ -720,7 +720,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         }
 
         result.setWarnings(warnings);
-        result.setMessage("Validation is successful for user "+user.getHandle());
+        result.setMessage("Validation is successful for user " + user.getHandle() + ".");
 
         //Util.logout(lc);
         logExit(methodName);
@@ -897,6 +897,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
             }
             result.setWarnings(warnings);
+            result.setMessage("ProvisionUser is successful for user " + userHandle + ".");
             logExit(methodName);
             return result;
         } catch (PersistenceFault e) {
@@ -1301,7 +1302,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp = contestServiceFacade.createContest(comp, proj.getProjectId());
 
                 result.setCompetition(comp);
-                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId());
+                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
 
             } else {
                 // get capacity full dates
@@ -1598,7 +1599,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp = contestServiceFacade.createSoftwareContest(comp, proj.getProjectId());
 
                 result.setCompetition(comp);
-                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId());
+                result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId() + ".");
             }
 
             for (UserInfo supportInfo : supportInfos) {
@@ -1783,6 +1784,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 
             }
             Result result = new Result();
+            result.setMessage("ProvisionProject is successful for cockpit project " + cockpitProjectName + ".");
             result.setWarnings(warnings);
             logExit(methodName);
             return result;
