@@ -28,6 +28,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.security.auth.login.LoginContext;
+import com.topcoder.service.pipeline.CapacityData;
 
 import org.jboss.ws.annotation.EndpointConfig;
 
@@ -809,8 +810,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     methodName);
         }
 
+            
             // pass request user in context
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String oldName = principal.getName();
+            long oldId = principal.getUserId();
+
             principal.setName(requestorUserInfo.getHandle());
             principal.setUserId(requestorUserInfo.getUserId());
 
@@ -896,6 +901,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     warnings.add(getWarning("Billing Project id '" + id + "' is invalid", 5007, null));
                 }
             }
+
             result.setWarnings(warnings);
             result.setMessage("ProvisionUser is successful for user " + userHandle + ".");
             logExit(methodName);
@@ -920,6 +926,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when provision user:" + userHandle, e),
                     methodName);
+        }
+        finally
+        {
+            if (oldName != null)
+            {
+                principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                principal.setName(oldName);
+                principal.setUserId(oldId);
+            }
         }
     }
 
@@ -1041,6 +1056,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             supportInfos.add(user);
         }
 
+        String oldName = null;
+        long oldId = 0;
+
         try {
             // get user info
             UserInfo requestorInfo = getUserInfo(requestorHandle, methodName);
@@ -1064,6 +1082,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
              // pass request user in context
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            oldName = principal.getName();
+            oldId = principal.getUserId();
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
@@ -1126,11 +1146,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             CreateCompetitonResult result = new CreateCompetitonResult();
             if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)) {
-                // get capacity full dates
-                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(studioContestTypes
-                        .get(competitionData.getSubContestTypeName()).intValue(), true);
-                // create studio competition with nextAvaliableStartDate, name, contest type etc
-
+                
                 ContestData data = new ContestData();
                 data.setBillingProject(competitionData.getBillingProjectId());
                 data.setName(competitionData.getContestName());
@@ -1285,6 +1301,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 data.setForumId(-1);
                 data.setStatusId(ContestStatusData.CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
                 data.setDetailedStatusId(ContestStatusData.CONTEST_DETAILED_STATUS_DRAFT);
+
+                // get capacity full dates
+                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(new Long(data.getContestTypeId()).intValue(), true);
+
                 
 
                 XMLGregorianCalendar nextAvailableStartDate = getNextAvailableStartDate(competitionData
@@ -1305,15 +1325,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
 
             } else {
-                // get capacity full dates
-                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(projectCategories
-                        .get(competitionData.getContestTypeName()).intValue(), false);
-                // create with nextAvailableStartDate, name, project category etc
-                SoftwareCompetition comp = new SoftwareCompetition();
-                comp.setType(CompetionType.SOFTWARE);
-                XMLGregorianCalendar nextAvailableStartDate = getNextAvailableStartDate(competitionData
-                        .getRequestedStartDate(), capacityDatas, competitionData.getAutoReschedule(), methodName);
-                comp.setStartTime(nextAvailableStartDate);
+                
+                
 
                 AssetDTO asset = new AssetDTO();
                 asset.setName(competitionData.getContestName());
@@ -1328,8 +1341,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 asset.setRootCategory(root);
                 asset.setCategories(new ArrayList<Category>());
                 asset.getCategories().add(getDefaultCategory(root));
-                asset.setProductionDate(nextAvailableStartDate);
-
+                
+                // create with nextAvailableStartDate, name, project category etc
+                SoftwareCompetition comp = new SoftwareCompetition();
+                comp.setType(CompetionType.SOFTWARE);
                 comp.setAssetDTO(asset);
 
                 com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project();
@@ -1386,6 +1401,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 {
                     projectHeader.setProjectCategory(ProjectCategory.TEST_SCENARIOS);
                 }
+
+                // get capacity full dates
+                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(new Long(projectHeader.getProjectCategory().getId()).intValue(), false);
+                
+                XMLGregorianCalendar nextAvailableStartDate = getNextAvailableStartDate(competitionData
+                        .getRequestedStartDate(), capacityDatas, competitionData.getAutoReschedule(), methodName);
+                comp.setStartTime(nextAvailableStartDate);
+                asset.setProductionDate(nextAvailableStartDate);
 
 
                 projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
@@ -1648,6 +1671,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         } catch (LiquidPortalServiceException e) {
             sessionContext.setRollbackOnly();
             throw e;
+        } finally
+        {
+            if (oldName != null)
+            {
+                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                principal.setName(oldName);
+                principal.setUserId(oldId);
+            }
         }
     }
 
@@ -1733,6 +1764,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
          // pass request user in context
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            String oldName = principal.getName();
+            long oldId = principal.getUserId();
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
@@ -1783,6 +1816,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 
             }
+
+
+            principal.setName(oldName);
+            principal.setUserId(oldId);
+
+
             Result result = new Result();
             result.setMessage("ProvisionProject is successful for cockpit project " + cockpitProjectName + ".");
             result.setWarnings(warnings);
@@ -1809,6 +1848,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException(
                     "Error occurs when provision project", e), methodName);
+        } finally
+        {
+            if (oldName != null)
+            {
+                principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                principal.setName(oldName);
+                principal.setUserId(oldId);
+            }
         }
     }
 
@@ -2651,10 +2698,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         try {
             XMLGregorianCalendar requestDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
+System.out.println("--------------------request------------" + requestDate);
             if (capacityDates == null || capacityDates.size() == 0)
             {
                 return requestDate;
+            }
+
+            for (CapacityData cap :  capacityDates)
+            {
+                System.out.println("----------cap------------"+cap.getDate()+"-----------"+cap.getNumScheduledContests());
             }
 
             if (!isContains(capacityDates, requestDate)) {
@@ -2662,7 +2714,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             } else if (autoSchedule) {
                 while (true) {
                     // next date
-                    requestDate.add(DatatypeFactory.newInstance().newDuration("p1d"));
+                    requestDate.add(DatatypeFactory.newInstance().newDuration("P1D"));
                     if (!isContains(capacityDates, requestDate)) {
                         return requestDate;
                     }
@@ -2689,7 +2741,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     private static boolean isContains(List<CapacityData> capacityDates, XMLGregorianCalendar requestDate) {
         for (CapacityData data : capacityDates) {
-            if (data.getDate() == requestDate) {
+            if (data.getDate().getYear() == requestDate.getYear()
+                 && data.getDate().getMonth() == requestDate.getMonth()
+                 && data.getDate().getDay() == requestDate.getDay()) {
                 return true;
             }
         }
