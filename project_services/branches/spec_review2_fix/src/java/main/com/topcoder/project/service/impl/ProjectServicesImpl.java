@@ -3465,5 +3465,31 @@ public class ProjectServicesImpl implements ProjectServices {
     }
 
 
+     /**
+     *  Get project only (not phase or resources)
+     */
+    public Project getProject(long projectId) throws ProjectServicesException
+    {
+
+        log(Level.INFO,
+				"Enters ProjectServicesImpl#getProject method.");
+
+		Project project = null;
+		try {
+			project = projectManager.getProject(projectId);
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating getProject.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getProject method.");
+		return project;
+    }
+
+
 
 }
