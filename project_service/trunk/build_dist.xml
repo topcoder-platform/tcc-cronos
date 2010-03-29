@@ -12,7 +12,7 @@
 
     <property name="cronos_libdir" value="${libdir}/cronos"/>
     <property name="target_libdir" value="${cronos_libdir}"/>
-
+    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
@@ -38,6 +38,13 @@
     <property name="component_version"
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
+
+    <!-- Change this for custom component build -->
+    <!--
+    <property name="greekgod_libdir" value="../lib/greekgod"/>
+    <property name="target_libdir" value="${greekgod_libdir}"/>
+    -->
+    <property name="target_libdir" value="${tcs_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -75,6 +82,9 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -90,8 +100,8 @@
         </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
-        <pathelement location="${configdir}"/>
         <pathelement location="${testfiles}"/>
+        <pathelement location="${configdir}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -236,11 +246,28 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
+
+        <if>
+          <and>
+            <isset property="component.mainclass"/>
+            <length string="${component.mainclass}" when="greater" length="0" />
+          </and>
+          <then>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+              <attribute name="Main-Class" value="${component.mainclass}"/>
+            </manifest>
+          </then>
+          <else>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+            </manifest>
+          </else>
+        </if>
     </target>
 
     <target name="dist" depends="compile, manifest">

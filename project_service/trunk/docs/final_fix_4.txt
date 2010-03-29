@@ -1,8 +1,0 @@
-Each entity has its separate ID Generator.
-Algorithm 1.3.2 is modified to use the ID Generator.
-Algorithm 1.3.3 is added to address this.
-
-UserServiceBean is not aggregated with IDGenerator, as the separate generators 
-could be retrieved from the IDGeneratorFactory via static methods by the id generator name
-
-The section 3.2 of CS are updated with the id generator names, and the class diagram are also updated.
