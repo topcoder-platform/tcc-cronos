@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.submission;
 
@@ -28,8 +28,6 @@ import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -174,14 +172,16 @@ import javax.persistence.Query;
  * - Added support to award milestone prizes.
  * - Removed rank - prize placement check in addPrizeToSubmission method.
  * </p>
+ * <p>
+ * Changes in v1.3.1(Cockpit Security Facade V1.0)
+ * - Remove DeclareRoles({"Cockpit User", "Cockpit Administrator"}) and RolesAllowed("Cockpit Administrator") annotation
+ * </p>
  *
- * @author pulky
- * @version 1.3
+ * @author pulky, waits
+ * @version 1.3.1
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@DeclareRoles({"Cockpit User", "Cockpit Administrator"})
-@RolesAllowed("Cockpit Administrator")
 public class SubmissionManagerBean implements SubmissionManagerLocal,
     SubmissionManagerRemote {
     /**
