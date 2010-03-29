@@ -16,6 +16,21 @@
 				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 			</port-component>
 		</session>
+		<session>
+            <ejb-name>PipelineServiceFacadeWebServiceBean</ejb-name>
+            <jndi-name>remote/PipelineServiceFacadeWebServiceBean</jndi-name>
+
+            <ejb-ref>
+                <ejb-ref-name>ejb/PipelineServiceFacade</ejb-ref-name>
+                <jndi-name>remote/PipelineServiceFacadeBean</jndi-name>
+            </ejb-ref>
+
+            <port-component>
+                <port-component-name>PipelineServiceFacadeWebServiceBean</port-component-name>
+                <port-component-uri>/PipelineServiceFacadeWebServiceBean</port-component-uri>
+                <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+            </port-component>
+        </session>
 	</enterprise-beans>
 
 	<security-domain>java:/jaas/JBossLoginModule</security-domain>

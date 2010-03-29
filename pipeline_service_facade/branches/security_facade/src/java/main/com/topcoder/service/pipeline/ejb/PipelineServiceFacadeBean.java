@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.pipeline.ejb;
 
@@ -9,21 +9,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.EJB;
-import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
-import javax.jws.WebService;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.jboss.ws.annotation.EndpointConfig;
-
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineService;
 import com.topcoder.service.pipeline.CapacityData;
@@ -43,12 +36,12 @@ import com.topcoder.util.log.LogManager;
  * <p>
  * This is an implementation of <code>ContestPipelineService</code> web service in form of stateless session EJB.
  * </p>
- * 
+ *
  * <p>
  * Updated for Pipeline Conversion Cockpit Integration Assembly 1 v1.0 - Added method for getContestsByDate - Added
  * method to retrieve change histories for array of contest ids and their types.
  * </p>
- * 
+ *
  * <p>
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
@@ -58,19 +51,23 @@ import com.topcoder.util.log.LogManager;
  * - added service that retrieves a list of dates that have full capacity starting from tomorrow for a given contest
  *   type (for software or studio contests)
  * </p>
- * 
+ * <p>
+ * Changes in v1.1.1(Cockpit Security Facade V1.0):
+ *  - It is not a web-service facade any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new UserServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to this interface.
+ * </p>
+ *
  * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
  *
  * @author snow01, pulky
- * @version 1.1
+ * @version 1.1.1
  * @since Pipeline Conversion Cockpit Integration Assembly 2 v1.0
  */
-@WebService
-@EndpointConfig(configName = "Standard WSSecurity Endpoint")
-@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
-@RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, PipelineServiceFacadeLocal {
@@ -83,14 +80,6 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      */
     @EJB(name = "ejb/ContestPipelineService")
     private ContestPipelineService pipelineService = null;
-
-    /**
-     * <p>
-     * Represents the sessionContext of the EJB.
-     * </p>
-     */
-    @Resource
-    private SessionContext sessionContext;
 
     /**
      * <p>
@@ -137,24 +126,28 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * Search the date competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
-    public List<CompetitionChangeHistory> getContestDateChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException {
+    public List<CompetitionChangeHistory> getContestDateChangeHistories(TCSubject tcSubject,
+            long[] contestIds, String[] competitionTypes) throws ContestPipelineServiceException {
         logger
                 .log(
                         Level.DEBUG,
-                        "Enter getContestDateChangeHistories(long[] contestIds, CompetitionType[] competitionTypes, CompetitionChangeType changeType) method");
-        logger.log(Level.DEBUG, "The parameters[contestIds =" + Arrays.toString(contestIds) + ", competitionTypes = "
+                        "Enter getContestDateChangeHistories(TCSubject tcSubject, long[] contestIds, CompetitionType[] competitionTypes, CompetitionChangeType changeType) method");
+        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ",contestIds =" + Arrays.toString(contestIds) + ", competitionTypes = "
                 + Arrays.toString(competitionTypes) + "].");
 
         try {
@@ -168,20 +161,24 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * Search the prize competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CompetitionChangeHistory> getContestPrizeChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException {
+    public List<CompetitionChangeHistory> getContestPrizeChangeHistories(TCSubject tcSubject,
+            long[] contestIds, String[] competitionTypes) throws ContestPipelineServiceException {
         logger
                 .log(
                         Level.DEBUG,
@@ -198,23 +195,28 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * Search the date competition change history for the given contest and competition type.
      * </p>
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
      * @param competitionType
      *            competition type, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
+    public List<CompetitionChangeHistory> getContestDateChangeHistory(TCSubject tcSubject,
+            long contestId, CompetitionType competitionType)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
-                "Enter getContestDateChangeHistory(long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + ", competitionType = " + competitionType
+                "Enter getContestDateChangeHistory(TCSubject tcSubject,long contestId, CompetitionType competitionType) method");
+        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + ", competitionType = " + competitionType
                 + "].");
 
         try {
@@ -228,23 +230,27 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * Search the prize competition change history for the given contest and competition type.
      * </p>
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
      * @param competitionType
      *            competition type, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
-            throws ContestPipelineServiceException {
+    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(TCSubject tcSubject,
+            long contestId, CompetitionType competitionType) throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
-                "Enter getContestPrizeChangeHistory(long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + ", competitionType = " + competitionType
+                "Enter getContestPrizeChangeHistory(TCSubject tcSubject,long contestId, CompetitionType competitionType) method");
+        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + ", competitionType = " + competitionType
                 + "].");
 
         try {
@@ -256,38 +262,49 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
 
     /**
      * Gets the list of competition for the specified date search criteria.
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param searchCriteria
      *            the date search criteria
-     * 
+     *
      * @return the list of competition for the specified search criteria.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException {
-        logger.log(Level.DEBUG, "Enter getContestsByDate(ContestsSearchCriteria criteria) method.");
-        logger.log(Level.DEBUG, "with parameter criteria:" + criteria);
+    public List<Competition> getContestsByDate(TCSubject tcSubject, DateSearchCriteria criteria)
+        throws ContestPipelineServiceException {
+        logger.log(Level.DEBUG, "Enter getContestsByDate(TCSubject tcSubject,ContestsSearchCriteria criteria) method.");
+        logger.log(Level.DEBUG, "with parameter criteria:" + criteria + ", tcSubject = " + tcSubject);
         return this.pipelineService.getContestsByDate(criteria);
     }
 
     /**
      * Gets the list of competition for the specified search criteria.
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param searchCriteria
      *            the search criteria
-     * 
+     *
      * @return the list of competition for the specified search criteria.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<Competition> getContests(ContestsSearchCriteria criteria) throws ContestPipelineServiceException {
-        logger.log(Level.DEBUG, "Enter getContests(ContestsSearchCriteria criteria) method.");
-        logger.log(Level.DEBUG, "with parameter criteria:" + criteria);
+    public List<Competition> getContests(TCSubject tcSubject, ContestsSearchCriteria criteria)
+        throws ContestPipelineServiceException {
+        logger.log(Level.DEBUG, "Enter getContests(TCSubject tcSubject,ContestsSearchCriteria criteria) method.");
+        logger.log(Level.DEBUG, "with parameter criteria:" + criteria + ", tcSubject =" + tcSubject);
         ExceptionUtils.checkNull(criteria, null, null, "The criteria is null.");
+        ExceptionUtils.checkNull(tcSubject, null, null, "The tcSubject is null.");
 
         try {
             return this.pipelineService.getContests(criteria);
@@ -298,7 +315,10 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
 
     /**
      * Gets the list of common pipeline data within between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
@@ -311,25 +331,29 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * @since 1.0.1
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
+    public List<CommonPipelineData> getCommonPipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException {
-        logger.log(Level.DEBUG, "Enter getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests method.");
-        logger.log(Level.DEBUG, "with parameter startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
+        logger.log(Level.DEBUG, "Enter getCommonPipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests method.");
+        logger.log(Level.DEBUG, "with parameter tcsubject:" + tcSubject + ", startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
         ExceptionUtils.checkNull(startDate, null, null, "The startDate is null.");
         ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
+        ExceptionUtils.checkNull(tcSubject, null, null, "The tcSubject is null.");
 
         try {
-            return this.pipelineService.getCommonPipelineData(startDate, endDate, overdueContests);
+            return this.pipelineService.getCommonPipelineData(tcSubject, startDate, endDate, overdueContests);
         } finally {
             logExit("getCommonPipelineData");
         }
     }
 
      /**
-     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software 
+     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software
      * or studio contests)
      * This method delegates to Pipeline Service layer.
-     *
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestType the contest type
      * @param isStudio true of it is a studio competition, false otherwise
      *
@@ -340,11 +364,12 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
+    public List<CapacityData> getCapacityFullDates(TCSubject tcSubject, int contestType, boolean isStudio)
         throws ContestPipelineServiceException {
-        logger.log(Level.DEBUG, "Enter getCapacityFullDates(int contestType, boolean isStudio) method.");
+        logger.log(Level.DEBUG, "Enter getCapacityFullDates(TCSubject tcSubject,int contestType, boolean isStudio) method.");
         logger.log(Level.DEBUG, "with parameter contestType: " + contestType);
         logger.log(Level.DEBUG, "with parameter isStudio: " + isStudio);
+        logger.log(Level.DEBUG, "with parameter tcSubject: " + tcSubject);
         try {
             return this.pipelineService.getCapacityFullDates(contestType, isStudio);
         } finally {
@@ -354,7 +379,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
 
     /**
      * This method is used to log the debug message.
-     * 
+     *
      * @param msg
      *            the message string.
      */
@@ -368,7 +393,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      */
@@ -382,7 +407,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * <p>
      * Log the exception.
      * </p>
-     * 
+     *
      * @param e
      *            the exception to log
      * @param message

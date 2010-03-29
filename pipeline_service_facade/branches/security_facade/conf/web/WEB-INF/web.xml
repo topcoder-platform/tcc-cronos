@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
     <display-name>Pipeline Service Demo</display-name>
+    <!-- wsdl address updated. Cockpit Security Facade V1.0 -->
     <context-param>
         <description>An URL for the Pipeline Service WSDL document</description>
         <param-name>facade_wsdl</param-name>
-        <param-value>http://127.0.0.1:8080/pipelinefacade/PipelineServiceFacadeBean?wsdl</param-value>
+        <param-value>http://cockpit.cloud.topcoder.com/pipelinefacade/PipelineServiceFacadeWebServiceBean?wsdl</param-value>
     </context-param>
 
     <welcome-file-list>
