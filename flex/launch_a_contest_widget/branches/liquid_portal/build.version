@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Launch a contest widget
+component.distfilename=launch_a_contest_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/LaunchAContestWidget
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
