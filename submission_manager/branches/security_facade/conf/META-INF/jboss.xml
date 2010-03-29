@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>SubmissionManagerBean</ejb-name>
+            <jndi-name>SubmissionManagerBean</jndi-name>
+        </session>
+    </enterprise-beans>
+    <security-domain>java:/jaas/cockpitDomain</security-domain>
+</jboss>
