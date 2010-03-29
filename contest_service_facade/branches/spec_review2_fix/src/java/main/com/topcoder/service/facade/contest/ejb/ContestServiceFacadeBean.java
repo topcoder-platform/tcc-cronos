@@ -3987,10 +3987,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String userName = principal.getName();
 
             if (contestData.getBillingProject() > 0) {
-
-     System.out.println("-----------------------studio passed in-----"+ contestData.getBillingProject());           
-                ContestData cur = studioService.getContest(contestData.getContestId());
-     System.out.println("-----------------------studio contest in-----"+ cur.getBillingProject());        
+      
+                ContestData cur = studioService.getContest(contestData.getContestId());      
                 if (cur.getBillingProject() == contestData.getBillingProject())
                 {
                     return;
