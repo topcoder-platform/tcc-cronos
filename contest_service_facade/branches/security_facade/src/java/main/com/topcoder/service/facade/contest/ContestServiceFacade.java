@@ -1,22 +1,21 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
 import java.util.List;
 
 import javax.activation.DataHandler;
-import javax.jws.WebService;
 
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 
 import com.topcoder.clients.model.ProjectContestFee;
-import com.topcoder.management.project.Project;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.project.service.FullProjectData;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.specreview.SpecReview;
 
 import com.topcoder.management.project.DesignComponents;
@@ -30,11 +29,9 @@ import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
-import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
-import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
@@ -55,12 +52,6 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
-
-import java.util.List;
-
-import javax.activation.DataHandler;
-
-import javax.jws.WebService;
 
 
 /**
@@ -127,17 +118,28 @@ import javax.jws.WebService;
  * - Added method to create new version for development or design contest.
  * </p>
  *
+ * <p>
+ * Changes in v1.5.1(Cockpit Security Facade V1.0):
+ *  - It is not a web-service facade any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new ContestServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to this interface.
+ * </p>
+ *
  * @author pulky, murphydog, waits
- * @version 1.5
+ * @version 1.5.1
  */
-@WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
     /**
      * <p>
      * Creates new contest for specified project. Upon creation an unique ID is
      * generated and assigned to returned contest.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest
      *            a <code>StudioCompetition</code> providing the data for new
      *            contest to be created.
@@ -155,14 +157,17 @@ public interface ContestServiceFacade {
      *             if the specified <code>tcDirectProjectId</code> is negative.
      * @tested
      */
-    public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId) 
+    public StudioCompetition createContest(TCSubject tcSubject,StudioCompetition contest, long tcDirectProjectId) 
         throws PersistenceException;
 
     /**
      * <p>
      * Gets the contest referenced by the specified ID.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get
      *            details for.
@@ -178,13 +183,17 @@ public interface ContestServiceFacade {
      *             if specified <code>contestId</code> is negative.
      * @tested
      */
-    public StudioCompetition getContest(long contestId)
+    public StudioCompetition getContest(TCSubject tcSubject,long contestId)
         throws PersistenceException, ContestNotFoundException;
 
     /**
      * <p>
      * Gets the contests for the given project.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param tcDirectProjectId
      *            a <code>long</code> providing the ID of a project to get the
@@ -201,13 +210,17 @@ public interface ContestServiceFacade {
      *             if specified <code>tcDirectProjectId</code> is negative.
      * @tested
      */
-    public List<StudioCompetition> getContestsForProject(long tcDirectProjectId)
+    public List<StudioCompetition> getContestsForProject(TCSubject tcSubject,long tcDirectProjectId)
         throws PersistenceException, ProjectNotFoundException;
 
     /**
      * <p>
      * Updates the specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contest
      *            a <code>StudioCompetition</code> providing the contest data to
@@ -222,7 +235,7 @@ public interface ContestServiceFacade {
      *             if specified <code>contest</code> is <code>null</code>.
      * @tested
      */
-    public void updateContest(StudioCompetition contest)
+    public void updateContest(TCSubject tcSubject,StudioCompetition contest)
         throws PersistenceException, ContestNotFoundException;
 
     /**
@@ -230,6 +243,10 @@ public interface ContestServiceFacade {
      * Sets the status of contest referenced by the specified ID to specified
      * value.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to update
@@ -252,7 +269,7 @@ public interface ContestServiceFacade {
      *             if any of specified IDs is negative.
      * @tested
      */
-    public void updateContestStatus(long contestId, long newStatusId)
+    public void updateContestStatus(TCSubject tcSubject,long contestId, long newStatusId)
         throws PersistenceException, StatusNotAllowedException,
             StatusNotFoundException, ContestNotFoundException;
 
@@ -260,6 +277,10 @@ public interface ContestServiceFacade {
      * <p>
      * Uploads the specified document and associates it with assigned contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param uploadedDocument
      *            an <code>UploadedDocument</code> providing the data for the
@@ -276,7 +297,7 @@ public interface ContestServiceFacade {
      *             if the argument is <code>null</code>.
      * @tested
      */
-    public UploadedDocument uploadDocumentForContest(
+    public UploadedDocument uploadDocumentForContest(TCSubject tcSubject,
         UploadedDocument uploadedDocument)
         throws PersistenceException, ContestNotFoundException;
 
@@ -284,6 +305,10 @@ public interface ContestServiceFacade {
      * <p>
      * Uploads the specified document without associating it with any contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param uploadedDocument
      *            an <code>UploadedDocument</code> providing the data for the
@@ -298,13 +323,17 @@ public interface ContestServiceFacade {
      *             if the argument is <code>null</code>.
      * @tested
      */
-    public UploadedDocument uploadDocument(UploadedDocument uploadedDocument)
+    public UploadedDocument uploadDocument(TCSubject tcSubject,UploadedDocument uploadedDocument)
         throws PersistenceException;
 
     /**
      * <p>
      * Associates the specified document with specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param documentId
      *            a <code>long</code> providing the ID of a document to be
@@ -322,13 +351,17 @@ public interface ContestServiceFacade {
      *             if any of specified IDs is negative.
      * @tested
      */
-    public void addDocumentToContest(long documentId, long contestId)
+    public void addDocumentToContest(TCSubject tcSubject, long documentId, long contestId)
         throws PersistenceException, ContestNotFoundException;
 
     /**
      * <p>
      * Removes the specified document from specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param document
      *            an <code>UploadedDocument</code> representing the document to
@@ -343,13 +376,17 @@ public interface ContestServiceFacade {
      *             if the specified argument is <code>null</code>.
      * @tested
      */
-    public void removeDocumentFromContest(UploadedDocument document)
+    public void removeDocumentFromContest(TCSubject tcSubject,UploadedDocument document)
         throws PersistenceException, DocumentNotFoundException;
 
     /**
      * <p>
      * Retrieves the list of submissions for the specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get the
@@ -367,7 +404,7 @@ public interface ContestServiceFacade {
      *             if the specified ID is negative.
      * @tested
      */
-    public List<SubmissionData> retrieveSubmissionsForContest(long contestId)
+    public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject,long contestId)
         throws PersistenceException, ContestNotFoundException;
 
 
@@ -375,6 +412,10 @@ public interface ContestServiceFacade {
      * <p>
      * Updates specified submission.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submission
      *            a <code>SubmissionData</code> providing the data for
@@ -387,13 +428,17 @@ public interface ContestServiceFacade {
      *             if the specified argument is <code>null</code>.
      * @tested
      */
-    public void updateSubmission(SubmissionData submission)
+    public void updateSubmission(TCSubject tcSubject,SubmissionData submission)
         throws PersistenceException;
 
     /**
      * <p>
      * Removes specified submission.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission to
@@ -406,12 +451,16 @@ public interface ContestServiceFacade {
      *             if the <code>submissionId</code> is negative.
      * @tested
      */
-    public void removeSubmission(long submissionId) throws PersistenceException;
+    public void removeSubmission(TCSubject tcSubject,long submissionId) throws PersistenceException;
 
     /**
      * <p>
      * Gets existing contest statuses.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing available contest statuses. Empty
      *         list is returned if there are no statuses.
@@ -421,12 +470,16 @@ public interface ContestServiceFacade {
      *             if the caller is not authorized to call this operation.
      * @tested
      */
-    public List<ContestStatusData> getStatusList() throws PersistenceException;
+    public List<ContestStatusData> getStatusList(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of existing submission types.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>String</code> providing the comma-separated list of
      *         submission types.
@@ -436,7 +489,7 @@ public interface ContestServiceFacade {
      *             if the caller is not authorized to call this operation.
      * @tested
      */
-    public String getSubmissionFileTypes() throws PersistenceException;
+    public String getSubmissionFileTypes(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
@@ -449,19 +502,23 @@ public interface ContestServiceFacade {
      *             if any error occurs when getting contest.
      * @tested
      */
-    public List<StudioCompetition> getAllContests() throws PersistenceException;
+    public List<StudioCompetition> getAllContests(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of all existing contests for contest monitor widget.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleContestData> getSimpleContestData()
+    public List<SimpleContestData> getSimpleContestData(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
@@ -469,6 +526,10 @@ public interface ContestServiceFacade {
      * Gets the list of all existing contests related to given project for
      * contest monitor widget .
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param pid
      *            the given project id
@@ -477,33 +538,41 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleContestData> getSimpleContestDataByPID(long pid)
+    public List<SimpleContestData> getSimpleContestDataByPID(TCSubject tcSubject,long pid)
         throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of all existing contests for my project widget.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleProjectContestData> getSimpleProjectContestData()
+    public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of all existing contests for my project widget.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<CommonProjectContestData> getCommonProjectContestData()
+    public List<CommonProjectContestData> getCommonProjectContestData(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
@@ -511,6 +580,10 @@ public interface ContestServiceFacade {
      * Gets the list of all existing contests related to given project for my
      * project widget.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param pid
      *            given project id
@@ -519,13 +592,17 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<CommonProjectContestData> getCommonProjectContestDataByPID(
+    public List<CommonProjectContestData> getCommonProjectContestDataByPID(TCSubject tcSubject,
         long pid) throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of existing contests matching the specified criteria.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param filter
      *            a <code>Filter</code> providing the criteria for searching for
@@ -539,7 +616,7 @@ public interface ContestServiceFacade {
      *             if specified <code>filter</code> is <code>null</code> or if
      *             it is not supported by implementor.
      */
-    public List<StudioCompetition> searchContests(ContestServiceFilter filter)
+    public List<StudioCompetition> searchContests(TCSubject tcSubject,ContestServiceFilter filter)
         throws PersistenceException;
 
     
@@ -548,6 +625,10 @@ public interface ContestServiceFacade {
      * <p>
      * Gets the submission referenced by the specified ID.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission to get
@@ -559,13 +640,17 @@ public interface ContestServiceFacade {
      *             if any error occurs during the retrieval.
      * @tested
      */
-    public SubmissionData retrieveSubmission(long submissionId)
+    public SubmissionData retrieveSubmission(TCSubject tcSubject,long submissionId)
         throws PersistenceException;
 
     /**
      * <p>
      * Gets existing contest types.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing available contest types. Empty list
      *         is returned if there are no types.
@@ -573,13 +658,17 @@ public interface ContestServiceFacade {
      *             if some persistence errors occur.
      * @tested
      */
-    public List<ContestTypeData> getAllContestTypes()
+    public List<ContestTypeData> getAllContestTypes(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
      * <p>
      * Removes the document referenced by the specified ID.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param documentId
      *            a <code>long</code> providing the ID of a document to remove.
@@ -591,12 +680,16 @@ public interface ContestServiceFacade {
      *             if specified <code>documentId</code> is negative.
      * @tested
      */
-    public boolean removeDocument(long documentId) throws PersistenceException;
+    public boolean removeDocument(TCSubject tcSubject,long documentId) throws PersistenceException;
 
     /**
      * <p>
-     * Gest the MIME type matching the specified context type.
+     * Gets the MIME type matching the specified context type.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contentType
      *            a <code>String</code> providing the content type to get the
@@ -610,7 +703,7 @@ public interface ContestServiceFacade {
      *             <code>null</code> or empty.
      * @tested
      */
-    public long getMimeTypeId(String contentType) throws PersistenceException;
+    public long getMimeTypeId(TCSubject tcSubject,String contentType) throws PersistenceException;
 
     /**
      * <p>
@@ -618,6 +711,7 @@ public interface ContestServiceFacade {
      * referenced by specified ID has been paid for in the course of payment
      * transaction referenced by the specified <code>PayPal</code> order ID.
      * </p>
+     * 
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission which has
@@ -635,14 +729,18 @@ public interface ContestServiceFacade {
      * @tested
      */
 
-    // public void purchaseSubmission(long submissionId, String payPalOrderId,
+    // public void purchaseSubmission(TCSubject tcSubject,long submissionId, String payPalOrderId,
     // String securityToken)
     // throws PersistenceException;
     /**
      * <p>
      * Purchases the specified submission. E.g. records a fact that submission
-     * referenced by specified ID has been paid
+     * referenced by specified ID has been paid.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission which has
@@ -658,7 +756,7 @@ public interface ContestServiceFacade {
      * @throws IllegalArgumentWSException
      *             if specified <code>submissionId</code> is negative.
      */
-    public void purchaseSubmission(long submissionId,
+    public void purchaseSubmission(TCSubject tcSubject,long submissionId,
         SubmissionPaymentData submissionPaymentData, String securityToken)
         throws PersistenceException;
 
@@ -667,6 +765,10 @@ public interface ContestServiceFacade {
      * <p>
      * Gets existing medium types.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a <code>List</code> listing available medium types. Empty list is
      *         returned if there are no types.
@@ -674,12 +776,16 @@ public interface ContestServiceFacade {
      *             if some persistence errors occur.
      * @tested
      */
-    public List<MediumData> getAllMediums() throws PersistenceException;
+    public List<MediumData> getAllMediums(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * Sets the placement for the specified submission.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission to set
@@ -690,13 +796,17 @@ public interface ContestServiceFacade {
      *             if any error occurs when setting placement.
      * @tested
      */
-    public void setSubmissionPlacement(long submissionId, int placement)
+    public void setSubmissionPlacement(TCSubject tcSubject,long submissionId, int placement)
         throws PersistenceException;
 
     /**
      * <p>
      * Associates the specified submission with the specified prize.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission.
@@ -706,13 +816,17 @@ public interface ContestServiceFacade {
      *             if any error occurs when setting submission prize.
      * @tested
      */
-    public void setSubmissionPrize(long submissionId, long prizeId)
+    public void setSubmissionPrize(TCSubject tcSubject,long submissionId, long prizeId)
         throws PersistenceException;
 
     /**
      * <p>
-     * Marks the specified submission for purchse.
+     * Marks the specified submission for purchase.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            a <code>long</code> providing the ID of a submission to be
@@ -721,12 +835,17 @@ public interface ContestServiceFacade {
      *             if any error occurs when marking for purchase.
      * @tested
      */
-    public void markForPurchase(long submissionId) throws PersistenceException;
+    public void markForPurchase(TCSubject tcSubject,long submissionId) throws PersistenceException;
 
     /**
      * <p>
-     * Adss the specified list of history data for the associated contest.
+     * Adds the specified list of history data for the associated contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param tcSubject the TCSubject instance with login profile info
      *
      * @param history
      *            a <code>List</code> of history data for a contest.
@@ -734,13 +853,17 @@ public interface ContestServiceFacade {
      *             if any other error occurs.
      * @tested
      */
-    public void addChangeHistory(List<ChangeHistoryData> history)
+    public void addChangeHistory(TCSubject tcSubject, List<ChangeHistoryData> history)
         throws PersistenceException;
 
     /**
      * <p>
      * Gets the history data for the specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get
@@ -750,7 +873,7 @@ public interface ContestServiceFacade {
      *             if any other error occurs.
      * @tested
      */
-    public List<ChangeHistoryData> getChangeHistory(long contestId)
+    public List<ChangeHistoryData> getChangeHistory(TCSubject tcSubject,long contestId)
         throws PersistenceException;
 
     /**
@@ -758,6 +881,10 @@ public interface ContestServiceFacade {
      * Gets the most history data for the most recent changes to specified
      * contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get
@@ -768,13 +895,17 @@ public interface ContestServiceFacade {
      *             if any other error occurs.
      * @tested
      */
-    public List<ChangeHistoryData> getLatestChanges(long contestId)
+    public List<ChangeHistoryData> getLatestChanges(TCSubject tcSubject,long contestId)
         throws PersistenceException;
 
     /**
      * <p>
      * Deletes the contest referenced by the specified ID.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to delete.
@@ -782,20 +913,24 @@ public interface ContestServiceFacade {
      *             if any other error occurs.
      * @tested
      */
-    public void deleteContest(long contestId) throws PersistenceException;
+    public void deleteContest(TCSubject tcSubject,long contestId) throws PersistenceException;
 
     /**
      * <p>
      * Gets the list of all existing contests.
      * </p>
      *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      * @tested
      */
-    public List<StudioCompetition> getAllContestHeaders()
+    public List<StudioCompetition> getAllContestHeaders(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
@@ -805,6 +940,10 @@ public interface ContestServiceFacade {
      * it fails, you'll have to check what payments where actually done trough
      * the <code>submussion.paid</code> flag.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to process
@@ -812,13 +951,17 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when processing a payment.
      */
-    public void processMissingPayments(long contestId)
+    public void processMissingPayments(TCSubject tcSubject,long contestId)
         throws PersistenceException;
 
     /**
      * <p>
      * Get all the DocumentType objects.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return the list of all available DocumentType
      *
@@ -829,19 +972,23 @@ public interface ContestServiceFacade {
      *             if any error occurss
      * @since 1.1.2
      */
-    public List<DocumentType> getAllDocumentTypes() throws PersistenceException;
+    public List<DocumentType> getAllDocumentTypes(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * Gets all studio file types to return. If no studio file type exists,
      * return an empty list
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a list of studio file types
      * @throws PersistenceException
      *             if any error occurs when getting studio file types.
      */
-    public List<StudioFileType> getAllStudioFileTypes()
+    public List<StudioFileType> getAllStudioFileTypes(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
@@ -849,13 +996,17 @@ public interface ContestServiceFacade {
      * This is going to fetch all the currently available contests for my
      * project widget.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @return the list of all available contents (or empty if none found)
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleContestData> getContestDataOnly()
+    public List<SimpleContestData> getContestDataOnly(TCSubject tcSubject)
         throws PersistenceException;
 
     /**
@@ -863,15 +1014,19 @@ public interface ContestServiceFacade {
      * This is going to fetch all the currently available contests for my
      * project widget related to given project.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param pid
      *            given project id
-     * @return the list of all available contents (or empty if none found)
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<SimpleContestData> getContestDataOnlyByPID(long pid)
+    public List<SimpleContestData> getContestDataOnlyByPID(TCSubject tcSubject,long pid)
         throws PersistenceException;
 
     /**
@@ -879,6 +1034,10 @@ public interface ContestServiceFacade {
      * This method retrieve all the permissions that the user owned for any
      * projects. Returns empty list if no permission found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userid
      *            user id to look for
@@ -892,7 +1051,7 @@ public interface ContestServiceFacade {
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissionsByUser(long userid)
+    public List<Permission> getPermissionsByUser(TCSubject tcSubject,long userid)
         throws PermissionServiceException;
 
     /**
@@ -900,6 +1059,10 @@ public interface ContestServiceFacade {
      * This method retrieve all the permissions that various users own for a
      * given project. Returns empty list if no permission found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectid
      *            project id to look for
@@ -913,7 +1076,7 @@ public interface ContestServiceFacade {
      *
      * @since Cockpit Share Submission Integration
      */
-    public List<Permission> getPermissionsByProject(long projectid)
+    public List<Permission> getPermissionsByProject(TCSubject tcSubject,long projectid)
         throws PermissionServiceException;
 
     /**
@@ -921,6 +1084,10 @@ public interface ContestServiceFacade {
      * This method retrieve all the permissions that the user own for a given
      * project. Returns empty list if no permission found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userid
      *            user id to look for
@@ -936,13 +1103,17 @@ public interface ContestServiceFacade {
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissions(long userid, long projectid)
+    public List<Permission> getPermissions(TCSubject tcSubject,long userid, long projectid)
         throws PermissionServiceException;
 
     /**
      * <p>
      * This method retrieve all the permission types.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return all the permission types.
      *
@@ -953,13 +1124,17 @@ public interface ContestServiceFacade {
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<PermissionType> getAllPermissionType()
+    public List<PermissionType> getAllPermissionType(TCSubject tcSubject)
         throws PermissionServiceException;
 
     /**
      * <p>
      * This method will add a permission type, and return the added type entity.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param type
      *            the permission type to add.
@@ -973,13 +1148,17 @@ public interface ContestServiceFacade {
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public PermissionType addPermissionType(PermissionType type)
+    public PermissionType addPermissionType(TCSubject tcSubject,PermissionType type)
         throws PermissionServiceException;
 
     /**
      * <p>
      * This method will update permission type data.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param type
      *            the permission type to update.
@@ -991,7 +1170,7 @@ public interface ContestServiceFacade {
      *
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermissionType(PermissionType type)
+    public void updatePermissionType(TCSubject tcSubject,PermissionType type)
         throws PermissionServiceException;
 
 
@@ -1017,11 +1196,15 @@ public interface ContestServiceFacade {
      * </li>
      * </ul>
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param competition
      *            <code>ContestData</code> data that recognizes a contest.
      * @param paymentData
-     *            <code>PaymentData</code> payment information (credit card/po
+     *            <code>PaymentData</code> payment information (TCSubject tcSubject,credit card/po
      *            details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PersistenceException
@@ -1035,12 +1218,16 @@ public interface ContestServiceFacade {
      *             it is not supported by implementor.
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public ContestPaymentResult processContestCreditCardPayment(
+    public ContestPaymentResult processContestCreditCardPayment(TCSubject tcSubject,
         StudioCompetition competition, CreditCardPaymentData paymentData)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param competition
      * @param paymentData
@@ -1049,7 +1236,7 @@ public interface ContestServiceFacade {
      * @throws PaymentException
      * @throws ContestNotFoundException
      */
-    public ContestPaymentResult processContestPurchaseOrderPayment(
+    public ContestPaymentResult processContestPurchaseOrderPayment(TCSubject tcSubject,
         StudioCompetition competition, TCPurhcaseOrderPaymentData paymentDat)
         throws PersistenceException, PaymentException, ContestNotFoundException;
 
@@ -1057,11 +1244,15 @@ public interface ContestServiceFacade {
      * <p>
      * Processes the contest sale.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param competition
      *            data that recognizes a contest.
      * @param paymentData
-     *            payment information (credit card/po details) that need to be
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
      *
      * @return a <code>PaymentResult</code> result of the payment processing.
@@ -1072,7 +1263,7 @@ public interface ContestServiceFacade {
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
-    public SoftwareContestPaymentResult processContestCreditCardSale(
+    public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
         SoftwareCompetition competition, CreditCardPaymentData paymentData)
         throws ContestServiceException;
 
@@ -1080,11 +1271,15 @@ public interface ContestServiceFacade {
      * <p>
      * Processes the contest sale.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param competition
      *            data that recognizes a contest.
      * @param paymentData
-     *            payment information (credit card/po details) that need to be
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
      *
      * @return a <code>PaymentResult</code> result of the payment processing.
@@ -1095,7 +1290,7 @@ public interface ContestServiceFacade {
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
-    public SoftwareContestPaymentResult processContestPurchaseOrderSale(
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
         SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
         throws ContestServiceException;
 
@@ -1109,16 +1304,20 @@ public interface ContestServiceFacade {
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
-     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * <li>it calls <code>this.purchaseSubmission(TCSubject tcSubject,...)</code></li>
      * </ul>
      * </li>
      * </ul>
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param completedContestData
      *            data of completed contest.
      * @param paymentData
-     *            a <code>PaymentData</code> payment information (credit card/po
+     *            a <code>PaymentData</code> payment information (TCSubject tcSubject,credit card/po
      *            details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PaymentException
@@ -1127,7 +1326,7 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionCreditCardPayment(
+    public PaymentResult processSubmissionCreditCardPayment(TCSubject tcSubject,
         CompletedContestData completedContestData,
         CreditCardPaymentData paymentData)
         throws PaymentException, PersistenceException;
@@ -1141,16 +1340,20 @@ public interface ContestServiceFacade {
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
-     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * <li>it calls <code>this.purchaseSubmission(TCSubject tcSubject,...)</code></li>
      * </ul>
      * </li>
      * </ul>
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param completedContestData
      *            data of completed contest.
      * @param paymentData
-     *            a <code>PaymentData</code> payment information (credit card/po
+     *            a <code>PaymentData</code> payment information (TCSubject tcSubject,credit card/po
      *            details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PaymentException
@@ -1159,7 +1362,7 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionPurchaseOrderPayment(
+    public PaymentResult processSubmissionPurchaseOrderPayment(TCSubject tcSubject,
         CompletedContestData completedContestData,
         TCPurhcaseOrderPaymentData paymentData)
         throws PaymentException, PersistenceException;
@@ -1168,6 +1371,10 @@ public interface ContestServiceFacade {
      * <p>
      * Ranks the submissions, given submission identifiers in the rank order.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionIdsInRankOrder
      *            an array of long submission identifier in the rank order.
@@ -1175,13 +1382,17 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving/updating the data.
      */
-    public boolean rankSubmissions(long[] submissionIdsInRankOrder)
+    public boolean rankSubmissions(TCSubject tcSubject,long[] submissionIdsInRankOrder)
         throws PersistenceException;
 
     /**
      * <p>
      * Updates the submission feedback.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param feedbacks
      *            an array of <code>SubmissionFeedback</code>
@@ -1189,13 +1400,17 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving/updating the data.
      */
-    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks)
+    public boolean updateSubmissionsFeedback(TCSubject tcSubject,SubmissionFeedback[] feedbacks)
         throws PersistenceException;
 
     /**
      * <p>
      * Returns a list containing all active <code>Categories</code>.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a list containing all active <code>Categories</code>. It can be
      *         empty if no objects found.
@@ -1204,12 +1419,16 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Category> getActiveCategories() throws ContestServiceException;
+    public List<Category> getActiveCategories(TCSubject tcSubject) throws ContestServiceException;
 
     /**
      * <p>
      * Returns a list containing all active <code>Technologies</code>.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a list containing all active <code>Categories</code>. It can be
      *         empty if no objects found.
@@ -1218,13 +1437,17 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Technology> getActiveTechnologies()
+    public List<Technology> getActiveTechnologies(TCSubject tcSubject)
         throws ContestServiceException;
 
     /**
      * <p>
      * Returns a list containing all <code>Phases</code>.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return a list containing all active <code>Categories</code>. It can be
      *         empty if no objects found.
@@ -1233,12 +1456,16 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Phase> getPhases() throws ContestServiceException;
+    public List<Phase> getPhases(TCSubject tcSubject) throws ContestServiceException;
 
     /**
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contest
      *            the <code>SoftwareCompetition</code> to create as a contest
@@ -1254,7 +1481,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+    public SoftwareCompetition createSoftwareContest(TCSubject tcSubject,SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException;
 
     /**
@@ -1265,6 +1492,10 @@ public interface ContestServiceFacade {
      * assetDTO, please check create software contest to see what data need to
      * be returned.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            the OR Project Id
@@ -1274,13 +1505,17 @@ public interface ContestServiceFacade {
      *
      * @since BURG-1716
      */
-    public SoftwareCompetition getSoftwareContestByProjectId(long projectId)
+    public SoftwareCompetition getSoftwareContestByProjectId(TCSubject tcSubject,long projectId)
         throws ContestServiceException;
 
     /**
      * <p>
      * Updates a <code>SoftwareCompetition</code> in the persistence.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param contest
      *            the <code>SoftwareCompetition</code> to update as a contest
@@ -1294,7 +1529,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition updateSoftwareContest(
+    public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject,
         SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException;
 
@@ -1307,6 +1542,10 @@ public interface ContestServiceFacade {
      * If the user already assigned to the asset, this method simply does
      * nothing.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userId
      *            the id of the user
@@ -1318,13 +1557,17 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void assignUserToAsset(long userId, long assetId)
+    public void assignUserToAsset(TCSubject tcSubject,long userId, long assetId)
         throws ContestServiceException;
 
     /**
      * <p>
      * Removes a specified user from a specified <code>assetDTO</code>.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userId
      *            the id of the user
@@ -1336,7 +1579,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void removeUserFromAsset(long userId, long assetId)
+    public void removeUserFromAsset(TCSubject tcSubject,long userId, long assetId)
         throws ContestServiceException;
 
     /**
@@ -1344,6 +1587,10 @@ public interface ContestServiceFacade {
      * This method finds all tc direct projects. Returns empty array if no
      * projects found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return Project array with project info, or empty array if none found
      *
@@ -1352,7 +1599,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition[] findAllTcDirectProjects()
+    public SoftwareCompetition[] findAllTcDirectProjects(TCSubject tcSubject)
         throws ContestServiceException;
 
     /**
@@ -1360,6 +1607,10 @@ public interface ContestServiceFacade {
      * This method finds all given user tc direct projects . Returns empty array
      * if no projects found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param operator
      *            The user to search for projects
@@ -1371,7 +1622,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator)
+    public SoftwareCompetition[] findAllTcDirectProjectsForUser(TCSubject tcSubject,String operator)
         throws ContestServiceException;
 
     /**
@@ -1379,6 +1630,10 @@ public interface ContestServiceFacade {
      * This method retrieves the project along with all known associated
      * information. Returns null if not found.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            The ID of the project to retrieve
@@ -1392,7 +1647,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition getFullProjectData(long projectId)
+    public SoftwareCompetition getFullProjectData(TCSubject tcSubject,long projectId)
         throws ContestServiceException;
 
     /**
@@ -1406,6 +1661,10 @@ public interface ContestServiceFacade {
      * project, firstly it will add the new submission, secondly mark previous
      * submissions as deleted and then return.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            the project's id
@@ -1424,7 +1683,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadSubmission(long projectId, String filename,
+    public long uploadSubmission(TCSubject tcSubject,long projectId, String filename,
         DataHandler submission) throws ContestServiceException;
 
     /**
@@ -1432,6 +1691,10 @@ public interface ContestServiceFacade {
      * Adds a new final fix upload for an user in a particular project. This
      * submission always overwrite the previous ones.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            the project's id
@@ -1450,7 +1713,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadFinalFix(long projectId, String filename,
+    public long uploadFinalFix(TCSubject tcSubject,long projectId, String filename,
         DataHandler finalFix) throws ContestServiceException;
 
     /**
@@ -1458,6 +1721,10 @@ public interface ContestServiceFacade {
      * Adds a new test case upload for an user in a particular project. This
      * submission always overwrite the previous ones.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            the project's id
@@ -1476,13 +1743,17 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadTestCases(long projectId, String filename,
+    public long uploadTestCases(TCSubject tcSubject,long projectId, String filename,
         DataHandler testCases) throws ContestServiceException;
 
     /**
      * <p>
      * Sets the status of a existing submission.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            the submission's id
@@ -1498,11 +1769,15 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void setSubmissionStatus(long submissionId, long submissionStatusId,
+    public void setSubmissionStatus(TCSubject tcSubject,long submissionId, long submissionStatusId,
         String operator) throws ContestServiceException;
 
     /**
      * Adds the given user as a new submitter to the given project id.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            the project to which the user needs to be added
@@ -1518,7 +1793,7 @@ public interface ContestServiceFacade {
      *
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long addSubmitter(long projectId, long userId)
+    public long addSubmitter(TCSubject tcSubject,long projectId, long userId)
         throws ContestServiceException;
 
     /**
@@ -1526,6 +1801,10 @@ public interface ContestServiceFacade {
      * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true,
      * the rank will target milestone submissions.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param submissionId
      *            identifier of the submission.
@@ -1539,12 +1818,12 @@ public interface ContestServiceFacade {
      *             if any error occurs when retrieving/updating the data.
      * @since TCCC-1219
      */
-    public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
+    public boolean updateSubmissionUserRank(TCSubject tcSubject,long submissionId, int rank, Boolean isRankingMilestone)
         throws PersistenceException;
 
     /**
      * <p>
-     * Gets the list of project and their permissions (including permissions for
+     * Gets the list of project and their permissions (TCSubject tcSubject,including permissions for
      * the parent tc project)
      * </p>
      *
@@ -1552,6 +1831,10 @@ public interface ContestServiceFacade {
      * Updated for Cockpit Project Admin Release Assembly v1.0 - software
      * projects also included.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param createdUser
      *            user for which to get the permissions
@@ -1559,23 +1842,31 @@ public interface ContestServiceFacade {
      *
      * @since TCCC-1329
      */
-    public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
+    public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(TCSubject tcSubject,
         long createdUser) throws PersistenceException;
 
     /**
      * <p>
      * Searches the user with the given key.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return list of matching users, empty list if none matches.
      * @since TCCC-1329
      */
-    public List<User> searchUser(String key) throws PersistenceException;
+    public List<User> searchUser(TCSubject tcSubject,String key) throws PersistenceException;
     
     /**
      * <p>
      * This method updates array of permissions to the persistence.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param permissions
      *            the permissions to update.
@@ -1587,19 +1878,23 @@ public interface ContestServiceFacade {
      *
      * @since Cockpit Project Admin Release Assembly.
      */
-    public void updatePermissions(Permission[] permissions)
+    public void updatePermissions(TCSubject tcSubject,Permission[] permissions)
         throws PermissionServiceException;
 
 	 
     /**
      * Gets all contest fees by billing project id.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * 
      * @param projectId the billing project id
      * @return the list of project contest fees for the given project id
      * @throws ContestServiceException  if any persistence or other error occurs
      * @since 1.0.1
      */
-    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException;
+    public List<ProjectContestFee> getContestFeesByProject(TCSubject tcSubject,long projectId) throws ContestServiceException;
 
 
       
@@ -1607,6 +1902,10 @@ public interface ContestServiceFacade {
      * Gets the spec review for specified contest id.
      * 
      * Updated for Spec Reviews Finishing Touches v1.0
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * 
      * @param contestId
      *            the contest id
@@ -1619,11 +1918,14 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException;
+    public SpecReview getSpecReviews(TCSubject tcSubject,long contestId, boolean studio) throws ContestServiceException;
 
     /**
      * Save specified review comment and review status for specified section and specified contest id to persistence.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
      * @param studio
@@ -1641,12 +1943,15 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
+    public void saveReviewStatus(TCSubject tcSubject,long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
             throws ContestServiceException;
 
     /**
      * Save specified review comment for specified section and specified contest id to persistence.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
      * @param studio
@@ -1662,12 +1967,15 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
+    public void saveReviewComment(TCSubject tcSubject,long contestId, boolean studio, String sectionName, String comment, String role)
             throws ContestServiceException;
 
     /**
      * Mark review comment with specified comment id as seen.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param commentId
      *            the comment id
      * 
@@ -1675,12 +1983,15 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void markReviewCommentSeen(long commentId) throws ContestServiceException;
+    public void markReviewCommentSeen(TCSubject tcSubject,long commentId) throws ContestServiceException;
     
     /**
      * Marks 'review done' by reviewer of the specs for specified contest.
      * Persistence is updated and all end users having write/full permission on the contest are notified by email.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the specified contest id.
      * @param contestName
@@ -1693,12 +2004,15 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException;
+    public void markReviewDone(TCSubject tcSubject,long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException;
 
     /**
      * Marks 'ready for review' by the writer of the specs for specified contest.
      * Persistence is updated, on update the spec would appear as review opportunity on tc site.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the specified contest id.
      * @param studio
@@ -1707,12 +2021,15 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException;
+    public void markReadyForReview(TCSubject tcSubject,long contestId, boolean studio) throws ContestServiceException;
 
     /**
      * Marks 'resubmit for review' by the writer of the specs for specified contest.
-     * Persistence is updated. Reviewer (if any) is notified about the updates.
-     * 
+     * Persistence is updated. Reviewer (TCSubject tcSubject,if any) is notified about the updates.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the specified contest id.
      * @param contestName
@@ -1725,11 +2042,14 @@ public interface ContestServiceFacade {
      *             if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException;
+    public void resubmitForReview(TCSubject tcSubject,long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException;
 
     /**
      * Get the user contest by user name Return empty list if none found
-     *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param userName
      *            the user name to get the user contest
      * @return a list of matching studio competitions
@@ -1739,12 +2059,15 @@ public interface ContestServiceFacade {
      *             if any other error occurs
      * @since 1.1
      */
-    public List<StudioCompetition> getUserContests(String userName)
+    public List<StudioCompetition> getUserContests(TCSubject tcSubject,String userName)
         throws ContestServiceException;
 
     /**
      * get milestone submissions for contest
-     *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the milestone submissions.
@@ -1754,12 +2077,15 @@ public interface ContestServiceFacade {
      *             if any other error occurs
      * @since 1.1
      */
-    public List<SubmissionData> getMilestoneSubmissionsForContest(
+    public List<SubmissionData> getMilestoneSubmissionsForContest(TCSubject tcSubject,
         long contestId) throws ContestServiceException;
 
     /**
      * get final submissions for contest
-     *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return empty list of none submission found for the given contest id.
      * @param contestId
      *            The contest id to get the final submissions
@@ -1769,7 +2095,7 @@ public interface ContestServiceFacade {
      *             if any other error occurs
      * @since 1.1
      */
-    public List<SubmissionData> getFinalSubmissionsForContest(long contestId)
+    public List<SubmissionData> getFinalSubmissionsForContest(TCSubject tcSubject,long contestId)
         throws ContestServiceException;
 
     /**
@@ -1780,7 +2106,10 @@ public interface ContestServiceFacade {
      * ContestServiceException will be thrown. If the MilestonePrize with given
      * id has reached the max number of submissions, ContestServiceException
      * will be thrown.
-     *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param submissionId
      *            The submission id
      * @param milestonePrizeId
@@ -1791,21 +2120,29 @@ public interface ContestServiceFacade {
      *             if any other error occurs
      * @since 1.1
      */
-    public void setSubmissionMilestonePrize(long submissionId,
+    public void setSubmissionMilestonePrize(TCSubject tcSubject,long submissionId,
         long milestonePrizeId) throws ContestServiceException;
 
     /**
      * Get all design components.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @throws ContestServiceException
      *             if any other error occurs
      * @since 1.1.1
      */
-    public List<DesignComponents> getDesignComponents() throws ContestServiceException;
+    public List<DesignComponents> getDesignComponents(TCSubject tcSubject) throws ContestServiceException;
     
     
     /**
      * Returns whether a user is eligible for a particular contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userId
      *            The user id
@@ -1819,10 +2156,14 @@ public interface ContestServiceFacade {
      *             if any other error occurs
      * @since 1.2
      */
-    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException;
+    public boolean isEligible(TCSubject tcSubject,long userId, long contestId, boolean isStudio) throws ContestServiceException;
 
     /**
      * Find eligibility name for the client.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * 
      * @param billingProjectId;
      * 			The ID of the billingProject.
@@ -1830,10 +2171,14 @@ public interface ContestServiceFacade {
      * 			The name of the eligibility group.
      * @since 1.2.1
      */
-    public String getEligibilityName(long billingProjectId);
+    public String getEligibilityName(TCSubject tcSubject,long billingProjectId);
 
     /**
      * This method creates a Specification Review project associated to a project determined by parameter.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId the project id to create a Specification Review for
      * @return the created project
@@ -1842,11 +2187,15 @@ public interface ContestServiceFacade {
      *
      * @since 1.4
      */
-    public FullProjectData createSpecReview(long projectId) throws ContestServiceException;
+    public FullProjectData createSpecReview(TCSubject tcSubject,long projectId) throws ContestServiceException;
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
      * Note: a single reviewer / review is assumed.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId the project id to search for
      * @return the aggregated scorecard and review data
@@ -1855,12 +2204,16 @@ public interface ContestServiceFacade {
      *
      * @since 1.4
      */
-    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException;
+    public ScorecardReviewData getScorecardAndReview(TCSubject tcSubject,long projectId) throws ContestServiceException;
 
     /**
      * This method uploads a mock file to the corresponding specification review project of the specified project
      * id, so that it can continue with review. Regular submission or final fix will be uploaded according to the
      * open phase.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId the project id of the original project
      *
@@ -1869,10 +2222,14 @@ public interface ContestServiceFacade {
      *
      * @since 1.4
      */
-    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException;
+    public void markSoftwareContestReadyForReview(TCSubject tcSubject,long projectId) throws ContestServiceException;
 
     /**
      * This method adds a review comment to a review. It simply delegates all logic to underlying services.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param reviewId the review id to add the comment to
      * @param comment the review comment to add
@@ -1882,22 +2239,29 @@ public interface ContestServiceFacade {
      *
      * @since 1.4
      */
-    public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException;
+    public void addReviewComment(TCSubject tcSubject,long reviewId, Comment comment) throws ContestServiceException;
     /**
      * <p>
-     * Re-Open the software project in status of (project_status_id = 4-6, 8-10 in tcs_catalog:project_status_lu).
+     * Re-Open the software project in status of (TCSubject tcSubject,project_status_id = 4-6, 8-10 in tcs_catalog:project_status_lu).
      * </p>
-     *
+     *<p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project id to open
      * @param tcDirectProjectId the tc-direct-project-id
      * @return returns the newly created contest id
      * @throws ContestServiceException if any problem occurs
      */
-    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException;
+    public long reOpenSoftwareContest(TCSubject tcSubject,long projectId, long tcDirectProjectId) throws ContestServiceException;
     /**
      * <p>
-     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * Create new version for design or development contest. (TCSubject tcSubject,project_status_id = 4-10 in tcs_catalog:project_status_lu).
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project to create new version
      * @param tcDirectProjectId tc direct project id
      * @param autoDevCreating if it is true and it is design contest, then will create development too
@@ -1905,6 +2269,42 @@ public interface ContestServiceFacade {
      * @return newly version contest id
      * @throws ContestServiceException if any error occurs
      */
-    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
+    public long createNewVersionForDesignDevContest(TCSubject tcSubject,long projectId, long tcDirectProjectId, boolean autoDevCreating,
                                                     boolean minorVersion) throws ContestServiceException;
+    /**
+     * <p>
+     * Gets the list of all existing contests related to given project for my
+     * project widget.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     *
+     * @param pid
+     *            given project id
+     * @return a <code>List</code> listing all existing contests. Empty list is
+     *         returned if there are no contests found.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */    
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(
+    		TCSubject tcSubject,long pid) throws PersistenceException;
+    /**
+     * Returns whether the contest is private.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId
+     *            The contest id
+     * @param isStudio
+     *            true if the contest is a studio contest, false otherwise.
+     * @return true if the contest is a private one, false otherwise.
+     * 
+     * @throws ContestServiceException
+     *             if any other error occurs
+     * @since 1.2.3
+     */
+    public boolean isPrivate(TCSubject tcSubject,long contestId, boolean isStudio) throws ContestServiceException;
 }

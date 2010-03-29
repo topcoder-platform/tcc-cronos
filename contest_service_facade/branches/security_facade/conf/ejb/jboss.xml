@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <jboss>
     <enterprise-beans>
+
+        
         <session>
             <ejb-name>ContestServiceFacadeBean</ejb-name>
-            <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
+            <jndi-name>ContestServiceFacadeBean/remote</jndi-name>
 			
 
             <ejb-ref>
@@ -46,12 +48,15 @@
                 <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
                 <jndi-name>ProjectDAOBean/remote</jndi-name>
             </ejb-ref>
-
-			<port-component>
-				<port-component-name>ContestServiceFacadeBean</port-component-name>
-				<port-component-uri>/ContestServiceFacadeBean</port-component-uri>
-				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-			</port-component>
+        </session>
+        
+          <session>
+            <ejb-name>ContestServiceFacadeWebServiceBean</ejb-name>
+            <jndi-name>ContestServiceFacadeWebServiceBean/remote</jndi-name>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ContestServiceFacade</ejb-ref-name>
+                <jndi-name>ContestServiceFacadeBean/remote</jndi-name>
+            </ejb-ref>
         </session>
     </enterprise-beans>
 

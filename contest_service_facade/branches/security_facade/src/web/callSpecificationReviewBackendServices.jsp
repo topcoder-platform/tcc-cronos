@@ -1,20 +1,23 @@
 <%--
   - Author: TCSDEVELOPER
-  - Version: 1.0 (Cockpit Spec Review Backend Service Update v1.0)
+  - Version: 1.1 (Cockpit Spec Review Backend Service Update v1.0)
   - Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
   -
   - Description: This page is used ot handle the requests from specificationReviewBackend.jsp for invoking the selected 
   - web service operations with provided parameters and displaying the results of the call.
+  -
+  -- V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page import="javax.xml.namespace.QName" %>
 <%@ page import="java.net.URL" %>
 <%@ page import="javax.xml.ws.Service" %>
-<%@ page import="com.topcoder.service.facade.contest.ContestServiceFacade" %>
+<%@ page import="com.topcoder.service.facade.contest.ContestServiceFacadeWebService" %>
 <%@ page import="org.jboss.ws.core.StubExt" %>
 <%@ page import="javax.xml.ws.BindingProvider" %>
 <%@ page import="java.io.StringWriter" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="com.topcoder.management.project.Project" %>
+<%@ page import="com.topcoder.project.service.FullProjectData" %>
 <%@ page import="com.topcoder.project.service.ScorecardReviewData" %>
 <%@ page import="com.topcoder.management.review.data.Comment" %>
 <%@ page import="com.topcoder.management.review.data.CommentType" %>
@@ -31,9 +34,9 @@
         calledOperation = operation;
         URL wsdlLocation = new URL(getServletConfig().getServletContext().getInitParameter("facade_wsdl"));
         QName serviceName = new QName("http://ejb.contest.facade.service.topcoder.com/",
-                                      "ContestServiceFacadeBeanService");
+                                      "ContestServiceFacadeWebServiceBeanService");
         Service service = Service.create(wsdlLocation, serviceName);
-        ContestServiceFacade port = service.getPort(ContestServiceFacade.class);
+        ContestServiceFacadeWebService port = service.getPort(ContestServiceFacadeWebService.class);
         ((StubExt) port).setConfigName("Standard WSSecurity Client");
         ((BindingProvider) port).getRequestContext().put(BindingProvider.USERNAME_PROPERTY,
                                                          request.getUserPrincipal().getName());
@@ -41,7 +44,7 @@
         if ("createSpecReview".equals(operation)) {
             StringBuilder b = new StringBuilder();
             String pid = request.getParameter("pid1");
-            Project p = port.createSpecReview(Long.parseLong(pid));
+            FullProjectData p = port.createSpecReview(Long.parseLong(pid));
             b.append("    Project: ID = ").append(p.getId()).append("<br/>");
             callResult = "Created the following spec review project:<br/>" + b.toString();
         } else if ("getScorecardAndReview".equals(operation)) {

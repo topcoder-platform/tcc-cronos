@@ -6,11 +6,11 @@
     <description>Contest Services Facade EJB</description>
     <display-name>Contest Services Facade EJB</display-name>
     <enterprise-beans>
+    
         <session>
             <ejb-name>ContestServiceFacadeBean</ejb-name>
             <remote>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeRemote</remote>
             <local>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeLocal</local>
-            <service-endpoint>com.topcoder.service.facade.contest.ContestServiceFacade</service-endpoint>
             <ejb-class>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
@@ -213,7 +213,7 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.contest.eligibility.dao.ContestEligibilityManagerRemote</remote>
             </ejb-ref>
-	    <ejb-ref>
+	        <ejb-ref>
                 <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.permission.PermissionService</remote>
@@ -234,6 +234,36 @@
                 <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
+            </ejb-ref>
+        </session>
+        
+         <session>
+            <ejb-name>ContestServiceFacadeWebServiceBean</ejb-name>
+            <remote>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeWebServiceRemote</remote>
+            <local>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeWebServiceLocal</local>
+            <service-endpoint>com.topcoder.service.facade.contest.ContestServiceFacadeWebService</service-endpoint>
+            <ejb-class>com.topcoder.service.facade.contest.ejb..ContestServiceFacadeWebServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+             <env-entry>
+                <env-entry-name>loginBeanResourceBundleBaseName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>tc_login_bean</env-entry-value>
+            </env-entry>
+           <env-entry>
+                <env-entry-name>loginBeanUrlPropertyName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>url</env-entry-value>
+            </env-entry>
+           <env-entry>
+                <env-entry-name>loginBeanDSJndiName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>java:DS</env-entry-value>
+            </env-entry>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ContestServiceFacade</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>                
+                <remote>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeRemote</remote>
             </ejb-ref>
         </session>
     </enterprise-beans>

@@ -1,17 +1,19 @@
 <%--
   - Author: isv
   - Date: 19 Dec 2008
-  - Version: 1.0
+  - Version: 1.1
   - Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
   -
   - Description: This page is used ot handle the requests from index.jsp for invoking the selected web service operation
   - with provided parameters and displaying the results of the call. In fact, this page acts like a web service client
   - demonstrating the code which could be used for calling the web service.
+  -
+  - V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page import="javax.xml.namespace.QName" %>
 <%@ page import="java.net.URL" %>
 <%@ page import="javax.xml.ws.Service" %>
-<%@ page import="com.topcoder.service.facade.contest.ContestServiceFacade" %>
+<%@ page import="com.topcoder.service.facade.contest.ContestServiceFacadeWebService" %>
 <%@ page import="org.jboss.ws.core.StubExt" %>
 <%@ page import="javax.xml.ws.BindingProvider" %>
 <%@ page import="java.util.List" %>
@@ -51,9 +53,9 @@
         calledOperation = operation;
         URL wsdlLocation = new URL(getServletConfig().getServletContext().getInitParameter("facade_wsdl"));
         QName serviceName = new QName("http://ejb.contest.facade.service.topcoder.com/",
-                                      "ContestServiceFacadeBeanService");
+                                      "ContestServiceFacadeWebServiceBeanService");
         Service service = Service.create(wsdlLocation, serviceName);
-        ContestServiceFacade port = service.getPort(ContestServiceFacade.class);
+        ContestServiceFacadeWebService port = service.getPort(ContestServiceFacadeWebService.class);
         ((StubExt) port).setConfigName("Standard WSSecurity Client");
         ((BindingProvider) port).getRequestContext().put(BindingProvider.USERNAME_PROPERTY,
                                                          request.getUserPrincipal().getName());
@@ -110,7 +112,7 @@
             calendar2.setTime(new Date(System.currentTimeMillis() + 20 * 24 * 3600 * 1000L));
             ContestData data = new ContestData();
             StudioCompetition newContest = new StudioCompetition(data);
-            newContest.setAdminFee(100);
+            //newContest.setAdminFee(100);
             newContest.setCompetitionId(-1L);
             newContest.setCreatorUserId(((UserProfilePrincipal) request.getUserPrincipal()).getUserId());
             newContest.setDrPoints(50);
@@ -227,20 +229,20 @@
                         append(sc.getSubmittedDate()).append("<br/>");
             }
             callResult = "Retrieved submissions for contest :<br/>" + b.toString();
-        } else if ("retrieveAllSubmissionsByMember".equals(operation)) {
+        }/* else if ("retrieveAllSubmissionsByMember".equals(operation)) {
             String uid = request.getParameter("uid1");
-            List<SubmissionData> submissions = port.retrieveAllSubmissionsByMember(Long.parseLong(uid));
+            List<SubmissionData> submissions = port.retr(Long.parseLong(uid));
             StringBuilder b = new StringBuilder();
             for (SubmissionData sc : submissions) {
                 b.append("    Submission: ID = ").append(sc.getSubmissionId()).append(", date = ").
                         append(sc.getSubmittedDate()).append("<br/>");
             }
             callResult = "Retrieved submissions for user :<br/>" + b.toString();
-        } else if ("removeSubmission".equals(operation)) {
+        } */else if ("removeSubmission".equals(operation)) {
             String sid = request.getParameter("sbmid1");
             port.removeSubmission(Long.parseLong(sid));
             callResult = "Removed submission successfully";
-        } else if ("getContestsForClient".equals(operation)) {
+        }/* else if ("getContestsForClient".equals(operation)) {
             String uid = request.getParameter("uid2");
             StringBuilder b = new StringBuilder();
             List<StudioCompetition> contests = port.getContestsForClient(Long.parseLong(uid));
@@ -250,7 +252,7 @@
                         append(", end = ").append(c.getEndTime()).append("<br/>");
             }
             callResult = "Retrieved contest for client:<br/>" + b.toString();
-        } else if ("retrieveSubmission".equals(operation)) {
+        }*/ else if ("retrieveSubmission".equals(operation)) {
             String sid = request.getParameter("sbmid2");
             SubmissionData s = port.retrieveSubmission(Long.parseLong(sid));
             StringBuilder b = new StringBuilder();
@@ -265,7 +267,7 @@
             String ct = request.getParameter("ct1");
             long mimeTypeId = port.getMimeTypeId(ct);
             callResult = "Retrieved mime type ID for content type: " + mimeTypeId;
-        } else if ("purchaseSubmission".equals(operation)) {
+        } /*else if ("purchaseSubmission".equals(operation)) {
             String sid = request.getParameter("sbmid3");
             String ppo = request.getParameter("ppo3");
             String st = request.getParameter("st3");
@@ -311,7 +313,7 @@
             String cid = request.getParameter("cid9");
             boolean result = port.removeContestPayment(Long.parseLong(cid));
             callResult = "Removed contest payment. Deleted = " + result;
-        } else if ("setSubmissionPlacement".equals(operation)) {
+        } */else if ("setSubmissionPlacement".equals(operation)) {
             String sid = request.getParameter("sbmid4");
             String place = request.getParameter("place4");
             port.setSubmissionPlacement(Long.parseLong(sid), Integer.parseInt(place));

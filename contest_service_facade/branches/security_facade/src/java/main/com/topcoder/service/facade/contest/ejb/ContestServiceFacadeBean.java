@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest.ejb;
 
@@ -15,14 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Enumeration;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -30,7 +27,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.jws.WebService;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -39,7 +35,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.Duration;
 
 import org.jboss.logging.Logger;
-import org.jboss.ws.annotation.EndpointConfig;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
@@ -54,7 +49,6 @@ import com.topcoder.catalog.entity.Technology;
 import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
 import com.topcoder.catalog.service.EntityNotFoundException;
-import com.topcoder.catalog.service.SearchCriteria;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
 import com.topcoder.clientcockpit.phases.EmailSendingException;
@@ -80,7 +74,8 @@ import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.ScorecardReviewData;
-import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.security.RolePrincipal;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
 import com.topcoder.service.contest.eligibility.GroupContestEligibility;
 import com.topcoder.service.contest.eligibility.dao.ContestEligibilityManager;
@@ -157,86 +152,56 @@ import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.BetweenFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.management.resource.search.ResourceFilterBuilder;
 
 /**
  * <p>
- * This is an implementation of <code>Contest Service Facade</code> web service
- * in form of stateless session EJB. It holds a reference to
- * {@link StudioService} which is delegated the fulfillment of requests.
+ * This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
+ * holds a reference to {@link StudioService} which is delegated the fulfillment of requests.
  * </p>
- *
  * <p>
- * Module Cockpit Contest Service Enhancement Assembly change: Several new
- * methods related to the permission and permission type are added.
+ * Module Cockpit Contest Service Enhancement Assembly change: Several new methods related to the permission and
+ * permission type are added.
  * </p>
- *
  * <p>
- * Module Cockpit Share Submission Integration Assembly change: Added method to
- * retrieve all permissions by projectId.
- * </p>
- * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
- *  - Added method to retrieve contest fees by given billing project id.
- * </p>
- * </p>
- * 
- * Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
- *  - Made the getSpecReviews method return instance of SpecReview rather than a list.
- *  - Added the methods to mark ready for review, review done and resubmit for review.
- * </p>
- *
+ * Module Cockpit Share Submission Integration Assembly change: Added method to retrieve all permissions by projectId.
+ * Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes: - Added method to retrieve contest fees by given
+ * billing project id. </p> </p> Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes: - Made the
+ * getSpecReviews method return instance of SpecReview rather than a list. - Added the methods to mark ready for review,
+ * review done and resubmit for review. </p>
  * <p>
- * Version 1.0.3 (Cockpit Software Contest Payments v1.0) Change notes:
- *  - For software contest, payment is made for the sum of various costs.
- *  - While doing so, only the increased amount is paid (if earlier payments were made).
- *  - Introduced constants for new cost types
+ * Version 1.0.3 (Cockpit Software Contest Payments v1.0) Change notes: - For software contest, payment is made for the
+ * sum of various costs. - While doing so, only the increased amount is paid (if earlier payments were made). -
+ * Introduced constants for new cost types
  * </p>
- *
  * <p>
- * Version 1.0.4 
- *  - Add 'Applications'/'Components' to resource for project
+ * Version 1.0.4 - Add 'Applications'/'Components' to resource for project
  * </p>
- *
- * * -----------------------changed in the version 1.1-----------------
- *
+ * -----------------------changed in the version 1.1-----------------
  * Four methods are added
  * setSubmissionMilestonePrize(submissionId:long,milestonePrizeId:long):void
  * getUserContests(userName:String):List<StudioCompetition>
  * getMilestoneSubmissionsForContest(contestId:long):List<SubmissionData>
  * getFinalSubmissionsForContest(contestId:long):List<SubmissionData>
- *
  * -----
  *
- * @author snow01, TCS Deveoper, TCS Designer
  * <p>
  * Changes in v1.2 (Studio Multi-Rounds Assembly - Launch Contest): Added default milestone date when contest is
  * created.
  * </p>
  * <p>
- * Changes in v1.2.1 updated to set creator user as Observer
- * created.
+ * Changes in v1.2.1 updated to set creator user as Observer created.
  * </p>
  * <p>
- * Changes in v1.2.2 - Cockpit Release Assembly 11
- * Add method getDesignComponents to get design components.
+ * Changes in v1.2.2 - Cockpit Release Assembly 11 Add method getDesignComponents to get design components.
  * </p>
-	* <p>
- * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI):
- * - Added a flag to updateSubmissionUserRank method to support ranking milestone submissions.
- * - Added support for milestone prizes payment.
+ * <p>
+ * Changes in v1.3 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI): - Added a flag to
+ * updateSubmissionUserRank method to support ranking milestone submissions. - Added support for milestone
+ * prizes payment.
  * </p>
- * 
  * <p>
  * Changes in v1.3.1 Added elegibility services.
  * </p>
- * 
  * <p>
  * Changes in v1.3.2 Added support for eligibility services.
  * </p>
@@ -247,9 +212,8 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * Changes in v1.4 (Cockpit Spec Review Backend Service Update v1.0):
  * - Added method to create specification review project for an existing project.
  * - Added method to get scorecard and review information for a specific project.
- * - Added method to upload a mock submission / final fixes to the associated specification review of a project
- *   to make it ready for review.
- * - Added method to add comments to an existing review.
+ * - Added method to upload a mock submission / final fixes to the associated specification review of a
+ * project to make it ready for review. - Added method to add comments to an existing review.
  * </p>
  * <p>
  * Change in v1.4.1 (Cockpit Spec Review -stage 2 v1.0)
@@ -262,18 +226,22 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
  * - Added method to create new version for development or design contest.
  * - Refactor the create/update-software-contest methods
  * </p>
+ * <p>
+ * Changes in v1.5.1(Cockpit Security Facade V1.0):
+ *  - It is not a web-service any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new ContestServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to it.
+ *  - UserService is used to get the user-name for the given user-id.
+ * </p>
  * @author snow01, pulky, murphydog, waits
- * @version 1.5
+ * @version 1.5.1
  */
 @Stateless
-@WebService
-@EndpointConfig(configName = "Standard WSSecurity Endpoint")
-@DeclareRoles({"Cockpit User"})
-@RolesAllowed({"Cockpit User"})
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
-    ContestServiceFacadeRemote {
+public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, ContestServiceFacadeRemote {
     /**
      * Private constant specifying non-active not yet published status id.
      */
@@ -344,8 +312,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since Module Contest Service Software Contest Sales Assembly
      */
     private static final String PAYMENTS_PROJECT_INFO_TYPE = "Payments";
-    
-    
 
     /**
      * <p>
@@ -436,7 +402,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
       /**
      * Represents the project category id for development contests.
-     * 
+     *
      * @since 1.0.1
      */
     private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
@@ -444,13 +410,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Represents the project category id for development contests.
-     * 
+     *
      * @since 1.0.4
      */
     private static final int DESIGN_PROJECT_CATEGORY_ID = 1;
 
 
-	/**
+    /**
      * Private constant specifying resource pay
      *
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
@@ -480,47 +446,47 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *
      * @since 1.0.3
      */
-	private static final String FIRST_PLACE_COST_PROJECT_INFO_TYPE = "First Place Cost";
-	
-	/**
+    private static final String FIRST_PLACE_COST_PROJECT_INFO_TYPE = "First Place Cost";
+
+    /**
      * Private constant specifying cost for second place.
      *
      * @since 1.0.3
      */
-	private static final String SECOND_PLACE_COST_PROJECT_INFO_TYPE = "Second Place Cost";
-	
-	/**
+    private static final String SECOND_PLACE_COST_PROJECT_INFO_TYPE = "Second Place Cost";
+
+    /**
      * Private constant specifying cost for reliability bonus.
      *
      * @since 1.0.3
      */
-	private static final String RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE = "Reliability Bonus Cost";
-	
-	/**
+    private static final String RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE = "Reliability Bonus Cost";
+
+    /**
      * Private constant specifying cost for milestone bonus
      *
      * @since 1.0.3
      */
-	private static final String MILESTONE_BONUS_COST_PROJECT_INFO_TYPE = "Milestone Bonus Cost";
-	
-	/**
+    private static final String MILESTONE_BONUS_COST_PROJECT_INFO_TYPE = "Milestone Bonus Cost";
+
+    /**
      * Private constant specifying cost for admin fee.
      */
-	private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
-	
-	/**
+    private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
+
+    /**
      * Private constant specifying cost for review cost.
      *
      * @since 1.0.3
      */
-	private static final String REVIEW_COST_PROJECT_INFO_TYPE = "Review Cost";
-	
-	/**
+    private static final String REVIEW_COST_PROJECT_INFO_TYPE = "Review Cost";
+
+    /**
      * Private constant specifying cost for dr point cost.
      *
      * @since 1.0.3
      */
-	private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
+    private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
 
     /**
      * The const string for configuration files.
@@ -540,23 +506,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since 1.2.2
      */
     private static final String ELIGIBILITY_NAME = "EligibilityName";
-    
+
     /**
      * The const string for configuration EligibilityGroupId key.
      * @since 1.2.2
      */
     private static final String ELIGIBILITY_ID = "EligibilityGroupId";
-    
+
 
     /**
      * Private constant specifying administrator role.
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
-
-    /**
-     * Private constant specifying liquid administrator role.
-     */
-    private static final String LIQUID_ADMIN_ROLE = "Liquid Administrator";
 
 
 
@@ -573,7 +534,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @since 1.4
      */
     private static final String PROJECT_FINAL_FIX_PHASE_NAME = "Final Fix";
-    
+
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -652,7 +613,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     @EJB(name = "ejb/UserService")
     private UserService userService = null;
 
-	/**
+    /**
      * <p>A <code>SpecReviewService</code> providing access to available <code>Spec Review Service</code>. This bean is
      * delegated to process the calls for CRUD spec reviews.</p>
      *
@@ -660,10 +621,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     @EJB(name = "ejb/SpecReviewService")
     private SpecReviewService specReviewService = null;
-    
+
     /**
-     * <p>A <code>ProjectDAO</code> providing access to available billing project related methods like retrieving 
-     * contest fee for given billing project.</p> 
+     * <p>A <code>ProjectDAO</code> providing access to available billing project related methods like retrieving
+     * contest fee for given billing project.</p>
      *
      * @since 1.0.1
      */
@@ -869,36 +830,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Email template file path for Spec Review Notification Email
-     * 
+     *
      * @since 1.0.2
      */
     @Resource(name = "specReviewNotificationEmailTemplatePath")
     private String specReviewNotificationEmailTemplatePath;
-    
+
     /**
      * BCC Address for Spec Review Notification Email
-     * 
+     *
      * @since 1.0.2
      */
     @Resource(name = "specReviewNotificationEmailBCCAddr")
     private String specReviewNotificationEmailBCCAddr;
-    
+
     /**
      * From Address for Spec Review Notification Email
-     * 
+     *
      * @since 1.0.2
      */
     @Resource(name = "specReviewNotificationEmailFromAddr")
     private String specReviewNotificationEmailFromAddr;
-    
+
     /**
      * Subject line for Spec Review Notification Email
-     * 
+     *
      * @since 1.0.2
      */
     @Resource(name = "specReviewNotificationEmailSubject")
     private String specReviewNotificationEmailSubject;
-    
+
     /**
      * The default prize for spec reviews
      *
@@ -937,10 +898,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      */
     private EmailMessageGenerator emailMessageGenerator;
 
-      
+
     /**
      * user id for Applications
-     * 
+     *
      * @since 1.0.4
      */
     private long applications_user_id;
@@ -948,7 +909,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
      /**
      * user id for Components
-     * 
+     *
      * @since 1.0.4
      */
     private long components_user_id;
@@ -1029,7 +990,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         // the default email message generator.
         emailMessageGenerator = new DefaultEmailMessageGenerator();
 
-        
+
         try
         {
             components_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_COMPONENTS);
@@ -1037,10 +998,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             applications_user_id = userService.getUserId(RESOURCE_INFO_HANDLE_APPLICATIONS);
         }
         catch (UserServiceException e) {
-			throw new IllegalStateException("Failed to get components/applications user id.", e);
-		}
-       
-    	
+            throw new IllegalStateException("Failed to get components/applications user id.", e);
+        }
+
+
     }
 
     /**
@@ -1071,30 +1032,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Creates new contest for specified project. Upon creation an unique ID is
-     * generated and assigned to returned contest.
+     * Creates new contest for specified project. Upon creation an unique ID is generated and assigned to returned
+     * contest.
      * </p>
-     *
-     * @param contest
-     *            a <code>StudioCompetition</code> providing the data for new
-     *            contest to be created.
-     * @param tcDirectProjectId
-     *            a <code>long</code> providing the ID of a project the new
-     *            competition belongs to.
-     *            a <code>long</code> providing the ID of a client the new
-     *            competition belongs to.
-     * @return a <code>StudioCompetition</code> providing the data for created
-     *         contest and having the ID auto-generated.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>competition</code> is <code>null</code> or
-     *             if the specified <code>tcDirectProjectId</code> is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest a <code>StudioCompetition</code> providing the data for new contest to be created.
+     * @param tcDirectProjectId a <code>long</code> providing the ID of a project the new competition belongs to. a
+     *            <code>long</code> providing the ID of a client the new competition belongs to.
+     * @return a <code>StudioCompetition</code> providing the data for created contest and having the ID auto-generated.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if specified <code>competition</code> is <code>null</code> or if the specified
+     *             <code>tcDirectProjectId</code> is negative.
      */
-    public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId) 
-        throws PersistenceException {
+    public StudioCompetition createContest(TCSubject tcSubject, StudioCompetition contest, long tcDirectProjectId)
+            throws PersistenceException {
         logger.debug("createContest");
 
         try
@@ -1102,9 +1057,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             ContestData contestData = convertToContestData(contest);
             //checks the permission
-            //TODO liquid creaet project, and assign permission, check fails here
-            //checkStudioProjectPermission(tcDirectProjectId);
-            checkStudioBillingProjectPermission(contestData);            
+            checkStudioProjectPermission(tcSubject, tcDirectProjectId);
+            checkStudioBillingProjectPermission(tcSubject, contestData);
 
             // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
             // contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
@@ -1150,12 +1104,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             if (contestData.isMultiRound()) {
                 if (contestData.getMultiRoundData() == null) {
                     ContestMultiRoundInformationData multiRoundData = new ContestMultiRoundInformationData();
-                    multiRoundData.setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+                    multiRoundData.setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() +
                         endDate.getTime())/2)));
-                    
+
                     contestData.setMultiRoundData(multiRoundData);
                 } else if (contestData.getMultiRoundData().getMilestoneDate() == null) {
-                    contestData.getMultiRoundData().setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() + 
+                    contestData.getMultiRoundData().setMilestoneDate(getXMLGregorianCalendar(new Date((startDate.getTime() +
                         endDate.getTime())/2)));
                 }
             }
@@ -1163,7 +1117,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
                     winnerAnnouncementDeadlineDate));
 
-            ContestData createdContestData = studioService.createContest(contestData, tcDirectProjectId);
+            ContestData createdContestData = studioService.createContest(tcSubject, contestData, tcDirectProjectId);
 
             if (contestData.getBillingProject() > 0) {
                 persistContestEligility(createdContestData.getContestId(), contestData.getBillingProject(), null, true);
@@ -1192,83 +1146,119 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the contest referenced by the specified ID.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get
-     *            details for.
-     * @return a <code>StudioCompetition</code> providing the data for the
-     *         requested contest.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ContestNotFoundException
-     *             if requested contest is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>contestId</code> is negative.
+     * @param contestId a <code>long</code> providing the ID of a contest to get details for.
+     * @return a <code>StudioCompetition</code> providing the data for the requested contest.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ContestNotFoundException if requested contest is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if specified <code>contestId</code> is negative.
      */
-    public StudioCompetition getContest(long contestId)
-        throws PersistenceException, ContestNotFoundException {
-        logger.debug("getContest (" + contestId + ")");
+    public StudioCompetition getContest(TCSubject tcSubject, long contestId) throws PersistenceException,
+            ContestNotFoundException {
+        logger.debug("getContest (" + tcSubject + "," + contestId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, true, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
-            }
-        }
-
+        this.checkStudioContestPermission(tcSubject, contestId, true);
         ContestData studioContest = this.studioService.getContest(contestId);
 
         // BUGR-1363
         StudioCompetition competition = (StudioCompetition) convertToCompetition(CompetionType.STUDIO,
                 studioContest);
-        competition.getContestData().setPayments(getContestPayments(contestId));
+        competition.getContestData().setPayments(getContestPayments(tcSubject, contestId));
         logger.info("for contest " + contestId + ", payments #: " +
             competition.getContestData().getPayments().size());
-        logger.debug("Exit getContest (" + contestId + ")");
+        logger.debug("Exit getContest (" + tcSubject + "," + contestId + ")");
 
         return competition;
+    }
+    /**
+     * <p>
+     * Check the contest permission for studio contest. Read-only or write-permission.
+     * </p>
+     *
+     * @param tcSubject The tcSubject contains the user info
+     * @param contestId the contest to check
+     * @param readonly read-only, or write
+     * @throws PersistenceException fail to check or does not have the given permission
+     */
+    private void checkStudioContestPermission(TCSubject tcSubject, long contestId, boolean readonly)
+            throws PersistenceException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+
+            if (!studioService.checkContestPermission(contestId, readonly, tcSubject.getUserId())) {
+                throw new PersistenceException("No " + (readonly ? "Read" : "write") + "permission on contest");
+            }
+        }
+    }
+    /**
+     * <p>
+     * Checks if the login user is of given role
+     * </p>
+     *
+     * @param tcSubject TCSubject instance for login user
+     * @return true if it is given role
+     */
+    private static boolean isRole(TCSubject tcSubject, String roleName) {
+        Set<RolePrincipal> roles = tcSubject.getPrincipals();
+        if (roles != null) {
+            for (RolePrincipal role : roles) {
+                if (role.getName().equalsIgnoreCase(roleName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
      * <p>
+     * Get the user-name for current login user represented by tcSubject.
+     * </p>
+     * @param tcSubject TCSubject instance for login user
+     * @return user name
+     * @throws ContestServiceException fail to retrieve user-name
+     */
+    private String getUserName(TCSubject tcSubject) throws ContestServiceException {
+        try {
+            return this.userService.getUserHandle(tcSubject.getUserId());
+        } catch(Exception e) {
+            throw new ContestServiceException("Fail to get the user-name by user-id" + tcSubject.getUserId(), e);
+        }
+    }
+    /**
+     * <p>
      * Gets the contests for the given project.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param tcDirectProjectId
-     *            a <code>long</code> providing the ID of a project to get the
-     *            list of associated contests for.
-     * @return a <code>List</code> providing the contests for specified project.
-     *         Empty list is returned if there are no such contests found.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ProjectNotFoundException
-     *             if requested project is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>tcDirectProjectId</code> is negative.
+     * @param tcDirectProjectId a <code>long</code> providing the ID of a project to get the list of associated contests
+     *            for.
+     * @return a <code>List</code> providing the contests for specified project. Empty list is returned if there are no
+     *         such contests found.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ProjectNotFoundException if requested project is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if specified <code>tcDirectProjectId</code> is negative.
      */
-    public List<StudioCompetition> getContestsForProject(long tcDirectProjectId)
-        throws PersistenceException, ProjectNotFoundException {
-        logger.debug("getContestFroPorject (" + tcDirectProjectId + ")");
+    public List<StudioCompetition> getContestsForProject(TCSubject tcSubject, long tcDirectProjectId)
+            throws PersistenceException, ProjectNotFoundException {
+        logger.debug("getContestFroPorject (" + tcSubject + "," + tcDirectProjectId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId))
-            {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!studioService.checkProjectPermission(tcDirectProjectId, true, tcSubject.getUserId())) {
                 throw new PersistenceException("No read permission on project");
             }
         }
 
         List<ContestData> studioContests = this.studioService.getContestsForProject(tcDirectProjectId);
-        logger.debug("Exit getContestFroPorject (" + tcDirectProjectId + ")");
+        logger.debug("Exit getContestFroPorject (" + tcSubject + "," + tcDirectProjectId + ")");
 
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
     }
@@ -1277,48 +1267,40 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Updates the specified contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param contest
-     *            a <code>StudioCompetition</code> providing the contest data to
-     *            update.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ContestNotFoundException
-     *             if requested contest is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>contest</code> is <code>null</code>.
+     * @param contest a <code>StudioCompetition</code> providing the contest data to update.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ContestNotFoundException if requested contest is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if specified <code>contest</code> is <code>null</code>.
      */
-    public void updateContest(StudioCompetition contest)
-        throws PersistenceException, ContestNotFoundException {
-        logger.debug("updateContest (" + contest.getContestData().getContestId() + ")");
+    public void updateContest(TCSubject tcSubject, StudioCompetition contest) throws PersistenceException,
+            ContestNotFoundException {
+        logger.debug("updateContest (" + tcSubject + "," + contest.getContestData().getContestId() + ")");
 
         try
         {
 
             ContestData studioContest = convertToContestData(contest);
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                String userName = p.getName();
-                if (!studioService.checkContestPermission(contest.getContestData().getContestId(), contest.getContestData().getTcDirectProjectId(), false, userId))
-                {
+            if (!isRole(tcSubject, ADMIN_ROLE)) {
+                String userName = getUserName(tcSubject);
+                if (!studioService.checkContestPermission(contest.getContestData().getContestId(), contest
+                        .getContestData().getTcDirectProjectId(), false,tcSubject.getUserId())) {
                     throw new PersistenceException("No write permission on contest");
                 }
 
-                if (studioContest.getBillingProject() > 0)
-                { 
-                    if (!billingProjectDAO.checkClientProjectPermission(userName, studioContest.getBillingProject()))
-                    {
-                        throw new PersistenceException("No permission on billing project " + studioContest.getBillingProject());
+                if (studioContest.getBillingProject() > 0) {
+                    if (!billingProjectDAO.checkClientProjectPermission(userName, studioContest.getBillingProject())) {
+                        throw new PersistenceException("No permission on billing project "
+                                + studioContest.getBillingProject());
                     }
                 }
             }
-
-            
 
             // BUGR-1363
             double total = 0;
@@ -1345,8 +1327,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             studioContest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(
                     winnerAnnouncementDeadlineDate));
 
-            this.studioService.updateContest(studioContest);
-            logger.debug("Exit updateContest (" + contest.getContestData().getContestId()  + ")");
+            this.studioService.updateContest(tcSubject, studioContest);
+            logger.debug("Exit updateContest (" + tcSubject + "," + contest.getContestData().getContestId()  + ")");
         }
         catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
@@ -1364,48 +1346,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Sets the status of contest referenced by the specified ID to specified
-     * value.
+     * Sets the status of contest referenced by the specified ID to specified value.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to update
-     *            status for.
-     * @param newStatusId
-     *            a <code>long</code> providing the ID of a new contest status
-     *            to set.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws StatusNotAllowedException
-     *             if the specified status is not allowed to be set for
-     *             specified contest.
-     * @throws StatusNotFoundException
-     *             if specified status is not found.
-     * @throws ContestNotFoundException
-     *             if specified contest is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if any of specified IDs is negative.
+     * @param contestId a <code>long</code> providing the ID of a contest to update status for.
+     * @param newStatusId a <code>long</code> providing the ID of a new contest status to set.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws StatusNotAllowedException if the specified status is not allowed to be set for specified contest.
+     * @throws StatusNotFoundException if specified status is not found.
+     * @throws ContestNotFoundException if specified contest is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if any of specified IDs is negative.
      */
-    public void updateContestStatus(long contestId, long newStatusId)
-        throws PersistenceException, StatusNotAllowedException,
-            StatusNotFoundException, ContestNotFoundException {
-        logger.debug("updateContestStatus (" + contestId + "," + newStatusId +
-            ")");
+    public void updateContestStatus(TCSubject tcSubject, long contestId, long newStatusId) throws PersistenceException,
+            StatusNotAllowedException, StatusNotFoundException, ContestNotFoundException {
+        logger.debug("updateContestStatus (" + tcSubject + "," + contestId + "," + newStatusId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        checkStudioContestPermission(tcSubject, contestId, false);
 
         this.studioService.updateContestStatus(contestId, newStatusId);
-        logger.debug("Exit updateContestStatus (" + contestId + "," +
+        logger.debug("Exit updateContestStatus (" + tcSubject + "," + contestId + "," +
             newStatusId + ")");
     }
 
@@ -1413,48 +1377,42 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Uploads the specified document and associates it with assigned contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param uploadedDocument
-     *            an <code>UploadedDocument</code> providing the data for the
-     *            uploaded document.
-     * @return an <code>UploadedDocument</code> passed as argument and having
-     *         the document ID auto-generated and set.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ContestNotFoundException
-     *             if requested contest is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the argument is <code>null</code>.
+     * @param uploadedDocument an <code>UploadedDocument</code> providing the data for the uploaded document.
+     * @return an <code>UploadedDocument</code> passed as argument and having the document ID auto-generated and set.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ContestNotFoundException if requested contest is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the argument is <code>null</code>.
      */
-    public UploadedDocument uploadDocumentForContest(
-        UploadedDocument uploadedDocument)
-        throws PersistenceException, ContestNotFoundException {
+    public UploadedDocument uploadDocumentForContest(TCSubject tcSubject, UploadedDocument uploadedDocument)
+            throws PersistenceException, ContestNotFoundException {
         logger.debug("uploadDocumentForContest");
 
-        return this.studioService.uploadDocumentForContest(uploadedDocument);
+        return this.studioService.uploadDocumentForContest(tcSubject, uploadedDocument);
     }
 
     /**
      * <p>
      * Uploads the specified document without associating it with any contest.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param uploadedDocument
-     *            an <code>UploadedDocument</code> providing the data for the
-     *            uploaded document.
-     * @return an <code>UploadedDocument</code> passed as argument and having
-     *         the document ID auto-generated and set.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the argument is <code>null</code>.
+     * @param uploadedDocument an <code>UploadedDocument</code> providing the data for the uploaded document.
+     * @return an <code>UploadedDocument</code> passed as argument and having the document ID auto-generated and set.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the argument is <code>null</code>.
      */
-    public UploadedDocument uploadDocument(UploadedDocument uploadedDocument)
-        throws PersistenceException {
+    public UploadedDocument uploadDocument(TCSubject tcSubject, UploadedDocument uploadedDocument)
+            throws PersistenceException {
         logger.debug("uploadDocument");
 
         return this.studioService.uploadDocument(uploadedDocument);
@@ -1464,196 +1422,152 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Associates the specified document with specified contest.
      * </p>
-     *
-     * @param documentId
-     *            a <code>long</code> providing the ID of a document to be
-     *            associated with specified contest.
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to associate
-     *            the specified document with.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ContestNotFoundException
-     *             if any of requested contest or document is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if any of specified IDs is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param documentId a <code>long</code> providing the ID of a document to be associated with specified contest.
+     * @param contestId a <code>long</code> providing the ID of a contest to associate the specified document with.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ContestNotFoundException if any of requested contest or document is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if any of specified IDs is negative.
      */
-    public void addDocumentToContest(long documentId, long contestId)
-        throws PersistenceException, ContestNotFoundException {
-        logger.debug("addDocumentToContest (" + documentId + "," + contestId +
-            ")");
+    public void addDocumentToContest(TCSubject tcSubject, long documentId, long contestId) throws PersistenceException,
+            ContestNotFoundException {
+        logger.debug("addDocumentToContest (" + tcSubject + "," + documentId + "," + contestId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        checkStudioContestPermission(tcSubject, contestId, false);
 
         this.studioService.addDocumentToContest(documentId, contestId);
-        logger.debug("Exit addDocumentToContest (" + documentId + "," +
-            contestId + ")");
+        logger.debug("Exit addDocumentToContest (" + tcSubject + "," + documentId + "," + contestId + ")");
     }
 
     /**
      * <p>
      * Removes the specified document from specified contest.
      * </p>
-     *
-     * @param document
-     *            an <code>UploadedDocument</code> representing the document to
-     *            be removed.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws DocumentNotFoundException
-     *             if the specified document is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the specified argument is <code>null</code>.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param document an <code>UploadedDocument</code> representing the document to be removed.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws DocumentNotFoundException if the specified document is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the specified argument is <code>null</code>.
      */
-    public void removeDocumentFromContest(UploadedDocument document)
-        throws PersistenceException, DocumentNotFoundException {
-        logger.debug("removeDocumentToContest (" + document.getDocumentId() +
-            ")");
+    public void removeDocumentFromContest(TCSubject tcSubject, UploadedDocument document) throws PersistenceException,
+            DocumentNotFoundException {
+        logger.debug("removeDocumentToContest (" + tcSubject + "," + document.getDocumentId() + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(document.getContestId(), false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        checkStudioContestPermission(tcSubject, document.getContestId(), false);
 
         this.studioService.removeDocumentFromContest(document);
-        logger.debug("Exit removeDocumentToContest (" +
-            document.getDocumentId() + ")");
+        logger.debug("Exit removeDocumentToContest (" + tcSubject + "," + document.getDocumentId() + ")");
     }
 
     /**
      * <p>
      * Retrieves the list of submissions for the specified contest.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get the
-     *            list of submissions for.
-     * @return a <code>List</code> providing the details for the submissions
-     *         associated with the specified contest. Empty list is returned if
-     *         there are no submissions found.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws ContestNotFoundException
-     *             if requested contest is not found.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the specified ID is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to get the list of submissions for.
+     * @return a <code>List</code> providing the details for the submissions associated with the specified contest.
+     *         Empty list is returned if there are no submissions found.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws ContestNotFoundException if requested contest is not found.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the specified ID is negative.
      */
-    public List<SubmissionData> retrieveSubmissionsForContest(long contestId)
-        throws PersistenceException, ContestNotFoundException {
-        logger.debug("retrieveSubmissionsForContest (" + contestId + ")");
+    public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject, long contestId)
+            throws PersistenceException, ContestNotFoundException {
+        logger.debug("retrieveSubmissionsForContest (" + tcSubject + "," + contestId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, true, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
+        checkStudioContestPermission(tcSubject, contestId, true);
+
+        return this.studioService.retrieveSubmissionsForContest(tcSubject, contestId);
+    }
+    /**
+     * <p>
+     * Check the submission permission for studio contest. Read-only or write-permission.
+     * </p>
+     *
+     * @param tcSubject The tcSubject contains the user info
+     * @param submissionId the submission to check
+     * @param readonly read-only, or write
+     * @throws PersistenceException fail to check or does not have the given permission
+     */
+    private void checkStudioSubmissionPermission(TCSubject tcSubject, long submissionId, boolean readonly)
+            throws PersistenceException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+
+            if (!studioService.checkSubmissionPermission(submissionId, false, tcSubject.getUserId())) {
+                throw new PersistenceException("No " + (readonly ? "Read" : "write") + "permission on contest");
             }
         }
-
-        return this.studioService.retrieveSubmissionsForContest(contestId);
     }
-
 
     /**
      * <p>
      * Updates specified submission.
      * </p>
-     *
-     * @param submission
-     *            a <code>SubmissionData</code> providing the data for
-     *            submission to be updated.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the specified argument is <code>null</code>.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submission a <code>SubmissionData</code> providing the data for submission to be updated.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the specified argument is <code>null</code>.
      */
-    public void updateSubmission(SubmissionData submission)
-        throws PersistenceException {
-        logger.debug("updateSubmission (" + submission.getSubmissionId() + ")");
+    public void updateSubmission(TCSubject tcSubject, SubmissionData submission) throws PersistenceException {
+        logger.debug("updateSubmission (" + tcSubject + "," + submission.getSubmissionId() + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submission.getSubmissionId(), false, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
-            }
-        }
+        checkStudioSubmissionPermission(tcSubject, submission.getSubmissionId(), false);
 
         this.studioService.updateSubmission(submission);
-        logger.debug("Exit updateSubmission (" + submission.getSubmissionId() +
-            ")");
+        logger.debug("Exit updateSubmission (" + tcSubject + "," + submission.getSubmissionId() + ")");
     }
 
     /**
      * <p>
      * Removes specified submission.
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission to
-     *            remove.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
-     * @throws IllegalArgumentWSException
-     *             if the <code>submissionId</code> is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission to remove.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
+     * @throws IllegalArgumentWSException if the <code>submissionId</code> is negative.
      */
-    public void removeSubmission(long submissionId) throws PersistenceException {
-        logger.debug("removeSubmission (" + submissionId + ")");
+    public void removeSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException {
+        logger.debug("removeSubmission (" + tcSubject + "," + submissionId + ")");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
         this.studioService.removeSubmission(submissionId);
-        logger.debug("Exit removeSubmission (" + submissionId + ")");
+        logger.debug("Exit removeSubmission (" + tcSubject + "," + submissionId + ")");
     }
 
     /**
      * <p>
      * Gets existing contest statuses.
      * </p>
-     *
-     * @return a <code>List</code> listing available contest statuses. Empty
-     *         list is returned if there are no statuses.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing available contest statuses. Empty list is returned if there are no statuses.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
      */
-    public List<ContestStatusData> getStatusList() throws PersistenceException {
+    public List<ContestStatusData> getStatusList(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getStatusList");
 
         return this.studioService.getStatusList();
@@ -1663,15 +1577,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the list of existing submission types.
      * </p>
-     *
-     * @return a <code>String</code> providing the comma-separated list of
-     *         submission types.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws UserNotAuthorizedException
-     *             if the caller is not authorized to call this operation.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>String</code> providing the comma-separated list of submission types.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
      */
-    public String getSubmissionFileTypes() throws PersistenceException {
+    public String getSubmissionFileTypes(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getSubmissionFileTypes");
 
         return this.studioService.getSubmissionFileTypes();
@@ -1681,17 +1595,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the list of all existing contests.
      * </p>
-     *
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<StudioCompetition> getAllContests() throws PersistenceException {
-        List<ContestData> studioContests = this.studioService.getAllContests();
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<StudioCompetition> getAllContests(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllContests");
-
+        List<ContestData> studioContests = this.studioService.getAllContests(tcSubject);
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
     }
 
@@ -1699,57 +1613,55 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the list of all existing contests for contest monitor widget.
      * </p>
-     *
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleContestData> getSimpleContestData()
-        throws PersistenceException {
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<SimpleContestData> getSimpleContestData(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getSimpleContestData");
 
-        return studioService.getSimpleContestData();
+        return studioService.getSimpleContestData(tcSubject);
     }
 
     /**
      * <p>
-     * Gets the list of all existing contests related to given project for my
-     * project widget.
+     * Gets the list of all existing contests related to given project for my project widget.
      * </p>
-     *
-     * @param pid
-     *            given project id
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param pid given project id
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(
-        long pid) throws PersistenceException {
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(TCSubject tcSubject, long pid)
+            throws PersistenceException {
         logger.debug("getSimpleProjectContestDataByPID");
 
         return studioService.getSimpleProjectContestData(pid);
     }
 
+
     /**
      * <p>
-     * Gets the list of all existing contests related to given project for
-     * contest monitor widget .
+     * Gets the list of all existing contests related to given project for contest monitor widget .
      * </p>
-     *
-     * @param pid
-     *            the given project id
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param pid the given project id
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleContestData> getSimpleContestDataByPID(long pid)
-        throws PersistenceException {
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<SimpleContestData> getSimpleContestDataByPID(TCSubject tcSubject, long pid) throws PersistenceException {
         logger.debug("getSimpleContestDataByPID");
 
         return studioService.getSimpleContestData(pid);
@@ -1757,81 +1669,76 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * This is going to fetch all the currently available contests for my
-     * project widget.
+     * This is going to fetch all the currently available contests for my project widget.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of all available contents (or empty if none found)
-     *
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleContestData> getContestDataOnly()
-        throws PersistenceException {
+    public List<SimpleContestData> getContestDataOnly(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getContestDataOnly");
 
-        return studioService.getContestDataOnly();
+        return studioService.getContestDataOnly(tcSubject);
     }
 
     /**
      * <p>
-     * This is going to fetch all the currently available contests for my
-     * project widget related to given project.
+     * This is going to fetch all the currently available contests for my project widget related to given project.
      * </p>
-     *
-     * @param pid
-     *            given project id
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param pid given project id
      * @return the list of all available contents (or empty if none found)
-     *
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleContestData> getContestDataOnlyByPID(long pid)
-        throws PersistenceException {
+    public List<SimpleContestData> getContestDataOnlyByPID(TCSubject tcSubject, long pid) throws PersistenceException {
         logger.debug("getContestDataOnlyByPID");
 
-        return studioService.getContestDataOnly(pid);
+        return studioService.getContestDataOnly(tcSubject, pid);
     }
 
     /**
      * <p>
      * Gets the list of all existing contests for my project widget.
      * </p>
-     *
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<SimpleProjectContestData> getSimpleProjectContestData()
-        throws PersistenceException {
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getSimpleProjectContestData");
 
-        return studioService.getSimpleProjectContestData();
+        return studioService.getSimpleProjectContestData(tcSubject);
     }
 
     /**
      * <p>
      * Gets the list of existing contests matching the specified criteria.
      * </p>
-     *
-     * @param filter
-     *            a <code>Filter</code> providing the criteria for searching for
-     *            contests.
-     * @return a <code>List</code> listing all existing contests matching the
-     *         specified criteria. Empty list is returned if there are no
-     *         matching contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     * @throws IllegalArgumentException
-     *             if specified <code>filter</code> is <code>null</code> or if
-     *             it is not supported by implementor.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param filter a <code>Filter</code> providing the criteria for searching for contests.
+     * @return a <code>List</code> listing all existing contests matching the specified criteria. Empty list is returned
+     *         if there are no matching contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
+     *             by implementor.
      */
-    public List<StudioCompetition> searchContests(ContestServiceFilter filter)
-        throws PersistenceException {
+    public List<StudioCompetition> searchContests(TCSubject tcSubject, ContestServiceFilter filter)
+            throws PersistenceException {
         logger.debug("searchContests");
 
         List<ContestData> studioContests = this.studioService.searchContests(filter.getFilter());
@@ -1840,35 +1747,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
     }
 
-   
+
 
     /**
      * <p>
      * Gets the submission referenced by the specified ID.
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission to get
-     *            details for.
-     * @return a <code>SubmissionData</code> providing details for the
-     *         submission referenced by the specified ID or <code>null</code> if
-     *         such a submission is not found.
-     * @throws PersistenceException
-     *             if any error occurs during the retrieval.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission to get details for.
+     * @return a <code>SubmissionData</code> providing details for the submission referenced by the specified ID or
+     *         <code>null</code> if such a submission is not found.
+     * @throws PersistenceException if any error occurs during the retrieval.
      */
-    public SubmissionData retrieveSubmission(long submissionId)
-        throws PersistenceException {
+    public SubmissionData retrieveSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException {
         logger.debug("retrieveSubmission");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, true, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
-            }
-        }
+        checkStudioSubmissionPermission(tcSubject, submissionId, true);
 
         return this.studioService.retrieveSubmissionData(submissionId);
     }
@@ -1877,14 +1774,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets existing contest types.
      * </p>
-     *
-     * @return a <code>List</code> listing available contest types. Empty list
-     *         is returned if there are no types.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing available contest types. Empty list is returned if there are no types.
+     * @throws PersistenceException if some persistence errors occur.
      */
-    public List<ContestTypeData> getAllContestTypes()
-        throws PersistenceException {
+    public List<ContestTypeData> getAllContestTypes(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllContestTypes");
 
         return this.studioService.getAllContestTypes();
@@ -1894,17 +1791,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Removes the document referenced by the specified ID.
      * </p>
-     *
-     * @param documentId
-     *            a <code>long</code> providing the ID of a document to remove.
-     * @return <code>true</code> if requested document was removed successfully;
-     *         <code>false</code> otherwise.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>documentId</code> is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param documentId a <code>long</code> providing the ID of a document to remove.
+     * @return <code>true</code> if requested document was removed successfully; <code>false</code> otherwise.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws IllegalArgumentWSException if specified <code>documentId</code> is negative.
      */
-    public boolean removeDocument(long documentId) throws PersistenceException {
+    public boolean removeDocument(TCSubject tcSubject, long documentId) throws PersistenceException {
         logger.debug("removeDocument");
 
         return this.studioService.removeDocument(documentId);
@@ -1914,19 +1810,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gest the MIME type matching the specified context type.
      * </p>
-     *
-     * @param contentType
-     *            a <code>String</code> providing the content type to get the
-     *            matching MIME type for.
-     * @return a <code>long</code> providing the ID of MIME type matching the
-     *         specified content type.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
-     * @throws IllegalArgumentWSException
-     *             if the specified <code>contentType</code> is
-     *             <code>null</code> or empty.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contentType a <code>String</code> providing the content type to get the matching MIME type for.
+     * @return a <code>long</code> providing the ID of MIME type matching the specified content type.
+     * @throws PersistenceException if some persistence errors occur.
+     * @throws IllegalArgumentWSException if the specified <code>contentType</code> is <code>null</code> or empty.
      */
-    public long getMimeTypeId(String contentType) throws PersistenceException {
+    public long getMimeTypeId(TCSubject tcSubject, String contentType) throws PersistenceException {
         logger.debug("getMimeTypeId");
 
         return this.studioService.getMimeTypeId(contentType);
@@ -1934,98 +1827,70 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Purchases the specified submission. E.g. records a fact that submission
-     * referenced by specified ID has been paid
+     * Purchases the specified submission. E.g. records a fact that submission referenced by specified ID has been paid
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission which has
-     *            been paid for.
-     * @param submissionPaymentData
-     *            a <code>SubmissionPaymentData</code> providing the data of
-     *            successfully purchased submission.
-     * @param securityToken
-     *            a <code>String</code> providing the security token to be used
-     *            for tracking the payment and prevent fraud.
-     * @throws PersistenceException
-     *             if any error occurs when purchasing submission.
-     * @throws IllegalArgumentWSException
-     *             if specified <code>submissionId</code> is negative.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission which has been paid for.
+     * @param submissionPaymentData a <code>SubmissionPaymentData</code> providing the data of successfully purchased
+     *            submission.
+     * @param securityToken a <code>String</code> providing the security token to be used for tracking the payment and
+     *            prevent fraud.
+     * @throws PersistenceException if any error occurs when purchasing submission.
+     * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      */
-    public void purchaseSubmission(long submissionId,
-        SubmissionPaymentData submissionPaymentData, String securityToken)
-        throws PersistenceException {
+    public void purchaseSubmission(TCSubject tcSubject, long submissionId, SubmissionPaymentData submissionPaymentData,
+            String securityToken) throws PersistenceException {
         logger.debug("purchaseSubmission");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
-        this.studioService.purchaseSubmission(submissionId,
-            submissionPaymentData, securityToken);
+        this.studioService.purchaseSubmission(submissionId, submissionPaymentData, securityToken);
         logger.debug("Exit purchaseSubmission");
     }
 
     /**
      * <p>
-     * Creates a new contest payment. Upon creation an unique ID is generated
-     * and assigned to returned payment.
+     * Creates a new contest payment. Upon creation an unique ID is generated and assigned to returned payment.
      * </p>
-     *
-     * @param contestPayment
-     *            a <code>ContestPaymentData</code> providing the data for the
-     *            contest payment to be created.
-     * @param securityToken
-     *            a <code>String</code> providing the security token to be used
-     *            for tracking the payment and prevent fraud.
-     * @return a <code>ContestPaymentData</code> providing the details for
-     *         created contest payment and having the ID for contest payment
-     *         auto-generated and set.
-     * @throws IllegalArgumentException
-     *             if any of specified arguments is <code>null</code>.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestPayment a <code>ContestPaymentData</code> providing the data for the contest payment to be created.
+     * @param securityToken a <code>String</code> providing the security token to be used for tracking the payment and
+     *            prevent fraud.
+     * @return a <code>ContestPaymentData</code> providing the details for created contest payment and having the ID for
+     *         contest payment auto-generated and set.
+     * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
      */
-    private ContestPaymentData createContestPayment(
-        ContestPaymentData contestPayment, String securityToken)
-        throws PersistenceException {
+    private ContestPaymentData createContestPayment(TCSubject tcSubject, ContestPaymentData contestPayment,
+            String securityToken) throws PersistenceException {
         logger.debug("createContestPayment");
 
-        return this.studioService.createContestPayment(contestPayment,
-            securityToken);
+        return this.studioService.createContestPayment(contestPayment, securityToken);
     }
 
     /**
      * <p>
      * Gets the contest payment referenced by specified contest ID.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get
-     *            payment details for.
-     * @return a <code>ContestPaymentData</code> representing the contest
-     *         payment matching the specified ID; or <code>null</code> if there
-     *         is no such contest.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to get payment details for.
+     * @return a <code>ContestPaymentData</code> representing the contest payment matching the specified ID; or
+     *         <code>null</code> if there is no such contest.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-    private List<ContestPaymentData> getContestPayments(long contestId)
-        throws PersistenceException {
+    private List<ContestPaymentData> getContestPayments(TCSubject tcSubject, long contestId)
+            throws PersistenceException {
         logger.debug("getContestPayments");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, true, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
-            }
-        }
+        this.checkStudioContestPermission(tcSubject, contestId, true);
 
         return this.studioService.getContestPayments(contestId);
     }
@@ -2034,28 +1899,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Updates specified contest payment data.
      * </p>
-     *
-     * @param contestPayment
-     *            a <code>ContestPaymentData</code> providing the details for
-     *            the contest payment to be updated.
-     * @throws PersistenceException
-     *             if any error occurs when updating contest.
-     * @throws IllegalArgumentException
-     *             if the specified argument is <code>null</code>.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestPayment a <code>ContestPaymentData</code> providing the details for the contest payment to be
+     *            updated.
+     * @throws PersistenceException if any error occurs when updating contest.
+     * @throws IllegalArgumentException if the specified argument is <code>null</code>.
      */
-    private void editContestPayment(ContestPaymentData contestPayment)
-        throws PersistenceException {
+    private void editContestPayment(TCSubject tcSubject, ContestPaymentData contestPayment) throws PersistenceException {
         logger.debug("editContestPayments");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestPayment.getContestId(), false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        this.checkStudioContestPermission(tcSubject, contestPayment.getContestId(), false);
 
         this.studioService.editContestPayment(contestPayment);
     }
@@ -2064,28 +1920,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Removes the contest payment referenced by the specified contest ID.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to remove
-     *            payment details for.
-     * @return <code>true</code> if requested contest payment was removed
-     *         successfully; <code>false</code> otherwise.
-     * @throws PersistenceException
-     *             if any error occurs when removing contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to remove payment details for.
+     * @return <code>true</code> if requested contest payment was removed successfully; <code>false</code> otherwise.
+     * @throws PersistenceException if any error occurs when removing contest.
      */
-    public boolean removeContestPayment(long contestId)
-        throws PersistenceException {
+    public boolean removeContestPayment(TCSubject tcSubject, long contestId) throws PersistenceException {
         logger.debug("removeContestPayments");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        this.checkStudioContestPermission(tcSubject, contestId, false);
 
         return this.studioService.removeContestPayment(contestId);
     }
@@ -2094,13 +1940,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets existing medium types.
      * </p>
-     *
-     * @return a <code>List</code> listing available medium types. Empty list is
-     *         returned if there are no types.
-     * @throws PersistenceException
-     *             if some persistence errors occur.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing available medium types. Empty list is returned if there are no types.
+     * @throws PersistenceException if some persistence errors occur.
      */
-    public List<MediumData> getAllMediums() throws PersistenceException {
+    public List<MediumData> getAllMediums(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllMediums");
 
         return this.studioService.getAllMediums();
@@ -2110,28 +1957,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Sets the placement for the specified submission.
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission to set
-     *            the placement for.
-     * @param placement
-     *            an <code>int</code> providing the submission placement.
-     * @throws PersistenceException
-     *             if any error occurs when setting placement.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission to set the placement for.
+     * @param placement an <code>int</code> providing the submission placement.
+     * @throws PersistenceException if any error occurs when setting placement.
      */
-    public void setSubmissionPlacement(long submissionId, int placement)
-        throws PersistenceException {
+    public void setSubmissionPlacement(TCSubject tcSubject, long submissionId, int placement)
+            throws PersistenceException {
         logger.debug("setSubmissionPlacement");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
         this.studioService.setSubmissionPlacement(submissionId, placement);
         logger.debug("Exit setSubmissionPlacement");
@@ -2141,27 +1979,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Associates the specified submission with the specified prize.
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission.
-     * @param prizeId
-     *            a <code>long</code> providing the ID of a prize.
-     * @throws PersistenceException
-     *             if any error occurs when setting submission prize.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission.
+     * @param prizeId a <code>long</code> providing the ID of a prize.
+     * @throws PersistenceException if any error occurs when setting submission prize.
      */
-    public void setSubmissionPrize(long submissionId, long prizeId)
-        throws PersistenceException {
+    public void setSubmissionPrize(TCSubject tcSubject, long submissionId, long prizeId) throws PersistenceException {
         logger.debug("setSubmissionPrize");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, true, userId))
-            {
-                throw new PersistenceException("No read permission on contest");
-            }
-        }
+        this.checkStudioSubmissionPermission(tcSubject, submissionId, true);
 
         this.studioService.setSubmissionPlacement(submissionId, prizeId);
         logger.debug("Exit setSubmissionPrize");
@@ -2171,25 +2000,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Marks the specified submission for purchse.
      * </p>
-     *
-     * @param submissionId
-     *            a <code>long</code> providing the ID of a submission to be
-     *            marked for purchase.
-     * @throws PersistenceException
-     *             if any error occurs when marking for purchase.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId a <code>long</code> providing the ID of a submission to be marked for purchase.
+     * @throws PersistenceException if any error occurs when marking for purchase.
      */
-    public void markForPurchase(long submissionId) throws PersistenceException {
+    public void markForPurchase(TCSubject tcSubject, long submissionId) throws PersistenceException {
         logger.debug("markForPurchase");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
         this.studioService.markForPurchase(submissionId);
         logger.debug("Exit markForPurchase");
@@ -2199,14 +2020,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Adss the specified list of history data for the associated contest.
      * </p>
-     *
-     * @param history
-     *            a <code>List</code> of history data for a contest.
-     * @throws PersistenceException
-     *             if any other error occurs.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param history a <code>List</code> of history data for a contest.
+     * @throws PersistenceException if any other error occurs.
      */
-    public void addChangeHistory(List<ChangeHistoryData> history)
-        throws PersistenceException {
+    public void addChangeHistory(TCSubject tcSubject, List<ChangeHistoryData> history) throws PersistenceException {
         logger.debug("adChangeHistory");
         this.studioService.addChangeHistory(history);
         logger.debug("Exit adChangeHistory");
@@ -2216,16 +2037,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the history data for the specified contest.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get
-     *            history data for.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to get history data for.
      * @return a <code>List</code> of history data for specified contest.
-     * @throws PersistenceException
-     *             if any other error occurs.
+     * @throws PersistenceException if any other error occurs.
      */
-    public List<ChangeHistoryData> getChangeHistory(long contestId)
-        throws PersistenceException {
+    public List<ChangeHistoryData> getChangeHistory(TCSubject tcSubject, long contestId) throws PersistenceException {
         logger.debug("getChangeHistory");
 
         return this.studioService.getChangeHistory(contestId);
@@ -2233,20 +2053,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Gets the most history data for the most recent changes to specified
-     * contest.
+     * Gets the most history data for the most recent changes to specified contest.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get
-     *            history data for.
-     * @return a <code>List</code> of history data for the most recent change
-     *         for specified contest.
-     * @throws PersistenceException
-     *             if any other error occurs.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to get history data for.
+     * @return a <code>List</code> of history data for the most recent change for specified contest.
+     * @throws PersistenceException if any other error occurs.
      */
-    public List<ChangeHistoryData> getLatestChanges(long contestId)
-        throws PersistenceException {
+    public List<ChangeHistoryData> getLatestChanges(TCSubject tcSubject, long contestId) throws PersistenceException {
         logger.debug("getLatestChanges");
 
         return this.studioService.getLatestChanges(contestId);
@@ -2256,24 +2073,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Deletes the contest referenced by the specified ID.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to delete.
-     * @throws PersistenceException
-     *             if any other error occurs.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to delete.
+     * @throws PersistenceException if any other error occurs.
      */
-    public void deleteContest(long contestId) throws PersistenceException {
+    public void deleteContest(TCSubject tcSubject, long contestId) throws PersistenceException {
         logger.debug("deleteContest");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
+        this.checkStudioContestPermission(tcSubject, contestId, false);
 
         this.studioService.deleteContest(contestId);
         logger.debug("Exit deleteContest");
@@ -2283,17 +2093,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the list of all existing contests.
      * </p>
-     *
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
-    public List<StudioCompetition> getAllContestHeaders()
-        throws PersistenceException {
+    public List<StudioCompetition> getAllContestHeaders(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllContestHeaders");
 
-        List<ContestData> studioContests = this.studioService.getAllContestHeaders();
+        List<ContestData> studioContests = this.studioService.getAllContestHeaders(tcSubject);
         logger.debug("Exit getAllContestHeaders");
 
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
@@ -2301,32 +2111,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Sends payments to <code>PACTS</code> application for all unpaid
-     * submussions with a prize already assigned. This service is not atomic. If
-     * it fails, you'll have to check what payments where actually done trough
-     * the <code>submussion.paid</code> flag.
+     * Sends payments to <code>PACTS</code> application for all unpaid submussions with a prize already assigned. This
+     * service is not atomic. If it fails, you'll have to check what payments where actually done trough the
+     * <code>submussion.paid</code> flag.
      * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to process
-     *            missing payments for.
-     * @throws PersistenceException
-     *             if any error occurs when processing a payment.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId a <code>long</code> providing the ID of a contest to process missing payments for.
+     * @throws PersistenceException if any error occurs when processing a payment.
      */
-    public void processMissingPayments(long contestId)
-        throws PersistenceException {
+    public void processMissingPayments(TCSubject tcSubject, long contestId) throws PersistenceException {
         logger.debug("processMissingPayments");
 
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-        {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkContestPermission(contestId, false, userId))
-            {
-                throw new PersistenceException("No write permission on contest");
-            }
-        }
-
+        this.checkStudioContestPermission(tcSubject, contestId, false);
 
         this.studioService.processMissingPayments(contestId);
         logger.debug("Exit processMissingPayments");
@@ -2334,16 +2133,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Gets all studio file types to return. If no studio file type exists,
-     * return an empty list
+     * Gets all studio file types to return. If no studio file type exists, return an empty list
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return a list of studio file types
-     * @throws PersistenceException
-     *             if any error occurs when getting studio file types.
+     * @throws PersistenceException if any error occurs when getting studio file types.
      */
-    public List<StudioFileType> getAllStudioFileTypes()
-        throws PersistenceException {
+    public List<StudioFileType> getAllStudioFileTypes(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllStudioFileTYpes");
 
         return this.studioService.getAllStudioFileTypes();
@@ -2353,15 +2152,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Get all the DocumentType objects.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of all available DocumentType
-     *
-     * @throws PersistenceException
-     *             if any error occurs when getting contest
-     *
+     * @throws PersistenceException if any error occurs when getting contest
      * @since 1.1.2
      */
-    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
+    public List<DocumentType> getAllDocumentTypes(TCSubject tcSubject) throws PersistenceException {
         logger.debug("getAllDocumentTypes");
 
         return this.studioService.getAllDocumentTypes();
@@ -2369,24 +2168,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * This method retrieve all the permissions that the user owned for any
-     * projects. Returns empty list if no permission found.
+     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
+     * permission found.
      * </p>
-     *
-     * @param userid
-     *            user id to look for
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userid user id to look for
      * @return all the permissions that the user owned for any projects.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissionsByUser(long userid)
-        throws PermissionServiceException {
+    public List<Permission> getPermissionsByUser(TCSubject tcSubject, long userid) throws PermissionServiceException {
         logger.debug("getPermissionsByUser");
 
         return this.permissionService.getPermissionsByUser(userid);
@@ -2394,24 +2189,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * This method retrieve all the permissions that various users own for a
-     * given project. Returns empty list if no permission found.
+     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
+     * permission found.
      * </p>
-     *
-     * @param projectid
-     *            project id to look for
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectid project id to look for
      * @return all the permissions that various users own for a given project.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      * @since Cockpit Share Submission Integration
      */
-    public List<Permission> getPermissionsByProject(long projectid)
-        throws PermissionServiceException {
+    public List<Permission> getPermissionsByProject(TCSubject tcSubject, long projectid)
+            throws PermissionServiceException {
         logger.debug("getPermissionsByProject");
 
         return this.permissionService.getPermissionsByProject(projectid);
@@ -2419,26 +2211,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * This method retrieve all the permissions that the user own for a given
-     * project. Returns empty list if no permission found.
+     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
+     * permission found.
      * </p>
-     *
-     * @param userid
-     *            user id to look for
-     * @param projectid
-     *            project id to look for
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userid user id to look for
+     * @param projectid project id to look for
      * @return all the permissions that the user own for a given project.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permissions.
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<Permission> getPermissions(long userid, long projectid)
-        throws PermissionServiceException {
+    public List<Permission> getPermissions(TCSubject tcSubject, long userid, long projectid)
+            throws PermissionServiceException {
         logger.debug("getPermissions");
 
         return this.permissionService.getPermissions(userid, projectid);
@@ -2448,18 +2236,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * This method retrieve all the permission types.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return all the permission types.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permission types.
-     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when getting permission types.
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public List<PermissionType> getAllPermissionType()
-        throws PermissionServiceException {
+    public List<PermissionType> getAllPermissionType(TCSubject tcSubject) throws PermissionServiceException {
         logger.debug("getAllPermissionType");
 
         return this.permissionService.getAllPermissionType();
@@ -2469,21 +2255,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * This method will add a permission type, and return the added type entity.
      * </p>
-     *
-     * @param type
-     *            the permission type to add.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param type the permission type to add.
      * @return the added permission type entity
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when adding the permission type.
-     *
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when adding the permission type.
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public PermissionType addPermissionType(PermissionType type)
-        throws PermissionServiceException {
+    public PermissionType addPermissionType(TCSubject tcSubject, PermissionType type) throws PermissionServiceException {
         return this.permissionService.addPermissionType(type);
     }
 
@@ -2491,19 +2273,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * This method will update permission type data.
      * </p>
-     *
-     * @param type
-     *            the permission type to update.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when updating the permission type.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param type the permission type to update.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when updating the permission type.
      * @since Module Cockpit Contest Service Enhancement Assembly
      */
-    public void updatePermissionType(PermissionType type)
-        throws PermissionServiceException {
+    public void updatePermissionType(TCSubject tcSubject, PermissionType type) throws PermissionServiceException {
         logger.debug("updatePermissionType");
         this.permissionService.updatePermissionType(type);
         logger.debug("Exit updatePermissionType");
@@ -2667,131 +2446,133 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Processes the contest payment. It does following steps:
      * <ul>
-     * <li>Checks contest id to decide whether to create new contest or update
-     * existing contest</li>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
      * <li>It processes the payment through <code>PaymentProcessor</code></li>
      * <li>On successful processing -
      * <ul>
      * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set payment reference number and type</li>
-     * <li>Creates new forum for the contest, forum name being contest name. It
-     * uses studio service for doing the same.</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
      * </ul>
      * </li>
      * </ul>
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param competition <code>StudioCompetition</code> data that recognizes a contest.
-     * @param paymentData <code>PaymentData</code> payment information (credit card/po
-     *        details) that need to be processed.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     * @throws ContestNotFoundException
-     *             if contest is not found while update.
-     * @throws IllegalArgumentException
-     *             if specified <code>filter</code> is <code>null</code> or if
-     *             it is not supported by implementor.
+     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws ContestNotFoundException if contest is not found while update.
+     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
+     *             by implementor.
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public ContestPaymentResult processContestCreditCardPayment(
-        StudioCompetition competition, CreditCardPaymentData paymentData)
-        throws PersistenceException, PaymentException, ContestNotFoundException {
+    public ContestPaymentResult processContestCreditCardPayment(TCSubject tcSubject, StudioCompetition competition,
+            CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.debug("processContestCreditCardPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.debug("Exit processContestCreditCardPayment");
 
-        return processContestPaymentInternal(competition, paymentData);
+        return processContestPaymentInternal(tcSubject, competition, paymentData);
     }
 
     /**
      * <p>
      * Processes the contest payment. It does following steps:
      * <ul>
-     * <li>Checks contest id to decide whether to create new contest or update
-     * existing contest</li>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
      * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set payment reference number and type</li>
-     * <li>Creates new forum for the contest, forum name being contest name. It
-     * uses studio service for doing the same.</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
      * </ul>
      * </li>
      * </ul>
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param competition <code>StudioCompetition</code> data that recognizes a contest.
-     * @param paymentData <code>PaymentData</code> payment information (credit card/po
-     *        details) that need to be processed.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     * @throws ContestNotFoundException
-     *             if contest is not found while update.
-     * @throws IllegalArgumentException
-     *             if specified <code>filter</code> is <code>null</code> or if
-     *             it is not supported by implementor.
+     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws ContestNotFoundException if contest is not found while update.
+     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
+     *             by implementor.
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public ContestPaymentResult processContestPurchaseOrderPayment(
-        StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
-        throws PersistenceException, PaymentException, ContestNotFoundException {
+    public ContestPaymentResult processContestPurchaseOrderPayment(TCSubject tcSubject, StudioCompetition competition,
+            TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
+            ContestNotFoundException {
         logger.debug("processContestPurchaseOrderPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
+        logger.info("tcSubject: " + tcSubject);
 
-        return processContestPaymentInternal(competition, paymentData);
+        return processContestPaymentInternal(tcSubject, competition, paymentData);
     }
-
+    /**
+     * Checks the billing project permission of the given contest for the current caller.
+     *
+     * @param contest the contest to check
+     * @return billing project id, if it is -1, then no billing project
+     * @throws ContestServiceException if user(not admin) does not have the permission
+     */
+    private void checkBillingProjectPoNumberPermission(TCSubject tcSubject, String poNumber)
+            throws ContestServiceException, DAOException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!billingProjectDAO.checkPoNumberPermission(getUserName(tcSubject), poNumber)) {
+                throw new ContestServiceException("No permission on poNumber " + poNumber);
+            }
+        }
+    }
     /**
      * <p>
      * Processes the contest payment. It does following steps:
      * <ul>
-     * <li>Checks contest id to decide whether to create new contest or update
-     * existing contest</li>
-     * <li>If payment type is credit card then it processes the payment through
-     * <code>PaymentProcessor</code></li>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
      * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
      * <li>set payment reference number and type</li>
-     * <li>Creates new forum for the contest, forum name being contest name. It
-     * uses studio service for doing the same.</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
      * </ul>
      * </li>
      * </ul>
      * </p>
-     *
      * <p>
-     * Updated for Cockpit Release Assembly for Receipts - Added email
-     * notification for payment receipts.
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
      * </p>
-     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param competition <code>StudioCompetition</code> data that recognizes a contest.
-     * @param paymentData <code>PaymentData</code> payment information (credit card/po
-     *        details) that need to be processed.
+     * @param paymentData <code>PaymentData</code> payment information (credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     * @throws ContestNotFoundException
-     *             if contest is not found while update.
-     * @throws IllegalArgumentException
-     *             if specified <code>filter</code> is <code>null</code> or if
-     *             it is not supported by implementor.
+     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws ContestNotFoundException if contest is not found while update.
+     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
+     *             by implementor.
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    private ContestPaymentResult processContestPaymentInternal(
-        StudioCompetition competition, PaymentData paymentData)
-        throws PersistenceException, PaymentException, ContestNotFoundException {
+    private ContestPaymentResult processContestPaymentInternal(TCSubject tcSubject, StudioCompetition competition,
+            PaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
+        logger.info("tcSubject: " + tcSubject);
 
         ContestPaymentResult contestPaymentResult = null;
 
@@ -2804,14 +2585,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (contestId >= 0) {
                 try {
-                    tobeUpdatedCompetition = getContest(contestId);
+                    tobeUpdatedCompetition = getContest(tcSubject, contestId);
                 } catch (ContestNotFoundException cnfe) {
                     // if not contest is found then simply ignore it.
                 }
             }
 
             if (tobeUpdatedCompetition == null) {
-                tobeUpdatedCompetition = createContest(competition,
+                tobeUpdatedCompetition = createContest(tcSubject, competition,
                         competition.getContestData().getTcDirectProjectId());
             } else {
                 tobeUpdatedCompetition = competition;
@@ -2847,17 +2628,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-                
+
                 String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-                {
-                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                    String userName = p.getName();
-                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
-                    {
-                        throw new ContestServiceException("No permission on poNumber " + poNumber);
-                    }
-                }
+                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
 
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
@@ -2884,7 +2657,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             tobeUpdatedCompetition.getContestData()
-                                  .setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
+                                  .setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
             tobeUpdatedCompetition.getContestData()
                                   .setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
 
@@ -2905,10 +2678,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
             contestPaymentData.setPrice(paymentAmount);
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            String userId = Long.toString(p.getUserId());
+            String userId = Long.toString(tcSubject.getUserId());
 
-            createContestPayment(contestPaymentData, userId);
+            createContestPayment(tcSubject, contestPaymentData, userId);
 
             // DONOT create for now
             // create forum for the contest.
@@ -2918,7 +2690,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             // tobeUpdatedCompetition.getContestData().setForumId(forumid);
 
             // update contest.
-            updateContest(tobeUpdatedCompetition);
+            updateContest(tcSubject, tobeUpdatedCompetition);
 
             // BUGR-1494
             contestPaymentResult = new ContestPaymentResult();
@@ -2938,20 +2710,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             String toAddr = "";
-            String purchasedByUser = p.getName();
+            String purchasedByUser = getUserName(tcSubject);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
-				logger.debug("Current User Email Address: " + currentUserEmailAddress);
+                String currentUserEmailAddress = this.userService.getEmailAddress(tcSubject.getUserId());
+                logger.debug("Current User Email Address: " + currentUserEmailAddress);
 
-                toAddr=currentUserEmailAddress; 
+                toAddr=currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData){
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
                 toAddr = cc.getEmail();
             }
-            
+
             //mark ready for spec review
-            markReadyForReview(tobeUpdatedCompetition.getContestData().getContestId(), true);
+            markReadyForReview(tcSubject, tobeUpdatedCompetition.getContestData().getContestId(), true);
 
 
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
@@ -2990,94 +2762,74 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Processes the contest sale.
      * </p>
-     *
-     * @param competition
-     *            data that recognizes a contest.
-     * @param paymentData
-     *            payment information (credit card/po details) that need to be
-     *            processed.
-     *
-     * @return a <code>SoftwareContestPaymentResult</code> result of the payment
-     *         processing.
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
-    public SoftwareContestPaymentResult processContestCreditCardSale(
-        SoftwareCompetition competition, CreditCardPaymentData paymentData)
-        throws ContestServiceException {
+    public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
+            SoftwareCompetition competition, CreditCardPaymentData paymentData) throws ContestServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(competition, paymentData);
+        return processContestSaleInternal(tcSubject, competition, paymentData);
     }
 
     /**
      * <p>
      * Processes the contest sale.
      * </p>
-     *
-     * @param competition
-     *            data that recognizes a contest.
-     * @param paymentData
-     *            payment information (credit card/po details) that need to be
-     *            processed.
-     *
-     * @return a <code>SoftwareContestPaymentResult</code> result of the payment
-     *         processing.
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
-    public SoftwareContestPaymentResult processContestPurchaseOrderSale(
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
-        throws ContestServiceException {
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
+            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(competition, paymentData);
+        return processContestSaleInternal(tcSubject, competition, paymentData);
     }
 
     /**
      * <p>
      * Processes the contest sale.
      * </p>
-     *
      * <p>
-     * Updated for Cockpit Release Assembly for Receipts - Added code snippet to
-     * send email receipts on successful purchase.
+     * Updated for Cockpit Release Assembly for Receipts - Added code snippet to send email receipts on successful
+     * purchase.
      * </p>
-     * 
      * <p>
-     * Updated for Version 1.0.3
-     *      - For software contest, payment is made for the sum of various costs.
-     *      - While doing so, only the increased amount is paid (if earlier payments were made).
+     * Updated for Version 1.0.3 - For software contest, payment is made for the sum of various costs. - While doing so,
+     * only the increased amount is paid (if earlier payments were made).
      * </p>
-     *
-     * @param competition
-     *            data that recognizes a contest.
-     * @param paymentData
-     *            payment information (credit card/po details) that need to be
-     *            processed.
-     *
-     * @return a <code>SoftwareContestPaymentResult</code> result of the payment
-     *         processing.
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
-    private SoftwareContestPaymentResult processContestSaleInternal(
-        SoftwareCompetition competition, PaymentData paymentData)
-        throws ContestServiceException {
+    private SoftwareContestPaymentResult processContestSaleInternal(TCSubject tcSubject,
+            SoftwareCompetition competition, PaymentData paymentData) throws ContestServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
+        logger.info("tcSubject: " + tcSubject);
 
         SoftwareContestPaymentResult softwareContestPaymentResult = null;
 
@@ -3085,13 +2837,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
         try {
             long contestId = competition.getProjectHeader().getId();
-        	double pastPayment=0;
+            double pastPayment=0;
 
             SoftwareCompetition tobeUpdatedCompetition = null;
 
             if (contestId > 0) { // BUGR-1682
-                tobeUpdatedCompetition = this.getSoftwareContestByProjectId(contestId); // BUGR-1682
-                
+                tobeUpdatedCompetition = this.getSoftwareContestByProjectId(tcSubject, contestId); // BUGR-1682
+
                 // calculate the past payment to calculate the differential cost.
                 List<ContestSaleData> sales = tobeUpdatedCompetition.getProjectData().getContestSales();
                 if (sales != null) {
@@ -3103,39 +2855,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition =
-                    createSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());
+                    createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
             } else {
                 competition.setProjectHeaderReason("User Update");
-                tobeUpdatedCompetition = 
-                    updateSoftwareContest(competition, competition.getProjectHeader().getTcDirectProjectId());                
+                tobeUpdatedCompetition =
+                    updateSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
             }
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
-           
 
-			double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE)) 
-			    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
-			    + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
-				
-			fee = fee - pastPayment;
-			
+
+            double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
+
+            fee = fee - pastPayment;
+
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
                 String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-                {
-                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                    String userName = p.getName();
-                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
-                    {
-                        throw new ContestServiceException("No permission on poNumber " + poNumber);
-                    }
-                }
+                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3212,11 +2956,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             String toAddr = "";
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            String purchasedByUser = p.getName();
+            String purchasedByUser = getUserName(tcSubject);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+                String currentUserEmailAddress = this.userService.getEmailAddress(tcSubject.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -3225,23 +2968,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
 
-            boolean hasEligibility = contestEligibilityManager.haveEligibility(new Long[]{tobeUpdatedCompetition.getProjectHeader().getId()}, false).size() > 0;
-    
+            boolean hasEligibility = contestEligibilityManager.haveEligibility(
+                    new Long[] { tobeUpdatedCompetition.getProjectHeader().getId() }, false).size() > 0;
+
             // if creating contest, eligiblity is not commited, so above will not get back result
             if (getBillingProjectId(tobeUpdatedCompetition) != 0
-                 && getEligibilityGroupId(getBillingProjectId(tobeUpdatedCompetition)) != null)
-            {
+                    && getEligibilityGroupId(getBillingProjectId(tobeUpdatedCompetition)) != null) {
                 hasEligibility = true;
             }
-            
 
-            // no need for dev that has design, so all non-dev and dev only will have spec review 
+
+            // no need for dev that has design, so all non-dev and dev only will have spec review
             // and dont create for private
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility) 
+                  && !hasEligibility)
             {
                  //create spec review project
-                FullProjectData specReview = this.createSpecReview(tobeUpdatedCompetition.getProjectHeader().getId());
+                FullProjectData specReview = this.createSpecReview(tcSubject, tobeUpdatedCompetition.getProjectHeader().getId());
                 logger.info("spec review project for contest " + specReview.getProjectHeader().getId() + " is created.");
 
                 com.topcoder.project.phases.Phase[] allPhases = specReview.getAllPhases();
@@ -3257,16 +3000,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         allPhases[i].setPhaseStatus(PhaseStatus.OPEN);
                     }
                     projectPhases.addPhase(allPhases[i]);
-                }    
+                }
 
-                projectServices.updatePhases(projectPhases, Long.toString(p.getUserId()));
+                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
 
 
                  // prepare mock file for upload
                 DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
                        mockSubmissionFileName));
 
-                uploadSubmission(specReview.getId(), mockSubmissionFileName, dataHandler);
+                uploadSubmission(tcSubject, specReview.getId(), mockSubmissionFileName, dataHandler);
                 logger.info("spec review project ready for reivew ");
 
                 projectPhases.setStartDate(new Date());
@@ -3278,14 +3021,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     {
                         allPhases[i].setPhaseStatus(PhaseStatus.SCHEDULED);
                     }
-                }    
+                }
 
-                projectServices.updatePhases(projectPhases, Long.toString(p.getUserId()));
+                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
 
                 //  now turn on auto pilot
                 specReview.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
                     PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
-                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot", Long.toString(p.getUserId()));  
+                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot",
+                                              Long.toString(tcSubject.getUserId()));
 
             }
 
@@ -3298,7 +3042,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                            .toGregorianCalendar().getTime(), fee, fee,
                 result.getReferenceNumber());
 
-           
+
 
             return softwareContestPaymentResult;
         } catch (ContestServiceException e) {
@@ -3322,8 +3066,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Processes the submission payment. It does following steps:
      * <ul>
-     * <li>Checks submissionId to see if is available, if not then it throws
-     * PaymentException.</li>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
      * <li>It processes the payment through <code>PaymentProcessor</code></li>
      * <li>On successful processing -
      * <ul>
@@ -3332,35 +3075,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </li>
      * </ul>
      * </p>
-     *
-     * @param completedContestData
-     *            data of completed contest.
-     * @param paymentData
-     *            a <code>CreditCardPaymentData</code> payment information
-     *            (credit card) that need to be processed.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param completedContestData data of completed contest.
+     * @param paymentData a <code>CreditCardPaymentData</code> payment information (credit card) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PaymentException
-     *             if any errors occurs in processing the payment or submission
-     *             is not valid.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving the submission.
+     * @throws PaymentException if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionCreditCardPayment(
-        CompletedContestData completedContestData,
-        CreditCardPaymentData paymentData)
-        throws PaymentException, PersistenceException {
+    public PaymentResult processSubmissionCreditCardPayment(TCSubject tcSubject,
+            CompletedContestData completedContestData, CreditCardPaymentData paymentData) throws PaymentException,
+            PersistenceException {
         logger.debug("processSubmissionCreditCardPayment");
 
-        return processSubmissionPaymentInternal(completedContestData,
-            paymentData);
+        return processSubmissionPaymentInternal(tcSubject, completedContestData, paymentData);
     }
 
     /**
      * <p>
      * Processes the submission payment. It does following steps:
      * <ul>
-     * <li>Checks submissionId to see if is available, if not then it throws
-     * PaymentException.</li>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
@@ -3369,37 +3107,31 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </li>
      * </ul>
      * </p>
-     *
-     * @param completedContestData
-     *            data of completed contest.
-     * @param paymentData
-     *            a <code>TCPurhcaseOrderPaymentData</code> payment information
-     *            (po details) that need to be processed.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param completedContestData data of completed contest.
+     * @param paymentData a <code>TCPurhcaseOrderPaymentData</code> payment information (po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PaymentException
-     *             if any errors occurs in processing the payment or submission
-     *             is not valid.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving the submission.
+     * @throws PaymentException if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionPurchaseOrderPayment(
-        CompletedContestData completedContestData,
-        TCPurhcaseOrderPaymentData paymentData)
-        throws PaymentException, PersistenceException {
+    public PaymentResult processSubmissionPurchaseOrderPayment(TCSubject tcSubject,
+            CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
+            PersistenceException {
         logger.debug("processSubmissionPurchaseOrderPayment");
 
-        return processSubmissionPaymentInternal(completedContestData,
-            paymentData);
+        return processSubmissionPaymentInternal(tcSubject, completedContestData, paymentData);
     }
 
     /**
      * <p>
      * Processes the submission payment. It does following steps:
      * <ul>
-     * <li>Checks submissionId to see if is available, if not then it throws
-     * PaymentException.</li>
-     * <li>If payment type is credit card then it processes the payment through
-     * <code>PaymentProcessor</code></li>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
      * <ul>
@@ -3408,40 +3140,37 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * </li>
      * </ul>
      * </p>
-     *
      * <p>
-     * Updated for Cockpit Release Assembly for Receipts - Added code snippet to
-     * send email notification on successful purchase.
+     * Updated for Cockpit Release Assembly for Receipts - Added code snippet to send email notification on successful
+     * purchase.
      * </p>
-     *
      * <p>
-     * Updated for Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI:
-     * Added support for milestone prizes payment.
+     * Updated for Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI: Added support for milestone
+     * prizes payment.
      * </p>
-     *
-     * @param completedContestData
-     *            data of completed contest.
-     * @param paymentData
-     *            a <code>PaymentData</code> payment information (credit card/po
-     *            details) that need to be processed.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param completedContestData data of completed contest.
+     * @param paymentData a <code>PaymentData</code> payment information (credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PaymentException
-     *             if any errors occurs in processing the payment or submission
-     *             is not valid.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving the submission.
+     * @throws PaymentException if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException if any error occurs when retrieving the submission.
      */
-    private PaymentResult processSubmissionPaymentInternal(
-        CompletedContestData completedContestData, PaymentData paymentData)
-        throws PaymentException, PersistenceException {
+    private PaymentResult processSubmissionPaymentInternal(TCSubject tcSubject,
+            CompletedContestData completedContestData, PaymentData paymentData) throws PaymentException,
+            PersistenceException {
         PaymentResult result = null;
 
         try {
             logger.info("CompletedContestData: " + completedContestData);
-            logger.info("PaymentData: " + paymentData + "," +
-                paymentData.getType());
+            logger.info("PaymentData: " + paymentData + "," + paymentData.getType());
+            logger.info("tcSubject: " + tcSubject);
 
-            List<SubmissionData> submissionDatas = this.retrieveSubmissionsForContest(completedContestData.getContestId());
+            List<SubmissionData> submissionDatas =
+                retrieveSubmissionsForContest(tcSubject, completedContestData.getContestId());
             int totalSubmissions = submissionDatas.size();
 
             for (int i = 0; i < completedContestData.getSubmissions().length;
@@ -3466,20 +3195,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 }
             }
 
-
+            logger.info("-------contest id ---" +
+                completedContestData.getContestId());
 
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
 
                 String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-                {
-                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                    String userName = p.getName();
-                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
-                    {
-                        throw new ContestServiceException("No permission on poNumber " + poNumber);
-                    }
-                }
+                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
 
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3502,8 +3224,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 result = paymentProcessor.process(paymentData);
             }
 
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            String userId = Long.toString(p.getUserId());
+            String userId = Long.toString(tcSubject.getUserId());
 
             // purchase or rank submission.
             for (int i = 0; i < completedContestData.getSubmissions().length;
@@ -3513,7 +3234,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                 if (submissionPaymentData.isPurchased() || submissionPaymentData.getAwardMilestonePrize()) {
                     if (submissionPaymentData.isPurchased()) {
-                        this.markForPurchase(submissionId);
+                        this.markForPurchase(tcSubject, submissionId);
                     }
                     submissionPaymentData.setPaymentReferenceNumber(result.getReferenceNumber());
 
@@ -3535,8 +3256,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             // update contest status to complete.
-            this.updateContestStatus(completedContestData.getContestId(),
-                CONTEST_COMPLETED_STATUS);
+            this.updateContestStatus(tcSubject, completedContestData.getContestId(), CONTEST_COMPLETED_STATUS);
 
             //
             // Added for Cockpit Release Assembly for Receipts
@@ -3548,10 +3268,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             String projectName = contestData.getTcDirectProjectName();
 
             String toAddr = "";
-            String purchasedByUser = p.getName();
+            String purchasedByUser = getUserName(tcSubject);
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				String currentUserEmailAddress = this.userService.getEmailAddress(p.getUserId());
+                String currentUserEmailAddress = this.userService.getEmailAddress(tcSubject.getUserId());
                 toAddr = currentUserEmailAddress;
             } else if (paymentData instanceof CreditCardPaymentData) {
                 CreditCardPaymentData cc = (CreditCardPaymentData) paymentData;
@@ -3588,21 +3308,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Ranks the submissions, given submission identifiers in the rank order.
      * </p>
-     *
-     * @param submissionIdsInRankOrder
-     *            an array of long submission identifier in the rank order.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionIdsInRankOrder an array of long submission identifier in the rank order.
      * @return a <code>boolean</code> true if successful, else false.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving/updating the data.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
      */
-    public boolean rankSubmissions(long[] submissionIdsInRankOrder)
-        throws PersistenceException {
+    public boolean rankSubmissions(TCSubject tcSubject, long[] submissionIdsInRankOrder) throws PersistenceException {
         logger.debug("rankSubmissions");
 
         try {
             for (int i = 0; i < submissionIdsInRankOrder.length; i++) {
-                this.studioService.setSubmissionPlacement(submissionIdsInRankOrder[i],
-                    i + 1);
+                this.studioService.setSubmissionPlacement(submissionIdsInRankOrder[i], i + 1);
             }
 
             logger.debug("Exit rankSubmissions");
@@ -3619,15 +3338,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Updates the submission feedback.
      * </p>
-     *
-     * @param feedbacks
-     *            an array of <code>SubmissionFeedback</code>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param feedbacks an array of <code>SubmissionFeedback</code>
      * @return a <code>boolean</code> true if successful, else false.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving/updating the data.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
      */
-    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks)
-        throws PersistenceException {
+    public boolean updateSubmissionsFeedback(TCSubject tcSubject, SubmissionFeedback[] feedbacks)
+            throws PersistenceException {
         logger.debug("updateSubmissionsFeedback");
 
         try {
@@ -3649,23 +3369,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Returns a list containing all active <code>Categories</code>.
      * </p>
-     *
-     * @return a list containing all active <code>Categories</code>. It can be
-     *         empty if no objects found.
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Category> getActiveCategories() throws ContestServiceException {
+    public List<Category> getActiveCategories(TCSubject tcSubject) throws ContestServiceException {
         logger.debug("getActiveCategories");
 
         try {
             return catalogService.getActiveCategories();
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Operation failed in the catalogService.", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         }
     }
 
@@ -3673,24 +3392,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Returns a list containing all active <code>Technologies</code>.
      * </p>
-     *
-     * @return a list containing all active <code>Categories</code>. It can be
-     *         empty if no objects found.
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Technology> getActiveTechnologies()
-        throws ContestServiceException {
+    public List<Technology> getActiveTechnologies(TCSubject tcSubject) throws ContestServiceException {
         logger.debug("getActiveTechnologies");
 
         try {
             return catalogService.getActiveTechnologies();
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Operation failed in the catalogService", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         }
     }
 
@@ -3698,23 +3415,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Returns a list containing all <code>Phases</code>.
      * </p>
-     *
-     * @return a list containing all active <code>Categories</code>. It can be
-     *         empty if no objects found.
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public List<Phase> getPhases() throws ContestServiceException {
+    public List<Phase> getPhases(TCSubject tcSubject) throws ContestServiceException {
         logger.debug("getPhase");
 
         try {
             return catalogService.getPhases();
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Operation failed in the catalogService", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         }
     }
 
@@ -3722,24 +3438,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Assigns a specified user to a specified <code>assetDTO</code>.
      * </p>
-     *
      * <p>
-     * If the user already assigned to the asset, this method simply does
-     * nothing.
+     * If the user already assigned to the asset, this method simply does nothing.
      * </p>
-     *
-     * @param userId
-     *            the id of the user
-     * @param assetId
-     *            the id of the assetDTO
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userId the id of the user
+     * @param assetId the id of the assetDTO
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void assignUserToAsset(long userId, long assetId)
-        throws ContestServiceException {
+    public void assignUserToAsset(TCSubject tcSubject, long userId, long assetId) throws ContestServiceException {
         logger.debug("assignUserToAsset");
 
         try {
@@ -3747,12 +3458,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.debug("Exit assignUserToAsset");
         } catch (EntityNotFoundException e) {
             logger.error("Operation failed in the catalogService.", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Operation failed in the catalogService.", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         }
     }
 
@@ -3760,19 +3469,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Removes a specified user from a specified <code>assetDTO</code>.
      * </p>
-     *
-     * @param userId
-     *            the id of the user
-     * @param assetId
-     *            the id of the asset
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userId the id of the user
+     * @param assetId the id of the asset
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void removeUserFromAsset(long userId, long assetId)
-        throws ContestServiceException {
+    public void removeUserFromAsset(TCSubject tcSubject, long userId, long assetId) throws ContestServiceException {
         logger.debug("removeUserFromAsset");
 
         try {
@@ -3780,34 +3486,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.debug("Exit removeUserFromAsset");
         } catch (EntityNotFoundException e) {
             logger.error("Operation failed in the catalogService.", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Operation failed in the catalogService.", e);
-            throw new ContestServiceException("Operation failed in the catalogService.",
-                e);
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
         }
     }
 
     /**
      * <p>
-     * This method finds all tc direct projects. Returns empty array if no
-     * projects found.
+     * This method finds all tc direct projects. Returns empty array if no projects found.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return Project array with project info, or empty array if none found
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition[] findAllTcDirectProjects()
-        throws ContestServiceException {
+    public SoftwareCompetition[] findAllTcDirectProjects(TCSubject tcSubject) throws ContestServiceException {
         logger.debug("findAllTcDirectProjects");
 
         try {
-            Project[] projects = projectServices.findAllTcDirectProjects();
+            Project[] projects = projectServices.findAllTcDirectProjects(tcSubject);
 
             SoftwareCompetition[] ret = new SoftwareCompetition[projects.length];
 
@@ -3826,33 +3528,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return ret;
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in the projectServices.", e);
-            throw new ContestServiceException("Operation failed in the projectServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
         }
     }
 
     /**
      * <p>
-     * This method finds all given user tc direct projects . Returns empty array
-     * if no projects found.
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
      * </p>
-     *
-     * @param operator
-     *            The user to search for projects
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param operator The user to search for projects
      * @return Project array with project info, or empty array if none found
-     *
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator)
-        throws ContestServiceException {
+    public SoftwareCompetition[] findAllTcDirectProjectsForUser(TCSubject tcSubject, String operator)
+            throws ContestServiceException {
         logger.debug("findAllTcDirectProjectsForUser");
 
         try {
-            Project[] projects = projectServices.findAllTcDirectProjectsForUser(operator);
+            Project[] projects = projectServices.findAllTcDirectProjectsForUser(tcSubject,operator);
 
             SoftwareCompetition[] ret = new SoftwareCompetition[projects.length];
 
@@ -3871,31 +3569,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return ret;
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in the projectServices.", e);
-            throw new ContestServiceException("Operation failed in the projectServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
         }
     }
 
     /**
      * <p>
-     * This method retrieves the project along with all known associated
-     * information. Returns null if not found.
+     * This method retrieves the project along with all known associated information. Returns null if not found.
      * </p>
-     *
-     * @param projectId
-     *            The ID of the project to retrieve
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId The ID of the project to retrieve
      * @return the project along with all known associated information
-     *
-     * @throws IllegalArgumentException
-     *             If projectId is negative
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException If projectId is negative
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition getFullProjectData(long projectId)
-        throws ContestServiceException {
+    public SoftwareCompetition getFullProjectData(TCSubject tcSubject, long projectId) throws ContestServiceException {
         logger.debug("getFullProjectData");
 
         try {
@@ -3920,45 +3612,35 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return contest;
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in the projectServices.", e);
-            throw new ContestServiceException("Operation failed in the projectServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
         }
     }
 
     /**
      * Checks the permission for the given tc-direct-project-id for the current caller.
-     * 
+     *
      * @param tcDirectProjectId the project id
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
-    private void checkSoftwareProjectPermission(long tcDirectProjectId, boolean readOnly) throws ContestServiceException {
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!projectServices.checkProjectPermission(tcDirectProjectId, readOnly, userId)) {
-                if (readOnly)
-                {
-                    throw new ContestServiceException("No read permission on project");
-                }
-                else
-                {
-                    throw new ContestServiceException("No write permission on project");
-                }
+    private void checkSoftwareProjectPermission(TCSubject tcSubject, long tcDirectProjectId, boolean readOnly)
+            throws ContestServiceException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!projectServices.checkProjectPermission(tcDirectProjectId, readOnly, tcSubject.getUserId())) {
+                throw new ContestServiceException("No " + (readOnly ? "read" : "write") + " permission on project");
             }
         }
     }
 
-     /**
+
+    /**
      * Checks the permission for the given tc-direct-project-id for the current caller.
-     * 
+     *
      * @param tcDirectProjectId the project id
      * @throws PersistenceException if user(not admin) does not have the permission
      */
-    private void checkStudioProjectPermission(long tcDirectProjectId) throws PersistenceException {
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!studioService.checkProjectPermission(tcDirectProjectId, true, userId)) {
+    private void checkStudioProjectPermission(TCSubject tcSubject, long tcDirectProjectId) throws PersistenceException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!studioService.checkProjectPermission(tcDirectProjectId, true, tcSubject.getUserId())) {
                 throw new PersistenceException("No read permission on project");
             }
         }
@@ -3966,40 +3648,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Checks the permission for the given contestId for the current caller.
-     * 
+     *
      * @param contestId the project id
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
-    private void checkSoftwareContestPermission(long contestId, boolean readOnly) throws ContestServiceException {
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-            if (!projectServices.checkContestPermission(contestId, readOnly, userId)) {
-                if (readOnly)
-                {
+    private void checkSoftwareContestPermission(TCSubject tcSubject, long contestId, boolean readOnly)
+            throws ContestServiceException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!projectServices.checkContestPermission(contestId, readOnly, tcSubject.getUserId())) {
+                if (readOnly) {
                     throw new ContestServiceException("No read permission on project");
-                }
-                else
-                {
+                } else {
                     throw new ContestServiceException("No write permission on project");
-                }
-            }
-        }
-    }
-
-     /**
-     * Checks the billing project permission of the given contest for the current caller.
-     * 
-     * @param contest the contest to check
-     * @throws ContestServiceException if user(not admin) does not have the permission
-     */
-    private void checkStudioBillingProjectPermission(ContestData contestData) throws PersistenceException, DAOException {
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            String userName = principal.getName();
-            if (contestData.getBillingProject() > 0) {
-                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
-                    throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
                 }
             }
         }
@@ -4007,19 +3667,45 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Checks the billing project permission of the given contest for the current caller.
-     * 
+     *
+     * @param contest the contest to check
+     * @throws ContestServiceException fail to retrieve user handle
+     * @throws PersistenceException if user(not admin) does not have the permission
+     * @throws DAOException fail to checking permission
+     */
+    private void checkStudioBillingProjectPermission(TCSubject tcSubject, ContestData contestData)
+            throws PersistenceException, DAOException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            String userName;
+            try {
+                userName = getUserName(tcSubject);
+            } catch (ContestServiceException e) {
+                throw new PersistenceException("Fail to get user-handle");
+            }
+            if (contestData.getBillingProject() > 0) {
+                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
+                    throw new PersistenceException("No permission on billing project "
+                            + contestData.getBillingProject());
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks the billing project permission of the given contest for the current caller.
+     *
      * @param contest the contest to check
      * @return billing project id, if it is -1, then no billing project
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
-    private void checkBillingProjectPermission(SoftwareCompetition contest) throws ContestServiceException, DAOException {
-        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
-            if (billingProject != null  && !billingProject.equals("") && !billingProject.equals("0")) {
-                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                String userName = principal.getName();
+    private void checkBillingProjectPermission(TCSubject tcSubject, SoftwareCompetition contest)
+            throws ContestServiceException, DAOException {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
+            String billingProject = contest.getProjectHeader().getProperty(
+                    ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
                 long clientProjectId = Long.parseLong(billingProject);
-                if (!billingProjectDAO.checkClientProjectPermission(userName, clientProjectId)) {
+                if (!billingProjectDAO.checkClientProjectPermission(getUserName(tcSubject), clientProjectId)) {
                     throw new ContestServiceException("No permission on billing project " + clientProjectId);
                 }
             }
@@ -4028,7 +3714,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
      /**
      * get billing project id
-     * 
+     *
      * @param contest the contest to check
      * @return billing project id, if it is 0, then no billing project
      */
@@ -4050,58 +3736,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @return true if yes
      */
     private boolean isDevContest(SoftwareCompetition contest) {
-        return contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;        
+        return contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
     }
-    
+
 
     /**
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
-     * 
-     * Updated for Version 1.0.1
-     *      - BUGR-2185: For development contests, if asset (or component) exists from design contests then that is used
-     *        to create a new contest. Otherwise a new asset is also created.
-     *
-     * Updated for Version1.5
-     *        the code is refactored by the logic:
-     *        1. check the permission
-     *        2. update or create the asset
-     *        3. set default resources
-     *        4. create project
-     *        5. prepare the return value
-     *        6. persist the eligility
-     *
+     * Updated for Version 1.0.1 - BUGR-2185: For development contests, if asset (or component) exists from design
+     * contests then that is used to create a new contest. Otherwise a new asset is also created. Updated for Version1.5
+     * the code is refactored by the logic: 1. check the permission 2. update or create the asset 3. set default
+     * resources 4. create project 5. prepare the return value 6. persist the eligility
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest the <code>SoftwareCompetition</code> to create as a contest
-     * @param tcDirectProjectId the TC direct project id.
-     *            a <code>long</code> providing the ID of a client the new
+     * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
      *            competition belongs to.
-     *
      * @return the created <code>SoftwareCompetition</code> as a contest
-     *
-     * @throws IllegalArgumentException
-     *             if the input argument is invalid.
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException {
-        logger.debug("createSoftwareContest with information : [tcDirectProjectId ="
+    public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId) throws ContestServiceException {
+        logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject + ", tcDirectProjectId ="
                 + tcDirectProjectId + "]");
 
         try {
             ExceptionUtils.checkNull(contest, null, null, "The contest to create is null.");
             ExceptionUtils.checkNull(contest.getProjectHeader(), null, null, "The contest#ProjectHeader to create is null.");
-            
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            //check the permission
-            //TODO liquid creaet project, and assign permission, check fails here
-            //checkSoftwareProjectPermission(tcDirectProjectId, true);
+
+            // check the permission
+            checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
             //check the billing project permission
             long billingProjectId = getBillingProjectId(contest);
-            
+
             //check whether we need to auto-create-development contest for design
             boolean creatingDevContest = shouldAutoCreateDevContest(contest);
 
@@ -4112,21 +3784,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
 
             //update the AssetDTO and update corresponding properties
-            createUpdateAssetDTO(contest);
-            
+            createUpdateAssetDTO(tcSubject, contest);
+
             //create contest resources
-            contest.setProjectResources(createContestResources(contest, billingProjectId));
+            contest.setProjectResources(createContestResources(tcSubject, contest, billingProjectId));
 
             //set the tc-direct-project-id
             contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 
             //create project now
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(), contest.getProjectResources(), String.valueOf(p.getUserId()));
+                        contest.getProjectPhases(), contest.getProjectResources(),
+                        String.valueOf(tcSubject.getUserId()));
 
             if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
-		        projectServices.linkDevelopmentToDesignContest(projectData.getProjectHeader().getId());
-	        }
+                projectServices.linkDevelopmentToDesignContest(projectData.getProjectHeader().getId());
+            }
 
             //preparing the result
             com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
@@ -4143,7 +3816,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contest.setId(projectData.getProjectHeader().getId());
 
             if (contest.getAssetDTO() != null) {
-    	        // set null to avoid cycle
+                // set null to avoid cycle
                 contest.getAssetDTO().setDependencies(null);
                 if (contest.getAssetDTO().getForum() != null) {
                     contest.getAssetDTO().getForum().setCompVersion(null);
@@ -4151,23 +3824,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 if (contest.getAssetDTO().getLink() != null) {
                     contest.getAssetDTO().getLink().setCompVersion(null);
                 }
-    
+
                 // need to remove loops before returning
                 removeDocumentationLoops(contest);
-    
+
                 // set project start date in production date
                 contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
             }
 
             if (billingProjectId > 0) {
-                persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);            
+                persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);
             }
 
-	        if (creatingDevContest) {
-                autoCreateDevContest(contest, tcDirectProjectId, devContest);
+            if (creatingDevContest) {
+                autoCreateDevContest(tcSubject, contest, tcDirectProjectId, devContest);
             }
 
-            
+
             return contest;
         } catch (Exception e) {
             sessionContext.setRollbackOnly();
@@ -4189,19 +3862,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private boolean shouldAutoCreateDevContest(SoftwareCompetition contest) {
         return contest.getDevelopmentProjectHeader() != null
                                      && contest.getDevelopmentProjectHeader().getProperties() != null
-                                     && contest.getDevelopmentProjectHeader().getProperties().size() != 0;        
+                                     && contest.getDevelopmentProjectHeader().getProperties().size() != 0;
     }
 
     /**
-     * Create or updating the AssetDTO for the contest. If the AssetDTO already exists for development contest,
-     * we need to create dev-component. Also, creating forum if necessary.
+     * Create or updating the AssetDTO for the contest. If the AssetDTO already exists for development contest, we need
+     * to create dev-component. Also, creating forum if necessary.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest the contest
      * @throws EntityNotFoundException if any error occurs
      * @throws com.topcoder.catalog.service.PersistenceException if any error occurs
      */
-    private void createUpdateAssetDTO(SoftwareCompetition contest) throws EntityNotFoundException,
+    private void createUpdateAssetDTO(TCSubject tcSubject, SoftwareCompetition contest) throws EntityNotFoundException,
             com.topcoder.catalog.service.PersistenceException {
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
         //check if it is going to create development contest
         boolean isDevContest = isDevContest(contest);
         XMLGregorianCalendar productionDate = null;
@@ -4210,18 +3886,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             boolean useExistingAsset = false;
             if (isDevContest && assetDTO.getVersionNumber()!= null && assetDTO.getVersionNumber().longValue() != 1) {
                 useExistingAsset = true;
-                productionDate = assetDTO.getProductionDate();                    
+                productionDate = assetDTO.getProductionDate();
                 assetDTO = catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
                 // for dev, we need to insert a row in comp version dates
                 catalogService.createDevComponent(assetDTO);
             }
-            
+
             if (!useExistingAsset) {
                 productionDate = assetDTO.getProductionDate() == null ? nextDay():assetDTO.getProductionDate();
                 assetDTO.setProductionDate(null);
                 if (contest.getProjectHeader() != null) {
                     // comp development, set phase to dev, otherwise to design
-                    assetDTO.setPhase(isDevContest?"Development":"Design");                            
+                    assetDTO.setPhase(isDevContest?"Development":"Design");
                 }
                 assetDTO = this.catalogService.createAsset(assetDTO);
                 contest.setAssetDTO(assetDTO);
@@ -4232,7 +3908,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 if (useExistingAsset && assetDTO.getForum() != null) {
                     forumId = assetDTO.getForum().getJiveCategoryId();
                 } else {
-                    forumId = createForum(assetDTO, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+                    forumId = createForum(tcSubject, assetDTO, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
                 }
             }
 
@@ -4263,23 +3939,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * If the auto creating development contest is switch on, we need to prepare the contest here. 
+     * If the auto creating development contest is switch on, we need to prepare the contest here.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param designContest the design contest
      * @param tcDirectProjectId tc-direct-project-id
      * @param devContest the development contest to create
      * @throws DatatypeConfigurationException if any error occurs
      * @throws ContestServiceException if any error occurs
      */
-    private void autoCreateDevContest(SoftwareCompetition designContest, long tcDirectProjectId,
+    private void autoCreateDevContest(TCSubject tcSubject, SoftwareCompetition designContest, long tcDirectProjectId,
             SoftwareCompetition devContest) throws DatatypeConfigurationException, ContestServiceException {
         devContest.setAssetDTO(designContest.getAssetDTO());
-        devContest.getProjectHeader().getProperties().putAll(designContest.getDevelopmentProjectHeader().getProperties());
+        devContest.getProjectHeader().getProperties().putAll(
+                designContest.getDevelopmentProjectHeader().getProperties());
         devContest.setDevelopmentProjectHeader(null);
-        devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);        
+        devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);
         devContest.getAssetDTO().setProductionDate(nextDevProdDay(devContest.getAssetDTO().getProductionDate()));
         devContest.setProjectHeaderReason("Create corresponding development contest");
-        createSoftwareContest(devContest, tcDirectProjectId);
+        createSoftwareContest(tcSubject, devContest, tcDirectProjectId);
     }
     /**
      * <p>
@@ -4301,18 +3982,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             eligibilityGroupId = getEligibilityGroupId(billingProjectId);
         }
-        else 
+        else
         {
             eligibilityGroupId = ((GroupContestEligibility)eligiblity).getGroupId();
         }
-           
+
         if (eligibilityGroupId != null) {
             GroupContestEligibility contestEligibility = new GroupContestEligibility();
             contestEligibility.setContestId(contestId);
             contestEligibility.setStudio(isStudio);
             contestEligibility.setDeleted(eligiblity==null?false:eligiblity.isDeleted());
             contestEligibility.setGroupId(eligibilityGroupId);
-            contestEligibilityManager.create(contestEligibility); 
+            contestEligibilityManager.create(contestEligibility);
         }
     }
 
@@ -4320,13 +4001,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Adding the contest resources when creating contest. manager or observer or client-manager will be added.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest the contest to create
      * @param billingProjectId the billing project id
      * @return resource array
+     * @throws ContestServiceException fail to retrive user-handle
      */
-    private com.topcoder.management.resource.Resource[] createContestResources(SoftwareCompetition contest, 
-            long billingProjectId) {
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+    private com.topcoder.management.resource.Resource[] createContestResources(TCSubject tcSubject,
+            SoftwareCompetition contest, long billingProjectId) throws ContestServiceException {
         com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
         resources[0] = new com.topcoder.management.resource.Resource();
         resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
@@ -4346,22 +4031,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         clientManagerRole.setName(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_NAME);
         clientManagerRole.setDescription(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_DESC);
 
-        boolean tcstaff = sessionContext.isCallerInRole(TC_STAFF_ROLE);
+        boolean tcstaff = isRole(tcSubject, TC_STAFF_ROLE);
         // tc staff add as manager, other as observer
         if (tcstaff) {
             resources[0].setResourceRole(managerRole);
-        } else if (getEligibilityName(billingProjectId).trim().length() > 0) {
+        } else if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) {
             resources[0].setResourceRole(clientManagerRole);
         } else {
             resources[0].setResourceRole(observerRole);
         }
 
-        resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(p.getUserId()));
-        resources[0].setProperty(RESOURCE_INFO_HANDLE, String.valueOf(p.getName()));
+        resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(tcSubject.getUserId()));
+        resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
         resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
-        
+
         // design/dev, add Components
-        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID 
+        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID
              || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
 
             resources[1] = new com.topcoder.management.resource.Resource();
@@ -4380,7 +4065,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
         }
-        
+
         return resources;
     }
 
@@ -4388,26 +4073,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Updates a <code>SoftwareCompetition</code> in the persistence.
      * </p>
-     * 
      * <p>
      * Update in version 1.5, reduce the code redundancy in permission checking.
      * <p>
-     *
-     * @param contest
-     *            the <code>SoftwareCompetition</code> to update as a contest
-     * @param tcDirectProjectId
-     *            the TC direct project id.
-     *
-     * @throws IllegalArgumentException
-     *             if the input argument is invalid.
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition updateSoftwareContest(
-        SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException {
+    public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId) throws ContestServiceException {
         logger.debug("updateSoftwareContest");
 
         try {
@@ -4431,12 +4111,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (contest.getProjectHeader() != null) {
 
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                // check the permissions
+                checkSoftwareContestPermission(tcSubject, contest.getProjectHeader().getId(), false);
+                checkBillingProjectPermission(tcSubject, contest);
 
-                //check the permissions
-                checkSoftwareContestPermission(contest.getProjectHeader().getId(), false);
-                checkBillingProjectPermission(contest);
-                
                 Set<com.topcoder.project.phases.Phase> phaseset = contest.getProjectPhases().getPhases();
                 com.topcoder.project.phases.Phase[] phases =  phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
 
@@ -4457,10 +4135,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         contest.getProjectHeaderReason(),
                         contest.getProjectPhases(),
                         contest.getProjectResources(),
-                        String.valueOf(p.getUserId()));
+                        String.valueOf(tcSubject.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.
-		        projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
+                projectData.setContestSales(projectServices.getContestSales(projectData.getProjectHeader().getId()));
 
                 contest.setProjectHeader(projectData.getProjectHeader());
                 contest.setProjectPhases(projectData);
@@ -4484,25 +4162,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                 // billing projct can change, set or unset
                 // so for now easy way is removing current, and add if any
-                List<ContestEligibility> contestEligibilities = 
-                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
-                for (ContestEligibility ce:contestEligibilities){   
+                List<ContestEligibility> contestEligibilities =
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false);
+                for (ContestEligibility ce:contestEligibilities){
                     contestEligibilityManager.remove(ce);
                 }
                 long billingProjectId = getBillingProjectId(contest);
                 if (billingProjectId > 0) {
-                    persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);            
+                    persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);
                 }
 
 
 
 
-		        //BugRace3074
+                //BugRace3074
 /**                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
                     long rst = projectServices.getDevelopmentContestId(contest.getId());
                     if (rst != 0) {
                         Duration twoDay = DatatypeFactory.newInstance().newDurationDayTime(true, 2, 0, 0, 0);
-			            //Since they are already sorted, just get the latest one's end time.
+                        //Since they are already sorted, just get the latest one's end time.
                         XMLGregorianCalendar twoDaysLater =
                             (getXMLGregorianCalendar(allPhases[allPhases.length - 1].getScheduledEndDate()));
                         twoDaysLater.add(twoDay);
@@ -4528,7 +4206,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                     }
                 } */
-            } 
+            }
 
             // set project start date in production date
             contest.getAssetDTO()
@@ -4568,41 +4246,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Adds a new submission for an user in a particular project.
      * </p>
-     *
      * <p>
-     * If the project allows multiple submissions for users, it will add the new
-     * submission and return. If multiple submission are not allowed for the
-     * project, firstly it will add the new submission, secondly mark previous
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project, firstly it will add the new submission, secondly mark previous
      * submissions as deleted and then return.
      * </p>
-     *
-     * @param projectId
-     *            the project's id
-     * @param filename
-     *            the file name to use
-     * @param submission
-     *            the submission file data
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param submission the submission file data
      * @return the id of the new submission
-     *
-     * @throws IllegalArgumentException
-     *             if any id is &lt; 0, if any argument is <code>null</code> or
-     *             trim to empty
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadSubmission(long projectId, String filename,
-        DataHandler submission) throws ContestServiceException {
+    public long uploadSubmission(TCSubject tcSubject, long projectId, String filename, DataHandler submission)
+            throws ContestServiceException {
         logger.debug("uploadSubmission");
 
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             logger.debug("Exit updateSoftwareContest");
 
             return uploadExternalServices.uploadSubmission(projectId,
-                p.getUserId(), filename, submission);
+                    tcSubject.getUserId(), filename, submission);
         } catch (UploadServicesException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
             throw new ContestServiceException("Operation failed in the uploadExternalServices.",
@@ -4616,89 +4285,69 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Adds a new final fix upload for an user in a particular project. This
-     * submission always overwrite the previous ones.
+     * Adds a new final fix upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
      * </p>
-     *
-     * @param projectId
-     *            the project's id
-     * @param filename
-     *            the file name to use
-     * @param finalFix
-     *            the final fix file data
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param finalFix the final fix file data
      * @return the id of the created final fix submission
-     *
-     * @throws IllegalArgumentException
-     *             if any id is &lt; 0, if any argument is <code>null</code> or
-     *             trim to empty
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadFinalFix(long projectId, String filename,
-        DataHandler finalFix) throws ContestServiceException {
+    public long uploadFinalFix(TCSubject tcSubject, long projectId, String filename, DataHandler finalFix)
+            throws ContestServiceException {
         logger.debug("uploadFinalFix");
 
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             logger.debug("Exit uploadFinalFix");
 
-            return uploadExternalServices.uploadFinalFix(projectId,
-                p.getUserId(), filename, finalFix);
+            return uploadExternalServices.uploadFinalFix(projectId, tcSubject.getUserId(), filename, finalFix);
         } catch (UploadServicesException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         } catch (RemoteException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         }
     }
 
     /**
      * <p>
-     * Adds a new test case upload for an user in a particular project. This
-     * submission always overwrite the previous ones.
+     * Adds a new test case upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
      * </p>
-     *
-     * @param projectId
-     *            the project's id
-     * @param filename
-     *            the file name to use
-     * @param testCases
-     *            the test cases data
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param testCases the test cases data
      * @return the id of the created test cases submission
-     *
-     * @throws IllegalArgumentException
-     *             if any id is &lt; 0, if any argument is <code>null</code> or
-     *             trim to empty
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long uploadTestCases(long projectId, String filename,
-        DataHandler testCases) throws ContestServiceException {
+    public long uploadTestCases(TCSubject tcSubject, long projectId, String filename, DataHandler testCases)
+            throws ContestServiceException {
         logger.debug("uploadTestCases");
 
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             logger.debug("Exit uploadTestCases");
 
-            return uploadExternalServices.uploadTestCases(projectId,
-                p.getUserId(), filename, testCases);
+            return uploadExternalServices.uploadTestCases(projectId, tcSubject.getUserId(), filename, testCases);
         } catch (UploadServicesException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         } catch (RemoteException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         }
     }
 
@@ -4706,91 +4355,72 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Sets the status of a existing submission.
      * </p>
-     *
-     * @param submissionId
-     *            the submission's id
-     * @param submissionStatusId
-     *            the submission status id
-     * @param operator
-     *            the operator which execute the operation
-     *
-     * @throws IllegalArgumentException
-     *             if any id is &lt; 0 or if operator is null or trim to empty
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId the submission's id
+     * @param submissionStatusId the submission status id
+     * @param operator the operator which execute the operation
+     * @throws IllegalArgumentException if any id is &lt; 0 or if operator is null or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public void setSubmissionStatus(long submissionId, long submissionStatusId,
-        String operator) throws ContestServiceException {
+    public void setSubmissionStatus(TCSubject tcSubject, long submissionId, long submissionStatusId, String operator)
+            throws ContestServiceException {
         logger.debug("setSubmissionStatus");
 
         try {
-            uploadExternalServices.setSubmissionStatus(submissionId,
-                submissionStatusId, operator);
+            uploadExternalServices.setSubmissionStatus(submissionId, submissionStatusId, operator);
             logger.debug("Exit setSubmissionStatus");
         } catch (UploadServicesException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         } catch (RemoteException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         }
     }
 
     /**
      * Adds the given user as a new submitter to the given project id.
-     *
-     * @param projectId
-     *            the project to which the user needs to be added
-     * @param userId
-     *            the user to be added
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId the project to which the user needs to be added
+     * @param userId the user to be added
      * @return the added resource id
-     *
-     * @throws IllegalArgumentException
-     *             if any id is &lt; 0
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public long addSubmitter(long projectId, long userId)
-        throws ContestServiceException {
-        logger.debug("AddSubmitter (" + projectId + "," + userId + ")");
+    public long addSubmitter(TCSubject tcSubject, long projectId, long userId) throws ContestServiceException {
+        logger.debug("AddSubmitter (tcSubject = " + tcSubject + ", " + projectId + "," + userId + ")");
 
         try {
             return uploadExternalServices.addSubmitter(projectId, userId);
         } catch (UploadServicesException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         } catch (RemoteException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
-            throw new ContestServiceException("Operation failed in the uploadExternalServices.",
-                e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
         }
     }
 
     /**
-     * create forum with given parameters. It will lookup the ForumsHome
-     * interface, and ceate the forum by the ejb home interface. In the old
-     * version, this method misses the document, it's added in the version 1.1
+     * create forum with given parameters. It will lookup the ForumsHome interface, and ceate the forum by the ejb home
+     * interface. In the old version, this method misses the document, it's added in the version 1.1
      *
-     *
-     * @param asset
-     *            The asset DTO to user
-     * @param userId
-     *            userId The user id to use
-     * @param projectCategoryId
-     *            The project category id to
+     * @param asset The asset DTO to user
+     * @param userId userId The user id to use
+     * @param projectCategoryId The project category id to
      * @return The long id of the created forum
      */
-    public long createForum(AssetDTO asset, long userId, long projectCategoryId) {
+    public long createForum(TCSubject tcSubject, AssetDTO asset, long userId, long projectCategoryId) {
         long forumId = -1;
-        logger.debug("createForum (" + userId + ")");
+        logger.debug("createForum (tcSubject = " + tcSubject + ", " + userId + ")");
 
         try {
             Properties p = new Properties();
@@ -4843,43 +4473,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true,
-     * the rank will target milestone submissions.
+     * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true, the
+     * rank will target milestone submissions.
      * </p>
-     *
-     * @param submissionId
-     *            identifier of the submission.
-     * @param rank
-     *            rank of the submission.
-     * @param isRankingMilestone
-     *            true if the user is ranking milestone submissions.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId identifier of the submission.
+     * @param rank rank of the submission.
+     * @param isRankingMilestone true if the user is ranking milestone submissions.
      * @return a <code>boolean</code> true if successful, else false.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving/updating the data.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
      * @since TCCC-1219
      */
-    public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
-        throws PersistenceException {
-        logger.debug("updateSubmissionUserRank (" + submissionId + "," + rank + "," + isRankingMilestone +
-            ")");
+    public boolean updateSubmissionUserRank(TCSubject tcSubject, long submissionId, int rank, Boolean isRankingMilestone)
+            throws PersistenceException {
+        logger.debug("updateSubmissionUserRank (tcSubject = " + tcSubject + ", " + submissionId + "," + rank + "," + isRankingMilestone + ")");
 
         try {
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-                {
-                    throw new PersistenceException("No write permission on contest");
-                }
-            }
-
+            this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
             this.studioService.updateSubmissionUserRank(submissionId, rank, isRankingMilestone);
-            logger.debug("Exit updateSubmissionUserRank (" + submissionId +
-                "," + rank + "," + isRankingMilestone + ")");
+            logger
+                    .debug("Exit updateSubmissionUserRank (" + submissionId + "," + rank + "," + isRankingMilestone
+                            + ")");
 
             return true;
         } catch (PersistenceException e) {
@@ -4889,10 +4508,27 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
     }
 
+    /**
+     * <p>
+     * Gets the list of all existing contests related to given project for my
+     * project widget.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     *
+     * @param pid
+     *            given project id
+     * @return a <code>List</code> listing all existing contests. Empty list is
+     *         returned if there are no contests found.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonProjectContestData> getCommonProjectContestDataByPID(
-        long pid) throws PersistenceException {
-        logger.debug("getCommonProjectContestDataByPID (" + pid + ")");
+    public List<CommonProjectContestData> getCommonProjectContestDataByPID(TCSubject tcSubject, long pid)
+            throws PersistenceException {
+        logger.debug("getCommonProjectContestDataByPID (tcSubject = " + tcSubject + ", " + pid + ")");
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
@@ -4919,9 +4555,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
                 newData.setSpecReviewStatus(data.getSpecReviewStatus());
-		newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
+        newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
-		ret.add(newData);
+        ret.add(newData);
             }
         }
 
@@ -4970,20 +4606,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Gets the list of all existing contests for my project widget.
      * </p>
-     *
-     * @return a <code>List</code> listing all existing contests. Empty list is
-     *         returned if there are no contests found.
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
+     * @throws PersistenceException if any error occurs when getting contest.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonProjectContestData> getCommonProjectContestData()
-        throws PersistenceException {
-        logger.debug("getCommonProjectContestDataByContestData");
+    public List<CommonProjectContestData> getCommonProjectContestData(TCSubject tcSubject) throws PersistenceException {
+        logger.debug("getCommonProjectContestDataByContestData(tcSubject = " + tcSubject + ")");
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
-        for (SimpleProjectContestData data : studioService.getSimpleProjectContestData()) {
+        for (SimpleProjectContestData data : studioService.getSimpleProjectContestData(tcSubject)) {
             if (data != null) {
                 CommonProjectContestData newData = new CommonProjectContestData();
                 newData.setCname(data.getCname());
@@ -5004,14 +4640,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-		newData.setSpecReviewStatus(data.getSpecReviewStatus());
-		newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
+        newData.setSpecReviewStatus(data.getSpecReviewStatus());
+        newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
                 ret.add(newData);
             }
         }
 
-        for (com.topcoder.management.project.SimpleProjectContestData data : projectServices.getSimpleProjectContestData()) {
+        for (com.topcoder.management.project.SimpleProjectContestData data :
+                projectServices.getSimpleProjectContestData(tcSubject)) {
             CommonProjectContestData newData = new CommonProjectContestData();
             newData.setCname(data.getCname());
             newData.setContestId(data.getContestId());
@@ -5053,31 +4690,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * <p>
-     * BURG-1716: We need to add a method to get software contest by project id,
-     * the method wil get all OR project related data, then from project
-     * property to get comp version id then to call getAssetByVersionId to get
-     * assetDTO, please check create software contest to see what data need to
-     * be returned.
+     * BURG-1716: We need to add a method to get software contest by project id, the method wil get all OR project
+     * related data, then from project property to get comp version id then to call getAssetByVersionId to get assetDTO,
+     * please check create software contest to see what data need to be returned.
      * </p>
-     *
-     * @param projectId
-     *            the OR Project Id
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectId the OR Project Id
      * @return SoftwareCompetition
-     * @throws ContestServiceException
-     *             if an error occurs when interacting with the service layer.
-     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since BURG-1716
      */
-    public SoftwareCompetition getSoftwareContestByProjectId(long projectId)
-        throws ContestServiceException {
-        logger.debug("getSoftwareContestByProjectId (" + projectId + ")");
+    public SoftwareCompetition getSoftwareContestByProjectId(TCSubject tcSubject, long projectId)
+            throws ContestServiceException {
+        logger.debug("getSoftwareContestByProjectId (tcSubject = " + tcSubject + ", " + projectId + ")");
 
         SoftwareCompetition contest = new SoftwareCompetition();
 
         try {
-            
-            checkSoftwareContestPermission(projectId, true);
-            
+
+            checkSoftwareContestPermission(tcSubject, projectId, true);
+
             FullProjectData fullProjectData = this.projectServices.getFullProjectData(projectId);
             Long compVersionId = Long.parseLong(fullProjectData.getProjectHeader()
                                                                .getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY));
@@ -5124,54 +4759,51 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             return contest;
         } catch (ProjectServicesException pse) {
             logger.error("Fail to get project data from project services.", pse);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project data from project services.",
                 pse);
         } catch (NumberFormatException nfe) {
             logger.error("the properites 'Version ID' is not of Long value in project.",
                 nfe);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("the properites 'Version ID' is not of Long value in project.",
                 nfe);
         } catch (EntityNotFoundException e) {
             logger.error("the version id does not exist.", e);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("the version id does not exist.",
                 e);
         } catch (com.topcoder.catalog.service.PersistenceException e) {
             logger.error("Fail to get project asset.", e);
-			sessionContext.setRollbackOnly();
+            sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project asset.", e);
         }
     }
 
     /**
      * <p>
-     * Gets the list of project and their permissions (including permissions for
-     * the parent tc project)
+     * Gets the list of project and their permissions (including permissions for the parent tc project)
      * </p>
-     *
      * <p>
-     * Updated for Cockpit Project Admin Release Assembly v1.0 - software
-     * projects also included.
+     * Updated for Cockpit Project Admin Release Assembly v1.0 - software projects also included.
      * </p>
-     *
-     * @param createdUser
-     *            user for which to get the permissions
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param createdUser user for which to get the permissions
      * @return list of project and their permissions.
-     *
      * @since TCCC-1329
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(
-        long createdUser) throws PersistenceException {
-        logger.debug("getCommonProjectPermissionDataForUser (" + createdUser +
-            ")");
+    public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(TCSubject tcSubject, long createdUser)
+            throws PersistenceException {
+        logger.debug("getCommonProjectPermissionDataForUser (tcSubject = " + tcSubject + ", " + createdUser + ")");
 
         List<com.topcoder.service.studio.contest.SimpleProjectPermissionData> studioPermissions =
-            studioService.getSimpleProjectPermissionDataForUser(createdUser);
+            studioService.getSimpleProjectPermissionDataForUser(tcSubject, createdUser);
         List<com.topcoder.management.project.SimpleProjectPermissionData> softwarePermissions =
-            projectServices.getSimpleProjectPermissionDataForUser(createdUser);
+            projectServices.getSimpleProjectPermissionDataForUser(tcSubject, createdUser);
 
         List<CommonProjectPermissionData> ret = new ArrayList<CommonProjectPermissionData>();
 
@@ -5217,12 +4849,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * Searches the user with the given key.
      * </p>
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return list of matching users, empty list if none matches.
      * @since TCCC-1329
      */
-    public List<User> searchUser(String key) throws PersistenceException {
-        logger.debug("searchUser (" + key + ")");
+    public List<User> searchUser(TCSubject tcSubject, String key) throws PersistenceException {
+        logger.debug("searchUser (tcSubject = " + tcSubject + ", " + key + ")");
 
         return studioService.searchUser(key);
     }
@@ -5231,71 +4866,67 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * This method updates array of permissions to the persistence.
      * </p>
-     *
-     * @param permissions
-     *            the permissions to update.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when updating the permission.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param permissions the permissions to update.
+     * @throws IllegalArgumentWSException if the argument is invalid
+     * @throws PermissionServiceException if any error occurs when updating the permission.
      * @since Cockpit Project Admin Release Assembly.
      */
-    public void updatePermissions(Permission[] permissions)
-        throws PermissionServiceException {
+    public void updatePermissions(TCSubject tcSubject, Permission[] permissions) throws PermissionServiceException {
         logger.debug("updatePermissions");
 
         try
         {
-                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE) && !sessionContext.isCallerInRole(LIQUID_ADMIN_ROLE))
+            if (!isRole(tcSubject, ADMIN_ROLE)) {
+                long userId = tcSubject.getUserId();
+
+                List<CommonProjectPermissionData> userPermissions =
+                    getCommonProjectPermissionDataForUser(tcSubject, userId);
+
+                for (Permission p : permissions)
                 {
-                    long userId = principal.getUserId();
+                    boolean hasFullPermission = false;
 
-                    List<CommonProjectPermissionData> userPermissions = getCommonProjectPermissionDataForUser(userId);
-
-                    for (Permission p : permissions)
+                    for (CommonProjectPermissionData data :  userPermissions)
                     {
-                        boolean hasFullPermission = false;
 
-                        for (CommonProjectPermissionData data :  userPermissions)
+                        if (p.getResourceId().longValue() == data.getProjectId())
                         {
-
-                            if (p.getResourceId().longValue() == data.getProjectId())
+                            if (data.getPfull() > 0)
                             {
-                                if (data.getPfull() > 0)
+                                hasFullPermission = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (p.getResourceId().longValue() == data.getContestId() && (p.isStudio() == data.isStudio()))
+                            {
+                                if (data.getPfull() > 0 || data.getCfull() > 0)
                                 {
                                     hasFullPermission = true;
                                     break;
                                 }
                             }
-                            else
-                            {
-                                if (p.getResourceId().longValue() == data.getContestId() && (p.isStudio() == data.isStudio()))
-                                {
-                                    if (data.getPfull() > 0 || data.getCfull() > 0)
-                                    {
-                                        hasFullPermission = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!hasFullPermission)
-                        {
-                            throw new PermissionServiceException("No full permission on resource "+p.getResourceId());
                         }
                     }
+
+                    if (!hasFullPermission)
+                    {
+                        throw new PermissionServiceException("No full permission on resource "+p.getResourceId());
+                    }
                 }
+           }
 
             // when add/remove permission, we need to add/remvoe observer
             for (Permission per : permissions) {
                 // if add permission
-                if ((per.getPermissionId() == null || per.getPermissionId() <= 0) 
+                if ((per.getPermissionId() == null || per.getPermissionId() <= 0)
                       && per.getPermissionType() != null && per.getPermissionType().getName() != null
-                      && !per.getPermissionType().getName().equals("")) 
+                      && !per.getPermissionType().getName().equals(""))
                 {
 
                     List<Long> projectIds = new ArrayList<Long>();
@@ -5309,8 +4940,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     else if (!per.isStudio())
                     {
                         projectIds.add(per.getResourceId());
-                    }   
-                    
+                    }
+
                     if (projectIds != null && projectIds.size() >0)
                     {
                         // for each OR project, find all observers
@@ -5336,9 +4967,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                             // if not found && user agreed terms (if any) && is eligible, add resource
                             if (!found && checkTerms(pid, per.getUserId(), new int[]{(int)RESOURCE_ROLE_OBSERVER_ID})
-                                 && isEligible(per.getUserId().longValue(), pid.longValue(), false))
+                                 && isEligible(tcSubject, per.getUserId().longValue(), pid.longValue(), false))
                             {
-                                 
+
                                  com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
                                  newRes.setId(com.topcoder.management.resource.Resource.UNSET_ID);
                                  newRes.setProject(pid);
@@ -5349,7 +4980,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                  observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
 
                                  newRes.setResourceRole(observer_role);
-                
+
                                  newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
                                     String.valueOf(per.getUserId()));
                                  newRes.setProperty(RESOURCE_INFO_HANDLE,
@@ -5357,11 +4988,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                  newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS,
                                     RESOURCE_INFO_PAYMENT_STATUS_NA);
 
-                                 projectServices.updateResource(newRes, String.valueOf(principal.getUserId()));
+                                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
 
                                  // create forum watch
                                 long forumId = projectServices.getForumId(pid);
-          
+
                                 if (forumId > 0 && createForum)
                                 {
                                     createForumWatchAndRole(forumId, per.getUserId());
@@ -5369,19 +5000,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                             }
 
                         }
-                        
+
                     }
-                    
-                    
+
+
                 }
                 // if remove permission, we need to remove observer
-                else if (per.getPermissionType() == null || per.getPermissionType().getName() == null 
-						                  || per.getPermissionType().getName().equals("")) 
+                else if (per.getPermissionType() == null || per.getPermissionType().getName() == null
+                                          || per.getPermissionType().getName().equals(""))
                 {
 
-                    List<Permission> ps = this.getPermissions(per.getUserId(), per.getResourceId());
+                    List<Permission> ps = this.getPermissions(tcSubject, per.getUserId(), per.getResourceId());
                     Permission toDelete = null;
-                    if (ps != null && ps.size() > 0) 
+                    if (ps != null && ps.size() > 0)
                     {
                         toDelete = ps.get(0);
                     }
@@ -5401,13 +5032,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         else if (!toDelete.isStudio())
                         {
                             projectIds.add(per.getResourceId());
-                        }   
-                        
+                        }
+
                         if (projectIds != null && projectIds.size() >0)
                         {
                             for (Long pid : projectIds)
                             {
-                                // if we are removing project permission but user still has contest permission, 
+                                // if we are removing project permission but user still has contest permission,
                                 // or if we are removing contest permission but user still has project permission
                                 // we will not remove observer
                                 if ((!projectServices.hasContestPermission(pid, toDelete.getUserId()) && isTCProject)
@@ -5416,7 +5047,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                     com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, RESOURCE_ROLE_OBSERVER_ID);
 
                                     com.topcoder.management.resource.Resource delRes = null;
-                        
+
                                     // check if user is already a observer
                                     if (resources != null && resources.length > 0)
                                     {
@@ -5433,7 +5064,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
                                     if (delRes != null)
                                     {
-                                        projectServices.removeResource(delRes, String.valueOf(principal.getUserId()));
+                                        projectServices.removeResource(delRes, String.valueOf(tcSubject.getUserId()));
                                     }
 
                                     // delete forum watch
@@ -5445,8 +5076,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                                 }
                             }
                         }
-                    }   
-                   
+                    }
+
                 }
             }
 
@@ -5528,7 +5159,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             for (String toAddr : toAddrs) {
                 email.addToAddress(toAddr, TCSEmailMessage.TO);
             }
-            
+
             if (ccAddr != null) {
                 email.addToAddress(ccAddr, TCSEmailMessage.CC);
             }
@@ -5650,7 +5281,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 activateContestReceiptEmailTemplatePath).getFile();
         Logger.getLogger(this.getClass()).debug("File name for template: " + file);
-        
+
         sendEmail(EMAIL_FILE_TEMPLATE_SOURCE_KEY, file, activateContestReceiptEmailSubject.replace("%ORDER_NUMBER%",
                 orderNumber), new String[] {toAddr}, null, activateContestReceiptEmailBCCAddr, activateContestReceiptEmailFromAddr,
                 phase);
@@ -5728,7 +5359,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 }
 
 
-                
+
                  if (submissionPaymentData.isPurchased())
                 {
                      sb.append(Long.toString(submissionId)).append(" - ")
@@ -5748,7 +5379,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     }
                 }
 
-               
+
 
                 // subPrices.add(subPrice);
             }
@@ -5824,21 +5455,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         phase.setAttribute("PROJECT_NAME", projectName);
     }
 
-	/**
+    /**
      * Gets the spec reviews for specified contest id.
-     * 
-     * @param contestId
-     *            the contest id
-     * @param studio
-     *            indicates whether the specified contest id is for studio contests.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the contest id
+     * @param studio indicates whether the specified contest id is for studio contests.
      * @return the spec review that matches the specified contest id.
-     * 
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException {
+    public SpecReview getSpecReviews(TCSubject tcSubject, long contestId, boolean studio)
+            throws ContestServiceException {
         try {
             return this.specReviewService.getSpecReviews(contestId, studio);
         } catch (SpecReviewServiceException e) {
@@ -5848,28 +5478,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Save specified review comment and review status for specified section and specified contest id to persistence.
-     * 
-     * @param contestId
-     *            the contest id
-     * @param studio
-     *            indicates whether the specified contest id is for studio contests.
-     * @param sectionName
-     *            the section name
-     * @param comment
-     *            the comment
-     * @param isPass
-     *            the is pass
-     * @param role
-     *            the user role type           
-     * 
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the contest id
+     * @param studio indicates whether the specified contest id is for studio contests.
+     * @param sectionName the section name
+     * @param comment the comment
+     * @param isPass the is pass
+     * @param role the user role type
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass, String role)
-            throws ContestServiceException {
+    public void saveReviewStatus(TCSubject tcSubject, long contestId, boolean studio, String sectionName,
+            String comment, boolean isPass, String role) throws ContestServiceException {
         try {
-            this.specReviewService.saveReviewStatus(contestId, studio, sectionName, comment, isPass, role);
+            this.specReviewService.saveReviewStatus(tcSubject, contestId, studio, sectionName, comment, isPass, role);
         } catch (SpecReviewServiceException e) {
             throw new ContestServiceException("Error during saveReviewStatus", e);
         }
@@ -5877,26 +5502,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Save specified review comment for specified section and specified contest id to persistence.
-     * 
-     * @param contestId
-     *            the contest id
-     * @param studio
-     *            indicates whether the specified contest id is for studio contests.
-     * @param sectionName
-     *            the section name
-     * @param comment
-     *            the comment
-     * @param role
-     *            the user role type           
-     * 
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the contest id
+     * @param studio indicates whether the specified contest id is for studio contests.
+     * @param sectionName the section name
+     * @param comment the comment
+     * @param role the user role type
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
-            throws ContestServiceException {
+    public void saveReviewComment(TCSubject tcSubject, long contestId, boolean studio, String sectionName,
+            String comment, String role) throws ContestServiceException {
         try {
-            this.specReviewService.saveReviewComment(contestId, studio, sectionName, comment, role);
+            this.specReviewService.saveReviewComment(tcSubject, contestId, studio, sectionName, comment, role);
         } catch (SpecReviewServiceException e) {
             throw new ContestServiceException("Error during saveReviewComment", e);
         }
@@ -5904,48 +5525,46 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Mark review comment with specified comment id as seen.
-     * 
-     * @param commentId
-     *            the comment id
-     * 
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param commentId the comment id
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since Cockpit Launch Contest - Inline Spec Review Part 2
      */
-    public void markReviewCommentSeen(long commentId) throws ContestServiceException {
+    public void markReviewCommentSeen(TCSubject tcSubject, long commentId) throws ContestServiceException {
         try {
-            this.specReviewService.markReviewCommentSeen(commentId);
+            this.specReviewService.markReviewCommentSeen(tcSubject, commentId);
         } catch (SpecReviewServiceException e) {
             throw new ContestServiceException("Error during markReviewCommentSeen", e);
         }
     }
-    
     /**
-     * Marks 'review done' by reviewer of the specs for specified contest.
-     * Persistence is updated and all end users having write/full permission on the contest are notified by email.
-     * 
-     * @param contestId
-     *            the specified contest id.
-     * @param contestName
-     *            the contest name
-     * @param studio
-     *            whether contest is studio or not.
-     * @tcDirectProjectId
-     *            the tc direct project id.            
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * Marks 'review done' by reviewer of the specs for specified contest. Persistence is updated and all end users
+     * having write/full permission on the contest are notified by email.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the specified contest id.
+     * @param contestName the contest name
+     * @param studio whether contest is studio or not.
+     * @tcDirectProjectId the tc direct project id.
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId) throws ContestServiceException {
+    public void markReviewDone(TCSubject tcSubject, long contestId, String contestName, boolean studio,
+            long tcDirectProjectId) throws ContestServiceException {
         try {
             // get updates.
             List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
-            
-            this.specReviewService.markReviewDone(contestId, studio);
-            
+
+            this.specReviewService.markReviewDone(tcSubject, contestId, studio);
+
             // notify all users who have write permission by email.
             Set<String> toAddresses = new HashSet<String>();
-            
+
             List<Permission> permissions = this.permissionService.getPermissionsByProject(contestId);
             for (Permission p : permissions) {
                 if (p.getPermissionType().getPermissionTypeId() == 6 || p.getPermissionType().getPermissionTypeId() == 5) {
@@ -5953,7 +5572,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     toAddresses.add(toAddr);
                 }
             }
-            
+
             permissions = this.permissionService.getPermissionsByProject(tcDirectProjectId);
             for (Permission p : permissions) {
                 if (p.getPermissionType().getPermissionTypeId() == 2 || p.getPermissionType().getPermissionTypeId() == 3) {
@@ -5961,7 +5580,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     toAddresses.add(toAddr);
                 }
             }
-            
+
             // send email to all toAddresses.
             sendSpecReviewNotificationEmail(toAddresses.toArray(new String[0]), updates, contestName);
         } catch (SpecReviewServiceException e) {
@@ -5980,53 +5599,52 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
 
     /**
-     * Marks 'ready for review' by the writer of the specs for specified contest.
-     * Persistence is updated, on update the spec would appear as review opportunity on tc site.
-     * 
-     * @param contestId
-     *            the specified contest id.
-     * @param studio
-     *            whether contest is studio or not.
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * Marks 'ready for review' by the writer of the specs for specified contest. Persistence is updated, on update the
+     * spec would appear as review opportunity on tc site.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the specified contest id.
+     * @param studio whether contest is studio or not.
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException {
+    public void markReadyForReview(TCSubject tcSubject, long contestId, boolean studio) throws ContestServiceException {
         try {
-            this.specReviewService.markReadyForReview(contestId, studio);
+            this.specReviewService.markReadyForReview(tcSubject, contestId, studio);
         } catch (SpecReviewServiceException e) {
             throw new ContestServiceException("Error during markReadyForReview", e);
         }
     }
 
     /**
-     * Marks 'resubmit for review' by the writer of the specs for specified contest.
-     * Persistence is updated. Reviewer (if any) is notified about the updates.
-     * 
-     * @param contestId
-     *            the specified contest id.
-     * @param contestName
-     *            the contest name
-     * @param studio
-     *            whether contest is studio or not.
-     * @param reviewerUserId
-     *            reviewer user id.
-     * @throws ContestServiceException
-     *             if any error during retrieval/save from persistence
+     * Marks 'resubmit for review' by the writer of the specs for specified contest. Persistence is updated. Reviewer
+     * (if any) is notified about the updates.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contestId the specified contest id.
+     * @param contestName the contest name
+     * @param studio whether contest is studio or not.
+     * @param reviewerUserId reviewer user id.
+     * @throws ContestServiceException if any error during retrieval/save from persistence
      * @since 1.0.1
      */
-    public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId) throws ContestServiceException {
+    public void resubmitForReview(TCSubject tcSubject, long contestId, String contestName, boolean studio,
+            long reviewerUserId) throws ContestServiceException {
         try {
             // get updates.
             List<UpdatedSpecSectionData> updates = this.specReviewService.getReviewerUpdates(contestId, studio);
-            
-            this.specReviewService.resubmitForReview(contestId, studio);
-          
+
+            this.specReviewService.resubmitForReview(tcSubject, contestId, studio);
+
             // do not send email if no updates are there.
             if (updates.size() <= 0) {
                 return;
             }
-            
+
             // notify the reviewer about updates.
             String reviewerEmail = this.userService.getEmailAddress(reviewerUserId);
 
@@ -6045,10 +5663,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             Logger.getLogger(this.getClass()).error("Email Error : "+e);
         }
     }
-    
+
     /**
      * Sends spec review notification email
-     * 
+     *
      * @param toAddrs
      *            array of to addresses to which spec review notification email should be sent.
      * @param updates
@@ -6059,7 +5677,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      *             thrown if error during email message generation
      * @throws EmailSendingException
      *             thrown if error during email sending.
-     * @since 1.0.2             
+     * @since 1.0.2
      */
     private void sendSpecReviewNotificationEmail(String[] toAddrs, List<UpdatedSpecSectionData> updates,
             String contestName) throws EmailMessageGenerationException, EmailSendingException {
@@ -6091,16 +5709,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 "%CONTEST_NAME%", contestName), toAddrs, null, specReviewNotificationEmailBCCAddr,
                 specReviewNotificationEmailFromAddr, phase);
     }
-    
+
     /**
      * Gets all contest fees by billing project id.
-     * 
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the billing project id
      * @return the list of project contest fees for the given project id
-     * @throws ContestServiceException  if any persistence or other error occurs
+     * @throws ContestServiceException if any persistence or other error occurs
      * @since 1.0.1
      */
-    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException {
+    public List<ProjectContestFee> getContestFeesByProject(TCSubject tcSubject, long projectId)
+            throws ContestServiceException {
         try {
             return this.billingProjectDAO.getContestFeesByProject(projectId);
         } catch(DAOException e) {
@@ -6110,18 +5732,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * Get the user contest by user name Return empty list if none found
-     *
-     * @param userName
-     *            the user name to get the user contest
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userName the user name to get the user contest
      * @return a list of matching studio competitions
-     * @throws IllegalArgumentException
-     *             if userName is null or empty
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * @throws IllegalArgumentException if userName is null or empty
+     * @throws ContestServiceException if any other error occurs
      * @since 1.1
      */
-    public List<StudioCompetition> getUserContests(String userName)
-        throws ContestServiceException {
+    public List<StudioCompetition> getUserContests(TCSubject tcSubject, String userName) throws ContestServiceException {
         String methodName = "getUserContests";
         logger.info("Enter: " + methodName);
 
@@ -6148,42 +5769,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * get milestone submissions for contest
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return empty list of none submission found for the given contest id.
-     * @param contestId
-     *            The contest id to get the milestone submissions.
-     * @throws IllegalArgumentException
-     *             if long argument is negative
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * @param contestId The contest id to get the milestone submissions.
+     * @throws IllegalArgumentException if long argument is negative
+     * @throws ContestServiceException if any other error occurs
      * @since 1.1
      */
-    public List<SubmissionData> getMilestoneSubmissionsForContest(
-        long contestId) throws ContestServiceException {
+    public List<SubmissionData> getMilestoneSubmissionsForContest(TCSubject tcSubject, long contestId)
+            throws ContestServiceException {
         String methodName = "getMilestoneSubmissionsForContest";
         logger.info("Enter: " + methodName);
-
-        
-
 
         if (contestId < 0L) {
             throw new IllegalArgumentException(
                 "contestId could not be a negative (" + contestId + ")");
         }
 
-
-
         try {
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!studioService.checkContestPermission(contestId, true, userId))
-                {
-                    throw new PersistenceException("No read permission on contest");
-                }
-            }
+            this.checkStudioContestPermission(tcSubject, contestId, true);
 
             /*
              * The return list dose not be null, the studioserivce will return
@@ -6201,42 +5809,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * get final submissions for contest
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return empty list of none submission found for the given contest id.
-     * @param contestId
-     *            The contest id to get the final submissions
-     * @throws IllegalArgumentException
-     *             if long argument is negative
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * @param contestId The contest id to get the final submissions
+     * @throws IllegalArgumentException if long argument is negative
+     * @throws ContestServiceException if any other error occurs
      * @since 1.1
      */
-    public List<SubmissionData> getFinalSubmissionsForContest(long contestId)
-        throws ContestServiceException {
+    public List<SubmissionData> getFinalSubmissionsForContest(TCSubject tcSubject, long contestId)
+            throws ContestServiceException {
         String methodName = "getFinalSubmissionsForContest";
         logger.info("Enter: " + methodName);
 
         if (contestId < 0L) {
-            throw new IllegalArgumentException(
-                "contestId could not be a negative (" + contestId + ")");
+            throw new IllegalArgumentException("contestId could not be a negative (" + contestId + ")");
         }
-
-        
 
         try {
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!studioService.checkContestPermission(contestId, true, userId))
-                {
-                    throw new PersistenceException("No read permission on contest");
-                }
-            }
+            this.checkStudioContestPermission(tcSubject, contestId, true);
+
             /*
-             * The return list dose not be null, the studioserivce will return
-             * the empty list when not found(Based on studio service 1.3 design)
+             * The return list dose not be null, the studioserivce will return the empty list when not found(Based on
+             * studio service 1.3 design)
              */
             List<SubmissionData> submissions = studioService.getFinalSubmissionsForContest(contestId);
             logger.info("Exit: " + methodName);
@@ -6247,53 +5845,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             throw new ContestServiceException(pe.getMessage(), pe);
         }
     }
-
     /**
-     * set submission milestone prize If given submission has already been
-     * associated with the given milestone prize before, ContestServiceException
-     * will be thrown. It's required that the contest field of the submission of
-     * given id is one of the contests set of the milestone prize, otherwise,
-     * ContestServiceException will be thrown. If the MilestonePrize with given
-     * id has reached the max number of submissions, ContestServiceException
-     * will be thrown.
-     *
-     * @param submissionId
-     *            The submission id
-     * @param milestonePrizeId
-     *            The milestone prize id
-     * @throws IllegalArgumentException
-     *             if long argument is negative
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * set submission milestone prize If given submission has already been associated with the given milestone prize
+     * before, ContestServiceException will be thrown. It's required that the contest field of the submission of given
+     * id is one of the contests set of the milestone prize, otherwise, ContestServiceException will be thrown. If the
+     * MilestonePrize with given id has reached the max number of submissions, ContestServiceException will be thrown.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param submissionId The submission id
+     * @param milestonePrizeId The milestone prize id
+     * @throws IllegalArgumentException if long argument is negative
+     * @throws ContestServiceException if any other error occurs
      * @since 1.1
      */
-    public void setSubmissionMilestonePrize(long submissionId,
-        long milestonePrizeId) throws ContestServiceException {
+    public void setSubmissionMilestonePrize(TCSubject tcSubject, long submissionId, long milestonePrizeId)
+            throws ContestServiceException {
         String methodName = "setSubmissionMilestonePrize";
         logger.info("Enter: " + methodName);
 
         if ((submissionId < 0L) || (milestonePrizeId < 0)) {
-            throw new IllegalArgumentException(
-                "submission Id and milestonePrizeId could not be a negative (" +
-                submissionId + "," + milestonePrizeId + ")");
+            throw new IllegalArgumentException("submission Id and milestonePrizeId could not be a negative ("
+                    + submissionId + "," + milestonePrizeId + ")");
         }
-
-        
 
         try {
 
-            if (!sessionContext.isCallerInRole(ADMIN_ROLE))
-            {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                long userId = p.getUserId();
-                if (!studioService.checkSubmissionPermission(submissionId, false, userId))
-                {
-                    throw new PersistenceException("No write permission on contest");
-                }
-            }
+            this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
 
-            studioService.setSubmissionMilestonePrize(submissionId,
-                milestonePrizeId);
+            studioService.setSubmissionMilestonePrize(submissionId, milestonePrizeId);
         } catch (PersistenceException pe) {
             logger.error(pe.getMessage(), pe);
             throw new ContestServiceException(pe.getMessage(), pe);
@@ -6329,78 +5910,80 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         {
             logger.error("Error voiding " + result.getReferenceNumber() + ": " +e.getMessage(), e);
         }
-        
+
     }
 
     /**
      * Get all design components.
-     *
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @throws ContestServiceException if any other error occurs
      * @since 1.1
      */
-    public List<DesignComponents> getDesignComponents() throws ContestServiceException {
+    public List<DesignComponents> getDesignComponents(TCSubject tcSubject) throws ContestServiceException {
         String methodName = "getDesignComponents";
         logger.info("Enter: " + methodName);
 
         try {
-            return projectServices.getDesignComponents(0);
+            return projectServices.getDesignComponents(tcSubject, 0);
         } catch (ProjectServicesException pe) {
             logger.error(pe.getMessage(), pe);
             throw new ContestServiceException(pe.getMessage(), pe);
-        } finally{
+        } finally {
             logger.info("Exit: " + methodName);
-	}
+        }
     }
 
-    
     /**
      * Returns whether a user is eligible for a particular contest.
-     *
-     * @param userId
-     *            The user id
-     * @param contestId
-     *            The contest id
-     * @param isStudio
-     *            true if the contest is a studio contest, false otherwise.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param userId The user id
+     * @param contestId The contest id
+     * @param isStudio true if the contest is a studio contest, false otherwise.
      * @return true if the user is eligible for the specified contest, false otherwise.
-     * 
-     * @throws ContestServiceException
-     *             if any other error occurs
+     * @throws ContestServiceException if any other error occurs
      * @since 1.2.2
      */
-    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException {
+    public boolean isEligible(TCSubject tcSubject, long userId, long contestId, boolean isStudio)
+            throws ContestServiceException {
         String methodName = "isEligible";
         logger.info("Enter: " + methodName);
 
         boolean eligible = false;
-    	
-    	try {
-			List<ContestEligibility> eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
-			eligible = contestEligibilityValidationManager.validate(userId, eligibilities);
-		} catch (ContestEligibilityPersistenceException e) {
+
+        try {
+            List<ContestEligibility> eligibilities = contestEligibilityManager.getContestEligibility(contestId,
+                    isStudio);
+            eligible = contestEligibilityValidationManager.validate(userId, eligibilities);
+        } catch (ContestEligibilityPersistenceException e) {
             logger.error(e.getMessage(), e);
             throw new ContestServiceException(e.getMessage(), e);
-		} catch (ContestEligibilityValidationManagerException e) {
+        } catch (ContestEligibilityValidationManagerException e) {
             logger.error(e.getMessage(), e);
             throw new ContestServiceException(e.getMessage(), e);
-		}
-    	    	
+        }
+
         logger.info("Exit: " + methodName);
-    	return eligible;
+        return eligible;
     }
 
     /**
      * Find eligibility name for the billing project.
-     * 
-     * @param billingProjectId;
-     * 			The ID of the billing project.
-     * @return
-     * 			The name of the eligibility group.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param billingProjectId; The ID of the billing project.
+     * @return The name of the eligibility group.
      * @since 1.2.3
      */
-    public String getEligibilityName(long billingProjectId) {
-        String methodName = "getEligibilityName : billing project id = "+ billingProjectId;
+    public String getEligibilityName(TCSubject tcSubject, long billingProjectId) {
+        String methodName = "getEligibilityName : tcSubject = " + tcSubject + ", billing project id = "+ billingProjectId;
         logger.info("Enter: " + methodName);
         try {
             ConfigManager cfgMgr = ConfigManager.getInstance();
@@ -6420,14 +6003,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
         }
     }
 
-    
+
     /**
      * Find eligibility group id for the client.
-     * 
+     *
      * @param billingProjectId;
-     * 			The ID of the billingProjectId.
+     *          The ID of the billingProjectId.
      * @return
-     * 			The id of the eligibility group.
+     *          The id of the eligibility group.
      * @since 1.2.3
      */
     private Long getEligibilityGroupId(long billingProjectId) {
@@ -6468,20 +6051,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     /**
      * Returns whether the contest is private.
      *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            The contest id
      * @param isStudio
      *            true if the contest is a studio contest, false otherwise.
      * @return true if the contest is a private one, false otherwise.
-     * 
+     *
      * @throws ContestServiceException
      *             if any other error occurs
      * @since 1.2.3
      */
-    public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException {
+    public boolean isPrivate(TCSubject tcSubject, long contestId, boolean isStudio) throws ContestServiceException {
         String methodName = "isPrivate";
         logger.info("Enter: " + methodName);
-        
+
         List<ContestEligibility> eligibilities;
         try {
             eligibilities = contestEligibilityManager.getContestEligibility(contestId, isStudio);
@@ -6489,29 +6076,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.error(e.getMessage(), e);
             throw new ContestServiceException(e.getMessage(), e);
         }
-                
+
         logger.info("Exit: " + methodName);
         return !eligibilities.isEmpty();
-    } 
+    }
 
-     /**
+    /**
      * This method creates a Specification Review project associated to a project determined by parameter.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project id to create a Specification Review for
      * @return the created project
-     *
      * @throws ContestServiceException if any unexpected error occurs in the underlying services
-     *
      * @since 1.4
      */
-    public FullProjectData createSpecReview(long projectId) throws ContestServiceException {
-        String method = "createSpecReview(" + projectId + ")";
+    public FullProjectData createSpecReview(TCSubject tcSubject, long projectId) throws ContestServiceException {
+        String method = "createSpecReview(tcSubject = " + tcSubject + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         FullProjectData specReview = null;
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(p.getUserId()));
+            specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(tcSubject.getUserId()));
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in ProjectServices.", e);
             throw new ContestServiceException("Operation failed in Project Services.", e);
@@ -6523,18 +6110,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
 
     /**
-     * This method retrieves scorecard and review information associated to a project determined by parameter.
-     * Note: a single reviewer / review is assumed.
-     *
+     * This method retrieves scorecard and review information associated to a project determined by parameter. Note: a
+     * single reviewer / review is assumed.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project id to search for
      * @return the aggregated scorecard and review data
-     *
      * @throws ContestServiceException if any unexpected error occurs in the underlying services
-     *
      * @since 1.4
      */
-    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException {
-        String method = "getScorecardAndReview(" + projectId + ")";
+    public ScorecardReviewData getScorecardAndReview(TCSubject tcSubject, long projectId)
+            throws ContestServiceException {
+        String method = "getScorecardAndReview(tcSubject = " + tcSubject + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         ScorecardReviewData scorecardReviewData =  null;
@@ -6551,19 +6140,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
 
     /**
-     * This method uploads a mock file to the corresponding specification review project of the specified project
-     * id, so that it can continue with review. Regular submission or final fix will be uploaded according to the
-     * open phase.
-     *
+     * This method uploads a mock file to the corresponding specification review project of the specified project id, so
+     * that it can continue with review. Regular submission or final fix will be uploaded according to the open phase.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project id of the original project
-     *
      * @throws ContestServiceException if any unexpected error occurs in the underlying services, if the associated
-     * specification review project id cannot be found or if neither submission or final fixes phase are open.
-     *
+     *             specification review project id cannot be found or if neither submission or final fixes phase are
+     *             open.
      * @since 1.4
      */
-    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException {
-        String method = "markSoftwareContestReadyForReview(" + projectId + ")";
+    public void markSoftwareContestReadyForReview(TCSubject tcSubject, long projectId) throws ContestServiceException {
+        String method = "markSoftwareContestReadyForReview(tcSubject = " + tcSubject + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         try {
@@ -6582,9 +6172,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             // upload regular submission or final fix according to open phase
             if (openPhases.contains(PROJECT_SUBMISSION_PHASE_NAME)) {
-                uploadSubmission(specReviewProjectId, mockSubmissionFileName, dataHandler);
+                uploadSubmission(tcSubject, specReviewProjectId, mockSubmissionFileName, dataHandler);
             } else if (openPhases.contains(PROJECT_FINAL_FIX_PHASE_NAME)) {
-                uploadFinalFix(specReviewProjectId, mockSubmissionFileName, dataHandler);
+                uploadFinalFix(tcSubject, specReviewProjectId, mockSubmissionFileName, dataHandler);
             } else {
                 throw new ContestServiceException("Submission or Final Fix phase should be open.");
             }
@@ -6598,26 +6188,26 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
     /**
      * This method adds a review comment to a review. It simply delegates all logic to underlying services.
-     *
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param reviewId the review id to add the comment to
      * @param comment the review comment to add
-     *
      * @throws ContestServiceException if any unexpected error occurs in the underlying services.
      * @throws IllegalArgumentException if comment is null
-     *
      * @since 1.4
      */
-    public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException {
+    public void addReviewComment(TCSubject tcSubject, long reviewId, Comment comment) throws ContestServiceException {
         if (comment == null) {
             throw new IllegalArgumentException("The comment cannot be null");
         }
 
-        String method = "addReviewComment(" + reviewId + ", " + comment + ")";
+        String method = "addReviewComment(tcSubject = " + tcSubject + "," + reviewId + ", " + comment + ")";
         logger.info("Enter: " + method);
 
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            projectServices.addReviewComment(reviewId, comment, String.valueOf(p.getUserId()));
+            projectServices.addReviewComment(reviewId, comment, String.valueOf(tcSubject.getUserId()));
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in Project Services.", e);
             throw new ContestServiceException("Operation failed in Project Services.", e);
@@ -6625,7 +6215,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             logger.info("Exit: " + method);
         }
     }
-    
+
     /**
      * create forum watch with given parameters. It will lookup the ForumsHome
      * interface, and ceate the forum by the ejb home interface. In the old
@@ -6796,11 +6386,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                 return true;
             }
 
-            for (int i = 0; i < necessaryTerms.length; i++) 
+            for (int i = 0; i < necessaryTerms.length; i++)
             {
-                if (necessaryTerms[i] != null) 
+                if (necessaryTerms[i] != null)
                 {
-                    for (int j = 0; j < necessaryTerms[i].size(); j++) 
+                    for (int j = 0; j < necessaryTerms[i].size(); j++)
                     {
                         Long termId = necessaryTerms[i].get(j);
                         // if user has not agreed
@@ -6853,14 +6443,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @throws DatatypeConfigurationException if any error occurs
      */
     private XMLGregorianCalendar nextDevProdDay(XMLGregorianCalendar date) throws DatatypeConfigurationException{
-        Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);        
+        Duration elevenDay = DatatypeFactory.newInstance().newDurationDayTime(true, 11, 0, 0, 0);
         date.add(elevenDay);
         return date;
     }
     /**
      * <p>
-     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * Create new version for design or development contest. (project_status_id = 4-10 in
+     * tcs_catalog:project_status_lu).
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project to create new version
      * @param tcDirectProjectId tc direct project id
      * @param autoDevCreating if it is true and it is design contest, then will create development too
@@ -6868,22 +6463,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @return newly version contest id
      * @throws ContestServiceException if any error occurs
      */
-    private long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, 
-            boolean autoDevCreating, XMLGregorianCalendar startDate, boolean minorVersion) throws ContestServiceException {
+    private long createNewVersionForDesignDevContest(TCSubject tcSubject, long projectId, long tcDirectProjectId,
+            boolean autoDevCreating, XMLGregorianCalendar startDate, boolean minorVersion)
+            throws ContestServiceException {
         try {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             //0.check the permission first
-            checkSoftwareProjectPermission(tcDirectProjectId, true);
+            checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
             //1. for now, only completed can create new version
-            FullProjectData contest = this.projectServices.getFullProjectData(projectId);  
+            FullProjectData contest = this.projectServices.getFullProjectData(projectId);
             // if auto dev creating, dont check, since we pass the new design project id
             if (!autoDevCreating && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.COMPLETED_STATUS_ID) {
                 throw new ProjectServicesException("The design project or its corresponding development project is not completed."
                         + " You can not create new version for it.");
             }
-            boolean isDevContest = 
+            boolean isDevContest =
                 contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
-            
+
             //2.create new version
             Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY));
             AssetDTO dto = catalogService.getAssetByVersionId(compVersionId);
@@ -6895,13 +6490,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             catalogService.updateAsset(dto);
 
             //create minor or major version
-            dto.setToCreateMinorVersion(minorVersion);  
+            dto.setToCreateMinorVersion(minorVersion);
             dto.setProductionDate(null);
-            
+
             //if it is dev only, or design, create new version here
             if (!isDevContest || !autoDevCreating) {
-		//clear the version
-            	dto.setCompVersionId(null);
+        //clear the version
+                dto.setCompVersionId(null);
                 dto.setForum(null);
                 dto.setDocumentation(new ArrayList<CompDocumentation>());
                 dto.setPhase("Design");
@@ -6911,17 +6506,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             else if (autoDevCreating && isDevContest) {
                 // need to get the latest verion by component id
                 dto = catalogService.getAssetById(dto.getId(), false);
-                dto = catalogService.createDevComponent(dto);                
+                dto = catalogService.createDevComponent(dto);
             }
 
-            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));    
-            contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));    
-            contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));    
+            contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));
+            contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));
+            contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));
 
             long forumId = 0;
             // create forum
             if (createForum) {
-                forumId = createForum(dto, p.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+                forumId = createForum(tcSubject, dto, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
             }
 
             // if forum created
@@ -6942,20 +6537,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             contest.setStartDate(getDate(startDate));
             //3.create the project
-            FullProjectData newVersionORProject = projectServices.createNewVersionContest(contest, String.valueOf(p.getUserId()));
+            FullProjectData newVersionORProject = projectServices.createNewVersionContest(contest, String.valueOf(tcSubject.getUserId()));
 
-            List<ContestEligibility> contestEligibilities = 
-                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
-            for (ContestEligibility ce:contestEligibilities){   
+            List<ContestEligibility> contestEligibilities =
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false);
+            for (ContestEligibility ce:contestEligibilities){
                 persistContestEligility(newVersionORProject.getProjectHeader().getId(), 0, ce, false);
             }
-            
+
             //4.if also auto-dev-creating for design, create it
             if (autoDevCreating && !isDevContest) {
                 long developmentProjectId = projectServices.getDevelopmentContestId(projectId);
                 if (developmentProjectId > 0){
                     logger.debug("create new version development project, the dev project id is :" + developmentProjectId);
-                    createNewVersionForDesignDevContest(developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate), minorVersion);
+                    createNewVersionForDesignDevContest(tcSubject, developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate), minorVersion);
                 }
             }
             logger.debug("Exit createNewVersionForDesignDevContest");
@@ -6969,23 +6564,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     }
     /**
      * <p>
-     * Create new version for design or development contest. (project_status_id = 4-10 in tcs_catalog:project_status_lu).
+     * Create new version for design or development contest. (project_status_id = 4-10 in
+     * tcs_catalog:project_status_lu).
      * </p>
      * <p>
      * since version 1.5.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project to create new version
      * @param tcDirectProjectId tc direct project id
      * @param autoDevCreating if it is true and it is design contest, then will create development too
      * @return newly version contest id
      * @throws ContestServiceException if any error occurs
      */
-    public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
-            boolean minorVersion) throws ContestServiceException {
-        logger.debug("createNewVersionForDesignDevContest with parameter [projectId =" + projectId
+    public long createNewVersionForDesignDevContest(TCSubject tcSubject, long projectId, long tcDirectProjectId,
+            boolean autoDevCreating, boolean minorVersion) throws ContestServiceException {
+        logger.debug("createNewVersionForDesignDevContest with parameter [TCSubject " + tcSubject + ", projectId =" + projectId
                      + ", tcDirectProjectId =" +tcDirectProjectId+", autoDevCreating="+ autoDevCreating +"].");
-       
-        return createNewVersionForDesignDevContest(projectId, tcDirectProjectId, autoDevCreating,nextReOpenNewReleaseDay(), minorVersion);       
+
+        return createNewVersionForDesignDevContest(tcSubject, projectId, tcDirectProjectId, autoDevCreating,
+                nextReOpenNewReleaseDay(), minorVersion);
     }
 
     /**
@@ -6995,21 +6596,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * <p>
      * since version 1.5.
      * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the project to repost
      * @param tcDirectProjectId the tc direct project id
      * @return the newly created OR project id
      * @throws ContestServiceException if any error occurs during repost
      */
-    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException {
-        logger.debug("reOpenSoftwareContest with parameter [projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
+    public long reOpenSoftwareContest(TCSubject tcSubject, long projectId, long tcDirectProjectId)
+            throws ContestServiceException {
+        logger.debug("reOpenSoftwareContest with parameter [TCSubject " + tcSubject + ", projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
 
         long reOpenContestId = 0;
         try {
-            
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
             //0.check the permission first
-            checkSoftwareProjectPermission(tcDirectProjectId, true);
-            
+            checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
+
             //1.make sure it is failed status and can be re-opened.
             FullProjectData contest = projectServices.getFullProjectData(projectId);
             if (contest == null) {
@@ -7026,13 +6631,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             }
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
             //2.create the project
-            FullProjectData reOpendedProject = 
-                projectServices.createReOpenContest(contest, String.valueOf(p.getUserId()));
-            
+            FullProjectData reOpendedProject =
+                projectServices.createReOpenContest(contest, String.valueOf(tcSubject.getUserId()));
+
             //3. keep terms and eligibility
-            List<ContestEligibility> contestEligibilities = 
-                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false); 
-            for (ContestEligibility ce:contestEligibilities){   
+            List<ContestEligibility> contestEligibilities =
+                 contestEligibilityManager.getContestEligibility(contest.getProjectHeader().getId(), false);
+            for (ContestEligibility ce:contestEligibilities){
                 persistContestEligility(reOpendedProject.getProjectHeader().getId(), 0, ce, false);
             }
 
