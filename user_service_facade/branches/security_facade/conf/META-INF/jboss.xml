@@ -8,8 +8,17 @@
             <jndi-name>remote/UserServiceBean</jndi-name>			
         </session>-->
         <session>
+            <ejb-name>UserServiceFacadeWebServiceBean</ejb-name>
+            <jndi-name>remote/UserServiceFacadeWebServiceBean</jndi-name>
+            
+            <ejb-ref>
+                <ejb-ref-name>ejb/UserServiceFacade</ejb-ref-name>
+                <jndi-name>UserServiceFacadeBean/remote</jndi-name>
+            </ejb-ref>
+        </session>
+        <session>
             <ejb-name>UserServiceFacadeBean</ejb-name>
-            <jndi-name>remote/UserServiceFacadeBean</jndi-name>
+            <jndi-name>UserServiceFacadeBean/remote</jndi-name>
 			
             <ejb-ref>
                 <ejb-ref-name>ejb/UserService</ejb-ref-name>

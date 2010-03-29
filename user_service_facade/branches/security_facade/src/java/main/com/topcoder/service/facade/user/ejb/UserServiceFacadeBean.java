@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.user.ejb;
 
@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -16,15 +14,12 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-
-import org.jboss.ws.annotation.EndpointConfig;
 
 import com.topcoder.confluence.client.ConfluenceClientServiceException;
 import com.topcoder.confluence.client.ConfluenceUserService;
 import com.topcoder.jira.client.JiraClientServiceException;
 import com.topcoder.jira.client.JiraUserService;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.Helper;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
@@ -39,31 +34,34 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 /**
  * <p>
  * This is the implementation class for Jira & Confluence back end service.
- * 
+ *
  * This service provides mechanism to create users in both Jira & Confluence.
- * 
+ *
  * TopCoder has developed custom login modules for both Jira and Confluence. Basically, all TC's users are
  * Jira/Confluence users in potential.
- * 
+ *
  * TC has developed a Jira and Confluence User service facade, that is used in this implementation.
  * </p>
- * 
+ *
  * <p>
  * Updated for Jira and Confluence User Sync Widget 1.0
  *  - instead of IllegalArgumentException, UserServiceFacadeException is thrown. IllegalArgumentException can not be serialized as fault in web-service.
  *  - All cases of IllegalArgumentException or tc handle not found, has prefix "TC-HANDLE-NOT-FOUND"
  * </p>
- * 
- * @author snow01, TCSASSEMBLER
- * 
+ * <p>
+ * Changes in v1.0.1(Cockpit Security Facade V1.0):
+ *  - It is not a web-service facade any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new UserServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to this interface.
+ * </p>
+ * @author snow01, waits
+ *
  * @since Jira & Confluence User Sync Service
- * @version 1.0
+ * @version 1.0.1
  */
-@RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
-@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @Stateless
-@WebService
-@EndpointConfig(configName = "Standard WSSecurity Endpoint")
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServiceFacadeRemote {
@@ -257,11 +255,11 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This is method is performed after the construction of the bean, at this point all the bean's resources will be
      * ready.
-     * 
+     *
      * It reads config properties and creates various beans using ObjectFactory. It also populates various properties by
      * reading from config properties.
      * </p>
-     * 
+     *
      * @throws IllegalStateException
      *             On some error this runtime error is thrown.
      */
@@ -356,31 +354,34 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
     /**
      * <p>
      * Creates Jira User (if does not exist already) and gets the email address of it from the Jira Service.
-     * 
+     *
      * Implementation should create the Jira user if the user does not exist already.
      * </p>
-     * 
+     *
      * <p>
      * Updated for Jira and Confluence User Sync Widget 1.0
      *  - instead of IllegalArgumentException, UserServiceFacadeException is thrown. IllegalArgumentException can not be serialized as fault in web-service.
      *  - All cases of IllegalArgumentException or tc handle not found, has prefix "TC-HANDLE-NOT-FOUND"
      * </p>
-     * 
+     * <p>
+     * Update in v1.0.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param userHandle
      *            the user handle for which to retrieve the email address from Jira Service.
      * @return the email address of the Jira user for the given handle.
      * @throws UserServiceFacadeException
      *             if any error occurs when getting user details.
      */
-    @WebMethod
-    public String getJiraUser(String userHandle) throws UserServiceFacadeException {
+    public String getJiraUser(TCSubject tcSubject, String userHandle) throws UserServiceFacadeException {
         String ret = null;
         try {
-            logEnter("getJiraUser(userHandle)", userHandle);
+            logEnter("getJiraUser(tcSubject, userHandle)", userHandle);
 
             // Check handle is null or trim'd empty and throw IllegalArgumentException
             Helper.checkNull(userHandle, "userHandle");
             Helper.checkEmpty(userHandle, "userHandle");
+            Helper.checkNull(tcSubject, "tcSubject");
 
             // Check if handle is actually a TopCoder user and throw IllegalArgumentException if not
             String email = this.userService.getEmailAddress(userHandle);
@@ -391,7 +392,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
 
             // Call JiraUserService#getUser and return the remoteUser#email
             com.atlassian.jira.rpc.soap.beans.RemoteUser jiraUser = this.jiraUserService.getUser(
-                    this.jiraServiceEndPoint, this.authUserName, this.authPassword, this.jiraServiceAdminUserName, 
+                    this.jiraServiceEndPoint, this.authUserName, this.authPassword, this.jiraServiceAdminUserName,
                     this.jiraServiceAdminUserPassword, userHandle);
 
             logDebug("For handle: " + userHandle + " jiraUser: " + jiraUser);
@@ -408,9 +409,9 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
         } catch (JiraClientServiceException e) {
             throw wrapUserServiceFacadeException(e, "Error in JiraUserService.");
         } finally {
-            logExit("getJiraUser(userHandle)", ret);
+            logExit("getJiraUser(tcSubject, userHandle)", ret);
         }
-        
+
         if (ret == null) {
             throw wrapUserServiceFacadeException("Could not create Jira User");
         }
@@ -421,31 +422,34 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
     /**
      * <p>
      * Creates Confluence User (if does not exist already) and gets the email address of it from the Confluence Service.
-     * 
+     *
      * Implementation should create the Confluence user if the user does not exist already.
      * </p>
-     * 
+     *
      * <p>
      * Updated for Jira and Confluence User Sync Widget 1.0
      *  - instead of IllegalArgumentException, UserServiceFacadeException is thrown. IllegalArgumentException can not be serialized as fault in web-service.
      *  - All cases of IllegalArgumentException or tc handle not found, has prefix "TC-HANDLE-NOT-FOUND"
      * </p>
-     * 
+     *  <p>
+     * Update in v1.0.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param userHandle
      *            the user handle for which to retrieve the email address from Confluence Service.
      * @return the email address of the Confluence user for the given handle.
      * @throws UserServiceFacadeException
      *             if any error occurs when getting user details.
      */
-    @WebMethod
-    public String getConfluenceUser(String userHandle) throws UserServiceFacadeException {
+    public String getConfluenceUser(TCSubject tcSubject, String userHandle) throws UserServiceFacadeException {
         String ret = null;
         try {
-            logEnter("getConfluenceUser(userHandle)", userHandle);
+            logEnter("getConfluenceUser(tcSubject, userHandle)", userHandle);
 
             // Check handle is null or trim'd empty and throw IllegalArgumentException
             Helper.checkNull(userHandle, "userHandle");
             Helper.checkEmpty(userHandle, "userHandle");
+            Helper.checkNull(tcSubject, "tcSubject");
 
             // Check if handle is actually a TopCoder user and throw IllegalArgumentException if not
             String email = this.userService.getEmailAddress(userHandle);
@@ -490,9 +494,9 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
         } catch (ConfluenceClientServiceException e) {
             throw wrapUserServiceFacadeException(e, "Error in ConfluenceUserService.");
         } finally {
-            logExit("getConfluenceUser(userHandle)", ret);
+            logExit("getConfluenceUser(tcSubject, userHandle)", ret);
         }
-        
+
         if (ret == null) {
             throw wrapUserServiceFacadeException("Could not create Confluence User");
         }
@@ -504,7 +508,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log enter in method. It will persist both method name and it's parameters if any.
      * </p>
-     * 
+     *
      * @param method
      *            name of the entered method
      * @param params
@@ -521,7 +525,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log arbitrary debug message. It will persist debug message.
      * </p>
-     * 
+     *
      * @param msg
      *            message information
      */
@@ -535,7 +539,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      */
@@ -549,7 +553,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      * @param returnValue
@@ -565,7 +569,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log arbitrary error. It will persist error's data.
      * </p>
-     * 
+     *
      * @param error
      *            exception describing error
      * @param message
@@ -584,7 +588,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * <p>
      * This method used to log arbitrary error. It will persist error's data.
      * </p>
-     * 
+     *
      * @param message
      *            message information
      */
@@ -599,7 +603,7 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
      * Creates a <code>UserServiceFacadeException</code> with inner exception and message. It will log the exception, and
      * set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param e
      *            the inner exception
      * @param message
@@ -613,13 +617,13 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
 
         return ce;
     }
-    
+
     /**
      * <p>
      * Creates a <code>UserServiceFacadeException</code> with inner exception and message. It will log the exception, and
      * set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param message
      *            the error message
      * @return the created exception

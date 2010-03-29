@@ -1,13 +1,15 @@
 <%--
   - Author: TCSASSEMBLER
   - Date: 28th June 2009
-  - Version: 1.0
+  - Version: 1.1
   - Since: Jira & Confluence User Sync Service
   - Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
   -
   - Description: This page is used ot handle the requests from index.jsp for invoking the selected web service operation
   - with provided parameters and displaying the results of the call. In fact, this page acts like a web service client
-  - demonstrating the code which could be used for calling the web service. 
+  - demonstrating the code which could be used for calling the web service.
+  -
+  - V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -19,7 +21,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.io.StringWriter"%>
 <%@ page import="java.io.PrintWriter"%>
-<%@ page import="com.topcoder.service.facade.user.UserServiceFacade"%>
+<%@ page import="com.topcoder.service.facade.user.UserServiceFacadeWebService"%>
 <%
     String calledOperation = null;
     Object callResult = null;
@@ -31,9 +33,9 @@
 
         // Obtain a client stub for accessing the web service
         URL wsdlLocation = new URL(getServletConfig().getServletContext().getInitParameter("facade_wsdl"));
-        QName serviceName = new QName("http://ejb.user.facade.service.topcoder.com/", "UserServiceFacadeBeanService");
+        QName serviceName = new QName("http://ejb.user.facade.service.topcoder.com/", "UserServiceFacadeWebServiceBeanService");
         Service service = Service.create(wsdlLocation, serviceName);
-        UserServiceFacace port = service.getPort(UserServiceFacade.class);
+        UserServiceFacadeWebService port = service.getPort(UserServiceFacadeWebService.class);
         ((StubExt) port).setConfigName("Standard WSSecurity Client");
         ((BindingProvider) port).getRequestContext().put(BindingProvider.USERNAME_PROPERTY,
                 request.getUserPrincipal().getName());

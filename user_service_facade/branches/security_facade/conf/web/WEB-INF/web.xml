@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
     <display-name>User Sync Service Demo</display-name>
+	<!-- the wsdl address has been updated in Cocpkpit Security Facade v1.0 -->
     <context-param>
         <description>An URL for the User Sync Service WSDL document</description>
         <param-name>facade_wsdl</param-name>
-        <param-value>http://127.0.0.1:8080/usersyncservice/UserSyncServiceBean?wsdl</param-value>
+        <param-value>http://cockpit.cloud.topcoder.com/usersyncservice/UserSyncServiceWebServiceBean?wsdl</param-value>
     </context-param>
 
     <welcome-file-list>
