@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<PropertyGroup>
+    <!-- Component Name and Version Information -->
+    <ComponentName>Legacy Transform Device Web Services</ComponentName>
+    <ComponentDistFileName>legacy_transform_device_web_services</ComponentDistFileName>
+    <ComponentPackage>Toro.TurfGuard.WebService</ComponentPackage>
+    <ComponentPackageDir>Toro\TurfGuard\WebService</ComponentPackageDir>
+    <ComponentVersionMajor>1</ComponentVersionMajor>
+    <ComponentVersionMinor>0</ComponentVersionMinor>
+    <ComponentVersionMicro>0</ComponentVersionMicro>
+    <ComponentVersionBuild>1</ComponentVersionBuild>
+  </PropertyGroup>
+</Project>

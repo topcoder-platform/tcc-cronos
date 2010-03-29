@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <!--Directory structure of the component.-->
+        <BuildDir>build</BuildDir>
+        <BuildClassDir>$(BuildDir)\classes</BuildClassDir>
+        <ConfigDir>conf</ConfigDir>
+        <DocsDir>docs</DocsDir>
+        <SrcDir>src</SrcDir>
+        <TestFilesDir>test_files</TestFilesDir>
+        <TestLogDir>log</TestLogDir>
+        <!--Src directory structure.-->
+        <DotNetSrc>$(SrcDir)\csharp</DotNetSrc>
+        <DotNetMain>$(DotNetSrc)\main</DotNetMain>
+        <DotNetTests>$(DotNetSrc)\tests</DotNetTests>
+        <OutputPath>$(BuildClassDir)</OutputPath>
+        <OutputType>Library</OutputType>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <CodeReviewExcludes>GeneratedClients.cs,dummy2.cs</CodeReviewExcludes>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="$(ConfigDir)\**\*" Exclude="$(ConfigDir)\**\.svn\**">
+            <Visible>true</Visible>
+        </Content>
+        <Content Include="$(DocsDir)\**\*" Exclude="$(DocsDir)\**\.svn\**">
+            <Visible>true</Visible>
+        </Content>
+        <Content Include="README.txt">
+            <Visible>true</Visible>
+        </Content>
+        <Folder Include="$(ConfigDir)\">
+            <Visible>true</Visible>
+        </Folder>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Web" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Data.Linq" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Runtime.Serialization" />
+        <Reference Include="System.ServiceModel" />
+        <Reference Include="System.Transactions" />
+        <Reference Include="System.Data.DataSetExtensions" />
+
+        <!--Component Source Library References.-->
+        <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+            <SpecificVersion>True</SpecificVersion>
+            <HintPath>$(ext_bin)\log4net\1.2.9\log4net.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Configuration.ApplicationConfiguration">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\application_based_configuration\1.1.0\TopCoder.Configuration.ApplicationConfiguration.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\configuration_api\1.0\TopCoder.Configuration.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.ObjectFactory, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\object_factory\1.2.1\TopCoder.Util.ObjectFactory.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.ObjectFactory.Configuration, Version=1.1.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\object_factory_configuration_api_plugin\1.1.1\TopCoder.Util.ObjectFactory.Configuration.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.Collection.Set">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\set_utility\1.0\TopCoder.Util.Collection.Set.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.LoggingWrapper, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\logging_wrapper\3.0.1\TopCoder.LoggingWrapper.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Services.WCF, Version=2.2.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\wcf_base\2.2.0\TopCoder.Services.WCF.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.ExceptionManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\exception_manager\2.0\TopCoder.Util.ExceptionManager.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.ExceptionManager.SDE, Version=2.1.2.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\self-documenting_exception\2.1.2\TopCoder.Util.ExceptionManager.SDE.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Configuration.Persistence.Manager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\configuration_persistence_manager\1.0.0\TopCoder.Configuration.Persistence.Manager.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Configuration.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\file_based_configuration\2.0.0\TopCoder.Configuration.File.dll</HintPath>
+        </Reference>
+        <Reference Include="TopCoder.Util.ConfigurationManager">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(tcs_bin)\configuration_manager\2.0.1\TopCoder.Util.ConfigurationManager.dll</HintPath>
+        </Reference>
+
+        <!--Mock Library References.-->
+        <Reference Include="mock">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(TestFilesDir)\mock\bin\debug\mock.dll</HintPath>
+        </Reference>
+
+    </ItemGroup>
+    <Choose>
+        <When Condition="$(ProjectKind)=='ComponentSources'">
+            <!--Component sources and referenced assemblies-->
+            <PropertyGroup>
+                <AssemblyName>$(ComponentPackage)</AssemblyName>
+                <RootNamespace>$(ComponentPackage)</RootNamespace>
+                <DocumentationFile>$(BuildClassDir)\$(ComponentPackage).xml</DocumentationFile>
+            </PropertyGroup>
+            <ItemGroup>
+                <Compile Include="$(DotNetMain)\**\*.cs">
+                    <Visible>true</Visible>
+                </Compile>
+            </ItemGroup>
+        </When>
+        <When Condition="$(ProjectKind)=='ComponentTests'">
+            <!--Component test sources and referenced assemblies-->
+            <PropertyGroup>
+                <AssemblyName>$(ComponentPackage).Test</AssemblyName>
+                <RootNamespace>$(ComponentPackage)</RootNamespace>
+                <DocumentationFile>$(BuildClassDir)\$(ComponentPackage).Test.xml</DocumentationFile>
+                <AppConfig>$(TestFilesDir)\web.config</AppConfig>
+            </PropertyGroup>
+            <ItemGroup>
+                <Compile Include="$(DotNetSrc)\**\*.cs">
+                    <Visible>true</Visible>
+                </Compile>
+                <Content Include="$(TestFilesDir)\**\*" Exclude="$(TestFilesDir)\**\.svn\**">
+                    <Visible>true</Visible>
+                </Content>
+                <Folder Include="$(TestFilesDir)\">
+                    <Visible>true</Visible>
+                </Folder>
+                <Content Include="$(TestLogDir)\**\*">
+                    <Visible>true</Visible>
+                </Content>
+                <Folder Include="$(TestLogDir)\">
+                    <Visible>true</Visible>
+                </Folder>
+            </ItemGroup>
+            <ItemGroup>
+                <Reference Include="nunit.framework">
+                    <SpecificVersion>False</SpecificVersion>
+                    <HintPath>$(NUnit)</HintPath>
+                </Reference>
+            </ItemGroup>
+        </When>
+    </Choose>
+</Project>

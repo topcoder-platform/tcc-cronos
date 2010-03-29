@@ -1,0 +1,33 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Services/d:Impl/f:AuthenticationService.cs" caret="791" fromTop="23" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="1294" fromTop="14" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:DeviceGroup.cs" caret="1177" fromTop="30" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:User.cs" caret="468" fromTop="16" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="2520" fromTop="26" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="3119" fromTop="40" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="2834" fromTop="35" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="1959" fromTop="25" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:Device.cs" caret="1454" fromTop="13" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:User.cs" caret="1112" fromTop="22" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:User.cs" caret="522" fromTop="20" />
+      <File id="CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0/d:src/d:Toro/d:TurfGuard/d:Common/d:Core/d:Domain/d:Model/f:User.cs" caret="1288" fromTop="42" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+</Configuration>

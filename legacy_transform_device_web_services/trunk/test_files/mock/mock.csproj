@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE3C847C-FDF7-41B7-8F25-F23DD32E5AA0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mock</RootNamespace>
+    <AssemblyName>mock</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Geocode.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IDeviceGroupRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IDeviceInstallRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IDeviceRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IFormRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IKeyedRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IPacketRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IReadingRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IReadingThresholdRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\ISiteRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\IUserRepository.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\BaseStation.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\Connection.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\Device.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\DeviceAlarm.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\DeviceGroup.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\DeviceInstall.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\KeyedObject.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\Packet.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\PersistentObject.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\ReadingDepth.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\ReadingThreshold.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\ReadingType.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\Site.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\Threshold.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\Model\User.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Domain\ReadingQuery.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Services\IAuthenticationService.cs" />
+    <Compile Include="src\Toro\TurfGuard\Common\Core\Services\Impl\AuthenticationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Toro\TurfGuard\Common\Core\Domain\Model\CoreModel.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
