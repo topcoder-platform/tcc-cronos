@@ -1303,13 +1303,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                     throw new PersistenceException("No write permission on contest");
                 }
 
-                if (studioContest.getBillingProject() > 0)
-                { 
-                    if (!billingProjectDAO.checkClientProjectPermission(userName, studioContest.getBillingProject()))
-                    {
-                        throw new PersistenceException("No permission on billing project " + studioContest.getBillingProject());
-                    }
-                }
+                checkStudioBillingProjectPermission(contest.getContestData());
             }
 
             
@@ -2842,16 +2836,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
                 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                checkStudioBillingProjectPermission(competition.getContestData());
+
+                long billingProject = competition.getContestData().getBillingProject();
+
+                if (billingProject == 0)
                 {
-                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                    String userName = p.getName();
-                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
-                    {
-                        throw new ContestServiceException("No permission on poNumber " + poNumber);
-                    }
+                    throw new ContestServiceException("Billing/PO Number is null/empty.");
                 }
+
+                String poNumber = billingProjectDAO.retrieveById(new Long(billingProject), false).getPOBoxNumber();
+
 
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
@@ -3120,16 +3115,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
 			
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                if (!sessionContext.isCallerInRole(ADMIN_ROLE))
+                checkBillingProjectPermission(tobeUpdatedCompetition);
+
+                String billingProject = tobeUpdatedCompetition.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+                if (billingProject == null || billingProject.equals("") || billingProject.equals("0"))
                 {
-                    UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                    String userName = p.getName();
-                    if (!billingProjectDAO.checkPoNumberPermission(userName, poNumber))
-                    {
-                        throw new ContestServiceException("No permission on poNumber " + poNumber);
-                    }
+                    throw new ContestServiceException("Billing/PO Number is null/empty.");
                 }
+
+                String poNumber = billingProjectDAO.retrieveById(new Long(billingProject), false).getPOBoxNumber();
+
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3459,9 +3455,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
                         submissionId + ". Submission is not found");
                 }
             }
-
-            logger.info("-------contest id ---" +
-                completedContestData.getContestId());
 
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
 
@@ -3988,11 +3981,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
      * @param contest the contest to check
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
-    private void checkStudioBillingProjectPermission(ContestData contestData) throws PersistenceException, DAOException {
+    private void checkStudioBillingProjectPermission(ContestData contestData) throws PersistenceException, DAOException, ContestNotFoundException {
         if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userName = principal.getName();
+
             if (contestData.getBillingProject() > 0) {
+
+     System.out.println("-----------------------studio passed in-----"+ contestData.getBillingProject());           
+                ContestData cur = studioService.getContest(contestData.getContestId());
+     System.out.println("-----------------------studio contest in-----"+ cur.getBillingProject());        
+                if (cur.getBillingProject() == contestData.getBillingProject())
+                {
+                    return;
+                }
+
                 if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
                     throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
                 }
@@ -4010,7 +4013,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
     private void checkBillingProjectPermission(SoftwareCompetition contest) throws ContestServiceException, DAOException {
         if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
             String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+            Project cur = projectServices.getProject(contest.getProjectHeader().getId());
+            String curBilling = cur.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
             if (billingProject != null  && !billingProject.equals("") && !billingProject.equals("0")) {
+
+                // if billing not changed, no need to check
+                if (curBilling != null && !billingProject.equals("") && !billingProject.equals("0"))
+                {
+                    if (billingProject.equals(billingProject))
+                    {
+                        return;
+                    }
+                }
                 UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 String userName = principal.getName();
                 long clientProjectId = Long.parseLong(billingProject);
