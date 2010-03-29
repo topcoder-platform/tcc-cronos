@@ -1,7 +1,7 @@
 <%--
   - Author: TCSASSEMBLER
   - Date: July 20, 2009
-  - Version: 1.0
+  - Version: 1.1
   - Since Configurable Contest Fees v1.0 Assembly
   - Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
   -
@@ -9,6 +9,8 @@
   - This page is the default page to open.
   - The page lists the operations provided by provides the AdminServiceFacade and provides the controls
     for setting the parameters and calling the desired web service operation.
+  -
+  - V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -21,7 +23,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.io.StringWriter"%>
 <%@ page import="java.io.PrintWriter"%>
-<%@ page import="com.topcoder.service.facade.admin.AdminServiceFacade"%>
+<%@ page import="com.topcoder.service.facade.admin.AdminServiceFacadeWebService"%>
 <%@ page import="com.topcoder.clients.model.Project"%>
 <%@ page import="com.topcoder.clients.model.ProjectContestFee"%>
 
@@ -36,9 +38,9 @@
 
         // Obtain a client stub for accessing the web service
         URL wsdlLocation = new URL(getServletConfig().getServletContext().getInitParameter("facade_wsdl"));
-        QName serviceName = new QName("http://ejb.admin.facade.service.topcoder.com/", "AdminServiceFacadeBeanService");
+        QName serviceName = new QName("http://ejb.admin.facade.service.topcoder.com/", "AdminServiceFacadeWebServiceBeanService");
         Service service = Service.create(wsdlLocation, serviceName);
-        AdminServiceFacade port = service.getPort(AdminServiceFacade.class);
+        AdminServiceFacadeWebService port = service.getPort(AdminServiceFacadeWebService.class);
         ((StubExt) port).setConfigName("Standard WSSecurity Client");
         ((BindingProvider) port).getRequestContext().put(BindingProvider.USERNAME_PROPERTY,
                 request.getUserPrincipal().getName());
