@@ -1,8 +1,9 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.pipeline;
 
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
@@ -14,7 +15,6 @@ import java.util.List;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -22,13 +22,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * An interface for the web service for contest pipeline services. It contains methods to find the contests pipeline
  * info and methods to search the competition change history info for both date and prize type.
  * </p>
- * 
+ *
  * <p>
  * Updated for Pipeline Conversion Cockpit Integration Assembly 1 v1.0
  *      - Added method for getContestsByDate
  *      - Added method to retrieve change histories for array of contest ids and their types.
  * </p>
- * 
+ *
  * <p>
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
@@ -38,23 +38,27 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * - added service that retrieves a list of dates that have full capacity starting from tomorrow for a given contest
  *   type (for software or studio contests)
  * </p>
+ * <p>
+ * Version 1.1.1(Cockpit Security Facade V1.0) change:
+ *  -Add TCSubject as parameter for the method getCommonPipelineData.
+ * </p>
  *
  * @author pulky
  * @since Pipeline Conversion Service Layer Assembly v1.0
- * @version 1.1
+ * @version 1.1.1
  */
 public interface ContestPipelineService {
-	/**
-	 * <p>
-	 * Search the contests by the given criteria.
-	 * </p>
-	 * @param criteria the search criteria, not null
-	 * @return List of Competition, could be empty if nothing found
-	 * @throws ContestPipelineServiceException fail to do the search
-	 */
+    /**
+     * <p>
+     * Search the contests by the given criteria.
+     * </p>
+     * @param criteria the search criteria, not null
+     * @return List of Competition, could be empty if nothing found
+     * @throws ContestPipelineServiceException fail to do the search
+     */
     List<Competition> getContests(ContestsSearchCriteria criteria)
         throws ContestPipelineServiceException;
-    
+
     /**
      * <p>
      * Search the contests by the given date criteria.
@@ -62,7 +66,7 @@ public interface ContestPipelineService {
      * @param criteria the date search criteria, not null
      * @return List of Competition, could be empty if nothing found
      * @throws ContestPipelineServiceException fail to do the search
-     * 
+     *
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
      */
     List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException;
@@ -89,22 +93,22 @@ public interface ContestPipelineService {
      */
     List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
         throws ContestPipelineServiceException;
-    
+
     /**
      * <p>
      * Search the date competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     *
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
-     * 
+     *
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -115,14 +119,14 @@ public interface ContestPipelineService {
      * <p>
      * Search the prize competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     *
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
@@ -130,10 +134,13 @@ public interface ContestPipelineService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestPrizeChangeHistories(long[] contestIds,
             String[] competitionTypes) throws ContestPipelineServiceException;
-    
+
     /**
      * Gets the list of common pipeline data within between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
@@ -145,13 +152,13 @@ public interface ContestPipelineService {
      *             if error during retrieval from database.
      * @since 1.0.1
      */
-    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
+    public List<CommonPipelineData> getCommonPipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException;
 
     /**
-     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software 
+     * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software
      * or studio contests)
-     * This method will get capacity information from the corresponding project / studio services layer and will 
+     * This method will get capacity information from the corresponding project / studio services layer and will
      * evaluate capacity according to the configured values.
      *
      * @param contestType the contest type
@@ -164,6 +171,6 @@ public interface ContestPipelineService {
      * @since 1.1
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio) 
+    public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio)
         throws ContestPipelineServiceException;
 }

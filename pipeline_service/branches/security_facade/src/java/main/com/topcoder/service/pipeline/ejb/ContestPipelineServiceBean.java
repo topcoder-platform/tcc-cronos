@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.pipeline.ejb;
 
@@ -17,8 +17,6 @@ import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
@@ -40,6 +38,7 @@ import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.pipeline.CommonPipelineData;
 import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.CompetitionType;
@@ -72,13 +71,13 @@ import com.topcoder.util.log.LogManager;
  * <p>
  * This is an implementation of <code>ContestPipelineService</code> web service in form of stateless session EJB.
  * </p>
- * 
+ *
  * <p>
  * Updated for Pipeline Conversion Cockpit Integration Assembly 1 v1.0
  *      - Added method for getContestsByDate
  *      - Added method to retrieve change histories for array of contest ids and their types.
  * </p>
- * 
+ *
  * <p>
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve CommonPipelineData for given date range.
@@ -89,23 +88,24 @@ import com.topcoder.util.log.LogManager;
  *   type (for software or studio contests)
  * - added configuration retrieval for capacity processing
  * </p>
- * 
+ * <p>
+ * Version 1.1.1(Cockpit Security Facade V1.0) change:
+ *  -Add TCSubject as parameter for the method getCommonPipelineData.
+ * </p>
+ *
  * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
  *
  * @author waits, snow01, pulky
- * @version 1.1
+ * @version 1.1.1
  * @since Pipeline Conversion Service v1.0
  */
-@SuppressWarnings("unchecked")
-@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
-@RolesAllowed( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ContestPipelineServiceBean implements ContestPipelineServiceRemote, ContestPipelineServiceLocal {
     private static final long MILLIS_PER_HOUR = 1000 * 60 * 60;
-    
+
     /** Private constant specifying project type info's version id key. */
     private static final String PROJECT_TYPE_INFO_EXTERNAL_REFERENCE_KEY = "External Reference ID";
 
@@ -288,7 +288,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
     /**
      * This method initializes capacity configurations
      *
-     * Capacity configurations will be loaded using configuration manager. 
+     * Capacity configurations will be loaded using configuration manager.
      *
      * @since 1.1
      */
@@ -304,17 +304,17 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Search the date competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     *
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
-     * 
+     *
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -338,14 +338,14 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Search the prize competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     *
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
@@ -371,14 +371,14 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Search the competition change history for the given contest ids and their competition types.
      * </p>
-     * 
+     *
      * @param contestIds
      *            the contest ids
      * @param competitionTypess
      *            competition types, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
@@ -420,14 +420,14 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Search the date competition change history for the given contest and competition type.
      * </p>
-     * 
+     *
      * @param contestId
      *            the contest id
      * @param competitionType
      *            competition type, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
@@ -455,14 +455,14 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Search the prize competition change history for the given contest and competition type.
      * </p>
-     * 
+     *
      * @param contestId
      *            the contest id
      * @param competitionType
      *            competition type, could be studio or software
-     * 
+     *
      * @return List of CompetitionChangeHistory
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             fail to do the query
      */
@@ -489,17 +489,17 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
     /**
      * Gets the specified type of competition change history for the specified contest id of the specified competition
      * type.
-     * 
+     *
      * @param contestId
      *            specified contest id.
      * @param competitionType
      *            specified competition type.
      * @param changeType
      *            specified change type.
-     * 
+     *
      * @return the specified type of competition change history for the specified contest id of the specified
      *         competition type.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during persistence retrieval.
      */
@@ -510,7 +510,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
         try {
             Query query = null;
-            
+
             if (competitionType == CompetitionType.STUDIO) {
                 EntityManager em = getStudioEntityManager();
                 query = em.createQuery(GET_STUDIO_CHANGE_HISTORY_QUERY);
@@ -518,16 +518,16 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                 EntityManager em = getSoftwareEntityManager();
                 query = em.createQuery(GET_SOFTWARE_CHANGE_HISTORY_QUERY);
             }
-            
+
             query.setParameter("contestId", contestId);
             query.setParameter("changeType", changeType);
 
-			List<CompetitionChangeHistory> results = (List<CompetitionChangeHistory>) query.getResultList();
-			
-			for (CompetitionChangeHistory r : results) {
-			    r.setContestId(contestId);
-			}
-            
+            List<CompetitionChangeHistory> results = (List<CompetitionChangeHistory>) query.getResultList();
+
+            for (CompetitionChangeHistory r : results) {
+                r.setContestId(contestId);
+            }
+
             logDebug("The results are:" + results.size());
 
             return results;
@@ -540,15 +540,15 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Gets the list of competition for the specified date search criteria.
-     * 
+     *
      * @param searchCriteria
      *            the date search criteria
-     * 
+     *
      * @return the list of competition for the specified search criteria.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
-     * 
+     *
      * @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -560,12 +560,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Gets the list of competition for the specified search criteria.
-     * 
+     *
      * @param searchCriteria
      *            the search criteria
-     * 
+     *
      * @return the list of competition for the specified search criteria.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
      */
@@ -651,12 +651,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Gets the list of software competition for the specified where clause.
-     * 
+     *
      * @param whereClause
      *            the search criteria as where clause
-     * 
+     *
      * @return the list of software competition for the specified where clause.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
      */
@@ -689,9 +689,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             }
             return competitions;
         }
-        
 
-		//for jql query
+
+        //for jql query
         Query query = em.createQuery(queryStr);
 
         List<SoftwareCompetitionPipelineInfo> pipelineInfos = query.getResultList();
@@ -712,23 +712,23 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Gets the project id by info id.
-     * 
+     *
      * @param em Entity manager.
      * @param pipelineInfo the specified sofware pipeline info
      * @return project id
      */
     private Integer getProjectIdByInfo(EntityManager em, SoftwareCompetitionPipelineInfo pipelineInfo) {
-    	String queryProjectIdByComponentId = 
-    		"SELECT DISTINCT project_id FROM project_info p, software_competition_pipeline_info info " +
-    		"WHERE p.project_info_type_id = 2 and info.component_id = p.value AND info.component_id = " + pipelineInfo.getComponentId() + 
-    		" AND info.id = " + pipelineInfo.getPipelineInfoId();
-    	Query query = em.createNativeQuery(queryProjectIdByComponentId);
+        String queryProjectIdByComponentId =
+            "SELECT DISTINCT project_id FROM project_info p, software_competition_pipeline_info info " +
+            "WHERE p.project_info_type_id = 2 and info.component_id = p.value AND info.component_id = " + pipelineInfo.getComponentId() +
+            " AND info.id = " + pipelineInfo.getPipelineInfoId();
+        Query query = em.createNativeQuery(queryProjectIdByComponentId);
         return (Integer) query.getSingleResult();
     }
 
     /**
      * Gets the software competition pipeline info by specified info id.
-     * 
+     *
      * @param em the Entity Manager
      * @param infoId the info id.
      * @return the instance of SoftwareCompetitionPipelineInfo
@@ -746,15 +746,15 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * related data, then from project property to get comp version id then to call getAssetByVersionId to get assetDTO,
      * please check create software contest to see what data need to be returned.
      * </p>
-     * 
+     *
      * @param projectId
      *            the OR Project Id
-     * 
+     *
      * @return SoftwareCompetition
-     * 
+     *
      * @throws ContestServiceException
      *             if an error occurs when interacting with the service layer.
-     * 
+     *
      * @since BURG-1716
      */
     private SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws ContestPipelineServiceException {
@@ -818,7 +818,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * This methods sets the StudioCompetitionPipelineInfo to the StudioCompetition
      * </p>
-     * 
+     *
      * @param competition
      *            the StudioCompetition
      * @param pipelineInfo
@@ -837,7 +837,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * This methods sets the SoftwareCompetitionPipelineInfo to the SoftwareCompetition
      * </p>
-     * 
+     *
      * @param competition
      *            the SoftwareCompetition
      * @param pipelineInfo
@@ -851,7 +851,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * This methods sets the CompetitionPipelineInfo to the Competition
      * </p>
-     * 
+     *
      * @param competition
      *            the Competition
      * @param pipelineInfo
@@ -874,12 +874,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Gets the list of studio competition for the specified where clause.
-     * 
+     *
      * @param whereClause
      *            the search criteria as where clause
-     * 
+     *
      * @return the list of studio competition for the specified where clause.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if any error occurs during retrieval of competitions.
      */
@@ -898,9 +898,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         // changed to retrieve from mock, as in current state persistence layer to retrieve pipeline info was not
         // working.
         // since: Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-        // 
+        //
         //List<StudioCompetitionPipelineInfo> pipelineInfos = getMockStudioCompetitionPipelineInfo();
-		List<StudioCompetitionPipelineInfo> pipelineInfos = (List<StudioCompetitionPipelineInfo>) query.getResultList();
+        List<StudioCompetitionPipelineInfo> pipelineInfos = (List<StudioCompetitionPipelineInfo>) query.getResultList();
 
         for (StudioCompetitionPipelineInfo pipelineInfo : pipelineInfos) {
             StudioCompetition c = getContest(pipelineInfo.getContestId());
@@ -921,12 +921,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Gets the contest referenced by the specified ID.
      * </p>
-     * 
+     *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get details for.
-     * 
+     *
      * @return a <code>StudioCompetition</code> providing the data for the requested contest.
-     * 
+     *
      * @throws ContestPipelineServiceException
      *             if some persistence errors occur.
      */
@@ -948,12 +948,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be
      * passed from <code>Studio Service</code> to <code>Contest Service Facade</code>.
      * </p>
-     * 
+     *
      * @param type
      *            a <code>CompetionType</code> specifying the type of the contest.
      * @param contestData
      *            a <code>ContestData</code> instance to be converted.
-     * 
+     *
      * @return a <code>Competition</code> providing the converted data.
      */
     private Competition convertToCompetition(CompetionType type, ContestData contestData) {
@@ -977,10 +977,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Calculates the end time for the specified contest.
      * </p>
-     * 
+     *
      * @param contest
      *            a <code>ContestData</code> representing the contest to calculate the end time for.
-     * 
+     *
      * @return an <code>XMLGregorianCalendar</code> providing the end time for the specified contest.
      */
     private XMLGregorianCalendar calculateEndTime(ContestData contest) {
@@ -995,10 +995,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Converts specified <code>Date</code> instance into <code>XMLGregorianCalendar</code> instance.
      * </p>
-     * 
+     *
      * @param date
      *            a <code>Date</code> representing the date to be converted.
-     * 
+     *
      * @return a <code>XMLGregorianCalendar</code> providing the converted value of specified date or <code>null</code>
      *         if specified <code>date</code> is <code>null</code> or if it can't be converted to calendar.
      */
@@ -1021,10 +1021,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Converts specified <code>XMLGregorianCalendar</code> instance into <code>Date</code> instance.
      * </p>
-     * 
+     *
      * @param calendar
      *            an <code>XMLGregorianCalendar</code> representing the date to be converted.
-     * 
+     *
      * @return a <code>Date</code> providing the converted value of specified calendar or <code>null</code> if specified
      *         <code>calendar</code> is <code>null</code>.
      */
@@ -1040,13 +1040,13 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Gets the contest payment referenced by specified contest ID.
      * </p>
-     * 
+     *
      * @param contestId
      *            a <code>long</code> providing the ID of a contest to get payment details for.
-     * 
+     *
      * @return a <code>ContestPaymentData</code> representing the contest payment matching the specified ID; or
      *         <code>null</code> if there is no such contest.
-     * 
+     *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
@@ -1056,10 +1056,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Constructs the SQL clause for searching contests.
-     * 
+     *
      * @param whereClause
      *            the ContestsSearchCriteria instance
-     * 
+     *
      * @return type CompetitionType instance
      */
     private String constructQuery(String whereClause, CompetitionType type) {
@@ -1092,10 +1092,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Format from clause.
-     * 
+     *
      * @param whereClause
      *            the where clause from the criteria.
-     * 
+     *
      * @return the from clause
      */
     private String getSoftwareFromClause(String whereClause) {
@@ -1108,10 +1108,10 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * Format from clause.
-     * 
+     *
      * @param whereClause
      *            the where clause from the criteria.
-     * 
+     *
      * @return the from clause
      */
     private String getStudioFromClause(String whereClause) {
@@ -1137,12 +1137,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * Creates a <code>ContestPipelineServiceException</code> with inner exception and message. It will log the
      * exception, and set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param e
      *            the inner exception
      * @param message
      *            the error message
-     * 
+     *
      * @return the created exception
      */
     private ContestPipelineServiceException wrapContestPipelineServiceException(Exception e, String message) {
@@ -1157,12 +1157,12 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * Creates a <code>ContestPipelineServiceException</code> with inner exception and message. It will log the
      * exception, and set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param e
      *            the inner exception
      * @param message
      *            the error message
-     * 
+     *
      * @return the created exception
      */
     private ContestPipelineServiceException wrapContestPipelineServiceException(String message) {
@@ -1176,9 +1176,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
-     * 
+     *
      * @return the EntityManager looked up from the session context
-     * 
+     *
      * @throws ContestManagementException
      *             if fail to get the EntityManager from the sessionContext.
      */
@@ -1202,9 +1202,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
-     * 
+     *
      * @return the EntityManager looked up from the session context
-     * 
+     *
      * @throws ContestManagementException
      *             if fail to get the EntityManager from the sessionContext.
      */
@@ -1226,7 +1226,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * This method is used to log the debug message.
-     * 
+     *
      * @param msg
      *            the message string.
      */
@@ -1240,7 +1240,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      */
@@ -1254,7 +1254,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * <p>
      * Log the exception.
      * </p>
-     * 
+     *
      * @param e
      *            the exception to log
      * @param message
@@ -1271,10 +1271,13 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             }
         }
     }
-    
+
     /**
      * Gets the list of common pipeline data within between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
@@ -1287,19 +1290,20 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      * @since 1.0.1
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
+    public List<CommonPipelineData> getCommonPipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException {
-        logger.log(Level.DEBUG, "Enter getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests) method.");
-        logger.log(Level.DEBUG, "with parameter startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
+        logger.log(Level.DEBUG, "Enter getCommonPipelineData(TCSubject tcSubject,Date startDate, Date endDate, boolean overdueContests) method.");
+        logger.log(Level.DEBUG, "with parameter tcSubject:" + tcSubject + ",startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
         ExceptionUtils.checkNull(startDate, null, null, "The startDate is null.");
         ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
+        ExceptionUtils.checkNull(tcSubject, null, null, "The tcSubject is null.");
 
         long startTime = System.currentTimeMillis();
         List<CommonPipelineData> ret = new ArrayList<CommonPipelineData>();
 
         try {
-            
-            List<com.topcoder.service.studio.contest.SimplePipelineData> studioPipelineDatas = this.studioService.getSimplePipelineData(startDate, endDate, overdueContests);
+
+            List<com.topcoder.service.studio.contest.SimplePipelineData> studioPipelineDatas = this.studioService.getSimplePipelineData(tcSubject,startDate, endDate, overdueContests);
             if (studioPipelineDatas != null) {
 
                 for (com.topcoder.service.studio.contest.SimplePipelineData p : studioPipelineDatas) {
@@ -1348,8 +1352,9 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     ret.add(cp);
                 }
             }
-            
-            List<com.topcoder.management.project.SimplePipelineData> swPipelineDatas = this.projectServices.getSimplePipelineData(startDate, endDate, overdueContests);
+
+            List<com.topcoder.management.project.SimplePipelineData> swPipelineDatas =
+                this.projectServices.getSimplePipelineData(tcSubject, startDate, endDate, overdueContests);
             if (swPipelineDatas != null) {
 
                 for (com.topcoder.management.project.SimplePipelineData p : swPipelineDatas) {
@@ -1398,7 +1403,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     ret.add(cp);
                 }
             }
-            
+
             logDebug("The results are:" + ret.size());
 
             Collections.sort(ret);
@@ -1412,7 +1417,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         }
           catch (Exception e) {
             throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data.");
-        } 
+        }
         finally {
             logExit("getCommonPipelineData");
         }
@@ -1515,28 +1520,28 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             new HashMap<String, Map<Integer,Integer>>(daysPropNames.length);
 
         try {
-			// iterate days
-			for (String dayProp : daysPropNames) {
-			    Map<Integer,Integer> capacityMap = new HashMap<Integer,Integer>();
+            // iterate days
+            for (String dayProp : daysPropNames) {
+                Map<Integer,Integer> capacityMap = new HashMap<Integer,Integer>();
 
-			    Property propDaysCapacity = cfgMgr.getPropertyObject(CONTEST_PIPELINE_SERVICE_BEAN_NAMESPACE,
-			        type + DAYS_CAPACITY_PROP_SUFFIX + "." + dayProp);
-			    Enumeration daysProps = propDaysCapacity.propertyNames();
+                Property propDaysCapacity = cfgMgr.getPropertyObject(CONTEST_PIPELINE_SERVICE_BEAN_NAMESPACE,
+                    type + DAYS_CAPACITY_PROP_SUFFIX + "." + dayProp);
+                Enumeration daysProps = propDaysCapacity.propertyNames();
 
-			    // iterate contest types
-			    while (daysProps.hasMoreElements()) {
-			        String typePropName = (String) daysProps.nextElement();
-			        Integer capacity = Integer.parseInt(propDaysCapacity.getValue(typePropName));
-			        Integer typeId = Integer.parseInt(typePropName);
+                // iterate contest types
+                while (daysProps.hasMoreElements()) {
+                    String typePropName = (String) daysProps.nextElement();
+                    Integer capacity = Integer.parseInt(propDaysCapacity.getValue(typePropName));
+                    Integer typeId = Integer.parseInt(typePropName);
 
-			        capacityMap.put(typeId, capacity);
-			    }
+                    capacityMap.put(typeId, capacity);
+                }
 
-			    daysCapacity.put(dayProp, capacityMap);
-			}
-		} catch (Exception e) {
-			logException(e, "An error occurred while loading capacity configuration, using defaults");
-		}
+                daysCapacity.put(dayProp, capacityMap);
+            }
+        } catch (Exception e) {
+            logException(e, "An error occurred while loading capacity configuration, using defaults");
+        }
 
         return daysCapacity;
     }

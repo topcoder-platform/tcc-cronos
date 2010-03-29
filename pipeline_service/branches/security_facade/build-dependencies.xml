@@ -1,5 +1,5 @@
 <project name="TopCoder Contest Service Facade Dependency Import" default="dist" basedir=".">
-    <!-- property file defining the component's dependencies 
+    <!-- property file defining the component's dependencies
     <property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
     <property name="jboss_config_name" value="default"/>-->
 
@@ -107,7 +107,7 @@
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
-    
+
     <property name="contest_and_submission_entities.version" value="1.2.0"/>
     <property name="contest_and_submission_entities.jar.name" value="contest_and_submission_entities.jar"/>
     <property name="contest_and_submission_entities.path" value="contest_and_submission_entities/${contest_and_submission_entities.version}"/>
@@ -117,7 +117,7 @@
     <property name="submission_manager.jar.name" value="submission_manager.jar"/>
     <property name="submission_manager.path" value="submission_manager/${submission_manager.version}"/>
     <property name="submission_manager.jar" value="${tcs_libdir}/${submission_manager.path}/${submission_manager.jar.name}"/>
-    
+
     <property name="studio_contest_manager.version" value="1.3.0"/>
     <property name="studio_contest_manager.jar.name" value="studio_contest_manager.jar"/>
     <property name="studio_contest_manager.path" value="studio_contest_manager/${studio_contest_manager.version}"/>
@@ -144,14 +144,14 @@
     <property name="user_project_data_store.jar" value="${tcs_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1/database_abstraction.jar"/>
-	<property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
+    <property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-    
+
     <property name="pipeline_service_persistence.version" value="1.0.0"/>
     <property name="pipeline_service_persistence.jar.name" value="pipeline_service_persistence.jar"/>
     <property name="pipeline_service_persistence.path" value="pipeline_service_persistence/${pipeline_service_persistence.version}"/>
     <property name="pipeline_service_persistence.jar" value="${tcs_libdir}/${pipeline_service_persistence.path}/${pipeline_service_persistence.jar.name}"/>
-
+    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
@@ -176,18 +176,18 @@
     <property name="antlr.jar" value="${jboss.home}/client/antlr.jar"/>
     <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
     <property name="activation.jar" value="${jboss.home}/client/activation.jar"/>
-    
+
     <property name="jaxb-api.jar" value="${jboss.home}/client/jaxb-api.jar"/>
     <property name="jaxb-impl.jar" value="${jboss.home}/client/jaxb-impl.jar"/>
 
     <property name="xercesImpl.jar" value="${jboss.home}/lib/endorsed/xercesImpl.jar"/>
-    
+
     <property name="paypal_base.jar" value="${ext_libdir}/paypal/paypal_base.jar"/>
     <property name="paypal_stubs.jar" value="${ext_libdir}/paypal/paypal_stubs.jar"/>
-	<property name="payflow.jar" value="${ext_libdir}/payflow/4.3/payflow.jar"/>
-    
+    <property name="payflow.jar" value="${ext_libdir}/payflow/4.3/payflow.jar"/>
+
     <property name="axis.jar" value="${ext_libdir}/axis/1.3/axis.jar"/>
-    
+
     <property name="xerces.jar" value="${ext_libdir}/xerces/2.6.2/xerces.jar"/>
     <property name="commons-discovery.jar" value="${ext_libdir}/commons-discovery/0.2/commons-discovery.jar"/>
 
@@ -232,9 +232,10 @@
         <pathelement location="${user_project_data_store.jar}"/>
         <pathelement location="${db_connection_factory.jar}"/>
         <pathelement location="${database_abstraction.jar}"/>
-		<pathelement location="${forums.jar}"/>
+        <pathelement location="${forums.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${pipeline_service_persistence.jar}"/>
+        <pathelement location="${security.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
@@ -244,13 +245,13 @@
         <pathelement location="${jboss-jaxws.jar}"/>
         <pathelement location="${paypal_base.jar}"/>
         <pathelement location="${paypal_stubs.jar}"/>
-		<pathelement location="${payflow.jar}"/>
+        <pathelement location="${payflow.jar}"/>
         <pathelement location="${axis.jar}"/>
         <pathelement location="${commons-discovery.jar}"/>
-        
+
         <pathelement location="${xerces.jar}"/>
         <pathelement location="${ext_libdir}/xerces/xercesImpl.jar"/>
-        
+
         <pathelement location="${jaxb-api.jar}"/>
         <pathelement location="${jaxb-impl.jar}"/>
     </path>
