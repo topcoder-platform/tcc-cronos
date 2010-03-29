@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.permission.ejb;
 
 import java.util.ArrayList;
@@ -5,11 +8,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
-import javax.annotation.security.RunAs;
-import javax.ejb.CreateException;
-import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -17,14 +15,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
 
 import com.topcoder.service.permission.Helper;
 import com.topcoder.service.permission.Permission;
-import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceRemote;
 import com.topcoder.service.permission.PermissionServiceLocal;
 import com.topcoder.service.permission.PermissionServiceException;
@@ -37,15 +33,17 @@ import com.topcoder.util.log.LogManager;
  * <p>
  * It provides CRUD on permission object.
  * </p>
- * 
- * @author TCSASSEMBLER
- * 
+ * <p>
+ * Version 1.1(Cockpit Security Facade V1.0)
+ * - Remove RunAs("Cockpit Administrator"), RolesAllowed("Cockpit User")
+ *   and DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
+ * </p>
+ *
+ * @author waits
+ *
  * @since Cockpit Project Admin Release Assembly v1.0
- * @version 1.0
+ * @version 1.1
  */
-@RunAs("Cockpit Administrator")
-@RolesAllowed("Cockpit User")
-@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
@@ -115,15 +113,15 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
      * permission found.
      * </p>
-     * 
+     *
      * @param userid
      *            user id to look for
-     * 
+     *
      * @return all the permissions that the user owned for any projects.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permissions.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     public List<Permission> getPermissionsByUser(long userid) throws PermissionServiceException {
@@ -152,20 +150,20 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
      * permission found.
      * </p>
-     * 
+     *
      * @param userid
      *            user id to look for
      * @param resourceId
      *            project id to look for
-     * 
+     *
      * @return all the permissions that the user own for a given project.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permissions.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Permission> getPermissions(long userid, long resourceId) throws PermissionServiceException {
         try {
             logEnter("getPermissions(userid, resourceId)");
@@ -184,25 +182,25 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
     }
 
 
-	/**
+    /**
      * <p>
      * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
      * permission found.
      * </p>
-     * 
+     *
      * @param userid
      *            user id to look for
      * @param resourceId
      *            project id to look for
-     * 
+     *
      * @return all the permissions that the user own for a given project.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permissions.
-     * 
+     *
      * @since Cockpit Project Admin Release Ass
-	 */
-	private List<Permission> getPermissions(long userid, long resourceId, EntityManager em) throws PermissionServiceException {
+     */
+    private List<Permission> getPermissions(long userid, long resourceId, EntityManager em) throws PermissionServiceException {
         try {
             logEnter("getPermissions(userid, resourceId)");
             logTwoParameters(userid, resourceId);
@@ -227,15 +225,15 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
      * permission found.
      * </p>
-     * 
+     *
      * @param resourceId
      *            project id to look for
-     * 
+     *
      * @return all the permissions that various users own for a given project.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permissions.
-     * 
+     *
      * @since Cockpit Share Submission Integration
      */
     public List<Permission> getPermissionsByProject(long resourceId) throws PermissionServiceException {
@@ -263,12 +261,12 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * This method retrieve all the permission types.
      * </p>
-     * 
+     *
      * @return all the permission types.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permission types.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
 
@@ -287,19 +285,19 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * This method will add a permission type, and return the added type entity.
      * </p>
-     * 
+     *
      * @param type
      *            the permission type to add.
-     * 
+     *
      * @return the added permission type entity
-     * 
+     *
      * @throws IllegalArgumentException
      *             if the arg is null.
      * @throws EntityAlreadyExistsException
      *             if the entity already exists in the persistence.
      * @throws PermissionServiceException
      *             if any error occurs when adding the permission type.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException {
@@ -333,19 +331,19 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * This method will add permission data, and return the added permission data.
      * </p>
-     * 
+     *
      * @param permission
      *            the permission to add.
-     * 
+     *
      * @return the added permission entity
-     * 
+     *
      * @throws IllegalArgumentException
      *             if the arg is null.
      * @throws EntityAlreadyExistsException
      *             if the entity already exists in the persistence.
      * @throws PermissionServiceException
      *             if any error occurs when adding the permission.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     private Permission addPermission(Permission permission, EntityManager em) throws PermissionServiceException {
@@ -377,17 +375,17 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * This method will update permission type data.
      * </p>
-     * 
+     *
      * @param type
      *            the permission type to update.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if the arg is null.
      * @throws EntityNotFoundException
      *             if the entity parameter doesn't exist in persistence.
      * @throws PermissionServiceException
      *             if any error occurs when updating the permission type.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     public void updatePermissionType(PermissionType type) throws PermissionServiceException {
@@ -419,17 +417,17 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * This method will update permission data.
      * </p>
-     * 
+     *
      * @param permission
      *            the permission to update.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if the arg is null.
      * @throws EntityNotFoundException
      *             if the entity parameter doesn't exist in persistence.
      * @throws PermissionServiceException
      *             if any error occurs when updating the permission.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     private void updatePermission(Permission permission, EntityManager em) throws PermissionServiceException {
@@ -460,15 +458,15 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * This method will update permission type data, return true if the permission type data exists and removed
      * successfully, return false if it doesn't exist.
      * </p>
-     * 
+     *
      * @param typeid
      *            the permission type to delete.
-     * 
+     *
      * @return true if the permission type data exists and removed successfully.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when deleting the permission.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     public boolean deletePermissionType(long typeid) throws PermissionServiceException {
@@ -503,31 +501,31 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * This method will remove permission data, return true if the permission data exists and removed successfully,
      * return false if it doesn't exist.
      * </p>
-     * 
+     *
      * @param permissionid
      *            the permission to delete.
-     * 
+     *
      * @return true if the permission data exists and removed successfully.
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when deleting the permission.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
     private boolean deletePermission(long permissionid,  EntityManager em) throws PermissionServiceException {
-		 try {
-			logEnter("removePermission(permissionid)");
-			logOneParameter(permissionid);
- 
-			Query query = em.createNativeQuery("delete from user_permission_grant where user_permission_grant_id=:permissionId");
-			query.setParameter("permissionId", permissionid);
- 
-			int result = query.executeUpdate();
-			if (result > 0) {
-					return true;
-			} else {
-				 return false;
-			}
+         try {
+            logEnter("removePermission(permissionid)");
+            logOneParameter(permissionid);
+
+            Query query = em.createNativeQuery("delete from user_permission_grant where user_permission_grant_id=:permissionId");
+            query.setParameter("permissionId", permissionid);
+
+            int result = query.executeUpdate();
+            if (result > 0) {
+                    return true;
+            } else {
+                 return false;
+            }
         } catch (IllegalStateException e) {
             throw wrapPermissionServiceException(e, "The EntityManager is closed.");
         } catch (TransactionRequiredException e) {
@@ -541,7 +539,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
 
     /**
      * Generic method for getting all the entities
-     * 
+     *
      * @param clazz
      *            class to get all the entities.
      * @return a list with the all required entities
@@ -571,7 +569,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
-     * 
+     *
      * @return the EntityManager looked up from the session context
      * @throws ContestManagementException
      *             if fail to get the EntityManager from the sessionContext.
@@ -589,14 +587,14 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
             throw wrapPermissionServiceException(e, "The jndi name for '" + unitName
                     + "' should be EntityManager instance.");
         }
-		//return entityManager;
+        //return entityManager;
     }
 
     /**
      * <p>
      * Log the entrance of a method.
      * </p>
-     * 
+     *
      * @param methodName
      *            the method name
      */
@@ -610,7 +608,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Log the exit of a method.
      * </p>
-     * 
+     *
      * @param methodName
      *            the method name
      */
@@ -624,7 +622,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Log the parameter.
      * </p>
-     * 
+     *
      * @param param
      *            the parameter value
      */
@@ -638,7 +636,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Log the parameters.
      * </p>
-     * 
+     *
      * @param param1
      *            the first parameter values
      * @param param2
@@ -654,7 +652,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Log the exception.
      * </p>
-     * 
+     *
      * @param e
      *            the exception to log
      * @param message
@@ -677,7 +675,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * Creates a <code>ContestManagementException</code> with inner exception and message. It will log the exception,
      * and set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param e
      *            the inner exception
      * @param message
@@ -697,7 +695,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * Creates a <code>ContestManagementException</code> with inner exception and message. It will log the exception,
      * and set the sessionContext to rollback only.
      * </p>
-     * 
+     *
      * @param e
      *            the inner exception
      * @param message
@@ -711,12 +709,12 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
 
         return ce;
     }
-    
+
     /**
      * <p>
      * This method updates array of permissions to the persistence.
      * </p>
-     * 
+     *
      * @param permissions the permissions to update.
      *
      * @throws IllegalArgumentWSException if the argument is invalid
@@ -726,23 +724,23 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      */
     public void updatePermissions(Permission[] permissions) throws PermissionServiceException {
 
-		EntityManager em = getEntityManager();
+        EntityManager em = getEntityManager();
 
         for (Permission p : permissions) {
 
             if (p.getPermissionId() == null || p.getPermissionId() <= 0) {
                 // do add.
-				
+
                 List<Permission> ps = this.getPermissions(p.getUserId(), p.getResourceId(), em);
                 if (ps == null || ps.size() == 0) {
                     this.addPermission(p, em);
                 } else {
                     // let's assume there would be only one permission record for given resource id and userId.
                     p.setPermissionId(ps.get(0).getPermissionId());
-                    
-                     if (p.getPermissionType() == null || p.getPermissionType().getName() == null 
-						                  || p.getPermissionType().getName().equals(""))
-					 {
+
+                     if (p.getPermissionType() == null || p.getPermissionType().getName() == null
+                                          || p.getPermissionType().getName().equals(""))
+                     {
                         // do delete
                         this.deletePermission(p.getPermissionId(), em);
                     } else {
@@ -767,12 +765,12 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      * <p>
      * Get permission by id
      * </p>
-     * 
+     *
      * @param id
      *            id to look for
-     * 
+     *
      * @return permission
-     * 
+     *
      * @throws PermissionServiceException
      *             if any error occurs when getting permissions.
      */
@@ -785,14 +783,14 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
 
             Query query = em.createQuery("select p from com.topcoder.service.permission.Permission p where p.permissionId = " + id);
 
-            
+
             Permission result = null;
-            
+
             if (query.getSingleResult() != null)
             {
                 result =  (Permission) query.getSingleResult();
             }
-           
+
             return result;
         } catch (IllegalStateException e) {
             throw wrapPermissionServiceException(e, "The EntityManager is closed.");

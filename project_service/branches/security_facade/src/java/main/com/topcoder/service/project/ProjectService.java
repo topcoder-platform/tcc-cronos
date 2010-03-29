@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.project;
 
 import java.util.List;
 
-import javax.jws.WebService;
+import com.topcoder.security.TCSubject;
 
 /**
  * <p>
@@ -33,9 +33,12 @@ import javax.jws.WebService;
  *               role-based authorization in code. It should rely instead (as always did) on EJB declarative
  *               security.</li>
  *             </ul>
- *         <li>Modified in version 1.1:</li>
+ *         <li>Modified in version 1.1.1:</li>
  *             <ul>
- *               <li>Added the <code>getProjectByName(String,long)</code> method.</li>
+ *               <li>It is not web-service any more.</li>
+ *               <li>createProject, getProject, updateProject, deleteProject accepts a new parameter TCSubject
+ *                   which is used to get the security info for current user.
+ *               </li>
  *             </ul>
  *     </ul>
  * </p>
@@ -46,11 +49,9 @@ import javax.jws.WebService;
  *
  * @author humblefool, FireIce
  * @author ThinMan, TCSDEVELOPER
- * @author woodjhon, ernestobf
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
-@WebService
 public interface ProjectService {
 
     /**
@@ -61,7 +62,10 @@ public interface ProjectService {
      * <p>
      * Note, any user can create project and the project will associate with him/her.
      * </p>
-     *
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectData
      *            The project data to be created. Must not be null.
      *            The <code>ProjectData.name</code> must not be null/empty.
@@ -77,7 +81,7 @@ public interface ProjectService {
      *
      * @since 1.0
      */
-    ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
+    ProjectData createProject(TCSubject tcSubject, ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
 
     /**
      * <p>
@@ -87,6 +91,10 @@ public interface ProjectService {
      * <p>
      * Notes, only associated user can retrieve the specified project, administrator can retrieve any projects.
      * </p>
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            The ID of the project to be retrieved.
@@ -102,33 +110,8 @@ public interface ProjectService {
      *
      * @since 1.0
      */
-    ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
+    ProjectData getProject(TCSubject tcSubject,long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault;
-
-    /**
-     * <p>
-     * Gets the project data for the project with the project name.
-     * </p>
-     *
-     * @param projectName
-     *            the name of the project to be retrieved.
-     * @param userId
-     *            The ID of the user whose project is to be retrieved.
-     * @return
-     *            The project data for the project with the given Id. Will never be null.
-     * @throws PersistenceFault
-     *            If a generic persistence error occurs.
-     * @throws ProjectNotFoundFault
-     *            If no project with the given name and user id exists.
-     * @throws AuthorizationFailedFault
-     *            If the calling principal is not authorized to retrieve the project.
-     * @throws IllegalArgumentFault
-     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
-     *            is non-positive.
-     * @since 1.1
-     */
-    ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault,
-        ProjectNotFoundFault, AuthorizationFailedFault, IllegalArgumentFault;
 
     /**
      * <p>
@@ -197,6 +180,10 @@ public interface ProjectService {
      * <p>
      * Notes, only project-associated user can update that project, but administrator can update any project.
      * </p>
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectData
      *            The project data to be updated. Must not be null.
@@ -214,7 +201,7 @@ public interface ProjectService {
      *
      * @since 1.0
      */
-    void updateProject(ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
+    void updateProject(TCSubject tcSubject, ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault, IllegalArgumentFault;
 
     /**
@@ -225,6 +212,10 @@ public interface ProjectService {
      * <p>
      * Notes, only project-associated user can delete that project, but administrator can delete any project.
      * </p>
+     * <p>
+     * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectId
      *            The ID of the project be deleted.
@@ -239,29 +230,6 @@ public interface ProjectService {
      *
      * @since 1.0
      */
-    boolean deleteProject(long projectId) throws PersistenceFault, AuthorizationFailedFault,
+    boolean deleteProject(TCSubject tcSubject, long projectId) throws PersistenceFault, AuthorizationFailedFault,
         ProjectHasCompetitionsFault;
-
-    /**
-     * <p>
-     * Gets the project data for the project with the project name.
-     * </p>
-     *
-     * @param projectName
-     *            the name of the project to be retrieved.
-     * @return
-     *            The project data for the project with the given Id. Will never be null.
-     * @throws PersistenceFault
-     *            If a generic persistence error occurs.
-     * @throws ProjectNotFoundFault
-     *            If no project with the given name and user id exists.
-     * @throws AuthorizationFailedFault
-     *            If the calling principal is not authorized to retrieve the project.
-     * @throws IllegalArgumentFault
-     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
-     *            is non-positive.
-     * @since 1.1
-     */
-    public List < ProjectData > getProjectsByName(String projectName) throws PersistenceFault,
-        ProjectNotFoundFault, IllegalArgumentFault;
 }
