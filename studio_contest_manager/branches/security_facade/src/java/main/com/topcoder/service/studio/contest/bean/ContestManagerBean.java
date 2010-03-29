@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest.bean;
 
@@ -22,8 +22,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.PermitAll;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -264,6 +262,12 @@ import com.topcoder.util.log.LogManager;
  * Version 1.4.1(Cockpit spec Review - stage 2 v1.0)
    - update the getSimpleProjectContestData three methods to get the spec review status.
  * </p>
+ *
+ * <p>
+ * Version 1.4.2(Cockpit Security Facade v1.0)
+ * - Remove the DeclareRoles({ "Cockpit User", "Cockpit Administrator" }) annotation.
+ * - Remove the PermitAll annotation from methods.
+ * </p>
  * <p>
  * <strong>Thread safety:</strong> The variables in this class are initialized
  * once in the initialize method after the bean is instantiated by EJB
@@ -272,20 +276,19 @@ import com.topcoder.util.log.LogManager;
  * class can be used thread-safely in EJB container.
  * </p>
  *
- * @author Standlove, TCSDEVELOPER, TCSASSEMBLER
+ * @author Standlove, TCSDEVELOPER, waits
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
  * @author saarixx, murphydog, pulky
- * @version 1.4.1
+ * @version 1.4.2
  * @since 1.0
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@DeclareRoles({ "Cockpit User", "Cockpit Administrator" })
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
     /**
      * Represents the format pattern used to parse dates.
-     * 
+     *
      * @since 1.4
      */
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -296,7 +299,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * overridden by 'submitter_terms_id' configuration parameter if it
      * exist.
      * </p>
-     * 
+     *
      */
     @Resource(name = "submitter_terms_id")
     private long submitter_terms_id;
@@ -308,7 +311,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * overridden by 'submitter_role_id' configuration parameter if it
      * exist.
      * </p>
-     * 
+     *
      */
     @Resource(name = "submitter_role_id")
     private long submitter_role_id;
@@ -350,7 +353,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * This field represents the <code>SessionContext</code> injected by the EJB
      * container automatically. It is marked with
-     * 
+     *
      * @Resource annotation. It's non-null after injected when this bean is
      *           instantiated. And its reference is not changed afterwards. It
      *           is used in the initialize method to lookup JNDI resources.
@@ -598,6 +601,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Creates a new contest, and return the created contest.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contest
      *            the contest to create
@@ -610,7 +616,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Contest createContest(Contest contest)
             throws ContestManagementException {
@@ -655,6 +660,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest by id, and return the retrieved contest. If the contest
      * doesn't exist, null is returned.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            the contest id
@@ -662,7 +670,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting contest.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Contest getContest(long contestId) throws ContestManagementException {
         try {
@@ -692,14 +699,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * with the given tcDirectProjectId should be returned. If there is no such
      * contests, an empty list should be returned.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param tcDirectProjectId
      *            the project id.
      * @return a list of associated contests.
      * @throws ContestManagementException
      *             if any error occurs when getting contests.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Contest> getContestsForProject(long tcDirectProjectId)
             throws ContestManagementException {
@@ -739,7 +747,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * is not active. If contest is active it is possible to increase prize
      * amount and duration.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param contest
      *            the contest to update
      * @throws IllegalArgumentException
@@ -749,7 +759,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when updating contest.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateContest(Contest contest, long transactionId,
             String username, boolean userAdmin)
@@ -928,7 +937,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates contest status to the given value.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param contestId
      *            the contest id
      * @param newStatusId
@@ -942,7 +953,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when updating contest's status.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateContestStatus(long contestId, long newStatusId)
             throws ContestManagementException {
@@ -1004,12 +1014,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-    
+
     /**
      * <p>
      * Adds contest status, and return the added contest status.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param contestStatus
      *            the contest status to add
      * @return the added contest status
@@ -1021,7 +1033,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestStatus addContestStatus(ContestStatus contestStatus)
             throws ContestManagementException {
@@ -1064,7 +1075,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates the contest status.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param contestStatus
      *            the contest status to update
      * @throws IllegalArgumentException
@@ -1074,7 +1087,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateContestStatus(ContestStatus contestStatus)
             throws ContestManagementException {
@@ -1114,7 +1126,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Removes contest status, return true if the contest status exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
-     *
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param contestStatusId
      *            the contest status id
      * @return true if the contest status exists and removed successfully,
@@ -1122,7 +1136,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removeContestStatus(long contestStatusId)
             throws ContestManagementException {
@@ -1161,6 +1174,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest status, and return the retrieved contest status. Return null
      * if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestStatusId
      *            the contest status id
@@ -1168,7 +1184,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting contest status
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestStatus getContestStatus(long contestStatusId)
             throws ContestManagementException {
@@ -1199,6 +1214,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Adds new document, and return the added document.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param document
      *            the document to add
@@ -1210,7 +1228,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Document addDocument(Document document)
             throws ContestManagementException {
@@ -1268,6 +1285,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates the specified document.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param document
      *            the document to update
@@ -1278,7 +1298,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateDocument(Document document)
             throws ContestManagementException {
@@ -1316,6 +1335,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets document by id, and return the retrieved document. Return null if
      * the document doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -1323,7 +1345,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting document
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Document getDocument(long documentId)
             throws ContestManagementException {
@@ -1352,6 +1373,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Removes the specified document, return true if the document exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -1360,7 +1384,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removeDocument(long documentId)
             throws ContestManagementException {
@@ -1398,6 +1421,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds document to contest. Nothing happens if the document already exists
      * in contest.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -1410,7 +1436,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addDocumentToContest(long documentId, long contestId)
             throws ContestManagementException {
@@ -1479,6 +1504,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * contest and removed successfully, return false if it doesn't exist in
      * contest.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -1492,7 +1520,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removeDocumentFromContest(long documentId, long contestId)
             throws ContestManagementException {
@@ -1544,6 +1571,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Adds contest channel, and return the added contest channel.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestChannel
      *            the contest channel to add
@@ -1555,7 +1585,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestChannel addContestChannel(ContestChannel contestChannel)
             throws ContestManagementException {
@@ -1603,6 +1632,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates the contest channel.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestChannel
      *            the contest category to update.
@@ -1613,7 +1645,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateContestChannel(ContestChannel contestChannel)
             throws ContestManagementException {
@@ -1653,6 +1684,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Removes contest category, return true if the contest category exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestChannelId
      *            the contest channel id
@@ -1661,7 +1695,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if fails to remove the contest category when it exists
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removeContestChannel(long contestChannelId)
             throws ContestManagementException {
@@ -1700,6 +1733,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest channel, and return the retrieved contest channel. Return
      * null if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestChannelId
      *            the contest channel id
@@ -1707,7 +1743,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting contest channel
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestChannel getContestChannel(long contestChannelId)
             throws ContestManagementException {
@@ -1737,6 +1772,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest configuration parameter, and return the added contest
      * configuration parameter.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestConfig
      *            the contest configuration parameter to add.
@@ -1748,7 +1786,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestConfig addConfig(ContestConfig contestConfig)
             throws ContestManagementException {
@@ -1793,6 +1830,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates contest configuration parameter.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestConfig
      *            the contest configuration parameter to update.
@@ -1804,7 +1844,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateConfig(ContestConfig contestConfig)
             throws ContestManagementException {
@@ -1841,6 +1880,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest configuration parameter by id, and return the retrieved
      * contest configuration parameter. Return null if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param compositeId
      *            the composite parameter id.
@@ -1850,7 +1892,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest configuration
      *             parameter
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestConfig getConfig(Identifier compositeId)
             throws ContestManagementException {
@@ -1883,6 +1924,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Save document content in file system. This methods should use
      * DocumentContentManager interface.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -1895,7 +1939,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void saveDocumentContent(long documentId, byte[] documentContent)
             throws ContestManagementException {
@@ -1945,6 +1988,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * returned. It will use DocumentContentManager to get document content. It
      * can also return empty array if the document content is empty.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      *
      * @param documentId
@@ -1956,7 +2002,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public byte[] getDocumentContent(long documentId)
             throws ContestManagementException {
@@ -2020,6 +2065,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * return false otherwise. It will use DocumentContentManager to check
      * document content's existence.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentId
      *            the document id
@@ -2029,7 +2077,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean existDocumentContent(long documentId)
             throws ContestManagementException {
@@ -2071,12 +2118,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets all contest statuses to return. If no contest status exists, return
      * an empty list.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return a list of contest statuses
      * @throws ContestManagementException
      *             if any error occurs when getting contest statuses
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestStatus> getAllContestStatuses()
             throws ContestManagementException {
@@ -2113,12 +2162,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets all contest categories to return. If no contest category exists,
      * return an empty list.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return a list of contest channels
      * @throws ContestManagementException
      *             if any error occurs when getting contest categories.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestChannel> getAllContestChannels()
             throws ContestManagementException {
@@ -2154,12 +2205,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets all studio file types to return. If no studio file type exists,
      * return an empty list
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return a list of studio file types
      * @throws ContestManagementException
      *             if any error occurs when getting studio file types.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<StudioFileType> getAllStudioFileTypes()
             throws ContestManagementException {
@@ -2195,6 +2248,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest type configuration parameter, and return the added contest
      * type configuration parameter.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestTypeConfig
      *            the contest type configuration parameter to add
@@ -2206,7 +2262,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestTypeConfig addContestTypeConfig(
             ContestTypeConfig contestTypeConfig)
@@ -2252,6 +2307,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates contest type configuration parameter.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestTypeConfig
      *            the contest type configuration parameter to update.
@@ -2263,7 +2321,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig)
             throws ContestManagementException {
@@ -2299,6 +2356,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest type configuration parameter by id, and return the retrieved
      * contest type configuration parameter. Return null if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestTypeConfigId
      *            the contest type configuration parameter id.
@@ -2308,7 +2368,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest type configuration
      *             parameter
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestTypeConfig getContestTypeConfig(long contestTypeConfigId)
             throws ContestManagementException {
@@ -2338,6 +2397,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds prize to the given contest. Nothing happens if the prize already
      * exists in contest.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            the contest id
@@ -2348,7 +2410,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addPrizeToContest(long contestId, long prizeId)
             throws ContestManagementException {
@@ -2394,6 +2455,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * contest and removed successfully, return false if it doesn't exist in
      * contest.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param prizeId
      *            the prize id
@@ -2406,7 +2470,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removePrizeFromContest(long contestId, long prizeId)
             throws ContestManagementException {
@@ -2457,6 +2520,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Retrieves all prizes in the given contest to return. An empty list is
      * returned if there is no such prizes.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            the contest id
@@ -2466,7 +2532,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Prize> getContestPrizes(long contestId)
             throws ContestManagementException {
@@ -2506,6 +2571,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get all the ContestProperty objects.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available ContestProperty
      *
@@ -2514,7 +2582,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestProperty> getAllContestProperties()
             throws ContestManagementException {
@@ -2532,6 +2599,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the ContestProperty with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestPropertyId
      *            id to look for
@@ -2540,7 +2610,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestProperty getContestProperty(long contestPropertyId)
             throws ContestManagementException {
@@ -2567,6 +2636,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get all the MimeType objects.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available MimeType
      *
@@ -2575,7 +2647,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<MimeType> getAllMimeTypes() throws ContestManagementException {
         try {
@@ -2592,6 +2663,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get all the PrizeType objects.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available PrizeType
      *
@@ -2599,7 +2673,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting PrizeType.
      * @since TCCC-349
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<PrizeType> getAllPrizeTypes() throws ContestManagementException {
         try {
@@ -2616,6 +2689,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the PrizeType with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param prizeTypeId
      *            id to look for
@@ -2624,7 +2700,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting PrizeType.
      * @since TCCC-349
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PrizeType getPrizeType(long prizeTypeId)
             throws ContestManagementException {
@@ -2651,6 +2726,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get all the PaymentStatus objects.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available PaymentStatus
      *
@@ -2659,7 +2737,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since TCCC-349
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<PaymentStatus> getAllPaymentStatuses()
             throws ContestManagementException {
@@ -2677,6 +2754,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the PaymentStatus with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param paymentStatusId
      *            id to look for
@@ -2685,7 +2765,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting PaymentStatus
      * @since TCCC-349
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PaymentStatus getPaymentStatus(long paymentStatusId)
             throws ContestManagementException {
@@ -2712,6 +2791,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the MimeType with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param mimeTypeId
      *            id to look for
@@ -2720,7 +2802,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public MimeType getMimeType(long mimeTypeId)
             throws ContestManagementException {
@@ -2747,6 +2828,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get all the DocumentType objects.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available DocumentType
      *
@@ -2755,7 +2839,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<DocumentType> getAllDocumentTypes()
             throws ContestManagementException {
@@ -2773,6 +2856,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the DocumentType with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param documentTypeId
      *            id to look for
@@ -2781,7 +2867,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public DocumentType getDocumentType(long documentTypeId)
             throws ContestManagementException {
@@ -2808,6 +2893,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * This is going to fetch all the currently available contests.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available contents (or empty if none found)
      *
@@ -2816,7 +2904,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Contest> getAllContests() throws ContestManagementException {
         try {
@@ -2846,7 +2933,22 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-    @PermitAll
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for contest
+     * monitor widget.
+     * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData()
             throws ContestManagementException {
@@ -2923,6 +3025,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * This is going to fetch all the currently available contests related to
      * given project.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param pid
      *            given project id;
@@ -2933,7 +3038,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData(long pid)
             throws ContestManagementException {
@@ -3005,7 +3109,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-    @PermitAll
+    /**
+     * <p>
+     * This is going to fetch user's currently available contests for contest
+     * monitor widget.
+     * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
+     *
+     * @param createdUser the created user.
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting
+     *         contest
+     *
+     * @since 1.1
+     */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestDataForUser(long createdUser)
             throws ContestManagementException {
@@ -3097,6 +3217,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updated for Cockpit Release Assembly 3 [RS:1.1.3] - Added check for
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available contents (or empty if none found)
      *
@@ -3105,7 +3228,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData()
             throws ContestManagementException {
@@ -3113,33 +3235,33 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logEnter("getSimpleProjectContestData()");
 
             EntityManager em = getEntityManager();
-            
-            
+
+
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s " 
-                    + "	left outer join submission_review sr " 
-                    + "		on s.submission_id = sr.submission_id " 
-                    + "	where contest_id = c.contest_id " 
-                    + " 	and s.submission_status_id = 1 " 
-                    + "		and rank is not null " 
-                    + "		and rank <= (select NVL(property_value, 10000) " 
-                    + "					 	from contest_config "
-                    + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from submission as s "
+                    + " left outer join submission_review sr "
+                    + "     on s.submission_id = sr.submission_id "
+                    + " where contest_id = c.contest_id "
+                    + "     and s.submission_status_id = 1 "
+                    + "     and rank is not null "
+                    + "     and rank <= (select NVL(property_value, 10000) "
+                    + "                     from contest_config "
+                    + "                     where contest_id = c.contest_id and property_id = 8) "
+                    + "     and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
-					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user, "
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id  and is_studio=1 "
-					+ " ),0)) as cperm, "
-					
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
-					+ " ),0)) as pperm, "
-					
-					/*spec review id for studio*/
+                    + " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+                    + " p.user_id as create_user, "
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=c.contest_id  and is_studio=1 "
+                    + " ),0)) as cperm, "
+
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=p.project_id  "
+                    + " ),0)) as pperm, "
+
+                    /*spec review id for studio*/
                     + "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
                     /*spec review status for studio*/
                     + "(select count(*) "
@@ -3150,11 +3272,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "(select sr.review_status_type_id "
                     + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
                     + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
-			/* Added in cockpit R 10 */
-			+ " (select milestone_date from contest_multi_round_information as cmri "
-			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-			/* R 10 end*/
-					
+            /* Added in cockpit R 10 */
+            + " (select milestone_date from contest_multi_round_information as cmri "
+            + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+            /* R 10 end*/
+
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
@@ -3217,6 +3339,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updated for Cockpit Release Assembly 3 [RS:1.1.3] - Added check for
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param pid
      *            given project id
@@ -3227,8 +3352,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
             throws ContestManagementException {
@@ -3240,43 +3363,43 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s " 
-                    + "	left outer join submission_review sr " 
-                    + "		on s.submission_id = sr.submission_id " 
-                    + "	where contest_id = c.contest_id " 
-                    + " 	and s.submission_status_id = 1 " 
-                    + "		and rank is not null " 
-                    + "		and rank <= (select NVL(property_value, 10000) " 
-                    + "					 	from contest_config "
-                    + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from submission as s "
+                    + " left outer join submission_review sr "
+                    + "     on s.submission_id = sr.submission_id "
+                    + " where contest_id = c.contest_id "
+                    + "     and s.submission_status_id = 1 "
+                    + "     and rank is not null "
+                    + "     and rank <= (select NVL(property_value, 10000) "
+                    + "                     from contest_config "
+                    + "                     where contest_id = c.contest_id and property_id = 8) "
+                    + "     and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
-					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user, "
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 "
-					+ " ),0)) as cperm, "
-					
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=p.project_id  "
-					+ " ),0)) as pperm, "
-					
-					/*spec review id for studio*/
-					+ "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
+                    + " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+                    + " p.user_id as create_user, "
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 "
+                    + " ),0)) as cperm, "
+
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=p.project_id  "
+                    + " ),0)) as pperm, "
+
+                    /*spec review id for studio*/
+                    + "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
                     /*spec review status for studio*/
                     + "(select count(*) "
                     + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
                     + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1 "
                     + " and sr.review_status_type_id in (3, 4, 5)) as spec_review_pending, "
-					/*spec review status */
-					+ "(select sr.review_status_type_id "
-					+ " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
-					+ " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
-    
-        			/* Added in cockpit R 10 */
-        			+ " (select milestone_date from contest_multi_round_information as cmri "
-        			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-        			/* R 10 end*/
+                    /*spec review status */
+                    + "(select sr.review_status_type_id "
+                    + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
+                    + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
+
+                    /* Added in cockpit R 10 */
+                    + " (select milestone_date from contest_multi_round_information as cmri "
+                    + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+                    /* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3341,6 +3464,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updated for Cockpit Release Assembly 3 [RS:1.1.3] - Added check for
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param createdUser
      *            created User
@@ -3351,7 +3477,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(
             long createdUser) throws ContestManagementException {
@@ -3359,32 +3484,32 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logEnter("getSimpleProjectContestDataForUser()");
 
             EntityManager em = getEntityManager();
-            
-            
+
+
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
                     + " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
                     + " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-                    + " (select count(*) from submission as s " 
-                    + "	left outer join submission_review sr " 
-                    + "		on s.submission_id = sr.submission_id " 
-                    + "	where contest_id = c.contest_id " 
-                    + " 	and s.submission_status_id = 1 " 
-                    + "		and rank is not null " 
-                    + "		and rank <= (select NVL(property_value, 10000) " 
-                    + "					 	from contest_config "
-                    + "						where contest_id = c.contest_id and property_id = 8) "
-                    + "		and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
+                    + " (select count(*) from submission as s "
+                    + " left outer join submission_review sr "
+                    + "     on s.submission_id = sr.submission_id "
+                    + " where contest_id = c.contest_id "
+                    + "     and s.submission_status_id = 1 "
+                    + "     and rank is not null "
+                    + "     and rank <= (select NVL(property_value, 10000) "
+                    + "                     from contest_config "
+                    + "                     where contest_id = c.contest_id and property_id = 8) "
+                    + "     and (sr.submission_id is null or (sr.review_status_id <> 2 and sr.review_status_id <> 3))) as num_sub, "
                     + " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for, "
-					+ " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
-            		+ " p.user_id as create_user, "
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id = " + createdUser
-					+ " ),0)) as cperm, "
-					
-					+ " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
-					+ " from user_permission_grant as upg  where resource_id=p.project_id and user_id = " + createdUser 
-					+ " ),0)) as pperm, "
-					
+                    + " (select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) as contest_type_desc,"
+                    + " p.user_id as create_user, "
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=c.contest_id and is_studio=1 and user_id = " + createdUser
+                    + " ),0)) as cperm, "
+
+                    + " (select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  "
+                    + " from user_permission_grant as upg  where resource_id=p.project_id and user_id = " + createdUser
+                    + " ),0)) as pperm, "
+
                     /*spec review id for studio*/
                     + "(select sr.spec_review_id from spec_review sr where sr.is_studio = 1 and sr.contest_id = c.contest_id) as spr_id,"
                     /*spec review status for studio*/
@@ -3396,12 +3521,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "(select sr.review_status_type_id "
                     + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
                     + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
- 
-					
-			/* Added in cockpit R 10 */
-			+ " (select milestone_date from contest_multi_round_information as cmri "
-			+ " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-			/* R 10 end*/
+
+
+            /* Added in cockpit R 10 */
+            + " (select milestone_date from contest_multi_round_information as cmri "
+            + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+            /* R 10 end*/
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3480,6 +3605,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * This gets list of <code>SimpleContestData</code> for given project.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param pid
      *            tc_project_id for which to get list of
@@ -3490,7 +3618,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<SimpleContestData> getContestDataOnly(long craetedUser, long pid)
             throws ContestManagementException {
@@ -3618,7 +3745,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "left outer join contest_multi_round_information cmri on "
                     + "c.contest_multi_round_information_id = cmri.contest_multi_round_information_id "
                     + "left outer join contest_milestone_prize cmp on "
-                    + "c.contest_milestone_prize_id = cmp.contest_milestone_prize_id "                    
+                    + "c.contest_milestone_prize_id = cmp.contest_milestone_prize_id "
                     + "where not c.tc_direct_project_id is null "
                     + "  and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
 
@@ -3679,24 +3806,24 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     }
                     result.add(c);
                 }
-                
+
                 // round type
                 if (os[11] != null) {
                     c.setMultiRound("1".equals(os[11].toString()));
                 } else {
-                    c.setMultiRound(false);                    
+                    c.setMultiRound(false);
                 }
-                                
+
                 // number of milestone prizes
                 if (os[12] != null) {
                     c.setNumberOfMilestonePrizes(Integer.parseInt(os[12].toString()));
                 }
-                
+
                 // milestone prize amount
                 if (os[13] != null) {
                     c.setMilestonePrizeAmount(Double.parseDouble(os[13].toString()));
                 }
-                
+
                 // milestone date
                 if (os[14] != null) {
                     SimpleDateFormat myFmt = new SimpleDateFormat(DATE_FORMAT_PATTERN);
@@ -3724,6 +3851,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * This is going to get all the matching contest entities that fulfill the
      * input criteria.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param filter
      *            a search filter used as criteria for contests.
@@ -3737,7 +3867,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Contest> searchContests(Filter filter)
             throws ContestManagementException {
@@ -3783,6 +3912,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Gets all the currently available contests types.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return the list of all available contents types (or empty if none found)
      *
@@ -3791,7 +3923,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *
      * @since 1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestType> getAllContestTypes()
             throws ContestManagementException {
@@ -4022,6 +4153,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Creates a new prize, and return the created prize.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param prize
      *            the prize to create
@@ -4034,7 +4168,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Prize createPrize(Prize prize) throws ContestManagementException {
         try {
@@ -4064,6 +4197,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Creates a new contest payment and returns the created contest payment.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestPayment
      *            the contest payment to create
@@ -4076,7 +4212,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestPayment createContestPayment(ContestPayment contestPayment)
             throws ContestManagementException {
@@ -4109,6 +4244,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest payment by contest id, and return the retrieved contest
      * payment. If the contest payment doesn't exist, null is returned.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            the contest id.
@@ -4118,7 +4256,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting contest.
      * @since BUGR-1363 changed method signature
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestPayment> getContestPayments(long contestId)
             throws ContestManagementException {
@@ -4149,6 +4286,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Updates contest payment data.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestPayment
      *            the contest payment to update
@@ -4159,7 +4299,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when updating contest payment.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void editContestPayment(ContestPayment contestPayment)
             throws ContestManagementException {
@@ -4188,6 +4327,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Removes contest payment, return true if the contest payment exists and
      * removed successfully, return false if it doesn't exist.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            the contest id.
@@ -4196,7 +4338,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean removeContestPayment(long contestId)
             throws ContestManagementException {
@@ -4234,6 +4375,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Fill status's statuses field (next statuses).
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param status
      *            status whose statuses field to be filled.
@@ -4241,7 +4385,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when filling the status.
      * @since 1.1.2
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void fillNextStatuses(ContestStatus status)
             throws ContestManagementException {
@@ -4282,6 +4425,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contests by the created user. If there is no such contests, an empty
      * list should be returned.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param createdUser
      *            the created user.
@@ -4290,7 +4436,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting contests
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Contest> getContestsForUser(long createdUser)
             throws ContestManagementException {
@@ -4323,12 +4468,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns all media.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return all media.
      * @throws ContestManagementException
      *             if any error occurs when getting contests
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Medium> getAllMedia() throws ContestManagementException {
         try {
@@ -4355,12 +4502,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns contest post count.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return contest post count.
      * @throws ContestManagementException
      *             if any error occurs when getting contest post count.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int getContestPostCount(long forumId)
             throws ContestManagementException {
@@ -4388,6 +4537,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns contest post count list.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param forumIds
      *            forum ids.
@@ -4395,7 +4547,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs when getting contest post count.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Map<Long, Long> getContestPostCount(List<Long> forumIds)
             throws ContestManagementException {
@@ -4447,6 +4598,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Creates a new contest result and returns the created contest result.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestResult
      *            the contest result to create
@@ -4459,7 +4613,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestResult createContestResult(ContestResult contestResult)
             throws ContestManagementException {
@@ -4491,6 +4644,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Returns the contest result associated with submissionId, contestId if
      * any.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param submissionId
      *            the submission Id
@@ -4501,7 +4657,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public ContestResult findContestResult(long submissionId, long contestId)
             throws ContestManagementException {
@@ -4530,6 +4685,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Add a change history entity.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param history
      *            Change history entity to be added.
@@ -4537,7 +4695,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addChangeHistory(List<ContestChangeHistory> history)
             throws ContestManagementException {
@@ -4566,6 +4723,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns change history entity list.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            contest id to search for.
@@ -4573,7 +4733,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestChangeHistory> getChangeHistory(long contestId)
             throws ContestManagementException {
@@ -4607,6 +4766,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns change history entity list.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            contest id to search for.
@@ -4617,7 +4779,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<ContestChangeHistory> getChangeHistory(long contestId,
             long transactionId) throws ContestManagementException {
@@ -4653,6 +4814,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Returns latest transaction id.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            contest id to search for.
@@ -4660,7 +4824,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Long getLatestTransactionId(long contestId)
             throws ContestManagementException {
@@ -4693,13 +4856,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Delete contest.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param contestId
      *            contest id to delete.
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteContest(long contestId) throws ContestManagementException {
         try {
@@ -4727,13 +4892,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets all payment types to return. If no payment types exist, return an
      * empty list.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @return a list of payment types
      * @throws ContestManagementException
      *             if any error occurs when getting payment types
      * @since BUGR-1076
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<PaymentType> getAllPaymentTypes()
             throws ContestManagementException {
@@ -4751,6 +4918,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Get the PaymentType with the specified id.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param paymentTypeId
      *            id to look for
@@ -4759,7 +4929,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if any error occurs when getting PaymentStatus
      * @since BUGR-1076
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PaymentType getPaymentType(long paymentTypeId)
             throws ContestManagementException {
@@ -4818,13 +4987,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updated for Cockpit Release Assembly 3 [RS:1.1.3] - Added check for
      * is_studio=1 whenever user_permission_grant is joined with contest table.
      * </p>
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param createdUser
      *            the specified user for which to get the permission
      * @return the list of project, contest and their read/write/full
      *         permissions.
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(
             long createdUser) throws ContestManagementException {
@@ -4985,7 +5156,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-	
+
      /**
      * This method will create a project role terms of use association.
      *
@@ -5019,6 +5190,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     /**
      * Retrieves the list of contests for which the user with the given name is
      * a resource. Returns an empty list if no contests are found.
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      *
      * @param username
      *            the name of the user
@@ -5030,7 +5204,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             when any other error occurs
      * @since 1.3
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Contest> getUserContests(String username)
             throws ContestManagementException {
@@ -5059,7 +5232,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * Gets the list of simple pipeline data for specified user id and between specified start and end date.
-     * 
+     * <p>
+     * Update in version 1.4.2, remove the PermitAll annotation.
+     * </p>
      * @param userId
      *            the user id.
      * @param startDate
@@ -5073,7 +5248,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if error during retrieval from database.
      * @since 1.1.1
      */
-    @PermitAll
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
             boolean overdueContests) throws ContestManagementException {
@@ -5256,7 +5430,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("                 WHERE ttw.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId) ");
             sb.append("             union  ");
             sb.append("             SELECT distinct project_id FROM tt_project_manager ttm, tt_user_account u  ");
-			sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
+            sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
             sb.append("        ) )  ");
             sb.append(" ) ");
    /*          // exclude contests that has eligibility
@@ -5306,7 +5480,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 SimplePipelineData data = (SimplePipelineData) list.get(i);
                 if (data != null) {
                     long statusId = data.getStatusId() !=  null ? data.getStatusId().longValue() : 0;
-                    if (statusId == 1 || statusId == 15) { 
+                    if (statusId == 1 || statusId == 15) {
                         data.setSname("Draft");
                     } else if (statusId == 9) {
                         data.setSname("Scheduled");
@@ -5369,7 +5543,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             for (int i = 0; i < list.size(); i++) {
 
                 Object[] os = (Object[]) list.get(i);
-                
+
 
                 // new date
                 if (!previous.equals(os[0].toString()))
@@ -5415,17 +5589,17 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try
         {
             EntityManager em = getEntityManager();
-            
+
             StringBuffer queryBuffer = new StringBuffer();
             queryBuffer.append("select 'has permssion' from user_permission_grant ");
             queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 1 and permission_type_id >= ");
-            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
             queryBuffer.append(" or ");
             queryBuffer.append(" (resource_id = (select tc_direct_project_id from contest where contest_id = ").append(contestId).append(") and permission_type_id >= ");
-            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
-        
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
+
             Query query = em.createNativeQuery(queryBuffer.toString());
 
             List result = query.getResultList();
@@ -5436,7 +5610,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             }
 
             return false;
-        
+
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -5461,17 +5635,17 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try
         {
             EntityManager em = getEntityManager();
-            
+
             StringBuffer queryBuffer = new StringBuffer();
             queryBuffer.append("select 'has permssion' from user_permission_grant ");
             queryBuffer.append(" where (resource_id = ").append(contestId).append(" and is_studio = 1 and permission_type_id >= ");
-            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
             queryBuffer.append(" or ");
             queryBuffer.append(" (resource_id = ").append(projectId).append(" and permission_type_id >= ");
-            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
-        
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
+
             Query query = em.createNativeQuery(queryBuffer.toString());
 
             List result = query.getResultList();
@@ -5482,7 +5656,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             }
 
             return false;
-        
+
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -5509,13 +5683,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try
         {
             EntityManager em = getEntityManager();
-            
+
             StringBuffer queryBuffer = new StringBuffer();
             queryBuffer.append("select 'has permssion' from user_permission_grant ");
             queryBuffer.append(" where  resource_id =  ").append(projectId).append(" and permission_type_id >= ");
-            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(" "); 
-        
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(" ");
+
             Query query = em.createNativeQuery(queryBuffer.toString());
 
             List result = query.getResultList();
@@ -5526,7 +5700,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             }
 
             return false;
-        
+
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -5551,21 +5725,21 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try
         {
             EntityManager em = getEntityManager();
-            
+
             StringBuffer queryBuffer = new StringBuffer();
             queryBuffer.append("select 'has permssion' from user_permission_grant ");
             queryBuffer.append(" where (resource_id = (select contest_id from submission where submission_id = ").append(submissionId).append(") and is_studio = 1 ");
             queryBuffer.append("   and permission_type_id >= ");
-            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
+            queryBuffer.append(readonly ? CONTEST_READ_PERMISSION_ID : CONTEST_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
             queryBuffer.append(" or ");
             queryBuffer.append(" (resource_id = ");
             queryBuffer.append("        (select tc_direct_project_id from contest where contest_id = ");
             queryBuffer.append("     (select contest_id from submission where submission_id = ").append(submissionId).append(")) ");
             queryBuffer.append("  and permission_type_id >= ");
-            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);  
-            queryBuffer.append(" and user_id = ").append(userId).append(")"); 
-        
+            queryBuffer.append(readonly ? PROJECT_READ_PERMISSION_ID : PROJECT_WRITE_PERMISSION_ID);
+            queryBuffer.append(" and user_id = ").append(userId).append(")");
+
             Query query = em.createNativeQuery(queryBuffer.toString());
 
             List result = query.getResultList();
@@ -5576,7 +5750,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             }
 
             return false;
-        
+
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
