@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service;
 
@@ -17,7 +17,7 @@ import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.management.project.SimpleProjectPermissionData;
+import com.topcoder.security.TCSubject;
 
 /**
  * <p>
@@ -90,13 +90,19 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
  * - Added method to create new version for development or design contest.
  * </p>
  * <p>
+ * Changes in v1.4.1(Cockpit Security Facade V1.0)
+ *  - findAllTcDirectProjects, findAllTcDirectProjectsForUser,
+ *    getSimplePipelineData, getDesignComponents these methods add paremeter TCSubject in order to replacing
+ *    the current permission checking security info.
+ * </p>
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog, waits
- * @version 1.4
+ * @version 1.4.1
  * @since 1.0
  */
 public interface ProjectServices {
@@ -122,25 +128,31 @@ public interface ProjectServices {
      *             If there is a system error while performing the search
      */
     public Project[] findActiveProjectsHeaders();
-    
+
     /**
      * <p>
      * This method finds all tc direct projects. Returns empty array if no projects found.
-     * </p
+     * </p>
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return Project array with project info, or empty array if none found
      */
-    public Project[] findAllTcDirectProjects();
-    
+    public Project[] findAllTcDirectProjects(TCSubject tcSubject);
+
     /**
      * <p>
      * This method finds all given user tc direct projects . Returns empty array if no projects found.
-     * </p
-     * @param operator 
-     * 				The user to search for projects
+     * </p>
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param operator The user to search for projects
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return   Project array with project info, or empty array if none found
      */
-     
-    public Project[] findAllTcDirectProjectsForUser(String operator);
+    public Project[] findAllTcDirectProjectsForUser(TCSubject tcSubject, String operator);
 
     /**
      * <p>
@@ -179,7 +191,7 @@ public interface ProjectServices {
      * This method retrieves the project along with all known associated information. Returns null
      * if not found.
      * </p>
-     * 
+     *
      * <p>
      * Module Contest Service Software Contest Sales Assembly change: fetch the contest sale info.
      * </p>
@@ -220,7 +232,7 @@ public interface ProjectServices {
      * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
      * Resource class and therefore will be persisted as new resources's.
      * </p>
-     * 
+     *
      * <p>
      * Module Contest Service Software Contest Sales Assembly change: return the wrapped value for project header, phases, resources info.
      * </p>
@@ -317,7 +329,7 @@ public interface ProjectServices {
      */
     public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, String operator);
-    
+
     /**
      * <p>
      * Persist the project and all related data. All ids (of project header, project phases and
@@ -374,7 +386,7 @@ public interface ProjectServices {
             Resource[] projectResources, String operator);
 
 
-	/**
+    /**
      * <p>
      * Creates a new contest sale and returns the created contest sale.
      * </p>
@@ -452,50 +464,67 @@ public interface ProjectServices {
      */
     public boolean removeContestSale(long contestSaleId) throws ProjectServicesException;
 
-	public List<SimpleProjectContestData> getSimpleProjectContestData()
-			throws ProjectServicesException;
+    /**
+     * <p>
+     * Get SimpleProjectContestData for all projects.
+     * </p>
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return List of SimpleProjectContestData
+     * @throws ProjectServicesException if any error occurs
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject)
+            throws ProjectServicesException;
 
-	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
-			throws ProjectServicesException;
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
+            throws ProjectServicesException;
 
-	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
-			String user) throws ProjectServicesException;
-	
-	/**
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(String user) throws ProjectServicesException;
+
+    /**
      * <p>
      * Gets the list of project their read/write/full permissions.
      * </p>
-     * 
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
      * @param createdUser
      *            the specified user for which to get the permission
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of project their read/write/full permissions.
-     * 
+     *
      * @throws ProjectServicesException exception if error during retrieval from persistence.
-     * 
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
-    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser) throws ProjectServicesException;
-    
+    List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(TCSubject tcSubject, long createdUser)
+        throws ProjectServicesException;
+
     /**
      * Gets the list of simple pipeline data in between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
      *            the end of date range within which pipeline data for contests need to be fetched.
      * @param overdueContests
      *            whether to include overdue contests or not.
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of simple pipeline data for specified user id and between specified start and end date.
      * @throws ProjectServicesException
      *             if error during retrieval from database.
-     * @since 1.1.1             
+     * @since 1.1.1
      */
-    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+    public List<SimplePipelineData> getSimplePipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests)
             throws ProjectServicesException;
-    
+
     /**
      * Gets the list of simple pipeline data for specified user id and between specified start and end date.
-     * 
+     *
      * @param userId
      *            the user id.
      * @param startDate
@@ -507,7 +536,7 @@ public interface ProjectServices {
      * @return the list of simple pipeline data for specified user id and between specified start and end date.
      * @throws ProjectServicesException
      *             if error during retrieval from database.
-     * @since 1.1.1             
+     * @since 1.1.1
      */
     public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate, boolean overdueContests)
             throws ProjectServicesException;
@@ -529,14 +558,15 @@ public interface ProjectServices {
 
     /**
      * Get all design components.
-     * @param userId
-     *            The dummy user id
-     * @throws ProjectServicesException
-     *             if any other error occurs
-     * @since 1.2.1
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param userId The dummy user id
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @throws ProjectServicesException if any other error occurs
      */
-    public List<DesignComponents> getDesignComponents(long userId) throws ProjectServicesException;
-     
+    public List<DesignComponents> getDesignComponents(TCSubject tcSubject, long userId) throws ProjectServicesException;
+
     /**
      * Get corresponding development contest's id for the design contest.
      *
@@ -547,7 +577,7 @@ public interface ProjectServices {
      * @since 1.2.1
      */
     public long getDevelopmentContestId(long contestId) throws ProjectServicesException;
-    
+
      /**
      * check contest permission, check if a user has permission (read or write) on a contest
      *
@@ -660,10 +690,10 @@ public interface ProjectServices {
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public long getForumId(long projectId) throws ProjectServicesException; 
+    public long getForumId(long projectId) throws ProjectServicesException;
 
 
-    
+
     /**
      * check if user has contest permission, it checks contest permission only (not project permission)
      *
@@ -795,7 +825,7 @@ public interface ProjectServices {
      * update phases
      * </p>
      *
-     * @param project project 
+     * @param project project
      * @oaran operator operator
      *
      *
@@ -806,7 +836,7 @@ public interface ProjectServices {
 
 
     /**
-     * Update the given project 
+     * Update the given project
      *
      * @param project
      *            The project instance to be updated into the database.
@@ -826,7 +856,7 @@ public interface ProjectServices {
 
      /**
      * <p>
-     * check if it is dev only 
+     * check if it is dev only
      * </p>
      *
      * @param projectId  project id
@@ -838,16 +868,16 @@ public interface ProjectServices {
      */
     public boolean isDevOnly(long projectId) throws ProjectServicesException;
 
-	/**
+    /**
      * This method links the development contest to its design contest. It simply call a method in project link manager.
      *
      * @param developmentContestId the development contest id
-	 *
+     *
      * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
      *
      * @since 1.3.1
      */
-	public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException;		
+    public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException;
 
     /**
      * Get corresponding development contest's id for the design contest.
@@ -863,7 +893,7 @@ public interface ProjectServices {
      /**
      * Creates re-open contest for the given contest.
      * since version 1.4.
-     * 
+     *
      * @param contest the contest to repost
      * @param operator the operator
      * @return new contest for the repost one
@@ -873,17 +903,11 @@ public interface ProjectServices {
     /**
      * Creates new version for development and design contest for the given contest.
      * since version 1.4.
-     * 
+     *
      * @param contest the contest to create new version
      * @param operator the operator
      * @return new contest for the repost one
      * @throws ProjectServicesException if any error occurs
      */
     FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException;
-
-    /**
-     *  Get project only (not phase or resources)
-     */
-    public Project getProject(long projectId) throws ProjectServicesException;
-
 }

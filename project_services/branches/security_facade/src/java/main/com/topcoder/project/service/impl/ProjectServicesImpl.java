@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.impl;
 
@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -74,6 +73,7 @@ import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.security.TCSubject;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
@@ -250,13 +250,19 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * - Added method to create new version for development or design contest.
  * </p>
  * <p>
+ * Changes in v1.4.1(Cockpit Security Facade V1.0)
+ *  - findAllTcDirectProjects, findAllTcDirectProjectsForUser,
+ *    getSimplePipelineData, getDesignComponents these methods add paremeter TCSubject in order to replacing
+ *    the current permission checking security info.
+ * </p>
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog, waits
- * @version 1.4
+ * @version 1.4.1
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -348,7 +354,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
-     * Represents the "Submitter" resource role id. 
+     * Represents the "Submitter" resource role id.
      * </p>
      *
      * @since 1.3
@@ -429,6 +435,50 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON = "On";
 
+    /**
+     * <p>
+     * Represents the "billing project" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String BILLING_PROJECT_PROJECT_PROPERTY_KEY = "Billing Project";
+
+    /**
+     * <p>
+     * Represents the "confidentiality type" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY = "Confidentiality Type";
+
+    /**
+     * <p>
+     * Represents the "version id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String VERSION_ID_PROJECT_PROPERTY_KEY = "Version ID";
+
+    /**
+     * <p>
+     * Represents the "component id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String COMPONENT_ID_PROJECT_PROPERTY_KEY = "Component ID";
+
+    /**
+     * <p>
+     * Represents the "external reference id" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY = "External Reference ID";
 
     /**
      * <p>
@@ -439,6 +489,63 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY = "External Reference ID";
 
+    /**
+     * <p>
+     * Represents the "project version" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_VERSION_PROJECT_PROPERTY_KEY = "Project Version";
+
+    /**
+     * <p>
+     * Represents the "payments" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PAYMENTS_PROJECT_PROPERTY_KEY = "Payments";
+
+
+
+    /**
+     * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY = "Autopilot Option";
+
+    /**
+     * <p>
+     * Represents the "project name" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String PROJECT_NAME_PROJECT_PROPERTY_KEY = "Project Name";
+
+
+    /**
+     * <p>
+     * Represents the "Developer Forum ID" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String FORUM_ID_PROJECT_PROPERTY_KEY = "Developer Forum ID";
+
+
+    /**
+     * <p>
+     * Represents the "Root Catelog ID" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY = "Root Catalog ID";
 
     /**
      * <p>
@@ -476,6 +583,14 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String SPEC_REVIEW_PROJECT_CATEGORY = "Spec Review";
 
+    /**
+     * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String NOTES_PROJECT_PROPERTY_KEY = "Notes";
 
 
     /**
@@ -486,32 +601,10 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.3
      */
     private static final String[] SPEC_REVIEW_PROJECT_PROPERTIES_TO_CLONE = new String[] {
-        ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, 
-        ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY};
-
-    
-    /**
-     * <p>
-     * Represents the project properties that need to be cloned when creating a new version for dev/design
-     * </p>
-     */
-    private static final String[] NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE = new String[] {
-        ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, 
-        ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.STATUS_NOTIFICATION_PROJECT_PROPERTY_KEY, ProjectPropertyType.TIMELINE_NOTIFICATION_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.PUBLIC_PROJECT_PROPERTY_KEY, ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, 
-        ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, 
-        ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, 
-        ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY};
+        EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, COMPONENT_ID_PROJECT_PROPERTY_KEY,
+        VERSION_ID_PROJECT_PROPERTY_KEY, CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
+        BILLING_PROJECT_PROJECT_PROPERTY_KEY, PROJECT_VERSION_PROJECT_PROPERTY_KEY,
+        ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, FORUM_ID_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -621,7 +714,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * Represents the <code>DefaultPhaseTemplate</code> instance that is used to generate project phases. It is set in
      * the constructor to a non-null value, and will never change.
      * </p>
-     * 
+     *
      * @since BUGR-1473
      */
     private final PhaseTemplate template;
@@ -897,7 +990,7 @@ public class ProjectServicesImpl implements ProjectServices {
         FullProjectData[] fullDatas = assembleFullProjectDatas(projects);
 
         log(Level.INFO, "Exits ProjectServicesImpl#findActiveProjects method.");
-        return fullDatas;    
+        return fullDatas;
     }
 
     /**
@@ -938,71 +1031,74 @@ public class ProjectServicesImpl implements ProjectServices {
         log(Level.INFO, "Exits ProjectServicesImpl#findActiveProjectsHeaders method.");
         return projects;
     }
-    
+
     /**
      * <p>
-     * This method finds projects which have tc direct id.
-     * Returns empty array if no projects found.
+     * This method finds all tc direct projects. Returns empty array if no projects found.
      * </p>
-     *
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return Project array with project info, or empty array if none found
-     * @throws ProjectServicesException
-     *             If there is a system error while performing the search
      */
-    public Project[] findAllTcDirectProjects() {
-    	log(Level.INFO, "Enters ProjectServicesImpl#ffindAllTcDirectProjects method.");
+    public Project[] findAllTcDirectProjects(TCSubject tcSubject) {
+        log(Level.INFO, "Enters ProjectServicesImpl#findAllTcDirectProjects(tcSubject) method.");
 
         // represents the active projects
         Project[] projects = null;
         try {
             // find all projects which have tc direct project id
-            logDebug("Starts calling ProjectManager#getAllTcDirectProjects method.");           
-            
+            logDebug("Starts calling ProjectManager#getAllTcDirectProjects(tcSubject) method.");
+
             projects = projectManager.getAllTcDirectProjects();
 
-            logDebug("Finished calling ProjectManager#getAllTcDirectProjects method.");
+            logDebug("Finished calling ProjectManager#getAllTcDirectProjects(tcSubject) method.");
 
         } catch (PersistenceException ex) {
             log(Level.ERROR,
-                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjects method.");
+                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjects(tcSubject) method.");
             throw new ProjectServicesException("PersisteceException occurred when operating ProjectManager.", ex);
         }
 
-        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjects method.");
+        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjects(tcSubject) method.");
         return projects;
 
     }
-    
+
     /**
      * <p>
      * This method finds all given user tc direct projects . Returns empty array if no projects found.
-     * </p
-     * @param user 
-     * 				The user to search for projects
+     * </p>
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param operator The user to search for projects
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return   Project array with project info, or empty array if none found
      */
-    public Project[] findAllTcDirectProjectsForUser(String user) {
-    	log(Level.INFO, "Enters ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+    public Project[] findAllTcDirectProjectsForUser(TCSubject tcSubject, String user) {
+        log(Level.INFO, "Enters ProjectServicesImpl#findAllTcDirectProjectsForUser(tcSubject, user) method.");
 
         // represents the active projects
         Project[] projects = null;
         try {
             // find all projects which have tc direct project id
-            logDebug("Starts calling ProjectManager#getAllTcDirectProjects(user) method.");           
-            
+            logDebug("Starts calling ProjectManager#getAllTcDirectProjects(tcSubject, user) method.");
+
             projects = projectManager.getAllTcDirectProjects(user);
 
-            logDebug("Finished calling ProjectManager#getAllTcDirectProjects(user) method.");
+            logDebug("Finished calling ProjectManager#getAllTcDirectProjects(tcSubject, user) method.");
 
         } catch (PersistenceException ex) {
             log(Level.ERROR,
-                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjectsForUser(tcSubject, user) method.");
             throw new ProjectServicesException("PersisteceException occurred when operating ProjectManager.", ex);
         }
 
-        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjectsForUser(tcSubject, user) method.");
         return projects;
-    	
+
     }
 
     /**
@@ -1026,7 +1122,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // filter ProjectHeaders
         Project[] projects = findProjectsHeaders(filter);
         // assembles FullProjectDatas
-        FullProjectData[] fullProjects = assembleFullProjectDatas(projects);
+        FullProjectData[] fullProjects = assembleFullProjectDatas( projects);
 
         log(Level.INFO, "Exits ProjectServicesImpl#findFullProjects method.");
         return fullProjects;
@@ -1071,7 +1167,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * This method retrieves the project along with all known associated information. Returns null
      * if not found.
      * </p>
-     * 
+     *
      * <p>
      * Module Contest Service Software Contest Sales Assembly change: fetch the contest sale info.
      * </p>
@@ -1233,7 +1329,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * The logging must performed in the same manner of other methods. Read the 1.4.1 section of
      * Component Specification for further details.
      * </p>
-     * 
+     *
      * <p>
      * Module Contest Service Software Contest Sales Assembly change: return the wrapped value for project header, phases, resources info.
      * </p>
@@ -1278,7 +1374,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // if the project of phases (for each phase: phase.project)
         // is not equal to projectPhases, throws IAE
         for (Phase phase : projectPhases.getAllPhases()) {
-			phase.setProject(projectPhases);
+            phase.setProject(projectPhases);
             /*if (!phase.getProject().equals(projectPhases)) {
                 throw new IllegalArgumentException(
                         "The Project of phase in projectPhases should equal to the projectPhases.");
@@ -1340,7 +1436,7 @@ public class ProjectServicesImpl implements ProjectServices {
             projectData.setId(projectPhases.getId());
             Phase[] allPhases = projectPhases.getAllPhases();
             for (int i = 0; i < allPhases.length; i++) {
-            	projectData.addPhase(allPhases[i]);
+                projectData.addPhase(allPhases[i]);
             }
 
             // sets the project header
@@ -1372,8 +1468,8 @@ public class ProjectServicesImpl implements ProjectServices {
                             + e.getMessage(), e);
             logError(e, pse.getMessage());
             throw pse;
-        } 
-		 catch (Exception e) {
+        }
+         catch (Exception e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "Exception occurred in ProjectServicesImpl#createProject method : "
                             + e.getMessage(), e);
@@ -1463,11 +1559,11 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNullOrEmpty(projectHeaderReason, null, null,
                 "The parameter[projectHeaderReason] should not be null or empty.");
 
-		if (template != null)
-		{
-			projectPhases.setWorkdays(template.getWorkdays());
-		}
-			
+        if (template != null)
+        {
+            projectPhases.setWorkdays(template.getWorkdays());
+        }
+
 
         validateUpdatePhases(projectHeader, projectPhases);
         validateUpdateResources(projectHeader, projectPhases, projectResources);
@@ -1498,19 +1594,19 @@ public class ProjectServicesImpl implements ProjectServices {
             // recalcuate phase dates in case project start date changes
             Phase[] phases = projectPhases.getAllPhases();
             Map phasesMap = new HashMap();
-			for (Phase p : phases) {
-						phasesMap.put(new Long(p.getId()), p);
-						p.setScheduledStartDate(null);
-						p.setScheduledEndDate(null);
-						p.setFixedStartDate(null);
-			 }	
-			phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
-			for (Phase p : phases) {
-						p.setScheduledStartDate(p.calcStartDate());
-						p.setScheduledEndDate(p.calcEndDate());
-						p.setFixedStartDate(p.calcStartDate());
+            for (Phase p : phases) {
+                        phasesMap.put(new Long(p.getId()), p);
+                        p.setScheduledStartDate(null);
+                        p.setScheduledEndDate(null);
+                        p.setFixedStartDate(null);
+             }
+            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+            for (Phase p : phases) {
+                        p.setScheduledStartDate(p.calcStartDate());
+                        p.setScheduledEndDate(p.calcEndDate());
+                        p.setFixedStartDate(p.calcStartDate());
 
-		    }		
+            }
 
              // Adjust the depending projects timelines if necessary
             ContestDependencyAutomation auto
@@ -1536,13 +1632,13 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.DEBUG, "Finished calling ResourceManager#updateResources method.");
             }
 
-            
-			// creates an instance of FullProjectData with phaseProject
+
+            // creates an instance of FullProjectData with phaseProject
             FullProjectData projectData = new FullProjectData(projectPhases.getStartDate(), projectPhases.getWorkdays());
             projectData.setId(projectPhases.getId());
             Phase[] allPhases = projectPhases.getAllPhases();
             for (int i = 0; i < allPhases.length; i++) {
-            	projectData.addPhase(allPhases[i]);
+                projectData.addPhase(allPhases[i]);
             }
 
             // sets the project header
@@ -1576,14 +1672,14 @@ public class ProjectServicesImpl implements ProjectServices {
             logError(e, pse.getMessage());
             throw pse;
         }
-		catch (Exception e) {
+        catch (Exception e) {
             ProjectServicesException pse = new ProjectServicesException(
                     "Exception occurred in ProjectServicesImpl#updateProject method : "
                             + e.getMessage(), e);
             logError(e, pse.getMessage());
             throw pse;
         }
-		finally {
+        finally {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#updateProject method.");
         }
     }
@@ -1642,7 +1738,7 @@ public class ProjectServicesImpl implements ProjectServices {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#getContestSale method.");
 
         try {
-            ContestSale contestSale = projectManager.getContestSale(contestSaleId); 
+            ContestSale contestSale = projectManager.getContestSale(contestSaleId);
 
             return convertContestSale(contestSale);
         } catch (PersistenceException e) {
@@ -1673,12 +1769,12 @@ public class ProjectServicesImpl implements ProjectServices {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#getContestSales method.");
 
         try {
-            List<ContestSale> contestSales = projectManager.getContestSales(contestId); 
+            List<ContestSale> contestSales = projectManager.getContestSales(contestId);
 
             List<ContestSaleData> ret = new ArrayList<ContestSaleData>();
 
             for (ContestSale contestSale : contestSales) {
-            	ret.add(convertContestSale(contestSale));
+                ret.add(convertContestSale(contestSale));
             }
 
             return ret;
@@ -1705,7 +1801,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since Module Contest Service Software Contest Sales Assembly
      */
-    public void editContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+    public void editContestSale( ContestSaleData contestSaleData) throws ProjectServicesException {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#editContestSale method.");
 
         ExceptionUtils.checkNull(contestSaleData, null, null, "The parameter[contestSaleData] should not be null.");
@@ -1740,7 +1836,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since Module Contest Service Software Contest Sales Assembly
      */
-    public boolean removeContestSale(long contestSaleId) throws ProjectServicesException {
+    public boolean removeContestSale( long contestSaleId) throws ProjectServicesException {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#removeContestSale method.");
 
         try {
@@ -1835,7 +1931,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // for each phase: if the phase.object is not equal to projectPhases or the
         // projectPhases.phases.project.id is not equal to projectHeader.id, throws IAE
         for (Phase phase : projectPhases.getAllPhases()) {
-			phase.setProject(projectPhases);
+            phase.setProject(projectPhases);
             /*if (!phase.getProject().equals(projectPhases)) {
                 throw new IllegalArgumentException(
                         "The Project of phase in projectPhases should equal to the projectPhases.");
@@ -1940,7 +2036,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * design forum. The resources could be empty or null, null is treated like empty: no resources are saved. The
      * resources' ids will be set to UNSET_ID of Resource class and therefore will be persisted as new resources's.
      * </p>
-     * 
+     *
      * @param projectHeader
      *            the project's header, the main project's data
      * @param projectPhases
@@ -1964,7 +2060,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *             if there is a system error while performing the create operation
      * @since BUGR-1473
      */
-    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+    public FullProjectData createProjectWithTemplate( Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
 
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
@@ -1975,21 +2071,21 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNull(projectPhases, null, null, "The parameter[projectPhases] should not be null.");
         try {
             String category = projectHeader.getProjectCategory().getName();
-			String type = projectHeader.getProjectCategory().getProjectType().getName();
+            String type = projectHeader.getProjectCategory().getProjectType().getName();
 
-			String[] templates = template.getAllTemplateNames();
+            String[] templates = template.getAllTemplateNames();
 
-			String templateName = null;
+            String templateName = null;
             boolean categoryMatch = false;
-			for (String t : templates )
-			{
-				if (category.equalsIgnoreCase(t))
-				{
-					templateName = t;
+            for (String t : templates )
+            {
+                if (category.equalsIgnoreCase(t))
+                {
+                    templateName = t;
                     categoryMatch = true;
-					break;
-				}
-			}
+                    break;
+                }
+            }
 
             if (!categoryMatch)
             {
@@ -2003,19 +2099,19 @@ public class ProjectServicesImpl implements ProjectServices {
                 }
 
             }
-            
-			if (templateName == null)
-			{
-				throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
-			}
+
+            if (templateName == null)
+            {
+                throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
+            }
             // apply a template with name category with a given start date
             com.topcoder.project.phases.Project newProjectPhases = template
                     .applyTemplate(templateName, projectPhases.getStartDate());
 
-			long screenTemplateId = 0L;
-		    long reviewTemplateId = 0L;
-			long projectTypeId = projectHeader.getProjectCategory().getId();
-			
+            long screenTemplateId = 0L;
+            long reviewTemplateId = 0L;
+            long projectTypeId = projectHeader.getProjectCategory().getId();
+
             try
             {
                 screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
@@ -2025,11 +2121,11 @@ public class ProjectServicesImpl implements ProjectServices {
             {
                 //TODO default to user spec (6) for now
                 Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
-				screenTemplateId = projectManager.getScorecardId(6, 1);
-				reviewTemplateId = projectManager.getScorecardId(6, 2);
+                screenTemplateId = projectManager.getScorecardId(6, 1);
+                reviewTemplateId = projectManager.getScorecardId(6, 2);
             }
-			
-        
+
+
             for (Phase p : newProjectPhases.getAllPhases()) {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
                     p.setScheduledStartDate(p.calcStartDate());
@@ -2064,7 +2160,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
             }
 
-            
+
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
         } catch (PhaseTemplateException e) {
@@ -2091,148 +2187,163 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
+    /**
+     * <p>
+     * Get SimpleProjectContestData for all projects.
+     * </p>
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return List of SimpleProjectContestData
+     * @throws ProjectServicesException if any error occurs
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject)
+            throws ProjectServicesException {
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getSimpleProjectContestData(tcSubject) method.");
 
-	public List<SimpleProjectContestData> getSimpleProjectContestData()
-			throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getSimpleProjectContestData method.");
+        // represents the active projects
+        List<SimpleProjectContestData> ret = null;
+        try {
+            // find all projects which have tc direct project id
+            logDebug("Starts calling ProjectManager#getSimpleProjectContestData(tcSubject) method.");
 
-		// represents the active projects
-		List<SimpleProjectContestData> ret = null;
-		try {
-			// find all projects which have tc direct project id
-			logDebug("Starts calling ProjectManager#getSimpleProjectContestData method.");
+            ret = projectManager.getSimpleProjectContestData();
 
-			ret = projectManager.getSimpleProjectContestData();
+            logDebug("Finished calling ProjectManager#getSimpleProjectContestData(tcSubject) method.");
 
-			logDebug("Finished calling ProjectManager#getSimpleProjectContestData method.");
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData(tcSubject) method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
 
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getSimpleProjectContestData(tcSubject) method.");
+        return ret;
+    }
 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
-		return ret;
-	}
+    public List<SimpleProjectContestData> getSimpleProjectContestData( long pid)
+            throws ProjectServicesException {
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getSimpleProjectContestData method.");
 
-	public List<SimpleProjectContestData> getSimpleProjectContestData(long pid)
-			throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getSimpleProjectContestData method.");
+        // represents the active projects
+        List<SimpleProjectContestData> ret = null;
+        try {
+            // find all projects which have tc direct project id
+            logDebug("Starts calling ProjectManager#getSimpleProjectContestData method.");
 
-		// represents the active projects
-		List<SimpleProjectContestData> ret = null;
-		try {
-			// find all projects which have tc direct project id
-			logDebug("Starts calling ProjectManager#getSimpleProjectContestData method.");
+            ret = projectManager.getSimpleProjectContestData(pid);
 
-			ret = projectManager.getSimpleProjectContestData(pid);
+            logDebug("Finished calling ProjectManager#getSimpleProjectContestData method.");
 
-			logDebug("Finished calling ProjectManager#getSimpleProjectContestData method.");
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
 
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestData method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getSimpleProjectContestData method.");
+        return ret;
+    }
 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
-		return ret;
-	}
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
+            String user) throws ProjectServicesException {
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
 
-	public List<SimpleProjectContestData> getSimpleProjectContestDataByUser(
-			String user) throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
+        // represents the active projects
+        List<SimpleProjectContestData> ret = null;
+        try {
+            // find all projects which have tc direct project id
+            logDebug("Starts calling ProjectManager#getSimpleProjectContestDataByUser method.");
 
-		// represents the active projects
-		List<SimpleProjectContestData> ret = null;
-		try {
-			// find all projects which have tc direct project id
-			logDebug("Starts calling ProjectManager#getSimpleProjectContestDataByUser method.");
+            ret = projectManager.getSimpleProjectContestDataByUser(user);
 
-			ret = projectManager.getSimpleProjectContestDataByUser(user);
+            logDebug("Finished calling ProjectManager#getSimpleProjectContestDataByUser method.");
 
-			logDebug("Finished calling ProjectManager#getSimpleProjectContestDataByUser method.");
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
 
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectContestDataByUser method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getSimpleProjectContestData method.");
+        return ret;
+    }
 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getSimpleProjectContestData method.");
-		return ret;
-	}
-	
-	/**
+    /**
      * <p>
      * Gets the list of project their read/write/full permissions.
      * </p>
-     * 
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
      * @param createdUser
      *            the specified user for which to get the permission
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of project their read/write/full permissions.
-     * 
-     * @throws ProjectServicesException
-     *             exception if error during retrieval from persistence.
-     * 
+     *
+     * @throws ProjectServicesException exception if error during retrieval from persistence.
+     *
      * @since Cockpit Project Admin Release Assembly v1.0
      */
-    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(TCSubject tcSubject, long createdUser)
             throws ProjectServicesException {
-        String method = "ProjectServicesBean#getSimpleProjectPermissionDataForUser(getSimpleProjectPermissionDataForUser) method.";
+        String method = "ProjectServicesBean#getSimpleProjectPermissionDataForUser(tcSubject, createdUser) method.";
 
-        log(Level.INFO, "Enters ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
+        log(Level.INFO, "Enters ProjectServicesImpl#getSimpleProjectPermissionDataForUser(tcSubject, createdUser)  method.");
 
         // represents the active projects
         List<SimpleProjectPermissionData> ret = null;
         try {
-            logDebug("Starts calling ProjectManager#getSimpleProjectPermissionDataForUser method.");
+            logDebug("Starts calling ProjectManager#getSimpleProjectPermissionDataForUser(tcSubject, createdUser)  method.");
 
             ret = projectManager.getSimpleProjectPermissionDataForUser(createdUser);
 
-            logDebug("Finished calling ProjectManager#getSimpleProjectPermissionDataForUser method.");
+            logDebug("Finished calling ProjectManager#getSimpleProjectPermissionDataForUser(tcSubject, createdUser)  method.");
 
         } catch (PersistenceException ex) {
             log(Level.ERROR,
-                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
+                    "ProjectServicesException occurred in ProjectServicesImpl#getSimpleProjectPermissionDataForUser(tcSubject, createdUser)  method.");
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager.", ex);
-        } 
+        }
 
-        log(Level.INFO, "Exits ProjectServicesImpl#getSimpleProjectPermissionDataForUser method.");
+        log(Level.INFO, "Exits ProjectServicesImpl#getSimpleProjectPermissionDataForUser(tcSubject, createdUser)  method.");
         return ret;
     }
-    
+
     /**
      * Gets the list of simple pipeline data in between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
      *            the end of date range within which pipeline data for contests need to be fetched.
      * @param overdueContests
      *            whether to include overdue contests or not.
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return the list of simple pipeline data for specified user id and between specified start and end date.
      * @throws ProjectServicesException
      *             if error during retrieval from database.
-     * @since 1.1.1             
+     * @since 1.1.1
      */
-    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate,
+    public List<SimplePipelineData> getSimplePipelineData(TCSubject tcSubject, Date startDate, Date endDate,
             boolean overdueContests) throws ProjectServicesException {
         log(Level.INFO, "Enters ProjectServicesImpl#getSimplePipelineData method.");
 
@@ -2252,10 +2363,10 @@ public class ProjectServicesImpl implements ProjectServices {
         log(Level.INFO, "Exits ProjectServicesImpl#getSimplePipelineData method.");
         return ret;
     }
-    
+
     /**
      * Gets the list of simple pipeline data for specified user id and between specified start and end date.
-     * 
+     *
      * @param userId
      *            the user id.
      * @param startDate
@@ -2267,9 +2378,9 @@ public class ProjectServicesImpl implements ProjectServices {
      * @return the list of simple pipeline data for specified user id and between specified start and end date.
      * @throws ProjectServicesException
      *             if error during retrieval from database.
-     * @since 1.1.1             
+     * @since 1.1.1
      */
-    public List<SimplePipelineData> getSimplePipelineData(long userId, Date startDate, Date endDate,
+    public List<SimplePipelineData> getSimplePipelineData( long userId, Date startDate, Date endDate,
             boolean overdueContests) throws ProjectServicesException {
         log(Level.INFO, "Enters ProjectServicesImpl#getSimplePipelineData method.");
 
@@ -2303,7 +2414,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.2
      */
-    public List<SoftwareCapacityData> getCapacity(int contestType) throws ProjectServicesException {
+    public List<SoftwareCapacityData> getCapacity( int contestType) throws ProjectServicesException {
         String method = "ProjectServicesImpl#getCapacity(" + contestType + ") method.";
 
         log(Level.INFO, "Enters " + method);
@@ -2319,33 +2430,32 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * Get all design components.
-     *
-     * @param userId
-     *            The user id
-     * @throws ProjectServicesException
-     *             if any other error occurs
-     * @since 1.2.1
+     * <p>
+     * Update in v1.4.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param userId The dummy user id
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @throws ProjectServicesException if any other error occurs
      */
-    	public List<DesignComponents> getDesignComponents(long userId)
-			throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getDesignComponents method.");
+    public List<DesignComponents> getDesignComponents(TCSubject tcSubject, long userId)
+            throws ProjectServicesException {
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getDesignComponents method.");
 
-		List<DesignComponents> ret = null;
-		try {
-			ret = projectManager.getDesignComponents(userId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getDesignComponents method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getDesignComponents method.");
-		return ret;
-	}
+        List<DesignComponents> ret = null;
+        try {
+            ret = projectManager.getDesignComponents(userId);
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getDesignComponents method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getDesignComponents method.");
+        return ret;
+    }
      /**
      * Get corresponding development contest's id for the design contest.
      *
@@ -2355,28 +2465,28 @@ public class ProjectServicesImpl implements ProjectServices {
      *             if any other error occurs
      * @since 1.2.1
      */
-    public long getDevelopmentContestId(long contestId)
+    public long getDevelopmentContestId( long contestId)
         throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getDevelopmentContestId method.");
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getDevelopmentContestId method.");
 
-		long ret;
-		try {
-			ret = projectManager.getDevelopmentContestId(contestId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getDevelopmentContestId method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getDevelopmentContestId method.");
-		return ret;
-	}
+        long ret;
+        try {
+            ret = projectManager.getDevelopmentContestId(contestId);
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getDevelopmentContestId method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getDevelopmentContestId method.");
+        return ret;
+    }
 
-    
+
      /**
      * check contest permission, check if a user has permission (read or write) on a contest
      *
@@ -2389,7 +2499,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      */
     public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws ProjectServicesException
-    {   
+    {
         String method = "checkContestPermission(" + contestId + ", " + readonly + ", " + userId + ")";
 
         Util.log(logger, Level.INFO, "Enters " + method);
@@ -2400,7 +2510,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }        
+        }
 
     }
 
@@ -2427,7 +2537,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
 
@@ -2443,7 +2553,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public List<Long> getProjectIdByTcDirectProject(long tcprojectId) throws ProjectServicesException
+    public List<Long> getProjectIdByTcDirectProject( long tcprojectId) throws ProjectServicesException
     {
         String method = "getProjectIdByTcDirectProject(" + tcprojectId + ")";
 
@@ -2455,7 +2565,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
 
@@ -2492,7 +2602,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @throws ProjectServicesException if there is an error executing the filter
      */
-    public Resource[] searchResources(Filter filter) throws ProjectServicesException
+    public Resource[] searchResources( Filter filter) throws ProjectServicesException
     {
         String method = "searchResources(" + filter + ")";
 
@@ -2504,7 +2614,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
 
@@ -2528,7 +2638,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *         with a phase, or if resource or operator is null
      * @throws ResourcePersistenceException if there is an error updating the resource
      */
-    public Resource updateResource(Resource resource, String operator) throws ProjectServicesException
+    public Resource updateResource( Resource resource, String operator) throws ProjectServicesException
     {
 
         String method = "updateResource(" + resource + ")";
@@ -2541,7 +2651,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
 
@@ -2557,7 +2667,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public long getForumId(long projectId) throws ProjectServicesException
+    public long getForumId( long projectId) throws ProjectServicesException
     {
 
         String method = "getForumId(" + projectId + ")";
@@ -2570,7 +2680,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
 
@@ -2584,7 +2694,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws  PersistenceException
      *
      */
-    public boolean hasContestPermission(long contestId, long userId)  throws ProjectServicesException
+    public boolean hasContestPermission( long contestId, long userId)  throws ProjectServicesException
      {
 
         String method = "hasContestPermission(" + contestId + "," + userId + ")";
@@ -2597,7 +2707,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
     /**
@@ -2612,7 +2722,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws IllegalArgumentException if the id of the resource is UNSET_ID, or the resource or operator is null
      * @throws ResourcePersistenceException if there is an error updating the persistence store
      */
-    public void removeResource(Resource resource, String operator) throws ProjectServicesException
+    public void removeResource( Resource resource, String operator) throws ProjectServicesException
     {
      String method = "removeResource(" + resource + ")";
 
@@ -2624,7 +2734,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }   
+        }
     }
 
 
@@ -2638,7 +2748,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @throws ResourcePersistenceException if there is an error reading the persistence store.
      */
-    public Resource[] searchResources(long projectId, long roleId) throws ProjectServicesException
+    public Resource[] searchResources( long projectId, long roleId) throws ProjectServicesException
      {
         String method = "searchResources(" + projectId + "," + roleId + ")";
 
@@ -2650,7 +2760,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }   
+        }
     }
 
 
@@ -2666,7 +2776,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public long getTcDirectProject(long projectId) throws ProjectServicesException
+    public long getTcDirectProject( long projectId) throws ProjectServicesException
     {
 
         String method = "getTcDirectProject(" + projectId + ")";
@@ -2679,7 +2789,7 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
-        }       
+        }
     }
 
     /**
@@ -2697,7 +2807,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview( long projectId, double specReviewPrize, String operator)
         throws ProjectServicesException {
 
         // check operator
@@ -2760,16 +2870,16 @@ public class ProjectServicesImpl implements ProjectServices {
             }
 
             // set new properties for the spec review
-            projectHeader.setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY,
-                project.getProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
+            projectHeader.setProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY,
+                project.getProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
             // Dont turn on yet
             //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
             //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
-            projectHeader.setProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, 
+            projectHeader.setProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY,
                           project.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
-            projectHeader.setProperty(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "0");
+            projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, "0");
 
-            projectHeader.setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
+            projectHeader.setProperty(NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
             // create mock ProjectSpec object
             ProjectSpec projectSpec = new ProjectSpec();
@@ -2788,21 +2898,21 @@ public class ProjectServicesImpl implements ProjectServices {
             }
 
             // add operator as a submitter
-            com.topcoder.management.resource.Resource[] extendedResources = 
-                new com.topcoder.management.resource.Resource[resources.length + 1];  
+            com.topcoder.management.resource.Resource[] extendedResources =
+                new com.topcoder.management.resource.Resource[resources.length + 1];
 
             System.arraycopy(resources, 0, extendedResources, 0, resources.length);
             ResourceRole submitterRole = new ResourceRole(SUBMITTER_ROLE_ID);
-            
-            com.topcoder.management.resource.Resource submitter = 
+
+            com.topcoder.management.resource.Resource submitter =
                 new com.topcoder.management.resource.Resource(com.topcoder.management.resource.Resource.UNSET_ID,
                     submitterRole);
-            
+
             submitter.setProperty(EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY, operator);
             extendedResources[extendedResources.length - 1] = submitter;
-            
+
             // create spec review project
-            projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources, 
+            projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources,
                 operator);
 
             // link it to the original project
@@ -2825,13 +2935,13 @@ public class ProjectServicesImpl implements ProjectServices {
     }
     /**
      * Creates re-open contest for the given contest. since version 1.4.
-     * 
+     *
      * @param contest the contest to repost
      * @param operator the operator
      * @return new contest for the repost one
      * @throws ProjectServicesException if any error occurs
      */
-    public FullProjectData createReOpenContest(FullProjectData contest, String operator) throws ProjectServicesException {
+    public FullProjectData createReOpenContest( FullProjectData contest, String operator) throws ProjectServicesException {
         // check operator
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
@@ -2839,23 +2949,20 @@ public class ProjectServicesImpl implements ProjectServices {
         log(Level.INFO, "Enters " + method);
 
         try {
-            //1. create the new re-open contest            
-            //1.1 copy the project header 
+            //1. create the new re-open contest
+            //1.1 copy the project header
             Project projectHeader = new Project();
             projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
             projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
-            // clone some original project properties
-            for (String key : NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE) {
-                projectHeader.setProperty(key, contest.getProjectHeader().getProperty(key));
-            }
+            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
             //make the fee to zero
-            projectHeader.setProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "0");
+            projectHeader.setProperty("Admin Fee", "0");
             projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
             projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
-            
+
             //1.2 clone resources:Only observers, managers, client managers and copilots should be copied in resources.
             List<com.topcoder.management.resource.Resource> newResourcesList = new ArrayList<com.topcoder.management.resource.Resource>();
             com.topcoder.management.resource.Resource[] resources = contest.getResources();
@@ -2868,18 +2975,18 @@ public class ProjectServicesImpl implements ProjectServices {
                     newResourcesList.add(resource);
                 }
             }
-            
+
             //1.3 Set the start time to 1 day + current time.
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
             projectPhases.setStartDate(contest.getStartDate());
-            com.topcoder.management.resource.Resource[] newResources = 
+            com.topcoder.management.resource.Resource[] newResources =
                  (com.topcoder.management.resource.Resource[]) newResourcesList.toArray(new com.topcoder.management.resource.Resource[newResourcesList.size()]);
-            
+
             //1.4 create the project here
-            FullProjectData reOpendedProject = 
+            FullProjectData reOpendedProject =
                 createProjectWithTemplate(projectHeader, projectPhases, newResources, operator);
-    
-            //1.5 link the project to the original one        
+
+            //1.5 link the project to the original one
             projectLinkManager.addProjectLink(reOpendedProject.getProjectHeader().getId(),
                                                     contest.getProjectHeader().getId(), ProjectLinkType.REPOST_FOR);
 
@@ -2894,20 +3001,20 @@ public class ProjectServicesImpl implements ProjectServices {
                     if (link.getType().getId() != ProjectLinkType.REPOST_FOR)
                     {
                         // delete existing link
-                    projectLinkManager.removeProjectLink(link.getSourceProject().getId(), 
+                    projectLinkManager.removeProjectLink(link.getSourceProject().getId(),
                                                       link.getDestProject().getId(), link.getType().getId());
 
                     // depenpends link to reposted
-                    projectLinkManager.addProjectLink(link.getSourceProject().getId(), 
+                    projectLinkManager.addProjectLink(link.getSourceProject().getId(),
                                                       reOpendedProject.getProjectHeader().getId(), link.getType().getId());
 
                     // existing link changes to related_to
-                    projectLinkManager.addProjectLink(link.getSourceProject().getId(), 
+                    projectLinkManager.addProjectLink(link.getSourceProject().getId(),
                                                       contest.getProjectHeader().getId(), ProjectLinkType.IS_RELATED_TO);
 
                     }
-                    
-                    
+
+
                 }
 
                 // adjust dependents dates if necessary
@@ -2922,7 +3029,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 if (originalLastPhase != null && reopenedLastPhase != null) {
                     Date originalEndDate = originalLastPhase.getScheduledEndDate();
                     Date reopenedEndDate = reopenedLastPhase.getScheduledEndDate();
-                    if (reopenedEndDate.compareTo(originalEndDate) != 0) 
+                    if (reopenedEndDate.compareTo(originalEndDate) != 0)
                     {
                         long diff = reopenedEndDate.getTime() - originalEndDate.getTime();
                         if (diff != 0)
@@ -2935,7 +3042,7 @@ public class ProjectServicesImpl implements ProjectServices {
                                     = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
                              }
                              List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(reOpendedProject.getProjectHeader().getId(), diff);
-                             for (Phase[] affectedProjectPhases : affectedPhases) 
+                             for (Phase[] affectedProjectPhases : affectedPhases)
                              {
                                 phaseManager.updatePhases(affectedProjectPhases[0].getProject(), operator);
                              }
@@ -2958,35 +3065,32 @@ public class ProjectServicesImpl implements ProjectServices {
     }
     /**
      * Creates new version for development and design contest for the given contest.since version 1.4.
-     * 
+     *
      * @param contest the contest to create new version
      * @param operator the operator
      * @return new contest for the repost one
      * @throws ProjectServicesException if any error occurs
      */
-    public FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException {
+    public FullProjectData createNewVersionContest( FullProjectData contest, String operator) throws ProjectServicesException {
         // check operator
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
         String method = "ProjectServicesImpl#createNewVersionContest(" + contest + ", " + operator + ") method.";
         log(Level.INFO, "Enters " + method);
 
-        try {              
-            //1.1 copy the project header 
+        try {
+            //1.1 copy the project header
             Project projectHeader = new Project();
             projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
             projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
-            
+
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
-            // clone some original project properties
-            for (String key : NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE) {
-                projectHeader.setProperty(key, contest.getProjectHeader().getProperty(key));
-            }
+            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
             projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
             projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
-            
+
             //1.2 clone resources:Only observers, managers, client managers and copilots should be copied in resources.
             List<com.topcoder.management.resource.Resource> newResourcesList = new ArrayList<com.topcoder.management.resource.Resource>();
             com.topcoder.management.resource.Resource[] resources = contest.getResources();
@@ -2999,18 +3103,18 @@ public class ProjectServicesImpl implements ProjectServices {
                     newResourcesList.add(resource);
                 }
             }
-            
+
             //1.3 Set the start time to 1 day + current time.
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
             projectPhases.setStartDate(contest.getStartDate());
 
-            com.topcoder.management.resource.Resource[] newResources = 
+            com.topcoder.management.resource.Resource[] newResources =
                  (com.topcoder.management.resource.Resource[]) newResourcesList.toArray(new com.topcoder.management.resource.Resource[newResourcesList.size()]);
-            
+
             //1.4 create the project here
-            FullProjectData reOpendedProject = 
+            FullProjectData reOpendedProject =
                 createProjectWithTemplate(projectHeader, projectPhases, newResources, operator);
-    
+
             return reOpendedProject;
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
@@ -3029,7 +3133,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public ScorecardReviewData getScorecardAndReview(long projectId) throws ProjectServicesException {
+    public ScorecardReviewData getScorecardAndReview( long projectId) throws ProjectServicesException {
         String method = "ProjectServicesImpl#getScorecardAndReview(" + projectId + ") method.";
 
         ScorecardReviewData scorecardReviewData = new ScorecardReviewData();
@@ -3075,7 +3179,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 if (projectPhases != null) {
                     Set<Phase> phases = projectPhases.getPhases();
                     Iterator<Phase> iter = phases.iterator();
-    
+
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
                         if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
@@ -3126,7 +3230,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public long getSpecReviewProjectId(long projectId) throws ProjectServicesException {
+    public long getSpecReviewProjectId( long projectId) throws ProjectServicesException {
         String method = "ProjectServicesImpl#getSpecReviewProjectId(" + projectId + ") method.";
 
         log(Level.INFO, "Enters " + method);
@@ -3158,7 +3262,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public Set<String> getOpenPhases(long projectId) throws ProjectServicesException {
+    public Set<String> getOpenPhases( long projectId) throws ProjectServicesException {
         String method = "ProjectServicesImpl#getOpenPhases(" + projectId + ") method.";
         log(Level.INFO, "Enters " + method);
 
@@ -3192,7 +3296,7 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public void addReviewComment(long reviewId, Comment comment, String operator) throws ProjectServicesException {
+    public void addReviewComment( long reviewId, Comment comment, String operator) throws ProjectServicesException {
         // check comment
         ExceptionUtils.checkNull(comment, null, null, "The parameter[comment] should not be null.");
 
@@ -3218,19 +3322,19 @@ public class ProjectServicesImpl implements ProjectServices {
      * update phases
      * </p>
      *
-     * @param project project 
+     * @param project project
      * @param operator operator
      *
      *
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public void updatePhases(com.topcoder.project.phases.Project project, String operator) throws ProjectServicesException
+    public void updatePhases( com.topcoder.project.phases.Project project, String operator) throws ProjectServicesException
     {
         String method = "ProjectServicesImpl#updatePhases(" + project.getId() + ") method.";
         log(Level.INFO, "Enters " + method);
 
-      
+
         try {
             phaseManager.updatePhases(project, operator);
 
@@ -3244,7 +3348,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
 
     /**
-     * Update the given project 
+     * Update the given project
      *
      * @param project
      *            The project instance to be updated into the database.
@@ -3260,19 +3364,19 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws ValidationException
      *             if error occurred while validating the project instance.
      */
-    public void updateProject(Project project, String reason, String operator) throws ProjectServicesException
+    public void updateProject( Project project, String reason, String operator) throws ProjectServicesException
     {
         String method = "ProjectServicesImpl#updateProject(" + project.getId() + ") method.";
         log(Level.INFO, "Enters " + method);
 
-      
+
         try {
             projectManager.updateProject(project, reason, operator);
 
         } catch (PersistenceException ex) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating PhaseManager.", ex);
-        } 
+        }
         catch (ValidationException ex) {
             log(Level.ERROR, "ValidationException occurred in " + method);
             throw new ProjectServicesException("ValidationException occurred when operating PhaseManager.", ex);
@@ -3284,7 +3388,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
-     * check if it is dev only 
+     * check if it is dev only
      * </p>
      *
      * @param projectId  project id
@@ -3294,52 +3398,52 @@ public class ProjectServicesImpl implements ProjectServices {
      * @throws PersistenceException if any other error occurs.
      *
      */
-    public boolean isDevOnly(long projectId) throws ProjectServicesException
+    public boolean isDevOnly( long projectId) throws ProjectServicesException
     {
         String method = "ProjectServicesImpl#isDevOnly(" + projectId + ") method.";
         log(Level.INFO, "Enters " + method);
 
-      
+
         try {
             return projectManager.isDevOnly(projectId);
 
         } catch (PersistenceException ex) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating PhaseManager.", ex);
-        } 
+        }
        finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
-	
-	/**
+
+    /**
      * This method links the development contest to its design contest. It simply call a method in project link manager.
      *
      * @param developmentContestId the development contest id
-	 *
+     *
      * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
      *
      * @since 1.3.1
      */
-	public void linkDevelopmentToDesignContest(long developmentContestId) throws ProjectServicesException {
-		String method = "ProjectServicesImpl#linkDevelopmentToDesignContest(" + developmentContestId + ") method.";
+    public void linkDevelopmentToDesignContest( long developmentContestId) throws ProjectServicesException {
+        String method = "ProjectServicesImpl#linkDevelopmentToDesignContest(" + developmentContestId + ") method.";
         log(Level.INFO, "Enters " + method);
         log(Level.ERROR, "Enters1 " + developmentContestId);
-        log(Level.ERROR, "Enters2 " + getDevelopmentContestId(developmentContestId));
+        log(Level.ERROR, "Enters2 " + getDevelopmentContestId( developmentContestId));
         try {
             long designId = getDesignContestId(developmentContestId);
             if (designId != 0)
             {
                 projectLinkManager.addProjectLink(developmentContestId, designId, ProjectLinkType.FOR_DESIGN);
             }
-			
+
         } catch (PersistenceException ex) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating Rroject Link Manager.", ex);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
-	}	
+    }
 
 
     /**
@@ -3353,24 +3457,24 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public long getDesignContestId(long contestId)
         throws ProjectServicesException {
-		log(Level.INFO,
-				"Enters ProjectServicesImpl#getDesignContestId method.");
+        log(Level.INFO,
+                "Enters ProjectServicesImpl#getDesignContestId method.");
 
-		long ret;
-		try {
-			ret = projectManager.getDesignContestId(contestId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getDesignContestId method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating ProjectManager.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getDesignContestId method.");
-		return ret;
-	}
+        long ret;
+        try {
+            ret = projectManager.getDesignContestId(contestId);
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getDesignContestId method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating ProjectManager.",
+                    ex);
+        }
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getDesignContestId method.");
+        return ret;
+    }
 
 
     /**
@@ -3439,7 +3543,7 @@ public class ProjectServicesImpl implements ProjectServices {
         List<Phase[]> phases = auto.adjustDependingProjectPhases(mainProject.getAllPhases());
         for (Phase[] p : phases) {
             if (p.length > 0) {
-                com.topcoder.project.phases.Project projectPhases = p[0].getProject();		
+                com.topcoder.project.phases.Project projectPhases = p[0].getProject();
                 phaseManager.updatePhases(projectPhases, operator);
             }
         }
@@ -3462,32 +3566,6 @@ public class ProjectServicesImpl implements ProjectServices {
             }
         }
         return lastPhase;
-    }
-
-
-     /**
-     *  Get project only (not phase or resources)
-     */
-    public Project getProject(long projectId) throws ProjectServicesException
-    {
-
-        log(Level.INFO,
-				"Enters ProjectServicesImpl#getProject method.");
-
-		Project project = null;
-		try {
-			project = projectManager.getProject(projectId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating getProject.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getProject method.");
-		return project;
     }
 
 

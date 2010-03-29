@@ -29,6 +29,11 @@
 				<env-entry-type>java.lang.String</env-entry-type>
 				<env-entry-value>defaultLogger</env-entry-value>
 			</env-entry>
+			<ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.user.UserServiceRemote</remote>
+            </ejb-ref>
 		</session>
 	</enterprise-beans>
 </ejb-jar>

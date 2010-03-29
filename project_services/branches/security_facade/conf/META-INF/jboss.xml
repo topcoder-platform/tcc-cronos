@@ -8,6 +8,11 @@
             <ejb-name>ProjectServicesBean</ejb-name>
             <jndi-name>ProjectServicesBean/remote</jndi-name>
             <local-jndi-name>ProjectServicesBean/local</local-jndi-name>
+            <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
+            
             <method-attributes>
               <method>
                 <method-name>createProject</method-name>
