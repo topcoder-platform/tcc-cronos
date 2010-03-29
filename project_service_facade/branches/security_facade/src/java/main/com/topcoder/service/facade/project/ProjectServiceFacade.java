@@ -1,25 +1,20 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.project;
 
-import com.topcoder.clients.model.Client;
-import com.topcoder.clients.model.ClientStatus;
-import com.topcoder.clients.model.Company;
+import java.util.List;
+
+import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.model.Project;
-import com.topcoder.clients.model.ProjectStatus;
+import com.topcoder.security.TCSubject;
+import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.IllegalArgumentFault;
 import com.topcoder.service.project.PersistenceFault;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectNotFoundFault;
-import com.topcoder.service.project.AuthorizationFailedFault;
-import com.topcoder.service.project.UserNotFoundFault;
-import com.topcoder.service.project.ProjectHasCompetitionsFault;
 import com.topcoder.service.project.ProjectService;
-
-import javax.jws.WebService;
-
-import java.util.List;
+import com.topcoder.service.project.UserNotFoundFault;
 
 /**
  * <p>An interface for the web service implementing unified <code>Facade</code> interface to various service components
@@ -27,17 +22,27 @@ import java.util.List;
  *
  * <p>As of this version a facade to <code>Project Service</code> is provided only.</p>
  *
+ * <p>
+ * Changes in v1.0.2(Cockpit Security Facade V1.0):
+ *  - It is not a web-service facade any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new ProjectServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to this interface.
+ * </p>
  * @author isv
- * @version 1.0
+ * @version 1.0.2
  */
-@WebService(name = "ProjectServiceFacade")
 public interface ProjectServiceFacade {
 
     /**
      * <p>Creates a project with the given project data.</p>
      *
      * <p>Note, any user can create project and the project will associate with him/her.</p>
-     *
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectData
      *            The project data to be created. Must not be null.
      *            The <code>ProjectData.name</code> must not be null/empty.
@@ -48,13 +53,15 @@ public interface ProjectServiceFacade {
      * @throws PersistenceFault if a generic persistence error occurs.
      * @see ProjectService#createProject(ProjectData)
      */
-    ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
-
-    /**
+    ProjectData createProject(TCSubject tcSubject, ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
+     /**
      * <p>Gets the project data for the project with the given Id.</p>
      *
      * <p>Notes, only associated user can retrieve the specified project, administrator can retrieve any projects.</p>
-     *
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the ID of the project to be retrieved.
      * @return The project data for the project with the given Id. Will never be null.
      * @throws PersistenceFault if a generic persistence error.
@@ -62,13 +69,16 @@ public interface ProjectServiceFacade {
      * @throws AuthorizationFailedFault if the calling principal is not authorized to retrieve the project.
      * @see ProjectService#getProject(long)
      */
-    ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault;
+    ProjectData getProject(TCSubject tcSubject, long projectId) throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault;
 
     /**
      * <p>Gets the project data for all projects of the given user.</p>
      *
      * <p>Notes, only administrator can do this.</p>
-     *
+     *<p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param userId the ID of the user whose projects are to be retrieved.
      * @return The project data for all projects of the given user. The returned collection will not be null or contain
      *         nulls. Will never be empty.
@@ -78,7 +88,7 @@ public interface ProjectServiceFacade {
      *         interface unchanged.
      * @see ProjectService#getProjectsForUser(long)
      */
-    List< ProjectData > getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault,
+    List< ProjectData > getProjectsForUser(TCSubject tcSubject, long userId) throws PersistenceFault, UserNotFoundFault,
                                                                AuthorizationFailedFault;
 
     /**
@@ -86,23 +96,27 @@ public interface ProjectServiceFacade {
      *
      * <p>Notes, for user, it will retrieve only the projects associated with him; for administrators, it will retrieve
      * all the existing projects.</p>
-     * 
+     *
      * <p>
      * Updated for Cockpit Project Admin Release Assembly v1.0
      *      - Added check for admin user, if admin user then all projects are loaded else only for the user.
      * </p>
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return The project data for all projects viewable from the calling principal. The returned collection will not
      *         be null or contain nulls. Possibly empty.
      * @throws PersistenceFault if a generic persistence error occurs.
      * @throws AuthorizationFailedFault if errors occurs during authorization of the caller user.
      * @throws UserNotFoundFault if errors occurs during authorization of the caller user.
-     * 
+     *
      * @see ProjectService#getAllProjects()
      */
-    List < ProjectData > getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault;
+    List < ProjectData > getAllProjects(TCSubject tcSubject) throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault;
 
-    
+
     /**
      * <p>
      * Defines the operation that performs the retrieval of the list with
@@ -123,19 +137,23 @@ public interface ProjectServiceFacade {
      *                 if any error occurs while performing this operation.
      */
     //List<Project> getClientProjectsForClient(Client client) throws DAOFault;
-    
+
     /**
      * <p>
      * Defines the operation that performs the retrieval of the list with
      * projects with the given user id. If nothing is found, return an empty list.
      * <p>
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return List of Project, if nothing is found, return an empty string
      * @throws DAOException if any error occurs while performing this operation.
      */
-    public List<Project> getClientProjectsByUser() throws DAOFault;
+    public List<Project> getClientProjectsByUser(TCSubject tcSubject) throws DAOFault;
 
 
-  
+
 
     /**
      * <p>

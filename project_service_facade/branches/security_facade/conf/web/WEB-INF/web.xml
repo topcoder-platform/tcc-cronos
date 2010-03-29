@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
     <display-name>Project Service Facade demo</display-name>
+	<!-- wsdl has been updated in cockpit security facade v1.0 -->
     <context-param>
         <description>An URL for the Project Service Facade WSDL document</description>
         <param-name>facade_wsdl</param-name>
-        <param-value>http://127.0.0.1:8080/projectfacade/ProjectServiceFacadeBean?wsdl</param-value>
+        <param-value>http://cockpit.cloud.topcoder.com/projectfacade/ProjectServiceFacadeWebServiceBean?wsdl</param-value>
 <!--
         <param-value>http://127.0.0.1:8380/services-project_service_facade/ProjectServiceFacadeBean?wsdl</param-value>
 -->

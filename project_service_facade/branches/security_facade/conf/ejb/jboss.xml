@@ -1,10 +1,22 @@
 <?xml version="1.0"?>
 <jboss>
-    <enterprise-beans>
+    <enterprise-beans>     
         <session>
             <ejb-name>ProjectServiceFacadeBean</ejb-name>
             <jndi-name>remote/ProjectServiceFacadeBean</jndi-name>
+             <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
         </session>
+		<session>
+            <ejb-name>ProjectServiceFacadeWebServiceBean</ejb-name>
+            <jndi-name>remote/ProjectServiceFacadeWebServiceBean</jndi-name>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectServiceFacade</ejb-ref-name>
+                <jndi-name>remote/ProjectServiceFacadeBean</jndi-name>
+            </ejb-ref>
+        </session>       
     </enterprise-beans>
     <security-domain>java:/jaas/JBossLoginModule</security-domain>
 

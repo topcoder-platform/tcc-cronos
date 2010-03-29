@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.project.ejb;
 
@@ -11,8 +11,6 @@ import com.topcoder.clients.dao.EntityNotFoundException;
 import com.topcoder.clients.dao.ProjectDAO;
 import com.topcoder.clients.dao.ProjectStatusDAO;
 import com.topcoder.clients.model.Client;
-import com.topcoder.clients.model.ClientStatus;
-import com.topcoder.clients.model.Company;
 import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectStatus;
 import com.topcoder.service.facade.project.DAOFault;
@@ -24,12 +22,13 @@ import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectNotFoundFault;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.UserNotFoundFault;
-import com.topcoder.service.project.ProjectHasCompetitionsFault;
-import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.security.RolePrincipal;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.user.UserService;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -38,34 +37,31 @@ import javax.ejb.TransactionManagementType;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
-import javax.jws.WebService;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
-import java.util.List;
-import java.util.ArrayList;
 
-import org.jboss.ws.annotation.EndpointConfig;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>This is an implementation of <code>Project Service Facade</code> web service in form of stateless session EJB. It
- * holds a reference to {@link ProjectService} which is delegated the fulfillment of requests.</p> 
+ * holds a reference to {@link ProjectService} which is delegated the fulfillment of requests.</p>
  * </p>
  * <p>
- *  Changes in v1.0.1 Moved insert permission when creating project
+ *  Changes in v1.0.1 Moved insert permission when creating project.
  * </p>
- *
- * @author isv
- * @version 1.0.1
+ * <p>
+ * Changes in v1.0.2(Cockpit Security Facade V1.0):
+ *  - It is not a web-service facade any more.
+ *  - All the methods accepts a parameter TCSubject which contains all the security info for current user.
+ *    The implementation EJB should use TCSubject and now get these info from the sessionContext.
+ *  - Please use the new ProjectServiceFacadeWebService as the facade now. That interface will delegates all the methods
+ *    to this interface.
+ * </p>
+ * @author isv, waits
+ * @version 1.0.2
  */
 @Stateless
-@WebService
-@EndpointConfig(configName = "Standard WSSecurity Endpoint")
-@DeclareRoles({"Cockpit User", "Cockpit Administrator" })
-@RolesAllowed({"Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, ProjectServiceFacadeRemote {
@@ -111,7 +107,14 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     @EJB(name = "ejb/ProjectStatusDAOBean")
     private ProjectStatusDAO projectStatusDAO = null;
-
+    /**
+     * <p>
+     * A <code>UserService</code> providing access to available <code>User Service EJB</code>.
+     * </p>
+     * @since v1.0.2 adding TCSubject
+     */
+    @EJB(name = "ejb/UserService")
+    private UserService userService = null;
 
     /**
      * <p>
@@ -124,7 +127,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     @EJB(name = "ejb/PermissionService")
     private PermissionService permissionService = null;
-    
+
     /**
      * <p>
      * The instance of SessionContext that was injected by the EJB container.
@@ -136,10 +139,14 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
     @Resource
     private SessionContext sessionContext;
 
-	/**
+    /**
      * Private constant specifying administrator role.
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
+    /**
+     * Private constant specifying user role.
+     */
+    private static final String USER_ROLE = "Cockpit User";
 
     /**
      * Private constant specifying 'project_full' permission type name
@@ -148,19 +155,23 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     private static final String PERMISSION_TYPE_PROJECT_FULL_NAME = "project_full";
 
-	/**
+    /**
      * Private constant specifying 'project_full' permission type id
      * @since 1.0.1
      *
      */
     private static final long ERMISSION_TYPE_PROJECT_FULL_ID = 3;
 
-    
+
 
     /**
      * <p>Creates a project with the given project data.</p>
      *
      * <p>Note, any user can create project and the project will associate with him/her.</p>
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectData The project data to be created. Must not be null. The <code>ProjectData.name</code> must not be
      * null/empty. The <code>ProjectData.projectId</code>, if any, is ignored.
@@ -170,17 +181,16 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws PersistenceFault if a generic persistence error occurs.
      * @see ProjectService#createProject(ProjectData)
      */
-    @WebMethod
-    public @WebResult ProjectData createProject(@WebParam ProjectData projectData) 
-        throws PersistenceFault, IllegalArgumentFault 
+
+    public ProjectData createProject(TCSubject tcSubject, ProjectData projectData)
+        throws PersistenceFault, IllegalArgumentFault
     {
         try
         {
-            ProjectData result = this.projectService.createProject(projectData);
+            ProjectData result = this.projectService.createProject(tcSubject, projectData);
 
             // add permission for project creator with project_full
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
+            long userId = tcSubject.getUserId();
             Permission perm = new Permission();
             perm.setUserId(userId);
             perm.setResourceId(result.getProjectId());
@@ -206,7 +216,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
             sessionContext.setRollbackOnly();
             throw e;
         }
-        
+
 
     }
 
@@ -214,7 +224,10 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * <p>Gets the project data for the project with the given Id.</p>
      *
      * <p>Notes, only associated user can retrieve the specified project, administrator can retrieve any projects.</p>
-     *
+     *<p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param projectId the ID of the project to be retrieved.
      * @return The project data for the project with the given Id. Will never be null.
      * @throws PersistenceFault if a generic persistence error.
@@ -222,16 +235,19 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws AuthorizationFailedFault if the calling principal is not authorized to retrieve the project.
      * @see ProjectService#getProject(long)
      */
-    @WebMethod
-    public @WebResult ProjectData getProject(@WebParam long projectId) throws PersistenceFault, ProjectNotFoundFault,
+    public ProjectData getProject(TCSubject tcSubject, long projectId) throws PersistenceFault, ProjectNotFoundFault,
                                                                               AuthorizationFailedFault {
-        return this.projectService.getProject(projectId);
+        return this.projectService.getProject(tcSubject,projectId);
     }
 
     /**
      * <p>Gets the project data for all projects of the given user.</p>
      *
      * <p>Notes, only administrator can do this.</p>
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param userId the ID of the user whose projects are to be retrieved.
      * @return The project data for all projects of the given user. The returned collection will not be null or contain
@@ -242,8 +258,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * unchanged.
      * @see ProjectService#getProjectsForUser(long)
      */
-    @WebMethod
-    public @WebResult List<ProjectData> getProjectsForUser(@WebParam long userId) throws PersistenceFault,
+    public List<ProjectData> getProjectsForUser(TCSubject tcSubject, long userId) throws PersistenceFault,
                                                                                          UserNotFoundFault,
                                                                                          AuthorizationFailedFault {
         return this.projectService.getProjectsForUser(userId);
@@ -254,25 +269,49 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      *
      * <p>Notes, for user, it will retrieve only the projects associated with him; for administrators, it will retrieve all
      * the existing projects.</p>
-     * 
+     *
      * <p>
      * Updated for Cockpit Project Admin Release Assembly v1.0
      *      - Added check for admin user, if admin user then all projects are loaded else only for the user.
      * </p>
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @return The project data for all projects viewable from the calling principal. The returned collection will not be
      *         null or contain nulls. Possibly empty.
      * @throws PersistenceFault if a generic persistence error occurs.
      * @see ProjectService#getAllProjects()
      */
-    @WebMethod
-    public @WebResult List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault {
-        if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+
+    public List<ProjectData> getAllProjects(TCSubject tcSubject) throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault {
+        if (isRole(tcSubject, ADMIN_ROLE)) {
             return this.projectService.getAllProjects();
-        } else {
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            return this.projectService.getProjectsForUser(p.getUserId());
+        } else if (isRole(tcSubject, USER_ROLE)) {
+            return this.projectService.getProjectsForUser(tcSubject.getUserId());
         }
+        return new ArrayList<ProjectData>();
+    }
+
+    /**
+     * <p>
+     * Checks if the login user is admin or not.
+     * </p>
+     *
+     * @param tcSubject TCSubject instance for login user
+     * @return true if it is admin
+     */
+    private static boolean isRole(TCSubject tcSubject, String roleName) {
+        Set<RolePrincipal> roles = tcSubject.getPrincipals();
+        if (roles != null) {
+            for (RolePrincipal role : roles) {
+                if (role.getName().equalsIgnoreCase(roleName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -288,10 +327,9 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws PersistenceFault if a generic persistence error.
      * @see ProjectService#updateProject(ProjectData)
      */
-    @WebMethod
-    public void updateProject(@WebParam ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
+    public void updateProject(TCSubject tcSubject, ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
                                                                         AuthorizationFailedFault, IllegalArgumentFault {
-        this.projectService.updateProject(projectData);
+        this.projectService.updateProject(tcSubject, projectData);
     }
 
 
@@ -314,17 +352,16 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOFault
      *                 if any error occurs while performing this operation.
      */
-    //@WebMethod
     public List<Project> getClientProjectsForClient(Client client) throws DAOFault {
-    	try {
-			return this.clientDAO.getProjectsForClient(client);
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.clientDAO.getProjectsForClient(client);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
- 
+
 
 
     /**
@@ -351,13 +388,13 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     //@WebMethod
     public Project retrieveClientProjectById(Long id, boolean includeChildren) throws EntityNotFoundFault, DAOFault {
-    	try {
-			return this.projectDAO.retrieveById(id, includeChildren);
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectDAO.retrieveById(id, includeChildren);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
 
     /**
@@ -378,11 +415,11 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
  //   @WebMethod
     public List<Project> retrieveClientProjects(boolean includeChildren) throws DAOFault {
-    	try {
-			return this.projectDAO.retrieveAll(includeChildren);
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectDAO.retrieveAll(includeChildren);
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
     /**
      * <p>
@@ -404,13 +441,13 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
    // @WebMethod
     public Project retrieveClientProjectByProjectId(Long id) throws EntityNotFoundFault, DAOFault {
-    	try {
-			return this.projectDAO.retrieveById(id);
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectDAO.retrieveById(id);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
 
     /**
@@ -426,14 +463,14 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     //@WebMethod
     public List<Project> retrieveAllClientProjects() throws DAOFault {
-    	try {
-			return this.projectDAO.retrieveAll();
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectDAO.retrieveAll();
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
 
-   
+
 
     /**
      * <p>
@@ -456,13 +493,13 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     //@WebMethod
     public List<Project> getClientProjectsWithStatus(ProjectStatus status) throws DAOFault {
-    	try {
-			return this.projectStatusDAO.getProjectsWithStatus(status);
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectStatusDAO.getProjectsWithStatus(status);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
     /**
      * <p>
@@ -484,45 +521,58 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     //@WebMethod
     public ProjectStatus retrieveProjectStatusById(Long id) throws EntityNotFoundFault, DAOFault {
-    	try {
-			return this.projectStatusDAO.retrieveById(id);
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
+        try {
+            return this.projectStatusDAO.retrieveById(id);
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
     }
 
-
+    /**
+     * <p>
+     * Get the user-name for the login user represented by TCSubject.
+     * </p>
+     * @param tcSubject for login user info
+     * @return user name
+     * @throws DAOException if any error occurs
+     */
+    private String getUserName(TCSubject tcSubject) throws DAOException {
+        try {
+            return this.userService.getUserHandle(tcSubject.getUserId());
+        } catch (Exception e) {
+            throw new DAOException("Fail to get the user-name by user-id" + tcSubject.getUserId(), e);
+        }
+    }
 
     /**
      * <p>
      * Defines the operation that performs the retrieval of the list with
      * projects with the given user id. If nothing is found, return an empty list.
      * <p>
-     * @param userId the user id
+     * <p>
+     * Update in v1.0.2: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return List of Project, if nothing is found, return an empty string
      * @throws DAOException if any error occurs while performing this operation.
      */
-    @WebMethod
-    public List<Project> getClientProjectsByUser() throws DAOFault {
-    	if ( sessionContext.getCallerPrincipal() == null || sessionContext.getCallerPrincipal().getName() == null) {
-    		throw new DAOFault("Fail to get client project for user.");
-    	}
-    	try {
-    		if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-    			return this.projectDAO.retrieveAllProjectsOnly();
-    		}    
+    public List<Project> getClientProjectsByUser(TCSubject tcSubject) throws DAOFault {
 
-			//TODO, until we fix retrieveAll, 
-			 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-			 //return this.clientDAO.getProjectsByUser(p.getName());
-             		 return this.projectDAO.getProjectsByUser(p.getName());
+        try {
+            if (isRole(tcSubject, ADMIN_ROLE)) {
+                return this.projectDAO.retrieveAllProjectsOnly();
+            } else if (isRole(tcSubject, USER_ROLE)){
+                return this.projectDAO.getProjectsByUser(getUserName(tcSubject));
+            }
+            return new ArrayList<Project>();
 
-		} catch(EntityNotFoundException e) {
-			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
-		} catch (DAOException e) {
-			throw new DAOFault(e.getMessage(), e.getCause());
-		}
-	}
+
+        } catch(EntityNotFoundException e) {
+            throw new EntityNotFoundFault(e.getMessage(), e.getCause());
+        } catch (DAOException e) {
+            throw new DAOFault(e.getMessage(), e.getCause());
+        }
+    }
 }

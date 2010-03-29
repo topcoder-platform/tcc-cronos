@@ -6,11 +6,13 @@
     <description>Project Services Facade EJB</description>
     <display-name>Project Services Facade EJB</display-name>
     <enterprise-beans>
+        
+      
+        
         <session>
             <ejb-name>ProjectServiceFacadeBean</ejb-name>
             <remote>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeRemote</remote>
             <local>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeLocal</local>
-            <service-endpoint>com.topcoder.service.facade.project.ProjectServiceFacade</service-endpoint>
             <ejb-class>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
@@ -19,27 +21,27 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
             </ejb-ref>
-			<ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/CompanyDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.CompanyDAORemote</remote>
             </ejb-ref>
-			<ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/ProjectStatusDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ProjectStatusDAORemote</remote>
             </ejb-ref>
-			<ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/ClientStatusDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ClientStatusDAORemote</remote>
             </ejb-ref>
-			<ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/ClientDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ClientDAORemote</remote>
             </ejb-ref>
-			<ejb-ref>
+            <ejb-ref>
                 <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
@@ -48,6 +50,40 @@
                 <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.permission.PermissionServiceRemote</remote>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.user.UserService</remote>
+            </ejb-ref>
+        </session>
+          <session>
+            <ejb-name>ProjectServiceFacadeWebServiceBean</ejb-name>
+            <remote>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeWebServiceRemote</remote>
+            <local>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeWebServiceLocal</local>
+            <service-endpoint>com.topcoder.service.facade.project.ProjectServiceFacadeWebService</service-endpoint>
+            <ejb-class>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeWebServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>loginBeanResourceBundleBaseName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>tc_login_bean</env-entry-value>
+            </env-entry>
+           <env-entry>
+                <env-entry-name>loginBeanUrlPropertyName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>url</env-entry-value>
+            </env-entry>
+           <env-entry>
+                <env-entry-name>loginBeanDSJndiName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>java:DS</env-entry-value>
+            </env-entry>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectServiceFacade</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.facade.project.ejb.ProjectServiceFacadeRemote</remote>
             </ejb-ref>
         </session>
     </enterprise-beans>

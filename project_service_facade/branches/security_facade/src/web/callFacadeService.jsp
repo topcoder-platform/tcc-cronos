@@ -1,17 +1,19 @@
 <%--
   - Author: isv
   - Date: 19 Dec 2008
-  - Version: 1.0
+  - Version: 1.1
   - Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
   -
   - Description: This page is used ot handle the requests from index.jsp for invoking the selected web service operation
   - with provided parameters and displaying the results of the call. In fact, this page acts like a web service client
-  - demonstrating the code which could be used for calling the web service. 
+  - demonstrating the code which could be used for calling the web service.
+  -
+  - V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page import="javax.xml.namespace.QName" %>
 <%@ page import="java.net.URL" %>
 <%@ page import="javax.xml.ws.Service" %>
-<%@ page import="com.topcoder.service.facade.project.ProjectServiceFacade" %>
+<%@ page import="com.topcoder.service.facade.project.ProjectServiceFacadeWebService" %>
 <%@ page import="com.topcoder.service.project.ProjectData" %>
 <%@ page import="org.jboss.ws.core.StubExt" %>
 <%@ page import="javax.xml.ws.BindingProvider" %>
@@ -32,9 +34,9 @@
         // Obtain a client stub for accessing the web service
         URL wsdlLocation = new URL(getServletConfig().getServletContext().getInitParameter("facade_wsdl"));
         QName serviceName = new QName("http://ejb.project.facade.service.topcoder.com/",
-                                      "ProjectServiceFacadeBeanService");
+                                      "ProjectServiceFacadeWebServiceBeanService");
         Service service = Service.create(wsdlLocation, serviceName);
-        ProjectServiceFacade port = service.getPort(ProjectServiceFacade.class);
+        ProjectServiceFacadeWebService port = service.getPort(ProjectServiceFacadeWebService.class);
         ((StubExt) port).setConfigName("Standard WSSecurity Client");
         ((BindingProvider) port).getRequestContext().put(BindingProvider.USERNAME_PROPERTY,
                                                          request.getUserPrincipal().getName());
@@ -50,7 +52,7 @@
             newProject = port.createProject(newProject);
             callResult = "Created new project: ID = " + newProject.getProjectId() + ", name = " + newProject.getName()
                          + ", desc = " + newProject.getDescription();
-        } else if ("updateProject".equals(operation)) {
+        } /*else if ("updateProject".equals(operation)) {
             String name = request.getParameter("uname");
             String desc = request.getParameter("udesc");
             String uid = request.getParameter("uid");
@@ -65,7 +67,7 @@
             String did = request.getParameter("did");
             boolean result = port.deleteProject(Long.parseLong(did));
             callResult = "Deleted project: ID = " + did + ", success = " + result;
-        } else if ("getProject".equals(operation)) {
+        } */else if ("getProject".equals(operation)) {
             String pid = request.getParameter("pid");
             ProjectData project = port.getProject(Long.parseLong(pid));
             callResult = "Retrieved project: ID = " + project.getProjectId() + ", name = " + project.getName()
@@ -87,7 +89,7 @@
                         append(", desc = ").append(p.getDescription()).append("<br/>");
             }
             callResult = "Retrieved all projects:<br/>" + b.toString();
-        } else if ("getClientProjectsForClient".equals(operation)) {
+        }/* else if ("getClientProjectsForClient".equals(operation)) {
         	String clientId = request.getParameter("clientId");
         	Client client = port.retrieveClientById(Long.parseLong(clientId));
         	List<Project> clientProjects = port.getClientProjectsForClient(client);
@@ -370,7 +372,7 @@
         	ProjectStatus project = port.retrieveProjectStatusById(Long.parseLong(id));
         	port.deleteProjectStatus(project);
         	callResult = "Delete ProjectStatus : ID = " + id;
-        } else if("getClientProjectsByUserId".equals(operation)) {
+        }*/ else if("getClientProjectsByUserId".equals(operation)) {
         	String userId = request.getParameter("userIDDDD");
         	
         	List<Project> projects = port.getClientProjectsByUser();
