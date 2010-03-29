@@ -1,9 +1,9 @@
 <project name="Dependency Import"  basedir=".">
     <!-- property file defining the component's dependencies -->
 
-	<property name="jboss_home" value="E:\jboss-4.2.2.GA"/>
-	<property name="server" value="default"/>
-	<property name="jboss_lib" value="${jboss_home}/server/${server}/lib"/>
+    <property name="jboss_home" value="E:\jboss-4.2.2.GA"/>
+    <property name="server" value="default"/>
+    <property name="jboss_lib" value="${jboss_home}/server/${server}/lib"/>
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
     <property name="component.target" value="1.5"/>
@@ -25,7 +25,12 @@
     <property name="search_builder.jar"  value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-    
+
+    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="user_service.version" value="1.0.0" />
+        <property name="user_service.jar.name" value="user_service.jar" />
+        <property name="user_service.path" value="user_service/${user_service.version}" />
+        <property name="user_service.jar" value="${tcs_libdir}/${user_service.path}/${user_service.jar.name}" />
     <!-- 3rd party dependencies -->
     <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
     <property name="jboss-j2ee.jar" value="${jboss_lib}/jboss-j2ee.jar"/>
@@ -50,6 +55,8 @@
         <pathelement location="${search_builder.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${security.jar}" />
+        <pathelement location="${user_service.jar}" />
     </path>
 
     <path id="component.3rdParty-dependencies">

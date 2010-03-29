@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
@@ -37,13 +38,6 @@ import com.topcoder.service.studio.submission.Submission;
  * </p>
  *
  * <p>
- * It has the following annotations: "@WebService". All the other annotations
- * (also in the methods) are optional: WebParam, WebMethod are not necessary
- * because if WebMethod is not used then automatically all methods are
- * WebMethod.
- * </p>
- *
- * <p>
  * Module Cockpit Contest Service Enhancement Assembly change: Several new
  * methods related to the permission and permission type are added.
  * </p>
@@ -56,7 +50,7 @@ import com.topcoder.service.studio.submission.Submission;
  * <p>
  * All the methods that does CRUD on permission have been commented for Cockpit Project Admin Release Assembly v1.0.
  * </p>
- * 
+ *
  * <p>
  * Version 1.0.1 (Cockpit Pipeline Release Assembly 1 v1.0) Change Notes:
  *  - Introduced method to retrieve SimplePipelineData for given date range.
@@ -70,16 +64,22 @@ import com.topcoder.service.studio.submission.Submission;
  * Changes in v1.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI): Added a flag to
  * updateSubmissionUserRank method to support ranking milestone submissions.
  * </p>
+ * <p>
+ * Changes in v1.2.1(Cockpit Security Facade V1.0)
+ *  - Methods add paremeter TCSubject in order to replacing the current permission checking security info.
+ * </p>
  *
  * @author fabrizyo, pulky
- * @version 1.2
+ * @version 1.2.1
  */
-// @WebService
 @Remote
 public interface StudioService {
     /**
      * Create contest for project. Return contest populated with id
-     *
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestData the contestData used to create the Contest
      * @param tcDirectProjectId the tc project id set to Contest
      * @return the ContestData persisted and polulated with the new id
@@ -89,7 +89,7 @@ public interface StudioService {
      * @throws UserNotAuthorizedException if the user is not authorized to
      *         perform this method
      */
-    public ContestData createContest(ContestData contestData, long tcDirectProjectId)
+    public ContestData createContest(TCSubject tcSubject,ContestData contestData, long tcDirectProjectId)
         throws PersistenceException;
 
     /**
@@ -114,21 +114,22 @@ public interface StudioService {
      * @param tcDirectProjectId the tc Direct Projec tId used to retrieve the
      *        ContestData
      * @return the contest datas which represents the contests
-     * @throws IllegalArgumentWSException if the tcDirectProjectId is less than
-     *         0
+     * @throws IllegalArgumentWSException if the tcDirectProjectId is less than  0
      * @throws PersistenceException if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to
-     *         perform this method
+     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
      * @throws ProjectNotFoundException if the project is not found
      */
     public List<ContestData> getContestsForProject(long tcDirectProjectId)
-        throws PersistenceException,
-            ProjectNotFoundException;
+        throws PersistenceException, ProjectNotFoundException;
 
     /**
      * <p>
      * Update contest
-     *
+     * </p>
+     *  <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestData the contest data to update
      * @throws IllegalArgumentWSException if the argument is null
      * @throws PersistenceException if some persistence errors occur
@@ -136,7 +137,7 @@ public interface StudioService {
      *         perform this method
      * @throws ContestNotFoundException if the contest is not found
      */
-    public void updateContest(ContestData contestData) throws PersistenceException, ContestNotFoundException;
+    public void updateContest(TCSubject tcSubject,ContestData contestData) throws PersistenceException, ContestNotFoundException;
 
     /**
      * <p>
@@ -161,7 +162,11 @@ public interface StudioService {
     /**
      * <p>
      * Upload document to contest. Return document populated with id.
-     *
+     * </p>
+     *  <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param uploadedDocument the uploadDocument to update
      * @return the same instance passed in argument with the documentId updated
      * @throws IllegalArgumentWSException if the argument is null
@@ -170,7 +175,7 @@ public interface StudioService {
      *         perform this method
      * @throws ContestNotFoundException if the contest is not found
      */
-    public UploadedDocument uploadDocumentForContest(UploadedDocument uploadedDocument)
+    public UploadedDocument uploadDocumentForContest(TCSubject tcSubject,UploadedDocument uploadedDocument)
         throws PersistenceException,
             ContestNotFoundException;
 
@@ -221,8 +226,12 @@ public interface StudioService {
     /**
      * <p>
      * Retrieve submission data. return an empty list if there are no submission
-     * data
-     *
+     * data.
+     * </p>
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId the contest if used
      * @return the submission data of contest
      * @throws IllegalArgumentWSException if the argument id less than 0
@@ -231,7 +240,7 @@ public interface StudioService {
      *         perform this method
      * @throws ContestNotFoundException if the contest is not found
      */
-    public List<SubmissionData> retrieveSubmissionsForContest(long contestId)
+    public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject,long contestId)
         throws PersistenceException,
             ContestNotFoundException;
 
@@ -302,24 +311,30 @@ public interface StudioService {
      * <p>
      * This is going to fetch all the currently available contests.
      * </p>
-     *
-     * @return the list of all available contents (or empty if none found)
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    public List<ContestData> getAllContests() throws PersistenceException;
+    public List<ContestData> getAllContests(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * This is going to fetch all the currently available contests for contest
      * monitor widget.
      * </p>
-     *
-     * @return the list of all available contents (or empty if none found)
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+    public List<SimpleContestData> getSimpleContestData(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
@@ -328,7 +343,7 @@ public interface StudioService {
      * </p>
      *
      * @param pid the given project id
-     * @return the list of all available contents (or empty if none found)
+     * @return the list of all available contents
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
@@ -339,12 +354,15 @@ public interface StudioService {
      * This is going to fetch all the currently available contests for my
      * project widget.
      * </p>
-     *
-     * @return the list of all available contents (or empty if none found)
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
+    public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
@@ -353,7 +371,7 @@ public interface StudioService {
      * </p>
      *
      * @param pid the given project id
-     * @return the list of all available contents (or empty if none found)
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
@@ -366,7 +384,7 @@ public interface StudioService {
      * </p>
      *
      * @param filter a search filter used as criteria for contests.
-     * @return a list (possibly empty) of all the matched contest entities.
+     * @return a list (TCSubject tcSubject,possibly empty) of all the matched contest entities.
      *
      * @throws IllegalArgumentException if the input filter is null or filter is
      *         not supported for searching
@@ -402,7 +420,7 @@ public interface StudioService {
      * This is going to fetch all the currently available contest types.
      * </p>
      *
-     * @return the list of all available content types (or empty if none found)
+     * @return the list of all available content types (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
@@ -516,7 +534,7 @@ public interface StudioService {
      * This is going to fetch all the currently available media.
      * </p>
      *
-     * @return the list of all available mediums (or empty if none found)
+     * @return the list of all available mediums (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting medium.
      */
@@ -595,12 +613,16 @@ public interface StudioService {
      * This is going to fetch all the currently available contests. This method
      * only return values used in my project widget.
      * </p>
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @return the list of all available contents (or empty if none found)
+     * @return the list of all available contents (TCSubject tcSubject,or empty if none found)
      *
      * @throws PersistenceException if any error occurs when getting contest.
      */
-    public List<ContestData> getAllContestHeaders() throws PersistenceException;
+    public List<ContestData> getAllContestHeaders(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * Send payments to PACTS for all unpaid submussions with a prize already
@@ -645,8 +667,11 @@ public interface StudioService {
      * <p>
      * This is going to fetch only contestid and contest name for contest.
      * </p>
-     *
-     * @return the list of all available contents (only id and name) (or empty
+     *<p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @return the list of all available contents (TCSubject tcSubject,only id and name) (TCSubject tcSubject,or empty
      *         if none found)
      *
      * @throws ContestManagementException if any error occurs when getting
@@ -654,16 +679,19 @@ public interface StudioService {
      *
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnly() throws PersistenceException;
+    public List<SimpleContestData> getContestDataOnly(TCSubject tcSubject) throws PersistenceException;
 
     /**
      * <p>
      * This is going to fetch only contestid and contest name related to given
      * project.
      * </p>
-     *
+     *<p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param pid the given project id
-     * @return the list of all available contents (only id and name) (or empty
+     * @return the list of all available contents (TCSubject tcSubject,only id and name) (TCSubject tcSubject,or empty
      *         if none found)
      *
      * @throws ContestManagementException if any error occurs when getting
@@ -671,12 +699,12 @@ public interface StudioService {
      *
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnly(long pid) throws PersistenceException;
+    public List<SimpleContestData> getContestDataOnly(TCSubject tcSubject,long pid) throws PersistenceException;
 
     public long createForum(String name, long userId);
 
     /**
-     * Loads and returns the list of payment types (currently it is 'Paypal' and
+     * Loads and returns the list of payment types (TCSubject tcSubject,currently it is 'Paypal' and
      * 'TC Purchase order')
      *
      * @since BUGR-1076
@@ -753,12 +781,15 @@ public interface StudioService {
      * </p>
      *
      * Comment added for Cockpit Project Admin Release Assembly v1.0
-     *
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param createdUser the specified user for which to get the permission
      * @return the list of project, contest and their read/write/full
      *         permissions.
      */
-    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(long createdUser)
+    public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(TCSubject tcSubject,long createdUser)
         throws PersistenceException;
 
     /**
@@ -780,7 +811,7 @@ public interface StudioService {
      * @throws IllegalArgumentException if username is null or empty
      * @throws PersistenceException when any other error occurs
      * @param username the name of the user
-     * @return the list of found contests data (empty list of none found).
+     * @return the list of found contests data (TCSubject tcSubject,empty list of none found).
      * @since 1.3
      */
     public List<ContestData> getUserContests(String username) throws PersistenceException;
@@ -824,7 +855,10 @@ public interface StudioService {
 
     /**
      * Gets the list of simple pipeline data within between specified start and end date.
-     * 
+     * <p>
+     * Update in v1.2.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param startDate
      *            the start of date range within which pipeline data for contests need to be fetched.
      * @param endDate
@@ -836,11 +870,11 @@ public interface StudioService {
      *             if error during retrieval from database.
      * @since 1.0.1
      */
-    public List<SimplePipelineData> getSimplePipelineData(Date startDate, Date endDate, boolean overdueContests)
+    public List<SimplePipelineData> getSimplePipelineData(TCSubject tcSubject,Date startDate, Date endDate, boolean overdueContests)
             throws PersistenceException;
 
     /**
-     * Retrieves a list of capacity data (date, number of scheduled contests) for the given contest type starting
+     * Retrieves a list of capacity data (TCSubject tcSubject,date, number of scheduled contests) for the given contest type starting
      * from tomorrow.
      *
      * @param contestType the contest type
@@ -854,7 +888,7 @@ public interface StudioService {
     public List<StudioCapacityData> getCapacity(int contestType) throws PersistenceException;
 
     /**
-     * check contest permission, check if a user has permission (read or write) on a contest
+     * check contest permission, check if a user has permission (TCSubject tcSubject,read or write) on a contest
      *
      * @param contestId the contest id
      * @param projectId tc direct project id
@@ -868,7 +902,7 @@ public interface StudioService {
 
 
     /**
-     * check contest permission, check if a user has permission (read or write) on a contest
+     * check contest permission, check if a user has permission (TCSubject tcSubject,read or write) on a contest
      *
      * @param contestId the contest id
      * @param readonly check read or write permission
@@ -880,7 +914,7 @@ public interface StudioService {
     public boolean checkContestPermission(long contestId, boolean readonly, long userId)  throws PersistenceException;
 
      /**
-     * check submission permission, check if a user has permission (read or write) on a submission's contest
+     * check submission permission, check if a user has permission (TCSubject tcSubject,read or write) on a submission's contest
      *
      * @param contestId the contest id
      * @param readonly check read or write permission
@@ -892,7 +926,7 @@ public interface StudioService {
     public boolean checkSubmissionPermission(long submissionId, boolean readonly, long userId) throws PersistenceException;
 
     /**
-     * check contest permission, check if a user has permission (read or write) on a project
+     * check contest permission, check if a user has permission (TCSubject tcSubject,read or write) on a project
      *
      * @param projectId the tc direct project id
      * @param readonly check read or write permission

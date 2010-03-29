@@ -4,6 +4,10 @@
         <session>
             <ejb-name>StudioServiceBean</ejb-name>
             <jndi-name>StudioServiceBean/remote</jndi-name>
+             <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <jndi-name>UserServiceBean/remote</jndi-name>
+            </ejb-ref>
         </session>
     </enterprise-beans>
     <security-domain>java:/jaas/JBossLoginModule</security-domain>
