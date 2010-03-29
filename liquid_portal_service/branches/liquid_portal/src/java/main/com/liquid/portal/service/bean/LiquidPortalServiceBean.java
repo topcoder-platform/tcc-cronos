@@ -1321,7 +1321,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 comp = contestServiceFacade.createContest(comp, proj.getProjectId());
 
-                result.setCompetition(comp);
+                result.setStudioCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
 
             } else {
@@ -1621,7 +1621,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 comp = contestServiceFacade.createSoftwareContest(comp, proj.getProjectId());
 
-                result.setCompetition(comp);
+                result.setSoftwareCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId() + ".");
             }
 
