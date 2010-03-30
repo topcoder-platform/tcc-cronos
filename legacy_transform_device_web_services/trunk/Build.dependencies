@@ -55,43 +55,43 @@
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\application_based_configuration\1.1.0\TopCoder.Configuration.ApplicationConfiguration.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Configuration">
             <SpecificVersion>False</SpecificVersion>
-            <HintPath>$(tcs_bin)\configuration_api\1.0\TopCoder.Configuration.dll</HintPath>
+            <HintPath>$(tcs_bin)\configuration_api\1.0.0\TopCoder.Configuration.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Util.ObjectFactory, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Util.ObjectFactory">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\object_factory\1.2.1\TopCoder.Util.ObjectFactory.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Util.ObjectFactory.Configuration, Version=1.1.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Util.ObjectFactory.Configuration">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\object_factory_configuration_api_plugin\1.1.1\TopCoder.Util.ObjectFactory.Configuration.dll</HintPath>
         </Reference>
         <Reference Include="TopCoder.Util.Collection.Set">
             <SpecificVersion>False</SpecificVersion>
-            <HintPath>$(tcs_bin)\set_utility\1.0\TopCoder.Util.Collection.Set.dll</HintPath>
+            <HintPath>$(tcs_bin)\set_utility\1.0.1\TopCoder.Util.Collection.Set.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.LoggingWrapper, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.LoggingWrapper">
             <SpecificVersion>False</SpecificVersion>
-            <HintPath>$(tcs_bin)\logging_wrapper\3.0.1\TopCoder.LoggingWrapper.dll</HintPath>
+            <HintPath>$(tcs_bin)\logging_wrapper\3.0.2\TopCoder.LoggingWrapper.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Services.WCF, Version=2.2.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Services.WCF">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\wcf_base\2.2.0\TopCoder.Services.WCF.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Util.ExceptionManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Util.ExceptionManager">
             <SpecificVersion>False</SpecificVersion>
-            <HintPath>$(tcs_bin)\exception_manager\2.0\TopCoder.Util.ExceptionManager.dll</HintPath>
+            <HintPath>$(tcs_bin)\exception_manager\2.0.1\TopCoder.Util.ExceptionManager.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Util.ExceptionManager.SDE, Version=2.1.2.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Util.ExceptionManager.SDE">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\self-documenting_exception\2.1.2\TopCoder.Util.ExceptionManager.SDE.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Configuration.Persistence.Manager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Configuration.Persistence.Manager">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\configuration_persistence_manager\1.0.0\TopCoder.Configuration.Persistence.Manager.dll</HintPath>
         </Reference>
-        <Reference Include="TopCoder.Configuration.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6">
+        <Reference Include="TopCoder.Configuration.File">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>$(tcs_bin)\file_based_configuration\2.0.0\TopCoder.Configuration.File.dll</HintPath>
         </Reference>
