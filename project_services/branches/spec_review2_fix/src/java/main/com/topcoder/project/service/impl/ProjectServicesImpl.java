@@ -3466,7 +3466,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
 
      /**
-     *  Get project only (not phase or resources)
+     *  Get project only (no phase or resources)
      */
     public Project getProject(long projectId) throws ProjectServicesException
     {
