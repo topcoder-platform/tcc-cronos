@@ -34,7 +34,7 @@
     <!-- Library repositories -->
     <ext_bin>..\tcs\bin\third_party</ext_bin>
     <tcs_bin>..\tcs\bin\tcs</tcs_bin>
-    <hera_bin>..\tcs\bin\hera</hera_bin>
+    <cronos_bin>..\tcs\bin\cronos</cronos_bin>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -42,7 +42,7 @@
      The repository in which is to be placed the distribution for this component.
      There can be a Common.targets file for each TopCoder client (hermes/castor).
     -->
-    <target_bin>$(hera_bin)</target_bin>
+    <target_bin>$(cronos_bin)</target_bin>
   </PropertyGroup>
   
   <Import Project="..\Common.targets" />
