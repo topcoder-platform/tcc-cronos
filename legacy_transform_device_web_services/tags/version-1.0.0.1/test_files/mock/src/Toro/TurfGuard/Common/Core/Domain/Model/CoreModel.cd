@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.Site" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <AssociationLine Name="_baseStations" Type="Toro.TurfGuard.Common.Core.Domain.Model.BaseStation" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="2.312" />
+        <Point X="7.125" Y="2.312" />
+        <Point X="7.125" Y="2.312" />
+        <Point X="8" Y="2.312" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.039" Y="0.069" Height="0.182" Width="1.077" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_primaryGroups" Type="Toro.TurfGuard.Common.Core.Domain.Model.DeviceGroup">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.244" Y="0.05" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_secondaryGroups" Type="Toro.TurfGuard.Common.Core.Domain.Model.DeviceGroup">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.369" Y="0.289" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CCAAgACAQEIAABAIIAAIRAQAAAAAIFACAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Model\Site.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_baseStations" />
+      <Field Name="_primaryGroups" />
+      <Field Name="_secondaryGroups" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.BaseStation" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <AssociationLine Name="_connections" Type="Toro.TurfGuard.Common.Core.Domain.Model.Connection">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.077" Y="0.154" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Domain\Model\BaseStation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_connections" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.User" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="_sites" Type="Toro.TurfGuard.Common.Core.Domain.Model.Site">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.69" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAEAAAQAAAAAAAAAAAAACAAAIAEAAAAg=</HashCode>
+      <FileName>Domain\Model\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_sites" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.Device" Collapsed="true">
+    <Position X="1.75" Y="3.25" Width="1.5" />
+    <AssociationLine Name="Site" Type="Toro.TurfGuard.Common.Core.Domain.Model.Site" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.562" Y="3.25" />
+        <Point X="2.562" Y="2.312" />
+        <Point X="4.75" Y="2.312" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.3" Y="0.079" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_deviceInstalls" Type="Toro.TurfGuard.Common.Core.Domain.Model.DeviceInstall">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.171" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAACAAAEAAAgAAAAAAAAAUAACEAAAgAAAAEAAEAAAA=</HashCode>
+      <FileName>Domain\Model\Device.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Site" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_deviceInstalls" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.DeviceGroup">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <Members>
+      <Property Name="Site" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAEAAAAAAQAAAAAgQAAAAAAAAAAABA=</HashCode>
+      <FileName>Domain\Model\DeviceGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Site" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.DeviceInstall" Collapsed="true">
+    <Position X="1.75" Y="4.75" Width="1.5" />
+    <AssociationLine Name="_thresholds" Type="Toro.TurfGuard.Common.Core.Domain.Model.Threshold">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.994" Y="0.05" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="PrimaryGroup" Type="Toro.TurfGuard.Common.Core.Domain.Model.DeviceGroup">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.07" Y="-1.171" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SecondaryGroup" Type="Toro.TurfGuard.Common.Core.Domain.Model.DeviceGroup">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.279" Y="-1.296" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAEAAAAGEAACiACAAAYSAQAAAABAAAAECIAAUQAABA=</HashCode>
+      <FileName>Domain\Model\DeviceInstall.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrimaryGroup" />
+      <Property Name="SecondaryGroup" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_thresholds" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.Threshold" Collapsed="true">
+    <Position X="1.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAGABAAAAAAAAAAEAAAAAEAABAAAAAAA=</HashCode>
+      <FileName>Domain\Model\Threshold.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toro.TurfGuard.Common.Core.Domain.Model.Connection" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAAAAAhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Model\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

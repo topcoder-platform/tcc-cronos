@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+    <configSections>
+        <section name="defaultConfiguration"
+                 type="TopCoder.Configuration.ApplicationConfiguration.DefaultConfiguration.DefaultConfigurationConfigurationSection, TopCoder.Configuration.ApplicationConfiguration, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6"
+                 requirePermission="false" allowDefinition="MachineToApplication"/>
+    </configSections>
+
+    <system.serviceModel>
+        <behaviors>
+            <serviceBehaviors>
+                <behavior name="WcfBehavior">
+                    <serviceDebug includeExceptionDetailInFaults="true" />
+                </behavior>
+            </serviceBehaviors>
+        </behaviors>
+        <services>
+            <service name="Toro.TurfGuard.WebService.Impl.DeviceService"
+                     behaviorConfiguration="WcfBehavior">
+                <endpoint address="http://localhost:8881/DeviceService"
+                          binding="wsHttpBinding"
+                          bindingConfiguration="wsHttpBinding_configuration"
+                          contract="Toro.TurfGuard.WebService.IDeviceService"/>
+            </service>
+        </services>
+
+        <bindings>
+            <wsHttpBinding>
+                <binding name="wsHttpBinding_configuration"
+                         maxReceivedMessageSize="10000000" />
+            </wsHttpBinding>
+        </bindings>
+
+        <client>
+            <endpoint name="DeviceServiceClient"
+                      binding="wsHttpBinding"
+                      bindingConfiguration="wsHttpBinding_configuration"
+                      contract="Toro.TurfGuard.WebService.Clients.IDeviceService"
+                      address="http://localhost:8881/DeviceService" />
+        </client>
+    </system.serviceModel>
+
+    <appSettings>
+        <add key="Toro.TurfGuard.WebService.Impl.DeviceService" value="WM | ??../../test_files/web.config | | defaultConfiguration"/>
+    </appSettings>
+
+    <runtime>
+        <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+            <dependentAssembly>
+                <assemblyIdentity name="TopCoder.Util.ObjectFactory" publicKeyToken="B7567367622062C6" culture="neutral" />
+                <bindingRedirect oldVersion="0.0.0.0-1.2.1.0" newVersion="1.2.1.0" />
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="TopCoder.Util.ExceptionManager" publicKeyToken="B7567367622062C6" culture="neutral" />
+                <bindingRedirect oldVersion="0.0.0.0-2.0.1.0" newVersion="2.0.1.0" />
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="TopCoder.LoggingWrapper" publicKeyToken="B7567367622062C6" culture="neutral" />
+                <bindingRedirect oldVersion="0.0.0.0-9.0.1.0" newVersion="3.0.2.0" />
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="TopCoder.Util.DataAccessInterface" publicKeyToken="B7567367622062C6" culture="neutral"/>
+                <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="2.1.0.0"/>
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="TopCoder.Util.ConfigurationManager" publicKeyToken="B7567367622062C6" culture="neutral"/>
+                <bindingRedirect oldVersion="0.0.0.0-5.0.0.0" newVersion="2.0.1.0"/>
+            </dependentAssembly>
+        </assemblyBinding>
+    </runtime>
+
+    <defaultConfiguration>
+        <children>
+            <child name="device_service_configuration">
+                <properties>
+                    <property name="user_repository_key" value="user_repository_key" valueType="System.String" />
+                    <property name="authentication_service_key" value="authentication_service_key" valueType="System.String" />
+                    <property name="device_repository_key" value="device_repository_key" valueType="System.String" />
+                    <property name="device_group_repository_key" value="device_group_repository_key" valueType="System.String" />
+                    <property name="device_install_repository_key" value="device_install_repository_key" valueType="System.String" />
+                    <property name="reading_repository_key" value="reading_repository_key" valueType="System.String" />
+                    <property name="xsd_directory" value="..\..\test_files" valueType="System.String" />
+                </properties>
+
+                <children>
+                    <child name="object_factory_configuration">
+                        <children>
+                            <child name="object_1">
+                                <properties>
+                                    <property name="name" value="user_repository_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Domain.Impl.MockUserRepository,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                            <child name="object_2">
+                                <properties>
+                                    <property name="name" value="authentication_service_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Services.Impl.MockAuthenticationService,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                            <child name="object_3">
+                                <properties>
+                                    <property name="name" value="device_repository_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Domain.Impl.MockDeviceRepository,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                            <child name="object_4">
+                                <properties>
+                                    <property name="name" value="device_group_repository_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Domain.Impl.MockDeviceGroupRepository,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                            <child name="object_5">
+                                <properties>
+                                    <property name="name" value="device_install_repository_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Domain.Impl.MockDeviceInstallRepository,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                            <child name="object_6">
+                                <properties>
+                                    <property name="name" value="reading_repository_key" valueType="System.String" />
+                                </properties>
+                                <children>
+                                    <child name="type_name">
+                                        <properties>
+                                            <property name="value"
+                                                 value="Toro.TurfGuard.Common.Core.Domain.Impl.MockReadingRepository,
+                                                    Toro.TurfGuard.WebService.Test"
+                                                 valueType="System.String" />
+                                        </properties>
+                                    </child>
+                                </children>
+                            </child>
+                        </children>
+                    </child>
+
+                    <child name="logging_wrapper_configuration">
+                        <properties>
+                            <property name="logger_class" value="TopCoder.LoggingWrapper.Log4NETImpl" valueType="System.String" />
+                            <property name="config_file" value="..\..\test_files\log4net.config" valueType="System.String" />
+                            <property name="logger_name" value="logger" valueType="System.String" />
+                            <property name="default_level" value="INFO" valueType="System.String" />
+                            <property name="source" value="UnitTests" valueType="System.String" />
+                        </properties>
+                    </child>
+                </children>
+            </child>
+        </children>
+    </defaultConfiguration>
+</configuration>

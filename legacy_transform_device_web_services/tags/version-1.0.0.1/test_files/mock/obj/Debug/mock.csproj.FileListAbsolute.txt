@@ -1,0 +1,5 @@
+C:\TopCoder\proj\legacy_transform_device_web_services_1.0.0\test_files\mock\bin\Debug\mock.dll
+C:\TopCoder\proj\legacy_transform_device_web_services_1.0.0\test_files\mock\bin\Debug\mock.pdb
+C:\TopCoder\proj\legacy_transform_device_web_services_1.0.0\test_files\mock\obj\Debug\ResolveAssemblyReference.cache
+C:\TopCoder\proj\legacy_transform_device_web_services_1.0.0\test_files\mock\obj\Debug\mock.dll
+C:\TopCoder\proj\legacy_transform_device_web_services_1.0.0\test_files\mock\obj\Debug\mock.pdb
