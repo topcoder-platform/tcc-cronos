@@ -797,8 +797,10 @@ xmlns:hc="com.hillelcoren.components.*"
                 if (mainWidget && mainWidget.clientProjectNames && mainWidget.clientProjectNames.length > 0) {
                     trace("Client Project Names: " + mainWidget.clientProjectNames);
                     var index:int=0;
+                    var found:Boolean = false;
                     for each (var o:Object in mainWidget.clientProjectNames) {
                         if (o.data && o.data.projectId == billingProject) {
+                            found = true;
                             trace("Selecting project: " + o + " at index: " + index);
                             selectBillingAccount.selectedItem=o;
                             selectBillingAccount.selectedIndex=index;
@@ -813,6 +815,30 @@ xmlns:hc="com.hillelcoren.components.*"
                         }
                         
                         index++;
+                    }
+
+                    // create a place holder
+                    if (!found && billingProject > 0)
+                    {
+                        var item:Object = new Object();
+			            item.label= "<<hidden>>";
+			            item.data = new Object();
+			            item.data.poNumber = "<<need PO for " + billingProject + ">>";
+			            item.data.projectName = "<<hidden>>";
+			            item.data.projectId = billingProject;
+			            item.data.clientId = 0;
+			            item.data.clientName = "<<hidden>>";
+			            item.data.manualPrizeSetting = false;
+            	        mainWidget.clientProjectNames.addItem(item);
+                        selectBillingAccount.selectedItem=item;
+                        selectBillingAccount.selectedIndex=index;
+                        if (mainWidget) {
+                                setBillingProjectProperties(item);
+                            }
+                            var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                            getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                            getEligibilityNameOp.send(billingProject);
+                            mainWidget.showLoadingProgress();
                     }
                 } 
             }
