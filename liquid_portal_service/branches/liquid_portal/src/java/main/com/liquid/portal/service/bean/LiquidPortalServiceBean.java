@@ -880,7 +880,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             String[] targetCockpitProjectNames = new String[cockpitProjects.size()];
             long[] targetBillingProjectIds = new long[billingProjects.size()];
-            System.out.println("before");
+
             for (int i = 0; i < cockpitProjects.size(); i++) {
             	System.out.println(cockpitProjects.get(i).getName());
                 targetCockpitProjectNames[i] = cockpitProjects.get(i).getName();
@@ -2112,7 +2112,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             notification
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    private void sendJiraNotification(String handle) throws LiquidPortalServiceException {
+    private void sendJiraNotification(String handle, String action, Exception ex) throws LiquidPortalServiceException {
         String methodName = "sendJiraNotification";
         logEntrance(methodName);
 
@@ -2120,6 +2120,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             Template template = documentGenerator.getTemplate(jiraEmailMessageTemplateName);
             String data = "<DATA><HANDLE>" + handle + "</HANDLE></DATA>";
             String message = documentGenerator.applyTemplate(template, data);
+            // hard code for now
+            message = "Handle: "+handle+"\nAction: "+action+"\nError: "+ex;
             TCSEmailMessage emailMessage = new TCSEmailMessage();
             emailMessage.setFromAddress(jiraEmailSender);
             emailMessage.setBody(message);
@@ -2714,6 +2716,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 while (true) {
                     // next date
                     requestDate.add(DatatypeFactory.newInstance().newDuration("P1D"));
+      
                     if (!isContains(capacityDates, requestDate)) {
                         return requestDate;
                     }
@@ -2783,18 +2786,20 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
         LiquidPortalServiceException{
         try {
+
             userService.addUserToGroups(userInfo.getHandle(), notusEligibilityGroupIds);
+
         } catch (IllegalArgumentException e) {
             // notusEligibilityGroupIds is invalid
             logError(e, methodName);
             // send JIRA email
-            sendJiraNotification(userInfo.getHandle());
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
             warnings.add(getWarning("Can not add user to notusEligibilityGroup", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_GROUPS, e));
         } catch (UserServiceException e) {
             // can not add user to the notusEligibilityGroupIds
             logError(e, methodName);
             // send JIRA email
-            sendJiraNotification(userInfo.getHandle());
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
             warnings.add(getWarning("Can not add user to notusEligibilityGroup", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
         }
     }
@@ -2819,13 +2824,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // notusObserverTermsId is invalid
             logError(e, methodName);
             // send JIRA email
-            sendJiraNotification(userInfo.getHandle());
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
             warnings.add(getWarning("Can not add user to terms group", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
         } catch (UserServiceException e) {
             // can not add user to the Terms groups
             logError(e, methodName);
             // send JIRA email
-            sendJiraNotification(userInfo.getHandle());
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
             warnings.add(getWarning("Can not add user to terms group", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
 
         }
