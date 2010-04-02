@@ -3992,7 +3992,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userName = principal.getName();
 
-            if (contestData.getBillingProject() > 0) {
+            if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
       
                 ContestData cur = studioService.getContest(contestData.getContestId());      
                 if (cur.getBillingProject() == contestData.getBillingProject())
