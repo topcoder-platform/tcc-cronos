@@ -116,6 +116,9 @@ import com.topcoder.service.studio.MediumData;
 import com.liquid.portal.service.Util;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 
+import com.topcoder.security.ldap.LDAPClient;
+import com.topcoder.security.ldap.LDAPClientException;
+
 /**
  * <p>
  * This class provides an implementation of the LiquidPortalService via its
@@ -641,6 +644,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         try {
             // register user
             long userId = userService.registerUser(user);
+
+            addTopCoderMemberProfile(userId, user.getHandle(), user.getPassword());
+
             result = new RegisterUserResult("Registration is successful for user "+user.getHandle(), 1);
             result.setUserId(userId);
         } catch (UserServiceException e) {
@@ -2783,6 +2789,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
+   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToNotusEligibilityGroup(UserInfo userInfo, List<Warning> warnings, String methodName) throws
         LiquidPortalServiceException{
         try {
@@ -2815,6 +2822,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param warnings the warning list
      * @param methodName the name of the calling method
      */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     private void addUserToTermsGroup(UserInfo userInfo, Date termsAgreedDate,
             List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
@@ -2947,6 +2955,38 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             return null;
         }
     }
+
+
+    /**
+     * <p>Updates the <code>status</code> attributed for <code>LDAP</code> entry corresponding to specified
+     * <code>TopCoder</code> member profile with <code>Active</code> status.</p>
+     *
+     * @param userId a <code>long</code> providing the user ID.
+     * @throws LDAPClientException if an unexpected error occurs while communicating to <code>LDAP</code> server.
+     * @since 2.0 
+     */
+    private void addTopCoderMemberProfile(long userId, String handle, String password) throws UserServiceException {
+        LDAPClient ldapClient = new LDAPClient();
+        try {
+
+            ldapClient.connect();
+
+            ldapClient.addTopCoderMemberProfile(userId, handle, password, "A");
+        } catch (LDAPClientException e) {
+                logError(e, "Failed to connect to LDAP server while activating user account. "
+                          + "The process is not interrupted." + e);
+                throw new UserServiceException("error in ldap "+e,e);
+            }
+            finally {
+            try {
+                ldapClient.disconnect();
+            } catch (LDAPClientException e) {
+                logError(e, "Failed to disconnect from LDAP server while activating user account. "
+                          + "The process is not interrupted.");
+     
+            }
+        }
+   }
 
 
     

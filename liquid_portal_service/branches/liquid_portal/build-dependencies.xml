@@ -93,6 +93,9 @@
               value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}"/>
 
 
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar"/>
+
+
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
    <property name="jboss-jaxws.jar" value="${jboss.home}/server/${server.name}/lib/jboss-jaxws.jar"/>
@@ -114,6 +117,8 @@
     
     <property name="xerces.jar" value="${ext_libdir}/xerces/2.6.2/xerces.jar"/>
     <property name="commons-discovery.jar" value="${ext_libdir}/commons-discovery/0.2/commons-discovery.jar"/>
+
+
 
     <path id="component.tcs-dependencies">
 
@@ -149,6 +154,7 @@
 
         <pathelement location="${jbossws-client.jar}"/>
         <pathelement location="${activation.jar}"/>
+        <pathelement location="${security.jar}"/>
 		
 
     </path>
