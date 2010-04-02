@@ -145,6 +145,13 @@ public abstract class TestBase extends TestCase {
         query.setParameter(idx++, 0);
         query.executeUpdate();
 
+        query = entityManager
+                .createNativeQuery("insert into client_project (project_id, client_id) values (?,?)");
+        idx = 1;
+        query.setParameter(idx++, project.getId());
+        query.setParameter(idx++, project.getClient().getId());
+        query.executeUpdate();
+        
         return project;
     }
 
