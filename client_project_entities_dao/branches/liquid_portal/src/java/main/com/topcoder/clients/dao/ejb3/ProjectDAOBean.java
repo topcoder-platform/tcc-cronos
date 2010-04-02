@@ -119,6 +119,18 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
               + " where p.start_date <= current and current <= p.end_date ";
 
     /**
+     * The query string used to select projects.
+     */
+    private static final String SELECT_PROJECT_BY_CLIENT_ID = "select p.project_id, p.name, p.po_box_number, p.description, "
+        + " p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
+        + " p.creation_date, p.creation_user, p.is_deleted, "
+        + " cp.client_id, c.name as client_name, p.is_manual_prize_setting "
+        + " from project as p, client_project as cp, client as c "
+        + " where p.start_date <= current and current <= p.end_date "
+        + " and c.client_id = cp.client_id and (p.is_deleted = 0 or p.is_deleted is null) "
+        + " and p.project_id = cp.project_id and cp.client_id = ";
+
+    /**
      * The JPA query string to select project contest fees.
      *
      * @since Configurable Contest Fees v1.0 Assembly
@@ -823,11 +835,11 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
         EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
         try {
-            String queryString = "select p from Project p where p.client.id = :clientId";
+            String queryString = SELECT_PROJECT_BY_CLIENT_ID + clientId;
 
-            Query query = entityManager.createQuery(queryString);
-            query.setParameter("clientId", clientId);
-            return query.getResultList();
+            Query query = entityManager.createNativeQuery(queryString);
+
+            return convertQueryToListProjects(query);
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e, "Fail to get projects by client id.");
         }
