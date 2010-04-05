@@ -202,8 +202,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      * @since 1.1
      */
     private static final String INSERT_PROJECT_MANAGER = "insert into project_manager (project_id, user_account_id,"
-            + " cost, active, creation_date, creation_user, modification_date, modification_user) "
-            + "values (:projectId, :userAccountId, 0, 1, CURRENT, 'System', CURRENT, 'System')";
+            + " pay_rate, cost, active, creation_date, creation_user, modification_date, modification_user) "
+            + "values (:projectId, :userAccountId, 0, 0, 1, CURRENT, 'System', CURRENT, 'System')";
 
     /**
      * <p>
