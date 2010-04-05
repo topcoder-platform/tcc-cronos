@@ -265,6 +265,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     private long[] notusEligibilityGroupIds;
 
+
+    /**
+     * <p>
+     * Represents the IDs of notus eligible groups.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the business methods.
+     * </p>
+     */
+    private long[] addToNotusEligibilityGroupIds;
+
     /**
      * <p>
      * Represents the full control permission ID.
@@ -517,6 +528,26 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         "The value of 'notusEligibilityGroupIds' property should be integer.", e);
             }
 
+            
+            // Assemble addToNotusEligibilityGroupIds into array of longs
+            Object[] addgroupIds = configObject.getPropertyValues("addToNotusEligibilityGroupIds");
+            if (addgroupIds == null) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The 'addToNotusEligibilityGroupIds' property should be configed.");
+            }
+            addToNotusEligibilityGroupIds = new long[addgroupIds.length];
+            try {
+                for (int i = 0; i < addgroupIds.length; i++) {
+                    addToNotusEligibilityGroupIds[i] = Long.parseLong((String) addgroupIds[i]);
+                }
+            } catch (ClassCastException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'addToNotusEligibilityGroupIds' property should be String.", e);
+            } catch (NumberFormatException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'addToNotusEligibilityGroupIds' property should be integer.", e);
+            }
+
             // Parse projectCategories into name,key values, create
             // HashMap<String,Integer> and add each key/value entry
             //projectCategories = getConfigurationMapValue("projectCategories", configObject);
@@ -644,7 +675,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         try {
             // register user
             long userId = userService.registerUser(user);
-
+           
             addTopCoderMemberProfile(userId, user.getHandle(), user.getPassword());
 
             result = new RegisterUserResult("Registration is successful for user "+user.getHandle(), 1);
@@ -709,9 +740,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         UserInfo savedUserInfo = getUserInfo(user.getHandle(), methodName);
 
         // compare saveUserInfo with passed-in userInfo
-        boolean demoMatched = savedUserInfo.getFirstName().equals(user.getFirstName())
-                && savedUserInfo.getLastName().equals(user.getLastName())
-                && savedUserInfo.getEmailAddress().equals(user.getEmailAddress());
+        boolean demoMatched = savedUserInfo.getFirstName().equalsIgnoreCase(user.getFirstName())
+                && savedUserInfo.getLastName().equalsIgnoreCase(user.getLastName())
+                && savedUserInfo.getEmailAddress().equalsIgnoreCase(user.getEmailAddress());
         Result result = new Result();
         List<Warning> warnings = new ArrayList<Warning>();
         if (!demoMatched) {
@@ -2794,7 +2825,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         LiquidPortalServiceException{
         try {
 
-            userService.addUserToGroups(userInfo.getHandle(), notusEligibilityGroupIds);
+            userService.addUserToGroups(userInfo.getHandle(), addToNotusEligibilityGroupIds);
 
         } catch (IllegalArgumentException e) {
             // notusEligibilityGroupIds is invalid
