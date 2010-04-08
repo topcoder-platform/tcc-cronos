@@ -740,9 +740,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         UserInfo savedUserInfo = getUserInfo(user.getHandle(), methodName);
 
         // compare saveUserInfo with passed-in userInfo
-        boolean demoMatched = savedUserInfo.getFirstName().equalsIgnoreCase(user.getFirstName())
-                && savedUserInfo.getLastName().equalsIgnoreCase(user.getLastName())
-                && savedUserInfo.getEmailAddress().equalsIgnoreCase(user.getEmailAddress());
+        boolean demoMatched = savedUserInfo.getEmailAddress().equalsIgnoreCase(user.getEmailAddress());
         Result result = new Result();
         List<Warning> warnings = new ArrayList<Warning>();
         if (!demoMatched) {
