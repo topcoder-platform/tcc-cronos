@@ -221,4 +221,40 @@ public interface UserService {
      * @since 1.1
      */
     void removeUserTerm(String handle, long termsId) throws UserServiceException;
+
+     /**
+     * Adds the user to the given groups.
+     *
+     * @param groupIds
+     *            the IDs of the groups to add the user to
+     * @param userId
+     *            userId
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, if <code>groupsIds</code> is null, empty or if it contains
+     *             non-positive values
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    void addUserToGroups(long userId, long[] groupIds) throws UserServiceException;
+
+
+    /**
+     * Adds the given agreed term to the user.
+     *
+     * @param userId
+     *            the userId
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @param termsAgreedDate
+     *            the date the user agreed the terms
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    void addUserTerm(long userId, long termsId, Date termsAgreedDate) throws UserServiceException;
+
 }

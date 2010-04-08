@@ -290,8 +290,9 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             EntityManager em = getEntityManager();
             Query query = em.createNativeQuery(
                     "select max(e.address) from email e, user u"
-                    + " where e.primary_ind = 1 and e.user_id = u.user_id and UPPER(u.handle) = UPPER(:handle)");
-            query.setParameter("handle", userHandle);
+                    + " where e.primary_ind = 1 and e.user_id = u.user_id and u.handle_lower = :handle");
+            // passing lower case
+            query.setParameter("handle", userHandle.toLowerCase());
             Object result = query.getSingleResult();
             if (result != null) {
                 return result.toString();
@@ -334,8 +335,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Helper.checkEmpty(logger, userHandle, "userHandle");
 
             EntityManager em = getEntityManager();
-            Query query = em.createNativeQuery("select user_id from user u where UPPER(u.handle) = UPPER(:handle)");
-            query.setParameter("handle", userHandle);
+            Query query = em.createNativeQuery("select user_id from user u where u.handle_lower = :handle");
+            query.setParameter("handle", userHandle.toLowerCase());
             Object result = query.getSingleResult();
             if (result != null) {
                 return Long.parseLong(result.toString());
@@ -377,8 +378,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             EntityManager em = getEntityManager();
             Query query = em.createNativeQuery(
-                    "select login_id from security_user where UPPER(user_id) = UPPER(:handle)");
-            query.setParameter("handle", handle);
+                    "select user_id from user where handle_lower = :handle");
+            query.setParameter("handle", handle.toLowerCase());
             Object result = query.getSingleResult();
             return Long.parseLong(result.toString());
 
@@ -465,9 +466,9 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                                              + " where x.login_id = u.user_id and "
                                              + " x.role_id = sr.role_id and "
                                              + "sr.description = :description and "
-                                             + " UPPER(u.handle) = UPPER(:handle)");
+                                             + " u.handle_lower = :handle");
             query.setParameter("description", TC_GROUP_ADMIN);
-            query.setParameter("handle", userHandle);
+            query.setParameter("handle", userHandle.toLowerCase());
             Object result = query.getSingleResult();
             if (result != null) {
                 ret = (1L == ((Number) result).longValue());
@@ -661,7 +662,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             // if user.groupIds is specified add the user to those groups
             if ((user.getGroupIds() != null) && (user.getGroupIds().length > 0)) {
-                long loginId = getLoginId(user.getHandle());
+                long loginId = userId;
                 addUserToGroups(loginId, user.getGroupIds());
             }
 
@@ -705,9 +706,9 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                     + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
                     + "from user "
                     + "left outer join email on user.user_id = email.user_id "
-                    + "where UPPER(user.handle) = UPPER(:handle)");
+                    + "where user.handle_lower = :handle ");
 
-            query1.setParameter("handle", handle);
+            query1.setParameter("handle", handle.toLowerCase());
 
             // There could be more than one result if the user has more than one
             // email address, so just pick the first result
@@ -731,7 +732,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Query query2 = em.createNativeQuery(
                     "select unique group_id from user_group_xref where login_id = :loginId");
 
-            query2.setParameter("loginId", getLoginId(handle));
+            query2.setParameter("loginId", userInfo.getUserId());
 
             // this list contains the group IDs associated to the user
             List groupIdsList = query2.getResultList();
@@ -809,7 +810,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
      *             if any error occurs during the operation
      * @since 1.1
      */
-    private void addUserToGroups(long loginId, long[] groupIds) throws UserServiceException {
+    public void addUserToGroups(long loginId, long[] groupIds) throws UserServiceException {
 
         try {
             Helper.checkNonPositive(logger, loginId, "loginId");
@@ -981,6 +982,98 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Helper.checkNonPositive(logger, termsId, "termsId");
 
             long userId = getUserId(handle);
+
+            EntityManager em = getEntityManager();
+
+            // First check if the association already exist
+            Query query1 = em.createNativeQuery(
+                    "select terms_of_use_id from user_terms_of_use_xref "
+                    + "where user_id  = :userId and terms_of_use_id = :termsId");
+
+            query1.setParameter("userId", userId);
+            query1.setParameter("termsId", termsId);
+
+            if (!query1.getResultList().isEmpty()) {
+                return;
+            }
+
+            // now check if the terms exist in the terms_of_use table
+            Query query2 = em.createNativeQuery(
+                    "select terms_of_use_id from terms_of_use where terms_of_use_id = :termsId");
+
+            query2.setParameter("termsId", termsId);
+
+            if (query2.getResultList().isEmpty()) {
+                // the terms id does not exist, throw UserServiceException
+                throw wrapUserServiceException(
+                    "The terms with id " + termsId + " don't exist in terms_of_use.");
+            }
+
+            // finally insert the association
+
+            Query userTermsInsert;
+
+            if (termsAgreedDate != null) {
+                // Only specify create_date and modify_date if termsAgreedDate is not null
+                // otherwise use the columns' default values.
+                userTermsInsert = em.createNativeQuery(
+                        "insert into user_terms_of_use_xref "
+                        + "(user_id, terms_of_use_id, create_date, modify_date) "
+                        + "values "
+                        + "(:userId, :termsId, :createDate, :modifyDate)");
+
+                userTermsInsert.setParameter("createDate", termsAgreedDate);
+                userTermsInsert.setParameter("modifyDate", termsAgreedDate);
+            } else {
+                // the columns create_date and modify_date have a default value (the current date)
+                userTermsInsert = em.createNativeQuery(
+                        "insert into user_terms_of_use_xref "
+                        + "(user_id, terms_of_use_id) "
+                        + "values "
+                        + "(:userId, :termsId)");
+            }
+
+            userTermsInsert.setParameter("userId", userId);
+            userTermsInsert.setParameter("termsId", termsId);
+
+            userTermsInsert.executeUpdate();
+
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e,
+                    "A persitence error occurred while adding the given terms to the user.");
+        } finally {
+            logExit("addUserTerm(String,long,Date)");
+        }
+    }
+
+
+     /**
+     * Adds the given agreed term to the user.
+     *
+     * @param handle
+     *            the user handle
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @param termsAgreedDate
+     *            the date the user agreed the terms
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void addUserTerm(long userId, long termsId, Date termsAgreedDate) throws UserServiceException {
+
+        logEnter("addUserTerm(String,long,Date)");
+        logParameters(userId, termsId, termsAgreedDate);
+
+        try {
+           
+            Helper.checkNonPositive(logger, termsId, "termsId");
+
+            //long userId = getUserId(handle);
 
             EntityManager em = getEntityManager();
 
