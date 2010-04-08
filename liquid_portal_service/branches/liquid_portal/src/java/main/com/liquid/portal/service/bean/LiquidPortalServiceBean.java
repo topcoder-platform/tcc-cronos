@@ -678,6 +678,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
            
             addTopCoderMemberProfile(userId, user.getHandle(), user.getPassword());
 
+            user.setUserId(userId);
+
             result = new RegisterUserResult("Registration is successful for user "+user.getHandle(), 1);
             result.setUserId(userId);
         } catch (UserServiceException e) {
@@ -750,9 +752,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         if (force || demoMatched) {
             // add user to notusEligibilityGroup
-            addUserToNotusEligibilityGroup(user, warnings, methodName);
+            addUserToNotusEligibilityGroup(savedUserInfo, warnings, methodName);
             // add user to terms group
-            addUserToTermsGroup(user, new Date(), warnings, methodName);
+            addUserToTermsGroup(savedUserInfo, new Date(), warnings, methodName);
         }
 
         result.setWarnings(warnings);
@@ -1175,7 +1177,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
 
                 // add waring, project had to be created
-                warnings.add(getWarning(String.format("Project <{0}> does not exist", competitionData
+                warnings.add(getWarning(String.format("Project {0} does not exist", competitionData
                         .getCockpitProjectName()), LiquidPortalServiceException.EC_PROJECT_DOESNOT_EXIST, null));
             }
 
@@ -2823,7 +2825,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         LiquidPortalServiceException{
         try {
 
-            userService.addUserToGroups(userInfo.getHandle(), addToNotusEligibilityGroupIds);
+            userService.addUserToGroups(userInfo.getUserId(), addToNotusEligibilityGroupIds);
 
         } catch (IllegalArgumentException e) {
             // notusEligibilityGroupIds is invalid
@@ -2856,7 +2858,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             List<Warning> warnings, String methodName) throws LiquidPortalServiceException {
         // add user to terms group
         try {
-            userService.addUserTerm(userInfo.getHandle(), notusObserverTermsId, termsAgreedDate);
+            userService.addUserTerm(userInfo.getUserId(), notusObserverTermsId, termsAgreedDate);
         } catch (IllegalArgumentException e) {
             // notusObserverTermsId is invalid
             logError(e, methodName);
