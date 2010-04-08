@@ -424,7 +424,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             throws SpecReviewServiceException {
         try {
             logEnter("saveReviewComment(contestId, studio, sectionName, comment, role)", contestId, studio,
-                    sectionName, comment, role);
+                    sectionName, role);
 
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userName = p.getName();
@@ -588,7 +588,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
             String role) throws SpecReviewServiceException {
         try {
             logEnter("saveReviewStatus(contestId, studio, sectionName, comment, isPass, role)", contestId, studio,
-                    sectionName, comment, isPass, role);
+                    sectionName, isPass, role);
 
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userName = p.getName();
