@@ -290,7 +290,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             EntityManager em = getEntityManager();
             Query query = em.createNativeQuery(
                     "select max(e.address) from email e, user u"
-                    + " where e.primary_ind = 1 and e.user_id = u.user_id and u.handle = :handle");
+                    + " where e.primary_ind = 1 and e.user_id = u.user_id and UPPER(u.handle) = UPPER(:handle)");
             query.setParameter("handle", userHandle);
             Object result = query.getSingleResult();
             if (result != null) {
@@ -334,7 +334,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             Helper.checkEmpty(logger, userHandle, "userHandle");
 
             EntityManager em = getEntityManager();
-            Query query = em.createNativeQuery("select user_id from user u where u.handle = :handle");
+            Query query = em.createNativeQuery("select user_id from user u where UPPER(u.handle) = UPPER(:handle)");
             query.setParameter("handle", userHandle);
             Object result = query.getSingleResult();
             if (result != null) {
@@ -377,7 +377,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             EntityManager em = getEntityManager();
             Query query = em.createNativeQuery(
-                    "select login_id from security_user where user_id = :handle");
+                    "select login_id from security_user where UPPER(user_id) = UPPER(:handle)");
             query.setParameter("handle", handle);
             Object result = query.getSingleResult();
             return Long.parseLong(result.toString());
@@ -465,7 +465,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                                              + " where x.login_id = u.user_id and "
                                              + " x.role_id = sr.role_id and "
                                              + "sr.description = :description and "
-                                             + "u.handle = :handle");
+                                             + " UPPER(u.handle) = UPPER(:handle)");
             query.setParameter("description", TC_GROUP_ADMIN);
             query.setParameter("handle", userHandle);
             Object result = query.getSingleResult();
@@ -705,7 +705,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                     + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
                     + "from user "
                     + "left outer join email on user.user_id = email.user_id "
-                    + "where user.handle = :handle");
+                    + "where UPPER(user.handle) = UPPER(:handle)");
 
             query1.setParameter("handle", handle);
 
