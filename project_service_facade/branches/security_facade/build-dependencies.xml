@@ -102,7 +102,7 @@
     <property name="configuration_manager.jar.name" value="configuration_manager.jar" />
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}" />
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}" />
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
 
     <!-- cockpit Security facade v1.0 -->
     <property name="user_service.version" value="1.0.0" />
