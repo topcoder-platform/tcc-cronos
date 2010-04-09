@@ -12,7 +12,7 @@
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
 
     <property name="security_facade.version" value="2.0.0" />
     <property name="security_facade.jar.name" value="security_facade.jar" />
