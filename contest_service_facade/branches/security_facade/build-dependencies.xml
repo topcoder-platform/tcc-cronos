@@ -186,7 +186,7 @@
     <property name="contest_eligibility_validation.jar.name" value="contest_eligibility_validation.jar"/>
     <property name="contest_eligibility_validation.path" value="contest_eligibility_validation/${contest_eligibility_validation.version}"/>
     <property name="contest_eligibility_validation.jar" value="${tcs_libdir}/${contest_eligibility_validation.path}/${contest_eligibility_validation.jar.name}"/>
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
