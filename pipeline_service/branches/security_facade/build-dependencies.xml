@@ -151,7 +151,7 @@
     <property name="pipeline_service_persistence.jar.name" value="pipeline_service_persistence.jar"/>
     <property name="pipeline_service_persistence.path" value="pipeline_service_persistence/${pipeline_service_persistence.version}"/>
     <property name="pipeline_service_persistence.jar" value="${tcs_libdir}/${pipeline_service_persistence.path}/${pipeline_service_persistence.jar.name}"/>
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
