@@ -122,7 +122,7 @@
     <property name="cockpit_facade_util.path" value="cockpit_facade_util/${cockpit_facade_util.version}" />
     <property name="cockpit_facade_util.jar" value="${tcs_libdir}/${cockpit_facade_util.path}/${cockpit_facade_util.jar.name}" />
 
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar" />
 
