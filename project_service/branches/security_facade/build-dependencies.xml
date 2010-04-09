@@ -20,7 +20,7 @@
     <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar" />
     <property name="resource_management.jar" value="${tcs_libdir}/resource_management/1.1.1/resource_management.jar" />
     <property name="project_services.jar" value="${tcs_libdir}/project_services/1.1/project_services.jar" />
-    <property name="security.jar" value="${tcs_libdir}/shared/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
     <property name="user_service.version" value="1.0.0" />
     <property name="user_service.jar.name" value="user_service.jar" />
     <property name="user_service.path" value="user_service/${user_service.version}" />
