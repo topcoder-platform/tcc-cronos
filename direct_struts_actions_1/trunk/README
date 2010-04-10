@@ -1,0 +1,12 @@
+1. For projectId and contestId, @IntRangeFieldValidator can not be used, as the projectId and cotestId is long type. If IntRangeFieldValidator is used, exception will raised.
+2. validation annotation can be tested through demo, like following http://localhost:8080/demo/saveDraftContest?startDate=8/1/2010&endDate=8/1/2010&contestName=Test&competitionType=STUDIO
+if validated, it will show sucess page, or Validation Fails page (simply text).   
+3. the SHORT format of date string is like 8/1/2010.
+4. in XMLGregorianCalendarTypeConverter, I use XWorkBasicConverter instead of DefaultTypeConverter, as it can not handle convert Date type. you can check 
+http://svn.apache.org/repos/asf/struts/struts2/trunk/xwork-core/src/main/java/com/opensymphony/xwork2/conversion/impl/DefaultTypeConverter.java
+http://svn.apache.org/repos/asf/struts/struts2/trunk/xwork-core/src/main/java/com/opensymphony/xwork2/conversion/impl/XWorkBasicConverter.java
+5. For primitive type, I have test it, it seems @RequiredFieldValidator does not work, as the validation is actually after setter, and by convert the primitive to corresponding Java type. it will never null.
+6. a ant target "demo" is defined in build-dependencies.xml to create test_files/demo.war which can be directly deployed into tomcat for validation check.
+
+
+Thanks for your review.

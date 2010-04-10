@@ -1,0 +1,54 @@
+<beans xmlns ="http://www.springframework.org/schema/beans"
+    xmlns:xsi ="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation ="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd" >
+    <!-- AuthenticationInterceptor -->
+    <bean id="authenticationInterceptor" class=" com.topcoder.service.interceptors.AuthenticationInterceptor">
+        <property name="loginPageName" value="login"></property>
+        <property name="userSessionIdentityKey" value="USER_ID_KEY"></property>
+    </bean>
+
+    <!-- LoggingInterceptor -->
+    <bean id="loggingInterceptor" class=" com.topcoder.service.interceptors.LoggingInterceptor">
+        <constructor-arg type="java.lang.String"><value>strutsLoggerName</value></constructor-arg>
+    </bean>
+    
+    <bean id="validationErrorsInterceptor" class="com.topcoder.service.actions.ValidationErrorsInterceptor">
+    </bean>
+
+    <bean id="contestServiceFacade" class="com.topcoder.service.actions.MockContestServiceFacade">
+    </bean>
+    
+    <bean id="projectServiceFacade" class="com.topcoder.service.actions.MockProjectServiceFacade">
+    </bean>
+    
+    <bean id="pipelineServiceFacade" class="com.topcoder.service.actions.MockPipelineServiceFacade">
+    </bean>
+    <!-- Note the scope is "prototype". -->
+
+    <bean id="createProjectAction" class="com.topcoder.service.actions.CreateProjectAction" scope="prototype">
+        <property name="action" value="createProjectAction"></property>
+    </bean>
+    
+    <bean id="getAllBillingProjectsAction" class="com.topcoder.service.actions.GetAllBillingProjectsAction" scope="prototype">
+        <property name="action" value="getAllBillingProjectsAction"></property>
+    </bean>
+    
+    <bean id="getAllProjectsAction" class="com.topcoder.service.actions.GetAllProjectsAction" scope="prototype">
+        <property name="action" value="getAllProjectsAction"></property>
+    </bean>
+    
+    
+    <bean id="getCapacityFullDatesAction" class="com.topcoder.service.actions.GetCapacityFullDatesAction" scope="prototype">
+        <property name="action" value="getCapacityFullDatesAction"></property>
+    </bean>
+    
+    <bean id="getContestAction" class="com.topcoder.service.actions.GetContestAction" scope="prototype">
+        <property name="action" value="getContestAction"></property>
+    </bean>
+    
+    <bean id="saveDraftContestAction" class="com.topcoder.service.actions.SaveDraftContestAction" scope="prototype">
+        <property name="action" value="saveDraftContestAction"></property>
+    </bean>
+    <!--other actions can be defined here -->
+
+ </beans>

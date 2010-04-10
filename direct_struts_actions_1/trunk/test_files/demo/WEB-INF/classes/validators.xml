@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator Config 1.0//EN" "http://www.opensymphony.com/xwork/xwork-validator-config-1.0.dtd">
+<!-- I define the date after current date validator in the validators.xml , then I can use it with the @CustomValidator annotation-->
+<validators>
+<validator name="dateAfterCurrentDate" class="com.topcoder.service.actions.DateAfterCurrentDateValidator"/>
+</validators>
