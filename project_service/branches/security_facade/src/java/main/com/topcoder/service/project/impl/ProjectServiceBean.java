@@ -18,6 +18,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -214,6 +216,13 @@ import com.topcoder.util.log.LogManager;
  *                   which is used to get the security info for current user.
  *               </li>
  *             </ul>
+ *  <li>Modified in version 1.1.2</li>
+ *             <ul>
+ *               <li>Added <code>getProjectByName(String,long)</code> method.</li>
+ *               <li>Added <code>checkAuthorization(Project)</code> method.</li>
+ *               <li>Modified <code>getProjectById(long)</code> method. It now uses the <code>checkAuthorization</code>
+ *               method instead of verifying the authorization itself</li>
+ *            </ul>
  * </p>
  * <p>
  * <b>Thread Safety</b>: This class is thread safe as it is immutable except for the session context. The
@@ -223,7 +232,8 @@ import com.topcoder.util.log.LogManager;
  *
  * @author humblefool, FireIce
  * @author ThinMan, TCSDEVELOPER
- * @version 1.1.1
+ * @author woodjhon, ernestobf
+ * @version 1.1.2
  * @since 1.0
  */
 @Stateless
@@ -254,6 +264,28 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      */
     private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description FROM tc_direct_project p, user_permission_grant per "
                                     + " where p.project_id = per.resource_id and per.user_id = ";
+
+    /**
+     * <p>
+     * JPQL query used to retrieve the project with the specified name and user id. It contains the named parameters
+     * <code>projectName</code> and <code>userId</code>.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String QUERY_PROJECT_BY_NAME =
+        "SELECT p FROM Project p WHERE p.name = :projectName and p.userId = :userId";
+
+    /**
+     * <p>
+     * JPQL query used to retrieve the project with the specified name and user id. It contains the named parameters
+     * <code>projectName</code> and <code>userId</code>.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String QUERY_PROJECT_BY_NAME_ONLY =
+        "SELECT p FROM Project p WHERE p.name = :projectName";
 
     /**
      * <p>
@@ -629,6 +661,69 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @param userId
+     *            The ID of the user whose projects are to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    public ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault,
+        ProjectNotFoundFault, AuthorizationFailedFault, IllegalArgumentFault {
+
+        logEnter("getProjectByName(String,long)");
+        logParameters("project name: {0}, user id: {1}", projectName, userId);
+
+        try {
+
+            if ((projectName == null) || (projectName.trim().length() == 0)) {
+                throw logException(new IllegalArgumentFault("projectName cannot be null or empty"));
+            } else if (userId <= 0) {
+                throw logException(new IllegalArgumentFault("userId must be a positive number"));
+            }
+
+            Query q = getEntityManager().createQuery(QUERY_PROJECT_BY_NAME);
+            q.setParameter("projectName", projectName);
+            q.setParameter("userId", userId);
+            Project project = (Project) q.getSingleResult();
+
+            //checkAuthorization(project);
+
+            ProjectData projectData = copyProjectData(project);
+
+            logReturn(formatProjectData(projectData));
+
+            return projectData;
+        } catch (NoResultException e) {
+            throw logException(new ProjectNotFoundFault(
+                    MessageFormat.format("Project with name {0} and userId {1} does not exist", projectName,
+                            userId)));
+        } catch (NonUniqueResultException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } catch (PersistenceException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } finally {
+            logExit("getProjectByName(String,long)");
+        }
+    }
+
+    /**
+     * <p>
      * Gets the project data for all projects of the given user.
      * </p>
      *
@@ -940,6 +1035,67 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         }
     }
 
+
+    /**
+     * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    public List <ProjectData> getProjectsByName(String projectName) throws PersistenceFault,
+        ProjectNotFoundFault, IllegalArgumentFault {
+
+        logEnter("getProjectByName(String,long)");
+        logParameters("project name: {0} ", projectName);
+
+        try {
+
+            if ((projectName == null) || (projectName.trim().length() == 0)) {
+                throw logException(new IllegalArgumentFault("projectName cannot be null or empty"));
+            } 
+
+            Query query = getEntityManager().createQuery(QUERY_PROJECT_BY_NAME_ONLY);
+            query.setParameter("projectName", projectName);
+
+            List list = query.getResultList();
+
+            // Copy each Project
+            List < ProjectData > projectDatas = new ArrayList();
+
+            for (int i = 0; i < list.size(); i++) {
+                ProjectData data = (ProjectData) list.get(i);
+                projectDatas.add(data);
+            }
+
+            return projectDatas;
+        } catch (NoResultException e) {
+            throw logException(new ProjectNotFoundFault(
+                    MessageFormat.format("Project with name {0} does not exist", projectName)));
+        } catch (NonUniqueResultException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } catch (PersistenceException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        } finally {
+            logExit("getProjectByName(String,long)");
+        }
+    }
+
     /**
      * <p>
      * Create/update/delete project entity.
@@ -1062,6 +1218,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *         <li>Modified in version 1.1:</li>
      *             <ul>
      *               <li>Use container managed <code>EntityManager</code> to find project.</li>
+     *             </ul>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Calls <code>checkAuthorization</code> to check if the
+     *               user is authorized to retrieve the project.</li>
      *             </ul>
      *     </ul>
      * </p>

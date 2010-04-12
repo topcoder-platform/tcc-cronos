@@ -115,6 +115,31 @@ public interface ProjectService {
 
     /**
      * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @param userId
+     *            The ID of the user whose project is to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    ProjectData getProjectByName(String projectName, long userId) throws PersistenceFault,
+        ProjectNotFoundFault, AuthorizationFailedFault, IllegalArgumentFault;
+
+    /**
+     * <p>
      * Gets the project data for all projects of the given user.
      * </p>
      *
@@ -232,4 +257,27 @@ public interface ProjectService {
      */
     boolean deleteProject(TCSubject tcSubject, long projectId) throws PersistenceFault, AuthorizationFailedFault,
         ProjectHasCompetitionsFault;
+
+    /**
+     * <p>
+     * Gets the project data for the project with the project name.
+     * </p>
+     *
+     * @param projectName
+     *            the name of the project to be retrieved.
+     * @return
+     *            The project data for the project with the given Id. Will never be null.
+     * @throws PersistenceFault
+     *            If a generic persistence error occurs.
+     * @throws ProjectNotFoundFault
+     *            If no project with the given name and user id exists.
+     * @throws AuthorizationFailedFault
+     *            If the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault
+     *            If the given <code>projectName</code> is null/empty, or <code>userId</code>
+     *            is non-positive.
+     * @since 1.1
+     */
+    public List < ProjectData > getProjectsByName(String projectName) throws PersistenceFault,
+        ProjectNotFoundFault, IllegalArgumentFault;
 }
