@@ -2446,8 +2446,6 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @param submissionId a <code>long</code> providing the ID of a submission.
      * @param prizeId a <code>long</code> providing the ID of a prize.
      * @throws PersistenceException if any error occurs when setting submission prize.
-     * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-     * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void setSubmissionPrize(long submissionId, long prizeId) throws PersistenceException {
         try
@@ -2476,8 +2474,6 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @param operator the operator which execute the operation
      * @throws IllegalArgumentException if any id is &lt; 0 or if operator is null or trim to empty
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
-     * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-     * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void setSubmissionStatus(long submissionId, long submissionStatusId, String operator)
             throws ContestServiceException {
@@ -2507,8 +2503,6 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws ContestNotFoundException if requested contest is not found.
      * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
      * @throws IllegalArgumentWSException if specified <code>contest</code> is <code>null</code>.
-     * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-     * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void updateContest(StudioCompetition contest) throws PersistenceException, ContestNotFoundException {
         try
