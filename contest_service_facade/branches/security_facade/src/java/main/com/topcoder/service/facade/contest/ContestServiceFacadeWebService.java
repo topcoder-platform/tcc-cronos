@@ -16,9 +16,7 @@ import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ScorecardReviewData;
-import com.topcoder.security.GeneralSecurityException;
 import com.topcoder.security.TCSubject;
-import com.topcoder.security.login.AuthenticationException;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -95,7 +93,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId)
-			throws PersistenceException, AuthenticationException, GeneralSecurityException;
+			throws PersistenceException;
 
 	/**
 	 * <p>
@@ -111,8 +109,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public StudioCompetition getContest(long contestId) throws AuthenticationException, GeneralSecurityException,
-			PersistenceException, ContestNotFoundException;
+	public StudioCompetition getContest(long contestId) throws PersistenceException, ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -131,7 +128,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public List<StudioCompetition> getContestsForProject(long tcDirectProjectId) throws PersistenceException,
-			ProjectNotFoundException, GeneralSecurityException, AuthenticationException;
+			ProjectNotFoundException;
 
 	/**
 	 * <p>
@@ -146,8 +143,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void updateContest(StudioCompetition contest) throws AuthenticationException, GeneralSecurityException,
-			PersistenceException, ContestNotFoundException;
+	public void updateContest(StudioCompetition contest) throws PersistenceException, ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -166,7 +162,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void updateContestStatus(long contestId, long newStatusId) throws PersistenceException,
-			GeneralSecurityException, AuthenticationException, StatusNotAllowedException, StatusNotFoundException,
+			StatusNotAllowedException, StatusNotFoundException,
 			ContestNotFoundException;
 
 	/**
@@ -184,7 +180,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public UploadedDocument uploadDocumentForContest(UploadedDocument uploadedDocument) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException, ContestNotFoundException;
+			ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -199,8 +195,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public UploadedDocument uploadDocument(UploadedDocument uploadedDocument) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public UploadedDocument uploadDocument(UploadedDocument uploadedDocument) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -217,7 +212,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws IllegalArgumentWSException if any of specified IDs is negative.
 	 */
 	public void addDocumentToContest(long documentId, long contestId) throws PersistenceException,
-			ContestNotFoundException, AuthenticationException, GeneralSecurityException;
+			ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -233,7 +228,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void removeDocumentFromContest(UploadedDocument document) throws PersistenceException,
-			DocumentNotFoundException, GeneralSecurityException, AuthenticationException;
+			DocumentNotFoundException;
 
 	/**
 	 * <p>
@@ -251,7 +246,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public List<SubmissionData> retrieveSubmissionsForContest(long contestId) throws PersistenceException,
-			ContestNotFoundException, GeneralSecurityException, AuthenticationException;
+			ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -265,8 +260,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void updateSubmission(SubmissionData submission) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void updateSubmission(SubmissionData submission) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -280,8 +274,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void removeSubmission(long submissionId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void removeSubmission(long submissionId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -294,8 +287,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<ContestStatusData> getStatusList() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<ContestStatusData> getStatusList() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -308,8 +300,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public String getSubmissionFileTypes() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public String getSubmissionFileTypes() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -321,8 +312,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<StudioCompetition> getAllContests() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<StudioCompetition> getAllContests() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -334,8 +324,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SimpleContestData> getSimpleContestData() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -348,8 +337,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SimpleContestData> getSimpleContestDataByPID(long pid) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<SimpleContestData> getSimpleContestDataByPID(long pid) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -361,8 +349,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -374,8 +361,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -388,8 +374,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -405,8 +390,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<StudioCompetition> searchContests(ContestServiceFilter filter) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<StudioCompetition> searchContests(ContestServiceFilter filter) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -420,8 +404,8 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException;
+			
 
 	/**
 	 * <p>
@@ -433,8 +417,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<ContestTypeData> getAllContestTypes() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<ContestTypeData> getAllContestTypes() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -448,8 +431,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public boolean removeDocument(long documentId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public boolean removeDocument(long documentId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -463,8 +445,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public long getMimeTypeId(String contentType) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public long getMimeTypeId(String contentType) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -482,7 +463,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void purchaseSubmission(long submissionId, SubmissionPaymentData submissionPaymentData, String securityToken)
-			throws PersistenceException, AuthenticationException, GeneralSecurityException;
+			throws PersistenceException;
 
 	/**
 	 * <p>
@@ -494,8 +475,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<MediumData> getAllMediums() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<MediumData> getAllMediums() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -508,8 +488,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -522,8 +501,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void setSubmissionPrize(long submissionId, long prizeId) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public void setSubmissionPrize(long submissionId, long prizeId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -535,8 +513,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void markForPurchase(long submissionId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void markForPurchase(long submissionId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -548,8 +525,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -562,8 +538,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -576,8 +551,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -589,8 +563,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void deleteContest(long contestId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void deleteContest(long contestId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -602,8 +575,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<StudioCompetition> getAllContestHeaders() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<StudioCompetition> getAllContestHeaders() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -617,8 +589,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void processMissingPayments(long contestId) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public void processMissingPayments(long contestId) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -631,8 +602,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<DocumentType> getAllDocumentTypes() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<DocumentType> getAllDocumentTypes() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -644,8 +614,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -657,8 +626,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SimpleContestData> getContestDataOnly() throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<SimpleContestData> getContestDataOnly() throws PersistenceException;
 
 	/**
 	 * <p>
@@ -671,8 +639,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SimpleContestData> getContestDataOnlyByPID(long pid) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<SimpleContestData> getContestDataOnlyByPID(long pid) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -687,7 +654,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Permission> getPermissionsByUser(long userid) throws AuthenticationException, GeneralSecurityException,
+	public List<Permission> getPermissionsByUser(long userid) throws
 			PermissionServiceException;
 
 	/**
@@ -703,8 +670,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Permission> getPermissionsByProject(long projectid) throws AuthenticationException,
-			GeneralSecurityException, PermissionServiceException;
+	public List<Permission> getPermissionsByProject(long projectid) throws PermissionServiceException;
 
 	/**
 	 * <p>
@@ -720,8 +686,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Permission> getPermissions(long userid, long projectid) throws AuthenticationException,
-			GeneralSecurityException, PermissionServiceException;
+	public List<Permission> getPermissions(long userid, long projectid) throws PermissionServiceException;
 
 	/**
 	 * <p>
@@ -734,8 +699,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<PermissionType> getAllPermissionType() throws AuthenticationException, PermissionServiceException,
-			GeneralSecurityException;
+	public List<PermissionType> getAllPermissionType() throws PermissionServiceException;
 
 	/**
 	 * <p>
@@ -749,8 +713,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException;
 
 	/**
 	 * <p>
@@ -763,8 +726,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void updatePermissionType(PermissionType type) throws AuthenticationException, GeneralSecurityException,
-			PermissionServiceException;
+	public void updatePermissionType(PermissionType type) throws PermissionServiceException;
 
 	/**
 	 * <p>
@@ -797,7 +759,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition,
-			CreditCardPaymentData paymentData) throws AuthenticationException, GeneralSecurityException,
+			CreditCardPaymentData paymentData) throws 
 			PersistenceException, PaymentException, ContestNotFoundException;
 
 	/**
@@ -814,7 +776,7 @@ public interface ContestServiceFacadeWebService {
 	 */
 	public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
 			TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
-			ContestNotFoundException, GeneralSecurityException, AuthenticationException;
+			ContestNotFoundException;
 
 	/**
 	 * <p>
@@ -829,8 +791,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public SoftwareContestPaymentResult processContestCreditCardSale(SoftwareCompetition competition,
-			CreditCardPaymentData paymentData) throws AuthenticationException, GeneralSecurityException,
-			ContestServiceException;
+			CreditCardPaymentData paymentData) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -845,7 +806,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public SoftwareContestPaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
-			TCPurhcaseOrderPaymentData paymentData) throws GeneralSecurityException, AuthenticationException,
+			TCPurhcaseOrderPaymentData paymentData) throws 
 			ContestServiceException;
 
 	/**
@@ -873,8 +834,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public PaymentResult processSubmissionCreditCardPayment(CompletedContestData completedContestData,
-			CreditCardPaymentData paymentData) throws PaymentException, PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+			CreditCardPaymentData paymentData) throws PaymentException, PersistenceException;
 
 	/**
 	 * <p>
@@ -900,8 +860,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData,
-			TCPurhcaseOrderPaymentData paymentData) throws PaymentException, PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+			TCPurhcaseOrderPaymentData paymentData) throws PaymentException, PersistenceException;
 
 	/**
 	 * <p>
@@ -914,8 +873,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -928,8 +886,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException,
-			AuthenticationException, GeneralSecurityException;
+	public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -941,8 +898,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Category> getActiveCategories() throws ContestServiceException, GeneralSecurityException,
-			AuthenticationException;
+	public List<Category> getActiveCategories() throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -954,8 +910,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Technology> getActiveTechnologies() throws GeneralSecurityException, AuthenticationException,
-			ContestServiceException;
+	public List<Technology> getActiveTechnologies() throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -967,7 +922,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<Phase> getPhases() throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+	public List<Phase> getPhases() throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -983,7 +938,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws ContestServiceException if an error occurs when interacting with the service layer.
 	 */
 	public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-			throws ContestServiceException, GeneralSecurityException, AuthenticationException;
+			throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -998,8 +953,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 * @throws ContestServiceException if an error occurs when interacting with the service layer.
 	 */
-	public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws GeneralSecurityException,
-			AuthenticationException, ContestServiceException;
+	public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1014,7 +968,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public SoftwareCompetition updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-			throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1030,8 +984,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void assignUserToAsset(long userId, long assetId) throws AuthenticationException, GeneralSecurityException,
-			ContestServiceException;
+	public void assignUserToAsset(long userId, long assetId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1044,8 +997,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void removeUserFromAsset(long userId, long assetId) throws AuthenticationException,
-			GeneralSecurityException, ContestServiceException;
+	public void removeUserFromAsset(long userId, long assetId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1057,8 +1009,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public SoftwareCompetition[] findAllTcDirectProjects() throws ContestServiceException, GeneralSecurityException,
-			AuthenticationException;
+	public SoftwareCompetition[] findAllTcDirectProjects() throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1071,8 +1022,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws AuthenticationException,
-			GeneralSecurityException, ContestServiceException;
+	public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1086,8 +1036,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public SoftwareCompetition getFullProjectData(long projectId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public SoftwareCompetition getFullProjectData(long projectId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1109,7 +1058,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public long uploadSubmission(long projectId, String filename, DataHandler submission)
-			throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1126,8 +1075,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public long uploadFinalFix(long projectId, String filename, DataHandler finalFix) throws GeneralSecurityException,
-			AuthenticationException, ContestServiceException;
+	public long uploadFinalFix(long projectId, String filename, DataHandler finalFix) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1144,8 +1092,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public long uploadTestCases(long projectId, String filename, DataHandler testCases) throws AuthenticationException,
-			GeneralSecurityException, ContestServiceException;
+	public long uploadTestCases(long projectId, String filename, DataHandler testCases) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1161,7 +1108,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void setSubmissionStatus(long submissionId, long submissionStatusId, String operator)
-			throws ContestServiceException, GeneralSecurityException, AuthenticationException;
+			throws ContestServiceException;
 
 	/**
 	 * Adds the given user as a new submitter to the given project id.
@@ -1174,8 +1121,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 * @throws ContestServiceException if an error occurs when interacting with the service layer.
 	 */
-	public long addSubmitter(long projectId, long userId) throws AuthenticationException, GeneralSecurityException,
-			ContestServiceException;
+	public long addSubmitter(long projectId, long userId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1192,7 +1138,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
-			throws PersistenceException, AuthenticationException, GeneralSecurityException;
+			throws PersistenceException;
 
 	/**
 	 * <p>
@@ -1206,7 +1152,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(long createdUser)
-			throws PersistenceException, AuthenticationException, GeneralSecurityException;
+			throws PersistenceException;
 
 	/**
 	 * <p>
@@ -1217,8 +1163,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<User> searchUser(String key) throws PersistenceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<User> searchUser(String key) throws PersistenceException;
 
 	/**
 	 * <p>
@@ -1231,8 +1176,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void updatePermissions(Permission[] permissions) throws GeneralSecurityException, AuthenticationException,
-			PermissionServiceException;
+	public void updatePermissions(Permission[] permissions) throws PermissionServiceException;
 
 	/**
 	 * Gets all contest fees by billing project id.
@@ -1243,8 +1187,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException;
 
 	/**
 	 * Gets the spec review for specified contest id.
@@ -1256,8 +1199,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException;
 
 	/**
 	 * Save specified review comment and review status for specified section and specified contest id to persistence.
@@ -1273,7 +1215,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass,
-			String role) throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			String role) throws ContestServiceException;
 
 	/**
 	 * Save specified review comment for specified section and specified contest id to persistence.
@@ -1288,7 +1230,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
-			throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			throws ContestServiceException;
 
 	/**
 	 * Mark review comment with specified comment id as seen.
@@ -1298,8 +1240,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void markReviewCommentSeen(long commentId) throws ContestServiceException, AuthenticationException,
-			GeneralSecurityException;
+	public void markReviewCommentSeen(long commentId) throws ContestServiceException;
 
 	/**
 	 * Marks 'review done' by reviewer of the specs for specified contest. Persistence is updated and all end users
@@ -1314,7 +1255,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId)
-			throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			throws ContestServiceException;
 
 	/**
 	 * Marks 'ready for review' by the writer of the specs for specified contest. Persistence is updated, on update the
@@ -1326,8 +1267,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException;
 
 	/**
 	 * Marks 'resubmit for review' by the writer of the specs for specified contest. Persistence is updated. Reviewer
@@ -1342,7 +1282,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId)
-			throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			throws ContestServiceException;
 
 	/**
 	 * Get the user contest by user name Return empty list if none found
@@ -1354,8 +1294,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<StudioCompetition> getUserContests(String userName) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<StudioCompetition> getUserContests(String userName) throws ContestServiceException;
 
 	/**
 	 * get milestone submissions for contest
@@ -1367,8 +1306,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SubmissionData> getMilestoneSubmissionsForContest(long contestId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<SubmissionData> getMilestoneSubmissionsForContest(long contestId) throws ContestServiceException;
 
 	/**
 	 * get final submissions for contest
@@ -1380,8 +1318,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<SubmissionData> getFinalSubmissionsForContest(long contestId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public List<SubmissionData> getFinalSubmissionsForContest(long contestId) throws ContestServiceException;
 
 	/**
 	 * set submission milestone prize If given submission has already been associated with the given milestone prize
@@ -1396,8 +1333,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void setSubmissionMilestonePrize(long submissionId, long milestonePrizeId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public void setSubmissionMilestonePrize(long submissionId, long milestonePrizeId) throws ContestServiceException;
 
 	/**
 	 * Get all design components.
@@ -1406,8 +1342,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public List<DesignComponents> getDesignComponents() throws ContestServiceException, AuthenticationException,
-			GeneralSecurityException;
+	public List<DesignComponents> getDesignComponents() throws ContestServiceException;
 
 	/**
 	 * Returns whether a user is eligible for a particular contest.
@@ -1420,8 +1355,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException;
 
 	/**
 	 * Find eligibility name for the client.
@@ -1431,7 +1365,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public String getEligibilityName(long billingProjectId) throws GeneralSecurityException, AuthenticationException;
+	public String getEligibilityName(long billingProjectId);
 
 	/**
 	 * This method creates a Specification Review project associated to a project determined by parameter.
@@ -1442,8 +1376,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 * @throws ContestServiceException if any unexpected error occurs in the underlying services
 	 */
-	public FullProjectData createSpecReview(long projectId) throws ContestServiceException, AuthenticationException,
-			GeneralSecurityException;
+	public FullProjectData createSpecReview(long projectId) throws ContestServiceException;
 
 	/**
 	 * This method retrieves scorecard and review information associated to a project determined by parameter. Note: a
@@ -1455,8 +1388,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 * @throws ContestServiceException if any unexpected error occurs in the underlying services
 	 */
-	public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException;
 
 	/**
 	 * This method uploads a mock file to the corresponding specification review project of the specified project id, so
@@ -1469,8 +1401,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException;
 
 	/**
 	 * This method adds a review comment to a review. It simply delegates all logic to underlying services.
@@ -1482,8 +1413,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1497,8 +1427,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException,
-			AuthenticationException, GeneralSecurityException;
+	public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException;
 
 	/**
 	 * <p>
@@ -1516,7 +1445,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
 	public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
-			boolean minorVersion) throws ContestServiceException, AuthenticationException, GeneralSecurityException;
+			boolean minorVersion) throws ContestServiceException;
 
 	/**
 	 * Returns whether the contest is private.
@@ -1528,8 +1457,7 @@ public interface ContestServiceFacadeWebService {
 	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
 	 */
-	public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException, AuthenticationException,
-			GeneralSecurityException;
+	public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException;
     /**
      * <p>
      * Gets the list of all existing contests related to given project for my
@@ -1543,6 +1471,5 @@ public interface ContestServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */    
-    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(long pid) throws PersistenceException,
-        AuthenticationException, GeneralSecurityException;
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(long pid) throws PersistenceException;
 }

@@ -201,9 +201,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.addChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), history);
+    public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException {
+        try
+        {
+            facade.addChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), history);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -221,9 +232,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws IllegalArgumentWSException if any of specified IDs is negative.
      */
     public void addDocumentToContest(long documentId, long contestId) throws PersistenceException,
-            ContestNotFoundException, AuthenticationException, GeneralSecurityException {
-        facade.addDocumentToContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), documentId,
+            ContestNotFoundException {
+        
+        try
+        {
+             facade.addDocumentToContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), documentId,
                 contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+       
     }
 
     /**
@@ -238,9 +262,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public PermissionType addPermissionType(PermissionType type) throws AuthenticationException,
-            GeneralSecurityException, PermissionServiceException {
-        return facade.addPermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), type);
+    public PermissionType addPermissionType(PermissionType type) throws PermissionServiceException {
+        try
+        {
+             return facade.addPermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), type);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -253,9 +288,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void addReviewComment(long reviewId, Comment comment) throws AuthenticationException,
-            GeneralSecurityException, ContestServiceException {
-        facade.addReviewComment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), reviewId, comment);
+    public void addReviewComment(long reviewId, Comment comment) throws ContestServiceException {
+        try
+        {
+             facade.addReviewComment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), reviewId, comment);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
+        
     }
 
     /**
@@ -269,10 +316,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      */
-    public long addSubmitter(long projectId, long userId) throws GeneralSecurityException, AuthenticationException,
-            ContestServiceException {
-        return facade.addSubmitter(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
+    public long addSubmitter(long projectId, long userId) throws ContestServiceException {
+         try
+        {
+              return facade.addSubmitter(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
                 userId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+       
     }
 
     /**
@@ -289,9 +347,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void assignUserToAsset(long userId, long assetId) throws AuthenticationException, GeneralSecurityException,
+    public void assignUserToAsset(long userId, long assetId) throws
             ContestServiceException {
-        facade.assignUserToAsset(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, assetId);
+        try
+        {
+              facade.assignUserToAsset(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, assetId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -311,9 +381,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId)
-            throws PersistenceException, AuthenticationException, GeneralSecurityException {
-        return facade.createContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contest,
+            throws PersistenceException {
+         try
+        {
+             return facade.createContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contest,
                 tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -329,9 +411,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public long createNewVersionForDesignDevContest(long projectId, long tcDirectProjectId, boolean autoDevCreating,
-            boolean minorVersion) throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.createNewVersionForDesignDevContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+            boolean minorVersion) throws ContestServiceException {
+         try
+        {
+             return facade.createNewVersionForDesignDevContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), projectId, tcDirectProjectId, autoDevCreating, minorVersion);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -348,9 +442,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      */
     public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-            throws ContestServiceException, GeneralSecurityException, AuthenticationException {
-        return facade.createSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            throws ContestServiceException {
+        try
+        {
+            return facade.createSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 contest, tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -362,10 +468,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestServiceException if any unexpected error occurs in the underlying services
      */
-    public FullProjectData createSpecReview(long projectId) throws ContestServiceException, GeneralSecurityException,
-            AuthenticationException {
-        return facade.createSpecReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+    public FullProjectData createSpecReview(long projectId) throws ContestServiceException {
+         try
+        {
+           return facade.createSpecReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
     }
+        
 
     /**
      * <p>
@@ -377,9 +494,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void deleteContest(long contestId) throws AuthenticationException, GeneralSecurityException,
-            PersistenceException {
-        facade.deleteContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+    public void deleteContest(long contestId) throws PersistenceException {
+         try
+        {
+          facade.deleteContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -392,9 +520,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public SoftwareCompetition[] findAllTcDirectProjects() throws AuthenticationException, GeneralSecurityException,
+    public SoftwareCompetition[] findAllTcDirectProjects() throws 
             ContestServiceException {
-        return facade.findAllTcDirectProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+         try
+        {
+          return facade.findAllTcDirectProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -408,9 +548,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws AuthenticationException,
-            GeneralSecurityException, ContestServiceException {
-        return facade.findAllTcDirectProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws ContestServiceException {
+        try
+        {
+          return facade.findAllTcDirectProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
+        
     }
 
     /**
@@ -423,9 +575,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Category> getActiveCategories() throws AuthenticationException, GeneralSecurityException,
-            ContestServiceException {
-        return facade.getActiveCategories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<Category> getActiveCategories() throws ContestServiceException {
+         try
+        {
+          return facade.getActiveCategories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -438,9 +601,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Technology> getActiveTechnologies() throws GeneralSecurityException, AuthenticationException,
+    public List<Technology> getActiveTechnologies() throws 
             ContestServiceException {
-        return facade.getActiveTechnologies(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        try
+        {
+          return facade.getActiveTechnologies(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -453,9 +628,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<StudioCompetition> getAllContestHeaders() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllContestHeaders(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<StudioCompetition> getAllContestHeaders() throws PersistenceException {
+        try
+        {
+          return facade.getAllContestHeaders(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -468,9 +654,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<StudioCompetition> getAllContests() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<StudioCompetition> getAllContests() throws PersistenceException {
+        try
+        {
+          return facade.getAllContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -483,11 +680,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ContestTypeData> getAllContestTypes() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllContestTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
-    }
-
+    public List<ContestTypeData> getAllContestTypes() throws PersistenceException {
+        try
+        {
+          return facade.getAllContestTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+    }    
+    
     /**
      * <p>
      * Get all the DocumentType objects.
@@ -499,9 +706,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<DocumentType> getAllDocumentTypes() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllDocumentTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
+        try
+        {
+          return facade.getAllDocumentTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -514,9 +732,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<MediumData> getAllMediums() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllMediums(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<MediumData> getAllMediums() throws PersistenceException {
+        try
+        {
+          return facade.getAllMediums(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -530,9 +759,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<PermissionType> getAllPermissionType() throws GeneralSecurityException, AuthenticationException,
+    public List<PermissionType> getAllPermissionType() throws 
             PermissionServiceException {
-        return facade.getAllPermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        try
+        {
+          return facade.getAllPermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -545,9 +786,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getAllStudioFileTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException{
+        try
+        {
+          return facade.getAllStudioFileTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -561,9 +813,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+    public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException {
+        try
+        {
+          return facade.getChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -576,9 +839,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getCommonProjectContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<CommonProjectContestData> getCommonProjectContestData() throws PersistenceException {
+        try
+        {
+          return facade.getCommonProjectContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -592,10 +866,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getCommonProjectContestDataByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+    public List<CommonProjectContestData> getCommonProjectContestDataByPID(long pid) throws PersistenceException {
+        try
+        {
+          return facade.getCommonProjectContestDataByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), pid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
     }
 
     /**
@@ -610,9 +894,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(long createdUser)
-            throws PersistenceException, AuthenticationException, GeneralSecurityException {
-        return facade.getCommonProjectPermissionDataForUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+            throws PersistenceException{
+        try
+        {
+          return facade.getCommonProjectPermissionDataForUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), createdUser);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -629,9 +925,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public StudioCompetition getContest(long contestId) throws AuthenticationException, GeneralSecurityException,
-            PersistenceException, ContestNotFoundException {
-        return facade.getContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+    public StudioCompetition getContest(long contestId) throws PersistenceException, ContestNotFoundException {
+        try
+        {
+          return facade.getContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -644,9 +951,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SimpleContestData> getContestDataOnly() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getContestDataOnly(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<SimpleContestData> getContestDataOnly() throws PersistenceException {
+         try
+        {
+          return facade.getContestDataOnly(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -660,9 +978,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SimpleContestData> getContestDataOnlyByPID(long pid) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getContestDataOnlyByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), pid);
+    public List<SimpleContestData> getContestDataOnlyByPID(long pid) throws PersistenceException {
+        try
+        {
+          return facade.getContestDataOnlyByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), pid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -674,10 +1003,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getContestFeesByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws ContestServiceException {
+        try
+        {
+          return facade.getContestFeesByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -697,9 +1037,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public List<StudioCompetition> getContestsForProject(long tcDirectProjectId) throws PersistenceException,
-            ProjectNotFoundException, GeneralSecurityException, AuthenticationException {
-        return facade.getContestsForProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            ProjectNotFoundException {
+        try
+        {
+          return facade.getContestsForProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -709,9 +1061,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<DesignComponents> getDesignComponents() throws ContestServiceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getDesignComponents(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<DesignComponents> getDesignComponents() throws ContestServiceException {
+        try
+        {
+            return facade.getDesignComponents(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -722,17 +1085,30 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getEligibilityName(long billingProjectId) throws AuthenticationException, GeneralSecurityException {
-        return facade.getEligibilityName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public String getEligibilityName(long billingProjectId)  {
+        try
+        {
+               return facade.getEligibilityName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 billingProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            return "";
+        }
+        catch (GeneralSecurityException e)
+        {
+            return "";
+        }
+        
+     
     }
 
     /*
      * (non-Javadoc)
      * @see com.topcoder.service.facade.contest.ContestServiceFacadeWebService#getFinalSubmissionsForContest(long)
      */
-    public List<SubmissionData> getFinalSubmissionsForContest(long contestId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
+    public List<SubmissionData> getFinalSubmissionsForContest(long contestId) throws ContestServiceException
+    {
         return null;
     }
 
@@ -748,9 +1124,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public SoftwareCompetition getFullProjectData(long projectId) throws GeneralSecurityException,
-            AuthenticationException, ContestServiceException {
-        return facade.getFullProjectData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+    public SoftwareCompetition getFullProjectData(long projectId) throws ContestServiceException {
+        try
+        {
+            return facade.getFullProjectData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -764,8 +1151,7 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
+    public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException {
         return null;
     }
 
@@ -779,8 +1165,7 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SubmissionData> getMilestoneSubmissionsForContest(long contestId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
+    public List<SubmissionData> getMilestoneSubmissionsForContest(long contestId) throws ContestServiceException {
         return null;
     }
 
@@ -796,9 +1181,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public long getMimeTypeId(String contentType) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getMimeTypeId(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contentType);
+    public long getMimeTypeId(String contentType) throws PersistenceException {
+        try
+        {
+            return facade.getMimeTypeId(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contentType);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -815,10 +1211,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Permission> getPermissions(long userid, long projectid) throws GeneralSecurityException,
-            AuthenticationException, PermissionServiceException {
-        return facade.getPermissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userid,
+    public List<Permission> getPermissions(long userid, long projectid) throws PermissionServiceException {
+        try
+        {
+            return facade.getPermissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userid,
                 projectid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -834,10 +1241,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Permission> getPermissionsByProject(long projectid) throws AuthenticationException,
-            GeneralSecurityException, PermissionServiceException {
-        return facade.getPermissionsByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public List<Permission> getPermissionsByProject(long projectid) throws PermissionServiceException {
+        try
+        {
+            return facade.getPermissionsByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -853,9 +1271,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Permission> getPermissionsByUser(long userid) throws GeneralSecurityException, AuthenticationException,
-            PermissionServiceException {
-        return facade.getPermissionsByUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userid);
+    public List<Permission> getPermissionsByUser(long userid) throws PermissionServiceException {
+        try
+        {
+            return facade.getPermissionsByUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -868,8 +1297,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Phase> getPhases() throws GeneralSecurityException, AuthenticationException, ContestServiceException {
-        return facade.getPhases(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<Phase> getPhases() throws ContestServiceException {
+        try
+        {
+            return facade.getPhases(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -882,10 +1323,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestServiceException if any unexpected error occurs in the underlying services
      */
-    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getScorecardAndReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public ScorecardReviewData getScorecardAndReview(long projectId) throws ContestServiceException {
+        try
+        {
+            return facade.getScorecardAndReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -898,9 +1350,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SimpleContestData> getSimpleContestData() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getSimpleContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<SimpleContestData> getSimpleContestData() throws PersistenceException {
+        try
+        {
+            return facade.getSimpleContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -914,10 +1377,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SimpleContestData> getSimpleContestDataByPID(long pid) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade
+    public List<SimpleContestData> getSimpleContestDataByPID(long pid) throws PersistenceException {
+        try
+        {
+            return facade
                 .getSimpleContestDataByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), pid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -930,9 +1404,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getSimpleProjectContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
+        try
+        {
+            return facade.getSimpleProjectContestData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -948,10 +1433,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      */
-    public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws GeneralSecurityException,
-            AuthenticationException, ContestServiceException {
-        return facade.getSoftwareContestByProjectId(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public SoftwareCompetition getSoftwareContestByProjectId(long projectId) throws ContestServiceException {
+        try
+        {
+            return facade.getSoftwareContestByProjectId(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -964,10 +1460,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getSpecReviews(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
+    public SpecReview getSpecReviews(long contestId, boolean studio) throws ContestServiceException {
+        try
+        {
+            return facade.getSpecReviews(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
                 studio);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -981,9 +1488,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ContestStatusData> getStatusList() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getStatusList(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public List<ContestStatusData> getStatusList() throws PersistenceException {
+        try
+        {
+            return facade.getStatusList(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -997,9 +1515,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getSubmissionFileTypes() throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getSubmissionFileTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public String getSubmissionFileTypes() throws PersistenceException {
+         try
+        {
+            return facade.getSubmissionFileTypes(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1012,9 +1541,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<StudioCompetition> getUserContests(String userName) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getUserContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userName);
+    public List<StudioCompetition> getUserContests(String userName) throws ContestServiceException {
+        try
+        {
+            return facade.getUserContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userName);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1028,10 +1568,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.isEligible(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, contestId,
+    public boolean isEligible(long userId, long contestId, boolean isStudio) throws ContestServiceException
+    {
+        try
+        {
+            return facade.isEligible(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, contestId,
                 isStudio);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1044,9 +1596,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void markForPurchase(long submissionId) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.markForPurchase(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId);
+    public void markForPurchase(long submissionId) throws PersistenceException {
+        try
+        {
+            facade.markForPurchase(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1059,11 +1622,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        facade
+    public void markReadyForReview(long contestId, boolean studio) throws ContestServiceException {
+        try
+        {
+            facade
                 .markReadyForReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
                         studio);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1074,9 +1648,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void markReviewCommentSeen(long commentId) throws ContestServiceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.markReviewCommentSeen(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), commentId);
+    public void markReviewCommentSeen(long commentId) throws ContestServiceException {
+        try
+        {
+            facade.markReviewCommentSeen(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), commentId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1092,9 +1677,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void markReviewDone(long contestId, String contestName, boolean studio, long tcDirectProjectId)
-            throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        facade.markReviewDone(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
+            throws ContestServiceException {
+        try
+        {
+            facade.markReviewDone(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
                 contestName, studio, tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1108,10 +1705,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        facade.markSoftwareContestReadyForReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public void markSoftwareContestReadyForReview(long projectId) throws ContestServiceException {
+        try
+        {
+            facade.markSoftwareContestReadyForReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1145,10 +1753,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition,
-            CreditCardPaymentData paymentData) throws AuthenticationException, GeneralSecurityException,
-            PersistenceException, PaymentException, ContestNotFoundException {
-        return facade.processContestCreditCardPayment(LoginUtil
+            CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
+        try
+        {
+            return facade.processContestCreditCardPayment(LoginUtil
                 .login(loginBeanURL, loginBeanDSJndiName, sessionContext), competition, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
+        
     }
 
     /**
@@ -1164,10 +1784,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(SoftwareCompetition competition,
-            CreditCardPaymentData paymentData) throws AuthenticationException, GeneralSecurityException,
-            ContestServiceException {
-        return facade.processContestCreditCardSale(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            CreditCardPaymentData paymentData) throws ContestServiceException {
+        try
+        {
+            return facade.processContestCreditCardSale(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 competition, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1184,9 +1815,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
             TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
-            ContestNotFoundException, GeneralSecurityException, AuthenticationException {
-        return facade.processContestPurchaseOrderPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+            ContestNotFoundException {
+        try
+        {
+            return facade.processContestPurchaseOrderPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), competition, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1202,10 +1845,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(SoftwareCompetition competition,
-            TCPurhcaseOrderPaymentData paymentData) throws GeneralSecurityException, AuthenticationException,
-            ContestServiceException {
-        return facade.processContestPurchaseOrderSale(LoginUtil
+            TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException {
+        try
+        {
+             return facade.processContestPurchaseOrderSale(LoginUtil
                 .login(loginBeanURL, loginBeanDSJndiName, sessionContext), competition, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+       
     }
 
     /**
@@ -1220,9 +1874,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void processMissingPayments(long contestId) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.processMissingPayments(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+    public void processMissingPayments(long contestId) throws PersistenceException {
+        try
+        {
+             facade.processMissingPayments(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1250,10 +1915,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public PaymentResult processSubmissionCreditCardPayment(CompletedContestData completedContestData,
-            CreditCardPaymentData paymentData) throws PaymentException, PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.processSubmissionCreditCardPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+            CreditCardPaymentData paymentData) throws PaymentException, PersistenceException {
+        try
+        {
+             return facade.processSubmissionCreditCardPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), completedContestData, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1280,10 +1956,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData,
-            TCPurhcaseOrderPaymentData paymentData) throws PaymentException, PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.processSubmissionPurchaseOrderPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
+            TCPurhcaseOrderPaymentData paymentData) throws PaymentException, PersistenceException {
+        try
+        {
+             return facade.processSubmissionPurchaseOrderPayment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName,
                 sessionContext), completedContestData, paymentData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1302,9 +1989,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void purchaseSubmission(long submissionId, SubmissionPaymentData submissionPaymentData, String securityToken)
-            throws PersistenceException, AuthenticationException, GeneralSecurityException {
-        facade.purchaseSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
+            throws PersistenceException {
+        try
+        {
+             facade.purchaseSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
                 submissionPaymentData, securityToken);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1318,10 +2017,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.rankSubmissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException {
+        try
+        {
+             return facade.rankSubmissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 submissionIdsInRankOrder);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1336,9 +2046,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public boolean removeDocument(long documentId) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.removeDocument(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), documentId);
+    public boolean removeDocument(long documentId) throws PersistenceException {
+        try
+        {
+             return facade.removeDocument(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), documentId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1355,8 +2076,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void removeDocumentFromContest(UploadedDocument document) throws PersistenceException,
-            DocumentNotFoundException, AuthenticationException, GeneralSecurityException {
-        facade.removeDocumentFromContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), document);
+            DocumentNotFoundException {
+        try
+        {
+             facade.removeDocumentFromContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), document);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1371,9 +2104,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void removeSubmission(long submissionId) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.removeSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId);
+    public void removeSubmission(long submissionId) throws PersistenceException {
+        try
+        {
+             facade.removeSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1384,12 +2128,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @param userId the id of the user
      * @param assetId the id of the asset
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
-     * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-     * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void removeUserFromAsset(long userId, long assetId) throws AuthenticationException,
-            GeneralSecurityException, ContestServiceException {
-        facade.removeUserFromAsset(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, assetId);
+    public void removeUserFromAsset(long userId, long assetId) throws ContestServiceException {
+        try
+        {
+            facade.removeUserFromAsset(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId, assetId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1401,13 +2154,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @param tcDirectProjectId the tc-direct-project-id
      * @return returns the newly created contest id
      * @throws ContestServiceException if any problem occurs
-     * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-     * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.reOpenSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public long reOpenSoftwareContest(long projectId, long tcDirectProjectId) throws ContestServiceException {
+        try
+        {
+             return facade.reOpenSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 projectId, tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1423,9 +2185,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void resubmitForReview(long contestId, String contestName, boolean studio, long reviewerUserId)
-            throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        facade.resubmitForReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
+            throws ContestServiceException {
+        try
+        {
+             facade.resubmitForReview(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
                 contestName, studio, reviewerUserId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1440,10 +2214,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.retrieveSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException {
+        try
+        {
+             return facade.retrieveSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 submissionId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1462,9 +2247,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public List<SubmissionData> retrieveSubmissionsForContest(long contestId) throws PersistenceException,
-            ContestNotFoundException, GeneralSecurityException, AuthenticationException {
-        return facade.retrieveSubmissionsForContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            ContestNotFoundException {
+        try
+        {
+             return facade.retrieveSubmissionsForContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 contestId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1480,9 +2277,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void saveReviewComment(long contestId, boolean studio, String sectionName, String comment, String role)
-            throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        facade.saveReviewComment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, studio,
+            throws ContestServiceException {
+        try
+        {
+             facade.saveReviewComment(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, studio,
                 sectionName, comment, role);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1499,9 +2308,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void saveReviewStatus(long contestId, boolean studio, String sectionName, String comment, boolean isPass,
-            String role) throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        facade.saveReviewStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, studio,
+            String role) throws ContestServiceException {
+        try
+        {
+             facade.saveReviewStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, studio,
                 sectionName, comment, isPass, role);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1518,9 +2339,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<StudioCompetition> searchContests(ContestServiceFilter filter) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.searchContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), filter);
+    public List<StudioCompetition> searchContests(ContestServiceFilter filter) throws PersistenceException {
+        try
+        {
+             return facade.searchContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), filter);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1532,9 +2364,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<User> searchUser(String key) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.searchUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), key);
+    public List<User> searchUser(String key) throws PersistenceException {
+        try
+        {
+             return facade.searchUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), key);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1550,10 +2393,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void setSubmissionMilestonePrize(long submissionId, long milestonePrizeId) throws ContestServiceException,
-            AuthenticationException, GeneralSecurityException {
-        facade.setSubmissionMilestonePrize(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public void setSubmissionMilestonePrize(long submissionId, long milestonePrizeId) throws ContestServiceException {
+        try
+        {
+             facade.setSubmissionMilestonePrize(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 submissionId, milestonePrizeId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1567,10 +2421,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        facade.setSubmissionPlacement(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
+    public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException {
+        try
+        {
+             facade.setSubmissionPlacement(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
                 placement);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1584,10 +2449,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void setSubmissionPrize(long submissionId, long prizeId) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        facade.setSubmissionPrize(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
+    public void setSubmissionPrize(long submissionId, long prizeId) throws PersistenceException {
+        try
+        {
+             facade.setSubmissionPrize(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
                 prizeId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1604,9 +2480,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void setSubmissionStatus(long submissionId, long submissionStatusId, String operator)
-            throws ContestServiceException, GeneralSecurityException, AuthenticationException {
-        facade.setSubmissionStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
+            throws ContestServiceException {
+        try
+        {
+             facade.setSubmissionStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submissionId,
                 submissionStatusId, operator);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1622,9 +2510,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void updateContest(StudioCompetition contest) throws AuthenticationException, GeneralSecurityException,
-            PersistenceException, ContestNotFoundException {
-        facade.updateContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contest);
+    public void updateContest(StudioCompetition contest) throws PersistenceException, ContestNotFoundException {
+        try
+        {
+             facade.updateContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contest);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1644,10 +2543,22 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void updateContestStatus(long contestId, long newStatusId) throws PersistenceException,
-            GeneralSecurityException, AuthenticationException, StatusNotAllowedException, StatusNotFoundException,
+            StatusNotAllowedException, StatusNotFoundException,
             ContestNotFoundException {
-        facade.updateContestStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
+        try
+        {
+             facade.updateContestStatus(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId,
                 newStatusId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1661,9 +2572,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void updatePermissions(Permission[] permissions) throws GeneralSecurityException, AuthenticationException,
-            PermissionServiceException {
-        facade.updatePermissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), permissions);
+    public void updatePermissions(Permission[] permissions) throws PermissionServiceException {
+        try
+        {
+             facade.updatePermissions(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), permissions);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1677,9 +2599,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void updatePermissionType(PermissionType type) throws AuthenticationException, GeneralSecurityException,
-            PermissionServiceException {
-        facade.updatePermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), type);
+    public void updatePermissionType(PermissionType type) throws PermissionServiceException {
+        try
+        {
+             facade.updatePermissionType(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), type);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1695,9 +2628,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public SoftwareCompetition updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
-            throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.updateSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            throws ContestServiceException {
+        try
+        {
+             return facade.updateSoftwareContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 contest, tcDirectProjectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1712,9 +2657,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public void updateSubmission(SubmissionData submission) throws PersistenceException, AuthenticationException,
-            GeneralSecurityException {
-        facade.updateSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submission);
+    public void updateSubmission(SubmissionData submission) throws PersistenceException {
+        try
+        {
+             facade.updateSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), submission);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1728,10 +2684,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.updateSubmissionsFeedback(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException {
+        try
+        {
+             return facade.updateSubmissionsFeedback(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 feedbacks);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1749,9 +2716,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public boolean updateSubmissionUserRank(long submissionId, int rank, Boolean isRankingMilestone)
-            throws PersistenceException, AuthenticationException, GeneralSecurityException {
-        return facade.updateSubmissionUserRank(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            throws PersistenceException {
+        try
+        {
+             return facade.updateSubmissionUserRank(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 submissionId, rank, isRankingMilestone);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1767,10 +2746,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public UploadedDocument uploadDocument(UploadedDocument uploadedDocument) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.uploadDocument(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+    public UploadedDocument uploadDocument(UploadedDocument uploadedDocument) throws PersistenceException {
+        try
+        {
+             return facade.uploadDocument(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 uploadedDocument);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1788,9 +2778,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public UploadedDocument uploadDocumentForContest(UploadedDocument uploadedDocument) throws PersistenceException,
-            AuthenticationException, GeneralSecurityException, ContestNotFoundException {
-        return facade.uploadDocumentForContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
+            ContestNotFoundException {
+        try
+        {
+             return facade.uploadDocumentForContest(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext),
                 uploadedDocument);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        
     }
 
     /**
@@ -1808,10 +2810,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public long uploadFinalFix(long projectId, String filename, DataHandler finalFix) throws GeneralSecurityException,
-            AuthenticationException, ContestServiceException {
-        return facade.uploadFinalFix(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
+    public long uploadFinalFix(long projectId, String filename, DataHandler finalFix) throws ContestServiceException {
+        try
+        {
+             return facade.uploadFinalFix(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
                 filename, finalFix);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1834,9 +2847,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public long uploadSubmission(long projectId, String filename, DataHandler submission)
-            throws ContestServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.uploadSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
+            throws ContestServiceException {
+        try
+        {
+             return facade.uploadSubmission(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
                 filename, submission);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1854,10 +2879,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public long uploadTestCases(long projectId, String filename, DataHandler testCases) throws AuthenticationException,
-            GeneralSecurityException, ContestServiceException {
-        return facade.uploadTestCases(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
+    public long uploadTestCases(long projectId, String filename, DataHandler testCases) throws ContestServiceException {
+        try
+        {
+             return facade.uploadTestCases(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId,
                 filename, testCases);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -1870,10 +2906,21 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException, AuthenticationException,
-            GeneralSecurityException {
-        return facade
+    public boolean isPrivate(long contestId, boolean isStudio) throws ContestServiceException {
+        try
+        {
+             return facade
                 .isPrivate(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, isStudio);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        
     }
     /**
      * <p>
@@ -1888,9 +2935,20 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
 	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */    
-    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(long pid) throws PersistenceException,
-        AuthenticationException, GeneralSecurityException {
-    	return facade.getSimpleProjectContestDataByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), pid);
+    public List<SimpleProjectContestData> getSimpleProjectContestDataByPID(long pid) throws PersistenceException {
+         try
+        {
+            return facade.getSimpleProjectContestDataByPID(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), pid);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+    	
     }
 
 }
