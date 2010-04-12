@@ -731,7 +731,6 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
      * (non-Javadoc)
      * @see com.topcoder.service.facade.contest.ContestServiceFacadeWebService#getFinalSubmissionsForContest(long)
      */
-    @Override
     public List<SubmissionData> getFinalSubmissionsForContest(long contestId) throws ContestServiceException,
             AuthenticationException, GeneralSecurityException {
         return null;
