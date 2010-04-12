@@ -5,8 +5,6 @@ package com.topcoder.service.facade.user;
 
 import javax.jws.WebService;
 
-import com.topcoder.security.GeneralSecurityException;
-import com.topcoder.security.login.AuthenticationException;
 
 /**
  * <p>
@@ -47,8 +45,7 @@ public interface UserServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getJiraUser(String handle) throws UserServiceFacadeException,
-        AuthenticationException, GeneralSecurityException;
+    public String getJiraUser(String handle) throws UserServiceFacadeException;
 
     /**
      * <p>
@@ -62,6 +59,5 @@ public interface UserServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getConfluenceUser(String handle) throws UserServiceFacadeException,
-        AuthenticationException, GeneralSecurityException;
+    public String getConfluenceUser(String handle) throws UserServiceFacadeException;
 }

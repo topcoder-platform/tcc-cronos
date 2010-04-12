@@ -151,9 +151,20 @@ public class UserServiceFacadeWebServiceBean implements UserServiceFacadeWebServ
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getConfluenceUser(String handle) throws UserServiceFacadeException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getConfluenceUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), handle);
+    public String getConfluenceUser(String handle) throws UserServiceFacadeException {
+        try
+        {
+            return facade.getConfluenceUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), handle);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new UserServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new UserServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -168,9 +179,20 @@ public class UserServiceFacadeWebServiceBean implements UserServiceFacadeWebServ
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public String getJiraUser(String handle) throws UserServiceFacadeException, AuthenticationException,
-            GeneralSecurityException {
-        return facade.getJiraUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), handle);
+    public String getJiraUser(String handle) throws UserServiceFacadeException {
+        try
+        {
+            return facade.getJiraUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), handle);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new UserServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new UserServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
 }
