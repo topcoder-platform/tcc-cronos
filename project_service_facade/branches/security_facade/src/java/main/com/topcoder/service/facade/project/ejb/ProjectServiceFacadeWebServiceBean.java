@@ -173,9 +173,20 @@ public class ProjectServiceFacadeWebServiceBean implements ProjectServiceFacadeW
      * @see ProjectService#createProject(ProjectData)
      */
     @WebMethod
-    public @WebResult ProjectData createProject(@WebParam ProjectData projectData) throws PersistenceFault, IllegalArgumentFault,
-            GeneralSecurityException, AuthenticationException {
-        return facade.createProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectData);
+    public @WebResult ProjectData createProject(@WebParam ProjectData projectData) throws PersistenceFault, IllegalArgumentFault {
+        try
+        {
+            return facade.createProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectData);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceFault("" + e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceFault("" + e);
+        }
+        
     }
 
     /**
@@ -197,9 +208,20 @@ public class ProjectServiceFacadeWebServiceBean implements ProjectServiceFacadeW
      * @see ProjectService#getAllProjects()
      */
     @WebMethod
-    public @WebResult List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault,
-            GeneralSecurityException, AuthenticationException {
-        return facade.getAllProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public @WebResult List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault {
+        try
+        {
+            return facade.getAllProjects(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceFault("" + e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceFault("" + e);
+        }
+        
     }
 
     /**
@@ -214,8 +236,20 @@ public class ProjectServiceFacadeWebServiceBean implements ProjectServiceFacadeW
      * @throws DAOException if any error occurs while performing this operation.
      */
     @WebMethod
-    public @WebResult List<Project> getClientProjectsByUser() throws DAOFault, GeneralSecurityException, AuthenticationException {
-        return facade.getClientProjectsByUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+    public @WebResult List<Project> getClientProjectsByUser() throws DAOFault {
+        try
+        {
+            return facade.getClientProjectsByUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext));
+        }
+        catch (AuthenticationException e)
+        {
+            throw new DAOFault(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new DAOFault(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -237,8 +271,20 @@ public class ProjectServiceFacadeWebServiceBean implements ProjectServiceFacadeW
      */
     @WebMethod
     public @WebResult ProjectData getProject(@WebParam long projectId) throws PersistenceFault, ProjectNotFoundFault,
-            AuthorizationFailedFault, GeneralSecurityException, AuthenticationException {
-        return facade.getProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+            AuthorizationFailedFault {
+        try
+        {
+            return facade.getProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceFault("" + e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceFault("" +  e);
+        }
+        
     }
 
     /**
@@ -262,8 +308,22 @@ public class ProjectServiceFacadeWebServiceBean implements ProjectServiceFacadeW
      */
     @WebMethod
     public @WebResult List<ProjectData> getProjectsForUser(@WebParam long userId) throws PersistenceFault, UserNotFoundFault,
-            AuthorizationFailedFault, GeneralSecurityException, AuthenticationException {
-        return facade.getProjectsForUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId);
+            AuthorizationFailedFault{
+        try
+        {
+            return facade.getProjectsForUser(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), userId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new PersistenceFault("" +  e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new PersistenceFault("" +  e);
+        }
+        
+
+        
     }
 
 }

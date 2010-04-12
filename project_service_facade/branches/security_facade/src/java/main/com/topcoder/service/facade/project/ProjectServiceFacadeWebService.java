@@ -9,8 +9,6 @@ import javax.jws.WebService;
 
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.model.Project;
-import com.topcoder.security.GeneralSecurityException;
-import com.topcoder.security.login.AuthenticationException;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.IllegalArgumentFault;
 import com.topcoder.service.project.PersistenceFault;
@@ -64,8 +62,7 @@ public interface ProjectServiceFacadeWebService {
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @see ProjectService#createProject(ProjectData)
      */
-    ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault,
-            GeneralSecurityException, AuthenticationException;
+    ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
 
     /**
      * <p>
@@ -84,8 +81,7 @@ public interface ProjectServiceFacadeWebService {
      * @throws AuthorizationFailedFault if the calling principal is not authorized to retrieve the project.
      * @see ProjectService#getProject(long)
      */
-    ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault,
-            GeneralSecurityException, AuthenticationException;
+    ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault, AuthorizationFailedFault;
 
     /**
      * <p>
@@ -107,7 +103,7 @@ public interface ProjectServiceFacadeWebService {
      * @see ProjectService#getProjectsForUser(long)
      */
     List<ProjectData> getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault,
-            AuthorizationFailedFault, GeneralSecurityException, AuthenticationException;
+            AuthorizationFailedFault;
 
     /**
      * <p>
@@ -127,8 +123,7 @@ public interface ProjectServiceFacadeWebService {
      * @throws UserNotFoundFault if errors occurs during authorization of the caller user.
      * @see ProjectService#getAllProjects()
      */
-    List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault,
-            GeneralSecurityException, AuthenticationException;
+    List<ProjectData> getAllProjects() throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault;
 
     /**
      * <p>
@@ -141,6 +136,6 @@ public interface ProjectServiceFacadeWebService {
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws DAOException if any error occurs while performing this operation.
      */
-    public List<Project> getClientProjectsByUser() throws DAOFault, GeneralSecurityException, AuthenticationException;
+    public List<Project> getClientProjectsByUser() throws DAOFault;
 
 }
