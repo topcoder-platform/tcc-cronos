@@ -3,6 +3,8 @@
  */
 package com.topcoder.service.user;
 
+import java.util.Date;
+
 import javax.ejb.Remote;
 
 /**
@@ -11,14 +13,33 @@ import javax.ejb.Remote;
  * </p>
  *
  * <p>
- * Updated for Jira and Confluence User Sync Widget 1.0
- *  - Moved the methods that existed in user_sync_service component's UserService.
+ *      <strong>Version History:</strong>
+ *      <ul>
+ *              <li>Introduced since Cockpit Release Assembly for Receipts</li>
+ *              <li>Updated for Jira and Confluence User Sync Widget 1.0</li>
+ *                  <ul>
+ *                      <li>Moved the methods that existed in user_sync_service
+ *                      component's UserService.</li>
+ *                  </ul>
+ *              <li>Modified in version 1.1</li>
+ *                  <ul>
+ *                      <li>Added the <code>registerUser(User)</code> method.</li>
+ *                      <li>Added the <code>getUserInfo(String)</code> method.</li>
+ *                      <li>Added the <code>removeUserFromGroups(String,long[])</code> method.</li>
+ *                      <li>Added the <code>addUserToGroups(String,long[])</code> method.</li>
+ *                      <li>Added the <code>removeUserTerm(String,long)</code> method.</li>
+ *                      <li>Added the <code>addUserTerm(String,long)</code> method.</li>
+ *                  </ul>
+ *      </ul>
  * </p>
  *
  * @author snow01, TCSASSEMBLER
+ * @author woodjhon, ernestobf
+ * @version 1.1
  * @since Cockpit Release Assembly for Receipts
- * @version 1.0
+ * @version 1.1
  */
+@Remote
 public interface UserService {
 
     /**
@@ -106,5 +127,135 @@ public interface UserService {
      * @throws UserServiceException
      *             if any error occurs when getting user details
      */
-    public String getUserHandle(long userId) throws UserServiceException;
+    String getUserHandle(long userId) throws UserServiceException;
+
+    /**
+     * Registers the given user.
+     *
+     * @param user
+     *            The user to register
+     * @return the generated user id
+     * @throws IllegalArgumentException
+     *             if <code>user</code> is null or has missing required fields.
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    long registerUser(User user) throws UserServiceException;
+
+    /**
+     * Retrieves the user info given the user handle.
+     *
+     * @param handle
+     *            the user handle
+     * @return the user info
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    UserInfo getUserInfo(String handle) throws UserServiceException;
+
+    /**
+     * Adds the user to the given groups.
+     *
+     * @param groupIds
+     *            the IDs of the groups to add the user to
+     * @param handle
+     *            the user handle
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, if <code>groupsIds</code> is null, empty or if it contains
+     *             non-positive values
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    void addUserToGroups(String handle, long[] groupIds) throws UserServiceException;
+
+    /**
+     * Removes the user from the given groups.
+     *
+     * @param handle
+     *            The user handle
+     * @param groupIds
+     *            the IDs of the groups to remove the user from
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, if <code>groupsIds</code> is null, empty or if it contains
+     *             non-positive values
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    void removeUserFromGroups(String handle, long[] groupIds) throws UserServiceException;
+
+    /**
+     * Adds the given agreed term to the user.
+     *
+     * @param handle
+     *            the user handle
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @param termsAgreedDate
+     *            the date the user agreed the terms
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    void addUserTerm(String handle, long termsId, Date termsAgreedDate) throws UserServiceException;
+
+    /**
+     * Removes the given term from the user.
+     *
+     * @param handle
+     *            the user handle
+     * @param termsId
+     *            the ID of the term
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive.
+     * @throws UserServiceException
+     *             if the association does not exist, the user does not exist in the DB, or if the given term does not
+     *             exist in the DB
+     * @since 1.1
+     */
+    void removeUserTerm(String handle, long termsId) throws UserServiceException;
+
+     /**
+     * Adds the user to the given groups.
+     *
+     * @param groupIds
+     *            the IDs of the groups to add the user to
+     * @param userId
+     *            userId
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, if <code>groupsIds</code> is null, empty or if it contains
+     *             non-positive values
+     * @throws UserServiceException
+     *             if any error occurs during the operation
+     * @since 1.1
+     */
+    void addUserToGroups(long userId, long[] groupIds) throws UserServiceException;
+
+
+    /**
+     * Adds the given agreed term to the user.
+     *
+     * @param userId
+     *            the userId
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @param termsAgreedDate
+     *            the date the user agreed the terms
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    void addUserTerm(long userId, long termsId, Date termsAgreedDate) throws UserServiceException;
+
 }
