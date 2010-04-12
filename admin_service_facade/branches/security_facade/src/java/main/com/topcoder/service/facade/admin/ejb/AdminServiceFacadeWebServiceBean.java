@@ -154,9 +154,20 @@ public class AdminServiceFacadeWebServiceBean implements AdminServiceFacadeWebSe
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     @WebMethod
-    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getContestFeesByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws AdminServiceFacadeException {
+        try
+        {
+            return facade.getContestFeesByProject(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -170,8 +181,20 @@ public class AdminServiceFacadeWebServiceBean implements AdminServiceFacadeWebSe
      */
     @WebMethod
     public void saveContestFees(List<ProjectContestFee> contestFees, long projectId)
-            throws AdminServiceFacadeException, AuthenticationException, GeneralSecurityException {
-        facade.saveContestFees(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestFees, projectId);
+            throws AdminServiceFacadeException{
+        try
+        {
+            facade.saveContestFees(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestFees, projectId);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -185,9 +208,20 @@ public class AdminServiceFacadeWebServiceBean implements AdminServiceFacadeWebSe
      * @throws AdminServiceFacadeException if any error occurs during the service call
      */
     @WebMethod
-    public List<Project> searchProjectsByProjectName(String projectName) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.searchProjectsByProjectName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectName);
+    public List<Project> searchProjectsByProjectName(String projectName) throws AdminServiceFacadeException {
+        try
+        {
+            return facade.searchProjectsByProjectName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), projectName);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -201,9 +235,20 @@ public class AdminServiceFacadeWebServiceBean implements AdminServiceFacadeWebSe
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     @WebMethod
-    public List<Project> searchProjectsByClientName(String clientName) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.searchProjectsByClientName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), clientName);
+    public List<Project> searchProjectsByClientName(String clientName) throws AdminServiceFacadeException {
+        try
+        {
+            return facade.searchProjectsByClientName(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), clientName);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new AdminServiceFacadeException(e.getMessage(), e);
+        }
+        
     }
 
 }

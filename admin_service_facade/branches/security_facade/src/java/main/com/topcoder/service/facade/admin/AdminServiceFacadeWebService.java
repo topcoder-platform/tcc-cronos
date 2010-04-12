@@ -9,8 +9,6 @@ import javax.jws.WebService;
 
 import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectContestFee;
-import com.topcoder.security.GeneralSecurityException;
-import com.topcoder.security.login.AuthenticationException;
 
 /**
  * <p>
@@ -46,8 +44,7 @@ public interface AdminServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException;
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws AdminServiceFacadeException;
 
     /**
      * Saves contest fees. It will refresh contest fees for the given project.
@@ -59,7 +56,7 @@ public interface AdminServiceFacadeWebService {
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public void saveContestFees(List<ProjectContestFee> contestFees, long projectId)
-            throws AdminServiceFacadeException, AuthenticationException, GeneralSecurityException;
+            throws AdminServiceFacadeException;
 
     /**
      * Searches projects by project name. The name search is case insensitive and also allows for partial name search.
@@ -71,8 +68,7 @@ public interface AdminServiceFacadeWebService {
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws AdminServiceFacadeException if any error occurs during the service call
      */
-    public List<Project> searchProjectsByProjectName(String projectName) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException;
+    public List<Project> searchProjectsByProjectName(String projectName) throws AdminServiceFacadeException;
 
     /**
      * Searches projects by client name. The name search is case insensitive and also allows for partial name search.
@@ -84,6 +80,5 @@ public interface AdminServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Project> searchProjectsByClientName(String clientName) throws AdminServiceFacadeException,
-            AuthenticationException, GeneralSecurityException;
+    public List<Project> searchProjectsByClientName(String clientName) throws AdminServiceFacadeException;
 }
