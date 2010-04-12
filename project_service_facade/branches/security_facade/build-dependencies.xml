@@ -8,20 +8,26 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
 
     <!-- TCS dependencies -->
-    <property name="auditor.version" value="2.0.0" />
-    <property name="auditor.jar.name" value="auditor.jar" />
-    <property name="auditor.path" value="auditor/${auditor.version}" />
-    <property name="auditor.jar" value="${tcs_libdir}/${auditor.path}/${auditor.jar.name}" />
+    <property name="auditor.version" value="2.0.1"/>
+    <property name="auditor.jar.name" value="auditor.jar"/>
+    <property name="auditor.path" value="auditor/${auditor.version}"/>
+    <property name="auditor.jar" value="${tcs_libdir}/${auditor.path}/${auditor.jar.name}"/>
 
     <property name="base_exception.version" value="2.0.0" />
     <property name="base_exception.jar.name" value="base_exception.jar" />
     <property name="base_exception.path" value="base_exception/${base_exception.version}" />
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}" />
 
-    <property name="jboss_login_module.version" value="2.1.0" />
-    <property name="jboss_login_module.jar.name" value="jboss_login_module.jar" />
-    <property name="jboss_login_module.path" value="jboss_login_module/${jboss_login_module.version}" />
-    <property name="jboss_login_module.jar" value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}" />
+    <property name="jboss_login_module.version" value="2.1.0"/>
+    <property name="jboss_login_module.jar.name" value="jboss_login_module.jar"/>
+    <property name="jboss_login_module.path" value="jboss_login_module/${jboss_login_module.version}"/>
+    <property name="jboss_login_module.jar"
+              value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}"/>
+              
+    <property name="object_formatter.version" value="1.0.0"/>
+    <property name="object_formatter.jar.name" value="object_formatter.jar"/>
+    <property name="object_formatter.path" value="object_formatter/${object_formatter.version}"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.path}/${object_formatter.jar.name}"/>
 
     <property name="logging_wrapper.version" value="2.0.0" />
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
@@ -78,7 +84,7 @@
     <property name="search_builder.path" value="search_builder/${search_builder.version}" />
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}" />
 
-    <property name="typesafe_enum.version" value="1.1" />
+    <property name="typesafe_enum.version" value="1.1.0" />
     <property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}" />
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}" />
@@ -88,7 +94,7 @@
     <property name="project_service.path" value="project_service/${project_service.version}" />
     <property name="project_service.jar" value="${tcs_libdir}/${project_service.path}/${project_service.jar.name}" />
 
-    <property name="client_project_entities_dao.version" value="1.0.0" />
+    <property name="client_project_entities_dao.version" value="1.1.0" />
     <property name="client_project_entities_dao.jar.name" value="client_project_entities_dao.jar" />
     <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}" />
     <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}" />
