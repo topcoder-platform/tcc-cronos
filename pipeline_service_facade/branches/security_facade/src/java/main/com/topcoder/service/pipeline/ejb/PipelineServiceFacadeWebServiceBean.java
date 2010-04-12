@@ -157,9 +157,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Competition> getContests(ContestsSearchCriteria criteria) throws ContestPipelineServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), criteria);
+    public List<Competition> getContests(ContestsSearchCriteria criteria) throws ContestPipelineServiceException {
+        try
+        {
+            return facade.getContests(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), criteria);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -173,9 +184,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    public List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException,
-            AuthenticationException, GeneralSecurityException {
-        return facade.getContestsByDate(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), criteria);
+    public List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException {
+        try
+        {
+            return facade.getContestsByDate(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), criteria);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -191,8 +213,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * @throws ContestPipelineServiceException fail to do the query
      */
     public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getContestDateChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+            throws ContestPipelineServiceException {
+        try
+        {
+            return facade.getContestDateChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -208,8 +242,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * @throws ContestPipelineServiceException fail to do the query
      */
     public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getContestPrizeChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+            throws ContestPipelineServiceException {
+        try
+        {
+            return facade.getContestPrizeChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -226,8 +272,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestDateChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getContestDateChangeHistories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestIds, competitionTypes);
+            throws ContestPipelineServiceException {
+        try
+        {
+            return facade.getContestDateChangeHistories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestIds, competitionTypes);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -244,8 +302,21 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestPrizeChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getContestPrizeChangeHistories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestIds, competitionTypes);
+            throws ContestPipelineServiceException {
+         try
+        {
+            return facade.getContestPrizeChangeHistories(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestIds, competitionTypes);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+
+        
     }
 
     /**
@@ -260,8 +331,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getCommonPipelineData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), startDate, endDate, overdueContests);
+            throws ContestPipelineServiceException {
+         try
+        {
+            return facade.getCommonPipelineData(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), startDate, endDate, overdueContests);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        
     }
 
     /**
@@ -277,8 +360,20 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException {
-        return facade.getCapacityFullDates(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestType, isStudio);
+            throws ContestPipelineServiceException {
+         try
+        {
+            return facade.getCapacityFullDates(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestType, isStudio);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
+        {
+            throw new ContestPipelineServiceException(e.getMessage(), e);
+        }
+       
     }
 
 }

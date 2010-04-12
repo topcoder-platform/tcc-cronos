@@ -9,9 +9,6 @@ import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.jws.WebService;
-
-import com.topcoder.security.GeneralSecurityException;
-import com.topcoder.security.login.AuthenticationException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
@@ -55,9 +52,7 @@ public interface PipelineServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    List<Competition> getContests(ContestsSearchCriteria criteria) throws ContestPipelineServiceException,
-            AuthenticationException, GeneralSecurityException;
-
+    List<Competition> getContests(ContestsSearchCriteria criteria) throws ContestPipelineServiceException;
     /**
      * <p>
      * Search the contests by the given date criteria.
@@ -69,8 +64,7 @@ public interface PipelineServiceFacadeWebService {
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
-    List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException,
-            AuthenticationException, GeneralSecurityException;
+    List<Competition> getContestsByDate(DateSearchCriteria criteria) throws ContestPipelineServiceException;
 
     /**
      * <p>
@@ -85,7 +79,7 @@ public interface PipelineServiceFacadeWebService {
      * @throws ContestPipelineServiceException fail to do the query
      */
     List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 
     /**
      * <p>
@@ -100,7 +94,7 @@ public interface PipelineServiceFacadeWebService {
      * @throws ContestPipelineServiceException fail to do the query
      */
     List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 
     /**
      * <p>
@@ -116,7 +110,7 @@ public interface PipelineServiceFacadeWebService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestDateChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 
     /**
      * <p>
@@ -132,7 +126,7 @@ public interface PipelineServiceFacadeWebService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestPrizeChangeHistories(long[] contestIds, String[] competitionTypes)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 
     /**
      * Gets the list of common pipeline data within between specified start and end date.
@@ -146,7 +140,7 @@ public interface PipelineServiceFacadeWebService {
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      */
     public List<CommonPipelineData> getCommonPipelineData(Date startDate, Date endDate, boolean overdueContests)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 
     /**
      * Gets the list of dates that have full capacity starting from tomorrow for the given contest type (for software or
@@ -161,5 +155,5 @@ public interface PipelineServiceFacadeWebService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CapacityData> getCapacityFullDates(int contestType, boolean isStudio)
-            throws ContestPipelineServiceException, AuthenticationException, GeneralSecurityException;
+            throws ContestPipelineServiceException;
 }
