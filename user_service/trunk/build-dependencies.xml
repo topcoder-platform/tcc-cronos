@@ -12,6 +12,18 @@
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0/id_generator.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+
+    <property name="configuration_api.version" value="1.0"/>
+    <property name="configuration_api.jar.name" value="configuration_api.jar"/>
+    <property name="configuration_api.path" value="configuration_api/${configuration_api.version}"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
+
+    <property name="configuration_persistence.version" value="1.0"/>
+    <property name="configuration_persistence.jar.name" value="configuration_persistence.jar"/>
+    <property name="configuration_persistence.path" value="configuration_persistence/${configuration_persistence.version}"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/${configuration_persistence.path}/${configuration_persistence.jar.name}"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -42,6 +54,10 @@
         <pathelement location="${logging_wrapper.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${typesafe_enum.jar}"/>
+         <pathelement location="${id_generator.jar}"/>
+         <pathelement location="${configuration_manager.jar}"/>
+            <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/> 
 
     </path>
 
