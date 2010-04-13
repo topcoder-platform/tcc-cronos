@@ -5,7 +5,7 @@
         
         <session>
             <ejb-name>ContestServiceFacadeBean</ejb-name>
-            <jndi-name>ContestServiceFacadeBean/remote</jndi-name>
+            <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
 			
 
             <ejb-ref>
