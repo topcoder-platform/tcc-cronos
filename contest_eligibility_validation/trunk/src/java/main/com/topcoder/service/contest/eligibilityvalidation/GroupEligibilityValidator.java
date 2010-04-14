@@ -72,7 +72,7 @@ public class GroupEligibilityValidator implements ContestEligibilityValidator {
         final Query query =
             Persistence.createEntityManagerFactory(persistenceUnitName).createEntityManager()
                 .createNativeQuery(
-                    "select * from user_group_xref where login_id=:userId and group_id=:groupId");
+                    "select * from user_group_xref where security_status_id = 1 and login_id=:userId and group_id=:groupId");
         query.setParameter("userId", userId);
         query.setParameter("groupId", ((GroupContestEligibility) contestEligibility).getGroupId());
         return query.getResultList().size() > 0;
