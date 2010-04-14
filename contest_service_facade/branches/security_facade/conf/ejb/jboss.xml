@@ -56,7 +56,7 @@
             <jndi-name>ContestServiceFacadeWebServiceBean/remote</jndi-name>
             <ejb-ref>
                 <ejb-ref-name>ejb/ContestServiceFacade</ejb-ref-name>
-                <jndi-name>ContestServiceFacadeBean/remote</jndi-name>
+                <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
             </ejb-ref>
         </session>
     </enterprise-beans>
