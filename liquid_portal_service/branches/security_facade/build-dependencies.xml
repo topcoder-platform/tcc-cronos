@@ -95,6 +95,16 @@
 
     <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar"/>
 
+    <property name="user_service.version" value="1.0.0" />
+    <property name="user_service.jar.name" value="user_service.jar" />
+    <property name="user_service.path" value="user_service/${user_service.version}" />
+    <property name="user_service.jar" value="${tcs_libdir}/${user_service.path}/${user_service.jar.name}" />
+	
+    <property name="cockpit_facade_util.version" value="1.0.0" />
+    <property name="cockpit_facade_util.jar.name" value="cockpit_facade_util.jar" />
+    <property name="cockpit_facade_util.path" value="cockpit_facade_util/${cockpit_facade_util.version}" />
+    <property name="cockpit_facade_util.jar" value="${tcs_libdir}/${cockpit_facade_util.path}/${cockpit_facade_util.jar.name}" />
+
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
@@ -155,6 +165,9 @@
         <pathelement location="${jbossws-client.jar}"/>
         <pathelement location="${activation.jar}"/>
         <pathelement location="${security.jar}"/>
+
+         <pathelement location="${user_service.jar}"/>
+          <pathelement location="${cockpit_facade_util.jar}"/>
 		
 
     </path>

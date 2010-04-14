@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -118,6 +120,12 @@ import com.topcoder.security.auth.module.UserProfilePrincipal;
 
 import com.topcoder.security.ldap.LDAPClient;
 import com.topcoder.security.ldap.LDAPClientException;
+
+import com.topcoder.service.util.LoginUtil;
+
+import com.topcoder.security.RolePrincipal;
+import com.topcoder.security.TCSubject;
+
 
 /**
  * <p>
@@ -654,6 +662,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         final String methodName = "registerUser";
         logEntrance(methodName);
 
+
+
         // check the argument
         checkUser(user, methodName);
         if (termsAgreedDate == null) {
@@ -671,6 +681,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         RegisterUserResult result;
         List<Warning> warnings = new ArrayList<Warning>();
+
+        TCSubject tcsubject = getTCSubject(true);
+        
 
         try {
             // register user
@@ -856,6 +869,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             principal.setName(requestorUserInfo.getHandle());
             principal.setUserId(requestorUserInfo.getUserId());
 
+            TCSubject tcSubject = getTCSubject(true);
+
 
         try {
             // get full control permission type which type id is
@@ -883,7 +898,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                             permissions.add(getPermission(userInfo, project, type));
                         } else {
                             // the project is not in the submitted list, remove the user's permission
-                            List<Permission> perms = contestServiceFacade.getPermissions(userInfo.getUserId(), project
+                            List<Permission> perms = contestServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), project
                                     .getProjectId());
                             for (Permission perm : perms) {
                                 // set PermissionType to null to remove the permission
@@ -896,7 +911,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
             }
             
-            contestServiceFacade.updatePermissions(permissions.toArray(new Permission[0]));
+            contestServiceFacade.updatePermissions(tcSubject, permissions.toArray(new Permission[0]));
 
             // get billing projects
             List<Project> billingProjects = billingProjectDAO.getProjectsByClientId(notusClientId);
@@ -1124,6 +1139,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
+            TCSubject tcSubject = getTCSubject(false);
+
             ProjectData proj = null;
             List<Warning> warnings = new ArrayList<Warning>();
             // get full control permission type which type id is fullControlPermissionTypeId
@@ -1148,7 +1165,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     for (ProjectData pjj :  tcProjects)
                     {
                         if (checkPermission(contestServiceFacade
-                            .getPermissions(requestorInfo.getUserId(), pjj.getProjectId())))
+                            .getPermissions(tcSubject, requestorInfo.getUserId(), pjj.getProjectId())))
                         {
                             proj = pjj;
                             break;
@@ -1163,7 +1180,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (proj != null) {
                 // ensure the requestor has the cockpit project permissions
                 if (!checkPermission(contestServiceFacade
-                        .getPermissions(requestorInfo.getUserId(), proj.getProjectId()))) {
+                        .getPermissions(tcSubject, requestorInfo.getUserId(), proj.getProjectId()))) {
                     sessionContext.setRollbackOnly();
                     throw logError(new LiquidPortalServiceException(String.format(
                             "User {0} does not has permission to project {1}", requestorHandle, proj.getName()), 5003),
@@ -1172,7 +1189,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             } else {
                 ProjectData projectData = new ProjectData();
                 projectData.setName(competitionData.getCockpitProjectName());
-                proj = projectService.createProject(projectData);
+                proj = projectService.createProject(tcSubject, projectData);
                 permissionService.updatePermissions(new Permission[] { getPermission(requestorInfo, proj, type) });
 
 
@@ -1340,7 +1357,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 data.setDetailedStatusId(ContestStatusData.CONTEST_DETAILED_STATUS_DRAFT);
 
                 // get capacity full dates
-                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(new Long(data.getContestTypeId()).intValue(), true);
+                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(tcSubject, new Long(data.getContestTypeId()).intValue(), true);
 
                 
 
@@ -1356,7 +1373,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp.setType(CompetionType.STUDIO);
                 comp.setStartTime(nextAvailableStartDate);
 
-                comp = contestServiceFacade.createContest(comp, proj.getProjectId());
+                comp = contestServiceFacade.createContest(tcSubject, comp, proj.getProjectId());
 
                 result.setStudioCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
@@ -1440,7 +1457,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
 
                 // get capacity full dates
-                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(new Long(projectHeader.getProjectCategory().getId()).intValue(), false);
+                List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(tcSubject, new Long(projectHeader.getProjectCategory().getId()).intValue(), false);
                 
                 XMLGregorianCalendar nextAvailableStartDate = getNextAvailableStartDate(competitionData
                         .getRequestedStartDate(), capacityDatas, competitionData.getAutoReschedule(), methodName);
@@ -1656,14 +1673,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp.setProjectPhases(new com.topcoder.project.phases.Project());
                 comp.setProjectResources(new com.topcoder.management.resource.Resource[0]);
 
-                comp = contestServiceFacade.createSoftwareContest(comp, proj.getProjectId());
+                comp = contestServiceFacade.createSoftwareContest(tcSubject, comp, proj.getProjectId());
 
                 result.setSoftwareCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId() + ".");
             }
 
             for (UserInfo supportInfo : supportInfos) {
-                updatePermission(getPermission(supportInfo, proj, type), supportInfo, warnings);
+                updatePermission(tcSubject, getPermission(supportInfo, proj, type), supportInfo, warnings);
             }
 
             result.setWarnings(warnings);
@@ -1806,6 +1823,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
+            TCSubject tcSubject = getTCSubject(false);
+
 
         try {
 
@@ -1849,7 +1868,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             for (UserInfo userInfo : userInfos) {
                 for (ProjectData proj : premittedProjects)
                 {
-                    updatePermission(getPermission(userInfo, proj, type), userInfo, warnings);
+                    updatePermission(tcSubject, getPermission(userInfo, proj, type), userInfo, warnings);
                 }
                 
             }
@@ -1951,9 +1970,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     "requestor handle is not in Notus Eligibility Groups", LiquidPortalServiceException.EC_INVALID_REQUESTOR_HANDLE), methodName);
         }
 
+        TCSubject tcSubject = getTCSubject(false);
+
         try {
             if (isStudio) {
-                StudioCompetition comp = contestServiceFacade.getContest(contestId);
+                StudioCompetition comp = contestServiceFacade.getContest(tcSubject, contestId);
                 if (comp == null) {
                     sessionContext.setRollbackOnly();
                     throw logError(new LiquidPortalServiceException("can not find contest with contestId:"
@@ -1967,19 +1988,19 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                             "the user has no permissions for the billing account associated to the competition", 5003),
                             methodName);
                 }
-                if (!checkPermission(contestServiceFacade.getPermissions(requestorInfo.getUserId(), comp.getProject()
+                if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
                         .getProjectId()))) {
                     sessionContext.setRollbackOnly();
                     throw logError(new LiquidPortalServiceException(String.format(
                             "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
                                     .getName()), LiquidPortalServiceException.EC_ACTION_NOT_PERMITTED), methodName);
                 }
-                contestServiceFacade.deleteContest(contestId);
+                contestServiceFacade.deleteContest(tcSubject, contestId);
             } else {
                 // get software competition
-                SoftwareCompetition comp = contestServiceFacade.getSoftwareContestByProjectId(contestId);
+                SoftwareCompetition comp = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, contestId);
                 // check permission
-                if (!checkPermission(contestServiceFacade.getPermissions(requestorInfo.getUserId(), comp.getProject()
+                if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
                         .getProjectId()))) {
                     sessionContext.setRollbackOnly();
                     throw logError(new LiquidPortalServiceException(String.format(
@@ -1990,7 +2011,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 comp.setStatus(Status.DELETED);
                 // use <Requestor Handle>: <Reason> as the explanation
                 comp.setProjectHeaderReason(requestorHandle + ": " + reason);
-                contestServiceFacade.updateSoftwareContest(comp, comp.getProject().getProjectId());
+                contestServiceFacade.updateSoftwareContest(tcSubject, comp, comp.getProject().getProjectId());
             }
             logExit(methodName);
         } catch (com.topcoder.service.studio.ContestNotFoundException e) {
@@ -2064,6 +2085,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     LiquidPortalServiceException.EC_USERHANDLE_NULL_EMPTY), methodName);
         }
 
+
+
         // check the requestorHandle argument
         UserInfo requestorInfo = getUserInfo(requestorHandle, methodName);
         if (!userBelongNotusElibilityGroups(requestorInfo)) {
@@ -2081,6 +2104,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     methodName);
         }
 
+        TCSubject tcSubject = getTCSubject(false);
+
         try {
             // get cockpit projects
             List<ProjectData> cockpitProjects = projectService.getProjectsForUser(notusClientId);
@@ -2088,7 +2113,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             List<Permission> permList = new ArrayList<Permission>();
             for (ProjectData proj : cockpitProjects) {
                 // get all the permissions that the user own for a given project
-                List<Permission> permissions = contestServiceFacade.getPermissions(userInfo.getUserId(), proj
+                List<Permission> permissions = contestServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), proj
                         .getProjectId());
                 for (Permission perm : permissions) {
                     // set PermissionType to null to remove the premission
@@ -2098,7 +2123,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 permList.addAll(permissions);
             }
             // remove permissions for userHandle
-            contestServiceFacade.updatePermissions(permList.toArray(new Permission[0]));
+            contestServiceFacade.updatePermissions(tcSubject, permList.toArray(new Permission[0]));
 
             // get billing projects
             List<Project> billingProjects = billingProjectDAO.getProjectsByClientId(notusClientId);
@@ -2885,9 +2910,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * @param userInfo the user info
      * @param warnings the warning list
      */
-    private void updatePermission(Permission permission, UserInfo userInfo, List<Warning> warnings) {
+    private void updatePermission(TCSubject tcSubject, Permission permission, UserInfo userInfo, List<Warning> warnings) {
         try {
-            contestServiceFacade.updatePermissions(new Permission[] { permission });
+            contestServiceFacade.updatePermissions(tcSubject, new Permission[] { permission });
         } catch (PermissionServiceException e) {
             warnings.add(getWarning(String.format("Failed to assign permission to user <{0}>",
                     userInfo.getHandle()), LiquidPortalServiceException.EC_FAIL_TO_ASSIGN_PERMISSION, e));
@@ -3018,6 +3043,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             }
         }
    }
+
+   private TCSubject getTCSubject(boolean liquidAdminRole)
+    {
+        UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+        RolePrincipal role = new RolePrincipal("Liquid Administrator", 9389);
+        Set roles = new HashSet();
+        if (liquidAdminRole)
+        {
+             roles.add(role);
+        }
+       
+        TCSubject tcSubject = new TCSubject(roles, principal.getUserId());
+
+        return tcSubject;
+
+    }
 
 
     
