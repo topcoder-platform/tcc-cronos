@@ -234,7 +234,7 @@
              */
             private function handleDoubleClick(event:MouseEvent):void {
                 if (data.hasOwnProperty("submissionUrl") && data.submissionUrl != "") {
-                    this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
+                    //this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
                 } else {
                     // Open the link in a new window.
                     navigateToURL(new URLRequest(model.selectedImage), '_blank');
