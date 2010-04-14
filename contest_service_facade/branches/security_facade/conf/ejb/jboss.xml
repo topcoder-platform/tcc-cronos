@@ -48,6 +48,7 @@
                 <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
                 <jndi-name>ProjectDAOBean/remote</jndi-name>
             </ejb-ref>
+	   
         </session>
         
           <session>

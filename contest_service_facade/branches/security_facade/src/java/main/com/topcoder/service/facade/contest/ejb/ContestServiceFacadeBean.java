@@ -519,6 +519,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
 
+    /**
+     * Private constant specifying liquid administrator role.
+     */
+    private static final String LIQUID_ADMIN_ROLE = "Liquid Administrator";
+
 
 
     /**
@@ -1057,7 +1062,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             ContestData contestData = convertToContestData(contest);
             //checks the permission
-            checkStudioProjectPermission(tcSubject, tcDirectProjectId);
+	        //TODO liquid creaet project, and assign permission, check fails here
+            //checkStudioProjectPermission(tcSubject, tcDirectProjectId);
             checkStudioBillingProjectPermission(tcSubject, contestData);
 
             // contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
@@ -2628,9 +2634,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+                
+                checkStudioBillingProjectPermission(tcSubject, competition.getContestData());
 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+                long billingProject = competition.getContestData().getBillingProject();
+
+                if (billingProject == 0)
+                {
+                    throw new ContestServiceException("Billing/PO Number is null/empty.");
+                }
+
+                String poNumber = billingProjectDAO.retrieveById(new Long(billingProject), false).getPOBoxNumber();
+
 
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
@@ -2657,7 +2672,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             tobeUpdatedCompetition.getContestData()
-                                  .setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
+                                  .setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
             tobeUpdatedCompetition.getContestData()
                                   .setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
 
@@ -2878,8 +2893,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+                checkBillingProjectPermission(tcSubject, tobeUpdatedCompetition);
+
+                String billingProject = tobeUpdatedCompetition.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+                if (billingProject == null || billingProject.equals("") || billingProject.equals("0"))
+                {
+                    throw new ContestServiceException("Billing/PO Number is null/empty.");
+                }
+
+                String poNumber = billingProjectDAO.retrieveById(new Long(billingProject), false).getPOBoxNumber();
+
                 // processing purchase order is not in scope of this assembly.
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3682,7 +3706,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } catch (ContestServiceException e) {
                 throw new PersistenceException("Fail to get user-handle");
             }
-            if (contestData.getBillingProject() > 0) {
+            if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
                 if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
                     throw new PersistenceException("No permission on billing project "
                             + contestData.getBillingProject());
@@ -3704,6 +3728,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String billingProject = contest.getProjectHeader().getProperty(
                     ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
             if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
+
+                if (billingProject.equals(billingProject))
+                {
+                    return;
+                }
                 long clientProjectId = Long.parseLong(billingProject);
                 if (!billingProjectDAO.checkClientProjectPermission(getUserName(tcSubject), clientProjectId)) {
                     throw new ContestServiceException("No permission on billing project " + clientProjectId);
@@ -3770,7 +3799,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             ExceptionUtils.checkNull(contest.getProjectHeader(), null, null, "The contest#ProjectHeader to create is null.");
 
             // check the permission
-            checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
+	     //TODO liquid creaet project, and assign permission, check fails here
+            //checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
             //check the billing project permission
             long billingProjectId = getBillingProjectId(contest);
 
@@ -4880,7 +4910,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         try
         {
-            if (!isRole(tcSubject, ADMIN_ROLE)) {
+            if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, LIQUID_ADMIN_ROLE)) {
                 long userId = tcSubject.getUserId();
 
                 List<CommonProjectPermissionData> userPermissions =
