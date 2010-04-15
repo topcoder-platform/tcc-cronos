@@ -622,7 +622,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
      */
     private void assertReviewValid(Review review) {
         Helper.assertLongPositive(review.getAuthor(), "author of review");
-        Helper.assertLongPositive(review.getSubmission(), "submission of review");
+//        Helper.assertLongPositive(review.getSubmission(), "submission of review");
         Helper.assertLongPositive(review.getScorecard(), "scorecard of review");
 
         Comment[] comments = review.getAllComments();
@@ -909,9 +909,16 @@ public class InformixReviewPersistence implements ReviewPersistence {
         changeTable.put(review, newId);
 
         // insert the review into database
-        Object[] queryArgs = new Object[] {newId, new Long(review.getAuthor()),
-            new Long(review.getSubmission()), new Long(review.getScorecard()),
-            new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, operator};
+        Object[] queryArgs;
+        if (review.getSubmission() > 0) {
+            queryArgs = new Object[] {newId, new Long(review.getAuthor()),
+                new Long(review.getSubmission()), new Long(review.getScorecard()),
+                new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, operator};
+        } else {
+            queryArgs = new Object[] {newId, new Long(review.getAuthor()),
+                null, new Long(review.getScorecard()),
+                new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, operator};
+        }
         Helper.doDMLQuery(conn, CREATE_REVIEW_SQL, queryArgs);
 
         LOGGER.log(Level.INFO, "insert record into " + REVIEW_TABLE + " with new id:" + newId);
@@ -1170,9 +1177,16 @@ public class InformixReviewPersistence implements ReviewPersistence {
         Long reviewId = new Long(review.getId());
 
         // update the review item in database
-        Object[] queryArgs = new Object[] {new Long(review.getAuthor()),
-            new Long(review.getSubmission()), new Long(review.getScorecard()),
-            new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, reviewId};
+        Object[] queryArgs;
+        if (review.getSubmission() > 0) {
+            queryArgs = new Object[] {new Long(review.getAuthor()),
+                new Long(review.getSubmission()), new Long(review.getScorecard()),
+                new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, reviewId};
+        } else {
+            queryArgs = new Object[] {new Long(review.getAuthor()),
+                null, new Long(review.getScorecard()),
+                new Long(review.isCommitted() ? 1 : 0), review.getScore(), review.getInitialScore(), operator, reviewId};
+        }
 
         LOGGER.log(Level.INFO, "update record in the  " + REVIEW_TABLE + " table with id:" + reviewId.longValue());
 
@@ -1781,7 +1795,9 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             review.setId(((Long) row[0]).longValue());
             review.setAuthor(((Long) row[1]).longValue());
-            review.setSubmission(((Long) row[2]).longValue());
+            if (row[2] != null) {
+                review.setSubmission(((Long) row[2]).longValue());
+            }
             review.setScorecard(((Long) row[3]).longValue());
             review.setCommitted(((Long) row[4]).longValue() != 0);
             review.setScore((Float) row[5]);
@@ -1846,7 +1862,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
         review.setId(resultSet.getLong("review_id"));
         review.setAuthor(resultSet.getLong("resource_id"));
-        review.setSubmission(resultSet.getLong("submission_id"));
+        try {
+            review.setSubmission(resultSet.getLong("submission_id"));
+        } catch (NullPointerException e) {
+            // Submission ID may be NULL
+        }
         review.setScorecard(resultSet.getLong("scorecard_id"));
         review.setCommitted(resultSet.getLong("committed") != 0);
         if (resultSet.getObject("score") != null) {
