@@ -21,11 +21,18 @@ import com.topcoder.management.deliverable.persistence.DeliverableCheckingExcept
  * This class is immutable.
  * </p>
  *
- * @author aubergineanode
+ * @author aubergineanode, isv
  * @author kr00tki
- * @version 1.0
+ * @version 1.1
  */
 public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverableChecker {
+
+    /**
+     * <p>A <code>boolean</code> flag indicating whether the reviews are expected to be per submission or not.</p>
+     *
+     * @since 1.1
+     */
+    private boolean submissionDependent = true;
 
     /**
      * Creates a new CommittedReviewDeliverableChecker.
@@ -50,6 +57,20 @@ public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverable
     }
 
     /**
+     * Creates a new CommittedReviewDeliverableChecker.
+     *
+     * @param connectionFactory The connection factory to use for getting connections to the database.
+     * @throws IllegalArgumentException If connectionFactory is null.
+     * @param submissionDependent <code>true</code> if reviews are expected to be done per submission;
+     *        <code>false</code> otherwise.
+     * @since 1.1
+     */
+    public CommittedReviewDeliverableChecker(DBConnectionFactory connectionFactory, boolean submissionDependent) {
+        super(connectionFactory);
+        this.submissionDependent = submissionDependent;
+    }
+
+    /**
      * <p>
      * Given a PreparedStatement representation of the SQL query returned by the getSqlQuery method, this method
      * extracts resource_id and submission_id values from the deliverable and sets them as
@@ -63,11 +84,18 @@ public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverable
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement)
         throws SQLException, DeliverableCheckingException {
-        if (!deliverable.isPerSubmission()) {
-            throw new DeliverableCheckingException("The deliverable is not per submission and cannot be check.");
+        if (this.submissionDependent) {
+            if (!deliverable.isPerSubmission()) {
+                throw new DeliverableCheckingException("The deliverable is not per submission and cannot be checked.");
+            }
+            statement.setLong(1, deliverable.getResource());
+            statement.setLong(2, deliverable.getSubmission().longValue());
+        } else {
+            if (deliverable.isPerSubmission()) {
+                throw new DeliverableCheckingException("The deliverable is per submission and cannot be checked.");
+            }
+            statement.setLong(1, deliverable.getResource());
         }
-        statement.setLong(1, deliverable.getResource());
-        statement.setLong(2, deliverable.getSubmission().longValue());
     }
 
     /**
@@ -80,6 +108,10 @@ public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverable
      * @return The SQL query string to execute.
      */
     protected String getSqlQuery() {
-        return "SELECT modify_date FROM review WHERE committed = 1 AND resource_id = ? AND submission_id = ?";
+        if (this.submissionDependent) {
+            return "SELECT modify_date FROM review WHERE committed = 1 AND resource_id = ? AND submission_id = ?";
+        } else {
+            return "SELECT modify_date FROM review WHERE committed = 1 AND resource_id = ?";
+        }
     }
 }
