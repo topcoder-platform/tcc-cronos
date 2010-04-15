@@ -4268,6 +4268,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal,
             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
 
+            // set all for false for now
+            contest.getProjectHeader().setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
+
             if (forumId > 0) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
             }
