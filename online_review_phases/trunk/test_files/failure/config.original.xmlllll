@@ -1,7 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <CMConfig>
-        <!-- Namespace for all handler classes -->
+    <!-- Namespace for all handler classes -->
     <Config name="com.cronos.onlinereview.phases.failuretests">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
         <Property name="ConnectionName">
             <Value>dbconnection</Value>
         </Property>
@@ -36,11 +39,9 @@
                 <Value>admin@topcoder.com</Value>
             </Property>
         </Property>
-        <Property name="ConnectionFactoryNS">
-            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-        </Property>
     </Config>
-        <!-- Namespace for ManagerHelper class -->
+
+    <!-- Namespace for ManagerHelper class -->
     <Config name="com.cronos.onlinereview.phases.ManagerHelper">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -52,42 +53,47 @@
             <Value>com.topcoder.search.builder.Upload_Resource_Search</Value>
         </Property>
         <Property name="ProjectManager">
-            <Property name="Namespace">
-                <Value>com.topcoder.management.project.InformixProjectManager</Value>
-            </Property>
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockProjectManager</Value>
             </Property>
-        </Property>
-        <Property name="PhaseManager">
             <Property name="Namespace">
-                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+                <Value>com.topcoder.management.project.InformixProjectManager</Value>
             </Property>
+        </Property>
+
+        <Property name="PhaseManager">
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockPhaseManager</Value>
             </Property>
-        </Property>
-        <Property name="ScorecardManager">
             <Property name="Namespace">
-                <Value>com.topcoder.management.scorecard.InformixScorecardManager</Value>
+                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
             </Property>
+        </Property>
+
+        <Property name="ScorecardManager">
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockScorecardManager</Value>
             </Property>
-        </Property>
-        <Property name="ReviewManager">
             <Property name="Namespace">
-                <Value>com.topcoder.management.review.InformixReviewManager</Value>
+                <Value>com.topcoder.management.scorecard.InformixScorecardManager</Value>
             </Property>
+        </Property>
+
+        <Property name="ReviewManager">
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockReviewManager</Value>
             </Property>
+            <Property name="Namespace">
+                <Value>com.topcoder.management.review.InformixReviewManager</Value>
+            </Property>
         </Property>
+
         <Property name="ScreeningManager">
             <Property name="Namespace">
                 <Value>com.cronos.onlinereview.phases.failuretests.screening</Value>
             </Property>
         </Property>
+
         <Property name="UploadManager">
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockUploadManager</Value>
@@ -117,6 +123,7 @@
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockUploadPersistence</Value>
             </Property>
         </Property>
+
         <Property name="ResourceManager">
             <Property name="ClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockResourceManager</Value>
@@ -146,6 +153,7 @@
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockResourcePersistence</Value>
             </Property>
         </Property>
+
         <Property name="UserProjectDataStore">
             <Property name="UserRetrievalClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockUserRetrieval</Value>
@@ -154,11 +162,9 @@
                 <Value>com.cronos.onlinereview.external.impl.DBUserRetrieval</Value>
             </Property>
         </Property>
-        <Property name="ProjectDetailsURL">
-            <Value>http://www.topcoder.com/tc?projectDetails=?</Value>
-        </Property>
     </Config>
-        <!-- Namespace for DBConnectionFactory component -->
+
+    <!-- Namespace for DBConnectionFactory component -->
     <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
         <Property name="connections">
             <Property name="default">
@@ -173,19 +179,20 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://75.101.226.6:2021/orp_test:informixserver=informixoltp_tcp</Value>
+                        <Value>jdbc:informix-sqli://wishingbone:15260/or:INFORMIXSERVER=or</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>1nf0rm1x</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>
         </Property>
     </Config>
-        <!-- Namespace for Email Engine component -->
+
+    <!-- Namespace for Email Engine component -->
     <Config name="com.topcoder.message.email.EmailEngine">
         <Property name="smtp_host_addr">
             <Value>localhost</Value>
@@ -200,7 +207,8 @@
             <Value></Value>
         </Property>
     </Config>
-        <!-- Default namespace for Registration handler -->
+
+    <!-- Default namespace for Registration handler -->
     <Config name="com.cronos.onlinereview.phases.RegistrationPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -240,7 +248,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Submission handler -->
+
+    <!-- Default namespace for Submission handler -->
     <Config name="com.cronos.onlinereview.phases.SubmissionPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -280,7 +289,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Screening handler -->
+
+    <!-- Default namespace for Screening handler -->
     <Config name="com.cronos.onlinereview.phases.ScreeningPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -320,7 +330,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Review handler -->
+
+    <!-- Default namespace for Review handler -->
     <Config name="com.cronos.onlinereview.phases.ReviewPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -360,7 +371,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Appeals handler -->
+
+    <!-- Default namespace for Appeals handler -->
     <Config name="com.cronos.onlinereview.phases.AppealsPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -400,7 +412,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Appeals Response handler -->
+
+    <!-- Default namespace for Appeals Response handler -->
     <Config name="com.cronos.onlinereview.phases.AppealsResponsePhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -440,7 +453,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Aggregation handler -->
+
+    <!-- Default namespace for Aggregation handler -->
     <Config name="com.cronos.onlinereview.phases.AggregationPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -480,7 +494,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Aggregation Review handler -->
+
+    <!-- Default namespace for Aggregation Review handler -->
     <Config name="com.cronos.onlinereview.phases.AggregationReviewPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -520,7 +535,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Final Fix handler -->
+
+    <!-- Default namespace for Final Fix handler -->
     <Config name="com.cronos.onlinereview.phases.FinalFixPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -560,7 +576,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Final Review handler -->
+
+    <!-- Default namespace for Final Review handler -->
     <Config name="com.cronos.onlinereview.phases.FinalReviewPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -600,7 +617,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Default namespace for Approval handler -->
+
+    <!-- Default namespace for Approval handler -->
     <Config name="com.cronos.onlinereview.phases.ApprovalPhaseHandler">
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -640,7 +658,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Namespace to instantiate the SreeningManager through ObjectFactory -->
+
+    <!-- Namespace to instantiate the SreeningManager through ObjectFactory -->
     <Config name="com.cronos.onlinereview.phases.failuretests.screening">
         <Property name="com/cronos/onlinereview/autoscreening/management/ScreeningManager">
             <Property name="type">
@@ -648,40 +667,41 @@
             </Property>
         </Property>
     </Config>
+
     <Config name="com.topcoder.search.builder.Upload_Resource_Search">
-        <Property name="searchStrategyFactoryNamespace">
+      <Property name="searchStrategyFactoryNamespace">
             <Value>com.topcoder.search.builder.strategy.factory</Value>
         </Property>
         <Property name="fieldValidatorFactoryNamespace">
             <Value>com.topcoder.search.builder.validator.factory</Value>
         </Property>
         <Property name="searchBundles">
-            <Property name="ResourceSearchBundle">
+           <Property name="ResourceSearchBundle">
                 <Property name="type">
-                    <Value>Database</Value>
+                  <Value>Database</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="name">
-                    <Value>ResourceSearchBundle</Value>
-                </Property>
+                  <Value>ResourceSearchBundle</Value>
+              </Property>
                 <Property name="context">
-                    <Value>SELECT resource.resource_id
+                  <Value>SELECT resource.resource_id
                           FROM resource
                           LEFT OUTER JOIN resource_submission
                           ON resource.resource_id = resource_submission.resource_id
@@ -692,218 +712,224 @@
                           resource_info_type_lu.resource_info_type_id
                           WHERE
                   </Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="resource_id">
-                        <Value>resource_id</Value>
-                    </Property>
+              </Property>
+              <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                  <Property name="resource_id">
+                      <Value>resource_id</Value>
+                  </Property>
+             </Property>
+          </Property>
+          <Property name="ResourceRoleSearchBundle">
+                <Property name="type">
+                  <Value>Database</Value>
+              </Property>
+                <Property name="name">
+                  <Value>ResourceRoleSearchBundle</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
             </Property>
-            <Property name="ResourceRoleSearchBundle">
-                <Property name="type">
-                    <Value>Database</Value>
-                </Property>
-                <Property name="name">
-                    <Value>ResourceRoleSearchBundle</Value>
-                </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="context">
-                    <Value>SELECT resource_role_id FROM resource_role_lu WHERE</Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="The ID">
-                        <Value>peopleID</Value>
-                    </Property>
+                  <Value>SELECT resource_role_id FROM resource_role_lu WHERE</Value>
+              </Property>
+             <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                     <Property name="The ID">
+                          <Value>peopleID</Value>
+                     </Property>
+             </Property>
+          </Property>
+
+          <Property name="NotificationSearchBundle">
+                <Property name="type">
+                  <Value>Database</Value>
+              </Property>
+                <Property name="name">
+                  <Value>NotificationSearchBundle</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
             </Property>
-            <Property name="NotificationSearchBundle">
-                <Property name="type">
-                    <Value>Database</Value>
-                </Property>
-                <Property name="name">
-                    <Value>NotificationSearchBundle</Value>
-                </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="context">
-                    <Value>SELECT external_ref_id, project_id, notification_type_id FROM notification WHERE</Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="The ID">
-                        <Value>peopleID</Value>
-                    </Property>
+                  <Value>SELECT external_ref_id, project_id, notification_type_id FROM notification WHERE</Value>
+              </Property>
+              <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                     <Property name="The ID">
+                          <Value>peopleID</Value>
+                     </Property>
+             </Property>
+          </Property>
+
+          <Property name="NotificationTypeSearchBundle">
+                <Property name="type">
+                  <Value>Database</Value>
+              </Property>
+                <Property name="name">
+                  <Value>NotificationTypeSearchBundle</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
             </Property>
-            <Property name="NotificationTypeSearchBundle">
-                <Property name="type">
-                    <Value>Database</Value>
-                </Property>
-                <Property name="name">
-                    <Value>NotificationTypeSearchBundle</Value>
-                </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="context">
-                    <Value>SELECT notification_type_id FROM notification_type_lu WHERE</Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="The ID">
-                        <Value>peopleID</Value>
-                    </Property>
+                  <Value>SELECT notification_type_id FROM notification_type_lu WHERE</Value>
+              </Property>
+              <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                     <Property name="The ID">
+                          <Value>peopleID</Value>
+                     </Property>
+             </Property>
+          </Property>
+
+          <Property name="UploadSearchBundle">
+                <Property name="type">
+                  <Value>Database</Value>
+              </Property>
+                <Property name="name">
+                  <Value>UploadSearchBundle</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
             </Property>
-            <Property name="UploadSearchBundle">
-                <Property name="type">
-                    <Value>Database</Value>
-                </Property>
-                <Property name="name">
-                    <Value>UploadSearchBundle</Value>
-                </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="context">
-                    <Value>SELECT upload_id FROM upload WHERE</Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="The ID">
-                        <Value>peopleID</Value>
-                    </Property>
+                  <Value>SELECT upload_id FROM upload WHERE</Value>
+              </Property>
+              <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                     <Property name="The ID">
+                          <Value>peopleID</Value>
+                     </Property>
+             </Property>
+          </Property>
+
+          <Property name="SubmissionSearchBundle">
+                <Property name="type">
+                  <Value>Database</Value>
+              </Property>
+                <Property name="name">
+                  <Value>SubmissionSearchBundle</Value>
+              </Property>
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
                 </Property>
             </Property>
-            <Property name="SubmissionSearchBundle">
-                <Property name="type">
-                    <Value>Database</Value>
-                </Property>
-                <Property name="name">
-                    <Value>SubmissionSearchBundle</Value>
-                </Property>
-                <Property name="searchStrategy">
-                    <Property name="class">
-                        <Value>dbStrategy</Value>
-                    </Property>
-                </Property>
-                <Property name="searchableFields">
-                    <Property name="dummy">
-                        <Property name="validator">
-                            <Property name="class">
-                                <Value>validator</Value>
-                            </Property>
-                            <Property name="identifier">
-                                <Value>default</Value>
-                            </Property>
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
                         </Property>
                     </Property>
                 </Property>
+            </Property>
                 <Property name="context">
-                    <Value>SELECT submission_id FROM submission
+                  <Value>SELECT submission_id FROM submission
                   INNER JOIN upload ON submission.upload_id = upload.upload_id WHERE</Value>
-                </Property>
-                <Property name="DBNamcespace">
-                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                </Property>
-                <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
-                </Property>
-                <Property name="alias">
-                    <Property name="The ID">
-                        <Value>peopleID</Value>
-                    </Property>
-                </Property>
-            </Property>
+              </Property>
+              <Property name="DBNamcespace">
+                      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+              </Property>
+              <Property name="connectionProducerName">
+                      <Value>dbconnection</Value>
+              </Property>
+              <Property name="alias">
+                     <Property name="The ID">
+                          <Value>peopleID</Value>
+                     </Property>
+             </Property>
+          </Property>
+
         </Property>
     </Config>
-        <!-- Object factory configuration for DBStrategy -->
+
+    <!-- Object factory configuration for DBStrategy -->
     <Config name="com.topcoder.search.builder.strategy.factory">
         <Property name="dbStrategy">
             <Property name="type">
@@ -921,7 +947,8 @@
             </Property>
         </Property>
     </Config>
-        <!-- Object Factory configuration for validator -->
+
+    <!-- Object Factory configuration for validator -->
     <Config name="com.topcoder.search.builder.validator.factory">
         <Property name="validator:default">
             <Property name="type">
@@ -929,15 +956,18 @@
             </Property>
         </Property>
     </Config>
-        <!-- Configuration for DBSearchStrategy -->
+    
+    <!-- Configuration for DBSearchStrategy -->
     <Config name="com.topcoder.search.builder.database.DBSearchStrategy">
         <!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
         <Property name="connectionFactory">
-        <!-- The namespace of the ConnectionFactory -->
+
+            <!-- The namespace of the ConnectionFactory -->
             <Property name="name">
                 <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
             </Property>
         </Property>
+
         <!--
             The name to request from the connection factory when acquiring a connection.
             If not present, then the default connection is used.
@@ -945,9 +975,11 @@
         <Property name="connectionName">
             <Value>informix_connection</Value>
         </Property>
+
         <Property name="searchFragmentFactoryNamespace">
             <Value>com.topcoder.search.builder.database.factory</Value>
         </Property>
+
         <Property name="searchFragmentBuilders">
             <Property name="first">
                 <Property name="targetFilter">
@@ -957,6 +989,7 @@
                     <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="second">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.OrFilter</Value>
@@ -965,6 +998,7 @@
                     <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="third">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
@@ -973,6 +1007,7 @@
                     <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="fourth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.NotFilter</Value>
@@ -981,6 +1016,7 @@
                     <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="fifth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
@@ -989,6 +1025,7 @@
                     <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="sixth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.InFilter</Value>
@@ -997,6 +1034,7 @@
                     <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="eighth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.NullFilter</Value>
@@ -1005,6 +1043,7 @@
                     <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="ninth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
@@ -1013,6 +1052,7 @@
                     <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="tenth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
@@ -1021,6 +1061,7 @@
                     <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="eleventh">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
@@ -1029,6 +1070,7 @@
                     <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="twelvth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
@@ -1037,6 +1079,7 @@
                     <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
                 </Property>
             </Property>
+
             <Property name="thirteenth">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
@@ -1047,11 +1090,9 @@
             </Property>
         </Property>
     </Config>
+    
     <Config name="com.topcoder.search.builder.database.factory">
     </Config>
-    <Config name="com.topcoder.util.log">
-        <Property name="logClass">
-            <Value>com.topcoder.util.log.log4j.Log4jLog</Value>
-        </Property>
-    </Config>
+
 </CMConfig>
+

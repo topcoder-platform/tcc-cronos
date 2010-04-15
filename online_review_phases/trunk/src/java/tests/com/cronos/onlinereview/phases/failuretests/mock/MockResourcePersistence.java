@@ -11,6 +11,7 @@ import com.topcoder.management.resource.Notification;
 import com.topcoder.management.resource.NotificationType;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -834,6 +835,26 @@ public class MockResourcePersistence implements ResourcePersistence {
 
         return (Notification[]) MockResourcePersistence.methodResults.get(methodName);
 
+    }
+
+    public Notification[] loadNotifications(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+     public ResourceRole[] loadResourceRoles(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+    public NotificationType[] loadNotificationTypes(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+    public Resource[] loadResources(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
     }
 
     /**

@@ -636,6 +636,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 message.setBody(docGenerator.applyTemplate(root));
                 message.setFromAddress(options.getFromAddress());
                 message.setToAddress(user.getEmail(), TCSEmailMessage.TO);
+                message.setContentType("text/html");
                 EmailEngine.send(message);
             }
         } catch (PhaseHandlingException e) {

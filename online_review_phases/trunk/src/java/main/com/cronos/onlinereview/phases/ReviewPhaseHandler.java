@@ -279,7 +279,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                                                                           false));
             // Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(
-                            getManagerHelper(), conn,  PhasesHelper.REVIEWER_ROLE_NAME, phase.getId());
+                            getManagerHelper(), conn,  PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
             //according to discussion here http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
             //if the attribute is not set, default value would be 0
             int reviewerNum = 0;

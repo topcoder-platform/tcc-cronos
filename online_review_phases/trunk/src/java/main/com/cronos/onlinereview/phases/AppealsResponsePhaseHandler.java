@@ -84,8 +84,17 @@ import java.util.Map;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits
- * @version 1.2
+ * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to use updated
+ *     {@link PhasesHelper#insertPostMortemPhase(com.topcoder.project.phases.Project , Phase, ManagerHelper, String)} method for creating
+ *     <code>Post-Mortem</code> phase.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
+ * @version 1.3
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -239,8 +248,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             if (!passedReview) {
                 // if there is no submission passes review after appeal response
                 // insert the post-mortem phase
-                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase,
-                                getManagerHelper().getPhaseManager(), operator);
+                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
         }
 

@@ -4,7 +4,7 @@
 <!-- Namespace for ProjectManagerImpl class -->
 <Config name="com.topcoder.management.project.ProjectManagerImpl">
 	<Property name="SearchBuilderNamespace">
-		<Value>com.topcoder.searchbuilder.ProjectManagement</Value>
+		<Value>com.topcoder.searchbuilder.Project</Value>
 	</Property>
 	<Property name="PersistenceClass">
 		<Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
@@ -41,7 +41,7 @@
 <!-- Namespace for SearchBuilder component
 The setting in this section decides the logic of project searching.
 -->
-<Config name="com.topcoder.searchbuilder.ProjectManagement">
+<Config name="com.topcoder.searchbuilder.Project">
         <Property name="searchStrategyFactoryNamespace">
             <Value>com.topcoder.search.builder.strategy.factory</Value>
         </Property>

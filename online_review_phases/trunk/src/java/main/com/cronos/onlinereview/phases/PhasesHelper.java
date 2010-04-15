@@ -27,6 +27,7 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.UploadStatus;
+import com.topcoder.management.deliverable.UploadType;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -34,7 +35,6 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.link.ProjectLink;
-import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -77,13 +77,28 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * </p>
  *
  * <p>
- * Version 1.3 (Contest Dependency Automation Release Assembly 1.0) Change notes:
+ * Version 1.2 (Contest Dependency Automation Release Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Added a method for checking if all projects which requested project depends on are completed to the project
  *     could start.</li>
  *   </ol>
  * </p>
- * @author tuenm, bose_java, pulky, aroglite, waits, isv
+ *
+ * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Release Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method to fix the bugs with
+ *     creation of <code>Post-Mortem</code> phase.</li>
+ *     <li>Added {@link #insertApprovalPhase(Project, Phase, ManagerHelper, String)} method.</li>
+ *     <li>Added {@link #getUploadType(UploadManager, String)} method.</li>
+ *     <li>Added {@link #searchProjectResourcesForRoleNames(ManagerHelper, Connection, String[], long)} method.</li>
+ *     <li>Added {@link #getApprovalPhaseReviews(Review[], Phase)} method.</li>
+ *     <li>Added {@link #searchProjectReviewsForResourceRoles(Connection, ManagerHelper, long, String[], Long)} method
+ *     to handle Post-Mortem phase correctly.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv, TCSDEVELOPER
  * @version 1.3
  */
 final class PhasesHelper {
@@ -93,10 +108,6 @@ final class PhasesHelper {
      */
     static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer",
         "Accuracy Reviewer", "Failure Reviewer", "Stress Reviewer"};
-    /**
-     * Constant for reviewer role name.
-     */
-    static final String[] REVIEWER_ROLE_NAME = new String[] {"Reviewer"};
     /**
      * One The property name of resource.
      */
@@ -663,15 +674,12 @@ final class PhasesHelper {
                 reviewerIds[i] = new Long(reviewers[i].getId());
             }
 
-            Filter reviewFilter = SearchBundle.buildInFilter("reviewer", Arrays
-                            .asList(reviewerIds));
+            Filter reviewFilter = SearchBundle.buildInFilter("reviewer", Arrays.asList(reviewerIds));
             Filter fullReviewFilter = reviewFilter;
             // if submission id filter is given, add it as filter condition
             if (submissionId != null) {
-                Filter submissionFilter = SearchBundle.buildEqualToFilter(
-                                "submission", submissionId);
-                fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter,
-                                submissionFilter);
+                Filter submissionFilter = SearchBundle.buildEqualToFilter("submission", submissionId);
+                fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter, submissionFilter);
             }
 
             return managerHelper.getReviewManager().searchReviews(
@@ -1241,6 +1249,30 @@ final class PhasesHelper {
     }
 
     /**
+     * <p>Gets upload type matching the specified name.</p>
+     *
+     * @param uploadManager an <code>UploadManager</code> instance used to search for upload type.
+     * @param typeName a <code>String</code> providing the upload type name.
+     * @return an <code>UploadType</code> instance matching the specified name.
+     * @throws PhaseHandlingException if upload type could not be found.
+     * @since 1.3
+     */
+    static UploadType getUploadType(UploadManager uploadManager, String typeName) throws PhaseHandlingException {
+        UploadType[] types = null;
+        try {
+            types = uploadManager.getAllUploadTypes();
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Error finding upload type with name: " + typeName, e);
+        }
+        for (int i = 0; i < types.length; i++) {
+            if (typeName.equals(types[i].getName())) {
+                return types[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find upload type with name: " + typeName);
+    }
+
+    /**
      * Returns the winning submitter for the given project id.
      *
      * @param resourceManager ResourceManager instance.
@@ -1300,39 +1332,112 @@ final class PhasesHelper {
     }
 
     /**
-     * Inserts a post-mortem phase into persistence.
+     * <p>Inserts a post-mortem phase into persistence.</p>
      *
      * @param currentPrj current project.
      * @param currentPhase current phase to insert a post-mortem phase.
-     * @param phaseManager the PhaseManager instance.
+     * @param managerHelper a helper for accessing various managers.
      * @param operator the operator name.
-     * @return index of current phase.
      * @throws PhaseHandlingException if any error occurs.
-     *
      * @since 1.1
      */
-    static int insertPostMortemPhase(Project currentPrj, Phase currentPhase,
-                    PhaseManager phaseManager, String operator) throws PhaseHandlingException {
-        // create phase type and status objects
-        PhaseType postMortemPhaseType = getPhaseType(phaseManager,
-                        "Post-Mortem");
-        PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager,
-                        "Scheduled");
-
-        // use helper method to create and save the new phases
-        int currentPhaseIndex = createNewPhases(currentPrj, currentPhase,
-                        new PhaseType[] {postMortemPhaseType}, phaseStatus,
-                        phaseManager, operator);
-
-        try {
-            phaseManager.updatePhases(currentPrj, operator);
-        } catch (PhaseManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting phases",
-                            e);
+    static void insertPostMortemPhase(Project currentPrj, Phase currentPhase,
+                                      ManagerHelper managerHelper, String operator) throws PhaseHandlingException {
+        // Check if Post-Mortem phase already exists for the project. If so then do nothing
+        if (null != getPostMortemPhase(currentPrj)) {
+            return;
         }
 
-        return currentPhaseIndex;
+        PhaseManager phaseManager = managerHelper.getPhaseManager();
+        UploadManager uploadManager = managerHelper.getUploadManager();
+
+        // create phase type and status objects
+        PhaseType postMortemPhaseType = getPhaseType(phaseManager, "Post-Mortem");
+        PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager, "Scheduled");
+
+        try {
+            // Create new Post-Mortem phase
+            String postMortemPhaseDuration = getPropertyValue(PostMortemPhaseHandler.class.getName(),
+                                                              "PostMortemPhaseDuration", true);
+
+            createNewPhases(currentPrj, currentPhase, new PhaseType[]{postMortemPhaseType}, phaseStatus,
+                            new long[] {Long.parseLong(postMortemPhaseDuration) * 3600 * 1000L}, false);
+
+            // Set the number of required reviewers for Post-Mortem phase to default value 
+            String postMortemPhaseDefaultReviewerNumber
+                = getPropertyValue(PostMortemPhaseHandler.class.getName(), "PostMortemPhaseDefaultReviewersNumber",
+                                   true);
+            String postMortemPhaseDefaultScorecardID
+                = getPropertyValue(PostMortemPhaseHandler.class.getName(), "PostMortemPhaseDefaultScorecardID",
+                                   true);
+            Phase postMortemPhase = getPostMortemPhase(currentPrj);
+            postMortemPhase.setAttribute("Reviewer Number", postMortemPhaseDefaultReviewerNumber);
+            postMortemPhase.setAttribute("Scorecard ID", postMortemPhaseDefaultScorecardID);
+
+            phaseManager.updatePhases(currentPrj, operator);
+        } catch (PhaseManagementException e) {
+            throw new PhaseHandlingException("Problem when persisting phases", e);
+        } catch (ConfigurationException e) {
+            throw new PhaseHandlingException("Problem when reading configuration file", e);
+        }
     }
+
+
+    /**
+     * <p>Inserts a Approval phase into persistence.</p>
+     *
+     * @param currentPrj current project.
+     * @param currentPhase current phase to insert a approval phase.
+     * @param managerHelper a helper for accessing various managers.
+     * @param operator the operator name.
+     * @throws PhaseHandlingException if any error occurs.
+     * @since 1.3
+     */
+    static void insertApprovalPhase(Project currentPrj, Phase currentPhase,
+                                    ManagerHelper managerHelper, String operator) throws PhaseHandlingException {
+        PhaseManager phaseManager = managerHelper.getPhaseManager();
+
+        // create phase type and status objects
+        PhaseType approvalPhaseType = getPhaseType(phaseManager, "Approval");
+        PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager, "Scheduled");
+
+        try {
+            // Create new Approval phase
+            String approvalPhaseDuration = getPropertyValue(ApprovalPhaseHandler.class.getName(),
+                                                           "ApprovalPhaseDuration", true);
+            // Find lst Approval phase (if any)
+            Phase lastApprovalPhase = locatePhase(currentPhase, "Approval", false, false);
+
+            createNewPhases(currentPrj, currentPhase, new PhaseType[] {approvalPhaseType}, phaseStatus,
+                            new long[] {Long.parseLong(approvalPhaseDuration) * 3600 * 1000L}, false);
+
+            // Set the number of required reviewers for Approval phase to default value or to value taken
+            // from previous Approval phase if it exists
+            String approvalPhaseDefaultReviewerNumber;
+            String approvalPhaseDefaultScorecardID;
+            if (lastApprovalPhase == null) {
+                approvalPhaseDefaultReviewerNumber
+                    = getPropertyValue(ApprovalPhaseHandler.class.getName(), "ApprovalPhaseDefaultReviewersNumber",
+                                       true);
+                approvalPhaseDefaultScorecardID
+                    = getPropertyValue(ApprovalPhaseHandler.class.getName(), "ApprovalPhaseDefaultScorecardID",
+                                       true);
+            } else {
+                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute("Reviewer Number"); 
+                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute("Scorecard ID");
+            }
+            Phase approvalPhase = getApprovalPhase(currentPrj);
+            approvalPhase.setAttribute("Reviewer Number", approvalPhaseDefaultReviewerNumber);
+            approvalPhase.setAttribute("Scorecard ID", approvalPhaseDefaultScorecardID);
+
+            phaseManager.updatePhases(currentPrj, operator);
+        } catch (PhaseManagementException e) {
+            throw new PhaseHandlingException("Problem when persisting phases", e);
+        } catch (ConfigurationException e) {
+            throw new PhaseHandlingException("Problem when reading configuration file", e);
+        }
+    }
+
     /**
      * Inserts a final fix and final review phases.
      *
@@ -1510,8 +1615,7 @@ final class PhasesHelper {
 
         // search for the old "Aggregator" or "Final Reviewer" resource
         Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
-                        managerHelper, conn, new String[] {roleName}, oldPhase
-                                        .getId());
+            managerHelper, conn, new String[] {roleName}, oldPhase.getId());
         Resource oldResource = resources[0];
 
         // copy resource properties
@@ -1924,16 +2028,18 @@ final class PhasesHelper {
      *
      * @param projectId a <code>long</code> providing the ID of a project to check the completeness of parent projects
      *        for.
-     * @param linkManager a <code>ProjectLinkManager</code> to be used for getting the links to parent projects.
+     * @param managerHelper a <code>ManagerHelper</code> to be used for getting the links to parent projects.
+     * @param conn a <code>Connection</code> providing connection to target database. 
      * @return <code>true</code> if all parent projects for specified project are completed or there are no parent
      *         projects at all; <code>false</code> otherwise.
      * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs while accessing the
      *         persistent data store.
-     *
+     * @throws com.topcoder.management.phase.PhaseManagementException fi an error occurs while reading phases data.
+     * @throws java.sql.SQLException if an SQL error occurs.
      * @since 1.3
      */
     static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper, Connection conn)
-        throws com.topcoder.management.project.PersistenceException, 
+        throws com.topcoder.management.project.PersistenceException,
                com.topcoder.management.phase.PhaseManagementException, SQLException {
         ProjectLink[] links = managerHelper.getProjectLinkManager().getDestProjectLinks(projectId);
         for (ProjectLink link : links) {
@@ -1942,45 +2048,18 @@ final class PhasesHelper {
                 if (parentProject.getProjectStatus().getId() != 7) { // project status is not Completed
 
                     // if not active
-                    if (parentProject.getProjectStatus().getId() != 1)
-                    {
+                    if (parentProject.getProjectStatus().getId() != 1) {
                         return false;
                     }
 
-                    // check if last phase is Final Review and if that is approved
-                    Phase[] phases = managerHelper.getPhaseManager().getPhases(parentProject.getId()).getAllPhases();
-                    Phase lastPhase = getLastPhase(phases);
-                    // if last phase is not FR, or not closed
-                    if (lastPhase == null || lastPhase.getPhaseStatus().getId() != 3)
-                    {
-                        return false;
-                    }
+                    Project phasesProject = managerHelper.getPhaseManager().getPhases(parentProject.getId());
 
-                    Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, managerHelper, lastPhase.getId());
-
-                    //check for approved/rejected comments.
-                    Comment[] comments = finalWorksheet.getAllComments();
-                    boolean rejected = false;
-
-                    for (int i = 0; i < comments.length; i++) {
-                        String value = (String) comments[i].getExtraInfo();
-
-                        if (comments[i].getCommentType().getName().equals("Final Review Comment")) {
-                            if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
-                                continue;
-                            } else if ("Rejected".equalsIgnoreCase(value)) {
-                                rejected = true;
-
-                                break;
-                            } else {
-                                throw new PhaseHandlingException("Comment can either be Approved or Rejected.");
-                            }
+                    // Check if all phases are closed.
+                    Phase[] phases = phasesProject.getAllPhases();
+                    for (int i = 0; i < phases.length; i++) {
+                        if (phases[i].getPhaseStatus().getId() != 3) {
+                            return false;
                         }
-                    }
-
-                    if (rejected)
-                    {
-                        return false;
                     }
                 }
             }
@@ -1989,21 +2068,250 @@ final class PhasesHelper {
     }
 
     /**
-     * <p>Gets the last phase from specified list of project phase. Current implementation looks up for the <code>Final
-     * Review</code> phase but this may change later.</p>
+     * <p>Returns all the reviews for a project based on resource role names. This method is useful for finding reviews
+     * for resources which are not tied to specified phase.</p>
      *
-     * @param phases a <code>Phase</code> array providing current project phases.
-     * @return a <code>Phase</code> providing the last phase or <code>null</code> if there is no such phase found,
+     * @param conn Connection to use to lookup resource role id.
+     * @param managerHelper ManagerHelper instance.
+     * @param projectId project id to be used as filter.
+     * @param resourceRoleNames resource role names to be used as filter.
+     * @param submissionId submission id to be used as filter when searching for reviews.
+     * @return Review[] which match filter conditions.
+     * @throws PhaseHandlingException if there was an error during retrieval.
+     * @throws SQLException in case of error when looking up resource role id.
+     * @since 1.3
      */
-    static Phase getLastPhase(Phase[] phases) {
-        Phase lastPhase = null;
+    static Review[] searchProjectReviewsForResourceRoles(Connection conn,
+                    ManagerHelper managerHelper, long projectId,
+                    String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException, SQLException {
+
+        Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn, resourceRoleNames, projectId);
+        if (reviewers.length == 0) {
+            return new Review[0];
+        }
+
+        try {
+
+            // create reviewer ids array
+            Long[] reviewerIds = new Long[reviewers.length];
+
+            for (int i = 0; i < reviewers.length; i++) {
+                reviewerIds[i] = new Long(reviewers[i].getId());
+            }
+
+            Filter reviewFilter = SearchBundle.buildInFilter("reviewer", Arrays.asList(reviewerIds));
+            Filter fullReviewFilter = reviewFilter;
+            // if submission id filter is given, add it as filter condition
+            if (submissionId != null) {
+                Filter submissionFilter = SearchBundle.buildEqualToFilter("submission", submissionId);
+                fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter, submissionFilter);
+            }
+
+            return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
+        } catch (ReviewManagementException e) {
+            throw new PhaseHandlingException("Problem with review retrieval", e);
+        }
+    }
+
+    /**
+     * <p>Searches for resources associated with specified project and vaving the specified resource roles assigned.</p>
+     *
+     * @param managerHelper ManagerHelper instance.
+     * @param conn connection to connect to db with.
+     * @param resourceRoleNames array of resource role names.
+     * @param projectId ID for the project to find associated resources for.
+     * @return Resource[] which match search criteria.
+     * @throws PhaseHandlingException if an error occurs during retrieval.
+     * @since 1.3
+     */
+    static Resource[] searchProjectResourcesForRoleNames(ManagerHelper managerHelper, Connection conn,
+                                                         String[] resourceRoleNames, long projectId)
+        throws PhaseHandlingException {
+        List resourceRoleIds = new ArrayList();
+
+        try {
+            for (int i = 0; i < resourceRoleNames.length; i++) {
+                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn, resourceRoleNames[i])));
+            }
+            Filter resourceRoleFilter
+                = SearchBundle.buildInFilter(ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
+            Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter fullFilter = SearchBundle.buildAndFilter(resourceRoleFilter, projectIdFilter);
+            return managerHelper.getResourceManager().searchResources(fullFilter);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("There was a database connection error", e);
+        } catch (SearchBuilderConfigurationException e) {
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("There was a resource retrieval error", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem with search builder", e);
+        }
+    }
+
+    /**
+     * <p>Gets the reviews (if any) for specified <code>Approval</code> phase.</p>
+     *
+     * @param reviews a <code>Review</code> array providing the <code>Apporval</code> reviews for project.
+     * @param thisPhase a <code>Phase</code> providing the <code>Approval</code> phases to get reviews for.
+     * @return a <code>Review</code> array listing the reviews (if any) for specified <code>Approval</code> phase.
+     * @since 1.3
+     */
+    static Review[] getApprovalPhaseReviews(Review[] reviews, Phase thisPhase) {
+        int count = 0;
+        List<Review> thisPhaseReviews = new ArrayList<Review>();
+        Phase[] phases = thisPhase.getProject().getAllPhases();
         for (int i = 0; i < phases.length; i++) {
             Phase phase = phases[i];
-            PhaseType phaseType = phase.getPhaseType();
-            if ((phaseType != null) && phaseType.getName().equalsIgnoreCase("Final Review")) {
-                lastPhase = phase;
+            if (phase.getPhaseType().getName().equals("Approval")) {
+                int reviewerNumber = Integer.parseInt((String) phase.getAttribute("Reviewer Number"));
+                if (phase.getId() != thisPhase.getId()) {
+                    count += reviewerNumber;
+                } else {
+                    int start = count;
+                    for (int j = 0; j < reviewerNumber; j++) {
+                        if (start + j < reviews.length) {
+                            Review review = reviews[start + j];
+                            thisPhaseReviews.add(review);
+                        }
+                    }
+                    break;
+                }
             }
         }
-        return lastPhase;
+
+        return thisPhaseReviews.toArray(new Review[thisPhaseReviews.size()]);
+    }
+
+    /**
+     * <p>Gets the <code>Post-Mortem</code> phase for specified project.</p>
+     *
+     * @param project a <code>Project</code> to get the post-mortem phase for.
+     * @return a <code>Phase</code> providing details for <code>Post-Mortem</code> phase for specified project or
+     *         <code>null</code> if such phase does not exist.
+     * @since 1.3
+     */
+    static Phase getPostMortemPhase(Project project) {
+        return getLastPhaseByType(project, "Post-Mortem");
+    }
+
+    /**
+     * <p>Gets the <code>Approval</code> phase for specified project.</p>
+     *
+     * @param project a <code>Project</code> to get the approval phase for.
+     * @return a <code>Phase</code> providing details for <code>Approval</code> phase for specified project or
+     *         <code>null</code> if such phase does not exist.
+     * @since 1.3
+     */
+    private static Phase getApprovalPhase(Project project) {
+        return getLastPhaseByType(project, "Approval");
+    }
+
+    /**
+     * <p>Gets the last phase of specified type for specified project.</p>
+     *
+     * @param project a <code>Project</code> to get the phase for.
+     * @param phaseTypeName a <code>String</code> providing the name of the phase type.
+     * @return a <code>Phase</code> providing details for phase of specified type for specified project or
+     *         <code>null</code> if such phase does not exist.
+     * @since 1.3
+     */
+    private static Phase getLastPhaseByType(Project project, String phaseTypeName) {
+        Phase[] phases = project.getAllPhases();
+        for (int i = phases.length - 1; i >= 0; i--) {
+            Phase phase = phases[i];
+            if (phase.getPhaseType().getName().equals(phaseTypeName)) {
+                return phase;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * <p>Helper method to add new phases of given type to the given project. This method does the following:
+     * <ol>
+     *   <li>finds the index of given phase in the current phases array of the project.</li>
+     *   <li>finds the lengths of current phases of the given types.</li>
+     *   <li>creates new Phase instance with given type and status</li>
+     *   <li>creates a new Phases array with additional elements for new phase instances.</li>
+     *   <li>removes all phases of the project.</li>
+     *   <li>adds each Phase from the new Phases array to the project.</li>
+     * </ol>
+     * </p>
+     *
+     * @param currentPrj project to add/remove phases from.
+     * @param currentPhase current phase instance.
+     * @param newPhaseTypes types of new phases to create.
+     * @param newPhaseStatus the status to set for all the phases.
+     * @param newPhaseLengths the lengths for the new phases.
+     * @param adjustSubsequentPhaseDependencies <code>true</code> if sub-sequent phases must be set depending on new
+     *        phase; <code>false</code> otherwise.
+     * @return returns the index of the current phase in the phases array.
+     * @since 1.3
+     */
+    private static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes,
+                                       PhaseStatus newPhaseStatus, long newPhaseLengths[],
+                                       boolean adjustSubsequentPhaseDependencies) {
+        // find current phase index and also the lengths of aggregation and aggregation review phases.
+        Phase[] phases = currentPrj.getAllPhases();
+        int currentPhaseIndex = 0;
+        for (int i = 0; i < phases.length; i++) {
+            if (phases[i].getId() == currentPhase.getId()) {
+                currentPhaseIndex = i;
+            }
+        }
+
+        // create new phases array which will hold the new phase order
+        Phase[] newPhases = new Phase[phases.length + newPhaseTypes.length];
+
+        // set the old phases into the new phases array
+        for (int i = 0; i < phases.length; i++) {
+            if (i > currentPhaseIndex) {
+                newPhases[i + newPhaseTypes.length] = phases[i];
+            } else {
+                newPhases[i] = phases[i];
+            }
+        }
+
+        // create new phases for each phase type and make them depending on current phase
+        for (int p = 0; p < newPhaseTypes.length; p++) {
+            Phase newPhase = new Phase(currentPrj, newPhaseLengths[p]);
+            newPhase.setPhaseStatus(newPhaseStatus);
+            newPhase.setPhaseType(newPhaseTypes[p]);
+            newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false, true, 0));
+            newPhases[currentPhaseIndex + (p + 1)] = newPhase;
+        }
+
+        // if there is a phase after the new phases change the dependencies of that phase
+        if (adjustSubsequentPhaseDependencies) {
+            if (newPhases.length > currentPhaseIndex + newPhaseTypes.length + 1) {
+                Phase afterPhase = newPhases[currentPhaseIndex + newPhaseTypes.length + 1];
+                Phase lastNewPhase = newPhases[currentPhaseIndex + newPhaseTypes.length];
+
+                Dependency[] dependencies = afterPhase.getAllDependencies();
+                for (int d = 0; d < dependencies.length; d++) {
+                    Dependency dependency = dependencies[d];
+                    dependency.getDependent().removeDependency(dependency);
+                    dependency.getDependent().addDependency(
+                        new Dependency(lastNewPhase, dependency.getDependent(), dependency.isDependencyStart(),
+                                       dependency.isDependentStart(), dependency.getLagTime()));
+                }
+            }
+        }
+
+        // add the new phases to the project
+        for (int p = 0; p < newPhaseTypes.length; p++) {
+            Phase newPhase = newPhases[currentPhaseIndex + (p + 1)];
+            currentPrj.addPhase(newPhase);
+        }
+
+        // set the scheduled start and end times after dependencies are changed
+        for (int p = 0; p < newPhases.length; p++) {
+            Phase phase = newPhases[p];
+            phase.setScheduledStartDate(phase.calcStartDate());
+            phase.setScheduledEndDate(phase.calcEndDate());
+        }
+
+        return currentPhaseIndex;
     }
 }

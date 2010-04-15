@@ -481,6 +481,21 @@ public class MockProjectManager implements ProjectManager {
     }
 
     /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose
+	 * create date is within current - days 
+     * </p>
+     * @param days last 'days' 
+	 * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+	public Project[] getProjectsByCreateDate(int days) throws PersistenceException 
+    {
+        return new Project[0];
+    }
+
+    /**
      * <p>Sets the result to be returned by the specified method.</p>
      *
      * @param methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods

@@ -34,11 +34,19 @@ import com.topcoder.project.phases.Phase;
  * </p>
  *
  * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #allPostMortemReviewsDone(Phase)} method to use appropriate logic for searching for review
+ *     scorecards tied to project but not to phase type.</p>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author argolite, waits
- * @version 1.2
+ * @author argolite, waits, TCSDEVELOPER
+ * @version 1.3
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -157,8 +165,8 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             try {
                 conn = createConnection();
-                Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                                       new String[] {POST_MORTEM_REVIEWER_ROLE_NAME}, phase.getId());
+                Resource[] resources = PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
+                                       new String[] {POST_MORTEM_REVIEWER_ROLE_NAME}, phase.getProject().getId());
                 //according to discussion here http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
                 //if the attribute is not set, default value would be 0
                 int requiredRN = 0;
@@ -188,30 +196,23 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
 
         try {
-            // Search all "Active" submissions for current project
+            // Search all post-mortem review scorecards for the current phase
             conn = createConnection();
-
-            // Search all post-mortem review scorecard for the current phase
-            Review[] reviews = PhasesHelper
-                            .searchReviewsForResourceRoles(
-                                            conn,
-                                            getManagerHelper(),
-                                            phase.getId(),
-                                            new String[] {POST_MORTEM_REVIEWER_ROLE_NAME},
-                                            null);
-
-            // Check whether all the reviews are committed
+            Review[] reviews
+                = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
+                                                                    phase.getProject().getId(),
+                                                                    new String[] {POST_MORTEM_REVIEWER_ROLE_NAME},
+                                                                    null);
+            
+            // Check whether all the reviews are committed. Return false if there is at least one uncommitted review
             for (int i = 0; i < reviews.length; ++i) {
                 if (!reviews[i].isCommitted()) {
-                    // not committed, return false
                     return false;
                 }
             }
 
             if (phase.getAttribute("Reviewer Number") != null) {
-                int reviewerNum = PhasesHelper.getIntegerAttribute(phase,
-                                "Reviewer Number");
-
+                int reviewerNum = PhasesHelper.getIntegerAttribute(phase, "Reviewer Number");
                 if (reviews.length < reviewerNum) {
                     return false;
                 }
@@ -219,8 +220,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
 
             return true;
         } catch (SQLException e) {
-            throw new PhaseHandlingException(
-                            "Error retrieving data from persistence", e);
+            throw new PhaseHandlingException("Error retrieving data from persistence", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

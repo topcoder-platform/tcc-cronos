@@ -17,11 +17,11 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.link.ProjectLinkManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.Project;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
@@ -70,10 +70,19 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to use updated
+ *     {@link PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String)} method for creating
+ *     <code>Post-Mortem</code> phase.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits
+ * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
  * @version 1.2
  */
 public class RegistrationPhaseHandler extends AbstractPhaseHandler {
@@ -158,7 +167,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                 // version 1.3
                 //return true if all dependencies have stopped and start time has been reached.
                 boolean canStart = PhasesHelper.canPhaseStart(phase);
-                boolean allParentProjectsCompleted = PhasesHelper.areParentProjectsCompleted(projectId, getManagerHelper(), createConnection());
+                boolean allParentProjectsCompleted
+                    = PhasesHelper.areParentProjectsCompleted(projectId, getManagerHelper(), createConnection());
                 if (canStart) {
                     if (allParentProjectsCompleted) {
                         return true;
@@ -170,7 +180,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                         phase.getProject().setStartDate(newScheduledStartTime);
                         recalculateScheduledDates(phase.getProject().getAllPhases());
 
-			           // Adjust timelines for depending projects as well
+                        // Adjust timelines for depending projects as well
                         PhaseManager phaseManager = getManagerHelper().getPhaseManager();
                         ContestDependencyAutomation auto
                             = new ContestDependencyAutomation(phaseManager,
@@ -244,8 +254,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         Map<String, Object> values = new HashMap<String, Object>();
         if (!toStart && isRegistrationEmpty(phase, values)) {
             // if no registration, insert post-Mortem phase
-            PhasesHelper.insertPostMortemPhase(phase.getProject(), phase,
-                            getManagerHelper().getPhaseManager(), operator);
+            PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
         }
 
         sendEmail(phase, values);
@@ -370,7 +379,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * <p>Recalculates scheduled start date and end date for all phases when a phase is moved.</p>
      *
      * @param allPhases all the phases for the project.
-     * @since 1.3
+     * @since 1.1
      */
     private void recalculateScheduledDates(Phase[] allPhases) {
         for (int i = 0; i < allPhases.length; ++i) {

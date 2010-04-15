@@ -16,8 +16,6 @@ import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
-import com.topcoder.project.phases.PhaseStatus;
-import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
 import com.topcoder.management.phase.ContestDependencyAutomation;
 
@@ -61,8 +59,16 @@ import com.topcoder.management.phase.ContestDependencyAutomation;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits
- * @version 1.2
+ * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #checkFinalReview(Phase, String)} method to use corrected logic for creating
+ *     <code>Approval</code> phase.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
+ * @version 1.3
  */
 public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -312,7 +318,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                                                 managerHelper.getPhaseManager(),
                                                 operator);
 
-    		    // Since new Final Review phases was added adjust the timelines for depending projects accordingly
+                // Since new Final Review phases was added adjust the timelines for depending projects accordingly
                 // by amount of time equal to difference between the end times for current processed Final Review phase
                 // and newly added Final Review phase
                 Date currentPhaseEndDate = phase.getScheduledEndDate();
@@ -336,21 +342,36 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                                 finalReviewPhaseId, operator);
             } else {
                 // Newly added in version 1.1
-                // the final review is approved, add approval phase
-                PhaseType approvalPhaseType = PhasesHelper.getPhaseType(
-                                managerHelper.getPhaseManager(),
-                                "Approval");
-                PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(
-                                managerHelper.getPhaseManager(),
-                                "Scheduled");
+                // the final review is approved, add approval phase if it does not exist yet
+                // and if there is corresponding property value
+                Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
 
-                // use helper method to create and save the new phases
-                PhasesHelper.createNewPhases(phase.getProject(), phase,
-                                new PhaseType[] {approvalPhaseType},
-                                phaseStatus, managerHelper.getPhaseManager(), operator);
+                com.topcoder.management.project.ProjectManager projectManager
+                     = getManagerHelper().getProjectManager();
+                com.topcoder.management.project.Project project
+                     = projectManager.getProject(phase.getProject().getId());
+                String approvalRequired = (String) project.getProperty("Approval Required");
 
-                managerHelper.getPhaseManager().updatePhases(
-                                phase.getProject(), operator);
+                if (approvalPhase == null && approvalRequired != null && approvalRequired.equalsIgnoreCase("true")) {
+                    PhasesHelper.insertApprovalPhase(phase.getProject(), phase, getManagerHelper(), operator);
+
+                    // Since new Approval was added adjust the timelines for depending projects accordingly
+                    // by amount of time equal to difference between the end times for current processed Final Review phase
+                    // and newly added Approval phase
+                    Project currentPrj = phase.getProject();
+                    Date currentPhaseEndDate = phase.getScheduledEndDate();
+                    Phase[] phases = currentPrj.getAllPhases();
+                    Date newPhaseEndDate = phases[phases.length - 1].getScheduledEndDate();
+                    long diff = newPhaseEndDate.getTime() - currentPhaseEndDate.getTime();
+                    ContestDependencyAutomation auto
+                        = new ContestDependencyAutomation(managerHelper.getPhaseManager(),
+                                                          managerHelper.getProjectManager(),
+                                                          managerHelper.getProjectLinkManager());
+                    List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(currentPrj.getId(), diff);
+                    for (Phase[] affectedProjectPhases : affectedPhases) {
+                        managerHelper.getPhaseManager().updatePhases(affectedProjectPhases[0].getProject(), operator);
+                    }
+                }
             }
             return rejected;
 

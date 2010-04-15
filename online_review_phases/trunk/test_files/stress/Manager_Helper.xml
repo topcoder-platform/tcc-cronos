@@ -1,3 +1,4 @@
+<CMConfig>
 <Config name="com.cronos.onlinereview.phases.ManagerHelper">
 	<Property name="ProjectManager">
 		<Property name="ClassName">
@@ -7,6 +8,15 @@
 			<Value>com.topcoder.management.project.ProjectManagerImpl</Value>
 		</Property>
 	</Property>
+
+    <Property name="ProjectLinkManager">
+            <Property name="ClassName">
+                <Value>com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl</Value>
+            </Property>
+            <Property name="Namespace">
+                <Value>com.topcoder.management.project.persistence.link.ProjectLinkManager</Value>
+            </Property>
+        </Property>
 
 	<Property name="PhaseManager">
 		<Property name="ClassName">
@@ -127,5 +137,28 @@
 			<Value>com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator</Value>
 		</Property>
 	</Property>
+	
+	<Property name="ProjectDetailsURL">
+		<Value>http://www.topcoder.com/tc?projectDetails=?</Value>
+	</Property>
 
 </Config>
+
+  <Config name="com.topcoder.management.project.persistence.link.ProjectLinkManager">
+        <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+    </Config>
+
+
+        <Config name="com.topcoder.util.log">
+        <Property name="logClass">
+            <Value>com.topcoder.util.log.log4j.Log4jLog</Value>
+        </Property>
+    </Config>
+    </CMConfig>

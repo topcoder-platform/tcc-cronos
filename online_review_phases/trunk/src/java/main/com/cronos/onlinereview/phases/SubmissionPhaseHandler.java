@@ -15,6 +15,7 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.Project;
 
 /**
  * <p>
@@ -66,8 +67,17 @@ import com.topcoder.project.phases.Phase;
  * </ul>
  * </p>
  *
+ * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to use updated
+ *     {@link PhasesHelper#insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method for creating
+ *     <code>Post-Mortem</code> phase.</li>
+ *   </ol>
+ * </p>
+ *
  * @author tuenm, bose_java, argolite, bramandia, TCSDEVELOPER
- * @version 1.2
+ * @version 1.3
  */
 public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -157,7 +167,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
             // version 1.1 : can stop if there is no submission
             return (dependencyMet && reachEndTime
-                    && (arePassedSubmissionsEnough(phase) || !hasAnySubmission(phase, null)));
+                    && (!hasAnySubmission(phase, null) || arePassedSubmissionsEnough(phase)));
         }
     }
 
@@ -201,8 +211,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         Map<String, Object> values = new HashMap<String, Object>();
         // Check whether we get submissions, if not, insert post-mortem phase
         if (!toStart && !hasAnySubmission(phase, values)) {
-            PhasesHelper.insertPostMortemPhase(phase.getProject(), phase,
-                            getManagerHelper().getPhaseManager(), operator);
+            PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
         }
 
         sendEmail(phase, values);

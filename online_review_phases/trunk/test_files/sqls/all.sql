@@ -548,6 +548,8 @@ CREATE TABLE project_audit (
   FOREIGN KEY(project_id)
     REFERENCES project(project_id)
 );
+
+
 CREATE TABLE notification_type_lu (
   notification_type_id          INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,

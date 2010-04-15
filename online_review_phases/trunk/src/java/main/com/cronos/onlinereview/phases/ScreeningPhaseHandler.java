@@ -13,6 +13,7 @@ import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
 
+import com.topcoder.project.phases.Project;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
@@ -72,8 +73,17 @@ import java.util.Map;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits
- * @version 1.2
+ * <p>
+ * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to use updated
+ *     {@link PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String)} method for creating
+ *     <code>Post-Mortem</code> phase.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
+ * @version 1.3
  */
 public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -327,8 +337,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             // if there is no passed screening, insert post-mortem phase
             // added in version 1.1
             if (noScreeningPass) {
-                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase,
-                                getManagerHelper().getPhaseManager(), operator);
+                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
         }
 
