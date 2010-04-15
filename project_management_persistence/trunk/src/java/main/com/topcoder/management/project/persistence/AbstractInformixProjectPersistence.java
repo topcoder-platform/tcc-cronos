@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -71,8 +71,18 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
- * @author tuenm, urtks, bendlund, fuyun
- * @version 1.1.2
+ *
+ * <p>Version 1.1.3 (End Of Project Analysis Release Assembly v1.0)
+ *   <ul>
+ *     <li>Updated {@link #getAllProjectTypes(Connection)} method and relevant constant strings to populate project type
+ *     entities with new <code>generic</code> property.</li>
+ *     <li>Updated {@link #getAllProjectCategories(Connection)} method and relevant constant strings to populate project
+ *     type entities with new <code>generic</code> property.</li>
+ *   </ul>
+ * </p>
+ *
+ * @author tuenm, urtks, bendlund, fuyun, TCSDEVELOPER
+ * @version 1.1.3
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
@@ -124,21 +134,21 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to query all project types.
      */
     private static final String QUERY_ALL_PROJECT_TYPES_SQL = "SELECT "
-            + "project_type_id, name, description FROM project_type_lu";
+            + "project_type_id, name, description, is_generic FROM project_type_lu";
 
     /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query all project types.
      */
     private static final DataType[] QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE};
 
     /**
      * Represents the sql statement to query all project categories.
      */
     private static final String QUERY_ALL_PROJECT_CATEGORIES_SQL = "SELECT "
             + "category.project_category_id, category.name, category.description, "
-            + "type.project_type_id, type.name, type.description "
+            + "type.project_type_id, type.name, type.description, type.is_generic "
             + "FROM project_category_lu AS category "
             + "JOIN project_type_lu AS type "
             + "ON category.project_type_id = type.project_type_id";
@@ -149,7 +159,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE };
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -757,10 +767,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * create date is within current - days 
      * </p>
      * @param days last 'days' 
-     * @param conn the database connection
      * @return An array of project instances.
-     * @throws PersistenceException if error occurred while accessing the
-     *             database.
+     * @throws PersistenceException if error occurred while accessing the database.
      */
     public Project[] getProjectsByCreateDate(int days)
         throws PersistenceException {
@@ -1334,7 +1342,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // create a new instance of ProjectType class
             projectTypes[i] = new ProjectType(((Long) row[0]).longValue(),
-                    (String) row[1], (String) row[2]);
+                    (String) row[1], (String) row[2], (Boolean) row[3]);
         }
 
         return projectTypes;
@@ -1644,7 +1652,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // create the ProjectType object
             ProjectType type = new ProjectType(((Long) row[3]).longValue(),
-                    (String) row[4], (String) row[5]);
+                    (String) row[4], (String) row[5], (Boolean) row[6]);
 
             // create a new instance of ProjectCategory class
             projectCategories[i] = new ProjectCategory(((Long) row[0])
