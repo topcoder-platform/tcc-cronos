@@ -1,0 +1,41 @@
+=====================================================
+Setup:
+
+- Follow the required steps to test the component in section 4.1 of the CS (in docs folder),
+  as it has all the instructions you need to setup your environment and run the tests/demo.
+
+- Mock code for dependencies is in test_files\mock.
+
+=====================================================
+Design Improvements/Changes:
+
+- Designer said ARS takes precendence over design notes regarding validations. 
+  http://forums.topcoder.com/?module=Thread&threadID=669824&start=0
+  You can get ARS from development phase documents forum.
+
+- Note for csc validation, min length is 3 (http://forums.topcoder.com/?module=Thread&threadID=669914&start=0)
+  and max is 4 since only American Express can have 4 and all other valid card types must be 3.
+
+- Some classes were removed: http://forums.topcoder.com/?module=Thread&threadID=669727&start=0
+  I have updated CS dependencies section 2.2 to include dependency on Direct Struts Actions 1.0.
+
+- Note the change in implementation for GetDocumentFileContestAction#performLogic
+  http://forums.topcoder.com/?module=Thread&threadID=669791&start=15&mc=32
+
+- GetDocumentsContestAction#performLogic/GetDocumentFileContestAction#performLogic was changed to take List<?>
+  as parameter instead of List<Object> (http://forums.topcoder.com/?module=Thread&threadID=669791&start=0)
+
+- All private fields in MimeTypeRetriever are now static:
+  http://forums.topcoder.com/?module=Thread&threadID=669701&start=0
+
+- There were a lot of other design changes also, too many to list, please check forum.
+
+- I improved efficiency on validations, because in many places design called for using multiple validators
+  (RequiredFieldValidator and StringLengthValidator) but I combined this logic into a single validation
+  using FieldExpressionValidator. In other places, validation is done directly in code, and that is also approved.
+  http://forums.topcoder.com/?module=Thread&threadID=669824&start=0
+  Designer: "ok, you can use all validators that you want or if it's not possible with the annotation validators
+             you can manage tha validation directly in the code"
+
+- Added extra validation to make sure credit card hasn't expired:
+  see point #3 here: http://forums.topcoder.com/?module=Thread&threadID=669821&start=0

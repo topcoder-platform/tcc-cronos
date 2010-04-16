@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="usgsow02580" name="com.topcoder.service.actions.AllTests" tests="305" time="35.573" timestamp="2010-04-15T13:32:12">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.topcoder.service.actions" />
+    <property name="docpackage.jar" value="direct_struts_actions_2_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/direct_struts_actions_2-1.0.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows XP" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_17\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_17\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_17\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_17\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_17\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_17\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_17\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="direct_struts_actions_2_1.0.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/direct_struts_actions_2_tests.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="net.sourceforge.cobertura.datafile" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\log\cobertura.ser" />
+    <property name="ant.home" value="C:\apache-ant-1.7.1\bin\.." />
+    <property name="java.runtime.version" value="1.5.0_17-b04" />
+    <property name="component_path" value="direct_struts_actions_2/1.0.0" />
+    <property name="cobertura.dir" value="C:/TopCoder/proj/java/tcs/lib/third_party/cobertura/1.9" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="uf8472v" />
+    <property name="manifest_file" value="build/dist/direct_struts_actions_2-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.0.0" />
+    <property name="dist_coverage" value="build/dist/direct_struts_actions_2-1.0.0/docs/coverage" />
+    <property name="component.packagedir" value="com/topcoder/service/actions" />
+    <property name="user.language" value="en" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_17\jre\bin" />
+    <property name="tcs_libdir" value="C:/TopCoder/proj/java/tcs/lib" />
+    <property name="srcdir" value="src" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.version" value="1.5.0_17" />
+    <property name="user.timezone" value="" />
+    <property name="dev_dist.jar" value="direct_struts_actions_2_1.0.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_17\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com/topcoder/service/actions" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="direct_struts_actions_2_1.0.0_dev_submission.jar" />
+    <property name="java.class.version" value="49.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="US" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_17\jre" />
+    <property name="component.distfilename" value="direct_struts_actions_2" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="build_war_dir" value="build/war" />
+    <property name="java_1_6_bootclasspath" value="C:/Program Files/Java/jdk1.6.0_02/jre/bin/rt.jar" />
+    <property name="ant.file" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="build_tcsdistdir" value="build/dist/direct_struts_actions_2-1.0.0" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="1.5.0_17-b04" />
+    <property name="testlogdir" value="log" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="C:\apache-ant-1.7.1\lib" />
+    <property name="component.name" value="Direct Struts Actions 2" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_javadocs" value="build/dist/direct_struts_actions_2-1.0.0/docs/javadocs" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="component" value="Direct Struts Actions 2" />
+    <property name="user.home" value="C:\Documents and Settings\uf8472v" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_17\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;c:\oracle\ora11g\product\11.1.0\client_2;c:\oracle\ora11g\product\11.1.0\client_2\bin;C:\oraclexe\app\oracle\product\10.2.0\server\bin;C:\oracle\ora92\bin;C:\oracle\product\10.2.0\client_1\bin;C:\Program Files\Oracle\jre\1.1.8\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Crimson Editor;C:\Program Files\nant-0.85\bin;C:\Program Files\NUnit 2.4.1\bin;c:\cygwin\bin;C:\Program Files\Microsoft Network Monitor 3\;C:\apache-ant-1.7.1\bin;C:\Program Files\Java\jdk1.6.0_02\bin;C:\Program Files\Windows Resource Kits\Tools;C:\WINDOWS\system32\WindowsPowerShell\v1.0;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\DTS\Binn\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\Interactive Intelligence\ICUserApps\;C:\apache-ant-1.7.1\bin;C:\Program Files\MySQL\MySQL Server 5.1\bin;C:\PROGRA~1\IBM\SQLLIB\BIN;C:\PROGRA~1\IBM\SQLLIB\FUNCTION;C:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;C:\apache-maven-2.2.1\bin;c:\Program Files\Microsoft SQL Server\90\Tools\binn\" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="jboss.home" value="C:/jboss-4.0.2" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
+    <property name="java.class.path" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build\instrumented;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build\testClasses;C:\TopCoder\proj\java\tcs\lib\third_party\junit\4.6\junit-4.6.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\base_exception.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\configuration_api.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\configuration_manager.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\configuration_persistence.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\data_validation.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\asm.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\cglib-2.1.3.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\commons-collections-2.1.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\commons-logging-1.0.4.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\dom4j-1.6.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\ejb3-persistence.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\hibernate-annotations.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\hibernate-commons-annotations.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\hibernate-entitymanager.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\hibernate-validator.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\hibernate3.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\jboss-archive-browsing.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\hibernate\jta.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\id_generator.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\javaee\activation-1.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\javaee\javaee.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\logging_wrapper.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\mock.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\object_factory.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\object_factory_configuration_api_plugin.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\object_formatter.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\search_builder.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\security.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\com.springsource.org.aopalliance-1.0.0.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.aop-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.asm-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.beans-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.context-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.core-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.expression-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.test-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.web-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\spring\org.springframework.web.servlet-3.0.1.RELEASE-A.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\commons-fileupload-1.2.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\commons-io-1.3.2.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\commons-lang-2.3.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\commons-logging-1.0.4.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\commons-logging-api-1.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\freemarker-2.3.15.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\ognl-2.7.3.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\struts2-convention-plugin-2.1.8.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\struts2-core-2.1.8.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\struts2-junit-plugin-2.1.8.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\struts2-spring-plugin-2.1.8.1.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts-2.1.8.1\xwork-core-2.1.6.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\struts_framework_1.0.0.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_reflib\typesafe_enum.jar;C:\jboss-4.0.2\client\activation.jar;C:\jboss-4.0.2\client\avalon-framework.jar;C:\jboss-4.0.2\client\axis-ws4ee.jar;C:\jboss-4.0.2\client\commons-discovery.jar;C:\jboss-4.0.2\client\commons-logging.jar;C:\jboss-4.0.2\client\concurrent.jar;C:\jboss-4.0.2\client\getopt.jar;C:\jboss-4.0.2\client\jacorb.jar;C:\jboss-4.0.2\client\jboss-client.jar;C:\jboss-4.0.2\client\jboss-common-client.jar;C:\jboss-4.0.2\client\jboss-deployment.jar;C:\jboss-4.0.2\client\jboss-iiop-client.jar;C:\jboss-4.0.2\client\jboss-j2ee.jar;C:\jboss-4.0.2\client\jboss-jaxrpc.jar;C:\jboss-4.0.2\client\jboss-jsr77-client.jar;C:\jboss-4.0.2\client\jboss-juddiaxis.jar;C:\jboss-4.0.2\client\jboss-saaj.jar;C:\jboss-4.0.2\client\jboss-system-client.jar;C:\jboss-4.0.2\client\jboss-transaction-client.jar;C:\jboss-4.0.2\client\jboss-ws4ee-client.jar;C:\jboss-4.0.2\client\jbossall-client.jar;C:\jboss-4.0.2\client\jbosscx-client.jar;C:\jboss-4.0.2\client\jbossha-client.jar;C:\jboss-4.0.2\client\jbossjmx-ant.jar;C:\jboss-4.0.2\client\jbossmq-client.jar;C:\jboss-4.0.2\client\jbosssx-client.jar;C:\jboss-4.0.2\client\jmx-client.jar;C:\jboss-4.0.2\client\jmx-invoker-adaptor-client.jar;C:\jboss-4.0.2\client\jnp-client.jar;C:\jboss-4.0.2\client\log4j.jar;C:\jboss-4.0.2\client\logkit.jar;C:\jboss-4.0.2\client\mail.jar;C:\jboss-4.0.2\client\namespace.jar;C:\jboss-4.0.2\client\scout.jar;C:\jboss-4.0.2\client\wsdl4j.jar;C:\jboss-4.0.2\server\default\lib\activation.jar;C:\jboss-4.0.2\server\default\lib\autonumber-plugin.jar;C:\jboss-4.0.2\server\default\lib\bcel.jar;C:\jboss-4.0.2\server\default\lib\bindingservice-plugin.jar;C:\jboss-4.0.2\server\default\lib\bsh-1.3.0.jar;C:\jboss-4.0.2\server\default\lib\bsh-deployer.jar;C:\jboss-4.0.2\server\default\lib\commons-httpclient.jar;C:\jboss-4.0.2\server\default\lib\commons-logging.jar;C:\jboss-4.0.2\server\default\lib\hsqldb-plugin.jar;C:\jboss-4.0.2\server\default\lib\hsqldb.jar;C:\jboss-4.0.2\server\default\lib\javax.servlet.jar;C:\jboss-4.0.2\server\default\lib\javax.servlet.jsp.jar;C:\jboss-4.0.2\server\default\lib\jboss-common-jdbc-wrapper.jar;C:\jboss-4.0.2\server\default\lib\jboss-j2ee.jar;C:\jboss-4.0.2\server\default\lib\jboss-jaxrpc.jar;C:\jboss-4.0.2\server\default\lib\jboss-jca.jar;C:\jboss-4.0.2\server\default\lib\jboss-jsr77.jar;C:\jboss-4.0.2\server\default\lib\jboss-management.jar;C:\jboss-4.0.2\server\default\lib\jboss-monitoring.jar;C:\jboss-4.0.2\server\default\lib\jboss-saaj.jar;C:\jboss-4.0.2\server\default\lib\jboss-transaction.jar;C:\jboss-4.0.2\server\default\lib\jboss.jar;C:\jboss-4.0.2\server\default\lib\jbossmq.jar;C:\jboss-4.0.2\server\default\lib\jbosssx.jar;C:\jboss-4.0.2\server\default\lib\jmx-adaptor-plugin.jar;C:\jboss-4.0.2\server\default\lib\jnpserver.jar;C:\jboss-4.0.2\server\default\lib\jpl-pattern.jar;C:\jboss-4.0.2\server\default\lib\jpl-util.jar;C:\jboss-4.0.2\server\default\lib\log4j.jar;C:\jboss-4.0.2\server\default\lib\mail-plugin.jar;C:\jboss-4.0.2\server\default\lib\mail.jar;C:\jboss-4.0.2\server\default\lib\properties-plugin.jar;C:\jboss-4.0.2\server\default\lib\scheduler-plugin-example.jar;C:\jboss-4.0.2\server\default\lib\scheduler-plugin.jar;C:\jboss-4.0.2\server\default\lib\scout.jar;C:\jboss-4.0.2\server\default\lib\snmp-support.jar;C:\jboss-4.0.2\server\default\lib\webcallbackhandler.jar;C:\jboss-4.0.2\lib\endorsed\xercesImpl.jar;C:\jboss-4.0.2\lib\endorsed\xalan.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build\classes;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\conf;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\test_files;C:\TopCoder\proj\java\tcs\lib\third_party\cobertura\1.9\cobertura.jar;C:\TopCoder\proj\java\tcs\lib\third_party\cobertura\1.9\lib\asm-2.2.1.jar;C:\TopCoder\proj\java\tcs\lib\third_party\cobertura\1.9\lib\asm-tree-2.2.1.jar;C:\TopCoder\proj\java\tcs\lib\third_party\cobertura\1.9\lib\jakarta-oro-2.0.8.jar;C:\TopCoder\proj\java\tcs\lib\third_party\cobertura\1.9\lib\log4j-1.2.9.jar;C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0;C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;C:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;C:\PROGRA~1\IBM\SQLLIB\bin;C:\PROGRA~1\IBM\SQLLIB\java\common.jar;C:\apache-ant-1.7.1\lib\ant-launcher.jar;C:\apache-ant-1.7.1\lib\ant.jar;C:\apache-ant-1.7.1\lib\ant-junit.jar" />
+    <property name="war_name" value="demo.war" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="ext_libdir" value="C:/TopCoder/proj/java/tcs/lib/third_party" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.dist.jar" value="build/dist/direct_struts_actions_2-1.0.0.jar" />
+    <property name="junit.jar" value="C:/TopCoder/proj/java/tcs/lib/third_party/junit/4.6/junit-4.6.jar" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="component.mainclass" value="" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\uf8472v\LOCALS~1\Temp\" />
+    <property name="component.target" value="1.x" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="os.arch" value="x86" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_17\jre\lib\ext" />
+    <property name="java_1_5_bootclasspath" value="C:/Program Files/Java/jdk1.5.0_17/jre/bin/rt.jar" />
+    <property name="user.dir" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0" />
+    <property name="design_dist.jar" value="direct_struts_actions_2_1.0.0_design_dist.jar" />
+    <property name="javasrc" value="src/java" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="direct_struts_actions_2" />
+    <property name="basedir" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="ant.core.lib" value="C:\apache-ant-1.7.1\lib\ant.jar" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="dist_docs" value="build/dist/direct_struts_actions_2-1.0.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/direct_struts_actions_2/1.0.0/direct_struts_actions_2.jar" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="target_libdir" value="C:/TopCoder/proj/java/tcs/lib" />
+    <property name="component.package" value="com.topcoder.service.actions" />
+    <property name="ant.file.Dependency Import" value="C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\build-dependencies.xml" />
+  </properties>
+  <testcase classname="com.topcoder.service.actions.ActionHelperUnitTest" name="test_checkInjectedFieldNull_Accuracy" time="0.016" />
+  <testcase classname="com.topcoder.service.actions.ActionHelperUnitTest" name="test_checkInjectedFieldNull_Failure" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.ContestActionUnitTest" name="testInheritance" time="0.016" />
+  <testcase classname="com.topcoder.service.actions.ContestActionUnitTest" name="testConstructor" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.ContestActionUnitTest" name="test_getContestServiceFacade_Accuracy" time="0.015" />
+  <testcase classname="com.topcoder.service.actions.ContestActionUnitTest" name="test_setContestServiceFacade_Accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="testInheritance" time="2.406" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="testConstructor" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_executeAction_Accuracy1" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_executeAction_Failure1" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_executeAction_Failure2" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_getDocumentId_Accuracy" time="0.14" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_setDocumentId_Accuracy" time="0.141" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_setDocumentId_Zero" time="0.453" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_getContestId_Accuracy" time="0.125" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_setContestId_Accuracy" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.DeleteDocumentContestActionUnitTest" name="test_setContestId_Zero" time="0.281" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="testInheritance" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="testConstructor" time="0.11" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_executeAction_Accuracy1" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_executeAction_Failure1" time="0.109" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_executeAction_Failure2" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getContestId_Accuracy" time="0.109" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestId_Accuracy" time="0.109" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestId_Zero" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getContestFile_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFile_Accuracy" time="0.109" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getContestFileName_Accuracy" time="0.125" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileName_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getContestFileContentType_Accuracy" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileContentType_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getContestFileDescription_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileDescription_Accuracy" time="0.141" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileDescription_Null" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileDescription_Empty" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setContestFileDescription_TooLong" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getDocumentTypeId_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setDocumentTypeId_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setDocumentTypeId_LessThanZero" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setDocumentTypeId_NotLessThan25" time="0.234" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_getMimeTypeRetriever_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setMimeTypeRetriever_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.FileUploadAttachContestFileActionUnitTest" name="test_setMimeTypeRetriever_Failure1" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="testInheritance" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="testConstructor" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getDocumentId_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setDocumentId_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setDocumentId_Zero" time="0.281" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getContestId_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setContestId_Accuracy" time="0.141" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getMimeTypeRetriever_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setMimeTypeRetriever_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setMimeTypeRetriever_Failure1" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Accuracy1" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Accuracy2" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Accuracy3" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Accuracy4" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Accuracy5" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Failure1" time="0.141" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_performLogic_Failure2" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getInputStream_Accuracy" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setInputStream_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getContentType_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setContentType_Accuracy" time="0.141" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getContentLength_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setContentLength_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_getContentDisposition_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentFileContestActionUnitTest" name="test_setContentDisposition_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="testConstructor" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_executeAction_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_executeAction_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_performLogic_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_performLogic_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_performLogic_Accuracy3" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_performLogic_Accuracy4" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetDocumentsContestActionUnitTest" name="test_executeAction_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="testConstructor" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy3" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy4" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy5" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy6" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy7" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy8" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy9" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy10" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy11" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy12" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy13" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy14" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy15" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy16" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy17" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy18" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy19" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Accuracy20" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromFileName_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy3" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy4" time="0.016" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy5" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy6" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy7" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy8" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy9" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy10" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy11" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy12" time="0.015" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy13" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy14" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy15" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy16" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy17" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy18" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy19" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Accuracy20" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromFileName_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy3" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy4" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy5" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy6" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy7" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy8" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy9" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy10" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy11" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy12" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy13" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy14" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy15" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy16" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Accuracy17" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeIdFromMimeType_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy3" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy4" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy5" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy6" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy7" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy8" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy9" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy10" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy11" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy12" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy13" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy14" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy15" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy16" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Accuracy17" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.MimeTypeRetrieverUnitTest" name="test_getMimeTypeFromMimeTypeId_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="testInheritance" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="testConstructor" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_prepare_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_processPayment_Accuracy1" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_processPayment_Accuracy2" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_processPayment_Failure1" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_processPayment_Failure2" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_getPoNumber_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setPoNumber_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setPoNumber_Null" time="0.328" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setPoNumber_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setPoNumber_TooLong" time="0.281" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_getClientId_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setClientId_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setClientId_Zero" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_getProjectId_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setProjectId_Accuracy" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setProjectId_Zero" time="0.281" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_getType_Accuracy" time="0.14" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setType_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByBillingAccountActionUnitTest" name="test_setType_Null" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="testInheritance" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="testConstructor" time="0.14" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_prepare_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_processPayment_Accuracy1" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_processPayment_Accuracy2" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_processPayment_Failure1" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_processPayment_Failure2" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_Accuracy" time="0.203" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_Accuracy2" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_MissingState" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_EmptyState" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_StateTooShort" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_StateTooLong" time="0.187" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_WrongCSCLength1" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_WrongCSCLength2" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_execute_CardExpired" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCardNumber_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardNumber_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardNumber_Null" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardNumber_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCardType_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Accuracy" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Accuracy2" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Accuracy3" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Accuracy4" time="0.187" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Null" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_Empty" time="0.359" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardType_InvalidCardType" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCardExpiryMonth_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryMonth_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryMonth_Null" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryMonth_Empty" time="0.187" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryMonth_NonNumber" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryMonth_WrongRange" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCardExpiryYear_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryYear_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryYear_Null" time="0.171" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryYear_Empty" time="0.188" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryYear_NonNumber" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCardExpiryYear_LessThanCurYear" time="0.187" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getFirstName_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setFirstName_Accuracy" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setFirstName_Null" time="0.343" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setFirstName_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getLastName_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setLastName_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setLastName_Null" time="0.281" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setLastName_Empty" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getZipCode_Accuracy" time="0.093" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setZipCode_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setZipCode_Null" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setZipCode_Empty" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setZipCode_TooLong" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setZipCode_NonDigit" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getAddress_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setAddress_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setAddress_Null" time="0.343" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setAddress_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setAddress_TooLong" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCity_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCity_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCity_Null" time="0.328" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCity_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCity_TooLong" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getState_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setState_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCountry_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCountry_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCountry_Null" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCountry_Empty" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCountry_TooLong" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getPhone_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_WrongFormat1" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_WrongFormat2" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_WrongFormat3" time="0.344" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_Empty" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setPhone_Null" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getEmail_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_WrongFormat1" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_WrongFormat2" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_WrongFormat3" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_Null" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_Empty" time="0.328" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setEmail_TooLong" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getAmount_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setAmount_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_getCsc_Accuracy" time="0.094" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_3Digit" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_4Digit" time="0.172" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_Null" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_Empty" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_TooLong" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_TooShort" time="0.328" />
+  <testcase classname="com.topcoder.service.actions.PayByCreditCardActionUnitTest" name="test_setCsc_NonDigit" time="0.266" />
+  <testcase classname="com.topcoder.service.actions.GetContestCategoriesActionUnitTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestCategoriesActionUnitTest" name="testConstructor" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestCategoriesActionUnitTest" name="test_executeAction_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestCategoriesActionUnitTest" name="test_executeAction_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestCategoriesActionUnitTest" name="test_executeAction_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestTechnologiesActionUnitTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestTechnologiesActionUnitTest" name="testConstructor" time="0.016" />
+  <testcase classname="com.topcoder.service.actions.GetContestTechnologiesActionUnitTest" name="test_executeAction_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestTechnologiesActionUnitTest" name="test_executeAction_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.GetContestTechnologiesActionUnitTest" name="test_executeAction_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayContestActionUnitTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayContestActionUnitTest" name="testConstructor" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayContestActionUnitTest" name="test_executeAction_Accuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayContestActionUnitTest" name="test_executeAction_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.PayContestActionUnitTest" name="test_executeAction_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="testInheritance" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="testConstructor" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_executeAction_Accuracy1" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_getContestId_Accuracy" time="0.156" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_setContestId_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_getProjectId_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_setProjectId_Accuracy" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_executeAction_ProjectIdAndContestIdBothSet" time="0.25" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_executeAction_ProjectIdAndContestIdNeitherSet" time="0.343" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_isStudioCompetition_Accuracy1" time="0.079" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_isStudioCompetition_Accuracy2" time="0.078" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_setProjectId_LessThanZero" time="0.265" />
+  <testcase classname="com.topcoder.service.actions.StudioOrSoftwareContestActionUnitTest" name="test_setContestId_LessThanZero" time="0.266" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.convention.action.disableScanning" value="true" />
+    
+    <package name="tcs-default" extends="struts-default"
+        abstract="true">
+        <!-- Setup interceptors stack -->
+        <interceptors>
+            <interceptor name="authentication" class="authenticationInterceptor" />
+            <interceptor name="logging" class="loggingInterceptor" />
+            <interceptor name="validationErrors" class="validationErrorsInterceptor" />
+            <interceptor name="mock" class="mockActionInterceptor" />
+
+            <interceptor-stack name="defaultTCSStack">
+                <interceptor-ref name="authentication" />
+                <interceptor-ref name="logging" />
+                <interceptor-ref name="validationErrors" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <!--
+            Make the default one used for all actions unless otherwise
+            configured.
+        -->
+        <default-interceptor-ref name="defaultTCSStack" />
+
+        <!-- Configure global results -->
+        <global-results>
+            <result name="login">/login.jsp</result>
+        </global-results>
+
+    </package>
+
+    <package name="default" namespace="/" extends="tcs-default">
+
+        <interceptors>
+            <!-- for the login stack, we exclude the authentication interceptor -->
+            <interceptor-stack name="loginTCSStack">
+                <interceptor-ref name="logging" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+            
+            <interceptor-stack name="demoTCSStack">
+                <interceptor-ref name="authentication" />
+                <interceptor-ref name="logging" />
+                <interceptor-ref name="mock" />
+                <interceptor-ref name="validationErrors" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>            
+        </interceptors>
+
+        <action name="login" class="loginAction">
+            <interceptor-ref name="loginTCSStack" />
+            <result name="input">/login.jsp</result>
+            <result>/main.jsp</result>
+        </action>
+
+         <action name="mockPayByBillingAccountAction" class="mockPayByBillingAccountAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="mockPayByCreditCardAction" class="mockPayByCreditCardAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="mockDeleteDocumentContestAction" class="mockDeleteDocumentContestAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="mockGetDocumentFileContestAction" class="mockGetDocumentFileContestAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="mockFileUploadAttachContestFileAction" class="mockFileUploadAttachContestFileAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <!-- ============================= -->
+        <!-- actions used for demo         -->
+        <!-- ============================= -->
+
+        <action name="fileUploadAttachContestFileAction" class="fileUploadAttachContestFileAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/fileUpload.jsp</result>
+            <result name="success">/success.jsp?type=fileUpload</result>
+        </action>
+
+        <action name="payByCreditCardAction" class="mockPayByCreditCardAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/payByCreditCard.jsp</result>
+            <result name="success">/success.jsp?type=payByCreditCard</result>
+        </action>
+
+        <action name="payByBillingAccountAction" class="mockPayByBillingAccountAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/payByBillingAccount.jsp</result>
+            <result name="success">/success.jsp?type=payByBillingAccount</result>
+        </action>
+
+        <action name="getContestCategoriesAction" class="getContestCategoriesAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="success">/success.jsp?type=getContestCategories</result>
+        </action>
+
+        <action name="getContestTechnologiesAction" class="getContestTechnologiesAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="success">/success.jsp?type=getContestTechnologies</result>
+        </action>
+
+        <action name="deleteDocumentContestAction" class="deleteDocumentContestAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/deleteDocument.jsp</result>
+            <result name="success">/success.jsp?type=deleteDocument</result>
+        </action>
+
+        <action name="getDocumentFileContestAction" class="getDocumentFileContestAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/getFile.jsp</result>
+            <result name="success">/success.jsp?type=getFile</result>
+        </action>
+
+        <action name="getDocumentsContestAction" class="getDocumentsContestAction">
+            <interceptor-ref name="demoTCSStack" />
+            <result name="input">/getDocuments.jsp</result>
+            <result name="success">/success.jsp?type=getDocuments</result>
+        </action>
+        
+    </package>
+
+</struts>

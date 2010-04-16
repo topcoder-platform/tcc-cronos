@@ -1,0 +1,38 @@
+=============================================================================
+moon.river 1.1.1 
+ContestAction#setContestServiceFacade should throw IAE when the input is null 
+=============================================================================
+fixed
+
+=============================================================================
+onsky 1.1.1 
+it seems the ContestServiceFacade you used is not accurate, please use the latest one.
+Your submission uses com.topcoder.service.facade.contest.ScorecardReviewData, but I found com.topcoder.project.service.ScorecardReviewData from the reo.zip
+=============================================================================
+I corrected my mock code to use correct package for ScorecardReviewData.
+
+=============================================================================
+onsky 1.1.1 
+PayContestAction no need to call sendEmail, the send email logic is removed as discussed from the forum. 
+=============================================================================
+I have removed sendEmail abstract method definition completely from PayContestAction.
+I also removed sendEmail method from PayByCreditCardAction and PayByBillingAccountAction.
+I also had to remove the unit tests for sendEmail since method no longer exists.
+Designer confirmed that we could completely remove these methods, http://forums.topcoder.com/?module=Thread&threadID=670820&start=0
+
+=============================================================================
+onsky 1.1.1 
+FileUploadAttachContestFileAction#executeAction, you'd better throw ISE if contestFile is not set 
+=============================================================================
+fixed
+
+=============================================================================
+moon.river 6.1.1
+Due to problem in 2.1.1, two cases are marked as failure, because they can't compile.
+=============================================================================
+As noted, you accidentally missed the designer's final response on this, so your tests need
+to be corrected for these 2 cases. The other test case that was a real failure in
+my submission should work now that I added the IAE check in ContestAction#setContestServiceFacade,
+however, I didn't aggregate your failure tests since you still need to correct
+the other 2 tests. 
+

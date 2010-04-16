@@ -1,0 +1,8 @@
+Starting audit...
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\MockContestServiceFacade.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'UserNotAuthorizedException'.
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\MockContestServiceFacade.java:1: File length is 2,470 lines (max allowed is 2,000).
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\TestHelper.java:167:47: '?' is not preceded with whitespace.
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\TestHelper.java:167:48: '?' is not followed by whitespace.
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\TestHelper.java:167:63: '?' is not preceded with whitespace.
+C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\tests\com\topcoder\service\actions\TestHelper.java:167:64: '?' is not followed by whitespace.
+Audit done.
