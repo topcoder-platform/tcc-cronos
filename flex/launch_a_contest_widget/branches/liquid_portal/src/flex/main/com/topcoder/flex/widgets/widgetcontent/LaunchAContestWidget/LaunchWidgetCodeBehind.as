@@ -781,7 +781,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         private function getSpecReviewsHandler(e:ResultEvent):void {
             hideLoadingProgress();
-            trace("getSpecReviewsHandler: " + e + ", " + e.result);
+            //trace("getSpecReviewsHandler: " + e + ", " + e.result);
             if (e && e.result) {
                 var srs:SpecReview=ObjectTranslatorUtils.translate(e.result, SpecReview) as SpecReview;
                 trace("getSpecReviewsHandler:: srs: " + srs);
@@ -1054,20 +1054,20 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             tempCompetition.projectHeader = new SoftwareProjectHeader();
             tempCompetition.projectHeader.properties = new Array();
             var me:LaunchWidget = container.contents as LaunchWidget;
-            var developmentAdminFee:Number=me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestFee;
+            var developmentAdminFee:Number=me.overView.contestFees.contestType.(@contestTypeId == 2).contestFee;
             var selCostData:Dictionary=null;
             var level:String=SoftwareCompetitionUtils.instance().getCostLevelProp(softwareCompetition);
             if (level==SoftwareCompetitionUtils.COST_LEVEL_A) {
                 me.overView.loadCostLevelData(
-                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'low')[0] as XML,
+                    me.overView.contestFees.contestType.(@contestTypeId == 2).contestCost.billingLevel.(@id == 'low')[0] as XML,
                     selCostData);
             } else if (level==SoftwareCompetitionUtils.COST_LEVEL_B) {
                 me.overView.loadCostLevelData(
-                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'medium')[0] as XML,
+                    me.overView.contestFees.contestType.(@contestTypeId == 2).contestCost.billingLevel.(@id == 'medium')[0] as XML,
                     selCostData);
             } else if (level==SoftwareCompetitionUtils.COST_LEVEL_C) {
                 me.overView.loadCostLevelData(
-                    me.overView.contestFees.contestType.(@id == "DEVELOPMENT").contestCost.billingLevel.(@id == 'high')[0] as XML,
+                    me.overView.contestFees.contestType.(@contestTypeId == 2).contestCost.billingLevel.(@id == 'high')[0] as XML,
                     selCostData);
             }
             

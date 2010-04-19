@@ -1968,9 +1968,9 @@
                 
                 var src:String=widgetSetting.settings[this.currentState + ".HelpVideoSource"] as String;
                 var frame:String=widgetSetting.settings[this.currentState + ".HelpVideoFrame"] as String;
-                trace("Help Video [" + this.currentState + "] == " 
-                    + widgetSetting.settings[this.currentState + ".HelpVideoSource"] + "," 
-                    + widgetSetting.settings[this.currentState + ".HelpVideoFrame"]);
+                //trace("Help Video [" + this.currentState + "] == " 
+                 //   + widgetSetting.settings[this.currentState + ".HelpVideoSource"] + "," 
+                 //   + widgetSetting.settings[this.currentState + ".HelpVideoFrame"]);
                 VideoPopupManager.showHelpVideo(this, src, frame);
             }
             
@@ -1991,10 +1991,11 @@
                     return;
                 }
                 
-                var ns_detailedRequirements:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
-                var ns_submissionDeliverables:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
-                var ns_environmentSetupInstructions:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
-                var ns_finalSubmissionGuidelines:String=detailsConfig.contestType.(@id == competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines');
+                var fieldDefaults:Object = detailsConfig.contestType.(@contestTypeId == this.getContestTypeIdByName(competitionType)).fieldDefaults;
+                var ns_detailedRequirements:String=fieldDefaults.field.(@id == 'detailedRequirements');
+                var ns_submissionDeliverables:String=fieldDefaults.field.(@id == 'submissionDeliverables');
+                var ns_environmentSetupInstructions:String=fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                var ns_finalSubmissionGuidelines:String=fieldDefaults.field.(@id == 'finalSubmissionGuidelines');
                 
                 if (!this.softwareCompetition.projectHeader.projectSpec) {
                     this.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
@@ -2022,6 +2023,40 @@
 
                 // for now, also set detailed Reuqirements on function description
                 this.softwareCompetition.assetDTO.detailedDescription=this.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+            }
+            
+            /**
+             * Gets the contest type id for the given contest type. The id is matching the value defined in the xml file.
+             * 
+             * @param type the contest type
+             * @return the contestTypeId, if not find, return -1
+             * @since TCCC-1591
+             */
+             public function getContestTypeIdByName(type:String):Number {
+            	if (type == "CONCEPTUALIZATION") {
+            		return 23;
+            	} else if (type == "SPECIFICATION") {
+            		return 6;
+            	} else if (type == "ARCHITECTURE") {
+            		return 7;
+            	} else if(type == "DESIGN") {
+            		return 1;
+            	} else if (type == "DEVELOPMENT") {
+            		return 2;
+            	} else if (type == "RIACOMPONENT") {
+            		return 25;
+            	} else if (type == "RIABUILD") {
+            		return 24;
+            	} else if (type == "UIPROTOTYPE") {
+            		return 19;
+            	} else if (type == "ASSEMBLY") {
+            		return 14;
+            	} else if (type == "TESTSUITES") {
+            		return 13;
+            	} else if (type == "TESTSCENARIOS") {
+            		return 26;
+            	}
+            	return -1;
             }
         ]]>
     </mx:Script>

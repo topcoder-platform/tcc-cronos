@@ -39,12 +39,11 @@
         - Cost breakdown is put in expanable panel. 1st Place, 2nd Place, Contest Fee and Contest Total are always made visible.
         - Milestone bonus is shown only for Conceptualization contest.
         - A few text is also updated.
-
-    @author pulky
-
-    
-    @author pulky, snow01
-    @version 1.0.4
+    Version 1.0.5 (Studio Contest Types - Release Assembly version 1.0) Change Notes:
+        - For studio contest, For contest_fee, contestTypeId is used instead of id in the sub-type.
+        - function loadContestFees, handleGetContestFeesByProject,getCurrentContestTypeXml is updated.
+    @author pulky, snow01, waits
+    @version 1.0.5
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -847,31 +846,47 @@
             private function loadContestFees(e:ResultEvent):void {
                 if (e != null && e.result != null && e.result is XML) {
                     contestFees=e.result as XML;
+                    var currentContestTypeId:Number = mainWidget.getContestTypeIdByName(mainWidget.competitionType);
+                    var softwareContestFee:XML = null;
+                    var studioContestFee:XML = null;
+                    var fees:XMLList = contestFees.children();
+                    for (var i:int =0; i< fees.length(); i++) {
+                    	var fee:XML = fees[i] as XML;
+                    	if (!mainWidget.studioContestType && fee.attribute("contestTypeId").length()>0 && fee.@contestTypeId == currentContestTypeId) {
+                    		softwareContestFee = fee;
+                    		break;
+                    	} else if (mainWidget.studioContestType && fee.attribute("id").length()>0 && fee.@id == "STUDIO"){
+                    		studioContestFee = fee;
+                    		break;
+                    	}
+                    }
                     
-                    if (!mainWidget.studioContestType) {
+                    if (!mainWidget.studioContestType) {                    	
+                    	
                         if (!mainWidget.isEditMode) {
-                            ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee; // BUGR-1737
+                            ns_contestf.text=softwareContestFee.contestFee; // BUGR-1737
                         }
-                        this.ns_specReviewCost.text = contestFees.contestType.(@id == mainWidget.competitionType).specReviewCost;
+                        this.ns_specReviewCost.text = softwareContestFee.specReviewCost;
 
-                        trace("Low billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'low'));
-                        trace("Medium billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'medium'));
-                        trace("High billing level - " + contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high'));
+                        trace("Low billing level - " + softwareContestFee.contestCost.billingLevel.(@id == 'low'));
+                        trace("Medium billing level - " + softwareContestFee.contestCost.billingLevel.(@id == 'medium'));
+                        trace("High billing level - " + softwareContestFee.contestCost.billingLevel.(@id == 'high'));
                         
-                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'low')[0] as XML, 
+                        loadCostLevelData(softwareContestFee.contestCost.billingLevel.(@id == 'low')[0] as XML, 
                             lowCostData);
-                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'medium')[0] as XML, 
+                        loadCostLevelData(softwareContestFee.contestCost.billingLevel.(@id == 'medium')[0] as XML, 
                             midCostData);
-                        loadCostLevelData(contestFees.contestType.(@id == mainWidget.competitionType).contestCost.billingLevel.(@id == 'high')[0] as XML, 
+                        loadCostLevelData(softwareContestFee.contestCost.billingLevel.(@id == 'high')[0] as XML, 
                             highCostData);
 
 			            ns_setPrizes();
                         //ns_contestf.editable=mainWidget.isAdmin; // BUGR-1737        
                                					
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee; // BUGR-1737
-                        firstPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).firstPlaceCost;
-                        secondPlace.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).secondPlaceCost;
+                    	var studioContestFees:Object = studioContestFee.subType.(@contestTypeId == mainWidget.studioContestSubTypeId);
+                        adminf.text=studioContestFees.contestFee; // BUGR-1737
+                        firstPlace.text=studioContestFees.firstPlaceCost;
+                        secondPlace.text=studioContestFees.secondPlaceCost;
 			            s_updateAmount(true);
                     }
                 }
@@ -946,17 +961,34 @@
              *
              * If the contest type is studio then the path is STUDIO/contest-type-id.
              * Otherwise the path is contest-type-name (or competition type name).
-             *
+             * Updated for Version 1.0.5
+             *    - for StudioTypes, using contestTypeId instead of id
              * @return whether the current contest type xml has the specified property or not.
-             *
              * @since Cockpit Release Assembly 1 v1.0 [BUGR-1896]
              */
             [Bindable(event="curContestTypeChanged")]
             private function getCurrentContestTypeXml():XML {
-                if (mainWidget.studioContestType) {
-                    return contestOverview.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeId)[0];
+            	var studioOverview:XML = null;
+            	var softwareOverView:XML= null;
+            	var currentContestTypeId = mainWidget.getContestTypeIdByName(mainWidget.competitionType);
+            	
+            	var types:XMLList = contestOverview.children();
+            	for (var i:int = 0; i< types.length(); i++) {
+            		var type:XML = types[i] as XML;
+            		//trace("type = " + type);
+            		trace("Id = " + type.attribute("id"));
+            		trace("Type = " + type.attribute("contestTypeId"));
+            		if (type.attribute("id").length() > 0 && type.@id == "STUDIO" && mainWidget.studioContestType) {
+            			studioOverview = type;
+            		} else if (!mainWidget.studioContestType && type.attribute("contestTypeId").length() > 0 && type.@contestTypeId == currentContestTypeId) {
+            			softwareOverView = type;
+            			break;
+            		}
+            	}
+                if (mainWidget.studioContestType) {                	
+                    return studioOverview.subType.(@contestTypeId == mainWidget.studioContestSubTypeId)[0];
                 } else {
-                    return contestOverview.contestType.(@id == mainWidget.competitionType)[0];
+                    return softwareOverView;
                 }
             }
 
@@ -975,7 +1007,8 @@
             
             /**
              * Handler for getting contest fees by project.
-             * 
+             * Updated for Version 1.0.5
+             *    - for StudioTypes, using contestTypeId instead of id
              * @param e the webservice result event.
              * @since 1.0.1
              */ 
@@ -988,24 +1021,46 @@
                     
                     var pcfArray:ArrayCollection=e.result as ArrayCollection;
                     for each (var pcf:Object in pcfArray) {
-                        var contestType:String=pcf.contestType;
-                        var subType:String=pcf.subType;
+                        var contestTypeId:Number=pcf.contestTypeId;
+                        var isStudio:Boolean = pcf.studio;
                         var contestFee:String=pcf.contestFee;
                         
-                        if (contestType && contestType == "STUDIO") {
-                            contestFees.contestType.(@id == contestType).subType.(@id == subType).contestFee[0]=contestFee;
-                        } else {
-                            contestFees.contestType.(@id == contestType).contestFee[0]=contestFee;
-                        }
+	                    var fees:XMLList = contestFees.children();
+	                    for (var i:int =0; i< fees.length(); i++) {
+	                        var fee:XML = fees[i] as XML;
+	                        if (!isStudio && fee.attribute("contestTypeId").length()>0 && fee.@contestTypeId == contestTypeId) {
+	                            fee.contestFee[0]=contestFee;
+	                            break;
+	                        } else if (isStudio && fee.attribute("id").length()>0 && fee.@id == "STUDIO"){
+
+	                            fee.subType.(@contestTypeId == contestTypeId).contestFee[0]=contestFee;
+	                            break;
+	                        }
+	                    }
                     }
                 }
 
                 if (contestFees) {
+                	var currentContestTypeId:Number = mainWidget.getContestTypeIdByName(mainWidget.competitionType);
+                    var softwareContestFee:XML = null;
+                    var studioContestFee:XML = null;
+                    var fees:XMLList = contestFees.children();
+                    for (var i:int =0; i< fees.length(); i++) {
+                        var fee:XML = fees[i] as XML;
+                        if (!mainWidget.studioContestType && fee.attribute("contestTypeId").length()>0 && fee.@contestTypeId == currentContestTypeId) {
+                            softwareContestFee = fee;
+                            break;
+                        } else if (mainWidget.studioContestType && fee.attribute("id").length()>0 && fee.@id == "STUDIO"){
+                            studioContestFee = fee;
+                            break;
+                        }
+                    }
                     if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
-                        ns_contestf.text=contestFees.contestType.(@id == mainWidget.competitionType).contestFee[0]; // BUGR-1737
+                    	
+                        ns_contestf.text=softwareContestFee.contestFee[0]; // BUGR-1737
                         ns_updateAmount();
                     } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
-                        adminf.text=contestFees.contestType.(@id == mainWidget.competitionType).subType.(@id == mainWidget.studioContestSubTypeLabel).contestFee[0]; // BUGR-1737
+                        adminf.text=studioContestFee.subType.(@contestTypeId == mainWidget.studioContestSubTypeId).contestFee[0]; // BUGR-1737
                         s_updateAmount(true);
                     }
                 }

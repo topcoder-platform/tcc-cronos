@@ -14,9 +14,10 @@
         - Removed pre calculated start date
         - Removed restriction for start date to begin 14 days from now
         - Changed the way restricted dates are handled for start date (pipeline web service is now used)
-
-    @author pulky
-    @version 1.0.2
+    Version 1.0.3 (Studio Contest Types - Release Assembly version 1.0) Change Notes:
+        - For studio contest, For contestTypeId is used since the schedule.xml is updated.
+    @author pulky, waits
+    @version 1.0.3
     @since 1.0
 -->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
@@ -26,7 +27,7 @@
            verticalScrollPolicy="off"
            creationComplete="init()">
     <mx:HTTPService id="requestSchedule"
-                    url="data/launch_a_contest/schedule.xml"
+                    url="/i/cockpit/data/launch_a_contest/schedule.xml"
                     resultFormat="e4x"
                     result="loadSchedule(event)"
                     fault="Helper.showAlertMessage(event.fault.faultString);">
@@ -540,9 +541,9 @@
             </mx:htmlText>
         </mx:Text>
         <mx:Text visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="For your chosen contest type - {mainWidget.studioContestSubTypeLabel} - the suggested timelines are:" />
-        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
-        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
-        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>
+        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="Min Allowable Time: {scheduleTypes.contestType.(@contestTypeId==curContestType).minTime}"/>
+        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="Average Timeframe: {scheduleTypes.contestType.(@contestTypeId==curContestType).averageTime}"/>
+        <mx:Label visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}" text="High Complexity: {scheduleTypes.contestType.(@contestTypeId==curContestType).highComplexity}"/>
         <mx:Text visible="{mainWidget.studioContestType}">
             <mx:htmlText>
                 <![CDATA[

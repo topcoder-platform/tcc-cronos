@@ -485,7 +485,7 @@ xmlns:hc="com.hillelcoren.components.*"
                 
                 if (selectContestSubTypes.visible 
                         && selectContestSubTypes.includeInLayout 
-                        && !(selectContestSubTypes.selectedItem || !selectContestSubTypes.selectedItem.data)) {
+                        && (selectContestSubTypes.selectedItem == null || selectContestSubTypes.selectedItem.data == null)) {
                     Helper.showAlertMessage("Contest sub type not selected");
                     return false;
                 }

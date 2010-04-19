@@ -208,10 +208,22 @@
              */
             private function setConfigData():void {
                 if (mainWidget.detailsConfig) {
-                    ns_detailedRequirements.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'detailedRequirements');
-                    ns_submissionDeliverables.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'submissionDeliverables');
-                    ns_environmentSetupInstructions.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'environmentSetupInstructions');
-                    ns_finalSubmissionGuidelines.htmlText=mainWidget.detailsConfig.contestType.(@id == mainWidget.competitionType).fieldDefaults.field.(@id == 'finalSubmissionGuidelines'); 
+                	var fieldDefaults:Object = null;
+                	var currentContestTypeId = mainWidget.getContestTypeIdByName(mainWidget.competitionType);
+                	var types:XMLList = mainWidget.detailsConfig.children();
+                	for (var i:int = 0; i< types.length();i++){
+                		var type:XML = types[i] as XML;
+                		if (type.attribute("contestTypeId").length()>0 && type.@contestTypeId == currentContestTypeId) {
+                			fieldDefaults = type.fieldDefaults;
+                			break;
+                		}
+                	}
+                	if (fieldDefaults) {
+                	      ns_detailedRequirements.htmlText=fieldDefaults.field.(@id == 'detailedRequirements');
+                        ns_submissionDeliverables.htmlText=fieldDefaults.field.(@id == 'submissionDeliverables');
+                        ns_environmentSetupInstructions.htmlText=fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                        ns_finalSubmissionGuidelines.htmlText=fieldDefaults.field.(@id == 'finalSubmissionGuidelines');
+                    } 
                 }
             }
 
@@ -247,7 +259,7 @@
             // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
             //
             private function setRootCategory():void {
-                trace("IN SET ROOT CATEGORY: " + LaunchWidgetCodeBehind.catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
+              //  trace("IN SET ROOT CATEGORY: " + LaunchWidgetCodeBehind.catalogs + "," + this.ns_catalogNameInput + "," + this.catalogContainer + "," + this.mainWidget.softwareCompetition.assetDTO.rootCategory);
                 if (!LaunchWidgetCodeBehind.catalogs || !this.ns_catalogNameInput || !this.catalogContainer.visible) {
                     return;
                 }
@@ -256,7 +268,7 @@
                     for (var j:int=0; j < LaunchWidgetCodeBehind.catalogs.length; j++) {
                         var catalogObj:Object=LaunchWidgetCodeBehind.catalogs.getItemAt(j);
                         
-                        trace("------> " + (catalogObj && catalogObj.data ? catalogObj.data.id : "") + "," + (this.mainWidget.softwareCompetition.assetDTO.rootCategory ? this.mainWidget.softwareCompetition.assetDTO.rootCategory.id : ""));
+                        //trace("------> " + (catalogObj && catalogObj.data ? catalogObj.data.id : "") + "," + (this.mainWidget.softwareCompetition.assetDTO.rootCategory ? this.mainWidget.softwareCompetition.assetDTO.rootCategory.id : ""));
                         if (catalogObj && catalogObj.data && catalogObj.data.id == this.mainWidget.softwareCompetition.assetDTO.rootCategory.id) {
                             trace("-----> Selecting: " + catalogObj);
                             this.ns_catalogNameInput.selectedItem=catalogObj;
