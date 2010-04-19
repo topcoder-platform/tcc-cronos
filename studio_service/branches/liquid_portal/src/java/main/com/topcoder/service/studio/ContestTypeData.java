@@ -29,23 +29,62 @@ import javax.xml.bind.annotation.XmlType;
         "requirePreviewImage", "config" })
 public class ContestTypeData {
 
-
+    /**
+      * @deprecated use WEB_DESIGN
+     */
+    @Deprecated 
     public static final Long WEB_PAGE_DESIGN = new Long(1);
+
+    public static final Long WEB_DESIGN = new Long(1);
 
     public static final Long APPLICATION_FRONT_END_DESIGN = new Long(5);
 
+    /**
+      * @deprecated use BANNERS_ICONS_DESIGN
+     */
+    @Deprecated 
     public static final Long WEB_ELEMENTS = new Long(4);
+
+    public static final Long BANNERS_ICONS_DESIGN = new Long(4);
 
     public static final Long LOGO_DESIGN = new Long(3);
 
+    /**
+      * @deprecated use BANNERS_ICONS_DESIGN
+     */
+    @Deprecated
     public static final Long ICONS = new Long(14);
 
+    /**
+      * @deprecated  use PRINT_PRESENTATION
+     */
+    @Deprecated
     public static final Long PRINT_DESIGN = new Long(12);
 
+    public static final Long PRINT_PRESENTATION = new Long(12);
+
+    /**
+      * @deprecated use PRINT_PRESENTATION
+     */
+    @Deprecated 
     public static final Long POWERPOINT_PRESENTATION = new Long(21);
 
+    /**
+      * @deprecated use BANNERS_ICONS_DESIGN
+     */
+    @Deprecated 
     public static final Long OTHER_STATIC_DESIGN = new Long(18);
 
+    public static final Long OTHER_DESIGN = new Long(18);
+
+    public static final Long WIDGET_OR_MOBILE_SCREEN_DESIGN = new Long(6);
+
+    public static final Long FRONT_END_FLASH = new Long(8);
+
+    public static final Long WIREFRAMES = new Long(25);
+
+    public static final Long IDEA_GENERATION = new Long(26);
+    
     /**
      * Represents contestType id.
      */
