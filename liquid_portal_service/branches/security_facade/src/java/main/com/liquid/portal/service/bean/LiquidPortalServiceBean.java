@@ -576,14 +576,30 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // HashMap<String,Integer> and add each key/value entry
             //studioContestTypes = getConfigurationMapValue("studioContestTypes", configObject);
 
-            studioContestTypes.put(CompetitionData.STUDIO_WEB_PAGE_DESIGN, ContestTypeData.WEB_PAGE_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_PAGE_DESIGN, ContestTypeData.WEB_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_DESIGN, ContestTypeData.WEB_DESIGN);
+
             studioContestTypes.put(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN, ContestTypeData.APPLICATION_FRONT_END_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_WEB_ELEMENTS, ContestTypeData.WEB_ELEMENTS);
+
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_ELEMENTS, ContestTypeData.BANNERS_ICONS_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN, ContestTypeData.BANNERS_ICONS_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_ICONS, ContestTypeData.BANNERS_ICONS_DESIGN);
+
             studioContestTypes.put(CompetitionData.STUDIO_LOGO_DESIGN, ContestTypeData.LOGO_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_ICONS, ContestTypeData.ICONS);
-            studioContestTypes.put(CompetitionData.STUDIO_PRINT_DESIGN, ContestTypeData.PRINT_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_POWERPOINT_PRESENTATION, ContestTypeData.POWERPOINT_PRESENTATION);
-            studioContestTypes.put(CompetitionData.STUDIO_OTHER_STATIC_DESIGN, ContestTypeData.OTHER_STATIC_DESIGN);
+            
+            studioContestTypes.put(CompetitionData.STUDIO_PRINT_DESIGN, ContestTypeData.PRINT_PRESENTATION);
+            studioContestTypes.put(CompetitionData.STUDIO_POWERPOINT_PRESENTATION, ContestTypeData.PRINT_PRESENTATION);
+            studioContestTypes.put(CompetitionData.STUDIO_PRINT_PRESENTATION, ContestTypeData.PRINT_PRESENTATION);
+
+            studioContestTypes.put(CompetitionData.STUDIO_OTHER_STATIC_DESIGN, ContestTypeData.OTHER_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_OTHER_DESIGN, ContestTypeData.OTHER_DESIGN);
+
+            studioContestTypes.put(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN, ContestTypeData.WIDGET_OR_MOBILE_SCREEN_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_FRONT_END_FLASH, ContestTypeData.FRONT_END_FLASH);
+            studioContestTypes.put(CompetitionData.STUDIO_WIREFRAMES, ContestTypeData.WIREFRAMES);
+            studioContestTypes.put(CompetitionData.STUDIO_IDEA_GENERATION, ContestTypeData.IDEA_GENERATION);
+
+            
 
             ConfigurationObject documentGeneratorConfigObject = config.getChild("document_generator_configuration");
             if (documentGeneratorConfigObject == null) {
@@ -1209,7 +1225,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 data.setTcDirectProjectName(proj.getName());
 
                 List<PrizeData> prizes = new ArrayList<PrizeData>();
-                if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_PAGE_DESIGN))
+                if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_PAGE_DESIGN)
+                    || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_DESIGN))
                 {
                     PrizeData first = new PrizeData();
                     first.setAmount(1250.0);
@@ -1222,7 +1239,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(2000);
-                    data.setContestTypeId(ContestTypeData.WEB_PAGE_DESIGN);
+                    data.setContestTypeId(ContestTypeData.WEB_DESIGN);
                     
                 }
                 else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN))
@@ -1241,7 +1258,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     data.setContestTypeId(ContestTypeData.APPLICATION_FRONT_END_DESIGN);
                     
                 }
-                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS))
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN))
                 {
                     PrizeData first = new PrizeData();
                     first.setAmount(350.0);
@@ -1254,7 +1272,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(250);
-                    data.setContestTypeId(ContestTypeData.WEB_ELEMENTS);
+                    data.setContestTypeId(ContestTypeData.BANNERS_ICONS_DESIGN);
                     
                 }
                 else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
@@ -1273,7 +1291,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     data.setContestTypeId(ContestTypeData.LOGO_DESIGN);
                     
                 }
-                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_ICONS))
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_ICONS)
+                        || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN ))
                 {
                     PrizeData first = new PrizeData();
                     first.setAmount(350.0);
@@ -1286,11 +1305,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(250);
-                    data.setContestTypeId(ContestTypeData.ICONS);
+                    data.setContestTypeId(ContestTypeData.BANNERS_ICONS_DESIGN);
                     
                 }
 
-                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN))
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION))
                 {
                     PrizeData first = new PrizeData();
                     first.setAmount(750.0);
@@ -1303,7 +1323,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(250);
-                    data.setContestTypeId(ContestTypeData.PRINT_DESIGN);
+                    data.setContestTypeId(ContestTypeData.PRINT_PRESENTATION);
                     
                 }
                 else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
@@ -1319,11 +1339,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(250);
-                    data.setContestTypeId(ContestTypeData.POWERPOINT_PRESENTATION);
+                    data.setContestTypeId(ContestTypeData.PRINT_PRESENTATION);
                     
                 }
 
-                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN))
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_DESIGN))
                 {
                     PrizeData first = new PrizeData();
                     first.setAmount(750.0);
@@ -1336,9 +1357,78 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                     data.setDrPoints(200);
                     data.setContestAdministrationFee(2000);
-                    data.setContestTypeId(ContestTypeData.OTHER_STATIC_DESIGN);
+                    data.setContestTypeId(ContestTypeData.OTHER_DESIGN);
                     
                 }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN ))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(1250.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(250.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.WIDGET_OR_MOBILE_SCREEN_DESIGN);
+                    
+                }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_FRONT_END_FLASH  ))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(1250.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(250.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.FRONT_END_FLASH);
+                    
+                }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_IDEA_GENERATION  ))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(750.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(100.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.IDEA_GENERATION);
+                    
+                }
+
+                else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIREFRAMES  ))
+                {
+                    PrizeData first = new PrizeData();
+                    first.setAmount(1250.0);
+                    first.setPlace(1);
+                    PrizeData second = new PrizeData();
+                    second.setAmount(250.0);
+                    second.setPlace(2);
+                    prizes.add(first);
+                    prizes.add(second);
+
+                    data.setDrPoints(200);
+                    data.setContestAdministrationFee(2000);
+                    data.setContestTypeId(ContestTypeData.WIREFRAMES);
+                    
+                }
+
                 
                 data.setPrizes(prizes);
                 data.setContestChannelId(2);

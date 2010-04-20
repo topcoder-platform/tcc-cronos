@@ -29,6 +29,7 @@
         	 <ejb-ref-type>Session</ejb-ref-type>
         	 <remote>com.topcoder.service.pipeline.ejb.PipelineServiceFacadeRemote</remote>
        	</ejb-ref>
+      
 		<ejb-ref>
         	 <ejb-ref-name>ejb/contestServiceFacade</ejb-ref-name>
         	 <ejb-ref-type>Session</ejb-ref-type>

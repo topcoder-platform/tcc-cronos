@@ -113,9 +113,19 @@ public class CompetitionData implements Serializable {
     /**
      * <p>
      * Represents studio Web Page Design
+     * @deprecated use STUDIO_WEB_DESIGN
      * <p>
      */
+    @Deprecated
     public static final String STUDIO_WEB_PAGE_DESIGN = "Web Page Design";
+
+
+    /**
+     * <p>
+     * Represents studio Web Design
+     * <p>
+     */
+    public static final String STUDIO_WEB_DESIGN = "Web Design";
 
     /**
      * <p>
@@ -127,8 +137,10 @@ public class CompetitionData implements Serializable {
     /**
      * <p>
      * Represents studio Web Elements
+     * @deprecated use STUDIO_BANNERS_ICONS_DESIGN
      * <p>
      */
+    @Deprecated 
     public static final String STUDIO_WEB_ELEMENTS = "Web Elements";
 
 
@@ -143,32 +155,91 @@ public class CompetitionData implements Serializable {
     /**
      * <p>
      * Represents studio Icons
+     * @deprecated use STUDIO_BANNERS_ICONS_DESIGN
      * <p>
      */
+    @Deprecated 
     public static final String STUDIO_ICONS = "Icons";
+
+    /**
+     * <p>
+     * Represents studio Banners/Icons
+     * <p>
+     */
+    public static final String STUDIO_BANNERS_ICONS_DESIGN = "Banners/Icons";
 
      /**
      * <p>
      * Represents studio Print Design
+     * @deprecated  use STUDIO_PRINT_PRESENTATION
      * <p>
      */
+    @Deprecated
     public static final String STUDIO_PRINT_DESIGN = "Print Design";
+
+    /**
+     * <p>
+     * Represents studio Print/Presentation
+     * <p>
+     */
+    public static final String STUDIO_PRINT_PRESENTATION = "Print/Presentation";
 
 
     /**
      * <p>
      * Represents studio Logo Design
+     * @deprecated  use STUDIO_PRINT_PRESENTATION
      * <p>
      */
+    @Deprecated 
     public static final String STUDIO_POWERPOINT_PRESENTATION = "PowerPoint Presentation";
 
 
     /**
      * <p>
      * Represents studio Other Static Design
+     * @deprecated use STUDIO_OTHER_DESIGN
      * <p>
      */
+    @Deprecated 
     public static final String STUDIO_OTHER_STATIC_DESIGN = "Other Static Design";
+
+    /**
+     * <p>
+     * Represents studio Other Design
+     * <p>
+     */
+    public static final String STUDIO_OTHER_DESIGN = "Other Design";
+
+    /**
+     * <p>
+     * Represents studio Widget or Mobile Screen Design
+     * <p>
+     */
+    public static final String STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN = "Widget or Mobile Screen Design";
+
+    /**
+     * <p>
+     * Represents studio Front-End Flash
+     * <p>
+     */
+    public static final String STUDIO_FRONT_END_FLASH = "Front-End Flash";
+
+    /**
+     * <p>
+     * Represents studio Wireframes
+     * <p>
+     */
+    public static final String STUDIO_WIREFRAMES = "Wireframes";
+
+    /**
+     * <p>
+     * Represents studio Idea Generation
+     * <p>
+     */
+    public static final String STUDIO_IDEA_GENERATION = "Idea Generation";
+
+
 
     /**
      * <p>
