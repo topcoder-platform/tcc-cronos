@@ -59,10 +59,10 @@
 	<input type="text" name="projectId2" value=""> &nbsp; : &nbsp; <br/>
 	&nbsp; &nbsp; Assembly Contest Fee : 
 	<input type="text" name="assembly" value=""> &nbsp; : &nbsp; <br/>
-	&nbsp; &nbsp; Component Contest Fee : 
-	<input type="text" name="component" value=""> &nbsp; : &nbsp; <br/>
+
 	&nbsp; &nbsp; Studio :  
-	subType <input type="text" name="subType" value="">  Fee <input type="text" name="studio" value=""> 
+	subType (now try 'Web Design','Banners/Icons','Application Front-End Design')
+	<input type="text" name="subType" value="">  Fee <input type="text" name="studio" value=""> 
 	&nbsp; : &nbsp; <br/>	
 	<input type="button" value="Execute"
 		onclick="callService('saveContestFees');" />

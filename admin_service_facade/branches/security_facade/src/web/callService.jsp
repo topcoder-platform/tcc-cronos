@@ -1,7 +1,7 @@
 <%--
   - Author: TCSASSEMBLER
   - Date: July 20, 2009
-  - Version: 1.1
+  - Version: 1.0
   - Since Configurable Contest Fees v1.0 Assembly
   - Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
   -
@@ -9,8 +9,6 @@
   - This page is the default page to open.
   - The page lists the operations provided by provides the AdminServiceFacade and provides the controls
     for setting the parameters and calling the desired web service operation.
-  -
-  - V1.1: Update in Cockpit Security Facade V1.0 change to new WebService facade.
 --%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -98,8 +96,8 @@
 			int count = 1;
 			for (ProjectContestFee fee : fees) {
 				sb.append(String.format(
-						"contest fee %1$d: contest type[%2$s] sub type[%3$s] fee[%4$.2f] <br/> ", count,
-						fee.getContestType(),fee.getSubType(),fee.getContestFee()
+						"contest fee %1$d: contest type[%2$d] is_studio[%3$s] fee[%4$.2f] <br/> ", count,
+						fee.getContestTypeId(),fee.isStudio(),fee.getContestFee()
 						));
 				count++;
 			}
@@ -109,23 +107,27 @@
 				calledOperation = operation;
 				long projectId = Long.parseLong(request.getParameter("projectId2"));
 				double assemblyFee = Double.parseDouble(request.getParameter("assembly"));
-				double componentFee = Double.parseDouble(request.getParameter("component"));;
 				String studioSubType = request.getParameter("subType");
 				double studioFee = Double.parseDouble(request.getParameter("studio"));
 				ProjectContestFee fee1 = new ProjectContestFee();
 				fee1.setProjectId(projectId);
-				fee1.setContestType("assembly");
+				fee1.setContestTypeId(14);
 				fee1.setContestFee(assemblyFee);
-				ProjectContestFee fee2 = new ProjectContestFee();
-				fee2.setProjectId(projectId);
-				fee2.setContestType("component");
-				fee2.setContestFee(componentFee);
+				fee1.setStudio(false);
+				
+				
 				ProjectContestFee fee3 = new ProjectContestFee();
 				fee3.setProjectId(projectId);
-				fee3.setContestType("studio");
-				fee3.setSubType(studioSubType);
+				if (studioSubType.equalsIgnoreCase("Web Design")){
+					fee3.setContestTypeId(1);
+				} else if (studioSubType.equalsIgnoreCase("Banners/Icons")){
+					fee3.setContestTypeId(4);
+				} else if (studioSubType.equalsIgnoreCase("Application Front-End Design")){
+					fee3.setContestTypeId(5);
+				}
 				fee3.setContestFee(studioFee);
-				port.saveContestFees(Arrays.asList(fee1,fee2,fee3), projectId);
+				port.saveContestFees(Arrays.asList(fee1,fee3), projectId);
+
 				callResult = String.format("Contest Fees have been saved/refreshed successfully for project with id of %1$d", projectId);
 			}
     } catch (Throwable e) {
