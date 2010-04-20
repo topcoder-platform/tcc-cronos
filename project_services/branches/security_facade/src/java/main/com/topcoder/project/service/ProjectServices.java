@@ -910,4 +910,10 @@ public interface ProjectServices {
      * @throws ProjectServicesException if any error occurs
      */
     FullProjectData createNewVersionContest(FullProjectData contest, String operator) throws ProjectServicesException;
+
+    /**
+     *  Get project only (not phase or resources)
+     */
+    public Project getProject(long projectId) throws ProjectServicesException;
+
 }

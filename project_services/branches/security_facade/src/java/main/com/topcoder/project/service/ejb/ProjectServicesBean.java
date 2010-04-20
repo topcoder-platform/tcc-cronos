@@ -1616,4 +1616,26 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+
+
+   /**
+     *  Get project only (not phase or resources)
+     */
+    public Project getProject(long projectId) throws ProjectServicesException
+    {
+
+
+        String method = "ProjectServicesBean#getProject(" + projectId + ") method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getProject(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
 }

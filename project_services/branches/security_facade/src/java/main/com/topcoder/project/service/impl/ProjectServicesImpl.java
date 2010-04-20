@@ -601,10 +601,33 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.3
      */
     private static final String[] SPEC_REVIEW_PROJECT_PROPERTIES_TO_CLONE = new String[] {
-        EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, COMPONENT_ID_PROJECT_PROPERTY_KEY,
-        VERSION_ID_PROJECT_PROPERTY_KEY, CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
-        BILLING_PROJECT_PROJECT_PROPERTY_KEY, PROJECT_VERSION_PROJECT_PROPERTY_KEY,
-        ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, FORUM_ID_PROJECT_PROPERTY_KEY};
+        ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, 
+        ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY};
+
+    
+    /**
+     * <p>
+     * Represents the project properties that need to be cloned when creating a new version for dev/design
+     * </p>
+     */
+    private static final String[] NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE = new String[] {
+        ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, 
+        ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.STATUS_NOTIFICATION_PROJECT_PROPERTY_KEY, ProjectPropertyType.TIMELINE_NOTIFICATION_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.PUBLIC_PROJECT_PROPERTY_KEY, ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, 
+        ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, 
+        ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, 
+        ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -2870,16 +2893,16 @@ public class ProjectServicesImpl implements ProjectServices {
             }
 
             // set new properties for the spec review
-            projectHeader.setProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY,
-                project.getProperty(PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
+            projectHeader.setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY,
+                project.getProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY) + " " + SPEC_REVIEW_PROJECT_CATEGORY);
             // Dont turn on yet
             //projectHeader.setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
             //    AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
             projectHeader.setProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY,
                           project.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
-            projectHeader.setProperty(PAYMENTS_PROJECT_PROPERTY_KEY, "0");
+            projectHeader.setProperty(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "0");
 
-            projectHeader.setProperty(NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
+            projectHeader.setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
             // create mock ProjectSpec object
             ProjectSpec projectSpec = new ProjectSpec();
@@ -2957,9 +2980,12 @@ public class ProjectServicesImpl implements ProjectServices {
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
-            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
+            // clone some original project properties
+            for (String key : NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE) {
+                projectHeader.setProperty(key, contest.getProjectHeader().getProperty(key));
+            }
             //make the fee to zero
-            projectHeader.setProperty("Admin Fee", "0");
+            projectHeader.setProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "0");
             projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
             projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
 
@@ -3087,7 +3113,10 @@ public class ProjectServicesImpl implements ProjectServices {
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
-            projectHeader.setProperties(contest.getProjectHeader().getAllProperties());
+            // clone some original project properties
+            for (String key : NEW_VERSION_PROJECT_PROPERTIES_TO_CLONE) {
+                projectHeader.setProperty(key, contest.getProjectHeader().getProperty(key));
+            }
             projectHeader.setTcDirectProjectId(contest.getProjectHeader().getTcDirectProjectId());
             projectHeader.setTcDirectProjectName(contest.getProjectHeader().getTcDirectProjectName());
 
@@ -3566,6 +3595,32 @@ public class ProjectServicesImpl implements ProjectServices {
             }
         }
         return lastPhase;
+    }
+
+
+     /**
+     *  Get project only (no phase or resources)
+     */
+    public Project getProject(long projectId) throws ProjectServicesException
+    {
+
+        log(Level.INFO,
+				"Enters ProjectServicesImpl#getProject method.");
+
+		Project project = null;
+		try {
+			project = projectManager.getProject(projectId);
+		} catch (PersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating getProject.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getProject method.");
+		return project;
     }
 
 
