@@ -3698,7 +3698,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws DAOException fail to checking permission
      */
     private void checkStudioBillingProjectPermission(TCSubject tcSubject, ContestData contestData)
-            throws PersistenceException, DAOException {
+            throws PersistenceException, DAOException, ContestNotFoundException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             String userName;
             try {
@@ -3706,12 +3706,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } catch (ContestServiceException e) {
                 throw new PersistenceException("Fail to get user-handle");
             }
-            if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
-                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
-                    throw new PersistenceException("No permission on billing project "
-                            + contestData.getBillingProject());
+           if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
+      
+                ContestData cur = studioService.getContest(contestData.getContestId());      
+                if (cur.getBillingProject() == contestData.getBillingProject())
+                {
+                    return;
                 }
-            }
+
+                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
+                    throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
+                }
+           }
         }
     }
 
@@ -3725,13 +3731,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private void checkBillingProjectPermission(TCSubject tcSubject, SoftwareCompetition contest)
             throws ContestServiceException, DAOException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
-            String billingProject = contest.getProjectHeader().getProperty(
-                    ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
-            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
+            String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
 
-                if (billingProject.equals(billingProject))
+            Project cur = projectServices.getProject(contest.getProjectHeader().getId());
+            String curBilling = cur.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+            if (billingProject != null  && !billingProject.equals("") && !billingProject.equals("0")) {
+
+                // if billing not changed, no need to check
+                if (curBilling != null && !billingProject.equals("") && !billingProject.equals("0"))
                 {
-                    return;
+                    if (billingProject.equals(billingProject))
+                    {
+                        return;
+                    }
                 }
                 long clientProjectId = Long.parseLong(billingProject);
                 if (!billingProjectDAO.checkClientProjectPermission(getUserName(tcSubject), clientProjectId)) {
@@ -3958,6 +3971,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY, assetDTO.getId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
+
+            // set all for false for now
+            contest.getProjectHeader().setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
 
             if (forumId > 0) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
