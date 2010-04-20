@@ -1055,11 +1055,10 @@
                             break;
                         }
                     }
-                    if (!mainWidget.studioContestType && !mainWidget.isEditMode) {
-                    	
-                        ns_contestf.text=softwareContestFee.contestFee[0]; // BUGR-1737
-                        ns_updateAmount();
-                    } else if (!mainWidget.competition || !mainWidget.competition.contestData || mainWidget.competition.contestData.contestId <= 0) {
+                    if (!mainWidget.studioContestType) {                    	
+                            ns_contestf.text=softwareContestFee.contestFee[0]; // BUGR-1737
+                            ns_updateAmount();
+                    } else {
                         adminf.text=studioContestFee.subType.(@contestTypeId == mainWidget.studioContestSubTypeId).contestFee[0]; // BUGR-1737
                         s_updateAmount(true);
                     }

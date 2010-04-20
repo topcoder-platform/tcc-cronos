@@ -746,10 +746,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 reloadInternal(false,map);
                 
                 if (contestType.toLocaleLowerCase() == "studio") {
+                    (container.contents as LaunchWidget).studioContestType=true;
                     var getStudioContestOp:AbstractOperation=_csws.getOperation("getContest");
                     getStudioContestOp.addEventListener("result", getStudioContestHandler);
                     getStudioContestOp.send(parseInt(contestid));
                 } else {
+                    (container.contents as LaunchWidget).studioContestType=false;
                     var getSWContestOp:AbstractOperation=_csws.getOperation("getSoftwareContestByProjectId");
                     getSWContestOp.addEventListener("result", getSoftwareContestHandler);
                     getSWContestOp.send(parseInt(contestid));
