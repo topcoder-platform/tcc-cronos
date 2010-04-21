@@ -747,7 +747,7 @@ public class StudioServiceBean implements StudioService {
     public ContestData createContest(TCSubject tcSubject, ContestData contestData, long tcDirectProjectId)
             throws PersistenceException {
 
-        logEnter("createContest", tcSubject, contestData, tcDirectProjectId);
+        logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("tcSubject", tcSubject);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
