@@ -1,0 +1,67 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="tcs-default"  extends="struts-default" abstract="true">
+        <!-- Setup interceptors stack -->
+        <interceptors>
+            <interceptor name="authentication" class="authenticationInterceptor" />
+            <interceptor name="logging" class="loggingInterceptor" />
+            <interceptor name="validationErrors" class="validationErrorsInterceptor" />
+
+            <interceptor-stack name="defaultTCSStack">
+            	<!--interceptor-ref name="authentication"/-->
+            	<interceptor-ref name="logging"/>
+            	<interceptor-ref name="validationErrors" />
+            	<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+            <interceptor-stack name="authenticationStack">
+            	<interceptor-ref name="logging"/>
+            	<interceptor-ref name="validationErrors" />
+            	<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- Make the default one used for all actions unless otherwise configured. -->
+        <default-interceptor-ref name="defaultTCSStack" />
+
+        <!-- Configure global results for AuthenticationInterceptor -->
+        <global-results>
+            <result name="login">/Login.jsp</result>
+        </global-results>
+    </package>
+
+    <package name="default" namespace="/" extends="tcs-default">
+        <!-- create action -->
+        <action name="createProject" class="createProjectAction">
+              <result name="input">/CreateProject.jsp</result>
+              <result>/Success.jsp</result>
+        </action>
+        
+        <action name="getAllBillingProjects" class="getAllBillingProjectsAction">
+              <result>/Success.jsp</result>
+        </action>
+        
+        <action name="getAllProjects" class="getAllProjectsAction">
+              <result>/Success.jsp</result>
+        </action>
+        
+        <action name="getCapacityFullDates" class="getCapacityFullDatesAction">
+              <result name="input">/Errors.jsp</result>
+              <result>/Success.jsp</result>
+        </action>
+        
+        <action name="getContest" class="getContestAction">
+              <result name="input">/Errors.jsp</result>
+              <result>/Success.jsp</result>
+        </action>
+        
+        <action name="saveDraftContest" class="saveDraftContestAction">
+              <result>/Success.jsp</result>
+        </action>
+  
+    </package>
+
+</struts>
