@@ -69,6 +69,7 @@
 
     <!-- NAME FOR .JAR FILES -->
     <property name="component.jar" value="${builddir}/${distfilename}.jar"/>
+	<property name="component_ws.jar" value="${builddir}/${distfilename}_ws.jar"/>
     <property name="component.war" value="${builddir}/${distfilename}_demo.war"/>
     <property name="component.ear" value="${builddir}/${distfilename}.ear"/>
 	<property name="component.dist.zip" value="${build_distdir}/${distfilename}-${component_version}.zip"/>
@@ -158,10 +159,13 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
-        <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
-            <metainf dir="conf/ejb"/>
-            <metainf dir="conf/ws" includes="jboss-wsse-server.xml"/>
+        <mkdir dir="${dist_lib}/${component_path}"/>        
+    	<jar jarfile="${component_ws.jar}" manifest="${manifest_file}" basedir="${build_classdir}"
+    		includes="**/*FacadeWebService*.class">
+            <metainf dir="conf/ws" excludes="jboss-wsse-client.xml"/>
+        </jar>
+    	<jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" excludes="**/*FacadeWebService*.class">
+            <metainf dir="conf/ejb" />
         </jar>
     </target>
 
@@ -220,6 +224,7 @@
 	<target name="move_to_tcs">
 		<mkdir dir="${tcs_libdir}/${component_path}"/>
 		<copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
+		<copy file="${component_ws.jar}" todir="${tcs_libdir}/${component_path}"/>
 		<copy file="${component.war}" todir="${tcs_libdir}/${component_path}"/>
 		<copy file="${component.dist.zip}" todir="${target_libdir}/${component_path}/dist"/>
 
