@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<Config>
+	
+		<Property name="loggerName">
+			<Value>db_log</Value>
+		</Property>
+		<Property name="connectionName">
+			<Value>informix_connection</Value>
+		</Property>
+		<Property name="dbConnectionFactoryConfig">
+			<Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+				<Property name="connections">
+					<Property name="default">
+						<Value>informix_connection</Value>
+					</Property>	
+					<Property name="informix_connection">
+						<Property name="producer">
+							<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+						</Property>
+						<Property name="parameters">
+							<Property name="jdbc_url">
+								<Value>jdbc:informix-sqli://192.168.1.2:1526/sysadmin:INFORMIXSERVER=tc;user=informix;password=111111</Value>
+								<!--<Value>jdbc:mysql://127.0.0.1:3306/topcoder</Value>-->
+							</Property>
+							<Property name="jdbc_driver">
+								<Value>com.informix.jdbc.IfxDriver</Value>
+								<!--<Value>com.mysql.jdbc.Driver</Value>-->
+							</Property>
+							<Property name="user">
+								<Value></Value>
+							</Property>
+							<Property name="password">
+								<Value></Value>
+							</Property>
+						</Property>
+					</Property>	
+				</Property>
+			</Property>
+		</Property>
+	
+</Config>
+
+

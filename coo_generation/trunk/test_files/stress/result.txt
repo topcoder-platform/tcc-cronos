@@ -1,0 +1,176 @@
+2010-01-27 21:55:19.109
+Generate COOReport for 160 times in 4 thread, cost 7,407 milliseconds
+2010-01-27 21:55:24.585
+Add component to database for 400 times in 1 thread, cost 5,253 milliseconds
+2010-01-29 10:28:05.625
+Generate COOReport for 160 times in 4 thread, cost 118,031 milliseconds
+2010-01-29 23:41:06.203
+Generate COOReport for 160 times in 4 thread, cost 25,218 milliseconds
+2010-01-29 23:42:20.375
+Add component to database for 400 times in 1 thread, cost 74,172 milliseconds
+2010-01-30 00:20:25.875
+Generate COOReport for 40 times in 4 thread, cost 21,125 milliseconds
+2010-01-30 00:20:57.359
+Generate COOReport for 20 times in 2 thread, cost 10,859 milliseconds
+2010-01-30 00:21:36.703
+Generate COOReport for 20 times in 2 thread, cost 11,078 milliseconds
+2010-01-30 00:21:45.0
+Add component to database for 40 times in 1 thread, cost 8,297 milliseconds
+2010-01-30 00:22:00.671
+Serialize COOReport to PDF byte array for 20 times in 2 thread, cost 15,671 milliseconds
+2010-01-30 00:22:02.015
+Serialize COOReport to XML byte array for 20 times in 2 thread, cost 1,328 milliseconds
+2010-01-30 11:26:04.281
+Generate COOReport for 20 times in 2 thread, cost 3,750 milliseconds
+2010-01-30 11:26:11.937
+Add component to database for 40 times in 1 thread, cost 7,641 milliseconds
+2010-01-30 11:40:32.468
+Generate COOReport for 10 times in 2 thread, cost 2,047 milliseconds
+2010-01-30 11:40:34.89
+Add component to database for 10 times in 1 thread, cost 2,203 milliseconds
+2010-01-30 11:41:51.39
+Generate COOReport for 10 times in 2 thread, cost 4,906 milliseconds
+2010-01-30 11:41:54.25
+Add component to database for 10 times in 1 thread, cost 1,782 milliseconds
+2010-01-30 11:42:55.046
+Generate COOReport for 10 times in 2 thread, cost 4,921 milliseconds
+2010-01-30 11:43:05.296
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 9,687 milliseconds
+2010-01-30 11:43:07.031
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 1,047 milliseconds
+2010-01-30 11:43:09.562
+Add component to database for 10 times in 1 thread, cost 1,953 milliseconds
+2010-01-30 12:17:30.437
+Generate COOReport for 10 times in 2 thread, cost 734 milliseconds
+2010-01-30 12:17:31.859
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 719 milliseconds
+2010-01-30 12:17:33.437
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 891 milliseconds
+2010-01-30 12:17:34.468
+Add component to database for 5 times in 1 thread, cost 328 milliseconds
+2010-01-30 12:28:16.671
+Generate COOReport for 10 times in 2 thread, cost 765 milliseconds
+2010-01-30 12:28:17.828
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 578 milliseconds
+2010-01-30 12:28:19.187
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 812 milliseconds
+2010-01-30 12:28:19.968
+Add component to database for 5 times in 1 thread, cost 187 milliseconds
+2010-02-02 12:20:51.625
+Generate COOReport for 10 times in 2 thread, cost 547 milliseconds
+2010-02-02 12:20:52.406
+Add component to database for 5 times in 1 thread, cost 172 milliseconds
+2010-02-02 12:20:53.609
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 609 milliseconds
+2010-02-02 12:20:54.984
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 578 milliseconds
+2010-02-02 12:29:23.937
+Generate COOReport for 10 times in 2 thread, cost 531 milliseconds
+2010-02-02 12:29:24.687
+Add component to database for 5 times in 1 thread, cost 172 milliseconds
+2010-02-02 12:29:26.109
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 797 milliseconds
+2010-02-02 12:29:27.453
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 610 milliseconds
+2010-02-02 12:31:46.031
+Generate COOReport for 10 times in 2 thread, cost 719 milliseconds
+2010-02-02 12:31:47.234
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 641 milliseconds
+2010-02-02 12:31:48.671
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 859 milliseconds
+2010-02-02 12:31:49.625
+Add component to database for 5 times in 1 thread, cost 219 milliseconds
+2010-02-02 12:33:40.937
+Generate COOReport for 10 times in 2 thread, cost 531 milliseconds
+2010-02-02 12:33:41.843
+Add component to database for 5 times in 1 thread, cost 172 milliseconds
+2010-02-02 12:33:42.953
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 532 milliseconds
+2010-02-02 12:33:44.375
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 641 milliseconds
+2010-02-02 12:39:26.14
+Generate COOReport for 10 times in 2 thread, cost 625 milliseconds
+2010-02-02 12:39:27.062
+Add component to database for 5 times in 1 thread, cost 297 milliseconds
+2010-02-02 12:39:28.312
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 687 milliseconds
+2010-02-02 12:39:29.812
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 719 milliseconds
+2010-02-03 23:29:44.296
+Generate COOReport for 10 times in 2 thread, cost 640 milliseconds
+2010-02-03 23:29:45.156
+Add component to database for 5 times in 1 thread, cost 266 milliseconds
+2010-02-03 23:29:46.328
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 594 milliseconds
+2010-02-03 23:29:47.703
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 532 milliseconds
+2010-02-03 23:35:03.234
+Generate COOReport for 10 times in 2 thread, cost 656 milliseconds
+2010-02-03 23:35:04.203
+Add component to database for 5 times in 1 thread, cost 172 milliseconds
+2010-02-03 23:35:05.171
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 484 milliseconds
+2010-02-03 23:35:06.359
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 531 milliseconds
+2010-02-04 10:05:27.062
+Generate COOReport for 10 times in 2 thread, cost 547 milliseconds
+2010-02-04 10:05:27.796
+Add component to database for 5 times in 1 thread, cost 171 milliseconds
+2010-02-04 10:05:28.984
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 516 milliseconds
+2010-02-04 10:05:30.328
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 672 milliseconds
+2010-02-04 10:13:32.078
+Generate COOReport for 10 times in 2 thread, cost 532 milliseconds
+2010-02-04 10:13:32.875
+Add component to database for 5 times in 1 thread, cost 204 milliseconds
+2010-02-04 10:13:33.968
+Serialize COOReport to PDF byte array for 10 times in 2 thread, cost 547 milliseconds
+2010-02-04 10:13:35.296
+Serialize COOReport to XML byte array for 10 times in 2 thread, cost 578 milliseconds
+2010-02-04 12:40:38.836
+Generate COOReport for 160 times in 4 thread, cost 19.825 milliseconds
+2010-02-04 12:41:26.391
+Add component to database for 400 times in 1 thread, cost 47.223 milliseconds
+2010-02-04 13:18:39.035
+Generate COOReport for 160 times in 4 thread, cost 18.110 milliseconds
+2010-02-04 13:19:23.053
+Add component to database for 400 times in 1 thread, cost 43.700 milliseconds
+2010-02-04 13:22:40.83
+Generate COOReport for 160 times in 4 thread, cost 60.458 milliseconds
+2010-02-04 13:22:42.479
+Serialize COOReport to PDF byte array for 160 times in 4 thread, cost 1.212 milliseconds
+2010-02-04 13:22:46.302
+Serialize COOReport to XML byte array for 160 times in 4 thread, cost 3.357 milliseconds
+2010-02-04 13:23:33.235
+Add component to database for 400 times in 1 thread, cost 46.460 milliseconds
+2010-02-04 13:44:52.407
+Generate COOReport for 160 times in 4 thread, cost 59.623 milliseconds
+2010-02-04 13:50:03.408
+Generate COOReport for 160 times in 4 thread, cost 67.900 milliseconds
+2010-02-04 17:07:00.555
+Generate COOReport for 160 times in 4 thread, cost 70.144 milliseconds
+2010-03-20 15:56:43.828
+Generate COOReport for 160 times in 4 thread, cost 71,609 milliseconds
+2010-03-20 15:58:54.5
+Generate COOReport for 160 times in 4 thread, cost 48,141 milliseconds
+2010-03-20 16:02:33.734
+Generate COOReport for 160 times in 4 thread, cost 55,000 milliseconds
+2010-03-20 16:04:26.281
+Add component to database for 400 times in 1 thread, cost 107,188 milliseconds
+2010-04-21 17:29:07.39
+Generate COOReport for 160 times in 4 thread, cost 68,875 milliseconds
+2010-04-21 17:30:29.015
+Add component to database for 400 times in 1 thread, cost 75,203 milliseconds
+2010-04-21 17:43:33.39
+Generate COOReport for 160 times in 4 thread, cost 56,406 milliseconds
+2010-04-21 17:44:49.0
+Add component to database for 400 times in 1 thread, cost 70,813 milliseconds
+2010-04-21 18:06:03.859
+Generate COOReport for 20 times in 2 thread, cost 14,438 milliseconds
+2010-04-21 18:06:25.031
+Serialize COOReport to PDF byte array for 20 times in 2 thread, cost 20,328 milliseconds
+2010-04-21 18:06:27.281
+Serialize COOReport to XML byte array for 20 times in 2 thread, cost 1,578 milliseconds
+2010-04-21 18:07:41.843
+Add component to database for 400 times in 1 thread, cost 73,937 milliseconds

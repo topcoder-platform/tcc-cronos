@@ -1,0 +1,9 @@
+delete from comp_catalog;
+delete from project_info;
+delete from project_phase;
+delete from project;
+delete from categories;
+delete from project_category_lu;
+delete from user;
+delete from resource_info;
+delete from resource;

@@ -1,0 +1,161 @@
+<report>
+<contestdata>
+	<projectId>1</projectId>
+	<componentName>COO Generator</componentName>
+	<contestEndDate>Wed Apr 21 17:26:47 CST 2010</contestEndDate>
+	<designWinner>designWinner</designWinner>
+	<designSecondPlace>N/A</designSecondPlace>
+	<designReviewer1>design review 1</designReviewer1>
+	<designReviewer2>design review 2</designReviewer2>
+	<designReviewer3>design review 3</designReviewer3>
+	<developmentWinner>developmentWinner</developmentWinner>
+	<developmentSecondPlace>developmentSecondPlace</developmentSecondPlace>
+	<developmentReviewer1>dev review 1</developmentReviewer1>
+	<developmentReviewer2>dev review 2</developmentReviewer2>
+	<developmentReviewer3>dev review 3</developmentReviewer3>
+</contestdata>
+<hasdependency>
+Yes
+</hasdependency>
+<dependencies>
+
+<dependency>
+	<name>name1</name>
+	<version>1.0.1</version>
+	<description>description1</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL1</license>
+</dependency>
+
+<dependency>
+	<name>name2</name>
+	<version>1.0.2</version>
+	<description>description2</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL2</license>
+</dependency>
+
+<dependency>
+	<name>name3</name>
+	<version>1.0.3</version>
+	<description>description3</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL3</license>
+</dependency>
+
+<dependency>
+	<name>name4</name>
+	<version>1.0.4</version>
+	<description>description4</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL4</license>
+</dependency>
+
+<dependency>
+	<name>baseException</name>
+	<version>2.0.0</version>
+	<description>exception handling.</description>
+	<url>http://www.topcoder.com</url>
+	<license>free for member.</license>
+</dependency>
+
+</dependencies>
+<dependencies-external>
+
+<dependency>
+	<name>name1</name>
+	<version>1.0.1</version>
+	<description>description1</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL1</license>
+</dependency>
+
+<dependency>
+	<name>name2</name>
+	<version>1.0.2</version>
+	<description>description2</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL2</license>
+</dependency>
+
+</dependencies-external>
+<dependencies-internal>
+
+<dependency>
+	<name>name3</name>
+	<version>1.0.3</version>
+	<description>description3</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL3</license>
+</dependency>
+
+<dependency>
+	<name>name4</name>
+	<version>1.0.4</version>
+	<description>description4</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL4</license>
+</dependency>
+
+<dependency>
+	<name>baseException</name>
+	<version>2.0.0</version>
+	<description>exception handling.</description>
+	<url>http://www.topcoder.com</url>
+	<license>free for member.</license>
+</dependency>
+
+</dependencies-internal>
+<dependencies-compile-external>
+
+<dependency>
+	<name>name1</name>
+	<version>1.0.1</version>
+	<description>description1</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL1</license>
+</dependency>
+
+</dependencies-compile-external>
+<dependencies-compile-internal>
+
+<dependency>
+	<name>name3</name>
+	<version>1.0.3</version>
+	<description>description3</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL3</license>
+</dependency>
+
+<dependency>
+	<name>baseException</name>
+	<version>2.0.0</version>
+	<description>exception handling.</description>
+	<url>http://www.topcoder.com</url>
+	<license>free for member.</license>
+</dependency>
+
+</dependencies-compile-internal>
+<dependencies-external-test>
+
+<dependency>
+	<name>name2</name>
+	<version>1.0.2</version>
+	<description>description2</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL2</license>
+</dependency>
+
+</dependencies-external-test>
+<dependencies-internal-test>
+
+<dependency>
+	<name>name4</name>
+	<version>1.0.4</version>
+	<description>description4</description>
+	<url>http://www.topcoder.com</url>
+	<license>GPL4</license>
+</dependency>
+
+</dependencies-internal-test>
+</report>

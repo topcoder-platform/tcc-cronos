@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<CMConfig>
+		<Property name="loggerName">
+			<Value>mylog</Value>
+		</Property>
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="dbConnectionFactoryConfig">
+			<Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+				<Property name="connections">
+					<Property name="default">
+						<Value>informix</Value>
+					</Property>	
+					<Property name="informix">
+						<Property name="producer">
+							<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+						</Property>
+						<Property name="parameters">
+							<Property name="jdbc_url">
+								<Value>jdbc:informix-sqli://192.168.1.2:1526/sysadmin:INFORMIXSERVER=tc;user=informix;password=111111</Value>
+							</Property>
+							<Property name="jdbc_driver">
+								<Value>com.informix.jdbc.IfxDriver</Value>
+							</Property>
+							<Property name="user">
+								<Value></Value>
+							</Property>
+							<Property name="password">
+								<Value></Value>
+							</Property>
+						</Property>
+					</Property>	
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="componentManagerKey">
+			<value>componentManager</value>
+		</Property>
+		
+		<Property name="javaComponentDependencyExtractorKey">
+			<value>java</value>
+		</Property>
+		
+		<Property name="dotNetComponentDependencyExtractorKey">
+			<value>dotNet</value>
+		</Property>
+		
+		<Property name="contestDataRetrieverKey">
+			<value>data_retriever</value>
+		</Property>
+		
+		<Property name="svnUsername">
+			<value>topcoder</value>
+		</Property>
+		
+		<Property name="svnPassword">
+			<value>topcoder</value>
+		</Property>
+		
+		<Config name="objectFactoryConfiguration">
+		
+		
+		<Property name="componentManager">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.impl.componentmanager.DBComponentManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>DBConnector</Value>
+						</Property>
+					</Property>
+				</Property>
+		</Property>
+		
+		
+	
+			
+		<Property name="data_retriever">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.impl.contestdataretriever.DBContestDataRetriever</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+					<Property name="name">
+						<Value>DBConnector</Value>
+					</Property>
+					</Property>
+				</Property>
+		</Property>
+
+		
+		
+		
+		<Property name="DBConnector">
+			<Property name="type">
+				<Value>com.topcoder.management.contest.coo.accuracytests.MockConfigurationObject</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>db_config</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		
+		
+		
+		<Property name="extractor">
+			<Property name="type">
+				<Value>com.topcoder.configuration.defaults.DefaultConfigurationObject</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>default</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		
+		
+			<Property name="java">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.dependencyextractor.JavaComponentDependencyExtractor</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>extractor</Value>
+						</Property>
+					</Property>
+					
+				</Property>
+			</Property>
+
+		
+			<Property name="dotNet">
+				<Property name="type">
+					<Value>com.topcoder.management.contest.coo.dependencyextractor.DotNetComponentDependencyExtractor</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>extractor</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			
+		</Config>	
+</CMConfig>
+
+
