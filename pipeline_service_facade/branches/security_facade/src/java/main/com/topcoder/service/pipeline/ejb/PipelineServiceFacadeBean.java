@@ -369,7 +369,7 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
         logger.log(Level.DEBUG, "Enter getCapacityFullDates(TCSubject tcSubject,int contestType, boolean isStudio) method.");
         logger.log(Level.DEBUG, "with parameter contestType: " + contestType);
         logger.log(Level.DEBUG, "with parameter isStudio: " + isStudio);
-        logger.log(Level.DEBUG, "with parameter tcSubject: " + tcSubject);
+        //logger.log(Level.DEBUG, "with parameter tcSubject: " + tcSubject);
         try {
             return this.pipelineService.getCapacityFullDates(contestType, isStudio);
         } finally {
