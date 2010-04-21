@@ -6,5 +6,4 @@
             <jndi-name>UserServiceBean/remote</jndi-name>
         </session>
     </enterprise-beans>
-  <security-domain>java:/jaas/JBossLoginModule</security-domain>
 </jboss>
