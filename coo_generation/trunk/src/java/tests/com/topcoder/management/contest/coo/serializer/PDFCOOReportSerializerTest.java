@@ -40,7 +40,7 @@ public class PDFCOOReportSerializerTest extends TestCase {
         TestHelper.executeSqlFile("test_files/insert.sql");
     	ConfigurationObject kk = new DefaultConfigurationObject("default");
         ConfigurationObject config = new DefaultConfigurationObject("default");
-        config.setPropertyValue("templateFilename", "test_files/WordTemplate.dot");
+        config.setPropertyValue("templateFilename", "test_files/testTemplate.dot");
         config.setPropertyValue("format", "WORD");
  //       config.setPropertyValue("defaultOutputFilename", "test_files/kk.pdf");
         kk.addChild(config);

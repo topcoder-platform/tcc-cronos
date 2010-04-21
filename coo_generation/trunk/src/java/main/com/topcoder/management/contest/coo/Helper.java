@@ -427,23 +427,23 @@ public final class Helper {
             List<ComponentDependency> deps, DependencyCategory category,
             DependencyType type) {
         List<Component> components = new ArrayList<Component>();
-        if (category == null && type == null) {
+        if (category == null && type == null && deps != null) {
             for (ComponentDependency dep : deps) {
                 components.add(dep.getComponent());
             }
-        } else if (category != null && type == null) {
+        } else if (category != null && type == null && deps != null) {
             for (ComponentDependency dep : deps) {
                 if (dep.getCategory().equals(category)) {
                     components.add(dep.getComponent());
                 }
             }
-        } else if (category == null && type != null) {
+        } else if (category == null && type != null && deps != null) {
             for (ComponentDependency dep : deps) {
                 if (dep.getType().equals(type)) {
                     components.add(dep.getComponent());
                 }
             }
-        } else {
+        } else if (deps != null){
             for (ComponentDependency dep : deps) {
                 if (dep.getType().equals(type)
                         && dep.getCategory().equals(category)) {

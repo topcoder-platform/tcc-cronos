@@ -201,7 +201,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
     private void setContestDataField(long projectId, String phase, ContestData contestData,
             String winner, String secondPlace, List<String> reviewers) {
         if (phase.equals(DESIGN_CATEGORY_ID)) {
-            contestData.setDesignProjectId(Long.toString(projectId));
+                contestData.setDesignProjectId(Long.toString(projectId));
             contestData.setDesignWinner(winner);
             contestData.setDesignSecondPlace(secondPlace);
             contestData.setDesignReviewers(reviewers);
@@ -210,7 +210,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
                 + " componentName[{0}], designWinner[{1}], designSecondPlace[{2}],"
                 + " phase[{3}] " + getReviewers(reviewers), contestData.getComponentName(), winner, secondPlace));
         } else if (phase.equals(DEVELOPMENT_CATEGORY_ID)) {
-            contestData.setDevelopmentProjectId(Long.toString(projectId));
+                contestData.setDevelopmentProjectId(Long.toString(projectId));
             contestData.setDevelopmentWinner(winner);
             contestData.setDevelopmentSecondPlace(secondPlace);
             contestData.setDevelopmentReviewers(reviewers);
@@ -328,9 +328,9 @@ public class DBContestDataRetriever extends BaseDBConnector implements
         private String versionId = null;
         /** Winner user. */
         private String winner = null;
-        /** Second palace user. */
+        /** Second palace user */
         private String secondPlace = null;
-        /** SVN path of component. */
+        /** SVN path of component */
         private String svnPath = null;
         /** Component category. */
         private String category = null;
@@ -369,7 +369,7 @@ public class DBContestDataRetriever extends BaseDBConnector implements
         throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(query);
         for (int i = 0; i < params.length; i++) {
-            stmt.setObject(i + 1, params[i]);
+                stmt.setObject(i+1, params[i]);
         }
         return stmt.executeQuery();
     }

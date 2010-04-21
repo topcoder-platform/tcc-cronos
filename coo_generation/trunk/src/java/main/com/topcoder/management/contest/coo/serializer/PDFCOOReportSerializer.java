@@ -45,10 +45,6 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-import com.sun.star.util.XPropertyReplace;
-import com.sun.star.util.XReplaceDescriptor;
-import com.sun.star.util.XReplaceable;
-
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.management.contest.coo.COOReport;
 import com.topcoder.management.contest.coo.COOReportSerializerException;
@@ -163,10 +159,7 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
             // Put the template data into the document.
             XTextFieldsSupplier xTextFieldsSupplier = (XTextFieldsSupplier) UnoRuntime.queryInterface(
                 XTextFieldsSupplier.class, xComponent);
-            // Replace CURRENT DATE
-            replaceWord(CURRENTDATE, DATEFORMAT.format(new Date()), xComponent);
-            // Replace LANGUAGE
-            replaceWord(LANGUAGE, getLanguage(), xComponent);
+
             XEnumeration e = xTextFieldsSupplier.getTextFields().createEnumeration();
             // iterate each merge field in template file.
             while (e.hasMoreElements()) {
@@ -215,43 +208,7 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
         }
     }
 
-    /**
-     * <p>
-     * Replace the word in yellow color.
-     * </p>
-     * @param oldStr old string to replace
-     * @param newStr the replaced string
-     * @param xDoc the XComponent.
-     * @throws UnknownPropertyException if the property is unknown property.
-     * @throws IllegalArgumentException if the attributes are invalid.
-     * @since 1.1
-     */
-    private void replaceWord(String oldStr, String newStr, XComponent xDoc)
-        throws UnknownPropertyException, IllegalArgumentException {
-        XReplaceable xReplaceable = (XReplaceable) UnoRuntime.queryInterface(XReplaceable.class, xDoc);
-        XReplaceDescriptor xRepDesc = xReplaceable.createReplaceDescriptor();
-        // set a string to search for
-        xRepDesc.setSearchString(oldStr);
-        // set the string to be inserted
-        xRepDesc.setReplaceString(newStr);
-
-        // create an array of one property value for a CharWeight property
-        PropertyValue[] aReplaceArgs = new PropertyValue[1];
-
-        // create PropertyValue
-        aReplaceArgs[0] = new PropertyValue();
-        // CharWeight should be bold
-        aReplaceArgs[0].Name = "CharBackColor";
-        // Set the value to RGB value: yellow
-        aReplaceArgs[0].Value = new Integer(0x00FFFF00);
-
-        // set our sequence with one property value as ReplaceAttribute
-        XPropertyReplace xPropRepl = (XPropertyReplace) UnoRuntime.queryInterface(
-            XPropertyReplace.class, xRepDesc);
-        xPropRepl.setReplaceAttributes(aReplaceArgs);
-        // replace
-        xReplaceable.replaceAll(xRepDesc);
-    }
+    
     /**
      * <p>
      * prepare XStore to export PDF to out put stream.
@@ -302,6 +259,10 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
             value = Helper.setDefaultNA(report.getContestData().getComponentName());
         } else if (fieldCode.equals("contestEndDate")) {
             value = Helper.setDefaultNA(report.getContestData().getContestEndDate().toString());
+        } else if (fieldCode.equals(CURRENTDATE)) {
+        	value = DATEFORMAT.format(new Date());
+        } else if (fieldCode.equals(LANGUAGE)) {
+            value = getLanguage();
         } else if (fieldCode.equals("designWinner")) {
             value = Helper.setDefaultNA(report.getContestData().getDesignWinner());
         } else if (fieldCode.equals("designSecondPlace")) {
@@ -325,13 +286,17 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
         } else if (fieldCode.equals("projectId")) {
             value = report.getProjectId() + "";
         } else if (fieldCode.equals("hasdependency")) {
-            if (report.isDependenciesError()) {
-                value = "Yes, but cannot get all the dependencies, please check the dependency file.";
-            } else if (dependencies.size() == 0) {
-                value = "No";
-            } else {
-                value = "Yes";
-            }
+        	if (dependencies == null) {
+        		value = "No";
+        	} else {
+                if (report.isDependenciesError()) {
+                    value = "Yes, but cannot get all the dependencies, please check the dependency file.";
+                } else if (dependencies.size() == 0) {
+                    value = "No";
+                } else {
+                    value = "Yes";
+                }
+        	}
         } else if (fieldCode.equals("Dependencies")) {
             // get component list with specific type and category
             List<Component> component = Helper.getComponentByTypeAndCategory(dependencies, null, null);
@@ -339,8 +304,7 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
             // generate dependency table report
             generateDependency(component, xComponent, xTextRange);
             return;
-        }
-        else if (fieldCode.equals("Dependencies_external")) {
+        } else if (fieldCode.equals("Dependencies_external")) {
             List<Component> component = Helper.getComponentByTypeAndCategory(dependencies,
                 null, DependencyType.EXTERNAL);
             xPropertySet.setPropertyValue("Content", "Dependencies_external");
@@ -420,7 +384,7 @@ public class PDFCOOReportSerializer extends BaseCOOReportSerializer {
         xTC.gotoRange(xTextRange, false);
         xTC.goRight((short) 2, false);
 
-        doc.getText().insertTextContent(xTC, xTextTable, false);
+        doc.getText().insertTextContent( xTC, xTextTable, false );
 
         XCellRange xCellRange = (XCellRange) UnoRuntime.queryInterface(XCellRange.class, xTextTable);
 

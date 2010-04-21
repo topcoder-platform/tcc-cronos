@@ -33,7 +33,7 @@ public class StressTestHelper {
         Properties config = new Properties();
         InputStream configInput = null;
         try {
-            configInput = new FileInputStream("test_files/stress_tests/stress_configuration.properties");
+            configInput = new FileInputStream("test_files/stress/stress_configuration.properties");
             config.load(configInput);
         } catch (IOException e) {
             e.printStackTrace();

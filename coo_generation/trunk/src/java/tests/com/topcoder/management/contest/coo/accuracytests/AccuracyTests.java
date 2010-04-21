@@ -22,6 +22,14 @@ public class AccuracyTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
+        suite.addTestSuite(BaseDBConnectorAccTests.class);
+        suite.addTestSuite(DBComponentManagerAccTests.class);
+        suite.addTestSuite(DBContestDataRetrieverAccTests.class);
+        suite.addTestSuite(DefaultCOOReportGeneratorAccTests.class);
+        suite.addTestSuite(DotNetComponentDependencyExtractorAccTests.class);
+        suite.addTestSuite(JavaComponentDependencyExtractorAccTests.class);
+        suite.addTestSuite(PDFCOOReportSerializerAccTests.class);
+        suite.addTestSuite(XMLCOOReportSerializerAccTests.class);
         suite.addTestSuite(PDFCOOReportSerializerAccuracyTest.class);
 
         return suite;

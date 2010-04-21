@@ -3,8 +3,6 @@
  */
 package com.topcoder.management.contest.coo.failuretests;
 
-import java.io.File;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

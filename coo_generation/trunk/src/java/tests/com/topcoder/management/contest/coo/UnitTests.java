@@ -61,8 +61,9 @@ public class UnitTests extends TestCase {
 
         suite.addTestSuite(PDFCOOReportSerializerTest.class);
         suite.addTestSuite(XMLCOOReportSerializerTest.class);
+        
         suite.addTestSuite(HelperTest.class);
-        suite.addTestSuite(Demo.class);
+//        suite.addTestSuite(Demo.class);
         return suite;
     }
 }

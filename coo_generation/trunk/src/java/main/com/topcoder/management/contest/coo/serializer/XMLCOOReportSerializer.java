@@ -173,7 +173,7 @@ public class XMLCOOReportSerializer extends BaseCOOReportSerializer {
         } else if (field.getName().equals("hasdependency")) {
             if (report.isDependenciesError()) {
                 field.setValue("Yes, but cannot get all the dependencies, please check the dependency file.");
-            } else if (report.getComponentDependencies().size() > 0) {
+                } else if (report.getComponentDependencies().size() > 0) {
                 field.setValue("Yes");
             } else {
                 field.setValue("No");

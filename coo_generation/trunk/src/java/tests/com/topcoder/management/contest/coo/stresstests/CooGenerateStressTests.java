@@ -67,8 +67,8 @@ public class CooGenerateStressTests {
      */
     @Before
     public void setUp() throws Exception {
-        numThread = 4;
-        timesToExecute = 40;
+        numThread = 2;
+        timesToExecute = 10;
         TestHelper.executeSqlFile("test_files/clean.sql");
         TestHelper.executeSqlFile("test_files/insert.sql");
     }
@@ -222,7 +222,7 @@ public class CooGenerateStressTests {
      * @throws IOException to caller.
      */
     private void outputTestResult(String content) throws IOException {
-        File file = new File("test_files/stress_tests/result.txt");
+        File file = new File("test_files/stress/result.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
