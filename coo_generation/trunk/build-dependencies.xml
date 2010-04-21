@@ -71,11 +71,11 @@
 	<property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}" />
 	<property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}" />
 	
-	<property name="openoffice.dir" value="D:\Program Files\OpenOffice.org 3\"/>
+	<property name="openoffice.dir" value="D:\Program Files\OpenOffice.org 2.4\"/>
 	
 	<!-- 3rd party dependencies -->
-	<property name="junit.jar" value="E:\tc\tcs\lib\third_party\junit\junit.jar" />
-	<property name="driver.jar" value="F:\Program Files\IBM\Informix_JDBC_Driver\lib\ifxjdbc.jar" />
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar" />
+	<property name="driver.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
 
 	<path id="component.tcs-dependencies" >
 		<pathelement location="${base_exception.jar}" />
