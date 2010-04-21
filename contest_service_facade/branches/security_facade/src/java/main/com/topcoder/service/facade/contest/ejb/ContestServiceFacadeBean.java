@@ -6029,7 +6029,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.2.3
      */
     public String getEligibilityName(TCSubject tcSubject, long billingProjectId) {
-        String methodName = "getEligibilityName : tcSubject = " + tcSubject + ", billing project id = "+ billingProjectId;
+        String methodName = "getEligibilityName :  billing project id = "+ billingProjectId;
         logger.info("Enter: " + methodName);
         try {
             ConfigManager cfgMgr = ConfigManager.getInstance();
