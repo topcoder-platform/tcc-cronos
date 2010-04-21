@@ -5,6 +5,5 @@
             <ejb-name>SubmissionManagerBean</ejb-name>
             <jndi-name>SubmissionManagerBean</jndi-name>
         </session>
-    </enterprise-beans>
-    <security-domain>java:/jaas/cockpitDomain</security-domain>
+    </enterprise-beans>    
 </jboss>
