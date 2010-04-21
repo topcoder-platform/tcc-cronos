@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="TopCoder Cronos Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -35,12 +35,9 @@
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
 
-    <!-- Change this for custom component build -->
-    <!--
-    <property name="greekgod_libdir" value="../lib/greekgod"/>
-    <property name="target_libdir" value="${greekgod_libdir}"/>
-    -->
-    <property name="target_libdir" value="${tcs_libdir}"/>
+    <property name="cronos_libdir" value="../lib/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+ 
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
