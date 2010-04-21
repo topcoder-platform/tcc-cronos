@@ -76,6 +76,7 @@
 
     <!-- NAME FOR .JAR FILES -->
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
+	<property name="component_ws.jar" value="${dist_lib}/${component_path}/${distfilename}_ws.jar"/>
     <property name="javadoc.jar" value="javadocs.jar"/>
     <property name="component.war" value="${builddir}/${distfilename}_demo.war"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
@@ -275,11 +276,14 @@
             </filterset>
         </copy>
         
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
-		<metainf dir="${build_conf}/META-INF" includes="**"/>
-	        <!--<metainf dir="${build_conf}/ejb"/>-->
-            <metainf dir="${build_conf}/ws" includes="jboss-wsse-server.xml"/>
+        <jar jarfile="${component_ws.jar}" manifest="${manifest_file}" basedir="${build_classdir}"
+        	includes="**/*FacadeWebService*.class">
+            <metainf dir="${build_conf}/ws" excludes="jboss-wsse-client.xml"/>
         </jar>
+    	 <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"
+    	 	excludes="**/*FacadeWebService*.class">
+    	              <metainf dir="${build_conf}/META-INF" includes="**"/>    	            
+    	        </jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
@@ -377,6 +381,7 @@
         	<mkdir dir="${target_libdir}/${component_path}"/>
 		<mkdir dir="${target_libdir}/${component_path}/dist"/>
 		<copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
+		<copy file="${component_ws.jar}" todir="${target_libdir}/${component_path}"/>
 		<copy file="${component.war}" todir="${target_libdir}/${component_path}"/>
         	<copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
 
