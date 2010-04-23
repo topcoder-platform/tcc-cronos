@@ -1,0 +1,40 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true" />
+
+	<package name="default" namespace="/" extends="struts-default">
+
+		<action name="contestCategories" class="categoriesAction">
+			<result name="success">page</result>
+		</action>
+
+		<action name="technologies" class="technologiesAction">
+			<result name="success">page</result>
+		</action>
+		<action name="delete" class="deleteDocument">
+			<result name="success">page</result>
+		</action>
+		<action name="fileUpload" class="fileUpload">
+			<result name="success">page</result>
+		</action>
+		<action name="documentsContest" class="documentsContest">
+			<result name="success">page</result>
+		</action>
+		<action name="documentFileContest" class="documentFileContest">
+			<result name="success">page</result>
+		</action>
+
+		<action name="payCredit" class="payCreditCard">
+			<result name="success">page</result>
+		</action>
+		<action name="payBillingAccount" class="payByBillingAccount">
+			<result name="success">page</result>
+		</action>
+
+	</package>
+
+</struts>

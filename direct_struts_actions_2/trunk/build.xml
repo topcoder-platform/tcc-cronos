@@ -11,7 +11,7 @@
     <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura-1.8"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -87,10 +87,6 @@
     <!-- classes needed to compile the test code -->
     <path id="test.build.classpath">
         <path refid="component.test.3rdParty-dependencies"/>
-        <fileset dir="${basedir}">
-            <include name="${test_reflib}/**/*.jar"/>
-            <include name="${test_reflib}/**/*.zip"/>
-        </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
         <pathelement location="${configdir}"/>
@@ -113,7 +109,7 @@
                verbose="${verbose}" includeAntRuntime="no" encoding="${javac.encoding}">
             <classpath refid="buildlibs"/>
         </javac>
-        <jar jarfile="${test_reflib}/mock.jar" basedir="${testfiles}/mock"/>
+        <jar jarfile="${testfiles}/mock.jar" basedir="${testfiles}/mock"/>
     </target>
 
     <target name="compile" depends="compile_mock">
@@ -172,7 +168,7 @@
             <mkdir dir="${testlogdir}"/>
             <echo>build_testclassdir = ${build_testclassdir}</echo>
             <echo>package = ${package}</echo>
-            <junit fork="true" haltonerror="true">
+            <junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">

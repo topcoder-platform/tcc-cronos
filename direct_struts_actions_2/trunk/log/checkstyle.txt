@@ -1,6 +1,0 @@
-Starting audit...
-C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\main\com\topcoder\service\actions\GetDocumentFileContestAction.java:152:38: '?' is not preceded with whitespace.
-C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\main\com\topcoder\service\actions\GetDocumentFileContestAction.java:152:39: '?' is not followed by whitespace.
-C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\main\com\topcoder\service\actions\GetDocumentsContestAction.java:98:38: '?' is not preceded with whitespace.
-C:\TopCoder\proj\java\direct_struts_actions_2_1.0.0\src\java\main\com\topcoder\service\actions\GetDocumentsContestAction.java:98:39: '?' is not followed by whitespace.
-Audit done.

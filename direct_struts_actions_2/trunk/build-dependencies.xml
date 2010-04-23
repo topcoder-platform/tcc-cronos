@@ -1,17 +1,36 @@
 <project name="Dependency Import" default="dist" basedir=".">
     <!-- property file defining the component's dependencies -->
 
-    <property name="jboss.home" value="C:/jboss-4.0.2" />
+    <property name="jboss.home" value="C:/Users/Administrator/Work/TopCoder/lib/jboss-5.1.0.GA" />
 
     <!-- Properties used in compile_targets ANT target for JDK version x -->
     <property name="component.target" value="1.x" />
     <property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
 
+
     <!-- TCS dependencies -->
-    <path id="all_libs">
-        <fileset dir="test_reflib">
-            <include name="**/*.jar" />
-        </fileset>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar" />
+    <property name="data_validation.jar" value="${tcs_libdir}/data_validation/1.1.1/data_validation.jar" />
+    <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0.2/id_generator.jar" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
+    <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.1/search_builder.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security/1.0.0/security.jar" />
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <property name="struts_framework.jar" value="${tcs_libdir}/struts_framework/1.0.0/struts_framework.jar" />
+
+    <property name="mock.jar" value="test_files/mock.jar" />
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar" />
+    <property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar" />
+
+    <path id="jboss">
         <fileset dir="${jboss.home}/client">
             <include name="**/*.jar" />
             <exclude name="**/jaxws-rt.jar" />
@@ -24,17 +43,59 @@
         <pathelement location="${jboss.home}/lib/endorsed/xalan.jar" />
     </path>
 
-    <!-- 3rd party dependencies -->
-    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
-
-    <path id="component.tcs-dependencies">
-        <path refid="all_libs" />
+	<path id="easymock">
+        <fileset dir="${ext_libdir}/easymock">
+            <include name="**/*.jar" />
+        </fileset>
     </path>
 
-    <path id="component.3rdParty-dependencies" />
+	<path id="struts">
+        <fileset dir="${ext_libdir}/struts">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+	<path id="hibernate">
+        <fileset dir="${ext_libdir}/hibernate">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+	<path id="spring">
+        <fileset dir="${ext_libdir}/spring">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <path id="component.tcs-dependencies">
+			<pathelement location="${base_exception.jar}" />
+			<pathelement location="${configuration_api.jar}" />
+			<pathelement location="${configuration_manager.jar}" />
+			<pathelement location="${configuration_persistence.jar}" />
+			<pathelement location="${data_validation.jar}" />
+			<pathelement location="${id_generator.jar}" />
+			<pathelement location="${logging_wrapper.jar}" />
+			<pathelement location="${object_factory.jar}" />
+			<pathelement location="${object_formatter.jar}" />
+			<pathelement location="${object_factory_configuration_api_plugin.jar}" />
+			<pathelement location="${search_builder.jar}" />
+			<pathelement location="${security.jar}" />
+			<pathelement location="${typesafe_enum.jar}" />
+			<pathelement location="${mock.jar}" />
+			<pathelement location="${struts_framework.jar}" />
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+	        <path refid="jboss" />
+	        <path refid="struts" />
+	        <path refid="hibernate" />
+	        <path refid="spring" />
+			<pathelement location="${javaee.jar}" />
+	</path>
 
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}" />
+	        <path refid="easymock" />
     </path>
 
     <!-- deployment targets for jboss -->

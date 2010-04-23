@@ -6,7 +6,9 @@ package com.topcoder.service.actions;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
+import com.topcoder.service.actions.accuracytests.AccuracyTests;
+import com.topcoder.service.actions.failuretests.FailureTests;
+import com.topcoder.service.actions.stresstests.StressTests;
 /**
  * <p>
  * This test case aggregates all test cases.
@@ -27,6 +29,12 @@ public class AllTests extends TestCase {
 
         //unit tests
         suite.addTest(UnitTests.suite());
+
+        suite.addTest(AccuracyTests.suite());
+
+        suite.addTest(FailureTests.suite());
+
+        suite.addTest(StressTests.suite());
 
         return suite;
     }

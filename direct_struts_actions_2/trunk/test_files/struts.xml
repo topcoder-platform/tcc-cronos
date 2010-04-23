@@ -61,7 +61,37 @@
             <result>/main.jsp</result>
         </action>
 
-         <action name="mockPayByBillingAccountAction" class="mockPayByBillingAccountAction">
+         <action name="FailureDeleteDocumentContestAction" class="FailureDeleteDocumentContestAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+         <action name="FailureStudioOrSoftwareContestAction" class="FailureStudioOrSoftwareContestAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="FailureFileUploadAttachContestFileAction" class="FailureFileUploadAttachContestFileAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="FailurePayByCreditCardAction" class="FailurePayByCreditCardAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="FailurePayByBillingAccountAction" class="FailurePayByBillingAccountAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+        <action name="FailureGetDocumentFileContestAction" class="FailureGetDocumentFileContestAction">
+            <result name="input">/main.jsp</result>
+            <result name="success">/main.jsp</result>
+        </action>
+
+		<action name="mockPayByBillingAccountAction" class="mockPayByBillingAccountAction">
             <result name="input">/main.jsp</result>
             <result name="success">/main.jsp</result>
         </action>
@@ -85,6 +115,33 @@
             <result name="input">/main.jsp</result>
             <result name="success">/main.jsp</result>
         </action>
+
+				<action name="contestCategories" class="categoriesAction">
+			<result name="success">page</result>
+		</action>
+
+		<action name="technologies" class="technologiesAction">
+			<result name="success">page</result>
+		</action>
+		<action name="delete" class="deleteDocument">
+			<result name="success">page</result>
+		</action>
+		<action name="fileUpload" class="fileUpload">
+			<result name="success">page</result>
+		</action>
+		<action name="documentsContest" class="documentsContest">
+			<result name="success">page</result>
+		</action>
+		<action name="documentFileContest" class="documentFileContest">
+			<result name="success">page</result>
+		</action>
+
+		<action name="payCredit" class="payCreditCard">
+			<result name="success">page</result>
+		</action>
+		<action name="payBillingAccount" class="payByBillingAccount">
+			<result name="success">page</result>
+		</action>
 
         <!-- ============================= -->
         <!-- actions used for demo         -->

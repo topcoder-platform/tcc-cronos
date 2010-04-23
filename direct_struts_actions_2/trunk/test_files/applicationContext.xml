@@ -6,11 +6,6 @@
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="authenticationInterceptor"
-        class="com.topcoder.service.interceptors.AuthenticationInterceptor">
-        <property name="loginPageName" value="login"></property>
-        <property name="userSessionIdentityKey" value="USER_ID_KEY"></property>
-    </bean>
 
     <bean id="loggingInterceptor" class="com.topcoder.service.interceptors.LoggingInterceptor">
         <constructor-arg index="0">
@@ -41,7 +36,37 @@
         <property name="action" value="loginAction"></property>
     </bean>
 
-    <bean id="mockPayByCreditCardAction"
+    <bean id="FailureStudioOrSoftwareContestAction"
+        class="com.topcoder.service.actions.failuretests.FailureStudioOrSoftwareContestAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+    <bean id="FailureDeleteDocumentContestAction"
+        class="com.topcoder.service.actions.failuretests.FailureDeleteDocumentContestAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+    <bean id="FailureFileUploadAttachContestFileAction"
+        class="com.topcoder.service.actions.failuretests.FailureFileUploadAttachContestFileAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+    <bean id="FailurePayByCreditCardAction"
+        class="com.topcoder.service.actions.failuretests.FailurePayByCreditCardAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+    <bean id="FailurePayByBillingAccountAction"
+        class="com.topcoder.service.actions.failuretests.FailurePayByBillingAccountAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+    <bean id="FailureGetDocumentFileContestAction"
+        class="com.topcoder.service.actions.failuretests.FailureGetDocumentFileContestAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+
+	 <bean id="mockPayByCreditCardAction"
         class="com.topcoder.service.actions.MockPayByCreditCardAction">
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
     </bean>
@@ -61,26 +86,27 @@
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
     </bean>
 
-    <bean id="getDocumentFileContestAction"
-        class="com.topcoder.service.actions.GetDocumentFileContestAction">
-        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
-        <property name="mimeTypeRetriever" ref="mimeTypeRetriever"></property>
-    </bean>
-
     <bean id="mockGetDocumentFileContestAction"
         class="com.topcoder.service.actions.MockGetDocumentFileContestAction">
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
         <property name="mimeTypeRetriever" ref="mimeTypeRetriever"></property>
     </bean>
 
-    <bean id="fileUploadAttachContestFileAction"
-        class="com.topcoder.service.actions.FileUploadAttachContestFileAction">
+    <bean id="mockFileUploadAttachContestFileAction"
+        class="com.topcoder.service.actions.MockFileUploadAttachContestFileAction">
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
         <property name="mimeTypeRetriever" ref="mimeTypeRetriever"></property>
     </bean>
 
-    <bean id="mockFileUploadAttachContestFileAction"
-        class="com.topcoder.service.actions.MockFileUploadAttachContestFileAction">
+	
+    <bean id="getDocumentFileContestAction"
+        class="com.topcoder.service.actions.GetDocumentFileContestAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+        <property name="mimeTypeRetriever" ref="mimeTypeRetriever"></property>
+    </bean>
+
+    <bean id="fileUploadAttachContestFileAction"
+        class="com.topcoder.service.actions.FileUploadAttachContestFileAction">
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
         <property name="mimeTypeRetriever" ref="mimeTypeRetriever"></property>
     </bean>
@@ -99,6 +125,27 @@
         class="com.topcoder.service.actions.GetDocumentsContestAction">
         <property name="contestServiceFacade" ref="contestServiceFacade"></property>
     </bean>
+
+		<bean id="categoriesAction" class="com.topcoder.service.actions.GetContestCategoriesAction" />
+
+	<bean id="technologiesAction"
+		class="com.topcoder.service.actions.GetContestTechnologiesAction">
+	</bean>
+	<bean id="deleteDocument"
+		class="com.topcoder.service.actions.DeleteDocumentContestAction">
+	</bean>
+	<bean id="fileUpload"
+		class="com.topcoder.service.actions.FileUploadAttachContestFileAction">
+	</bean>
+	<bean id="documentsContest" class="com.topcoder.service.actions.GetDocumentsContestAction">
+	</bean>
+	<bean id="documentFileContest"
+		class="com.topcoder.service.actions.GetDocumentFileContestAction">
+	</bean>
+	<bean id="payCreditCard" class="com.topcoder.service.actions.PayByCreditCardAction">
+	</bean>
+	<bean id="payByBillingAccount" class="com.topcoder.service.actions.PayByBillingAccountAction">
+	</bean>
 
 </beans>
 
