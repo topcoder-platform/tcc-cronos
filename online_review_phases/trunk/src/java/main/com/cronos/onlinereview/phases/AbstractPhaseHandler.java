@@ -84,68 +84,99 @@ import java.util.Map;
  *        &lt;Property name="ConnectionFactoryNS"&gt;
  *            &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
  *        &lt;/Property&gt;
- *        &lt;Property name="StartPhaseEmail"&gt;
- *            &lt;Property name="SendEmail"&gt;
- *                &lt;Value&gt;true&lt;/Value&gt;
+ *        &lt;Property name="Schemes"&gt;
+ *            &lt;Property name="DefaultScheme"&gt;
+ *                &lt;Value&gt;*&lt;/Value&gt;
  *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateSource"&gt;
- *                &lt;Value&gt;file&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateName"&gt;
- *                &lt;Value&gt;test_files/valid_email_template.txt&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailSubject"&gt;
- *                &lt;Value&gt;Phase Start&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailFromAddress"&gt;
- *                &lt;Value&gt;admin@topcoder.com&lt;/Value&gt;
+ *            &lt;Property name="ExtendedScheme"&gt;
+ *                &lt;Value&gt;Manager&lt;/Value&gt;
+ *                &lt;Value&gt;Observer&lt;/Value&gt;	
  *            &lt;/Property&gt;
  *        &lt;/Property&gt;
- *        &lt;Property name="EndPhaseEmail"&gt;
- *             &lt;Property name="SendEmail"&gt;
- *                &lt;Value&gt;true&lt;/Value&gt;
+ *        &lt;Property name="DefaultScheme"&gt;
+ *            &lt;Property name="StartPhaseEmail"&gt;
+ *                &lt;Property name="SendEmail"&gt;
+ *                    &lt;Value&gt;yes&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateSource"&gt;
+ *                    &lt;Value&gt;file&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateName"&gt;
+ *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailSubject"&gt;
+ *                    &lt;Value&gt;Phase Start&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailFromAddress"&gt;
+ *                    &lt;Value&gt;&notificationEmailFromAddress;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="Priority"&gt;
+ *                    &lt;Value&gt;0&lt;/Value&gt;
+ *                &lt;/Property&gt;
  *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateSource"&gt;
- *                &lt;Value&gt;file&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateName"&gt;
- *                &lt;Value&gt;test_files/valid_email_template.txt&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailSubject"&gt;
- *                &lt;Value&gt;Phase End&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailFromAddress"&gt;
- *                &lt;Value&gt;admin@topcoder.com&lt;/Value&gt;
+ *            &lt;Property name="EndPhaseEmail"&gt;
+ *                &lt;Property name="SendEmail"&gt;
+ *                    &lt;Value&gt;yes&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateSource"&gt;
+ *                    &lt;Value&gt;file&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateName"&gt;
+ *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailSubject"&gt;
+ *                    &lt;Value&gt;Phase End&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailFromAddress"&gt;
+ *                    &lt;Value&gt;&notificationEmailFromAddress;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="Priority"&gt;
+ *                    &lt;Value&gt;0&lt;/Value&gt;
+ *                &lt;/Property&gt;
  *            &lt;/Property&gt;
  *        &lt;/Property&gt;
- *        &lt;Property name="Roles"&gt;
- *            &lt;Value&gt;Submitter&lt;/Value&gt;
- *            &lt;Value&gt;Manager&lt;/Value&gt;
- *            &lt;Value&gt;Observer&lt;/Value&gt;
- *            &lt;Value&gt;Reviewer&lt;/Value&gt;
+ *        &lt;Property name="ExtendedScheme"&gt;
+ *            &lt;Property name="StartPhaseEmail"&gt;
+ *                &lt;Property name="SendEmail"&gt;
+ *                    &lt;Value&gt;yes&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateSource"&gt;
+ *                    &lt;Value&gt;file&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateName"&gt;
+ *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/start.txt&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailSubject"&gt;
+ *                    &lt;Value&gt;Phase Start&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailFromAddress"&gt;
+ *                    &lt;Value&gt;&notificationEmailFromAddress;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="Priority"&gt;
+ *                    &lt;Value&gt;1&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *            &lt;/Property&gt;
+ *            &lt;Property name="EndPhaseEmail"&gt;
+ *                &lt;Property name="SendEmail"&gt;
+ *                    &lt;Value&gt;yes&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateSource"&gt;
+ *                    &lt;Value&gt;file&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailTemplateName"&gt;
+ *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/end.txt&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailSubject"&gt;
+ *                    &lt;Value&gt;Phase End&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="EmailFromAddress"&gt;
+ *                    &lt;Value&gt;&notificationEmailFromAddress;&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *                &lt;Property name="Priority"&gt;
+ *                    &lt;Value&gt;1&lt;/Value&gt;
+ *                &lt;/Property&gt;
+ *            &lt;/Property&gt;
  *        &lt;/Property&gt;
- *        &lt;Property name="Roles"&gt;
- *          &lt;Property name="StartPhaseEmail"&gt;
- *             &lt;Property name="SendEmail"&gt;
- *                &lt;Value&gt;true&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateSource"&gt;
- *                &lt;Value&gt;file&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailTemplateName"&gt;
- *                &lt;Value&gt;test_files/valid_email_template.txt&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailSubject"&gt;
- *                &lt;Value&gt;Phase End&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="EmailFromAddress"&gt;
- *                &lt;Value&gt;admin@topcoder.com&lt;/Value&gt;
- *            &lt;/Property&gt;
- *            &lt;Property name="Priority"&gt;
- *                &lt;Value&gt;2&lt;/Value&gt;
- *            &lt;/Property&gt;
- *         &lt;/Property&gt;
- *      &lt;/Property&gt;
  *    &lt;/Config&gt;
  * </pre>
  * </p>
@@ -153,12 +184,11 @@ import java.util.Map;
  * <p>
  * Sample email template is given below:
  * <pre>
- * %PHASE_TIMESTAMP{Phase timestamp}%
- * Hello %USER_FIRST_NAME{User first name}% %USER_LAST_NAME{User last name}%,
- * Handle\: %USER_HANDLE{User handle}%
- * This is the notification on project\: %PROJECT_NAME{Project name}%
- * Version\: %PROJECT_VERSION{Project version}%
- * This is the %PHASE_OPERATION{The phase operation - start/end}% of the %PHASE_TYPE{Phase type}% phase.
+ * %PHASE_TIMESTAMP{Phase timestamp}%&lt;br/&gt;
+ * Handle\: %USER_HANDLE{User handle}%&lt;br/&gt;
+ * Contest\: &lt;a href\="%OR_LINK%"&gt;%PROJECT_NAME{Project name}%&lt;/a&gt;&lt;br/&gt;
+ * Version\: %PROJECT_VERSION{Project version}%&lt;br/&gt;
+ * This is the notification about %PHASE_OPERATION{The phase operation - start/end}% of the %PHASE_TYPE{Phase type}% phase.&lt;br/&gt;
  * </pre>
  * </p>
  *
@@ -240,9 +270,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /** Constant for end phase. */
     private static final String END = "End";
-
-    /** The key for default email options in the startPhaseEmailOptions and endPhaseEmailOptions. */
-    private static final String DEFAULT = "default";
 
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
@@ -363,30 +390,49 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             this.connectionName = null;
         }
 
-        //the 'StartPhaseEmail' property now is mandatory, it holds the 'default' email options
-        PhasesHelper.checkPropertyExists(namespace, format(PROP_PHASE_EMAIL, START));
-        startPhaseEmailOptions.put(DEFAULT, createEmailOptions(namespace, START, true, false));
+        //load the 'Schemes' property
+        Map<String, List<String>> schemes = getSchemes(namespace);
 
-        //the 'EndPhaseEmail' property now is mandatory, it holds the 'default' email options
-        PhasesHelper.checkPropertyExists(namespace, format(PROP_PHASE_EMAIL, END));
-        endPhaseEmailOptions.put(DEFAULT, createEmailOptions(namespace, END, true, false));
+        // Retrieve names of all resource roles.
+        List<String> allRoles = new ArrayList<String>();
+        try {
+            ResourceRole[] roles = managerHelper.getResourceManager().getAllResourceRoles();
+            for (ResourceRole role : roles) {
+                allRoles.add(role.getName());
+            }
+        } catch (ResourcePersistenceException ex) {
+        }
 
-        //load the 'Roles' property
-        String[] roles = getRoles(namespace);
-
-        for (String role : roles) {
-            //look up 'Role/xxPhaseEmail/xx'
-            if (PhasesHelper.doesPropertyExist(namespace, role)) {
+        for (String scheme : schemes.keySet()) {
+            //look up 'Scheme/xxPhaseEmail/xx'
+            if (PhasesHelper.doesPropertyExist(namespace, scheme)) {
                 //if the configuration not exists, create not send email options
                 boolean exists = PhasesHelper.doesPropertyObjectExist(namespace,
-                        role + "." + format(PROP_PHASE_EMAIL, START));
-                startPhaseEmailOptions.put(role, exists ? createEmailOptions(namespace, role + "." + START, false, true)
-                                                        : createNotSendEmailOptions());
+                        scheme + "." + format(PROP_PHASE_EMAIL, START));
+                EmailOptions startEmailOption =  exists ? createEmailOptions(namespace, scheme + "." + START)
+                                                        : createNotSendEmailOptions();
 
                 //if the configuration not exists, create not send email options
-                exists = PhasesHelper.doesPropertyObjectExist(namespace, role + "." + format(PROP_PHASE_EMAIL, END));
-                endPhaseEmailOptions.put(role, exists ? createEmailOptions(namespace, role + "." + END, false, true)
-                                                      : createNotSendEmailOptions());
+                exists = PhasesHelper.doesPropertyObjectExist(namespace, scheme + "." + format(PROP_PHASE_EMAIL, END));
+                EmailOptions endEmailOption = exists ? createEmailOptions(namespace, scheme + "." + END)
+                                                      : createNotSendEmailOptions();
+
+                List<String> roles = schemes.get(scheme);
+
+                // If at least one of the role names is "*" we add the scheme for all roles.
+                if (roles.contains("*"))
+                    roles = allRoles;
+
+                for (String role : roles) {
+                    // If the role is already associated with some scheme we pick the one with the higher priority.
+                    EmailOptions currentStartOptions = (EmailOptions)startPhaseEmailOptions.get(role);
+                    if (currentStartOptions == null || currentStartOptions.getPriority()<startEmailOption.getPriority())
+                        startPhaseEmailOptions.put(role, startEmailOption);
+
+                    EmailOptions currentEndOptions = (EmailOptions)endPhaseEmailOptions.get(role);
+                    if (currentEndOptions == null || currentEndOptions.getPriority()<endEmailOption.getPriority())
+                        endPhaseEmailOptions.put(role, endEmailOption);
+                }
             }
         }
 
@@ -611,17 +657,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 ResourceRole role = resource.getResourceRole();
                 String roleName = role.getName();
 
-                EmailOptions options = bStart ? startPhaseEmailOptions.get(DEFAULT)
-                                              : endPhaseEmailOptions.get(DEFAULT);
-                EmailOptions roleOptions = bStart ? startPhaseEmailOptions.get(roleName)
-                                                  : endPhaseEmailOptions.get(roleName);
+                EmailOptions options = bStart ? startPhaseEmailOptions.get(roleName)
+				                              : endPhaseEmailOptions.get(roleName);
 
-                //if default options is not send email or the role-options is also not send, then don't need to send now
-                if (!options.isSend() || ((roleOptions != null) && !roleOptions.isSend())) {
+                if (options == null || !options.isSend())
                     continue;
-                }
-
-                options = clone(roleOptions, options);
 
                 Template template = docGenerator.getTemplate(options.getTemplateSource(), options.getTemplateName());
                 long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
@@ -844,34 +884,29 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      *
      * @param namespace the namespace
      * @param propertyPrefix the prefix of property to retrieve from
-     * @param mandatory true if it is required, otherwise false
-     * @param forRole true if it is for role's options
      * @return EmailOptions instance with the setting from property
      * @throws ConfigurationException if any error occurs during retrieving
      */
-    private static EmailOptions createEmailOptions(String namespace, String propertyPrefix,
-            boolean mandatory, boolean forRole) throws ConfigurationException {
+    private static EmailOptions createEmailOptions(String namespace, String propertyPrefix) throws ConfigurationException {
         EmailOptions options = new EmailOptions();
         options.setFromAddress(PhasesHelper.getPropertyValue(namespace,
-                format(PROP_EMAIL_FROM_ADDRESS, propertyPrefix), mandatory));
+                format(PROP_EMAIL_FROM_ADDRESS, propertyPrefix), true));
         options.setTemplateSource(PhasesHelper.getPropertyValue(namespace,
-                format(PROP_EMAIL_TEMPLATE_SOURCE, propertyPrefix), mandatory));
+                format(PROP_EMAIL_TEMPLATE_SOURCE, propertyPrefix), true));
         options.setTemplateName(PhasesHelper.getPropertyValue(namespace,
-                format(PROP_EMAIL_TEMPLATE_NAME, propertyPrefix), mandatory));
-        options.setSubject(PhasesHelper.getPropertyValue(namespace, format(PROP_EMAIL_SUBJECT, propertyPrefix),
-                mandatory));
+                format(PROP_EMAIL_TEMPLATE_NAME, propertyPrefix), true));
+        options.setSubject(PhasesHelper.getPropertyValue(namespace, format(PROP_EMAIL_SUBJECT, propertyPrefix), true));
 
         //'SendEmail' is optional, the value could be 'Yes' or 'No', or 'True' or 'False', case-insenstive
         options.setSend(parseSendEmailPropValue(PhasesHelper.getPropertyValue(namespace,
                     format(PROP_SEND_EMAIL, propertyPrefix), false)));
-        if (forRole) {
-            String priority = PhasesHelper.getPropertyValue(namespace, format(PROP_PRIORITY, propertyPrefix), false);
-            if (priority != null) {
-                try {
-                    options.setPriority(Integer.parseInt(priority));
-                } catch (NumberFormatException nfe) {
-                    throw new ConfigurationException("The value for priority should be integer.", nfe);
-                }
+
+        String priority = PhasesHelper.getPropertyValue(namespace, format(PROP_PRIORITY, propertyPrefix), false);
+        if (priority != null) {
+            try {
+                options.setPriority(Integer.parseInt(priority));
+            } catch (NumberFormatException nfe) {
+                throw new ConfigurationException("The value for priority should be integer.", nfe);
             }
         }
         return options;
@@ -906,71 +941,39 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /**
      * <p>
-     * Gets the 'Roles' property values from the given namespace. If there is no such property, empty string array will
+     * Gets the 'Schemes' property values from the given namespace. If there is no such property, empty map will
      * be returned.
      * </p>
      * @param namespace the namespace to retrieve the values from
-     * @return String array of roles defined, not null, can be empty
+     * @return Map object mapping scheme names to list of roles. Not null, can be empty.
      * @throws ConfigurationException if the namespace does not exist
      */
-    private static String[] getRoles(String namespace)
+    private static Map<String, List<String>> getSchemes(String namespace)
         throws ConfigurationException {
         try {
-            String[] roles = ConfigManager.getInstance().getStringArray(namespace, "Roles");
+            com.topcoder.util.config.Property schemesProperty = ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
+            if (schemesProperty == null)
+                return new HashMap<String, List<String>>();
 
-            if (roles == null) {
-                roles = new String[0];
+            java.util.Enumeration schemeNames = schemesProperty.propertyNames();
+            Map<String, List<String>> schemes = new HashMap<String, List<String>>();
+
+            for (; schemeNames.hasMoreElements() ;) {
+                String schemeName = (String)schemeNames.nextElement();
+                if (schemeName != null) {
+                    String[] roles = schemesProperty.getProperty(schemeName).getValues();
+
+                    if (roles!=null && roles.length>0)
+                        schemes.put(schemeName, java.util.Arrays.asList(roles));
+                    else
+                        schemes.put(schemeName, new ArrayList<String>());
+                }
             }
 
-            return roles;
+            return schemes;
         } catch (UnknownNamespaceException e) {
             throw new ConfigurationException("The namespace '" + namespace + "' does not exist.", e);
         }
-    }
-
-    /**
-     * <p>
-     * Clones EmailOptions from the default-options first, and if the any field in role-options is not null/empty,
-     * set it to the corresponding field in the cloned object.
-     * </p>
-     *
-     * @param roleOptions EmailOptions instance for the given role
-     * @param defaultOptions EmailOptions instance for the default setting
-     * @return EmailOptions instance cloned from the two given options
-     */
-    private static EmailOptions clone(EmailOptions roleOptions, EmailOptions defaultOptions) {
-        EmailOptions cloned = new EmailOptions();
-        //copy from default-options first
-        cloned.setFromAddress(defaultOptions.getFromAddress());
-        cloned.setSubject(defaultOptions.getSubject());
-        cloned.setTemplateSource(defaultOptions.getTemplateSource());
-        cloned.setTemplateName(defaultOptions.getTemplateName());
-
-        //if any field is not null or empty, get it from role-options
-        if (roleOptions != null) {
-            cloned.setFromAddress(getValue(roleOptions.getFromAddress(), defaultOptions.getFromAddress()));
-            cloned.setSubject(getValue(roleOptions.getSubject(), defaultOptions.getSubject()));
-            cloned.setTemplateSource(getValue(roleOptions.getTemplateSource(), defaultOptions.getTemplateSource()));
-            cloned.setTemplateName(getValue(roleOptions.getTemplateName(), defaultOptions.getTemplateName()));
-        }
-
-        return cloned;
-    }
-    /**
-     * <p>
-     * If the value is null or empty, using the default value then.
-     * </p>
-     *
-     * @param value String value, could be null or empty
-     * @param defaultValue the default value, not null actually
-     * @return value or default value
-     */
-    private static String getValue(String value, String defaultValue) {
-        if ((value != null) && (value.trim().length() != 0)) {
-            return value;
-        }
-
-        return defaultValue;
     }
 
     /**

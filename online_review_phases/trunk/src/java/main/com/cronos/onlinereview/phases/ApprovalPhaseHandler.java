@@ -189,7 +189,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 }
 
                 // version 1.1 : Return true if approver number is met
-                return (projectApproversCount == approverNum);
+                return (projectApproversCount >= approverNum);
 
             } finally {
                 PhasesHelper.closeConnection(conn);
