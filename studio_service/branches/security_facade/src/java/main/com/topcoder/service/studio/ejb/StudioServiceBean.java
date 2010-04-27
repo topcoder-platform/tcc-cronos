@@ -240,7 +240,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Private constant specifying user role.
      */
-    private static final String USER_ROLE = "Cockpit User";
+    //private static final String USER_ROLE = "Cockpit User";
 
     /**
      * Private constant specifying administrator role.
@@ -1027,8 +1027,6 @@ public class StudioServiceBean implements StudioService {
         // retrieve contest and authorize
         Contest c = getContst(uploadedDocument.getContestId());
 
-        // last authentication check
-        if (isRole(tcSubject, USER_ROLE)) {
             // [TCCC-385]
             if (c.getStatus() == null
                     || (c.getStatus().getContestStatusId() != draftStatusId
@@ -1037,7 +1035,7 @@ public class StudioServiceBean implements StudioService {
                             .getContestStatusId() != scheduledStatusId)) {
                 handleAuthorizationError("contest must be in draft status or unactive status.");
             }
-        }
+       
 
         // finally, upload document and return
         uploadedDocument = uploadDocument(uploadedDocument, c);
@@ -2642,12 +2640,10 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getAllContests();
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else  {
                 logInfo("User is user.");
                 contests = contestManager.getContestsForUser(tcSubject.getUserId());
-            } else {
-                return result;
-            }
+            } 
 
             List<Long> forumIds = new ArrayList<Long>();
             for (Contest contest : contests) {
@@ -2691,7 +2687,7 @@ public class StudioServiceBean implements StudioService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getSimpleContestData(TCSubject tcSubject) throws PersistenceException {
-        logEnter("getSimpleContestData", tcSubject);
+        logEnter("getSimpleContestData", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
         try {
 
@@ -2699,7 +2695,7 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getSimpleContestData();
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else {
                 logInfo("User is user.");
                 contests = contestManager.getSimpleContestDataForUser(tcSubject.getUserId());
             }
@@ -2762,7 +2758,7 @@ public class StudioServiceBean implements StudioService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectContestData> getSimpleProjectContestData(TCSubject tcSubject) throws PersistenceException {
-        logEnter("getSimpleProjectContestData", tcSubject);
+        logEnter("getSimpleProjectContestData", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
         try {
 
@@ -2771,7 +2767,7 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getSimpleProjectContestData();
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else  {
                 logInfo("User is user.");
                 contests = contestManager.getSimpleProjectContestDataForUser(tcSubject.getUserId());
             }
@@ -2838,7 +2834,7 @@ public class StudioServiceBean implements StudioService {
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleContestData> getContestDataOnly(TCSubject tcSubject) throws PersistenceException {
-        logEnter("getContestDataOnly", tcSubject);
+        logEnter("getContestDataOnly", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
         try {
             List<SimpleContestData> contests = null;
@@ -2846,7 +2842,7 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getContestDataOnly();
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else {
                 logInfo("User is user");
                 contests = contestManager.getContestDataOnlyForUser(tcSubject.getUserId());
             }
@@ -2886,7 +2882,7 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getContestDataOnly(-1, pid);
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else {
                 logInfo("User is user role.");
                 contests = contestManager.getContestDataOnly(tcSubject.getUserId(), pid);
             }
@@ -3904,7 +3900,7 @@ public class StudioServiceBean implements StudioService {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 logInfo("User is admin.");
                 contests = contestManager.getAllContests();
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else {
                 logInfo("User  is non-admin.");
                 contests = contestManager.getContestsForUser(tcSubject.getUserId());
             }
@@ -4441,7 +4437,7 @@ public class StudioServiceBean implements StudioService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimpleProjectPermissionData> getSimpleProjectPermissionDataForUser(TCSubject tcSubject, long createdUser)
             throws PersistenceException {
-        logEnter("SimpleProjectPermissionDataForUser", tcSubject);
+        logEnter("SimpleProjectPermissionDataForUser", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
         try {
             List<SimpleProjectPermissionData> contests = null;
@@ -4450,7 +4446,7 @@ public class StudioServiceBean implements StudioService {
                 if (isRole(tcSubject, ADMIN_ROLE)) {
                     logInfo("User is admin.");
                     contests = contestManager.getSimpleProjectPermissionDataForUser(-1);
-                } else if (isRole(tcSubject, USER_ROLE)) {
+                } else {
                     logInfo("User  is non-admin.");
                     contests = contestManager.getSimpleProjectPermissionDataForUser(tcSubject.getUserId());
                 }
@@ -4619,7 +4615,7 @@ public class StudioServiceBean implements StudioService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<SimplePipelineData> getSimplePipelineData(TCSubject tcSubject, Date startDate, Date endDate,
             boolean overdueContests) throws PersistenceException {
-        logEnter("getSimplePipelineData", tcSubject, startDate, endDate, overdueContests);
+        logEnter("getSimplePipelineData", startDate, endDate, overdueContests);
         checkParameter("tcSubject", tcSubject);
         try {
             List<SimplePipelineData> pipelineDatas = contestManager.getSimplePipelineData(tcSubject.getUserId(),
