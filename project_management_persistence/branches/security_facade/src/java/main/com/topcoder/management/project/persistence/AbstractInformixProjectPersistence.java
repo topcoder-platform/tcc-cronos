@@ -728,7 +728,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
-           + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
+           + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
+            // contest fee/ price sum
+           + " (select sum(cast(nvl(value, '0') as DECIMAL(10,2))) from project_info where project_id = p.project_id and project_info_type_id in (31,33,35,36,37,38,39)) as contest_fee "
 
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
@@ -832,7 +834,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum(price),0) from contest_sale where contest_id = p.project_id) as contest_fee"
+           + " (select sum(cast(nvl(value, '0') as DECIMAL(10,2))) from project_info where project_id = p.project_id  and project_info_type_id in (31,33,35,36,37,38,39)) as contest_fee "
 
     + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
     + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -4175,7 +4177,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum(price),0) from contest_sale where contest_id = p.project_id) as contest_fee"
+           + " (select sum(cast(nvl(value, '0') as DECIMAL(10,2))) from project_info where project_id = p.project_id  and project_info_type_id in (31,33,35,36,37,38,39)) as contest_fee "
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
