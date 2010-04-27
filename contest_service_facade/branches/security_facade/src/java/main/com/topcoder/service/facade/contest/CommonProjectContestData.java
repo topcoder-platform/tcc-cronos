@@ -1,11 +1,9 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
-import java.util.Date;
-
-import javax.persistence.Id;
+import java.io.Serializable;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -25,11 +23,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 	Add milestoneDate and submissionEndDate for Cockpit Release Assembly 10 - My Projects v1.0
  * Version 1.3
  *  Add specReviewProjectId for Cockpit Spec Review - Stage 2 v1.0.
- * 
- * @author will.xie, squarY, murphydog
- * @version 1.3
+ * Version 1.4
+ *  Implements Serializable interface and adds the contest fee field - Direct Search Assembly
+ *
+ * @author will.xie, squarY, murphydog, BeBetter
+ * @version 1.4
  */
-public class CommonProjectContestData {
+public class CommonProjectContestData implements Serializable {
     /**
      * Generated serial version id.
      */
@@ -141,8 +141,13 @@ public class CommonProjectContestData {
      * @since 1.3
      */
     private Long specReviewProjectId;
-    
-    
+
+    /**
+     * The contest fee.
+     * @since 1.4
+     */
+    private Double contestFee;
+
     /**
      * Returns the value of specReviewProjectId.
      * @return the specReviewProjectId
@@ -607,5 +612,25 @@ public class CommonProjectContestData {
      */
     public void setSubmissionEndDate(XMLGregorianCalendar submissionEndDate) {
         this.submissionEndDate = submissionEndDate;
+    }
+
+    /**
+     * Gets the contest fee.
+     *
+     * @return the contest fee.
+     * @since 1.4
+     */
+    public Double getContestFee() {
+        return contestFee;
+    }
+
+    /**
+     * Sets the contest fee.
+     *
+     * @param contestFee the contest fee
+     * @since 1.4
+     */
+    public void setContestFee(Double contestFee) {
+        this.contestFee = contestFee;
     }
 }

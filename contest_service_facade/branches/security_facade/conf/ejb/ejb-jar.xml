@@ -235,6 +235,13 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
             </ejb-ref>
+		
+	     <!-- added for Direct Search Assembly -->
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
+            </ejb-ref>
         </session>
     </enterprise-beans>
 </ejb-jar>

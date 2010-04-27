@@ -127,8 +127,13 @@ import com.topcoder.service.studio.contest.User;
  *    to this interface.
  * </p>
  *
- * @author pulky, murphydog, waits
- * @version 1.5.1
+ * <p>
+ * Changes in v1.6 (Direct Search Assembly):
+ * - Add getProjectData function
+ * </p>
+ *
+ * @author pulky, murphydog, waits, BeBetter
+ * @version 1.6
  */
 public interface ContestServiceFacade {
     /**
@@ -594,6 +599,18 @@ public interface ContestServiceFacade {
      */
     public List<CommonProjectContestData> getCommonProjectContestDataByPID(TCSubject tcSubject,
         long pid) throws PersistenceException;
+
+    /**
+     * Gets all project data with aggregated statistics data for each type of contest status.
+     *
+     * @param tcSubject <code>TCSubject</code> object
+     * @return a list of <code>ProjectSummaryData</code> objects
+     *
+     * @throws ContestServiceException if any error occurs during processing
+     *
+     * @since 1.6
+     */
+    public List<ProjectSummaryData> getProjectData(TCSubject tcSubject) throws ContestServiceException;
 
     /**
      * <p>

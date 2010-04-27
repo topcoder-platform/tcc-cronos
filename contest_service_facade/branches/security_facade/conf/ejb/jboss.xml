@@ -44,6 +44,11 @@
                 <ejb-ref-name>ejb/ProjectDAOBean</ejb-ref-name>
                 <jndi-name>ProjectDAOBean/remote</jndi-name>
             </ejb-ref>
+    	     <!-- added for Direct Search Assembly -->
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectService</ejb-ref-name>
+                <jndi-name>remote/ProjectServiceBean</jndi-name>
+            </ejb-ref>
         </session>
     </enterprise-beans>
 </jboss>

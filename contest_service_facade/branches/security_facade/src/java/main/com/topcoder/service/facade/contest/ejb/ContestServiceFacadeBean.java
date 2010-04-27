@@ -11,8 +11,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -87,6 +89,8 @@ import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
+import com.topcoder.service.facade.contest.ProjectStatusData;
+import com.topcoder.service.facade.contest.ProjectSummaryData;
 import com.topcoder.service.facade.contest.SoftwareContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
@@ -100,10 +104,15 @@ import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
+import com.topcoder.service.project.PersistenceFault;
+import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.project.UserNotFoundFault;
 import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.specreview.SpecReviewService;
 import com.topcoder.service.specreview.SpecReviewServiceException;
@@ -235,8 +244,13 @@ import com.topcoder.util.config.Property;
  *    to it.
  *  - UserService is used to get the user-name for the given user-id.
  * </p>
- * @author snow01, pulky, murphydog, waits
- * @version 1.5.1
+ * <p>
+ * Changes in v1.6(Direct Search Assembly v1.0): Adds getProjectData method to return project data with aggregate contest
+ * information in different status. Change getCommonProjectContestData method to add payment information.
+ * </p>
+ *
+ * @author snow01, pulky, murphydog, waits, BeBetter
+ * @version 1.6
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -541,6 +555,44 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final String PROJECT_FINAL_FIX_PHASE_NAME = "Final Fix";
 
     /**
+     * Constant for zero amount.
+     *
+     * @since 1.6
+     */
+    private static final Double ZERO_AMOUNT = new Double(0);
+
+    /**
+     * Draft status list.
+     *
+     * @since 1.6
+     */
+    private final static List<String> DRAFT_STATUS = Arrays.asList("Draft", "Unactive - Not Yet Published","Inactive");
+
+    /**
+     * Scheduled status list.
+     *
+     * @since 1.6
+     */
+    private final static List<String> SCHEDULED_STATUS = Arrays.asList("Scheduled");
+
+    /**
+     * Active status list.
+     *
+     * @since 1.6
+     */
+    private final static List<String> ACTIVE_STATUS = Arrays.asList("Active - Public", "Active", "Registration",
+        "Submission", "Screening", "Review", "Appeals", "Appeals Response", "Aggregation", "Aggregation Review",
+        "Final Fix", "Final Review", "Approval", "Action Required", "In Danger", "Extended");
+
+    /**
+     * Constant for zero amount.
+     *
+     * @since 1.6
+     */
+    private final static List<String> FINISHED_STATUS = Arrays.asList("Completed", "No Winner Chosen",
+        "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed");
+
+    /**
      * <p>
      * A <code>StudioService</code> providing access to available
      * <code>Studio Service EJB</code>. This bean is delegated to process the
@@ -635,6 +687,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/ProjectDAOBean")
     private ProjectDAO billingProjectDAO = null;
+
+    @EJB(name = "ejb/ProjectService")
+    private ProjectService projectService = null;
 
     /**
      * PayPal API UserName
@@ -4601,9 +4656,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
                 newData.setSpecReviewStatus(data.getSpecReviewStatus());
-        newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
+                newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
-        ret.add(newData);
+                newData.setContestFee(data.getContestPayment());
+                ret.add(newData);
             }
         }
 
@@ -4630,6 +4686,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             newData.setSpecReviewStatus(data.getSpecReviewStatus());
             newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
             newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
+            newData.setContestFee(data.getContestFee());
             ret.add(newData);
         }
 
@@ -4655,6 +4712,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>
      * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
      * </p>
+     * <p>
+     * Updated for v1.6 Direct Search Assembly
+     *      - provided contest fee for each contest data
+     * </p>
+     *
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests found.
      * @throws PersistenceException if any error occurs when getting contest.
@@ -4686,9 +4748,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newData.setCreateUser(data.getCreateUser());
                 newData.setPperm(data.getPperm());
                 newData.setCperm(data.getCperm());
-        newData.setSpecReviewStatus(data.getSpecReviewStatus());
-        newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
+                newData.setSpecReviewStatus(data.getSpecReviewStatus());
+                newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
                 newData.setMilestoneDate(data.getMilestoneDate());
+                newData.setContestFee(data.getContestPayment());
                 ret.add(newData);
             }
         }
@@ -4716,6 +4779,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             newData.setSpecReviewStatus(data.getSpecReviewStatus());
             newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
             newData.setSubmissionEndDate(getXMLGregorianCalendar(data.getSubmissionEndDate()));
+            newData.setContestFee(data.getContestFee());
             ret.add(newData);
         }
 
@@ -4732,6 +4796,96 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("Exit getCommonProjectContestDataByContestData");
 
         return ret;
+    }
+
+
+    /**
+     * Gets all project data with aggregated statistics data for each type of contest status.
+     *
+     * @param tcSubject <code>TCSubject</code> object
+     * @return a list of <code>ProjectSummaryData</code> objects
+     *
+     * @throws ContestServiceException if any error occurs during processing
+     *
+     * @since 1.6
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<ProjectSummaryData> getProjectData(TCSubject tcSubject) throws ContestServiceException {
+        ExceptionUtils.checkNull(tcSubject, null, null, "The tcSubject parameter is null.");
+
+        List<ProjectSummaryData> result = new ArrayList<ProjectSummaryData>();
+        Map<Long, ProjectSummaryData> projectDataMap = new HashMap<Long, ProjectSummaryData>();
+
+        try {
+            List<ProjectData> projects = projectService.getProjectsForUser(tcSubject.getUserId());
+            for (ProjectData project : projects) {
+                ProjectSummaryData data = new ProjectSummaryData();
+                data.setProjectId(project.getProjectId());
+                data.setProjectName(project.getName());
+                result.add(data);
+                projectDataMap.put(data.getProjectId(), data);
+            }
+
+            List<CommonProjectContestData> contests;
+
+            contests = getCommonProjectContestData(tcSubject);
+
+            for (CommonProjectContestData contest : contests) {
+                ProjectSummaryData data = projectDataMap.get(contest.getProjectId());
+                if (data == null) {
+                    continue;
+                }
+
+                if (DRAFT_STATUS.contains(contest.getSname())) {
+                    addToStatusData(data.getDraft(), contest.getContestFee());
+                } else if (SCHEDULED_STATUS.contains(contest.getSname())) {
+                    addToStatusData(data.getScheduled(), contest.getContestFee());
+                } else if (ACTIVE_STATUS.contains(contest.getSname())) {
+                    addToStatusData(data.getActive(), contest.getContestFee());
+                } else if (FINISHED_STATUS.contains(contest.getSname())) {
+                    addToStatusData(data.getFinished(), contest.getContestFee());
+                } else {
+                    String infoMsg = "status " + contest.getSname()
+                        + " is not recognized as one of Scheduled/Draft/Active/Finished or skipped intentionally";
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(infoMsg);
+                    }
+                }
+            }
+
+            return result;
+        } catch (PersistenceFault e) {
+            logger.error("Fail to get project data from project service : " + e.getMessage(), e);
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Fail to get project data from project service : " + e.getMessage(), e);
+        } catch (UserNotFoundFault e) {
+            logger.error("Fail to get project data from project service : " + e.getMessage(), e);
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Fail to get project data from project service : " + e.getMessage(), e);
+        } catch (AuthorizationFailedFault e) {
+            logger.error("Fail to get project data from project service : " + e.getMessage(), e);
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Fail to get project data from project service : " + e.getMessage(), e);
+        } catch (PersistenceException e) {
+            logger.error("Fail to get contest data  : " + e.getMessage(), e);
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException("Fail to get contest data : " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Adds the payment into status data.
+     *
+     * @param data status data to be added on
+     * @param payment the new payment
+     */
+    private void addToStatusData(ProjectStatusData data, Double payment) {
+        if (payment == null) {
+            payment = ZERO_AMOUNT;
+        }
+
+        data.setTotalNumber(data.getTotalNumber() + 1);
+        data.setTotalPayment(data.getTotalPayment() + payment);
     }
 
     /**
@@ -4844,7 +4998,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(TCSubject tcSubject, long createdUser)
             throws PersistenceException {
-        logger.debug("getCommonProjectPermissionDataForUser (tcSubject = " + tcSubject + ", " + createdUser + ")");
+        logger.debug("getCommonProjectPermissionDataForUser (tcSubject = " + tcSubject.getUserId() + ", " + createdUser + ")");
 
         List<com.topcoder.service.studio.contest.SimpleProjectPermissionData> studioPermissions =
             studioService.getSimpleProjectPermissionDataForUser(tcSubject, createdUser);
