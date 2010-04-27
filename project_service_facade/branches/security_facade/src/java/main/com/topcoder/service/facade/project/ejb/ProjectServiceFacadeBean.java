@@ -146,7 +146,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
     /**
      * Private constant specifying user role.
      */
-    private static final String USER_ROLE = "Cockpit User";
+    //private static final String USER_ROLE = "Cockpit User";
 
     /**
      * Private constant specifying 'project_full' permission type name
@@ -288,10 +288,9 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
     public List<ProjectData> getAllProjects(TCSubject tcSubject) throws PersistenceFault, AuthorizationFailedFault, UserNotFoundFault {
         if (isRole(tcSubject, ADMIN_ROLE)) {
             return this.projectService.getAllProjects();
-        } else if (isRole(tcSubject, USER_ROLE)) {
+        } else {
             return this.projectService.getProjectsForUser(tcSubject.getUserId());
         }
-        return new ArrayList<ProjectData>();
     }
 
     /**
@@ -563,10 +562,9 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
         try {
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 return this.projectDAO.retrieveAllProjectsOnly();
-            } else if (isRole(tcSubject, USER_ROLE)){
+            } else {
                 return this.projectDAO.getProjectsByUser(getUserName(tcSubject));
             }
-            return new ArrayList<Project>();
 
 
         } catch(EntityNotFoundException e) {
