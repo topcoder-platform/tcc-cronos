@@ -23,6 +23,48 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>persistence/HibernateProjectPersistence</env-entry-value>
             </env-entry>
+            <env-entry>
+        <description>The email status id used in the registerUser method</description>
+        <env-entry-name>emailStatusId</env-entry-name>
+        <env-entry-type>java.lang.Long</env-entry-type>
+        <env-entry-value>1</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the phone id generator</description>
+        <env-entry-name>phoneIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>PHONE_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the email id generator</description>
+        <env-entry-name>emailIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>EMAIL_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the address id generator</description>
+        <env-entry-name>addressIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>ADDRESS_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the user id generator</description>
+        <env-entry-name>userIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>USER_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the security user id generator</description>
+        <env-entry-name>securityUserIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>SECURITY_SEQ</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the user-group id generator</description>
+        <env-entry-name>userGroupIdGeneratorName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>USER_GROUP_SEQ</env-entry-value>
+      </env-entry>
 			
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/HibernateProjectPersistence</persistence-context-ref-name>
