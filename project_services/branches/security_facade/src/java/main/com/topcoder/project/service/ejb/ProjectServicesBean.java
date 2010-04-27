@@ -149,7 +149,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
     /**
      * Private constant specifying user role.
      */
-    private static final String USER_ROLE = "Cockpit User";
+    //private static final String USER_ROLE = "Cockpit User";
 
     /**
      * Private constant specifying administrator role.
@@ -341,11 +341,11 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 Util.log(logger, Level.INFO, "User is admin.");
                 return getProjectServices().findAllTcDirectProjects(tcSubject);
-            } else if (isRole(tcSubject, USER_ROLE)) {
+            } else  {
                 Util.log(logger, Level.INFO, "User is non-admin.");
                 return getProjectServices().findAllTcDirectProjectsForUser(tcSubject, userName);
             }
-            return new Project[0];
+
 
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
@@ -858,10 +858,10 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
             if (isRole(tcSubject, ADMIN_ROLE)) {
                 return getProjectServices().getSimpleProjectContestData(tcSubject);
-            } else if (isRole(tcSubject, USER_ROLE)){
+            } else {
                 return getProjectServices().getSimpleProjectContestDataByUser(String.valueOf(tcSubject.getUserId()));
             }
-            return new ArrayList<SimpleProjectContestData>();
+
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
@@ -937,7 +937,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
                     Util.log(logger, Level.DEBUG, "User is admin.");
                     contests = getProjectServices().getSimpleProjectPermissionDataForUser(tcSubject,-1);
 
-                } else if (isRole(tcSubject, USER_ROLE)){
+                } else {
                     Util.log(logger, Level.DEBUG, "User  is non-admin.");
                     contests = getProjectServices().getSimpleProjectPermissionDataForUser(tcSubject, tcSubject.getUserId());
                 }
