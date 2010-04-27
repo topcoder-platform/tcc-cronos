@@ -4819,7 +4819,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         Map<Long, ProjectSummaryData> projectDataMap = new HashMap<Long, ProjectSummaryData>();
 
         try {
-            List<ProjectData> projects = projectService.getProjectsForUser(tcSubject.getUserId());
+            List<ProjectData> projects = new ArrayList<ProjectData>();
+
+            if (isRole(tcSubject, ADMIN_ROLE)) {
+                projects = projectService.getAllProjects();
+            } else {
+                projects = projectService.getProjectsForUser(tcSubject.getUserId());
+            }
+                
+            
             for (ProjectData project : projects) {
                 ProjectSummaryData data = new ProjectSummaryData();
                 data.setProjectId(project.getProjectId());
