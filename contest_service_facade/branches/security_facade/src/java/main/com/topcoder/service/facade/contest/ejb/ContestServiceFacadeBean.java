@@ -590,7 +590,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6
      */
     private final static List<String> FINISHED_STATUS = Arrays.asList("Completed", "No Winner Chosen",
-        "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed");
+        "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed", "Cancelled - Failed Review",
+        "Cancelled - Failed Screening", "Cancelled - Zero Submissions", "Cancelled - Winner Unresponsive", "Cancelled - Client Request",
+        "Cancelled - Requirements Infeasible", "Cancelled - Zero Registrations" );
 
     /**
      * <p>
@@ -4835,7 +4837,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (data == null) {
                     continue;
                 }
-
                 if (DRAFT_STATUS.contains(contest.getSname())) {
                     addToStatusData(data.getDraft(), contest.getContestFee());
                 } else if (SCHEDULED_STATUS.contains(contest.getSname())) {
