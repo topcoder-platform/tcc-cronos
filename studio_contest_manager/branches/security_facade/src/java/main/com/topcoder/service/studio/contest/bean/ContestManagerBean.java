@@ -3287,14 +3287,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date, "
                     /* R 10 end*/
                     /* contest payment*/
-                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
+                    + " (select sum(fee) from "
+                    + " ( " 
+                    + " select cast(nvl(property_value, '0') as DECIMAL(10,2)) as fee from contest_config where contest_id = c.contest_id and property_id = 25 "
+                    + " union all "
+                    + " select sum(amount) as fee from contest_prize_xref x, prize p where contest_id = c.contest_id and x.prize_id = p.prize_id "
+                    + " union all "
+                    + " select cast(amount*number_of_submissions as DECIMAL(10,2)) as fee from contest_milestone_prize m, contest c "
+                    + " where m.contest_milestone_prize_id = c.contest_milestone_prize_id and contest_id = c.contest_id "
+                    + " )) as contest_payment "
+
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,
                     "ContestForMyProjectResults");
-System.out.println("----------------------------studio:::22222:\n"+qstr);
+
             List list = query.getResultList();
 
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
@@ -3417,7 +3426,16 @@ System.out.println("----------------------------studio:::22222:\n"+qstr);
                     /* R 10 end*/
 
                     /* contest payment*/
-                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
+                    /* contest payment*/
+                    + " (select sum(fee) from "
+                    + " ( " 
+                    + " select cast(nvl(property_value, '0') as DECIMAL(10,2)) as fee from contest_config where contest_id = c.contest_id and property_id = 25 "
+                    + " union all "
+                    + " select sum(amount) as fee from contest_prize_xref x, prize p where contest_id = c.contest_id and x.prize_id = p.prize_id "
+                    + " union all "
+                    + " select cast(amount*number_of_submissions as DECIMAL(10,2)) as fee from contest_milestone_prize m, contest c "
+                    + " where m.contest_milestone_prize_id = c.contest_milestone_prize_id and contest_id = c.contest_id "
+                    + " )) as contest_payment "
 
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -3551,15 +3569,22 @@ System.out.println("----------------------------studio:::22222:\n"+qstr);
                     /* R 10 end*/
 
                     /* contest payment*/
-                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
+                    /* contest payment*/
+                    + " (select sum(fee) from "
+                    + " ( " 
+                    + " select cast(nvl(property_value, '0') as DECIMAL(10,2)) as fee from contest_config where contest_id = c.contest_id and property_id = 25 "
+                    + " union all "
+                    + " select sum(amount) as fee from contest_prize_xref x, prize p where contest_id = c.contest_id and x.prize_id = p.prize_id "
+                    + " union all "
+                    + " select cast(amount*number_of_submissions as DECIMAL(10,2)) as fee from contest_milestone_prize m, contest c "
+                    + " where m.contest_milestone_prize_id = c.contest_milestone_prize_id and contest_id = c.contest_id "
+                    + " )) as contest_payment "
 
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
 
                     + " order by p.project_id";
-
-System.out.println("----------------------------studio::::\n"+qstr);
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
