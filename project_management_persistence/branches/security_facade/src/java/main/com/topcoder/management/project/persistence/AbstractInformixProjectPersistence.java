@@ -12,17 +12,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Arrays;
 import java.util.Map.Entry;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -45,15 +45,15 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.persistence.Helper.DataType;
 import com.topcoder.management.project.persistence.logging.LogMessage;
-import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
-import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -148,8 +148,17 @@ import com.topcoder.util.log.Log;
  *  [ Cockpit Release Assembly - Contest Repost and New Version v1.0]
  *  update the query used in the method getDevelopmentContestId, to remove the constraint on the project status.
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits
- * @version 1.2.4
+ *  <p>
+ *  Version 1.3 - Direct Search Assembly
+ *  - add payment information into getSimpleProjectContestData functions.
+ *  </p>
+ *
+ * <p>
+ * Thread Safety: This class is thread safe because it is immutable.
+ * </p>
+ *
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter
+ * @version 1.3
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -820,8 +829,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
-           + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
+           + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
+           // contest fee/ price sum
+           + " (select nvl(sum(price),0) from contest_sale where contest_id = p.project_id) as contest_fee"
 
     + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
     + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -847,6 +858,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      *
      * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
+     *
+     * <p>
+     * Updated for Direct Search Assembly
+     *      - Added column type for price sum/ contest fee
+     * </p>
      */
     private static final DataType[] QUERY_ALL_SIMPLE_PROJECT_CONTEST_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE,
@@ -857,7 +873,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE,Helper.LONG_TYPE,
-            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
+            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DOUBLE_TYPE};
 
     /**
      * Represents the sql statement to query all design components data for a user id.
@@ -3689,6 +3705,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *     - project and contest permissions are also fetched now.
      * Updated for Cockpit Release Assembly 10:
      * 	   - add set SubmissionEndDate
+     * Updated for Direct Search Assembly
+     *     - add payment information.
      * </p>
      * 
      * @return the full list of contests.
@@ -3818,6 +3836,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     }
                 }
 
+                // set contest fee/ price sum
+                ret[i].setContestFee((Double)rows[i][26]);
 
 				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
 				{
@@ -3864,6 +3884,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 	   - add set SubmissionEndDate
      *
      * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
+     *
+     * Updated for Direct Search Assembly
+     *     - add payment information.
      *
      * @param pid the specified tc project id for which to get the list of contest.
      * @return the list of contest for specified tc project id.
@@ -3946,10 +3969,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                      		    ret[i].setPperm((String) rows[i][17]);
                 		}
 
-				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
-				{
-					result.add(ret[i]);
-				}
+                // set contest fee/ price sum
+                ret[i].setContestFee((Double)rows[i][26]);
+
+                if (ret[i].getCperm() != null || ret[i].getPperm() != null)
+                {
+                    result.add(ret[i]);
+                }
 
                 if (rows[i][18] != null) {
                     ret[i].setSubmissionEndDate(myFmt.parse(rows[i][18].toString()));
@@ -4048,6 +4074,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 	   - add set SubmissionEndDate
      *
      * Updated for Cockpit Spec Review - Stage 2(version 1.2.4).
+     *
+     * Updated for Direct Search Assembly
+     *     - add payment information.
+     *
      * @param createdUser the specified user for which to get the list of contest.
      * @return the list of contest for specified user.
      * @throws PersistenceException exception is thrown when there is error retrieving the list from persistence.
@@ -4142,7 +4172,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and ri.comment_type_id = 10 and r.resource_id = re.resource_id "
            + "                   and linkp.dest_project_Id = p.project_id "
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
-           + "                   and re.project_id = linkp.source_project_id)) as hassrfr "
+           + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
+
+           // contest fee/ price sum
+           + " (select nvl(sum(price),0) from contest_sale where contest_id = p.project_id) as contest_fee"
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -4216,10 +4249,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     		   ret[i].setPperm((String) rows[i][17]);
                 		}
 
-				if (ret[i].getCperm() != null || ret[i].getPperm() != null)
-				{
-					result.add(ret[i]);
-				}
+
+                // set contest fee/ price sum
+                ret[i].setContestFee((Double)rows[i][26]);
+
+                if (ret[i].getCperm() != null || ret[i].getPperm() != null)
+                {
+                    result.add(ret[i]);
+                }
 
                 if (rows[i][18] != null) {
                     ret[i].setSubmissionEndDate(myFmt.parse(rows[i][18].toString()));
