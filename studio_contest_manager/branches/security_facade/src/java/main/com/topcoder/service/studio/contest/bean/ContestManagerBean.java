@@ -268,6 +268,12 @@ import com.topcoder.util.log.LogManager;
  * - Remove the DeclareRoles({ "Cockpit User", "Cockpit Administrator" }) annotation.
  * - Remove the PermitAll annotation from methods.
  * </p>
+ *
+ * <p>
+ * Version 1.5(Direct Search Assembly)
+ * - Change getSimpleProjectContestData to add payment information.
+ * </p>
+ *
  * <p>
  * <strong>Thread safety:</strong> The variables in this class are initialized
  * once in the initialize method after the bean is instantiated by EJB
@@ -279,8 +285,8 @@ import com.topcoder.util.log.LogManager;
  * @author Standlove, TCSDEVELOPER, waits
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @author saarixx, murphydog, pulky
- * @version 1.4.2
+ * @author saarixx, murphydog, pulky, BeBetter
+ * @version 1.5
  * @since 1.0
  */
 @Stateless
@@ -3221,6 +3227,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Update in version 1.4.2, remove the PermitAll annotation.
      * </p>
      *
+     * <p>
+     * Update in version 1.5, add payment information.
+     * </p>
+     *
      * @return the list of all available contents (or empty if none found)
      *
      * @throws ContestManagementException
@@ -3272,18 +3282,19 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + "(select sr.review_status_type_id "
                     + " from spec_review sr, spec_review_reviewer_xref srrx where sr.contest_id = c.contest_id"
                     + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
-            /* Added in cockpit R 10 */
-            + " (select milestone_date from contest_multi_round_information as cmri "
-            + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-            /* R 10 end*/
-
+                    /* Added in cockpit R 10 */
+                    + " (select milestone_date from contest_multi_round_information as cmri "
+                    + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date, "
+                    /* R 10 end*/
+                    /* contest payment*/
+                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,
                     "ContestForMyProjectResults");
-
+System.out.println("----------------------------studio:::22222:\n"+qstr);
             List list = query.getResultList();
 
             List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
@@ -3343,6 +3354,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Update in version 1.4.2, remove the PermitAll annotation.
      * </p>
      *
+     * <p>
+     * Update in version 1.5, add payment information.
+     * </p>
+     *
      * @param pid
      *            given project id
      * @return the list of all available contents (or empty if none found)
@@ -3398,8 +3413,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
                     /* Added in cockpit R 10 */
                     + " (select milestone_date from contest_multi_round_information as cmri "
-                    + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
+                    + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date,"
                     /* R 10 end*/
+
+                    /* contest payment*/
+                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
+
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
@@ -3467,6 +3486,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * Update in version 1.4.2, remove the PermitAll annotation.
      * </p>
+     * <p>
+     * Update in version 1.5, add payment information.
+     * </p>
      *
      * @param createdUser
      *            created User
@@ -3523,15 +3545,21 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " and sr.spec_review_id = srrx.spec_review_id and srrx.review_user_id is not null and sr.is_studio = 1) as spec_review_status, "
 
 
-            /* Added in cockpit R 10 */
-            + " (select milestone_date from contest_multi_round_information as cmri "
-            + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date"
-            /* R 10 end*/
+                    /* Added in cockpit R 10 */
+                    + " (select milestone_date from contest_multi_round_information as cmri "
+                    + " where cmri.contest_multi_round_information_id = c.contest_milestone_prize_id) as milestone_date, "
+                    /* R 10 end*/
+
+                    /* contest payment*/
+                    + " (select nvl(sum(cp.price),0) from contest_payment cp where cp.contest_id = c.contest_id) as contest_payment "
+
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
 
                     + " order by p.project_id";
+
+System.out.println("----------------------------studio::::\n"+qstr);
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
