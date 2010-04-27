@@ -3747,17 +3747,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				// try to use phase if not null
 				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][1]);
+					ret[i].setSname(((String)rows[i][1]).trim());
 				}
 				// else for active, use 'newstatus'
 				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][15]);
+					ret[i].setSname(((String)rows[i][15]).trim());
 				}
 				// use status
 				else
 				{
-					ret[i].setSname((String)rows[i][6]);
+					ret[i].setSname(((String)rows[i][6]).trim());
 				}
 				
 				ret[i].setCname((String)rows[i][2]);
@@ -3927,17 +3927,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				// try to use phase if not null
 				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][1]);
+					ret[i].setSname(((String)rows[i][1]).trim());
 				}
 				// else for active, use 'newstatus'
 				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][15]);
+					ret[i].setSname(((String)rows[i][15]).trim());
 				}
 				// use status
 				else
 				{
-					ret[i].setSname((String)rows[i][6]);
+					ret[i].setSname(((String)rows[i][6]).trim());
 				}
 				
 				ret[i].setCname((String)rows[i][2]);
@@ -4207,17 +4207,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				// try to use phase if not null
 				if (rows[i][1] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][1]);
+					ret[i].setSname(((String)rows[i][1]).trim());
 				}
 				// else for active, use 'newstatus'
 				else if (rows[i][15] != null && ((String)rows[i][6]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName()))
 				{
-					ret[i].setSname((String)rows[i][15]);
+					ret[i].setSname(((String)rows[i][15]).trim());
 				}
 				// use status
 				else
 				{
-					ret[i].setSname((String)rows[i][6]);
+					ret[i].setSname(((String)rows[i][6]).trim());
 				}
 				
 				ret[i].setCname((String)rows[i][2]);
@@ -5020,7 +5020,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					c.setSname("Active");
 				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
 				    //scheduled or draft
-					c.setSname((String)rows[i][35]);
+					c.setSname(((String)rows[i][35]).trim());
 				} else if(!((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
 
                     if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
