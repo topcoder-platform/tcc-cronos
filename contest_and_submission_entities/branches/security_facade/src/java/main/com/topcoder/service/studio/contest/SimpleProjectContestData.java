@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -38,8 +38,11 @@ import javax.xml.datatype.DatatypeConfigurationException;
  * Version 1.2
     Add specReviewProjectId/specReviewPending, change specReviewStatus Cockpit Spec Review - part 2 version 1.0
  *
- * @author will.xie, TCSDEVELOPER, murphydog
- * @version 1.2
+ * Version 1.3
+ *  Add contestPayment field and associated setter/getter - Direct Search Assembly
+ *
+ * @author will.xie, TCSDEVELOPER, murphydog, BeBetter
+ * @version 1.4
  */
 @SqlResultSetMapping(
         name="ContestForMyProjectResults",
@@ -63,7 +66,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
                         @FieldResult(name = "specReviewProjectId", column = "spr_id"),
                         @FieldResult(name = "specReviewPending", column = "spec_review_pending"),
                         @FieldResult(name = "specReviewStatusTypeId", column = "spec_review_status"),
-                        @FieldResult(name = "milestoneDate", column = "milestone_date")
+                        @FieldResult(name = "milestoneDate", column = "milestone_date"),
+                        @FieldResult(name = "contestPayment", column = "contest_payment")
                         }
         )})
 @Entity
@@ -209,7 +213,12 @@ public class SimpleProjectContestData {
      */
     private Date milestoneDate;
 
-
+    /**
+     * The contest payment.
+     *
+     * @since 1.3
+     */
+    private Double contestPayment;
 
     /**
      * Returns the contest name.
@@ -651,5 +660,25 @@ public class SimpleProjectContestData {
      */
     public void setMilestoneDate(XMLGregorianCalendar milestoneDate) {
         this.milestoneDate = getDate(milestoneDate);
-    }    
+    }
+
+    /**
+     * Gets the value of contest payment.
+     *
+     * @return the contest payment
+     * @since 1.3
+     */
+    public Double getContestPayment() {
+        return contestPayment;
+    }
+
+    /**
+     * Sets the contest payment.
+     *
+     * @param contestPayment the contest payment value to set
+     * @since 1.3
+     */
+    public void setContestPayment(Double contestPayment) {
+        this.contestPayment = contestPayment;
+    }
 }
