@@ -623,8 +623,8 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
     public void saveReviewStatus(TCSubject tcSubject, long contestId, boolean studio, String sectionName, String comment, boolean isPass,
             String role) throws SpecReviewServiceException {
         try {
-            logEnter("saveReviewStatus(tcSubject, contestId, studio, sectionName, comment, isPass, role)", tcSubject, contestId, studio,
-                    sectionName, comment, isPass, role);
+            logEnter("saveReviewStatus(tcSubject, contestId, studio, sectionName, isPass, role)", tcSubject, contestId, studio,
+                    sectionName, isPass, role);
 
 
             String userName = getUserName(tcSubject);
