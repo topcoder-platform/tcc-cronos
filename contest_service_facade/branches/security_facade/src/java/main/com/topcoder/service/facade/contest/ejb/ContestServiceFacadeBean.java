@@ -2581,7 +2581,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("processContestPurchaseOrderPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
-        logger.info("tcSubject: " + tcSubject);
+        logger.info("tcSubject: " + tcSubject.getUserId());
 
         return processContestPaymentInternal(tcSubject, competition, paymentData);
     }
@@ -2635,7 +2635,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             PaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
-        logger.info("tcSubject: " + tcSubject);
+        logger.info("tcSubject: " + tcSubject.getUserId());
 
         ContestPaymentResult contestPaymentResult = null;
 
@@ -2901,7 +2901,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             SoftwareCompetition competition, PaymentData paymentData) throws ContestServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
-        logger.info("tcSubject: " + tcSubject);
+        logger.info("tcSubject: " + tcSubject.getUserId());
 
         SoftwareContestPaymentResult softwareContestPaymentResult = null;
 
@@ -3060,9 +3060,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 
             // no need for dev that has design, so all non-dev and dev only will have spec review
-            // and dont create for private
+            // and dont create for private, and it is not already have a spec review
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility)
+                  && !hasEligibility 
+                  && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0)
             {
                  //create spec review project
                 FullProjectData specReview = this.createSpecReview(tcSubject, tobeUpdatedCompetition.getProjectHeader().getId());
@@ -3248,7 +3249,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
             logger.info("CompletedContestData: " + completedContestData);
             logger.info("PaymentData: " + paymentData + "," + paymentData.getType());
-            logger.info("tcSubject: " + tcSubject);
+            logger.info("tcSubject: " + tcSubject.getUserId());
 
             List<SubmissionData> submissionDatas =
                 retrieveSubmissionsForContest(tcSubject, completedContestData.getContestId());
@@ -3861,7 +3862,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
             long tcDirectProjectId) throws ContestServiceException {
-        logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject + ", tcDirectProjectId ="
+        logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject.getUserId() + ", tcDirectProjectId ="
                 + tcDirectProjectId + "]");
 
         try {
@@ -4499,7 +4500,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public long addSubmitter(TCSubject tcSubject, long projectId, long userId) throws ContestServiceException {
-        logger.debug("AddSubmitter (tcSubject = " + tcSubject + ", " + projectId + "," + userId + ")");
+        logger.debug("AddSubmitter (tcSubject = " + tcSubject.getUserId() + ", " + projectId + "," + userId + ")");
 
         try {
             return uploadExternalServices.addSubmitter(projectId, userId);
@@ -4523,7 +4524,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public long createForum(TCSubject tcSubject, AssetDTO asset, long userId, long projectCategoryId) {
         long forumId = -1;
-        logger.debug("createForum (tcSubject = " + tcSubject + ", " + userId + ")");
+        logger.debug("createForum (tcSubject = " + tcSubject.getUserId() + ", " + userId + ")");
 
         try {
             Properties p = new Properties();
@@ -4592,7 +4593,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public boolean updateSubmissionUserRank(TCSubject tcSubject, long submissionId, int rank, Boolean isRankingMilestone)
             throws PersistenceException {
-        logger.debug("updateSubmissionUserRank (tcSubject = " + tcSubject + ", " + submissionId + "," + rank + "," + isRankingMilestone + ")");
+        logger.debug("updateSubmissionUserRank (tcSubject = " + tcSubject.getUserId() + ", " + submissionId + "," + rank + "," + isRankingMilestone + ")");
 
         try {
 
@@ -4631,7 +4632,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestDataByPID(TCSubject tcSubject, long pid)
             throws PersistenceException {
-        logger.debug("getCommonProjectContestDataByPID (tcSubject = " + tcSubject + ", " + pid + ")");
+        logger.debug("getCommonProjectContestDataByPID (tcSubject = " + tcSubject.getUserId() + ", " + pid + ")");
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
@@ -4725,7 +4726,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CommonProjectContestData> getCommonProjectContestData(TCSubject tcSubject) throws PersistenceException {
-        logger.debug("getCommonProjectContestDataByContestData(tcSubject = " + tcSubject + ")");
+        logger.debug("getCommonProjectContestDataByContestData(tcSubject = " + tcSubject.getUserId() + ")");
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
@@ -4914,7 +4915,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition getSoftwareContestByProjectId(TCSubject tcSubject, long projectId)
             throws ContestServiceException {
-        logger.debug("getSoftwareContestByProjectId (tcSubject = " + tcSubject + ", " + projectId + ")");
+        logger.debug("getSoftwareContestByProjectId (tcSubject = " + tcSubject.getUserId() + ", " + projectId + ")");
 
         SoftwareCompetition contest = new SoftwareCompetition();
 
@@ -5066,7 +5067,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TCCC-1329
      */
     public List<User> searchUser(TCSubject tcSubject, String key) throws PersistenceException {
-        logger.debug("searchUser (tcSubject = " + tcSubject + ", " + key + ")");
+        logger.debug("searchUser (tcSubject = " + tcSubject.getUserId() + ", " + key + ")");
 
         return studioService.searchUser(key);
     }
@@ -6302,7 +6303,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.4
      */
     public FullProjectData createSpecReview(TCSubject tcSubject, long projectId) throws ContestServiceException {
-        String method = "createSpecReview(tcSubject = " + tcSubject + "," + projectId + ")";
+        String method = "createSpecReview(tcSubject = " + tcSubject.getUserId() + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         FullProjectData specReview = null;
@@ -6332,7 +6333,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public ScorecardReviewData getScorecardAndReview(TCSubject tcSubject, long projectId)
             throws ContestServiceException {
-        String method = "getScorecardAndReview(tcSubject = " + tcSubject + "," + projectId + ")";
+        String method = "getScorecardAndReview(tcSubject = " + tcSubject.getUserId() + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         ScorecardReviewData scorecardReviewData =  null;
@@ -6362,7 +6363,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.4
      */
     public void markSoftwareContestReadyForReview(TCSubject tcSubject, long projectId) throws ContestServiceException {
-        String method = "markSoftwareContestReadyForReview(tcSubject = " + tcSubject + "," + projectId + ")";
+        String method = "markSoftwareContestReadyForReview(tcSubject = " + tcSubject.getUserId() + "," + projectId + ")";
         logger.info("Enter: " + method);
 
         try {
@@ -6412,7 +6413,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throw new IllegalArgumentException("The comment cannot be null");
         }
 
-        String method = "addReviewComment(tcSubject = " + tcSubject + "," + reviewId + ", " + comment + ")";
+        String method = "addReviewComment(tcSubject = " + tcSubject.getUserId() + "," + reviewId + ", " + comment + ")";
         logger.info("Enter: " + method);
 
         try {
@@ -6791,7 +6792,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public long createNewVersionForDesignDevContest(TCSubject tcSubject, long projectId, long tcDirectProjectId,
             boolean autoDevCreating, boolean minorVersion) throws ContestServiceException {
-        logger.debug("createNewVersionForDesignDevContest with parameter [TCSubject " + tcSubject + ", projectId =" + projectId
+        logger.debug("createNewVersionForDesignDevContest with parameter [TCSubject " + tcSubject.getUserId() + ", projectId =" + projectId
                      + ", tcDirectProjectId =" +tcDirectProjectId+", autoDevCreating="+ autoDevCreating +"].");
 
         return createNewVersionForDesignDevContest(tcSubject, projectId, tcDirectProjectId, autoDevCreating,
@@ -6816,7 +6817,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public long reOpenSoftwareContest(TCSubject tcSubject, long projectId, long tcDirectProjectId)
             throws ContestServiceException {
-        logger.debug("reOpenSoftwareContest with parameter [TCSubject " + tcSubject + ", projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
+        logger.debug("reOpenSoftwareContest with parameter [TCSubject " + tcSubject.getUserId() + ", projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
 
         long reOpenContestId = 0;
         try {
