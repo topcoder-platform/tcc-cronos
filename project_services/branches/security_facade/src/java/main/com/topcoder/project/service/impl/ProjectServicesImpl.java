@@ -1627,7 +1627,12 @@ public class ProjectServicesImpl implements ProjectServices {
             for (Phase p : phases) {
                         p.setScheduledStartDate(p.calcStartDate());
                         p.setScheduledEndDate(p.calcEndDate());
-                        p.setFixedStartDate(p.calcStartDate());
+                        // only set Reg with fixed dates
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                        {
+                            p.setFixedStartDate(p.calcStartDate());
+                        }
+                        
 
             }
 
@@ -2153,7 +2158,11 @@ public class ProjectServicesImpl implements ProjectServices {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
                     p.setScheduledStartDate(p.calcStartDate());
                     p.setScheduledEndDate(p.calcEndDate());
-                    p.setFixedStartDate(p.calcStartDate());
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    {
+                        p.setFixedStartDate(p.calcStartDate());
+                    }
+                    
 
                     if (p.getPhaseType().getName().equals("Registration"))
                     {
