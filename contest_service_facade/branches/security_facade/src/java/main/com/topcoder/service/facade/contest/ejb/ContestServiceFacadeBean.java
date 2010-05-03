@@ -527,6 +527,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String ELIGIBILITY_ID = "EligibilityGroupId";
 
+     /**
+     * The const string for configuration EligibilityAdminRole key.
+     * @since 1.2.2
+     */
+    private static final String ELIGIBILITY_ADMIN_ROLE = "EligibilityAdminRole";
+
 
     /**
      * Private constant specifying administrator role.
@@ -4115,7 +4121,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException fail to retrive user-handle
      */
     private com.topcoder.management.resource.Resource[] createContestResources(TCSubject tcSubject,
-            SoftwareCompetition contest, long billingProjectId) throws ContestServiceException {
+            SoftwareCompetition contest, long billingProjectId) throws ContestServiceException, UserServiceException {
         com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
         resources[0] = new com.topcoder.management.resource.Resource();
         resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
@@ -4149,8 +4155,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
         resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
 
+        // for private, check if admin role is set, and use that if so
+        if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) {
+
+            String adminRole = getEligibilityAdminRole(tcSubject, billingProjectId).trim();
+
+            if (adminRole.length() > 0)
+            {
+                long roleId = userService.getUserId(adminRole);
+                resources[1] = new com.topcoder.management.resource.Resource();
+                resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                resources[1].setResourceRole(managerRole);
+                resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(roleId));
+                resources[1].setProperty(RESOURCE_INFO_HANDLE, adminRole);
+                resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+            }
+        }
         // design/dev, add Components
-        if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID
+        else if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID
              || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
 
             resources[1] = new com.topcoder.management.resource.Resource();
@@ -6238,6 +6260,37 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (Exception e) {
             logger.error("Cannot retrieve eligibility id.");
             return null;
+        } finally {
+            logger.info("Exit: " + methodName);
+        }
+    }
+
+    /**
+     * Find eligibility admin role for the billing project.
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param billingProjectId; The ID of the billing project.
+     * @return The name of the eligibility group.
+     * @since 1.2.3
+     */
+    public String getEligibilityAdminRole(TCSubject tcSubject, long billingProjectId) {
+        String methodName = "getEligibilityAdminRole :  billing project id = "+ billingProjectId;
+        logger.info("Enter: " + methodName);
+        try {
+            ConfigManager cfgMgr = ConfigManager.getInstance();
+            Property rootProperty = cfgMgr.getPropertyObject(CONTEST_ELIGIBILITY_MAPPING_NAMESPACE,
+                CONTEST_ELIGIBILITY_MAPPING_PREFIX);
+            Property eligibility = rootProperty.getProperty(Long.toString(billingProjectId));
+            if (eligibility != null && !eligibility.equals("")) {
+
+                return (String)(eligibility.getValue(ELIGIBILITY_ADMIN_ROLE));
+            }
+            return "";
+        } catch (Exception e) {
+            logger.error("Cannot retrieve eligibility admin role.");
+            return "";
         } finally {
             logger.info("Exit: " + methodName);
         }
