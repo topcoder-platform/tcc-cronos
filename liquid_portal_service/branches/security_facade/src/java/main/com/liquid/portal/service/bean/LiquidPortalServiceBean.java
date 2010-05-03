@@ -409,6 +409,16 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
     /**
      * <p>
+     * Represents the IDs of billing projects that has zero contest fee.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the business methods.
+     * </p>
+     */
+    private long[] zeroContestFeeBillingIds;
+
+    /**
+     * <p>
      * Represents the session context of this bean.
      * </p>
      *
@@ -554,6 +564,26 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             } catch (NumberFormatException e) {
                 throw new LiquidPortalServiceConfigurationException(
                         "The value of 'addToNotusEligibilityGroupIds' property should be integer.", e);
+            }
+
+
+            // Assemble addToNotusEligibilityGroupIds into array of longs
+            Object[] zeroBillingIds = configObject.getPropertyValues("zeroContestFeeBillingIds");
+            if (zeroBillingIds == null) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The 'zeroContestFeeBillingIds' property should be configed.");
+            }
+            zeroContestFeeBillingIds = new long[zeroBillingIds.length];
+            try {
+                for (int i = 0; i < zeroBillingIds.length; i++) {
+                    zeroContestFeeBillingIds[i] = Long.parseLong((String) zeroBillingIds[i]);
+                }
+            } catch (ClassCastException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'zeroContestFeeBillingIds' property should be String.", e);
+            } catch (NumberFormatException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'zeroContestFeeBillingIds' property should be integer.", e);
             }
 
             // Parse projectCategories into name,key values, create
@@ -950,7 +980,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             long[] targetBillingProjectIds = new long[billingProjects.size()];
 
             for (int i = 0; i < cockpitProjects.size(); i++) {
-            	System.out.println(cockpitProjects.get(i).getName());
                 targetCockpitProjectNames[i] = cockpitProjects.get(i).getName();
             }
             for (int i = 0; i < billingProjects.size(); i++) {
@@ -1218,7 +1247,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)) {
                 
                 ContestData data = new ContestData();
+                boolean zeroContestFee = false;
                 data.setBillingProject(competitionData.getBillingProjectId());
+                if (isZeroContestFee(competitionData.getBillingProjectId()))
+                {
+                    zeroContestFee = true;
+                }
+                data.setContestAdministrationFee(0);
                 data.setName(competitionData.getContestName());
                 data.setProjectId(proj.getProjectId());
                 data.setTcDirectProjectId(proj.getProjectId());
@@ -1238,7 +1273,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
+                    
                     data.setContestTypeId(ContestTypeData.WEB_DESIGN);
                     
                 }
@@ -1254,7 +1293,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.APPLICATION_FRONT_END_DESIGN);
                     
                 }
@@ -1271,7 +1313,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(250);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(250);
+                    }
                     data.setContestTypeId(ContestTypeData.BANNERS_ICONS_DESIGN);
                     
                 }
@@ -1287,7 +1332,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(250);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(250);
+                    }
                     data.setContestTypeId(ContestTypeData.LOGO_DESIGN);
                     
                 }
@@ -1304,7 +1352,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(250);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(250);
+                    }
                     data.setContestTypeId(ContestTypeData.BANNERS_ICONS_DESIGN);
                     
                 }
@@ -1322,7 +1373,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(250);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(250);
+                    }
                     data.setContestTypeId(ContestTypeData.PRINT_PRESENTATION);
                     
                 }
@@ -1338,7 +1392,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(250);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(250);
+                    }
                     data.setContestTypeId(ContestTypeData.PRINT_PRESENTATION);
                     
                 }
@@ -1356,7 +1413,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.OTHER_DESIGN);
                     
                 }
@@ -1373,7 +1433,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.WIDGET_OR_MOBILE_SCREEN_DESIGN);
                     
                 }
@@ -1390,7 +1453,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.FRONT_END_FLASH);
                     
                 }
@@ -1407,7 +1473,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.IDEA_GENERATION);
                     
                 }
@@ -1424,7 +1493,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     prizes.add(second);
 
                     data.setDrPoints(200);
-                    data.setContestAdministrationFee(2000);
+                    if (!zeroContestFee)
+                    {
+                        data.setContestAdministrationFee(2000);
+                    }
                     data.setContestTypeId(ContestTypeData.WIREFRAMES);
                     
                 }
@@ -1585,9 +1657,18 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "public");
                 }
 
+                boolean zeroContestFee = false;
+                projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "0");
+                if (isZeroContestFee(competitionData.getBillingProjectId()))
+                {
+                    zeroContestFee = true;
+                }
                 if (competitionData.getContestTypeName().equals(CompetitionData.DESIGN))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1600,7 +1681,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
 
                     devHeader.setProperties(projectHeader.getProperties());
-                    devHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    }
                     devHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     devHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     devHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1614,7 +1698,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.DEVELOPMENT))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1628,7 +1715,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.ARCHITECTURE))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1642,7 +1732,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SUITES))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1656,7 +1749,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.ASSEMBLY))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1670,7 +1766,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.UI_PROTOTYPES))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1684,7 +1783,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.SPECIFICATION))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1698,7 +1800,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.CONCEPTUALIZATION))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1712,7 +1817,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_BUILD))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1726,7 +1834,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.RIA_COMPONENT))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "450");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -1740,7 +1851,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
                 else if (competitionData.getContestTypeName().equals(CompetitionData.TEST_SCENARIOS))
                 {
-                    projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    if (!zeroContestFee)
+                    {
+                        projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
+                    }
                     projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
@@ -3149,6 +3263,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         return tcSubject;
 
+    }
+
+
+    /**
+     * check if billing project should have zero contest fee
+     */
+    private boolean isZeroContestFee(long billing)
+    { 
+        for (int i=0; i < zeroContestFeeBillingIds.length ; i++ )
+        { 
+            if (zeroContestFeeBillingIds[i] == billing)
+            { 
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
