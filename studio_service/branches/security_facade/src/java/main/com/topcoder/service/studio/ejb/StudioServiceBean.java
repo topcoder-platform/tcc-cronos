@@ -892,7 +892,7 @@ public class StudioServiceBean implements StudioService {
      */
     public void updateContest(TCSubject tcSubject, ContestData contestData) throws PersistenceException,
             ContestNotFoundException {
-        logEnter("updateContest", tcSubject, contestData);
+        logEnter("updateContest", tcSubject.getUserId(), contestData);
         checkParameter("tcSubject", tcSubject);
         checkParameter("contestData", contestData);
 
@@ -1020,7 +1020,7 @@ public class StudioServiceBean implements StudioService {
      */
     public UploadedDocument uploadDocumentForContest(TCSubject tcSubject, UploadedDocument uploadedDocument)
             throws PersistenceException, ContestNotFoundException {
-        logEnter("uploadDocumentForContest", tcSubject, uploadedDocument);
+        logEnter("uploadDocumentForContest", tcSubject.getUserId(), uploadedDocument);
         checkParameter("tcSubject", tcSubject);
         checkParameter("uploadedDocument", uploadedDocument);
 
@@ -1095,7 +1095,7 @@ public class StudioServiceBean implements StudioService {
      */
     public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject, long contestId)
             throws PersistenceException, ContestNotFoundException {
-        logEnter("retrieveSubmissionsForContest", tcSubject, contestId);
+        logEnter("retrieveSubmissionsForContest", tcSubject.getUserId(), contestId);
         checkParameter("tcSubject", tcSubject);
         checkParameter("contestId", contestId);
 
@@ -2631,7 +2631,7 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException if any error occurs when getting contest.
      */
     public List<ContestData> getAllContests(TCSubject tcSubject) throws PersistenceException {
-        logEnter("getAllContests", tcSubject);
+        logEnter("getAllContests", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
 
         try {
@@ -3892,7 +3892,7 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException if any error occurs when getting contest.
      */
     public List<ContestData> getAllContestHeaders(TCSubject tcSubject) throws PersistenceException {
-        logEnter("getAllContestHeaders", tcSubject);
+        logEnter("getAllContestHeaders", tcSubject.getUserId());
         checkParameter("tcSubject", tcSubject);
         try {
             List<ContestData> result = new ArrayList<ContestData>();
