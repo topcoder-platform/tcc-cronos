@@ -735,6 +735,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
+
                                                  // dont show spec review project
             + "		and p.project_status_id != 3 and p.project_category_id != 27 ";
 
@@ -4182,6 +4183,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
             + " and p.project_status_id != 3 "
+            + " and (p.create_user = " + createdUser + " OR exists "
+            + "     (select user_id from user_permission_grant upg where upg.user_id = " + createdUser
+            + "      and ((upg.resource_id = p.project_id and is_studio = 0) "
+            + "        OR upg.resource_id = tcd.project_id))) "
             // dont show spec review project
             + " and p.project_category_id != 27 ";
 
