@@ -3582,7 +3582,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
                     + " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
                     + "  where (c.deleted is null or c.deleted = 0) and (c.contest_detailed_status_id is null or c.contest_detailed_status_id!=3 ) "
-
+                    + " and (c.create_user_id = " + createdUser + " OR exists "
+                    + "     (select user_id from user_permission_grant upg where upg.user_id = " + createdUser
+                    + "      and ((upg.resource_id = c.contest_id and is_studio = 1) "
+                    + "        OR upg.resource_id = p.project_id))) "
                     + " order by p.project_id";
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
