@@ -390,6 +390,7 @@ xmlns:hc="com.hillelcoren.components.*"
                     // set contest name.
                     // set start date.
                     contestNameInput.text=this.mainWidget.competition.contestData.name;
+                    mainWidget.studioContestType = true;
                     
                     if (studioContestSubTypes.length <= 1) {
                         // get the data here.
@@ -420,6 +421,7 @@ xmlns:hc="com.hillelcoren.components.*"
                     // set contest name.
                     // set start date.
                     contestNameInput.text=this.mainWidget.softwareCompetition.assetDTO.name;
+                    mainWidget.studioContestType = false;
                     
                     startTime=mainWidget.softwareCompetition.assetDTO.productionDate;
                     
