@@ -627,7 +627,7 @@ public class ProjectServicesImpl implements ProjectServices {
         ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, 
         ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, 
         ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY};
+        ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -2910,6 +2910,7 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY,
                           project.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
             projectHeader.setProperty(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "0");
+            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
 
             projectHeader.setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
