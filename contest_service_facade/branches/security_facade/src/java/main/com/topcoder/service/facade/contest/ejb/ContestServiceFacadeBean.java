@@ -1363,12 +1363,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     throw new PersistenceException("No write permission on contest");
                 }
 
-                if (studioContest.getBillingProject() > 0) {
-                    if (!billingProjectDAO.checkClientProjectPermission(userName, studioContest.getBillingProject())) {
-                        throw new PersistenceException("No permission on billing project "
-                                + studioContest.getBillingProject());
-                    }
-                }
+                checkStudioBillingProjectPermission(tcSubject, contest.getContestData());
             }
 
             // BUGR-1363
