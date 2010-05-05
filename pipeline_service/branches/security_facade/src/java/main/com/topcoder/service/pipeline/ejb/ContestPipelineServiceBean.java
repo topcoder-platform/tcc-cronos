@@ -1293,7 +1293,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
     public List<CommonPipelineData> getCommonPipelineData(TCSubject tcSubject, Date startDate, Date endDate, boolean overdueContests)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG, "Enter getCommonPipelineData(TCSubject tcSubject,Date startDate, Date endDate, boolean overdueContests) method.");
-        logger.log(Level.DEBUG, "with parameter tcSubject:" + tcSubject + ",startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
+        logger.log(Level.DEBUG, "with parameter tcSubject:" + tcSubject.getUserId() + ",startDate:" + startDate + ", endDate: " + endDate + ", overdueContests: " + overdueContests);
         ExceptionUtils.checkNull(startDate, null, null, "The startDate is null.");
         ExceptionUtils.checkNull(endDate, null, null, "The endDate is null.");
         ExceptionUtils.checkNull(tcSubject, null, null, "The tcSubject is null.");
