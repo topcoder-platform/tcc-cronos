@@ -1184,7 +1184,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
-            TCSubject tcSubject = getTCSubject(false);
+            TCSubject tcSubject = getTCSubject(true);
 
             ProjectData proj = null;
             List<Warning> warnings = new ArrayList<Warning>();
@@ -2027,7 +2027,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             principal.setName(requestorInfo.getHandle());
             principal.setUserId(requestorInfo.getUserId());
 
-            TCSubject tcSubject = getTCSubject(false);
+            TCSubject tcSubject = getTCSubject(true);
 
 
         try {
@@ -3067,7 +3067,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             logError(e, methodName);
             // send JIRA email
             sendJiraNotification(userInfo.getHandle(), methodName , e);
-            warnings.add(getWarning("Can not add user to notusEligibilityGroup", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
+            warnings.add(getWarning("Can not add user to notusEligibilityGroup", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_GROUPS, e));
         }
     }
 
