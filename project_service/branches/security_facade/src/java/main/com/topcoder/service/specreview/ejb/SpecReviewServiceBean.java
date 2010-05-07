@@ -405,7 +405,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      */
     public void markReviewCommentSeen(TCSubject tcSubject, long commentId) throws SpecReviewServiceException {
         try {
-            logEnter("markReviewCommentSeen(tcSubject, commentId)", tcSubject, commentId);
+            logEnter("markReviewCommentSeen(tcSubject, commentId)", tcSubject.getUserId(), commentId);
 
 
             String userName = getUserName(tcSubject);
@@ -456,7 +456,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
     public void saveReviewComment(TCSubject tcSubject, long contestId, boolean studio, String sectionName,
             String comment, String role) throws SpecReviewServiceException {
         try {
-            logEnter("saveReviewComment(tcSubject, contestId, studio, sectionName, comment, role)", tcSubject, contestId, studio,
+            logEnter("saveReviewComment(tcSubject, contestId, studio, sectionName, comment, role)", tcSubject.getUserId(), contestId, studio,
                     sectionName, comment, role);
 
             String userName = getUserName(tcSubject);
@@ -623,7 +623,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
     public void saveReviewStatus(TCSubject tcSubject, long contestId, boolean studio, String sectionName, String comment, boolean isPass,
             String role) throws SpecReviewServiceException {
         try {
-            logEnter("saveReviewStatus(tcSubject, contestId, studio, sectionName, isPass, role)", tcSubject, contestId, studio,
+            logEnter("saveReviewStatus(tcSubject, contestId, studio, sectionName, isPass, role)", tcSubject.getUserId(), contestId, studio,
                     sectionName, isPass, role);
 
 
@@ -924,7 +924,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      */
     public void markReviewDone(TCSubject tcSubject, long contestId, boolean studio) throws SpecReviewServiceException {
         try {
-            logEnter("markReviewDone(tcSubject, contestId, studio)", tcSubject, contestId, studio);
+            logEnter("markReviewDone(tcSubject, contestId, studio)", tcSubject.getUserId(), contestId, studio);
 
 
             String userName = getUserName(tcSubject);
@@ -965,7 +965,7 @@ public class SpecReviewServiceBean implements SpecReviewServiceRemote, SpecRevie
      */
     public void markReadyForReview(TCSubject tcSubject, long contestId, boolean studio) throws SpecReviewServiceException {
         try {
-            logEnter("markReadyForReview(tcSubject, contestId, studio)", tcSubject, contestId, studio);
+            logEnter("markReadyForReview(tcSubject, contestId, studio)", tcSubject.getUserId(), contestId, studio);
 
             String userName = getUserName(tcSubject);
 
