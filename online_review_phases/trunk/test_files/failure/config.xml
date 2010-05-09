@@ -15,84 +15,81 @@
             <Property name="ExtendedScheme">
                 <Value>Manager</Value>
             </Property>
-            <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
-            </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress" >
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -116,8 +113,7 @@
         <Property name="ConnectionName">
             <Value>dbconnection</Value>
         </Property>
-
-      <Property name="ProjectLinkManager">
+        <Property name="ProjectLinkManager">
             <Property name="ClassName">
                 <Value>com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl</Value>
             </Property>
@@ -125,7 +121,6 @@
                 <Value>com.topcoder.management.project.persistence.link.ProjectLinkManager</Value>
             </Property>
         </Property>
-
         <Property name="SearchBundleManagerNS">
             <Value>com.topcoder.search.builder.Upload_Resource_Search</Value>
         </Property>
@@ -297,83 +292,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Submission handler -->
@@ -395,83 +390,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Screening handler -->
@@ -493,83 +488,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Review handler -->
@@ -591,83 +586,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Appeals handler -->
@@ -689,83 +684,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Appeals Response handler -->
@@ -787,83 +782,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Aggregation handler -->
@@ -885,83 +880,83 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
     </Config>
         <!-- Default namespace for Aggregation Review handler -->
@@ -983,85 +978,84 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
-
     </Config>
         <!-- Default namespace for Final Fix handler -->
     <Config name="com.cronos.onlinereview.phases.FinalFixPhaseHandler">
@@ -1082,85 +1076,84 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
-
     </Config>
         <!-- Default namespace for Final Review handler -->
     <Config name="com.cronos.onlinereview.phases.FinalReviewPhaseHandler">
@@ -1181,85 +1174,84 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
-
     </Config>
         <!-- Default namespace for Approval handler -->
     <Config name="com.cronos.onlinereview.phases.ApprovalPhaseHandler">
@@ -1280,85 +1272,84 @@
                 <Value>Manager</Value>
             </Property>
             <Property name="EmptyScheme">
-               <!-- such definition, is invalid. just for coverage purpose -->
+        <!-- such definition, is invalid. just for coverage purpose -->
             </Property>
         </Property>
         <Property name="DefaultScheme">
-	        <Property name="StartPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
-	        <Property name="EndPhaseEmail">
-	        	<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase End</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	        </Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
         <Property name="ExtendedScheme">
-        	<Property name="StartPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-	            <Property name="Priority">
-	            	<Value>1</Value>
-	            </Property>
-        	</Property>
-        	<Property name="EndPhaseEmail">
-        		<Property name="SendEmail">
-	        		<Value>yes</Value>
-	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
-	            <Property name="EmailTemplateName">
-	                <Value>test_files/valid_email_template_manager.txt</Value>
-	            </Property>
-	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
-	            </Property>
-	            <Property name="EmailFromAddress">
-	                <Value>topcoder.developer@gmail.com</Value>
-	            </Property>
-        	</Property>
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+                <Property name="Priority">
+                    <Value>1</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template_manager.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
         </Property>
-
     </Config>
         <!-- Namespace to instantiate the SreeningManager through ObjectFactory -->
     <Config name="com.cronos.onlinereview.phases.failuretests.screening">

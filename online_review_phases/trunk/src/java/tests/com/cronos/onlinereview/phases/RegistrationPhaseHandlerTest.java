@@ -261,7 +261,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
 
             // test with scheduled status, but time not passed.
             registration.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertFalse("can start should return false", handler.canPerform(registration));
+            handler.canPerform(registration);
         } finally {
             closeConnection();
             cleanTables();
