@@ -90,7 +90,7 @@ import java.util.Map;
  *            &lt;/Property&gt;
  *            &lt;Property name="ExtendedScheme"&gt;
  *                &lt;Value&gt;Manager&lt;/Value&gt;
- *                &lt;Value&gt;Observer&lt;/Value&gt;	
+ *                &lt;Value&gt;Observer&lt;/Value&gt;
  *            &lt;/Property&gt;
  *        &lt;/Property&gt;
  *        &lt;Property name="DefaultScheme"&gt;
@@ -188,7 +188,8 @@ import java.util.Map;
  * Handle\: %USER_HANDLE{User handle}%&lt;br/&gt;
  * Contest\: &lt;a href\="%OR_LINK%"&gt;%PROJECT_NAME{Project name}%&lt;/a&gt;&lt;br/&gt;
  * Version\: %PROJECT_VERSION{Project version}%&lt;br/&gt;
- * This is the notification about %PHASE_OPERATION{The phase operation - start/end}% of the %PHASE_TYPE{Phase type}% phase.&lt;br/&gt;
+ * This is the notification about %PHASE_OPERATION{The phase operation - start/end}% of
+ *  the %PHASE_TYPE{Phase type}% phase.&lt;br/&gt;
  * </pre>
  * </p>
  *
@@ -273,13 +274,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
-
-    /**
-     * This constant stores Online Review's project details page url property name.
-     *
-     * @since 1.1
-     */
-    private static final String PROP_PROJECT_DETAILS_URL = "ProjectDetailsURL";
 
     /**
      * The factory instance used to create connection to the database. It is initialized in the constructor using
@@ -437,7 +431,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
 
         // get project details base url
-        projectDetailsBaseURL = PhasesHelper.getPropertyValue(managerHelperNamespace, PROP_PROJECT_DETAILS_URL, true);
+        projectDetailsBaseURL = managerHelper.getProjectDetailsBaseURL();
     }
 
     /**
@@ -658,7 +652,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 String roleName = role.getName();
 
                 EmailOptions options = bStart ? startPhaseEmailOptions.get(roleName)
-				                              : endPhaseEmailOptions.get(roleName);
+                                              : endPhaseEmailOptions.get(roleName);
 
                 if (options == null || !options.isSend())
                     continue;
@@ -887,7 +881,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @return EmailOptions instance with the setting from property
      * @throws ConfigurationException if any error occurs during retrieving
      */
-    private static EmailOptions createEmailOptions(String namespace, String propertyPrefix) throws ConfigurationException {
+    private static EmailOptions createEmailOptions(String namespace, String propertyPrefix)
+        throws ConfigurationException {
         EmailOptions options = new EmailOptions();
         options.setFromAddress(PhasesHelper.getPropertyValue(namespace,
                 format(PROP_EMAIL_FROM_ADDRESS, propertyPrefix), true));
@@ -951,7 +946,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private static Map<String, List<String>> getSchemes(String namespace)
         throws ConfigurationException {
         try {
-            com.topcoder.util.config.Property schemesProperty = ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
+            com.topcoder.util.config.Property schemesProperty =
+                ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
             if (schemesProperty == null)
                 return new HashMap<String, List<String>>();
 

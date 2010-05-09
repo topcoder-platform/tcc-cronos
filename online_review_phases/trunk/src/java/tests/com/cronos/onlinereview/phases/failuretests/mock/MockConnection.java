@@ -4,27 +4,36 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.NClob;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLWarning;
+import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.Struct;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * <p>A mock implementation of {@link Connection} class to be used for testing.
  * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
  * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
  *
- * @author  isv
- * @version 1.0
+ * @author  isv, moon.river
+ * @since 1.0
+ * @version 1.3
  */
 public class MockConnection implements Connection {
 
@@ -1594,6 +1603,71 @@ public class MockConnection implements Connection {
      * <p>Initializes the initial state for all created instances of <code>MockConnection</code> class.</p>
      */
     public static void init() {
+    }
+
+    public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Blob createBlob() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Clob createClob() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public NClob createNClob() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public SQLXML createSQLXML() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Properties getClientInfo() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public String getClientInfo(String name) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean isValid(int timeout) throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

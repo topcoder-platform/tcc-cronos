@@ -3,10 +3,9 @@
  */
 package com.cronos.onlinereview.phases.failuretests;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
-
-import junit.framework.TestCase;
 
 import com.cronos.onlinereview.phases.ApprovalPhaseHandler;
 import com.cronos.onlinereview.phases.PhaseNotSupportedException;
@@ -27,7 +26,7 @@ import com.topcoder.util.config.ConfigManager;
  * @version 1.1
  * @since 1.1
  */
-public class ApprovalPhaseHandlerTest extends TestCase {
+public class ApprovalPhaseHandlerTest extends AbstractTestCase {
 
 	/**
 	 * The instance to test.
@@ -39,7 +38,6 @@ public class ApprovalPhaseHandlerTest extends TestCase {
 	 */
     public static final String[] CONFIGURATION_FILES = new String[] {
         "failure/DB_Factory.xml",
-        "failure/Logging_Wrapper.xml",
         "failure/Document_Manager.xml",
         "failure/Phase_Handler.xml",
         "failure/Manager_Helper.xml",
@@ -61,10 +59,14 @@ public class ApprovalPhaseHandlerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
         ConfigManager configManager = ConfigManager.getInstance();
-        for (int i = 0; i < CONFIGURATION_FILES.length; i++) {
-        	configManager.add(CONFIGURATION_FILES[i]);
+
+        Iterator iter = configManager.getAllNamespaces();
+        while (iter.hasNext()) {
+            configManager.removeNamespace((String) iter.next());
         }
-        instance = new ApprovalPhaseHandler("com.cronos.onlinereview.phases.OtherHandler");
+        ConfigHelper.loadConfiguration(new File("failure/config.xml"));
+        ConfigHelper.loadConfiguration(new File("failure/Failure.xml"));
+        instance = new ApprovalPhaseHandler("com.cronos.onlinereview.phases.failuretests");
 	}
 
 	/**

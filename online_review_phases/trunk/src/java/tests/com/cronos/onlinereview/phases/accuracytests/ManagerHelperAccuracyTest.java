@@ -1,7 +1,6 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
-import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.UserRetrieval;
 import com.cronos.onlinereview.phases.ManagerHelper;
 import com.topcoder.management.deliverable.UploadManager;
@@ -55,6 +54,7 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest {
      */
     public void testConstructor() throws Exception {
         ManagerHelper helper = new ManagerHelper();
+        assertNotNull("The instance must be created", helper);
     }
 
     /**

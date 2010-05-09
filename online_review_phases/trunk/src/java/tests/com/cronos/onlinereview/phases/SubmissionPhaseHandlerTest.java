@@ -208,7 +208,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testCanPerformWithScheduled() throws Exception {
-        SubmissionPhaseHandler handler = new SubmissionPhaseHandler(SubmissionPhaseHandler.DEFAULT_NAMESPACE);
+        SubmissionPhaseHandler handler = new SubmissionPhaseHandler();
 
         try {
             cleanTables();
@@ -365,7 +365,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
      * @since 1.2
      */
     public void testPerform_no_submission_stop() throws Exception {
-        SubmissionPhaseHandler handler = new SubmissionPhaseHandler(SubmissionPhaseHandler.DEFAULT_NAMESPACE);
+        SubmissionPhaseHandler handler = new SubmissionPhaseHandler();
 
         try {
             cleanTables();
@@ -440,7 +440,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
      * @since 1.2
      */
     public void testPerform_with_submission_stop() throws Exception {
-        SubmissionPhaseHandler handler = new SubmissionPhaseHandler(SubmissionPhaseHandler.DEFAULT_NAMESPACE);
+        SubmissionPhaseHandler handler = new SubmissionPhaseHandler();
 
         try {
             cleanTables();
@@ -486,6 +486,103 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
         } finally {
             cleanTables();
             closeConnection();
+        }
+    }
+
+    /**
+     * Tests the SubmissionPhaseHandler() constructor and canPerform with Scheduled statuses.
+     *
+     * @throws Exception not under test.
+     */
+    public void testCanPerformHandlerWithOpen1() throws Exception {
+        SubmissionPhaseHandler handler = new SubmissionPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase submissionPhase = phases[1];
+
+            // test with open status.
+            submissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            submissionPhase.setAttribute("Manual Screening", "Yes");
+
+            Connection conn = getConnection();
+
+            Phase screeningPhase = phases[2];
+            long screeningPhaseId = screeningPhase.getId();
+            Resource submitter = super.createResource(1, submissionPhase.getId(), 1, 1);
+            Resource reviewer1 = super.createResource(2, screeningPhaseId, 1, 2);
+            Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);
+
+            Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
+            Submission submission = createSubmission(1, 1, 1);
+            Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
+            Review review = createReview(1, reviewer1.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
+
+            insertResources(conn, new Resource[] {submitter, reviewer1, reviewer2});
+            insertResourceInfo(conn, submitter.getId(), 1, "11111");
+            insertResourceInfo(conn, reviewer1.getId(), 1, "11112");
+            insertResourceInfo(conn, reviewer2.getId(), 1, "11113");
+            insertUploads(conn, new Upload[] {upload});
+            insertSubmissions(conn, new Submission[] {submission});
+            insertScorecards(conn, new Scorecard[] {scorecard});
+            insertReviews(conn, new Review[] {review});
+            assertTrue("canPerform should have returned true", handler.canPerform(submissionPhase));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the SubmissionPhaseHandler() constructor and canPerform with auto screening.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testCanPerformHandlerWithOpen2() throws Exception {
+        SubmissionPhaseHandler handler = new SubmissionPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase submissionPhase = phases[1];
+
+            // test with open status.
+            submissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+            submissionPhase.setAttribute("Submission Number", "1");
+
+            Connection conn = getConnection();
+
+            Phase screeningPhase = phases[2];
+            long screeningPhaseId = screeningPhase.getId();
+            Resource submitter = super.createResource(1, submissionPhase.getId(), 1, 1);
+            Resource reviewer1 = super.createResource(2, screeningPhaseId, 1, 2);
+            Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);
+
+            Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
+            Submission submission = createSubmission(1, 1, 1);
+            Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
+            Review review = createReview(1, reviewer1.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
+
+            insertResources(conn, new Resource[] {submitter, reviewer1, reviewer2});
+            insertResourceInfo(conn, submitter.getId(), 1, "11111");
+            insertResourceInfo(conn, reviewer1.getId(), 1, "11112");
+            insertResourceInfo(conn, reviewer2.getId(), 1, "11113");
+            insertUploads(conn, new Upload[] {upload});
+            insertSubmissions(conn, new Submission[] {submission});
+            insertScorecards(conn, new Scorecard[] {scorecard});
+            insertReviews(conn, new Review[] {review});
+            insertScreeningTask(conn, upload.getId());
+            assertTrue("canPerform should have returned true", handler.canPerform(submissionPhase));
+        } finally {
+            closeConnection();
+            cleanTables();
         }
     }
 }

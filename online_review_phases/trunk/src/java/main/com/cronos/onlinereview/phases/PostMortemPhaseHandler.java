@@ -37,7 +37,7 @@ import com.topcoder.project.phases.Phase;
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Updated {@link #allPostMortemReviewsDone(Phase)} method to use appropriate logic for searching for review
- *     scorecards tied to project but not to phase type.</p>
+ *     scorecards tied to project but not to phase type.</li>
  *   </ol>
  * </p>
  *
@@ -203,7 +203,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                                                                     phase.getProject().getId(),
                                                                     new String[] {POST_MORTEM_REVIEWER_ROLE_NAME},
                                                                     null);
-            
+
             // Check whether all the reviews are committed. Return false if there is at least one uncommitted review
             for (int i = 0; i < reviews.length; ++i) {
                 if (!reviews[i].isCommitted()) {

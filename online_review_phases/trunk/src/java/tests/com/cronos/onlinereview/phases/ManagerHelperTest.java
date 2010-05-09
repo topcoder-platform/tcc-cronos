@@ -8,8 +8,8 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Test cases for ManagerHelper class.
  *
- * @author bose_java
- * @version 1.0
+ * @author bose_java, TCSDEVELOPER
+ * @version 1.3
  */
 public class ManagerHelperTest extends BaseTest {
 
@@ -70,6 +70,14 @@ public class ManagerHelperTest extends BaseTest {
         } catch (IllegalArgumentException ex) {
             // expected.
         }
+    }
+
+    /**
+     * Tests that ManagerHelper.getProjectLinkManager() returns non-null value.
+     */
+    public void testGetProjectLinkManager() {
+        assertNotNull("getProjectLinkManager() returned null.", managerHelper
+                        .getProjectLinkManager());
     }
 
     /**

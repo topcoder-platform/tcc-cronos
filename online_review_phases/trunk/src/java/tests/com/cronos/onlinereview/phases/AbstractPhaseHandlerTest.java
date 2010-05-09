@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -11,25 +11,28 @@ import com.topcoder.util.config.ConfigManager;
 
 import java.sql.Connection;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * All test cases for AbstractPhaseHandler class.
- *
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * All test cases for AbstractPhaseHandler class.
  * </p>
- * @author bose_java, waits
- * @version 1.2
+ * <p>
+ * Version 1.3 change notes : since the configuration for phases handler are changed, this test cases are fully updated
+ * correspondingly.
+ * </p>
+ *
+ * @author bose_java, waits, TCSDEVELOPER
+ * @version 1.3
  */
 public class AbstractPhaseHandlerTest extends BaseTest {
     /**
-     * sets up the environment required for test cases for this class.
+     * Sets up the environment required for test cases for this class.
      *
-     * @throws Exception not under test.
+     * @throws Exception
+     *             not under test.
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -50,7 +53,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * cleans up the environment required for test cases for this class.
      *
-     * @throws Exception not under test.
+     * @throws Exception
+     *             not under test.
      */
     protected void tearDown() throws Exception {
         super.tearDown();
@@ -59,7 +63,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will null argument.
      *
-     * @throws ConfigurationException not under test.
+     * @throws ConfigurationException
+     *             not under test.
      */
     public void testAbstractPhaseHandlerWithNull() throws ConfigurationException {
         try {
@@ -73,7 +78,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will empty argument.
      *
-     * @throws ConfigurationException not under test.
+     * @throws ConfigurationException
+     *             not under test.
      */
     public void testAbstractPhaseHandlerWithEmpty() throws ConfigurationException {
         try {
@@ -87,11 +93,10 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will not-exists argument.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithNotExistNS()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithNotExistNS() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("notExist");
             fail("The namespace does not exist.");
@@ -103,11 +108,10 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ConnectionFactoryNS' is missing.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_ConnectionFactoryNS_invalid()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_ConnectionFactoryNS_invalid() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid1");
             fail("The namespace is invalid.");
@@ -119,11 +123,10 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ManagerHelperNamespace' is invalid.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_ManagerHelperNamespace_invalid()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_ManagerHelperNamespace_invalid() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid2");
             fail("The namespace is invalid.");
@@ -133,13 +136,12 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail' is missing.
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'EmailTemplateSource' is missing.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_StartPhaseEmail_invalid()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_EmailTemplateSource_invalid() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid3");
             fail("The namespace is invalid.");
@@ -149,13 +151,13 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'EndPhaseEmail' is missing.
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/EmailFromAddress' is
+     * missing.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_EndPhaseEmail_invalid()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_EmailFromAddress_missing() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid4");
             fail("The namespace is invalid.");
@@ -165,14 +167,13 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/SendEmail' is
-     * invalid.
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/EmailTemplateName'
+     * is invalid.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_SendEmail_invalid()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_EmailTemplateName_invalid() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid5");
             fail("The namespace is invalid.");
@@ -182,14 +183,13 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/EmailFromAddress'
-     * is missing.
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/SendInvalid' is
+     * invalid value.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    public void testAbstractPhaseHandlerWithInvalidCF_EmailFromAddress_missing()
-        throws Exception {
+    public void testAbstractPhaseHandlerWithInvalidCF_SendEmail_invalid() throws Exception {
         try {
             new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid6");
             fail("The namespace is invalid.");
@@ -199,54 +199,102 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will valid argument.
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/Priority' is invalid
+     * value.
      *
-     * @throws ConfigurationException not under test.
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
-    @SuppressWarnings("unchecked")
-    public void testAbstractPhaseHandler_accuracy() throws ConfigurationException {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
-
-        //verify
-        Map<String, EmailOptions> startPhaseEmailOptions =
-            (Map<String, EmailOptions>) getPrivateField(AbstractPhaseHandler.class, handler, "startPhaseEmailOptions");
-        assertNotNull("The field is null.", startPhaseEmailOptions);
-        assertEquals("The field is invalid.", 6, startPhaseEmailOptions.size());
-        assertEquals("The value is invalid.", "topcoder.developer@gmail.com",
-                startPhaseEmailOptions.get("default").getFromAddress());
-        assertEquals("The value is invalid.", "Phase Start", startPhaseEmailOptions.get("Manager").getSubject());
-        assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Reviewer"));
-        assertEquals("The value is invalid.", 2, startPhaseEmailOptions.get("Reviewer").getPriority());
-        //verify
-        Map<String, EmailOptions> endPhaseEmailOptions =
-            (Map<String, EmailOptions>) getPrivateField(AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
-        assertNotNull("The field is null.", endPhaseEmailOptions);
-        assertEquals("The field is invalid.", 6, endPhaseEmailOptions.size());
-        assertEquals("The value is invalid.", "topcoder.developer@gmail.com",
-                endPhaseEmailOptions.get("default").getFromAddress());
-        assertEquals("The value is invalid.", "Phase Start", endPhaseEmailOptions.get("Manager").getSubject());
-        assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
-        assertEquals("The value is invalid.", 0, endPhaseEmailOptions.get("Reviewer").getPriority());
+    public void testAbstractPhaseHandlerWithInvalidCF_Priority_invalid() throws Exception {
+        try {
+            new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid7");
+            fail("The namespace is invalid.");
+        } catch (ConfigurationException ex) {
+            // expected.
+        }
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest
-     * config.
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest config.
      *
-     * @throws ConfigurationException not under test.
-     * @since 1.2
+     * @throws ConfigurationException
+     *             not under test.
      */
     public void testAbstractPhaseHandlerWithValid() throws ConfigurationException {
         new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.simplest");
     }
 
     /**
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest config.
+     *
+     * @throws ConfigurationException
+     *             not under test.
+     */
+    public void testAbstractPhaseHandlerWithValid1() throws ConfigurationException {
+        new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.emptySchemes");
+    }
+
+    /**
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument.
+     *
+     * @throws ConfigurationException
+     *             not under test.
+     */
+    @SuppressWarnings("unchecked")
+    public void testAbstractPhaseHandler_accuracy() throws ConfigurationException {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+
+        // verify
+        Map<String, EmailOptions> startPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
+                AbstractPhaseHandler.class, handler, "startPhaseEmailOptions");
+        assertNotNull("The field is null.", startPhaseEmailOptions);
+        assertEquals("The field is invalid.", 2, startPhaseEmailOptions.size());
+        assertEquals("The value is invalid.", "Phase Start", startPhaseEmailOptions.get("Manager").getSubject());
+        assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Reviewer"));
+        assertEquals("The value is invalid.", 0, startPhaseEmailOptions.get("Reviewer").getPriority());
+        // verify
+        Map<String, EmailOptions> endPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
+                AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
+        assertNotNull("The field is null.", endPhaseEmailOptions);
+        assertEquals("The field is invalid.", 2, endPhaseEmailOptions.size());
+        assertEquals("The value is invalid.", "Phase Start", endPhaseEmailOptions.get("Manager").getSubject());
+        assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
+        assertEquals("The value is invalid.", 0, endPhaseEmailOptions.get("Reviewer").getPriority());
+    }
+
+    /**
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument.
+     *
+     * @throws ConfigurationException
+     *             not under test.
+     */
+    @SuppressWarnings("unchecked")
+    public void testAbstractPhaseHandler_accuracy1() throws ConfigurationException {
+        AbstractPhaseHandler handler =
+            new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.matchAllRoles");
+
+        // verify
+        Map<String, EmailOptions> startPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
+                AbstractPhaseHandler.class, handler, "startPhaseEmailOptions");
+        assertNotNull("The field is null.", startPhaseEmailOptions);
+        assertEquals("The field is invalid.", 14, startPhaseEmailOptions.size());
+        assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Manager"));
+        assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Reviewer"));
+
+        // verify
+        Map<String, EmailOptions> endPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
+                AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
+        assertNotNull("The field is null.", endPhaseEmailOptions);
+        assertEquals("The field is invalid.", 14, endPhaseEmailOptions.size());
+        assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Manager"));
+        assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
+    }
+
+    /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with null.
      *
-     * @throws PhaseHandlingException not under test.
-     * @throws ConfigurationException not under test.
-     * @since 1.0
+     * @throws Exception
+     *             into JUnit
      */
     public void testSendEmail_nullPhase() throws PhaseHandlingException, ConfigurationException {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -262,11 +310,10 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null phase.
      *
-     * @throws PhaseHandlingException not under test.
-     * @throws ConfigurationException not under test.
-     * @since 1.0
+     * @throws Exception
+     *             into JUnit
      */
-    public void testSendEmailpb_nullPhase() throws PhaseHandlingException, ConfigurationException {
+    public void testSendEmailpb_nullPhase() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
 
         try {
@@ -280,8 +327,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
      *
-     * @throws Exception into JUnit
-     * @since 1.0
+     * @throws Exception
+     *             into JUnit
      */
     public void testSendEmailpb_nullMap() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -290,15 +337,15 @@ public class AbstractPhaseHandlerTest extends BaseTest {
             handler.sendEmail(createPhase(1, 1, "Scheduled", 1, "Registration"), null);
             fail("sendEmail(Phase, Map) did not throw IllegalArgumentException for null Map.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
     public void testSendEmailpb_invalidMap() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -306,20 +353,20 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         try {
             Map<String, Object> values = new HashMap<String, Object>();
 
-            //invalid value
+            // invalid value
             values.put("SUBMITTER", null);
             handler.sendEmail(createPhase(1, 1, "Scheduled", 1, "Registration"), values);
             fail("sendEmail(Phase, Map) did not throw IllegalArgumentException for invalid Map.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
      *
-     * @throws Exception into JUnit
-     * @since 1.2
+     * @throws Exception
+     *             into JUnit
      */
     public void testSendEmailpb_invalidMap2() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -327,21 +374,20 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         try {
             Map<String, Object> values = new HashMap<String, Object>();
 
-            //invalid value
+            // invalid value
             values.put(" ", "value");
             handler.sendEmail(createPhase(1, 1, "Scheduled", 1, "Registration"), values);
             fail("sendEmail(Phase, Map) did not throw IllegalArgumentException for invalid Map.");
         } catch (IllegalArgumentException ex) {
-            //expected
+            // expected
         }
     }
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Scheduled phase status.
-     * Update the case in version 1.2.
      *
-     * @throws Exception not under test.
-     * @since 1.0
+     * @throws Exception
+     *             not under test.
      */
     public void testSendEmailWithStartPhase() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -361,9 +407,9 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     * Update the case in version 1.2.
-     * @throws Exception not under test.
-     * @since 1.0
+     *
+     * @throws Exception
+     *             not under test.
      */
     public void testSendEmailWithStopPhase() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -383,10 +429,84 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithStopPhase1() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE + "1");
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 2, "Open", 1, "Registration");
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with zero length phase, email should not send.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithZeroLenthPhase() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 2, "Open", 1, "Registration");
+            phase.setLength(0);
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with scheduled start date after scheduled end date.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithWrongScheduledDate() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 2, "Open", 1, "Registration");
+
+            Date date = new Date();
+            phase.setScheduledEndDate(date);
+            phase.setScheduledStartDate(new Date(date.getTime() + 1000));
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
      * Tests AbstractPhaseHandler.createConnection() for accuracy.
      *
-     * @throws Exception not under test.
-     * @since 1.0
+     * @throws Exception
+     *             not under test.
      */
     public void testCreateConnection() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
@@ -405,11 +525,80 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests AbstractPhaseHandler.getManagerHelper() returns non-null.
      *
-     * @throws Exception not under test.
-     * @since 1.0
+     * @throws Exception
+     *             not under test.
      */
     public void testGetManagerHelper() throws Exception {
         AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
         assertNotNull("ManagerHelper not instantiated.", handler.getManagerHelper());
+    }
+
+    /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithStartPhase1() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE + "2");
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 1, "Scheduled", 1, "Registration");
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithStartPhase2() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE + "3");
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 1, "Scheduled", 1, "Registration");
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testSendEmailWithStartPhase3() throws Exception {
+        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE + "4");
+
+        try {
+            cleanTables();
+            setupProjectResourcesNotification("All");
+
+            Phase phase = createPhase(1, 1, "Scheduled", 1, "Registration");
+
+            handler.sendEmail(phase);
+
+            // manually check mailbox.
+        } finally {
+            cleanTables();
+        }
     }
 }

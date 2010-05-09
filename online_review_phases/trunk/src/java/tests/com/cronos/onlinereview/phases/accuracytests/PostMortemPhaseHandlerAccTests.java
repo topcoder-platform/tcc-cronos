@@ -22,8 +22,7 @@ import java.util.Date;
 
 
 /**
- * Accuracy tests for the new added phase handler
- * <code>PostMortemPhaseHandler</code> in version 1.1.
+ * Accuracy tests for the new added phase handler <code>PostMortemPhaseHandler</code> in version 1.1.
  *
  * @author myxgyy
  * @version 1.0
@@ -43,8 +42,7 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
     }
 
     /**
-     * cleans up the environment required for test cases for this
-     * class.
+     * cleans up the environment required for test cases for this class.
      *
      * @throws Exception to JUnit.
      */
@@ -76,20 +74,17 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
         // time has passed, but dependency not met.
         postMortemPhase.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
         // set the number of required post-mortem reviewer to 1
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // time has passed and dependency met
-        postMortemPhase.getAllDependencies()[0].getDependency()
-                                               .setPhaseStatus(PhaseStatus.CLOSED);
+        postMortemPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
         assertTrue("canPerform should return true when dependencies met and time is up",
             handler.canPerform(postMortemPhase));
     }
@@ -111,8 +106,7 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setPhaseStatus(PhaseStatus.OPEN);
 
         // dependencies not met
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
         // remove all dependencies
         for (int i = 0; i < postMortemPhase.getAllDependencies().length; ++i) {
@@ -123,48 +117,41 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // dependencies met but without post-mortem reviewer
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
         // insert post-mortem reviewer
-        Resource postMortemReviewer = createResource(101,
-                postMortemPhase.getId(), project.getId(), 14);
+        Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
 
         Connection conn = getConnection();
 
         // insert records
-        insertResources(conn, new Resource[] {postMortemReviewer});
+        insertResources(conn, new Resource[] { postMortemReviewer });
 
         // we need to insert an external reference id
         // which references to resource's user id in resource_info table
         insertResourceInfo(conn, postMortemReviewer.getId(), 1, "1001");
 
         // there is not scorecard filled
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
         // insert a scorecard here
-        Upload upload = createUpload(101, project.getId(),
-                postMortemReviewer.getId(), 4, 1, "parameter");
+        Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
         Submission submission = createSubmission(101, upload.getId(), 1);
         submission.setUpload(upload);
 
-        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0",
-                75.0f, 100.0f);
+        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
 
         // scorecard not committed
-        Review postMortemScorecard = createReview(11,
-                postMortemReviewer.getId(), submission.getId(),
+        Review postMortemScorecard = createReview(11, postMortemReviewer.getId(), submission.getId(),
                 scorecard1.getId(), false, 90.0f);
 
-        this.insertUploads(conn, new Upload[] {upload});
-        this.insertSubmissions(conn, new Submission[] {submission});
-        this.insertScorecards(conn, new Scorecard[] {scorecard1});
-        this.insertReviews(conn, new Review[] {postMortemScorecard});
+        this.insertUploads(conn, new Upload[] { upload });
+        this.insertSubmissions(conn, new Submission[] { submission });
+        this.insertScorecards(conn, new Scorecard[] { scorecard1 });
+        this.insertReviews(conn, new Review[] { postMortemScorecard });
 
         // scorecard not committed return false
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(postMortemPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
     }
 
     /**
@@ -189,39 +176,34 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // insert post-mortem reviewer
-        Resource postMortemReviewer = createResource(101,
-                postMortemPhase.getId(), project.getId(), 14);
+        Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
 
         Connection conn = getConnection();
 
         // insert records
-        insertResources(conn, new Resource[] {postMortemReviewer});
+        insertResources(conn, new Resource[] { postMortemReviewer });
 
         // we need to insert an external reference id
         // which references to resource's user id in resource_info table
         insertResourceInfo(conn, postMortemReviewer.getId(), 1, "1001");
 
         // insert a scorecard here
-        Upload upload = createUpload(101, project.getId(),
-                postMortemReviewer.getId(), 4, 1, "parameter");
+        Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
         Submission submission = createSubmission(101, upload.getId(), 1);
         submission.setUpload(upload);
 
-        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0",
-                75.0f, 100.0f);
+        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
 
         // insert a committed scorecard
-        Review postMortemScorecard = createReview(11,
-                postMortemReviewer.getId(), submission.getId(),
+        Review postMortemScorecard = createReview(11, postMortemReviewer.getId(), submission.getId(),
                 scorecard1.getId(), true, 90.0f);
 
-        this.insertUploads(conn, new Upload[] {upload});
-        this.insertSubmissions(conn, new Submission[] {submission});
-        this.insertScorecards(conn, new Scorecard[] {scorecard1});
-        this.insertReviews(conn, new Review[] {postMortemScorecard});
+        this.insertUploads(conn, new Upload[] { upload });
+        this.insertSubmissions(conn, new Submission[] { submission });
+        this.insertScorecards(conn, new Scorecard[] { scorecard1 });
+        this.insertReviews(conn, new Review[] { postMortemScorecard });
 
         // scorecard committed
-        assertTrue("canPerform should have returned true",
-            handler.canPerform(postMortemPhase));
+        assertTrue("canPerform should have returned true", handler.canPerform(postMortemPhase));
     }
 }

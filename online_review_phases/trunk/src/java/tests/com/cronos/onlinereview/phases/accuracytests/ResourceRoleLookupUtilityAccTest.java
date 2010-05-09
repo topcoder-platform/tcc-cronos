@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the ResourceRoleLookupUtility class
  *
@@ -32,7 +33,6 @@ public class ResourceRoleLookupUtilityAccTest extends BaseAccuracyTest {
         long id = ResourceRoleLookupUtility.lookUpId(conn, "Primary Screener");
         assertEquals("Not the expected value from lookUpId()", id, 2);
     }
-
 
     /**
      * Tests ResourceRoleLookupUtility.lookUpId(Connection, String) on "Screener" value.
@@ -69,6 +69,4 @@ public class ResourceRoleLookupUtilityAccTest extends BaseAccuracyTest {
 
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 }
-

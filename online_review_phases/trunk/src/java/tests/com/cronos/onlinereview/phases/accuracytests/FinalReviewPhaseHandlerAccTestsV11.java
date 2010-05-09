@@ -21,8 +21,7 @@ import java.util.Date;
 
 
 /**
- * Accuracy tests for change functions in version 1.1 of
- * FinalReviewPhaseHandler class .
+ * Accuracy tests for change functions in version 1.1 of FinalReviewPhaseHandler class .
  *
  * @author myxgyy
  * @version 1.0
@@ -42,8 +41,7 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
     }
 
     /**
-     * cleans up the environment required for test cases for this
-     * class.
+     * cleans up the environment required for test cases for this class.
      *
      * @throws Exception not under test.
      */
@@ -65,19 +63,15 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
         finalReviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed, nor dependencies met
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(finalReviewPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
 
         // time has passed, but dependency not met.
         finalReviewPhase.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(finalReviewPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
 
         // time has passed and dependency met.
-        finalReviewPhase.getAllDependencies()[0].getDependency()
-                                                .setPhaseStatus(PhaseStatus.CLOSED);
-        assertTrue("canPerform should have returned true",
-            handler.canPerform(finalReviewPhase));
+        finalReviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
+        assertTrue("canPerform should have returned true", handler.canPerform(finalReviewPhase));
     }
 
     /**
@@ -97,8 +91,7 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
         finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
 
         // time has not passed, dependencies not met
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(finalReviewPhase));
+        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
     }
 
     /**
@@ -114,37 +107,30 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
 
         // populate db with required data
         // final reviewer resource
-        Resource finalReviewer = createResource(101, finalReviewPhase.getId(),
-                project.getId(), 9);
-        Upload frUpload = createUpload(1, project.getId(),
-                finalReviewer.getId(), 4, 1, "parameter");
+        Resource finalReviewer = createResource(101, finalReviewPhase.getId(), project.getId(), 9);
+        Upload frUpload = createUpload(1, project.getId(), finalReviewer.getId(), 4, 1, "parameter");
         Submission frSubmission = createSubmission(1, frUpload.getId(), 1);
 
         // reviewer resource and related review
-        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0",
-                75.0f, 100.0f);
-        Review frWorksheet = createReview(11, finalReviewer.getId(),
-                frSubmission.getId(), scorecard1.getId(), true, 90.0f);
+        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+        Review frWorksheet = createReview(11, finalReviewer.getId(), frSubmission.getId(), scorecard1.getId(), true,
+                90.0f);
         // add a rejected comment
-        frWorksheet.addComment(createComment(1, finalReviewer.getId(),
-                "Rejected", 10, "Final Review Comment"));
+        frWorksheet.addComment(createComment(1, finalReviewer.getId(), "Rejected", 10, "Final Review Comment"));
 
         Connection conn = getConnection();
 
         // insert records
-        insertResources(conn, new Resource[] {finalReviewer});
+        insertResources(conn, new Resource[] { finalReviewer });
         insertResourceInfo(conn, finalReviewer.getId(), 1, "100001");
-        insertUploads(conn, new Upload[] {frUpload});
-        insertSubmissions(conn, new Submission[] {frSubmission});
-        insertResourceSubmission(conn, finalReviewer.getId(),
-            frSubmission.getId());
-        insertScorecards(conn, new Scorecard[] {scorecard1});
-        insertReviews(conn, new Review[] {frWorksheet});
-        insertCommentsWithExtraInfo(conn, new long[] {1},
-            new long[] {finalReviewer.getId()},
-            new long[] {frWorksheet.getId()},
-            new String[] {"Rejected COmment"}, new long[] {10},
-            new String[] {"Rejected"});
+        insertUploads(conn, new Upload[] { frUpload });
+        insertSubmissions(conn, new Submission[] { frSubmission });
+        insertResourceSubmission(conn, finalReviewer.getId(), frSubmission.getId());
+        insertScorecards(conn, new Scorecard[] { scorecard1 });
+        insertReviews(conn, new Review[] { frWorksheet });
+        insertCommentsWithExtraInfo(conn, new long[] { 1 }, new long[] { finalReviewer.getId() },
+            new long[] { frWorksheet.getId() }, new String[] { "Rejected COmment" }, new long[] { 10 },
+            new String[] { "Rejected" });
         insertScorecardQuestion(conn, 1, 1);
 
         // no exception should be thrown.
@@ -152,8 +138,7 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
 
         handler.perform(finalReviewPhase, operator);
 
-        assertTrue("Final fix phase should be inserted.",
-            haveNewFinalFixPhase(conn));
+        assertTrue("Final fix phase should be inserted.", haveNewFinalFixPhase(conn));
     }
 
     /**
@@ -169,37 +154,30 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
 
         // populate db with required data
         // final reviewer resource
-        Resource finalReviewer = createResource(101, finalReviewPhase.getId(),
-                project.getId(), 9);
-        Upload frUpload = createUpload(1, project.getId(),
-                finalReviewer.getId(), 4, 1, "parameter");
+        Resource finalReviewer = createResource(101, finalReviewPhase.getId(), project.getId(), 9);
+        Upload frUpload = createUpload(1, project.getId(), finalReviewer.getId(), 4, 1, "parameter");
         Submission frSubmission = createSubmission(1, frUpload.getId(), 1);
 
         // reviewer resource and related review
-        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0",
-                75.0f, 100.0f);
-        Review frWorksheet = createReview(11, finalReviewer.getId(),
-                frSubmission.getId(), scorecard1.getId(), true, 90.0f);
+        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+        Review frWorksheet = createReview(11, finalReviewer.getId(), frSubmission.getId(), scorecard1.getId(), true,
+                90.0f);
         // add a Approved comment
-        frWorksheet.addComment(createComment(1, finalReviewer.getId(),
-                "Approved", 10, "Final Review Comment"));
+        frWorksheet.addComment(createComment(1, finalReviewer.getId(), "Approved", 10, "Final Review Comment"));
 
         Connection conn = getConnection();
 
         // insert records
-        insertResources(conn, new Resource[] {finalReviewer});
+        insertResources(conn, new Resource[] { finalReviewer });
         insertResourceInfo(conn, finalReviewer.getId(), 1, "100001");
-        insertUploads(conn, new Upload[] {frUpload});
-        insertSubmissions(conn, new Submission[] {frSubmission});
-        insertResourceSubmission(conn, finalReviewer.getId(),
-            frSubmission.getId());
-        insertScorecards(conn, new Scorecard[] {scorecard1});
-        insertReviews(conn, new Review[] {frWorksheet});
-        insertCommentsWithExtraInfo(conn, new long[] {1},
-            new long[] {finalReviewer.getId()},
-            new long[] {frWorksheet.getId()},
-            new String[] {"Approved Comment"}, new long[] {10},
-            new String[] {"Approved"});
+        insertUploads(conn, new Upload[] { frUpload });
+        insertSubmissions(conn, new Submission[] { frSubmission });
+        insertResourceSubmission(conn, finalReviewer.getId(), frSubmission.getId());
+        insertScorecards(conn, new Scorecard[] { scorecard1 });
+        insertReviews(conn, new Review[] { frWorksheet });
+        insertCommentsWithExtraInfo(conn, new long[] { 1 }, new long[] { finalReviewer.getId() },
+            new long[] { frWorksheet.getId() }, new String[] { "Approved Comment" }, new long[] { 10 },
+            new String[] { "Approved" });
         insertScorecardQuestion(conn, 1, 1);
 
         // no exception should be thrown.

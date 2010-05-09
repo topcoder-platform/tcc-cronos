@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the SubmissionStatusLookupUtility class
  *
@@ -32,7 +33,6 @@ public class SubmissionStatusLookupUtilityAccTest extends BaseAccuracyTest {
         long id = SubmissionStatusLookupUtility.lookUpId(conn, "Failed Screening");
         assertEquals("Not the expected value from lookUpId()", id, 2);
     }
-
 
     /**
      * Tests SubmissionStatusLookupUtility.lookUpId(Connection, String) on "Failed Review" value.
@@ -80,6 +80,4 @@ public class SubmissionStatusLookupUtilityAccTest extends BaseAccuracyTest {
 
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 }
-

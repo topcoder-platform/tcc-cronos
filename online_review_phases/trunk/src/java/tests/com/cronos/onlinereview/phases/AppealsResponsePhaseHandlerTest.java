@@ -10,6 +10,8 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.project.phases.Phase;
@@ -285,6 +287,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
         String operator = "operator";
         handler.perform(appealsResponsePhase, operator);
     }
+
     /**
      * <p>
      * Test the perform method. To start the phase.
@@ -688,4 +691,283 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             closeConnection();
         }
     }
+
+    /**
+     * Tests the AppealsResponsePhaseHandler() constructor and canPerform with Open statuses.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testCanPerform_NoReviewFound() throws Exception {
+        AppealsResponsePhaseHandler handler = new AppealsResponsePhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase appealsResponsePhase = phases[5];
+
+            // test with open status.
+            appealsResponsePhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            assertTrue("canPerform should have returned true", handler.canPerform(appealsResponsePhase));
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AppealsResponsePhaseHandler() constructor and canPerform with Open statuses.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testCanPerform_Comments() throws Exception {
+        AppealsResponsePhaseHandler handler = new AppealsResponsePhaseHandler();
+        ReviewPhaseHandler reviewPhaseHandler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("AppealsResponse");
+
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // test with scheduled status.
+            Phase appealsResponsePhase = project.getAllPhases()[5];
+            appealsResponsePhase.setPhaseStatus(PhaseStatus.OPEN);
+            String operator = "1001";
+
+            Connection conn = getConnection();
+
+            // insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            // insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            // insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2});
+
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review[] {review, review2});
+
+            // another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review.addComment(createComment(21, reviewer.getId(), "Good Design", 4, "Appeal"));
+            review.addComment(createComment(22, reviewer.getId(), "Good Design", 5, "Appeal Response"));
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review[] {review, review2});
+
+            Item[] reviewItems = new Item[2];
+            reviewItems[0] = createReviewItem(11, "Answer 1", review.getId(), 1);
+            reviewItems[1] = createReviewItem(12, "Answer 2", review.getId(), 1);
+
+            Comment[] reviewItemComments = new Comment[2];
+            reviewItemComments[0] = createComment(11, reviewer.getId(), "Item 1", 4, "Appeal");
+            reviewItemComments[1] = createComment(12, reviewer.getId(), "Item 2", 5, "Appeal Response");
+
+            insertComments(conn, new long[] {103, 104}, new long[] {reviewer.getId(), reviewer.getId()}, new long[] {
+                review.getId(), review.getId()}, new String[] {"comment 1", "comment 4"}, new long[] {4, 5});
+            insertScorecardQuestion(conn, 1, 1);
+            insertReviewItems(conn, reviewItems);
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11, 12});
+
+            // perform review first before appeals start
+            reviewPhaseHandler.perform(reviewPhase, operator);
+
+            assertTrue("canPerform should have returned true", handler.canPerform(appealsResponsePhase));
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AppealsResponsePhaseHandler() constructor and canPerform with Open statuses.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testCanPerform_Comments2() throws Exception {
+        AppealsResponsePhaseHandler handler = new AppealsResponsePhaseHandler();
+        ReviewPhaseHandler reviewPhaseHandler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("AppealsResponse");
+
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // test with scheduled status.
+            Phase appealsResponsePhase = project.getAllPhases()[5];
+            appealsResponsePhase.setPhaseStatus(PhaseStatus.OPEN);
+            String operator = "1001";
+
+            Connection conn = getConnection();
+
+            // insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            // insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            // insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2});
+
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review[] {review, review2});
+
+            // another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review.addComment(createComment(21, reviewer.getId(), "Good Design", 4, "Appeal"));
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review[] {review, review2});
+
+            Item[] reviewItems = new Item[2];
+            reviewItems[0] = createReviewItem(11, "Answer 1", review.getId(), 1);
+            reviewItems[1] = createReviewItem(12, "Answer 2", review.getId(), 1);
+
+            Comment[] reviewItemComments = new Comment[2];
+            reviewItemComments[0] = createComment(11, reviewer.getId(), "Item 1", 4, "Appeal");
+            reviewItemComments[1] = createComment(12, reviewer.getId(), "Item 2", 5, "Appeal Response");
+
+            insertComments(conn, new long[] {103}, new long[] {reviewer.getId()}, new long[] {review.getId()},
+                    new String[] {"comment 1"}, new long[] {4});
+            insertScorecardQuestion(conn, 1, 1);
+            insertReviewItems(conn, reviewItems);
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11, 12});
+
+            // perform review first before appeals start
+            reviewPhaseHandler.perform(reviewPhase, operator);
+
+            assertFalse("canPerform should have returned false", handler.canPerform(appealsResponsePhase));
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the AppealsResponsePhaseHandler() constructor and perform() with Open status and winners.
+     *
+     * @throws Exception
+     *             to JUnit.
+     * @version 1.3
+     */
+    public void testPerform_noReviews() throws Exception {
+        AppealsResponsePhaseHandler handler = new AppealsResponsePhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase appealsResponsePhase = phases[5];
+            Phase submissionPhase = phases[1];
+            Phase reviewPhase = phases[3];
+
+            // test with open status.
+            appealsResponsePhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // insert database records.
+            Resource submitter1 = createResource(1, submissionPhase.getId(), project.getId(), 1);
+            Resource reviewer1 = createResource(4, reviewPhase.getId(), project.getId(), 4);
+            Upload upload1 = createUpload(1, project.getId(), submitter1.getId(), 1, 1, "parameter");
+            Submission submission1 = createSubmission(1, upload1.getId(), 1);
+            Scorecard scorecard = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+
+            Connection conn = getConnection();
+            insertResources(conn, new Resource[] {submitter1, reviewer1});
+            insertResourceInfo(conn, submitter1.getId(), 1, "" + submitter1.getId());
+            insertResourceInfo(conn, reviewer1.getId(), 1, "" + reviewer1.getId());
+
+            insertUploads(conn, new Upload[] {upload1});
+            insertSubmissions(conn, new Submission[] {submission1});
+            insertScorecards(conn, new Scorecard[] {scorecard});
+
+            // call perform method
+            String operator = "1001";
+            handler.canPerform(appealsResponsePhase);
+            handler.perform(appealsResponsePhase, operator);
+
+            fail("expect PhaseHandlingException");
+        } catch (PhaseHandlingException e) {
+            // expected
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.ProjectInfoTypeLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the ProjectInfoTypeLookupUtility class
  *
@@ -35,6 +36,4 @@ public class ProjectInfoTypeLookupUtilityAccTest extends BaseAccuracyTest {
 
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 }
-

@@ -327,7 +327,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * @since 1.2
      */
     public void testPerform_Start_withReviewer() throws Exception {
-        ReviewPhaseHandler handler = new ReviewPhaseHandler(ReviewPhaseHandler.DEFAULT_NAMESPACE);
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
 
         try {
             cleanTables();
@@ -454,6 +454,449 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             insertReviews(conn, new Review []{review, review2});
 
             handler.perform(reviewPhase, operator);
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method. No reviewer has been assigned.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_noReviewer() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            Connection conn = getConnection();
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            assertFalse(handler.canPerform(reviewPhase));
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method. reviewer has been assigned.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_withReviewer() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            Connection conn = getConnection();
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+
+            //insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+
+            assertFalse("reviews not match reviewers number.", handler.canPerform(reviewPhase));
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_accuracy() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            Connection conn = getConnection();
+
+            //insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            //insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            //insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_accuracy1() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+            reviewPhase.setAttribute("Reviewer Number", "1");
+
+            Connection conn = getConnection();
+
+            //insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            //insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            //insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_accuracy2() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            Connection conn = getConnection();
+
+            //insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+            Upload reviewerUpload = super.createUpload(3, project.getId(), reviewer.getId(), 1, 1, "Paramter");
+            Upload reviewerUpload2 = super.createUpload(4, project.getId(), reviewer2.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {reviewerUpload, reviewerUpload2});
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            //insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            //insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            assertTrue("all test cases uploaded", handler.canPerform(reviewPhase));
+
+            //manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the canPerform method.
+     * </p>
+     *
+     * @throws Exception into JUnit
+     * @since 1.3
+     */
+    public void testCanPerform_accuracy3() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+        try {
+            cleanTables();
+
+            Project project = setupProjectResourcesNotification("Review");
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            Connection conn = getConnection();
+
+            //insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
+            super.insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
+            super.insertResources(conn, new Resource[] {reviewer2});
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            //insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            //insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            //another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            submission = super.createSubmission(2, upload.getId(), 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review []{review, review2});
+
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
 
             //manually check the email
         } finally {

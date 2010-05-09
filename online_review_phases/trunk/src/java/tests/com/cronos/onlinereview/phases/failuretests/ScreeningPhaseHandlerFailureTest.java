@@ -23,6 +23,7 @@ import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>A failure test for {@link ScreeningPhaseHandler} class. Tests the proper handling
@@ -738,6 +739,122 @@ public class ScreeningPhaseHandlerFailureTest extends AbstractTestCase {
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
                 this.testedInstances[i].perform(TestDataFactory.getScreeningPhaseWithPrimaryScreener(),
+                                                TestDataFactory.OPERATOR);
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#perform,Phase,String} for proper behavior if the
+     * underlying service meets invalid configuration.</p>
+     * <p>Configures the config manager instance not to have post mortem reviewer number.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_Phase_String_OpenPhase_ReviewerNumberNotSet() throws Exception {
+        // remove the old database and use the incorrect one
+        ConfigManager cm = ConfigManager.getInstance();
+        try {
+            cm.removeNamespace("com.cronos.onlinereview.phases.PostMortemPhaseHandler");
+        } catch (Exception e) {
+            // ignore
+        }
+        cm.add("failure/Post_Mortem_1.xml");
+
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].perform(TestDataFactory.getOpenAppealsResponsePhase(),
+                                                TestDataFactory.OPERATOR);
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#perform,Phase,String} for proper behavior if the
+     * underlying service meets invalid configuration.</p>
+     * <p>Configures the config manager instance to have invalid post mortem reviewer number.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_Phase_String_OpenPhase_ReviewerNumberInvalid() throws Exception {
+        // remove the old database and use the incorrect one
+        ConfigManager cm = ConfigManager.getInstance();
+        try {
+            cm.removeNamespace("com.cronos.onlinereview.phases.PostMortemPhaseHandler");
+        } catch (Exception e) {
+            // ignore
+        }
+        cm.add("failure/Post_Mortem_2.xml");
+
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].perform(TestDataFactory.getOpenAppealsResponsePhase(),
+                                                TestDataFactory.OPERATOR);
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#perform,Phase,String} for proper behavior if the
+     * underlying service meets invalid configuration.</p>
+     * <p>Configures the config manager instance not to have post-mortem duration.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_Phase_String_OpenPhase_WrongPostMortemDuration() throws Exception {
+        // remove the old database and use the incorrect one
+        ConfigManager cm = ConfigManager.getInstance();
+        try {
+            cm.removeNamespace("com.cronos.onlinereview.phases.PostMortemPhaseHandler");
+        } catch (Exception e) {
+            // ignore
+        }
+        cm.add("failure/Post_Mortem_3.xml");
+
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].perform(TestDataFactory.getOpenAppealsResponsePhase(),
+                                                TestDataFactory.OPERATOR);
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#perform,Phase,String} for proper behavior if the
+     * underlying service meets invalid configuration.</p>
+     * <p>Configures the config manager instance not to have linked project id.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_Phase_String_OpenPhase_WrongLinkedId() throws Exception {
+        // remove the old database and use the incorrect one
+        ConfigManager cm = ConfigManager.getInstance();
+        try {
+            cm.removeNamespace("com.cronos.onlinereview.phases.PostMortemPhaseHandler");
+        } catch (Exception e) {
+            // ignore
+        }
+        cm.add("failure/Post_Mortem_4.xml");
+
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].perform(TestDataFactory.getOpenAppealsResponsePhase(),
                                                 TestDataFactory.OPERATOR);
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {

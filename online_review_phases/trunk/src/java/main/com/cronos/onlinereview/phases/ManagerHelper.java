@@ -348,6 +348,13 @@ public class ManagerHelper {
     private static final String PROP_UPLOAD_MGR_SUBMISSION_IDGEN_NAME = "UploadManager.SubmissionIdGeneratorName";
 
     /**
+     * This constant stores Online Review's project details page url property name.
+     *
+     * @since 1.3
+     */
+    private static final String PROP_PROJECT_DETAILS_URL = "ProjectDetailsURL";
+
+    /**
      * Property name constant for submission status IDgenerator name when
      * creating UploadManager instance.
      */
@@ -452,6 +459,13 @@ public class ManagerHelper {
     private final ReviewScoreAggregator scorecardAggregator;
 
     /**
+     * This constant stores Online Review's project details page URL.
+     *
+     * @since 1.3
+     */
+    private final String projectDetailsBaseURL;
+
+    /**
      * Creates a new instance of ManagerHelper using the default configuration
      * namespace of this class. This constructor loads the manager instances
      * using the configuration settings in the default namespace. Please see
@@ -506,6 +520,7 @@ public class ManagerHelper {
                         PROP_USER_RETRIEVAL_NAMESPACE, UserRetrieval.class,
                         true);
         this.scorecardAggregator = initScorecardAggregator(namespace);
+        this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);;
     }
 
     /**
@@ -597,6 +612,18 @@ public class ManagerHelper {
      */
     public ReviewScoreAggregator getScorecardAggregator() {
         return scorecardAggregator;
+    }
+
+    /**
+     * <p>
+     * Gets the project details base url.
+     * </p>
+     *
+     * @return the project details base url.
+     * @since 1.3
+     */
+    public String getProjectDetailsBaseURL() {
+        return projectDetailsBaseURL;
     }
 
     /**

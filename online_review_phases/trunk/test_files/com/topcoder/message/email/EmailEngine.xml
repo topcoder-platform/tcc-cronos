@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <CMConfig>
     <Property name="smtp_host_addr">
-        <Value>localhost</Value>
+        <Value>127.0.0.1</Value>
     </Property>
     <Property name="smtp_host_port">
         <Value>25</Value>

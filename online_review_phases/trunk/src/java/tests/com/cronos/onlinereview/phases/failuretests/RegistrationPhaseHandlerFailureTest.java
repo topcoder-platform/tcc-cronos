@@ -5,8 +5,11 @@ package com.cronos.onlinereview.phases.failuretests;
 
 import com.cronos.onlinereview.phases.PhaseNotSupportedException;
 import com.cronos.onlinereview.phases.RegistrationPhaseHandler;
+import com.cronos.onlinereview.phases.failuretests.mock.MockPhaseManager;
+import com.cronos.onlinereview.phases.failuretests.mock.MockProjectManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockResourceManager;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
@@ -185,6 +188,48 @@ public class RegistrationPhaseHandlerFailureTest extends AbstractTestCase {
      * <code>phase</code> and expects the <code>PhaseHandlingException</code> to be thrown.</p>
      */
     public void testCanPerform_Phase_phase_RegistrationPhaseWithNonIntegerRegistrationNumberAttribute() {
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].canPerform(TestDataFactory.getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute());
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                Assert.fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link RegistrationPhaseHandler#canPerform(Phase)} method for proper handling the
+     * invalid input arguments.</p>
+     *
+     * <p>Passes {@link TestDataFactory#getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute()} as
+     * <code>phase</code> and expects the <code>PhaseHandlingException</code> to be thrown.</p>
+     */
+    public void testCanPerform_Phase_phase_PhaseManagerError() {
+        MockPhaseManager.throwGlobalException(new PhaseManagementException("test"));
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].canPerform(TestDataFactory.getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute());
+                Assert.fail("PhaseHandlingException should have been thrown");
+            } catch (PhaseHandlingException e) {
+                // expected behavior
+            } catch (Exception e) {
+                Assert.fail("PhaseHandlingException was expected but the original exception is : " + e);
+            }
+        }
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link RegistrationPhaseHandler#canPerform(Phase)} method for proper handling the
+     * invalid input arguments.</p>
+     *
+     * <p>Passes {@link TestDataFactory#getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute()} as
+     * <code>phase</code> and expects the <code>PhaseHandlingException</code> to be thrown.</p>
+     */
+    public void testCanPerform_Phase_phase_ProjectManagerError() {
+        MockProjectManager.throwGlobalException(new PhaseManagementException("test"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
                 this.testedInstances[i].canPerform(TestDataFactory.getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute());

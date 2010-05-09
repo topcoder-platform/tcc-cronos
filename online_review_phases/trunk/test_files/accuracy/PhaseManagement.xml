@@ -14,7 +14,9 @@
         <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
       </Property>
     </Property>
-    
+		<Property name="connectionName">
+			<Value>informix_connection</Value>
+		</Property>
     <Property name="ConnectionFactory">
         <Property name="className">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -53,24 +55,6 @@
         <!-- the connection name to retrieve connection in DB Connection Factory, required -->
         <Property name="ConnectionName">
             <Value>informix_connection</Value>
-        </Property>
-    </Config>
-
-      <Config name="com.topcoder.management.project">
-        <Property name="SearchBuilderNamespace">
-            <Value>com.topcoder.searchbuilder.ProjectManagement</Value>
-        </Property>
-        <Property name="PersistenceClass">
-            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
-        </Property>
-        <Property name="PersistenceNamespace">
-            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
-        </Property>
-        <Property name="ValidatorClass">
-            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
-        </Property>
-        <Property name="ValidatorNamespace">
-            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
         </Property>
     </Config>
 

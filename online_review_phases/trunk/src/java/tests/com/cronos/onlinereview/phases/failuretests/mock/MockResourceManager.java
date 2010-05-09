@@ -936,6 +936,7 @@ public class MockResourceManager implements ResourceManager {
      */
     public static void init() {
         setMethodResult("searchResources_Filter", new Resource[] {new Resource(1)});
+        MockResourceManager.setMethodResult("getAllResourceRoles", new ResourceRole[0]);
     }
 
 }

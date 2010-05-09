@@ -192,7 +192,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                         }
 
                         getManagerHelper().getPhaseManager().updatePhases(phase.getProject(), "0");
-                    }   
+                    }
                 }
                 // Either project start time hasn't been reached yet or not all parent projects are completed
                 return false;

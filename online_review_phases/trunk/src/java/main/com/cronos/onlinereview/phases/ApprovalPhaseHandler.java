@@ -73,7 +73,7 @@ import com.topcoder.project.phases.Project;
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Updated {@link #checkScorecardsCommitted(Phase)} method to use appropriate logic for searching for review
- *     scorecards tied to project but not to phase type.</p>
+ *     scorecards tied to project but not to phase type.</li>
  *   </ol>
  * </p>
  *

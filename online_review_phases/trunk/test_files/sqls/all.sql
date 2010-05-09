@@ -442,7 +442,7 @@ CREATE TABLE comment_type_lu (
 CREATE TABLE review (
   review_id                     INTEGER                         NOT NULL,
   resource_id                   INTEGER                         NOT NULL,
-  submission_id                 INTEGER                         NOT NULL,
+  submission_id                 INTEGER,
   scorecard_id                  INTEGER                         NOT NULL,
   committed                     DECIMAL(1, 0)                   NOT NULL,
   score                         FLOAT,
@@ -1096,6 +1096,44 @@ INSERT INTO project_info_type_lu(project_info_type_id, name, description, create
   VALUES(23, 'Winner External Reference ID', 'Winner External Reference ID', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(24, 'Runner-up External Reference ID', 'Runner-up External Reference ID', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(25, 'Event Flag', 'Event Flag', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(26, 'Digital Run Flag', 'Digital Run Flag', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(27, 'AutoPilot AD Change', 'AutoPilot AD Change', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(28, 'Allow multiple submissions', 'Allow multiple submission', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(29, 'Contest Indicator', 'Whether or not this proje', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(30, 'DR points', 'DR points to award', 'pulky', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(31,"Admin Fee","Admin Fee", 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(32,"Billing Project","Billing Project", 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(33,"Review Cost","Review Cost", 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(34, 'Confidentiality Type', 'Confidentiality Type', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(35, 'Spec Review Cost', 'Spec Review Cost', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(36,'First Place Cost','First Place Cost', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(37,'Second Place Cost','Second Place Cost', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(38,'Reliability Bonus Cost','Reliability Bonus Cost', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(39,'Milestone Bonus Cost','Milestone Bonus Cost', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(40,'Cost Level','Cost Level', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(41, 'Approval Required', 'Approval Required', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(42, 'Requires Other Fixes', 'Requires Other Fixes', 'System', CURRENT, 'System', CURRENT);
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(43, 'Send Winner Emails', 'Send Winner Emails', 'System', CURRENT, 'System', CURRENT);  
 
 INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Registration', 'Registration', 'System', CURRENT, 'System', CURRENT);
@@ -1247,6 +1285,8 @@ INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, cre
   VALUES(11, 'Manager Comment', 'Manager Comment', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(12, 'Approval Review Comment', 'Approval Review Comment', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(13, 'Approval Review Comment - Other Fixes', 'The final product meets all requirement but requires other fixes before it can be used', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
   VALUES(1, 2, 1, 'Submission', 'Submission', 0, 0, 'System', CURRENT, 'System', CURRENT);
@@ -1395,3 +1435,56 @@ alter table 'informix'.project_phase_audit add constraint foreign key
 references 'informix'.project_phase
 (project_phase_id) 
 constraint project_phase_audit_project_phase_fk;
+
+-- Generic project type and category
+ALTER TABLE project_type_lu ADD is_generic BOOLEAN DEFAULT 'f' NOT NULL;
+
+INSERT INTO project_type_lu (project_type_id, name, description, is_generic, create_user, create_date, modify_user, modify_date)
+       VALUES (4, 'Generic', 'Generic (can not have projects created of that type)', 't', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO project_category_lu (project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)
+       VALUES (28, 4, 'Generic Scorecards',
+               'Generic scorecards are available for selection when creating projects of all categories',
+               'System', CURRENT, 'System', CURRENT);
+
+-- Approval and Post-Mortem scorecard types
+UPDATE scorecard_type_lu SET name = 'Approval', description = 'Approval' WHERE scorecard_type_id = 3;
+
+INSERT INTO scorecard_type_lu (scorecard_type_id, name, description, create_user, create_date, modify_user, modify_date)
+       VALUES (4, 'Post-Mortem', 'Post-Mortem', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO resource_role_lu (resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user,
+                              modify_date)
+       VALUES (16, NULL, 'Post-Mortem Reviewer', 'Post-Mortem Reviewer', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission,
+                            required, create_user, create_date, modify_user, modify_date)
+       VALUES (24, 12, 16, 'Post-Mortem Review', 'Post-Mortem Review', 0, 1, 'System', CURRENT, 'System', CURRENT );
+
+-- Approver role is unbound from Approval phase
+UPDATE resource_role_lu SET phase_type_id = NULL WHERE resource_role_id = 10;
+
+-- New project info type to hold the flag indicating whether the project requires other fixes
+INSERT INTO project_info_type_lu (project_info_type_id, name, description,
+                                  create_user, create_date, modify_user, modify_date)
+       VALUES (50, 'Requires Other Fixes', 'Requires Other Fixes', 'System', CURRENT, 'System', CURRENT);
+
+create table link_type_lu (
+link_type_id INT not null,
+link_type_name VARCHAR(64) not null,
+allow_overlap DECIMAL(1)
+);
+
+
+create table linked_project_xref (
+source_project_id INT,
+dest_project_id INT,
+link_type_id INT
+);
+
+INSERT INTO link_type_lu(link_type_id, link_type_name,allow_overlap) VALUES(1,'Depends On', 0);
+INSERT INTO link_type_lu(link_type_id, link_type_name,allow_overlap) VALUES(2,'Is Related To', 1);
+INSERT INTO link_type_lu(link_type_id, link_type_name,allow_overlap) VALUES(3,'Requires Spec Review', 0);
+INSERT INTO link_type_lu(link_type_id, link_type_name,allow_overlap) VALUES(4,'For Design', 0);
+INSERT INTO link_type_lu(link_type_id, link_type_name,allow_overlap) VALUES(5,'Repost For', 1);
+

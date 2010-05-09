@@ -64,6 +64,17 @@ public class AggregationPhaseHandlerTest extends BaseTest {
     }
 
     /**
+     * Tests no-arg constructor.
+     *
+     * @throws Exception not under test.
+     */
+    public void testCtor() throws Exception {
+        AggregationPhaseHandler handler = new AggregationPhaseHandler();
+
+        assertNotNull("instance should not be null", handler);
+    }
+
+    /**
      * Tests canPerform(Phase) with null phase.
      *
      * @throws Exception not under test.
@@ -270,6 +281,33 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             cleanTables();
         }
     }
+
+    /**
+     * Tests the AggregationPhaseHandler() constructor and canPerform with Open statuses.
+     *
+     * @throws Exception
+     *             not under test.
+     */
+    public void testCanPerformHandlerWithOpen1() throws Exception {
+        AggregationPhaseHandler handler = new AggregationPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase aggregationPhase = phases[6];
+
+            // test with open status.
+            aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // time has not passed, dependencies not met
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+        } finally {
+            cleanTables();
+        }
+    }
+
 
     /**
      * Tests the perform with Open statuses.
@@ -486,4 +524,5 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             closeConnection();
         }
     }
+
 }

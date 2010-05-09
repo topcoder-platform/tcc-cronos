@@ -108,7 +108,7 @@ public class BaseTest extends TestCase {
         "resource_submission", "submission", "upload", "resource_info", "resource", "phase_criteria",
         "phase_dependency", "project_phase", "project_scorecard", "project_info", "project", "scorecard_question",
         "scorecard_section", "scorecard_group", "scorecard", "comp_forum_xref", "comp_versions", "categories",
-        "comp_catalog", "user_reliability", "user_rating", "user", "email"};
+        "comp_catalog", "user_reliability", "user_rating", "user", "email", "linked_project_xref"};
 
     /** Represents the configuration manager instance used in tests. */
     private ConfigManager configManager;
@@ -412,7 +412,6 @@ public class BaseTest extends TestCase {
             // insert a project
             String insertProject = "insert into project(project_id, project_status_id, project_category_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 1, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertProject);
             preparedStmt = conn.prepareStatement(insertProject);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -424,7 +423,6 @@ public class BaseTest extends TestCase {
             String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name," +
                 "description, create_time, status_id) values " +
                 "(1, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
-            System.out.println(insertCatalog);
             preparedStmt = conn.prepareStatement(insertCatalog);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.executeUpdate();
@@ -435,10 +433,63 @@ public class BaseTest extends TestCase {
             String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text," +
                 "create_time, phase_id, phase_time, price, comments) values " +
                 "(1, 1, 1, '1.0', ?, 112, ?, 500, 'Comments')";
-            System.out.println(insertVersion);
             preparedStmt = conn.prepareStatement(insertVersion);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
+    }
+
+    /**
+     * inserts a project into the database. Inserts records into the project, comp_catalog and comp_versions tables.
+     *
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
+     */
+    protected void insertDependentProject(Connection conn) throws Exception {
+        PreparedStatement preparedStmt = null;
+
+        try {
+            // insert a project
+            String insertProject = "insert into project(project_id, project_status_id, project_category_id," +
+                "create_user, create_date, modify_user, modify_date) values " + "(2, 1, 1, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertProject);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert into comp_catalog
+            String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name," +
+                "description, create_time, status_id) values " +
+                "(2, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
+            preparedStmt = conn.prepareStatement(insertCatalog);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert into comp_catalog
+            String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text," +
+                "create_time, phase_id, phase_time, price, comments) values " +
+                "(2, 2, 1, '1.0', ?, 112, ?, 500, 'Comments')";
+            preparedStmt = conn.prepareStatement(insertVersion);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert into linked_project_xref
+            String insertLinkedProject = "insert into linked_project_xref(source_project_id, dest_project_id"
+                    + ", link_type_id) values (1, 2, 1)";
+            preparedStmt = conn.prepareStatement(insertLinkedProject);
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
@@ -468,7 +519,6 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertProjectInfo);
 
             for (int i = 0; i < infoTypes.length; i++) {
-                System.out.println(insertProjectInfo + " for " + infoTypes[i]);
                 preparedStmt.setLong(1, projectId);
                 preparedStmt.setLong(2, infoTypes[i]);
                 preparedStmt.setString(3, infoValues[i]);
@@ -517,7 +567,7 @@ public class BaseTest extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            Project project = postMorterm ? this.setupPhasesWithPostMortem() : setupPhases(step);
+            Project project = postMorterm ? this.setupPhasesWithPostMortem() : setupPhases(step, false, false);
 
             conn = getConnection();
 
@@ -527,7 +577,6 @@ public class BaseTest extends TestCase {
             // insert into notification
             String insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 1, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertNotification);
             preparedStmt = conn.prepareStatement(insertNotification);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -536,7 +585,6 @@ public class BaseTest extends TestCase {
 
             insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 2, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertNotification);
             preparedStmt = conn.prepareStatement(insertNotification);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -545,7 +593,6 @@ public class BaseTest extends TestCase {
 
             insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 3, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertNotification);
             preparedStmt = conn.prepareStatement(insertNotification);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -554,7 +601,6 @@ public class BaseTest extends TestCase {
 
             insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 4, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertNotification);
             preparedStmt = conn.prepareStatement(insertNotification);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -563,7 +609,6 @@ public class BaseTest extends TestCase {
 
             insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id," +
                 "create_user, create_date, modify_user, modify_date) values " + "(1, 5, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertNotification);
             preparedStmt = conn.prepareStatement(insertNotification);
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -576,83 +621,68 @@ public class BaseTest extends TestCase {
 
             String sql = "insert into user(user_id, first_name, last_name, handle, status)" +
                 "values (1, 'babut', 'guy', 'babut', 'ON')";
-            System.out.println(sql);
             stmt.addBatch(sql);
 
             // insert into 'user_rating'
             sql = "insert into user_rating(user_id, phase_id) values (1, 112)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             // insert into email
             sql = "insert into email(user_id, email_id, address, primary_ind)" +
                 " values (1, 1, 'topcoder_smtp@126.com', 1)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             sql = "insert into user(user_id, first_name, last_name, handle, status)" +
                 "values (2, 'abc', 'xyz', 'wishingbone', 'ON')";
-            System.out.println(sql);
             stmt.addBatch(sql);
 
             // insert into 'user_rating'
             sql = "insert into user_rating(user_id, phase_id) values (2, 112)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             // insert into email
             sql = "insert into email(user_id, email_id, address, primary_ind)" +
                 " values (2, 2, 'topcoder_smtp@126.com', 1)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             sql = "insert into user(user_id, first_name, last_name, handle, status)" +
                 "values (3, 'abc', 'xyz', 'developer', 'ON')";
-            System.out.println(sql);
             stmt.addBatch(sql);
 
             // insert into 'user_rating'
             sql = "insert into user_rating(user_id, phase_id) values (3, 112)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             // insert into email
             sql = "insert into email(user_id, email_id, address, primary_ind)" +
                 " values (3, 3, 'topcoder_smtp@126.com', 1)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             sql = "insert into user(user_id, first_name, last_name, handle, status)" +
                 "values (4, 'Allen', 'Iverson', 'I3', 'ON')";
-            System.out.println(sql);
             stmt.addBatch(sql);
 
             // insert into 'user_rating'
             sql = "insert into user_rating(user_id, phase_id) values (4, 112)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             // insert into email
             sql = "insert into email(user_id, email_id, address, primary_ind)" +
                 " values (4, 4, 'iverns@topcoder.com', 1)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             sql = "insert into user(user_id, first_name, last_name, handle, status)" +
                 "values (5, 'John', 'Lennon', 'lennon', 'ON')";
-            System.out.println(sql);
             stmt.addBatch(sql);
 
             // insert into 'user_rating'
             sql = "insert into user_rating(user_id, phase_id) values (5, 112)";
             stmt.addBatch(sql);
-            System.out.println(sql);
 
             // insert into email
             sql = "insert into email(user_id, email_id, address, primary_ind)" +
                 " values (5, 5, 'iverns@topcoder.com', 1)";
             stmt.addBatch(sql);
-            System.out.println(sql);
             stmt.executeBatch();
 
             //insert manager resource
@@ -684,7 +714,7 @@ public class BaseTest extends TestCase {
      * @throws Exception not under test.
      */
     protected Project setupPhases() throws Exception {
-        return setupPhases("All");
+        return setupPhases("All", false, false);
     }
 
     /**
@@ -694,7 +724,29 @@ public class BaseTest extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected Project setupPhases(String stepPhase) throws Exception {
+    protected Project setupPastPhases() throws Exception {
+        return setupPhases("All", false, true);
+    }
+
+    /**
+     * inserts a project and the standard phases into the database.
+     *
+     * @return project instance with phases populated.
+     *
+     * @throws Exception not under test.
+     */
+    protected Project setupPhasesWithDepedentProject() throws Exception {
+        return setupPhases("All", true, false);
+    }
+
+    /**
+     * inserts a project and the standard phases into the database.
+     *
+     * @return project instance with phases populated.
+     *
+     * @throws Exception not under test.
+     */
+    protected Project setupPhases(String stepPhase, boolean hasDependentProject, boolean past) throws Exception {
         Connection conn = getConnection();
         PreparedStatement preparedStmt = null;
         Project project = null;
@@ -705,6 +757,10 @@ public class BaseTest extends TestCase {
 
             // insert project first
             insertProject(conn);
+
+            if (hasDependentProject) {
+                insertDependentProject(conn);
+            }
 
             String insertPhase =
                 "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
@@ -733,11 +789,15 @@ public class BaseTest extends TestCase {
             long duration = 24 * 60 * 60 * 1000; // one day
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now-duration*2);
-            Timestamp scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+            Timestamp scheduledEnd = null;
+            if (past) {
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration/1000);
+            } else {
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+            }
 
             for (int i = 0; i < (step + 1); i++) {
                 // insert into db
-                System.out.println(insertPhase);
                 preparedStmt.setLong(1, phaseIds[i]);
                 preparedStmt.setLong(2, phaseTypeIds[i]);
                 preparedStmt.setTimestamp(3, scheduledStart);
@@ -747,7 +807,7 @@ public class BaseTest extends TestCase {
                 preparedStmt.setTimestamp(7, new Timestamp(now));
                 preparedStmt.executeUpdate();
 
-                // create phase intance
+                // create phase instance
                 Phase phase = new Phase(project, duration);
                 phase.setId(phaseIds[i]);
                 phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
@@ -761,7 +821,11 @@ public class BaseTest extends TestCase {
 
                 // re-calculate scheduled start and end.
                 scheduledStart = new Timestamp(scheduledEnd.getTime());
-                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+                if (past) {
+                    scheduledEnd = new Timestamp(scheduledStart.getTime() + duration/1000);
+                } else {
+                    scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+                }
             }
 
             closeStatement(preparedStmt);
@@ -779,7 +843,6 @@ public class BaseTest extends TestCase {
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < step; i++) {
-                System.out.println(insertDependency);
                 preparedStmt.setLong(1, dependencyPhaseIds[i]);
                 preparedStmt.setLong(2, dependentPhaseIds[i]);
                 preparedStmt.setBoolean(3, false);
@@ -912,7 +975,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < resources.length; i++) {
-                System.out.println(insertResource);
                 preparedStmt.setLong(1, resources[i].getId());
                 preparedStmt.setLong(2, resources[i].getResourceRole().getId());
                 preparedStmt.setLong(3, resources[i].getProject().longValue());
@@ -957,7 +1019,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < uploads.length; i++) {
-                System.out.println(insertUpload);
                 preparedStmt.setLong(1, uploads[i].getId());
                 preparedStmt.setLong(2, uploads[i].getProject());
                 preparedStmt.setLong(3, uploads[i].getOwner());
@@ -997,7 +1058,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < submissions.length; i++) {
-                System.out.println(insertSubmission);
                 preparedStmt.setLong(1, submissions[i].getId());
                 preparedStmt.setLong(2, submissions[i].getUpload().getId());
                 preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
@@ -1039,7 +1099,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < scorecards.length; i++) {
-                System.out.println(insertScorecard);
                 preparedStmt.setLong(1, scorecards[i].getId());
                 preparedStmt.setLong(2, scorecards[i].getScorecardStatus().getId());
                 preparedStmt.setLong(3, scorecards[i].getScorecardType().getId());
@@ -1082,7 +1141,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < reviews.length; i++) {
-                System.out.println(insertReview);
                 preparedStmt.setLong(1, reviews[i].getId());
                 preparedStmt.setLong(2, reviews[i].getAuthor());
                 preparedStmt.setLong(3, reviews[i].getSubmission());
@@ -1093,6 +1151,38 @@ public class BaseTest extends TestCase {
                 preparedStmt.setTimestamp(8, now);
                 preparedStmt.executeUpdate();
             }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
+    }
+
+    /**
+     * inserts screening task.
+     *
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
+     */
+    protected void insertScreeningTask(Connection conn, long uploadId) throws Exception {
+        PreparedStatement preparedStmt = null;
+
+        try {
+            String insertScreeningTask = "INSERT INTO screening_task"
+                    + "(screening_task_id, upload_id, screening_status_id, create_user, create_date,"
+                    + " modify_user, modify_date) VALUES (?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertScreeningTask);
+
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            preparedStmt.setLong(1, 1);
+            preparedStmt.setLong(2, uploadId);
+            preparedStmt.setLong(3, 4);
+            preparedStmt.setTimestamp(4, now);
+            preparedStmt.setTimestamp(5, now);
+            preparedStmt.executeUpdate();
 
             closeStatement(preparedStmt);
             preparedStmt = null;
@@ -1127,7 +1217,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < ids.length; i++) {
-                System.out.println(insertReview);
                 preparedStmt.setLong(1, ids[i]);
                 preparedStmt.setLong(2, authors[i]);
                 preparedStmt.setLong(3, reviewIds[i]);
@@ -1173,7 +1262,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < ids.length; i++) {
-                System.out.println(insertReview);
                 preparedStmt.setLong(1, ids[i]);
                 preparedStmt.setLong(2, authors[i]);
                 preparedStmt.setLong(3, reviewIds[i]);
@@ -1214,7 +1302,6 @@ public class BaseTest extends TestCase {
                 "(scorecard_group_id, scorecard_id, name, weight, sort, " +
                 "create_user, create_date, modify_user, modify_date) " +
                 "VALUES (1, ?, 'group name', 1, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertGroup);
             stmt1 = conn.prepareStatement(insertGroup);
             stmt1.setLong(1, scorecardId);
             stmt1.setTimestamp(2, now);
@@ -1227,7 +1314,6 @@ public class BaseTest extends TestCase {
                 "(scorecard_section_id, scorecard_group_id, name, weight, sort, " +
                 "create_user, create_date, modify_user, modify_date) " +
                 "VALUES (1, 1, 'section name', 1, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertSection);
             stmt2 = conn.prepareStatement(insertSection);
             stmt2.setTimestamp(1, now);
             stmt2.setTimestamp(2, now);
@@ -1240,7 +1326,6 @@ public class BaseTest extends TestCase {
                 "sort, upload_document, upload_document_required," +
                 "create_user, create_date, modify_user, modify_date) " +
                 "VALUES (?, 1, 1, 'question desc', 1, 1, 1, 1, 'user', ?, 'user', ?)";
-            System.out.println(insertQues);
             stmt3 = conn.prepareStatement(insertQues);
 
             stmt3.setLong(1, questionId);
@@ -1279,7 +1364,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < items.length; i++) {
-                System.out.println(insertReview);
                 preparedStmt.setLong(1, items[i].getId());
                 preparedStmt.setLong(2, items[i].getDocument().longValue());
                 preparedStmt.setLong(3, items[i].getQuestion());
@@ -1320,7 +1404,6 @@ public class BaseTest extends TestCase {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < itemComments.length; i++) {
-                System.out.println(insertReview);
                 preparedStmt.setLong(1, itemComments[i].getId());
                 preparedStmt.setLong(2, itemComments[i].getAuthor());
                 preparedStmt.setLong(3, reviewItemIds[i]);
@@ -1380,7 +1463,6 @@ public class BaseTest extends TestCase {
         try {
             String insertInfo = "insert into resource_info" + "(resource_id, resource_info_type_id, value," +
                 "create_user, create_date, modify_user, modify_date) " + "VALUES (?, ?, ?, 'user', ?, 'user', ?)";
-            System.out.println(insertInfo);
             preparedStmt = conn.prepareStatement(insertInfo);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1414,7 +1496,6 @@ public class BaseTest extends TestCase {
         try {
             String insertInfo = "insert into resource_submission" + "(resource_id, submission_id," +
                 "create_user, create_date, modify_user, modify_date) " + "VALUES (?, ?, 'user', ?, 'user', ?)";
-            System.out.println(insertInfo);
             preparedStmt = conn.prepareStatement(insertInfo);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1591,11 +1672,26 @@ public class BaseTest extends TestCase {
 
             for (int i = 0; i < ALL_TABLE_NAMES.length; i++) {
                 String sql = "delete from " + ALL_TABLE_NAMES[i];
-                System.out.println(sql);
                 stmt.addBatch(sql);
             }
 
             stmt.executeBatch();
+        } finally {
+            closeStatement(stmt);
+            closeConnection();
+        }
+    }
+
+    protected void deletePhase(long id) throws Exception {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            conn = getConnection();
+            stmt = conn.createStatement();
+
+            String sql = "delete from project_phase WHERE project_phase_id = " + id;
+            stmt.executeUpdate(sql);
         } finally {
             closeStatement(stmt);
             closeConnection();
@@ -1645,7 +1741,6 @@ public class BaseTest extends TestCase {
 
             for (int i = 0; i < phaseIds.length; i++) {
                 // insert into db
-                System.out.println(insertPhase);
                 preparedStmt.setLong(1, phaseIds[i]);
                 preparedStmt.setLong(2, phaseTypeIds[i]);
                 preparedStmt.setTimestamp(3, scheduledStart);
@@ -1655,7 +1750,7 @@ public class BaseTest extends TestCase {
                 preparedStmt.setTimestamp(7, new Timestamp(now));
                 preparedStmt.executeUpdate();
 
-                // create phase intance
+                // create phase instance
                 Phase phase = new Phase(project, duration);
                 phase.setId(phaseIds[i]);
                 phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
@@ -1687,7 +1782,6 @@ public class BaseTest extends TestCase {
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
-                System.out.println(insertDependency);
                 preparedStmt.setLong(1, dependencyPhaseIds[i]);
                 preparedStmt.setLong(2, dependentPhaseIds[i]);
                 preparedStmt.setBoolean(3, false);

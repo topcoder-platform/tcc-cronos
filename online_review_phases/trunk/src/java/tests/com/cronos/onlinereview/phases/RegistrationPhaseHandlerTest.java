@@ -204,7 +204,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
      * @throws Exception not under test.
      */
     public void testRegistrationPhaseHandler() throws Exception {
-        RegistrationPhaseHandler handler = new RegistrationPhaseHandler(RegistrationPhaseHandler.DEFAULT_NAMESPACE);
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
 
         try {
             cleanTables();
@@ -235,6 +235,33 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
             Resource resource = super.createResource(1, 101L, 1, 1);
             super.insertResources(conn, new Resource[] {resource});
             assertTrue("can stop should return true", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the RegistrationPhaseHandler() constructor and canPerform with Scheduled and Open statuses.
+     *
+     * @throws Exception not under test.
+     */
+    public void testRegistrationPhaseHandler1() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler(RegistrationPhaseHandler.DEFAULT_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            //create phases
+            Project project = setupPhasesWithDepedentProject();
+
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[0];
+
+            // test with scheduled status, but time not passed.
+            registration.setPhaseStatus(PhaseStatus.SCHEDULED);
+            assertFalse("can start should return false", handler.canPerform(registration));
         } finally {
             closeConnection();
             cleanTables();

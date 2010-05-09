@@ -4,21 +4,19 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
-import com.topcoder.management.scorecard.PersistenceException;
-import com.topcoder.management.scorecard.ScorecardIDInfo;
-import com.topcoder.management.scorecard.ScorecardManager;
-import com.topcoder.management.scorecard.validation.ValidationException;
-import com.topcoder.management.scorecard.PersistenceException;
-import com.topcoder.management.scorecard.data.Scorecard;
-import com.topcoder.management.scorecard.data.ScorecardType;
-import com.topcoder.management.scorecard.data.QuestionType;
-import com.topcoder.management.scorecard.data.ScorecardStatus;
-import com.topcoder.search.builder.filter.Filter;
-
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+
+import com.topcoder.management.scorecard.PersistenceException;
+import com.topcoder.management.scorecard.ScorecardManager;
+import com.topcoder.management.scorecard.data.QuestionType;
+import com.topcoder.management.scorecard.data.Scorecard;
+import com.topcoder.management.scorecard.data.ScorecardStatus;
+import com.topcoder.management.scorecard.data.ScorecardType;
+import com.topcoder.management.scorecard.validation.ValidationException;
+import com.topcoder.search.builder.filter.Filter;
 
 /**
  * <p>A mock implementation of {@link ScorecardManager} class to be used for testing.
@@ -490,10 +488,6 @@ public class MockScorecardManager implements ScorecardManager {
      * <p>Initializes the initial state for all created instances of <code>MockScorecardManager</code> class.</p>
      */
     public static void init() {
-    }
-
-    public ScorecardIDInfo[] getDefaultScorecardsIDInfo(long arg0) throws PersistenceException {
-        return null;
     }
 
 }

@@ -3,14 +3,14 @@
  */
 package com.cronos.onlinereview.phases.failuretests;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
-
-import junit.framework.TestCase;
 
 import com.cronos.onlinereview.phases.PhaseNotSupportedException;
 import com.cronos.onlinereview.phases.PostMortemPhaseHandler;
 import com.topcoder.date.workdays.DefaultWorkdays;
+import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
@@ -26,7 +26,7 @@ import com.topcoder.util.config.ConfigManager;
  * @version 1.1
  * @since 1.1
  */
-public class PostMortemPhaseHandlerTest extends TestCase {
+public class PostMortemPhaseHandlerTest extends AbstractTestCase {
 
 	/**
 	 * The instance to test.
@@ -60,9 +60,13 @@ public class PostMortemPhaseHandlerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
         ConfigManager configManager = ConfigManager.getInstance();
-        for (int i = 0; i < CONFIGURATION_FILES.length; i++) {
-        	configManager.add(CONFIGURATION_FILES[i]);
+        Iterator iter = configManager.getAllNamespaces();
+        while (iter.hasNext()) {
+            configManager.removeNamespace((String) iter.next());
         }
+        ConfigHelper.loadConfiguration(new File("failure/config.xml"));
+        ConfigHelper.loadConfiguration(new File("failure/Failure.xml"));
+        ConfigHelper.loadConfiguration(new File("failure/Phase_Handler.xml"));
         instance = new PostMortemPhaseHandler();
 	}
 
@@ -203,6 +207,40 @@ public class PostMortemPhaseHandlerTest extends TestCase {
 			// good
 		}
 	}
+
+	/**
+     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+     * In this case, the phase type is wrong.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_WrongReviewerNumber1() throws Exception {
+        try {
+            Phase phase = createPhase(1, 1, "Scheduled", 12, "Post-Mortem");
+            phase.setAttribute("Reviewer Number", "-1");
+            instance.perform(phase, "operator");
+            fail("PhaseHandlingException expected");
+        } catch (PhaseHandlingException e) {
+            // good
+        }
+    }
+
+    /**
+     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+     * In this case, the phase type is wrong.
+     * @throws Exception to JUnit
+     */
+    public void testPerform_WrongReviewerNumber2() throws Exception {
+        try {
+            Phase phase = createPhase(1, 1, "Scheduled", 12, "Post-Mortem");
+            phase.setAttribute("Reviewer Number", "xyz");
+            instance.perform(phase, "operator");
+            fail("PhaseHandlingException expected");
+        } catch (PhaseHandlingException e) {
+            // good
+        }
+    }
 
     /**
      * Helper method to create a phase instance.

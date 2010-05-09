@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the UploadTypeLookupUtility class
  *
@@ -57,6 +58,4 @@ public class UploadTypeLookupUtilityAccTest extends BaseAccuracyTest {
 
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 }
-

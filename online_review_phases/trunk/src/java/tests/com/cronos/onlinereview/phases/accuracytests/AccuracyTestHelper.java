@@ -1,16 +1,24 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
+
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-import com.topcoder.project.phases.*;
+import com.topcoder.project.phases.Dependency;
+import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.PhaseType;
+import com.topcoder.project.phases.Project;
 import com.topcoder.util.config.ConfigManager;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.sql.*;
-import java.util.Date;
-import java.util.Iterator;
 
 /**
  * <p>This class contains helper methods for accuracy tests.</p>
@@ -93,7 +101,8 @@ public class AccuracyTestHelper {
      *
      * @throws Exception if any unexpected error occurred.
      */
-    public static void clearAllConfigNS() throws Exception {
+    @SuppressWarnings("unchecked")
+	public static void clearAllConfigNS() throws Exception {
         ConfigManager configManager = ConfigManager.getInstance();
 
         for (Iterator iter = configManager.getAllNamespaces(); iter.hasNext();) {
@@ -110,7 +119,8 @@ public class AccuracyTestHelper {
      * @param instanceName a <code>String</code> providing the name of the static field holding the reference to the
      *                     singleton instance.
      */
-    public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
+    @SuppressWarnings("unchecked")
+	public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
         try {
             Field instanceField = clazz.getDeclaredField(instanceName);
             boolean accessibility = instanceField.isAccessible();
@@ -150,30 +160,6 @@ public class AccuracyTestHelper {
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
-
-
-            /*
-            //insert into comp_catalog
-            String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name,"
-                    + "description, create_time, status_id) values "
-                    + "(1, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
-            preparedStmt = conn.prepareStatement(insertCatalog);
-            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-            preparedStmt.executeUpdate();
-            closeStatement(preparedStmt);
-            preparedStmt = null;
-
-            //insert into comp_versions
-            String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text,"
-                    + "create_time, phase_id, phase_time, price, comments) values "
-                    + "(1, 1, 1, '1.0', ?, 112, ?, 500, 'Comments')";
-            preparedStmt = conn.prepareStatement(insertVersion);
-            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            preparedStmt.executeUpdate();
-            closeStatement(preparedStmt);
-            preparedStmt = null;
-            */
 
         } finally {
             closeStatement(preparedStmt);
@@ -247,13 +233,14 @@ public class AccuracyTestHelper {
     }
 
     /**
-     * Add dependency
+     * Add dependency.
      *
-     * @param dependent
-     * @param dependency
-     * @param project
-     * @return
-     * @throws Exception
+     * @param dependent the dependent string
+     * @param dependency the dependency
+     * @param project the project to be added
+     * @param depClosed if the dependency is closed.
+     * @return the added project
+     * @throws Exception if any error occurs
      */
     public static Project addDependency(String dependent, String dependency, Project project, boolean depClosed) throws Exception {
         Connection conn = getConnection();
@@ -295,11 +282,11 @@ public class AccuracyTestHelper {
     }
 
     /**
-     * Get phase
+     * Get phase.
      *
-     * @param type
-     * @param phases
-     * @return
+     * @param type the phase type
+     * @param phases all phases
+     * @return the phase got
      */
     public static Phase getPhase(String type, Phase[] phases) {
         for (int i = 0; i < phases.length; i++) {
@@ -317,7 +304,8 @@ public class AccuracyTestHelper {
      * @return a connection instance.
      * @throws Exception not for this test case.
      */
-    public static Connection getConnection() throws Exception {
+    @SuppressWarnings("deprecation")
+	public static Connection getConnection() throws Exception {
         DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         if (connection == null) {

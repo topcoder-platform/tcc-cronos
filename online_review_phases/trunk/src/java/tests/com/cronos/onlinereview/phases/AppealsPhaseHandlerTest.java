@@ -267,6 +267,31 @@ public class AppealsPhaseHandlerTest extends BaseTest {
     }
 
     /**
+     * Tests the AppealsPhaseHandler() constructor and canPerform with Open statuses.
+     *
+     * @throws Exception not under test.
+     */
+    public void testCanPerformCloseEarly() throws Exception {
+        AppealsPhaseHandler handler = new AppealsPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = super.setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase appealsPhase = phases[4];
+
+            // test with open status.
+            appealsPhase.setPhaseStatus(PhaseStatus.OPEN);
+
+            // time is not passed, all agree to close early.
+            assertTrue("canPerform should have returned true", handler.canPerform(appealsPhase));
+        } finally {
+            cleanTables();
+        }
+    }
+
+    /**
      * Tests the perform with Scheduled and Open statuses.
      *
      * @throws Exception not under test.

@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.PhaseTypeLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the PhaseTypeLookupUtility class
  *
@@ -21,7 +22,6 @@ public class PhaseTypeLookupUtilityAccTest extends BaseAccuracyTest {
         long id = PhaseTypeLookupUtility.lookUpId(conn, "Registration");
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 
     /**
      * Tests PhaseTypeLookupUtility.lookUpId(Connection, String) on "Submission" value.
@@ -147,4 +147,3 @@ public class PhaseTypeLookupUtilityAccTest extends BaseAccuracyTest {
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
 }
-

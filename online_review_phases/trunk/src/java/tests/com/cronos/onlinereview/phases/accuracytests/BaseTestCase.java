@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases.accuracytests;
 
+import com.dumbster.smtp.SimpleSmtpServer;
 import com.topcoder.date.workdays.DefaultWorkdays;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -34,7 +35,9 @@ import com.topcoder.util.config.ConfigManager;
 import junit.framework.TestCase;
 
 import java.io.FileInputStream;
+
 import java.lang.reflect.Field;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,10 +55,10 @@ import java.util.Properties;
  *
  * @author myxgyy, assistant
  * @version 1.0
+ *
  * @since 1.2
  */
 abstract class BaseTestCase extends TestCase {
-
     /** constant for db connection configuration file. */
     private static final String DB_FACTORY_CONFIG_FILE = "accuracy/ConnectionFactory.xml";
 
@@ -70,32 +73,21 @@ abstract class BaseTestCase extends TestCase {
 
     /** array of all the config file names for various dependency components. */
     private static final String[] COMPONENT_FILE_NAMES = new String[] {
-            "accuracy/ProjectManagement.xml", "accuracy/PhaseManagement.xml",
-            "accuracy/ReviewManagement.xml", "accuracy/ScorecardManagement.xml",
-            "accuracy/ScreeningManagement.xml",
-            "accuracy/ResourceUploadSearchBundleManager.xml",
-            "accuracy/UserProjectDataStore.xml",
-            "accuracy/ReviewScorecardAggregator.xml",
-            "accuracy/SearchBuilderCommon.xml"
+            "accuracy/ProjectManagement.xml", "accuracy/PhaseManagement.xml", "accuracy/ReviewManagement.xml",
+            "accuracy/ScorecardManagement.xml", "accuracy/ScreeningManagement.xml",
+            "accuracy/ResourceUploadSearchBundleManager.xml", "accuracy/UserProjectDataStore.xml",
+            "accuracy/ReviewScorecardAggregator.xml", "accuracy/SearchBuilderCommon.xml"
         };
 
-    /**
-     * An array of table names to be cleaned in setup() and tearDown()
-     * methods.
-     */
+    /** An array of table names to be cleaned in setup() and tearDown() methods. */
     private static final String[] ALL_TABLE_NAMES = new String[] {
-        "project_user_audit", "screening_result", "screening_task", 
-        "project_phase_audit", "project_info_audit",
-        "notification", "project_audit", "review_item_comment",
-        "review_comment", "review_item", "review",
-        "resource_submission", "submission", "upload",
-        "resource_info", "resource", "phase_criteria",
-        "phase_dependency", "project_phase", "project_scorecard",
-        "project_info", "project", "scorecard_question",
-        "scorecard_section", "scorecard_group", "scorecard",
-        "comp_forum_xref", "comp_versions", "categories",
-        "comp_catalog", "user_reliability", "user_rating", "user",
-        "email"};
+            "project_user_audit", "screening_result", "screening_task", "project_phase_audit", "project_info_audit",
+            "notification", "project_audit", "review_item_comment", "review_comment", "review_item", "review",
+            "resource_submission", "submission", "upload", "resource_info", "resource", "phase_criteria",
+            "phase_dependency", "project_phase", "project_scorecard", "project_info", "project", "scorecard_question",
+            "scorecard_section", "scorecard_group", "scorecard", "comp_forum_xref", "comp_versions", "categories",
+            "comp_catalog", "user_reliability", "user_rating", "user", "email"
+        };
 
     /** constant for namespace to test other phase handlers with. */
     static final String PHASE_HANDLER_NAMESPACE = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
@@ -111,16 +103,17 @@ abstract class BaseTestCase extends TestCase {
 
     /**
      * The properties to get the testing information from a configuration file.
+     *
      * @since 1.2
      */
     protected Properties props;
-
 
     /**
      * <p>Sets up the test environment.</p>
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
+    @SuppressWarnings("deprecation")
     protected void setUp() throws Exception {
         configManager = ConfigManager.getInstance();
 
@@ -139,12 +132,12 @@ abstract class BaseTestCase extends TestCase {
             configManager.add(COMPONENT_FILE_NAMES[i]);
         }
 
-        dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class
-                .getName());
+        dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
         cleanTables();
 
         props = new Properties();
         props.load(new FileInputStream("test_files/accuracy/test.properties"));
+
     }
 
     /**
@@ -169,6 +162,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception to JUnit.
      */
+    @SuppressWarnings("unchecked")
     protected void clearAllNamespace() throws Exception {
         ConfigManager configManager = ConfigManager.getInstance();
 
@@ -190,8 +184,8 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return phase instance.
      */
-    protected Phase createPhase(long phaseId, long phaseStatusId,
-        String phaseStatusName, long phaseTypeId, String phaseTypeName) {
+    protected Phase createPhase(long phaseId, long phaseStatusId, String phaseStatusName, long phaseTypeId,
+        String phaseTypeName) {
         Project project = new Project(new Date(), new DefaultWorkdays());
         project.setId(1);
 
@@ -213,8 +207,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Resource instance.
      */
-    protected Resource createResource(long resourceId, long phaseId,
-        long projectId, long resourceRoleId) {
+    protected Resource createResource(long resourceId, long phaseId, long projectId, long resourceRoleId) {
         Resource resource2 = new Resource();
         resource2.setId(resourceId);
         resource2.setPhase(new Long(phaseId));
@@ -236,9 +229,8 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Upload instance.
      */
-    protected Upload createUpload(long uploadId, long projectId,
-        long resourceId, long uploadTypeId, long uploadStatusId,
-        String parameter) {
+    protected Upload createUpload(long uploadId, long projectId, long resourceId, long uploadTypeId,
+        long uploadStatusId, String parameter) {
         Upload upload = new Upload();
         upload.setId(uploadId);
         upload.setProject(projectId);
@@ -260,8 +252,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Submission instance.
      */
-    protected Submission createSubmission(long submissionId, long uploadId,
-        long submissionStatusId) {
+    protected Submission createSubmission(long submissionId, long uploadId, long submissionStatusId) {
         Submission submission = new Submission(submissionId);
         submission.setUpload(new Upload(uploadId));
         submission.setSubmissionStatus(new SubmissionStatus(submissionStatusId));
@@ -287,9 +278,8 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Scorecard instance.
      */
-    protected Scorecard createScorecard(long scorecardId,
-        long scorecardStatusId, long scorecardTypeId, long projectCategoryId,
-        String name, String version, float minScore, float maxScore) {
+    protected Scorecard createScorecard(long scorecardId, long scorecardStatusId, long scorecardTypeId,
+        long projectCategoryId, String name, String version, float minScore, float maxScore) {
         Scorecard scorecard = new Scorecard(scorecardId);
         scorecard.setScorecardStatus(new ScorecardStatus(scorecardStatusId));
         scorecard.setScorecardType(new ScorecardType(scorecardTypeId));
@@ -314,8 +304,8 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Review instance.
      */
-    protected Review createReview(long reviewId, long resourceId,
-        long submissionId, long scorecardId, boolean committed, float score) {
+    protected Review createReview(long reviewId, long resourceId, long submissionId, long scorecardId,
+        boolean committed, float score) {
         Review review = new Review(reviewId);
         review.setAuthor(resourceId);
         review.setSubmission(submissionId);
@@ -337,8 +327,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return Comment instance.
      */
-    protected Comment createComment(long id, long author, String sComment,
-        long commentTypeId, String commentType) {
+    protected Comment createComment(long id, long author, String sComment, long commentTypeId, String commentType) {
         Comment comment = new Comment(id);
         comment.setAuthor(author);
         comment.setComment(sComment);
@@ -357,8 +346,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @return review item instance.
      */
-    protected Item createReviewItem(long id, String answer, long reviewId,
-        long questionId) {
+    protected Item createReviewItem(long id, String answer, long reviewId, long questionId) {
         Item item = new Item(id);
         item.setAnswer(answer);
         item.setDocument(new Long(reviewId));
@@ -413,8 +401,8 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * inserts a project into the database. Inserts records into the
-     * project, comp_catalog and comp_versions tables.
+     * inserts a project into the database. Inserts records into the project, comp_catalog and comp_versions
+     * tables.
      *
      * @param conn connection to use.
      *
@@ -425,38 +413,32 @@ abstract class BaseTestCase extends TestCase {
 
         try {
             // insert a project
-            String insertProject = "insert into project(project_id, project_status_id, project_category_id,"
-                + "create_user, create_date, modify_user, modify_date) values "
-                + "(1, 1, 1, 'user', ?, 'user', ?)";
+            String insertProject = "insert into project(project_id, project_status_id, project_category_id," +
+                "create_user, create_date, modify_user, modify_date) values " + "(1, 1, 1, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertProject);
-            preparedStmt.setTimestamp(1,
-                new Timestamp(System.currentTimeMillis()));
-            preparedStmt.setTimestamp(2,
-                new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
 
             // insert into comp_catalog
-            String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name,"
-                + "description, create_time, status_id) values "
-                + "(1, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
+            String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name," +
+                "description, create_time, status_id) values " +
+                "(1, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
             preparedStmt = conn.prepareStatement(insertCatalog);
-            preparedStmt.setTimestamp(1,
-                new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
 
             // insert into comp_catalog
-            String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text,"
-                + "create_time, phase_id, phase_time, price, comments) values "
-                + "(1, 1, 1, '1.0', ?, 112, ?, 500, 'Comments')";
+            String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text," +
+                "create_time, phase_id, phase_time, price, comments) values " +
+                "(1, 1, 1, '1.0', ?, 112, ?, 500, 'Comments')";
             preparedStmt = conn.prepareStatement(insertVersion);
-            preparedStmt.setTimestamp(1,
-                new Timestamp(System.currentTimeMillis()));
-            preparedStmt.setTimestamp(2,
-                new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
@@ -466,8 +448,7 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * inserts project properties into the database. Inserts records
-     * into the project_info table.
+     * inserts project properties into the database. Inserts records into the project_info table.
      *
      * @param conn connection to use.
      * @param projectId project id.
@@ -476,25 +457,22 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertProjectInfo(Connection conn, long projectId,
-        long[] infoTypes, String[] infoValues) throws Exception {
+    protected void insertProjectInfo(Connection conn, long projectId, long[] infoTypes, String[] infoValues)
+        throws Exception {
         PreparedStatement preparedStmt = null;
 
         try {
             // insert a project info
-            String insertProjectInfo = "insert into project_info(project_id, project_info_type_id, value,"
-                + "create_user, create_date, modify_user, modify_date) values "
-                + "(?, ?, ?, 'user', ?, 'user', ?)";
+            String insertProjectInfo = "insert into project_info(project_id, project_info_type_id, value," +
+                "create_user, create_date, modify_user, modify_date) values " + "(?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertProjectInfo);
 
             for (int i = 0; i < infoTypes.length; i++) {
                 preparedStmt.setLong(1, projectId);
                 preparedStmt.setLong(2, infoTypes[i]);
                 preparedStmt.setString(3, infoValues[i]);
-                preparedStmt.setTimestamp(4,
-                    new Timestamp(System.currentTimeMillis()));
-                preparedStmt.setTimestamp(5,
-                    new Timestamp(System.currentTimeMillis()));
+                preparedStmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+                preparedStmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
                 preparedStmt.executeUpdate();
             }
 
@@ -524,22 +502,18 @@ abstract class BaseTestCase extends TestCase {
             // insert project first
             insertProject(conn);
 
-            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id,"
-                + "scheduled_start_time, scheduled_end_time, duration,"
-                + " create_user, create_date, modify_user, modify_date)"
-                + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
+                "scheduled_start_time, scheduled_end_time, duration," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {
-                    101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111
-                };
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+            long[] phaseIds = new long[] { 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
+            long[] phaseTypeIds = new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             String[] phaseTypeNames = new String[] {
-                    "Registration", "Submission", "Screening", "Review",
-                    "Appeals", "Appeals Response", "Aggregation",
-                    "Aggregation Review", "Final Fix", "Final Review",
-                    "Approval"
+                    "Registration", "Submission", "Screening", "Review", "Appeals", "Appeals Response", "Aggregation",
+                    "Aggregation Review", "Final Fix", "Final Review", "Approval"
                 };
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now);
@@ -560,8 +534,7 @@ abstract class BaseTestCase extends TestCase {
                 // create phase intance
                 Phase phase = new Phase(project, duration);
                 phase.setId(phaseIds[i]);
-                phase.setPhaseType(new PhaseType(phaseTypeIds[i],
-                        phaseTypeNames[i]));
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
                 phase.setPhaseStatus(PhaseStatus.SCHEDULED);
                 phase.setActualStartDate(scheduledStart);
                 phase.setActualEndDate(scheduledEnd);
@@ -572,26 +545,21 @@ abstract class BaseTestCase extends TestCase {
 
                 // re-calculate scheduled start and end.
                 scheduledStart = new Timestamp(scheduledEnd.getTime());
-                scheduledEnd = new Timestamp(scheduledStart.getTime()
-                        + duration);
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
             }
 
             closeStatement(preparedStmt);
             preparedStmt = null;
 
             // insert dependencies
-            String insertDependency = "INSERT INTO phase_dependency "
-                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time,"
-                + " create_user, create_date, modify_user, modify_date)"
-                + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertDependency = "INSERT INTO phase_dependency " +
+                "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
 
-            long[] dependencyPhaseIds = new long[] {
-                    101, 102, 103, 104, 105, 106, 107, 108, 109, 110
-                };
-            long[] dependentPhaseIds = new long[] {
-                    102, 103, 104, 105, 106, 107, 108, 109, 110, 111
-                };
+            long[] dependencyPhaseIds = new long[] { 101, 102, 103, 104, 105, 106, 107, 108, 109, 110 };
+            long[] dependentPhaseIds = new long[] { 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
@@ -604,8 +572,7 @@ abstract class BaseTestCase extends TestCase {
                 preparedStmt.setTimestamp(7, new Timestamp(now));
                 preparedStmt.executeUpdate();
 
-                Dependency dependency = new Dependency(phases[i],
-                        phases[i + 1], false, true, 0);
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
                 phases[i + 1].addDependency(dependency);
             }
 
@@ -636,7 +603,7 @@ abstract class BaseTestCase extends TestCase {
         submitter.setProject(new Long(1));
         submitter.setPhase(new Long(102));
 
-        insertResources(con, new Resource[] {submitter});
+        insertResources(con, new Resource[] { submitter });
 
         // Prepare upload and insert into DB
         Upload upload = new Upload();
@@ -647,7 +614,7 @@ abstract class BaseTestCase extends TestCase {
         upload.setUploadStatus(new UploadStatus(1));
         upload.setParameter("param");
 
-        insertUploads(con, new Upload[] {upload});
+        insertUploads(con, new Upload[] { upload });
 
         // Prepare submission and insert into DB
         Submission submission = new Submission();
@@ -659,7 +626,7 @@ abstract class BaseTestCase extends TestCase {
         submission.setScreeningScore(100.00d);
         submission.setSubmissionStatus(new SubmissionStatus(1));
 
-        insertSubmissions(con, new Submission[] {submission});
+        insertSubmissions(con, new Submission[] { submission });
     }
 
     /**
@@ -679,7 +646,7 @@ abstract class BaseTestCase extends TestCase {
         submitter.setProject(new Long(1));
         submitter.setPhase(new Long(103));
 
-        insertResources(con, new Resource[] {submitter});
+        insertResources(con, new Resource[] { submitter });
 
         // Prepare upload and insert into DB
         Upload upload = new Upload();
@@ -690,7 +657,7 @@ abstract class BaseTestCase extends TestCase {
         upload.setUploadStatus(new UploadStatus(1));
         upload.setParameter("param");
 
-        insertUploads(con, new Upload[] {upload});
+        insertUploads(con, new Upload[] { upload });
 
         // Prepare submission and insert into DB
         Submission submission = new Submission();
@@ -698,9 +665,8 @@ abstract class BaseTestCase extends TestCase {
         submission.setUpload(upload);
         submission.setSubmissionStatus(new SubmissionStatus(1));
 
-        insertSubmissions(con, new Submission[] {submission});
+        insertSubmissions(con, new Submission[] { submission });
     }
-
 
     /**
      * inserts uploads required by test cases into the db.
@@ -715,10 +681,10 @@ abstract class BaseTestCase extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertUpload = "INSERT INTO upload "
-                + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertUpload = "INSERT INTO upload " +
+                "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertUpload);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -755,11 +721,10 @@ abstract class BaseTestCase extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertSubmission = "INSERT INTO submission "
-                + "(submission_id, upload_id, submission_status_id, "
-                + "create_user, create_date, modify_user, modify_date,"
-                + " placement, initial_score, final_score, screening_score) "
-                + "VALUES (?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?)";
+            String insertSubmission = "INSERT INTO submission " + "(submission_id, upload_id, submission_status_id, " +
+                "create_user, create_date, modify_user, modify_date," +
+                " placement, initial_score, final_score, screening_score) " +
+                "VALUES (?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?)";
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -767,15 +732,12 @@ abstract class BaseTestCase extends TestCase {
             for (int i = 0; i < submissions.length; i++) {
                 preparedStmt.setLong(1, submissions[i].getId());
                 preparedStmt.setLong(2, submissions[i].getUpload().getId());
-                preparedStmt.setLong(3,
-                    submissions[i].getSubmissionStatus().getId());
+                preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
                 preparedStmt.setTimestamp(4, now);
                 preparedStmt.setTimestamp(5, now);
 
                 preparedStmt.setDouble(6,
-                    (submissions[i].getPlacement() == null) ? new Long(0)
-                                                            : submissions[i]
-                    .getPlacement());
+                    (submissions[i].getPlacement() == null) ? new Long(0) : submissions[i].getPlacement());
                 preparedStmt.setDouble(7, submissions[i].getInitialScore());
                 preparedStmt.setDouble(8, submissions[i].getFinalScore());
                 preparedStmt.setDouble(9, submissions[i].getScreeningScore());
@@ -802,19 +764,17 @@ abstract class BaseTestCase extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertScorecard = "INSERT INTO scorecard "
-                + "(scorecard_id, scorecard_status_id, scorecard_type_id, project_category_id,"
-                + "name, version, min_score, max_score,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertScorecard = "INSERT INTO scorecard " +
+                "(scorecard_id, scorecard_status_id, scorecard_type_id, project_category_id," +
+                "name, version, min_score, max_score," + "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertScorecard);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < scorecards.length; i++) {
                 preparedStmt.setLong(1, scorecards[i].getId());
-                preparedStmt.setLong(2,
-                    scorecards[i].getScorecardStatus().getId());
+                preparedStmt.setLong(2, scorecards[i].getScorecardStatus().getId());
                 preparedStmt.setLong(3, scorecards[i].getScorecardType().getId());
                 preparedStmt.setLong(4, scorecards[i].getCategory());
                 preparedStmt.setString(5, scorecards[i].getName());
@@ -846,10 +806,10 @@ abstract class BaseTestCase extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertReview = "INSERT INTO review"
-                + "(review_id, resource_id, submission_id, scorecard_id, committed, score,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertReview = "INSERT INTO review" +
+                "(review_id, resource_id, submission_id, scorecard_id, committed, score," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertReview);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -885,16 +845,15 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertComments(Connection conn, long[] ids, long[] authors,
-        long[] reviewIds, String[] sComments, long[] commentTypeIds)
-        throws Exception {
+    protected void insertComments(Connection conn, long[] ids, long[] authors, long[] reviewIds, String[] sComments,
+        long[] commentTypeIds) throws Exception {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertReview = "INSERT INTO review_comment"
-                + "(review_comment_id, resource_id, review_id, comment_type_id, content, sort,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
+            String insertReview = "INSERT INTO review_comment" +
+                "(review_comment_id, resource_id, review_id, comment_type_id, content, sort," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertReview);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -918,8 +877,7 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * Helper method to insert Comment with extra info into the
-     * database.
+     * Helper method to insert Comment with extra info into the database.
      *
      * @param conn connection to use
      * @param ids comment id
@@ -931,16 +889,16 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertCommentsWithExtraInfo(Connection conn, long[] ids,
-        long[] authors, long[] reviewIds, String[] sComments,
-        long[] commentTypeIds, String[] extraInfos) throws Exception {
+    protected void insertCommentsWithExtraInfo(Connection conn, long[] ids, long[] authors, long[] reviewIds,
+        String[] sComments, long[] commentTypeIds, String[] extraInfos)
+        throws Exception {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertReview = "INSERT INTO review_comment"
-                + "(review_comment_id, resource_id, review_id, comment_type_id, content, sort, extra_info,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, 1, ?, 'user', ?, 'user', ?)";
+            String insertReview = "INSERT INTO review_comment" +
+                "(review_comment_id, resource_id, review_id, comment_type_id, content, sort, extra_info," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, 1, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertReview);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -965,8 +923,8 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * Helper method to insert a question. This inserts a record into
-     * the scorecard_group, scorecard_section, scorecard_question tables.
+     * Helper method to insert a question. This inserts a record into the scorecard_group, scorecard_section,
+     * scorecard_question tables.
      *
      * @param conn connection to use.
      * @param questionId scorecard question id.
@@ -974,18 +932,18 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertScorecardQuestion(Connection conn, long questionId,
-        long scorecardId) throws Exception {
+    protected void insertScorecardQuestion(Connection conn, long questionId, long scorecardId)
+        throws Exception {
         PreparedStatement stmt1 = null;
         PreparedStatement stmt2 = null;
         PreparedStatement stmt3 = null;
 
         try {
             Timestamp now = new Timestamp(System.currentTimeMillis());
-            String insertGroup = "INSERT INTO scorecard_group"
-                + "(scorecard_group_id, scorecard_id, name, weight, sort, "
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (1, ?, 'group name', 1, 1, 'user', ?, 'user', ?)";
+            String insertGroup = "INSERT INTO scorecard_group" +
+                "(scorecard_group_id, scorecard_id, name, weight, sort, " +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (1, ?, 'group name', 1, 1, 'user', ?, 'user', ?)";
             stmt1 = conn.prepareStatement(insertGroup);
             stmt1.setLong(1, scorecardId);
             stmt1.setTimestamp(2, now);
@@ -994,10 +952,10 @@ abstract class BaseTestCase extends TestCase {
             closeStatement(stmt1);
             stmt1 = null;
 
-            String insertSection = "INSERT INTO scorecard_section"
-                + "(scorecard_section_id, scorecard_group_id, name, weight, sort, "
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (1, 1, 'section name', 1, 1, 'user', ?, 'user', ?)";
+            String insertSection = "INSERT INTO scorecard_section" +
+                "(scorecard_section_id, scorecard_group_id, name, weight, sort, " +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (1, 1, 'section name', 1, 1, 'user', ?, 'user', ?)";
             stmt2 = conn.prepareStatement(insertSection);
             stmt2.setTimestamp(1, now);
             stmt2.setTimestamp(2, now);
@@ -1005,11 +963,11 @@ abstract class BaseTestCase extends TestCase {
             closeStatement(stmt2);
             stmt2 = null;
 
-            String insertQues = "INSERT INTO scorecard_question"
-                + "(scorecard_question_id, scorecard_question_type_id, scorecard_section_id, description, weight,"
-                + "sort, upload_document, upload_document_required,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, 1, 1, 'question desc', 1, 1, 1, 1, 'user', ?, 'user', ?)";
+            String insertQues = "INSERT INTO scorecard_question" +
+                "(scorecard_question_id, scorecard_question_type_id, scorecard_section_id, description, weight," +
+                "sort, upload_document, upload_document_required," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, 1, 1, 'question desc', 1, 1, 1, 1, 'user', ?, 'user', ?)";
             stmt3 = conn.prepareStatement(insertQues);
 
             stmt3.setLong(1, questionId);
@@ -1039,10 +997,10 @@ abstract class BaseTestCase extends TestCase {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertReview = "INSERT INTO review_item"
-                + "(review_item_id, review_id, scorecard_question_id, upload_id, answer, sort,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
+            String insertReview = "INSERT INTO review_item" +
+                "(review_item_id, review_id, scorecard_question_id, upload_id, answer, sort," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertReview);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1074,15 +1032,15 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertReviewItemComments(Connection conn,
-        Comment[] itemComments, long[] reviewItemIds) throws Exception {
+    protected void insertReviewItemComments(Connection conn, Comment[] itemComments, long[] reviewItemIds)
+        throws Exception {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertReview = "INSERT INTO review_item_comment"
-                + "(review_item_comment_id, resource_id, review_item_id, comment_type_id, content, extra_info, sort,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
+            String insertReview = "INSERT INTO review_item_comment" +
+                "(review_item_comment_id, resource_id, review_item_id, comment_type_id, content, extra_info, sort," +
+                "create_user, create_date, modify_user, modify_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, 1, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertReview);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1093,8 +1051,7 @@ abstract class BaseTestCase extends TestCase {
                 preparedStmt.setLong(3, reviewItemIds[i]);
                 preparedStmt.setLong(4, itemComments[i].getCommentType().getId());
                 preparedStmt.setString(5, itemComments[i].getComment());
-                preparedStmt.setString(6,
-                    (String) itemComments[i].getExtraInfo());
+                preparedStmt.setString(6, (String) itemComments[i].getExtraInfo());
                 preparedStmt.setTimestamp(7, now);
                 preparedStmt.setTimestamp(8, now);
                 preparedStmt.executeUpdate();
@@ -1108,8 +1065,7 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * A helper method to insert a winning submitter for the given
-     * project id with given resource id.
+     * A helper method to insert a winning submitter for the given project id with given resource id.
      *
      * @param conn connection to use.
      * @param resourceId resource id.
@@ -1117,10 +1073,10 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertWinningSubmitter(Connection conn, long resourceId,
-        long projectId) throws Exception {
+    protected void insertWinningSubmitter(Connection conn, long resourceId, long projectId)
+        throws Exception {
         Resource winner = createResource(resourceId, 101, projectId, 1);
-        insertResources(conn, new Resource[] {winner});
+        insertResources(conn, new Resource[] { winner });
 
         // insert placement : value = 1
         insertResourceInfo(conn, resourceId, 12, "1");
@@ -1129,13 +1085,11 @@ abstract class BaseTestCase extends TestCase {
         insertResourceInfo(conn, resourceId, 1, "1");
 
         // insert project winner information
-        insertProjectInfo(conn, projectId, new long[] {23}, new String[] {"1"});
+        insertProjectInfo(conn, projectId, new long[] { 23 }, new String[] { "1" });
     }
 
-
     /**
-     * Inserts resource-submission mapping into the resource_submission
-     * table.
+     * Inserts resource-submission mapping into the resource_submission table.
      *
      * @param conn connection to use.
      * @param resourceId resource id.
@@ -1143,15 +1097,13 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception not under test.
      */
-    protected void insertResourceSubmission(Connection conn, long resourceId,
-        long submissionId) throws Exception {
+    protected void insertResourceSubmission(Connection conn, long resourceId, long submissionId)
+        throws Exception {
         PreparedStatement preparedStmt = null;
 
         try {
-            String insertInfo = "insert into resource_submission"
-                + "(resource_id, submission_id,"
-                + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, ?, 'user', ?, 'user', ?)";
+            String insertInfo = "insert into resource_submission" + "(resource_id, submission_id," +
+                "create_user, create_date, modify_user, modify_date) " + "VALUES (?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertInfo);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1237,8 +1189,7 @@ abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * Checks whether a new final review phase is inserted into
-     * database.
+     * Checks whether a new final review phase is inserted into database.
      *
      * @param con the database connection.
      *
@@ -1349,24 +1300,18 @@ abstract class BaseTestCase extends TestCase {
             // insert project first
             insertProject(conn);
 
-            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id,"
-                + "scheduled_start_time, scheduled_end_time, duration,"
-                + " create_user, create_date, modify_user, modify_date)"
-                + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
+                "scheduled_start_time, scheduled_end_time, duration," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {
-                    101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112
-                };
-            long[] phaseTypeIds = new long[] {
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-                };
+            long[] phaseIds = new long[] { 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
+            long[] phaseTypeIds = new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             String[] phaseTypeNames = new String[] {
-                    "Registration", "Submission", "Screening", "Review",
-                    "Appeals", "Appeals Response", "Aggregation",
-                    "Aggregation Review", "Final Fix", "Final Review",
-                    "Approval", "Post-Mortem"
+                    "Registration", "Submission", "Screening", "Review", "Appeals", "Appeals Response", "Aggregation",
+                    "Aggregation Review", "Final Fix", "Final Review", "Approval", "Post-Mortem"
                 };
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now);
@@ -1387,8 +1332,7 @@ abstract class BaseTestCase extends TestCase {
                 // create phase intance
                 Phase phase = new Phase(project, duration);
                 phase.setId(phaseIds[i]);
-                phase.setPhaseType(new PhaseType(phaseTypeIds[i],
-                        phaseTypeNames[i]));
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
                 phase.setPhaseStatus(PhaseStatus.SCHEDULED);
                 phase.setActualStartDate(scheduledStart);
                 phase.setActualEndDate(scheduledEnd);
@@ -1399,26 +1343,21 @@ abstract class BaseTestCase extends TestCase {
 
                 // re-calculate scheduled start and end.
                 scheduledStart = new Timestamp(scheduledEnd.getTime());
-                scheduledEnd = new Timestamp(scheduledStart.getTime()
-                        + duration);
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
             }
 
             closeStatement(preparedStmt);
             preparedStmt = null;
 
             // insert dependencies
-            String insertDependency = "INSERT INTO phase_dependency "
-                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time,"
-                + " create_user, create_date, modify_user, modify_date)"
-                + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            String insertDependency = "INSERT INTO phase_dependency " +
+                "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
 
-            long[] dependencyPhaseIds = new long[] {
-                    101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 102
-                };
-            long[] dependentPhaseIds = new long[] {
-                    102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112
-                };
+            long[] dependencyPhaseIds = new long[] { 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 102 };
+            long[] dependentPhaseIds = new long[] { 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
@@ -1431,8 +1370,7 @@ abstract class BaseTestCase extends TestCase {
                 preparedStmt.setTimestamp(7, new Timestamp(now));
                 preparedStmt.executeUpdate();
 
-                Dependency dependency = new Dependency(phases[i],
-                        phases[i + 1], false, true, 0);
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
                 phases[i + 1].addDependency(dependency);
             }
 
@@ -1445,18 +1383,21 @@ abstract class BaseTestCase extends TestCase {
 
         return project;
     }
+
     /**
-     * Gets the value of a private field in the given class. The field has the given name. The value is retrieved from
-     * the given instance. If the instance is null, the field is a static field. If any error occurs, null is
-     * returned.
+     * Gets the value of a private field in the given class. The field has the given name. The value is
+     * retrieved from the given instance. If the instance is null, the field is a static field. If any error occurs,
+     * null is returned.
      *
      * @param type the class which the private field belongs to
      * @param instance the instance which the private field belongs to
      * @param name the name of the private field to be retrieved
      *
      * @return the value of the private field
+     *
      * @since 1.2
      */
+    @SuppressWarnings("unchecked")
     static Object getPrivateField(Class type, Object instance, String name) {
         Field field = null;
         Object obj = null;
@@ -1484,9 +1425,10 @@ abstract class BaseTestCase extends TestCase {
         return obj;
     }
 
-
     /**
      * inserts a project and the standard phases into the database.
+     *
+     * @param stepPhase DOCUMENT ME!
      *
      * @return project instance with phases populated.
      *
@@ -1504,8 +1446,7 @@ abstract class BaseTestCase extends TestCase {
             // insert project first
             insertProject(conn);
 
-            String insertPhase =
-                "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
                 "scheduled_start_time, scheduled_end_time, duration," +
                 " create_user, create_date, modify_user, modify_date)" +
                 "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
@@ -1528,9 +1469,10 @@ abstract class BaseTestCase extends TestCase {
                     break;
                 }
             }
+
             long duration = 24 * 60 * 60 * 1000; // one day
             long now = System.currentTimeMillis();
-            Timestamp scheduledStart = new Timestamp(now-duration*2);
+            Timestamp scheduledStart = new Timestamp(now - (duration * 2));
             Timestamp scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
 
             for (int i = 0; i < (step + 1); i++) {
@@ -1620,6 +1562,7 @@ abstract class BaseTestCase extends TestCase {
      * @return The created Project
      *
      * @throws Exception into JUnit
+     *
      * @since 1.2
      */
     protected Project setupProjectResourcesNotification(String step, boolean postMorterm)
@@ -1697,8 +1640,8 @@ abstract class BaseTestCase extends TestCase {
             System.out.println(sql);
 
             // insert into email
-            sql = "insert into email(user_id, email_id, address, primary_ind)" +
-                " values (1, 1, '" + props.getProperty("email.1") + "', 1)";
+            sql = "insert into email(user_id, email_id, address, primary_ind)" + " values (1, 1, '" +
+                props.getProperty("email.1") + "', 1)";
             stmt.addBatch(sql);
             System.out.println(sql);
 
@@ -1713,8 +1656,8 @@ abstract class BaseTestCase extends TestCase {
             System.out.println(sql);
 
             // insert into email
-            sql = "insert into email(user_id, email_id, address, primary_ind)" +
-                " values (2, 2, '" + props.getProperty("email.2") + "', 1)";
+            sql = "insert into email(user_id, email_id, address, primary_ind)" + " values (2, 2, '" +
+                props.getProperty("email.2") + "', 1)";
             stmt.addBatch(sql);
             System.out.println(sql);
 
@@ -1729,8 +1672,8 @@ abstract class BaseTestCase extends TestCase {
             System.out.println(sql);
 
             // insert into email
-            sql = "insert into email(user_id, email_id, address, primary_ind)" +
-                " values (3, 3, '" + props.getProperty("email.3") + "', 1)";
+            sql = "insert into email(user_id, email_id, address, primary_ind)" + " values (3, 3, '" +
+                props.getProperty("email.3") + "', 1)";
             stmt.addBatch(sql);
             System.out.println(sql);
 
@@ -1745,8 +1688,8 @@ abstract class BaseTestCase extends TestCase {
             System.out.println(sql);
 
             // insert into email
-            sql = "insert into email(user_id, email_id, address, primary_ind)" +
-                " values (4, 4, '" + props.getProperty("email.4") + "', 1)";
+            sql = "insert into email(user_id, email_id, address, primary_ind)" + " values (4, 4, '" +
+                props.getProperty("email.4") + "', 1)";
             stmt.addBatch(sql);
             System.out.println(sql);
 
@@ -1761,8 +1704,8 @@ abstract class BaseTestCase extends TestCase {
             System.out.println(sql);
 
             // insert into email
-            sql = "insert into email(user_id, email_id, address, primary_ind)" +
-                " values (5, 5, '" + props.getProperty("email.5") + "', 1)";
+            sql = "insert into email(user_id, email_id, address, primary_ind)" + " values (5, 5, '" +
+                props.getProperty("email.5") + "', 1)";
             stmt.addBatch(sql);
             System.out.println(sql);
             stmt.executeBatch();
@@ -1772,7 +1715,7 @@ abstract class BaseTestCase extends TestCase {
             Resource freviewer = createResource(100008, null, 1, 9);
             Resource reviewer = createResource(100001, null, 1, 4);
             Resource observer = createResource(100002, null, 1, 12);
-            insertResources(conn, new Resource[] {manager, reviewer, freviewer, observer});
+            insertResources(conn, new Resource[] { manager, reviewer, freviewer, observer });
 
             //insert resource info
             insertResourceInfo(conn, manager.getId(), 1, "1");
@@ -1826,8 +1769,8 @@ abstract class BaseTestCase extends TestCase {
     /**
      * inserts resources required by test cases into the db.
      *
-     * @param resources resources to insert.
      * @param conn connection to use.
+     * @param resources resources to insert.
      *
      * @throws Exception not under test.
      */

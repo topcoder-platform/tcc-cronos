@@ -3,13 +3,14 @@
  */
 package com.cronos.onlinereview.phases.failuretests;
 
-import com.cronos.onlinereview.autoscreening.management.PersistenceException;
-import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
+import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import com.cronos.onlinereview.phases.PhaseNotSupportedException;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
 import com.cronos.onlinereview.phases.failuretests.mock.MockResourceManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockReviewManager;
-import com.cronos.onlinereview.phases.failuretests.mock.MockScreeningManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockUploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -18,9 +19,6 @@ import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
-import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * <p>A failure test for {@link ReviewPhaseHandler} class. Tests the proper handling of
@@ -426,50 +424,6 @@ public class ReviewPhaseHandlerFailureTest extends AbstractTestCase {
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
-                fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ReviewPhaseHandler#perform,Phase,String} for proper behavior if the underlying
-     * service throws an unexpected exception.</p>
-     *
-     * <p>Configures the mock implementation <code>MockScreeningManager</code> to throw an exception from any method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testPerform_Phase_String_ScheduledPhase_ScreeningManagerError_ScreeningTaskDoesNotExistException() {
-        MockScreeningManager.throwGlobalException(new ScreeningTaskDoesNotExistException(1));
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].perform(TestDataFactory.getReviewPhase(), TestDataFactory.OPERATOR);
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ReviewPhaseHandler#perform,Phase,String} for proper behavior if the underlying
-     * service throws an unexpected exception.</p>
-     *
-     * <p>Configures the mock implementation <code>MockScreeningManager</code> to throw an exception from any method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testPerform_Phase_String_ScheduledPhase_ScreeningManagerError_PersistenceException() {
-        MockScreeningManager.throwGlobalException(new PersistenceException("FailureTest"));
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].perform(TestDataFactory.getReviewPhase(), TestDataFactory.OPERATOR);
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                e.printStackTrace();
                 fail("PhaseHandlingException was expected but the original exception is : " + e);
             }
         }

@@ -245,7 +245,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_5() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "StartPhaseEmail.EmailTemplateSource");
+                                                      "DefaultScheme.StartPhaseEmail.EmailTemplateSource");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -255,7 +255,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailTemplateSource", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailTemplateSource", values);
         }
     }
 
@@ -268,7 +268,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_6() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "StartPhaseEmail.EmailTemplateSource", "");
+                                                   "DefaultScheme.StartPhaseEmail.EmailTemplateSource", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -278,7 +278,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailTemplateSource", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailTemplateSource", values);
         }
     }
 
@@ -291,7 +291,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_7() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "StartPhaseEmail.EmailTemplateName");
+                                                      "DefaultScheme.StartPhaseEmail.EmailTemplateName");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -301,7 +301,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailTemplateName", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailTemplateName", values);
         }
     }
 
@@ -314,7 +314,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_8() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "StartPhaseEmail.EmailTemplateName", "");
+                                                   "DefaultScheme.StartPhaseEmail.EmailTemplateName", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -324,7 +324,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailTemplateName", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailTemplateName", values);
         }
     }
 
@@ -337,7 +337,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_9() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "StartPhaseEmail.EmailSubject");
+                                                      "DefaultScheme.StartPhaseEmail.EmailSubject");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -347,7 +347,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailSubject", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailSubject", values);
         }
     }
 
@@ -360,7 +360,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_10() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "StartPhaseEmail.EmailSubject", "");
+                                                   "DefaultScheme.StartPhaseEmail.EmailSubject", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -370,7 +370,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailSubject", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailSubject", values);
         }
     }
 
@@ -383,7 +383,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_11() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "StartPhaseEmail.EmailFromAddress");
+                                                      "DefaultScheme.StartPhaseEmail.EmailFromAddress");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -393,7 +393,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailFromAddress", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailFromAddress", values);
         }
     }
 
@@ -406,7 +406,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_12() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "StartPhaseEmail.EmailFromAddress", "");
+                                                   "DefaultScheme.StartPhaseEmail.EmailFromAddress", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -416,7 +416,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "StartPhaseEmail.EmailFromAddress", values);
+                                         "DefaultScheme.StartPhaseEmail.EmailFromAddress", values);
         }
     }
 
@@ -429,7 +429,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_13() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "EndPhaseEmail.EmailTemplateSource");
+                                                      "DefaultScheme.EndPhaseEmail.EmailTemplateSource");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -439,7 +439,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailTemplateSource", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailTemplateSource", values);
         }
     }
 
@@ -452,7 +452,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_14() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "EndPhaseEmail.EmailTemplateSource", "");
+                                                   "DefaultScheme.EndPhaseEmail.EmailTemplateSource", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -462,7 +462,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailTemplateSource", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailTemplateSource", values);
         }
     }
 
@@ -475,7 +475,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_15() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "EndPhaseEmail.EmailTemplateName");
+                                                      "DefaultScheme.EndPhaseEmail.EmailTemplateName");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -485,7 +485,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailTemplateName", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailTemplateName", values);
         }
     }
 
@@ -498,7 +498,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_16() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "EndPhaseEmail.EmailTemplateName", "");
+                                                   "DefaultScheme.EndPhaseEmail.EmailTemplateName", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -508,7 +508,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailTemplateName", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailTemplateName", values);
         }
     }
 
@@ -521,7 +521,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_17() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "EndPhaseEmail.EmailSubject");
+                                                      "DefaultScheme.EndPhaseEmail.EmailSubject");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -531,7 +531,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailSubject", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailSubject", values);
         }
     }
 
@@ -544,7 +544,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_18() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "EndPhaseEmail.EmailSubject", "");
+                                                   "DefaultScheme.EndPhaseEmail.EmailSubject", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -554,7 +554,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailSubject", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailSubject", values);
         }
     }
 
@@ -567,7 +567,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_19() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "EndPhaseEmail.EmailFromAddress");
+                                                      "DefaultScheme.EndPhaseEmail.EmailFromAddress");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -577,7 +577,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailFromAddress", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailFromAddress", values);
         }
     }
 
@@ -590,7 +590,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      */
     public void testAbstractPhaseHandler_String_20() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "EndPhaseEmail.EmailFromAddress", "");
+                                                   "DefaultScheme.EndPhaseEmail.EmailFromAddress", "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -600,7 +600,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
             fail("ConfigurationException was expected but the original exception is : " + e);
         } finally {
             ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "EndPhaseEmail.EmailFromAddress", values);
+                                         "DefaultScheme.EndPhaseEmail.EmailFromAddress", values);
         }
     }
 
@@ -617,42 +617,6 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
         try {
             new AbstractPhaseHandlerSubclass(
                 "com.cronos.onlinereview.phases.AbstractPhaseHandler.MissingProjectDetailsURL");
-            fail("should have thrown ConfigurationException");
-        } catch (ConfigurationException ex) {
-            // expected.
-        }
-    }
-
-    /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config,
-     * the 'StartPhaseEmail' is missing.
-     *
-     * @throws Exception to JUnit
-     * @since 1.2
-     */
-    public void testAbstractPhaseHandler_MissingStartPhaseEmail()
-        throws Exception {
-        try {
-            new AbstractPhaseHandlerSubclass(
-                "com.cronos.onlinereview.phases.AbstractPhaseHandler.MissingStartPhaseEmail");
-            fail("should have thrown ConfigurationException");
-        } catch (ConfigurationException ex) {
-            // expected.
-        }
-    }
-
-    /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config,
-     * the 'EndPhaseEmail' is missing.
-     *
-     * @throws Exception to JUnit
-     * @since 1.2
-     */
-    public void testAbstractPhaseHandler_MissingEndPhaseEmail()
-        throws Exception {
-        try {
-            new AbstractPhaseHandlerSubclass(
-                "com.cronos.onlinereview.phases.AbstractPhaseHandler.MissingEndPhaseEmail");
             fail("should have thrown ConfigurationException");
         } catch (ConfigurationException ex) {
             // expected.

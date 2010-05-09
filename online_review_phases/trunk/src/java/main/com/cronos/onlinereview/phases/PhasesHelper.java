@@ -27,7 +27,6 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.UploadStatus;
-import com.topcoder.management.deliverable.UploadType;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -90,7 +89,6 @@ import com.topcoder.util.config.UnknownNamespaceException;
  *     <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method to fix the bugs with
  *     creation of <code>Post-Mortem</code> phase.</li>
  *     <li>Added {@link #insertApprovalPhase(Project, Phase, ManagerHelper, String)} method.</li>
- *     <li>Added {@link #getUploadType(UploadManager, String)} method.</li>
  *     <li>Added {@link #searchProjectResourcesForRoleNames(ManagerHelper, Connection, String[], long)} method.</li>
  *     <li>Added {@link #getApprovalPhaseReviews(Review[], Phase)} method.</li>
  *     <li>Added {@link #searchProjectReviewsForResourceRoles(Connection, ManagerHelper, long, String[], Long)} method
@@ -260,30 +258,6 @@ final class PhasesHelper {
     }
 
     /**
-     * Helper method to retrieve a property value from given configuration
-     * namespace. If the property does not exist, then the default value is
-     * returned.
-     *
-     * @param namespace configuration namespace to use.
-     * @param propertyName name of the property.
-     * @param defaultValue value to be used in case not specified by user.
-     *
-     * @return value for given property name, or defaultValue if not specified.
-     *
-     * @throws ConfigurationException if namespace is unknown.
-     */
-    static String getPropertyValue(String namespace, String propertyName,
-                    String defaultValue) throws ConfigurationException {
-        String value = getPropertyValue(namespace, propertyName, false);
-
-        if (isStringNullOrEmpty(value)) {
-            return defaultValue;
-        } else {
-            return value;
-        }
-    }
-
-    /**
      * Returns true if the property by the given name exists in the namespace,
      * false otherwise.
      *
@@ -328,19 +302,6 @@ final class PhasesHelper {
         } catch (UnknownNamespaceException e) {
             throw new ConfigurationException("Namespace '" + namespace
                             + "' does not exist.", e);
-        }
-    }
-    /**
-     * Checks if the property by the given name exists in the namespace, if not, throws CE.
-     *
-     * @param namespace configuration namespace to use.
-     * @param propertyName name of the property.
-     *
-     * @throws ConfigurationException if namespace is unknown or the property does not exist.
-     */
-    static void checkPropertyExists(String namespace, String propertyName) throws ConfigurationException {
-        if (!doesPropertyExist(namespace, propertyName)) {
-            throw new ConfigurationException("The property '" + propertyName + "' is mandatory.");
         }
     }
 
@@ -536,7 +497,7 @@ final class PhasesHelper {
         if (startDate == null) {
             return true;
         } else {
-            return (!new Date().before(phase.calcStartDate()));
+            return (!new Date().before(startDate));
         }
     }
 
@@ -814,7 +775,6 @@ final class PhasesHelper {
                 resourceRoleIds.add(new Long(ResourceRoleLookupUtility
                                 .lookUpId(conn, resourceRoleNames[i])));
             }
-
             Filter resourceRoleFilter = SearchBundle
                             .buildInFilter(
                                             ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME,
@@ -1024,54 +984,6 @@ final class PhasesHelper {
     }
 
     /**
-     * retrieves all active/failed screening submissions for the given project
-     * id.
-     *
-     * @param uploadManager UploadManager instance to use for searching.
-     * @param conn the connection.
-     * @param projectId project id.
-     *
-     * @return all active submissions for the given project id.
-     *
-     * @throws PhaseHandlingException if an error occurs during retrieval.
-     * @throws SQLException if an error occurred when looking up id.
-     */
-    static Submission[] searchAllUndeletedSubmissions(
-                    UploadManager uploadManager, Connection conn, long projectId) 
-        throws PhaseHandlingException, SQLException {
-        // OrChange - Modified to take all submissions for the placement
-        // calculation
-        // first get submission status id for "Active" status
-        long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn,
-                        "Active");
-        long failedScreening = SubmissionStatusLookupUtility.lookUpId(conn,
-                        "Failed Screening");
-        // then search for submissions
-        Filter projectIdFilter = SubmissionFilterBuilder
-                        .createProjectIdFilter(projectId);
-        Filter submissionActiveStatusFilter = SubmissionFilterBuilder
-                        .createSubmissionStatusIdFilter(activeStatusId);
-        Filter submissionFailedScreeningStatusFilter = SubmissionFilterBuilder
-                        .createSubmissionStatusIdFilter(failedScreening);
-        // build the status OR filter
-        Filter submissionStatusFilter = SearchBundle.buildOrFilter(
-                        submissionActiveStatusFilter,
-                        submissionFailedScreeningStatusFilter);
-        Filter fullFilter = SearchBundle.buildAndFilter(projectIdFilter,
-                        submissionStatusFilter);
-
-        try {
-            return uploadManager.searchSubmissions(fullFilter);
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException(
-                            "There was a submission retrieval error", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException(
-                            "There was a search builder error", e);
-        }
-    }
-
-    /**
      * This method checks if the winning submission has one aggregated review
      * scorecard committed and returns the same.
      *
@@ -1249,30 +1161,6 @@ final class PhasesHelper {
     }
 
     /**
-     * <p>Gets upload type matching the specified name.</p>
-     *
-     * @param uploadManager an <code>UploadManager</code> instance used to search for upload type.
-     * @param typeName a <code>String</code> providing the upload type name.
-     * @return an <code>UploadType</code> instance matching the specified name.
-     * @throws PhaseHandlingException if upload type could not be found.
-     * @since 1.3
-     */
-    static UploadType getUploadType(UploadManager uploadManager, String typeName) throws PhaseHandlingException {
-        UploadType[] types = null;
-        try {
-            types = uploadManager.getAllUploadTypes();
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Error finding upload type with name: " + typeName, e);
-        }
-        for (int i = 0; i < types.length; i++) {
-            if (typeName.equals(types[i].getName())) {
-                return types[i];
-            }
-        }
-        throw new PhaseHandlingException("Could not find upload type with name: " + typeName);
-    }
-
-    /**
      * Returns the winning submitter for the given project id.
      *
      * @param resourceManager ResourceManager instance.
@@ -1363,7 +1251,7 @@ final class PhasesHelper {
             createNewPhases(currentPrj, currentPhase, new PhaseType[]{postMortemPhaseType}, phaseStatus,
                             new long[] {Long.parseLong(postMortemPhaseDuration) * 3600 * 1000L}, false);
 
-            // Set the number of required reviewers for Post-Mortem phase to default value 
+            // Set the number of required reviewers for Post-Mortem phase to default value
             String postMortemPhaseDefaultReviewerNumber
                 = getPropertyValue(PostMortemPhaseHandler.class.getName(), "PostMortemPhaseDefaultReviewersNumber",
                                    true);
@@ -1423,7 +1311,7 @@ final class PhasesHelper {
                     = getPropertyValue(ApprovalPhaseHandler.class.getName(), "ApprovalPhaseDefaultScorecardID",
                                        true);
             } else {
-                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute("Reviewer Number"); 
+                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute("Reviewer Number");
                 approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute("Scorecard ID");
             }
             Phase approvalPhase = getApprovalPhase(currentPrj);
@@ -1616,6 +1504,9 @@ final class PhasesHelper {
         // search for the old "Aggregator" or "Final Reviewer" resource
         Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
             managerHelper, conn, new String[] {roleName}, oldPhase.getId());
+        if (resources.length == 0) {
+            throw new PhaseHandlingException("unable for find resource for role - " + roleName);
+        }
         Resource oldResource = resources[0];
 
         // copy resource properties
@@ -2029,7 +1920,7 @@ final class PhasesHelper {
      * @param projectId a <code>long</code> providing the ID of a project to check the completeness of parent projects
      *        for.
      * @param managerHelper a <code>ManagerHelper</code> to be used for getting the links to parent projects.
-     * @param conn a <code>Connection</code> providing connection to target database. 
+     * @param conn a <code>Connection</code> providing connection to target database.
      * @return <code>true</code> if all parent projects for specified project are completed or there are no parent
      *         projects at all; <code>false</code> otherwise.
      * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs while accessing the
@@ -2114,7 +2005,7 @@ final class PhasesHelper {
     }
 
     /**
-     * <p>Searches for resources associated with specified project and vaving the specified resource roles assigned.</p>
+     * <p>Searches for resources associated with specified project and the specified resource roles assigned.</p>
      *
      * @param managerHelper ManagerHelper instance.
      * @param conn connection to connect to db with.
@@ -2152,7 +2043,7 @@ final class PhasesHelper {
     /**
      * <p>Gets the reviews (if any) for specified <code>Approval</code> phase.</p>
      *
-     * @param reviews a <code>Review</code> array providing the <code>Apporval</code> reviews for project.
+     * @param reviews a <code>Review</code> array providing the <code>Approval</code> reviews for project.
      * @param thisPhase a <code>Phase</code> providing the <code>Approval</code> phases to get reviews for.
      * @return a <code>Review</code> array listing the reviews (if any) for specified <code>Approval</code> phase.
      * @since 1.3

@@ -342,7 +342,7 @@ public class BaseAccuracyTest extends TestCase {
     }
 
     /**
-     * inserts a project and the standard phases into the database.
+     * Inserts a project and the standard phases into the database.
      *
      * @return project instance with phases populated.
      *

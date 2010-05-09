@@ -3,8 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.text.MessageFormat;
-
 import junit.framework.TestCase;
 
 

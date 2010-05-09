@@ -4,6 +4,7 @@ import com.cronos.onlinereview.phases.lookup.PhaseStatusLookupUtility;
 
 import java.sql.Connection;
 
+
 /**
  * Accuracy test cases for the PhaseStatusLookupUtility class
  *
@@ -11,7 +12,6 @@ import java.sql.Connection;
  * @version 1.0
  */
 public class PhaseStatusLookupUtilityAccTest extends BaseAccuracyTest {
-
     /**
      * Tests PhaseStatusLookupUtility.lookUpId(Connection, String) on "Scheduled" value.
      *
@@ -33,7 +33,6 @@ public class PhaseStatusLookupUtilityAccTest extends BaseAccuracyTest {
         long id = PhaseStatusLookupUtility.lookUpId(conn, "Open");
         assertEquals("Not the expected value from lookUpId()", id, 2);
     }
-
 
     /**
      * Tests PhaseStatusLookupUtility.lookUpId(Connection, String) on "Closed" value.
@@ -59,6 +58,4 @@ public class PhaseStatusLookupUtilityAccTest extends BaseAccuracyTest {
 
         assertEquals("Not the expected value from lookUpId()", id, 1);
     }
-
 }
-
