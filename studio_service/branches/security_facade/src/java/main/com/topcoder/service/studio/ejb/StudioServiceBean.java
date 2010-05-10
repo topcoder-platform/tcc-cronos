@@ -1402,7 +1402,7 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyFinalFileFormatId, defaultContestNotesOnSubmissionFiles);
 
         // Create user handle.
-        addContestConfig(result, contestPropertyCreateUserHandleId, String.valueOf(tcSubject.getUserId()));
+        addContestConfig(result, contestPropertyCreateUserHandleId, getUserName(tcSubject));
 
         // [TCCC-284]
         addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));
