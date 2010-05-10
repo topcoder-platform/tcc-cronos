@@ -283,7 +283,9 @@ public class LiquidPortalServiceException extends Exception {
 
     public static final int EC_FAIL_TO_ASSIGN_PERMISSION = 5013; 
 
-    public static final int EC_HANDLE_DOESNOT_EXIST = 5014; 
+    public static final int EC_HANDLE_DOESNOT_EXIST = 5014;
+    
+    public static final int EC_CANNOT_ADD_USER_TO_JIRA = 5015;   
 
 
     private int errorCode;
@@ -333,6 +335,7 @@ public class LiquidPortalServiceException extends Exception {
         errorMessages.put(EC_START_DATE_NOT_AVAILABLE, "Start date is not available.");
         errorMessages.put(EC_FAIL_TO_ASSIGN_PERMISSION, "Fail to assign permission.");
         errorMessages.put(EC_HANDLE_DOESNOT_EXIST, "Handle doset not exist.");
+        errorMessages.put(EC_CANNOT_ADD_USER_TO_JIRA, "Can not add user to JIRA.");
 
         
 

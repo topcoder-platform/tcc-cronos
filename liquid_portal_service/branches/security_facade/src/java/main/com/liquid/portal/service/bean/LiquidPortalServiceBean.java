@@ -126,6 +126,8 @@ import com.topcoder.service.util.LoginUtil;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
 
+import com.topcoder.service.facade.user.UserServiceFacade;
+import com.topcoder.service.facade.user.UserServiceFacadeException;
 
 /**
  * <p>
@@ -252,6 +254,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @Resource(name = "configurationNamespace")
     private String configurationNamespace;
+
+    /**
+     * <p>
+     * Represents the user service facade.
+     * </p>
+     * <p>
+     * It is injected by the container. It is used in the business methods.
+     * </p>
+     */
+    @EJB(name = "ejb/userServiceFacade")
+    private UserServiceFacade userServiceFacade;
 
     /**
      * <p>
@@ -755,6 +768,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         addUserToNotusEligibilityGroup(user, warnings, methodName);
         // add user to terms group
         addUserToTermsGroup(user, termsAgreedDate, warnings, methodName);
+        // add user to jira
+        addUserToJira(user, tcsubject, warnings, methodName);
         result.setWarnings(warnings);
 
         logExit(methodName);
@@ -809,11 +824,15 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             warnings.add(getWarning("User info doesn't math with persisted user info", LiquidPortalServiceException.EC_USER_INFO_DOESNOT_MATCH_WITH_PERSISTENCE, null));
         }
 
+        TCSubject tcsubject = getTCSubject(true);
+
         if (force || demoMatched) {
             // add user to notusEligibilityGroup
             addUserToNotusEligibilityGroup(savedUserInfo, warnings, methodName);
             // add user to terms group
             addUserToTermsGroup(savedUserInfo, new Date(), warnings, methodName);
+            // add user to jira
+            addUserToJira(user, tcsubject, warnings, methodName);
         }
 
         result.setWarnings(warnings);
@@ -3101,6 +3120,38 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sendJiraNotification(userInfo.getHandle(), methodName , e);
             warnings.add(getWarning("Can not add user to terms group", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
 
+        }
+    }
+
+    /**
+     * <p>
+     * Add user to jira. If can not add the user to the jira, add a warning message
+     * to warning list.
+     * </p>
+     *
+     * @param userInfo the user info
+     * @param warnings the warning list
+     * @param methodName the name of the calling method
+     */
+   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    private void addUserToJira(UserInfo userInfo, TCSubject tcsubject, List<Warning> warnings, String methodName) throws
+        LiquidPortalServiceException{
+        try {
+
+            userServiceFacade.syncJiraUser(tcsubject, userInfo.getHandle());
+
+        } catch (IllegalArgumentException e) {
+            // notusEligibilityGroupIds is invalid
+            logError(e, methodName);
+            // send JIRA email
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
+            warnings.add(getWarning("Can not add user to JIRA", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_JIRA, e));
+        } catch (UserServiceFacadeException e) {
+            // can not add user to the notusEligibilityGroupIds
+            logError(e, methodName);
+            // send JIRA email
+            sendJiraNotification(userInfo.getHandle(), methodName , e);
+            warnings.add(getWarning("Can not add user to JIRA", LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_JIRA, e));
         }
     }
 

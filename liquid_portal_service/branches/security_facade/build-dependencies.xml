@@ -105,6 +105,11 @@
     <property name="cockpit_facade_util.path" value="cockpit_facade_util/${cockpit_facade_util.version}" />
     <property name="cockpit_facade_util.jar" value="${tcs_libdir}/${cockpit_facade_util.path}/${cockpit_facade_util.jar.name}" />
 
+    <property name="user_service_facade.version" value="1.0.0"/>
+    <property name="user_service_facade.jar.name" value="user_service_facade.jar"/>
+    <property name="user_service_facade.path" value="user_service_facade/${user_service_facade.version}"/>
+    <property name="user_service_facade.jar" value="${tcs_libdir}/${user_service_facade.path}/${user_service_facade.jar.name}"/>
+
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="test_reflib/junit/4.6/junit.jar"/>
@@ -167,7 +172,8 @@
         <pathelement location="${security.jar}"/>
 
          <pathelement location="${user_service.jar}"/>
-          <pathelement location="${cockpit_facade_util.jar}"/>
+         <pathelement location="${cockpit_facade_util.jar}"/>
+         <pathelement location="${user_service_facade.jar}"/>
 		
 
     </path>
