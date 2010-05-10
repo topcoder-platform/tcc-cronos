@@ -419,6 +419,77 @@ public class UserServiceFacadeBean implements UserServiceFacadeLocal, UserServic
         return ret;
     }
 
+     /**
+     * <p>
+     * Creates Jira User (if does not exist already) and gets the email address of it from the Jira Service.
+     *
+     * Implementation should create the Jira user if the user does not exist already.
+     *
+     *   ******************
+     *   ******************
+     *   THIS METHOD DOES NOT CHECK EMAIL IN USER TALBE AND DOES NOT SET ROLLBACK ONLY IF ERRORS
+     *   ******************
+     *   ******************
+     * </p>
+     * <p>
+     * Update in v1.0.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param handle
+     *            the user handle for which to retrieve the email address from Jira Service.
+     * @return the email address of the Jira user for the given handle.
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     */
+    public String syncJiraUser(TCSubject tcSubject, String userHandle) throws UserServiceFacadeException {
+        String ret = null;
+        try {
+            logEnter("getJiraUser(tcSubject, userHandle)", userHandle);
+
+            // Check handle is null or trim'd empty and throw IllegalArgumentException
+            Helper.checkNull(userHandle, "userHandle");
+            Helper.checkEmpty(userHandle, "userHandle");
+            Helper.checkNull(tcSubject, "tcSubject");
+
+            // Call JiraUserService#getUser and return the remoteUser#email
+            com.atlassian.jira.rpc.soap.beans.RemoteUser jiraUser = this.jiraUserService.getUser(
+                    this.jiraServiceEndPoint, this.authUserName, this.authPassword, this.jiraServiceAdminUserName,
+                    this.jiraServiceAdminUserPassword, userHandle);
+
+            logDebug("For handle: " + userHandle + " jiraUser: " + jiraUser);
+
+            if (jiraUser != null) {
+                ret = jiraUser.getEmail();
+            }
+        } catch (IllegalArgumentException e) {
+            String msg = "TC-HANDLE-NOT-FOUND: IllegalArgumentException.";
+            UserServiceFacadeException ce = new UserServiceFacadeException(msg, e);
+            logError(ce, msg);
+            throw ce;
+        } catch (IllegalStateException e) {
+            String msg = "IllegalStateException.";
+            UserServiceFacadeException ce = new UserServiceFacadeException(msg, e);
+            logError(ce, msg);
+            throw ce;
+        }  catch (JiraClientServiceException e) {
+            String msg = "Error in JiraUserService.";
+            UserServiceFacadeException ce = new UserServiceFacadeException(msg, e);
+            logError(ce, msg);
+            throw ce;
+        } finally {
+            logExit("getJiraUser(tcSubject, userHandle)", ret);
+        }
+
+        if (ret == null) {
+            String msg = "Could not create Jira User.";
+            UserServiceFacadeException ce = new UserServiceFacadeException(msg);
+            logError(ce, msg);
+            throw ce;
+        }
+
+        return ret;
+    }
+
     /**
      * <p>
      * Creates Confluence User (if does not exist already) and gets the email address of it from the Confluence Service.

@@ -60,4 +60,28 @@ public interface UserServiceFacade {
      *             if any error occurs when getting user details.
      */
     public String getConfluenceUser(TCSubject tcSubject, String handle) throws UserServiceFacadeException;
+
+    /**
+     * <p>
+     * Creates Jira User (if does not exist already) and gets the email address of it from the Jira Service.
+     *
+     * Implementation should create the Jira user if the user does not exist already.
+     *
+     *   ******************
+     *   ******************
+     *   THIS METHOD DOES NOT CHECK EMAIL IN USER TALBE AND DOES NOT SET ROLLBACK ONLY IF ERRORS
+     *   ******************
+     *   ******************
+     * </p>
+     * <p>
+     * Update in v1.0.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param handle
+     *            the user handle for which to retrieve the email address from Jira Service.
+     * @return the email address of the Jira user for the given handle.
+     * @throws UserServiceException
+     *             if any error occurs when getting user details.
+     */
+    public String syncJiraUser(TCSubject tcSubject, String handle) throws UserServiceFacadeException;
 }
