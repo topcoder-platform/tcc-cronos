@@ -6,24 +6,20 @@ package com.cronos.onlinereview.phases.failuretests.mock;
 
 import java.sql.Array;
 import java.sql.Blob;
+import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.NClob;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.Struct;
-
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -1620,16 +1616,6 @@ public class MockConnection implements Connection {
         return null;
     }
 
-    public NClob createNClob() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public SQLXML createSQLXML() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -1648,16 +1634,6 @@ public class MockConnection implements Connection {
     public boolean isValid(int timeout) throws SQLException {
         // TODO Auto-generated method stub
         return false;
-    }
-
-    public void setClientInfo(Properties properties) throws SQLClientInfoException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void setClientInfo(String name, String value) throws SQLClientInfoException {
-        // TODO Auto-generated method stub
-        
     }
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
