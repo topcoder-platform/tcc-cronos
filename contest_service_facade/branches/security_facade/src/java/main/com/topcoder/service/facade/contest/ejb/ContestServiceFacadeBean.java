@@ -4263,6 +4263,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // update name in project info in case name is changed.
                 contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, contest.getAssetDTO().getName());
 
+                long billingProjectId = getBillingProjectId(contest);
+
+                // dont send wiiner email for private
+                if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) 
+                {
+                    contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
+                }
+                else
+                {
+                    contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "true");
+                }
+
                 FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(),
                         contest.getProjectHeaderReason(),
                         contest.getProjectPhases(),
@@ -4299,12 +4311,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 for (ContestEligibility ce:contestEligibilities){
                     contestEligibilityManager.remove(ce);
                 }
-                long billingProjectId = getBillingProjectId(contest);
+                
                 if (billingProjectId > 0) {
                     persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);
                 }
-
-
 
 
                 //BugRace3074
