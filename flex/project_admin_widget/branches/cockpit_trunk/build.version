@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Project Admin Widget
+component.distfilename=project_admin_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.projectadminwidget
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/projectadminwidget
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

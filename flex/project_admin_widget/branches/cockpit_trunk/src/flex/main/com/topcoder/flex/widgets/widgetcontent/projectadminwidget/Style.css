@@ -1,0 +1,217 @@
+/* CSS file */
+.container /* Widget */
+{
+    backgroundGradientColors: #cccccc, #ffffff;
+    themeColor: #666666;
+    backgroundColor: "green";
+	borderSkin: Embed(source="../assets/bg_panel.png",
+			scaleGridTop="33",scaleGridLeft="20",scaleGridRight="280",scaleGridBottom="242");
+	paddingTop: 38;
+	paddingLeft: 21px;
+	paddingRight: 19px;
+	paddingBottom: 6px;
+	color: #000000;
+	headerHeight: 30;
+	/* Detailed Styles of Inner Objects */
+	widgetCloseButtonStyleName: widgetCloseButton;
+	widgetMaximizeButtonStyleName: widgetMaximizeButton;
+	widgetRestoreButtonStyleName: widgetRestoreButton;
+	widgetRefreshButtonStyleName: widgetRefreshButton;
+	widgetCollapseButtonStyleName: widgetCollapseButton;
+	widgetExpandButtonStyleName: widgetExpandButton;
+	title-style-name: titleStyle
+}
+.titleStyle {
+	font-family: Arial;
+	color: #000000;
+	font-weight: bold;
+	font-size: 13;
+}
+.widgetExpandButton {
+	upSkin: Embed(source="../assets/icon_expand_Up.png");
+	overSkin: Embed(source="../assets/icon_expand_Over.png");
+	downSkin: Embed(source="../assets/icon_expand_Down.png");
+	disabledSkin: Embed(source="../assets/icon_expand_Disabled.png");
+}
+.widgetCloseButton /* Button, close-button(icon) on the right of the title-bar */
+{
+	upSkin: Embed(source="../assets/icon_close_Up.png");
+	overSkin: Embed(source="../assets/icon_close_Over.png");
+	downSkin: Embed(source="../assets/icon_close_Down.png");
+	disabledSkin: Embed(source="../assets/icon_close_Disabled.png");
+	selectedUpSkin: Embed(source="../assets/icon_close_Up.png");
+	selectedOverSkin: Embed(source="../assets/icon_close_Over.png");
+	selectedDownSkin: Embed(source="../assets/icon_close_Down.png");
+	selectedDisabledSkin: Embed(source="../assets/icon_close_Disabled.png");
+}
+
+.widgetMaximizeButton /* Button, maximize-button(icon) on the right of the title-bar | When widget restored */
+{
+	upSkin: Embed(source="../assets/icon_max_Up.png");
+	overSkin: Embed(source="../assets/icon_max_Over.png");
+	downSkin: Embed(source="../assets/icon_max_Down.png");
+	disabledSkin: Embed(source="../assets/icon_max_Disabled.png");
+	selectedUpSkin: Embed(source="../assets/icon_restore_Up.png");
+	selectedOverSkin: Embed(source="../assets/icon_restore_Over.png");
+	selectedDownSkin: Embed(source="../assets/icon_restore_Down.png");
+	selectedDisabledSkin: Embed(source="../assets/icon_restore_Disabled.png");
+}
+
+.widgetRefreshButton /* Button, refresh-button(icon) on the right of the title-bar */
+{
+	upSkin: Embed(source="../assets/icon_refresh_Up.png");
+	overSkin: Embed(source="../assets/icon_refresh_Over.png");
+	downSkin: Embed(source="../assets/icon_refresh_Down.png");
+	disabledSkin: Embed(source="../assets/icon_refresh_Disabled.png");
+	selectedUpSkin: Embed(source="../assets/icon_refresh_Up.png");
+	selectedOverSkin: Embed(source="../assets/icon_refresh_Over.png");
+	selectedDownSkin: Embed(source="../assets/icon_refresh_Down.png");
+	selectedDisabledSkin: Embed(source="../assets/icon_refresh_Disabled.png");
+}
+
+.widgetCollapseButton /* Button, collapse-button(icon) on the right of the title-bar | when widget expanded */
+{
+	upSkin: Embed(source="../assets/icon_collapse_Up.png");
+	overSkin: Embed(source="../assets/icon_collapse_Over.png");
+	downSkin: Embed(source="../assets/icon_collapse_Down.png");
+	disabledSkin: Embed(source="../assets/icon_collapse_Disabled.png");
+	selectedUpSkin: Embed(source="../assets/icon_expand_Up.png");
+	selectedOverSkin: Embed(source="../assets/icon_expand_Over.png");
+	selectedDownSkin: Embed(source="../assets/icon_expand_Down.png");
+	selectedDisabledSkin: Embed(source="../assets/icon_expand_Disabled.png");
+}
+.widgetRestoreButton /* Button, restore-button(icon) on the right of the title-bar | When widget maximized */
+{
+	upSkin: Embed(source="../assets/icon_restore_Up.png");
+	overSkin: Embed(source="../assets/icon_restore_Over.png");
+	downSkin: Embed(source="../assets/icon_restore_Down.png");
+	disabledSkin: Embed(source="../assets/icon_restore_Disabled.png");
+}
+.normalText {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+
+.textInput {
+	border-style: none;
+	background-image: Embed(source="../assets/textInput.png",
+			scaleGridTop="2",scaleGridLeft="1",scaleGridRight="252",scaleGridBottom="22");
+	background-size: "100%";
+	vertical-align: middle;
+	color: #999999;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	padding-left: 10;
+	padding-top: 2;
+}
+.searchBtn {
+	upSkin: Embed(source="../assets/search_bton.png");
+	overSkin: Embed(source="../assets/search_bton.png");
+	downSkin: Embed(source="../assets/search_bton_over.png");
+	disabledSkin: Embed(source="../assets/search_bton.png");
+}
+	
+.popUp {
+	border-skin: Embed(source="../assets/border.png");
+}
+.popUp2 {
+	border-skin: Embed(source="../assets/border2.png");
+}
+.grid {
+	header-separator-skin: Embed(source="../assets/separator.png");
+	header-background-skin: ClassReference("com.topcoder.flex.widgets.widgetcontent.projectadminwidget.com.renderer.DGHeaderSkin");
+	font-weight:normal;
+	font-size: 10;
+   	roll-over-color: #fff9b3;
+	font-family: Arial;
+	
+}
+.selectedDataGridHeader {
+}
+.dataGridHeader {
+   	fontWeight: bold;
+   	fontSize: 11;
+   	font-family: Arial;
+   	textAlign: left;
+   	border-style: none;
+   	text-selected-color: #ffffff;
+   	background-skin: Embed(source="../assets/header.png");/* 
+   	selected-up-skin: Embed(source="../assets/header_down.png");
+   	selected-down-skin: Embed(source="../assets/header_down.png");
+   	fillColors: haloSilver, haloBlue;
+    fillAlphas: 1.0, 0.5;
+    selectedFillColors: black, black; */
+
+   	/* 
+   	upSkin: Embed(source="../assets/header.png");
+   	overSkin: Embed(source="../assets/header_over.png");
+	downSkin: Embed(source="../assets/header_down.png");
+   	border-sides: "top"; */
+}
+.linkBtn {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: underline;
+	roll-over-color: #ffffff;
+	selection-color: #ffffff;
+}
+.researchBox {
+	border-style: solid;
+	
+}
+.headerText {
+	font-family: Arial;
+	font-size: 13;
+	font-weight: bold;
+	color: #000000;
+}
+.normalBtn {
+	font-family: Arial;
+	font-size: 13;
+	font-weight: bold;
+	color: #ffffff;
+	skin: Embed(source="../assets/btn_skin.png",
+			scaleGridTop="9",scaleGridLeft="11",scaleGridRight="43",scaleGridBottom="14");
+	up-skin: Embed(source="../assets/btn_skin.png",
+			scaleGridTop="9",scaleGridLeft="11",scaleGridRight="43",scaleGridBottom="14");
+	over-skin: Embed(source="../assets/btn_skin.png",
+			scaleGridTop="9",scaleGridLeft="11",scaleGridRight="43",scaleGridBottom="14");
+	down-skin: Embed(source="../assets/btn_down_skin.png",
+			scaleGridTop="9",scaleGridLeft="11",scaleGridRight="43",scaleGridBottom="14");
+}
+.nomal {
+	font-family: Arial;
+	font-size: 11;
+	font-weight: bold;
+	color: #000000;
+}
+Tree {
+    defaultLeafIcon: ClassReference(null);
+	folderClosedIcon: ClassReference(null);
+	folderOpenIcon: ClassReference(null);
+}
+ScrollBar
+{
+    thumbDownSkin: Embed(source="../assets/thumb.png",
+        	scaleGridTop=2, scaleGridLeft=1, scaleGridBottom=20, scaleGridRight=152);
+    thumbOverSkin: Embed(source="../assets/thumb.png",
+        	scaleGridTop=2, scaleGridLeft=1, scaleGridBottom=20, scaleGridRight=152);
+    thumbUpSkin: Embed(source="../assets/thumb.png",
+        	scaleGridTop=2, scaleGridLeft=1, scaleGridBottom=20, scaleGridRight=152);
+    trackSkin: Embed(source="../assets/thumb.png");
+    
+    downArrowDisabledSkin: Embed(source="../assets/next.png");
+    downArrowDownSkin: Embed(source="../assets/next_down.png");
+    downArrowOverSkin: Embed(source="../assets/next.png");
+    downArrowUpSkin: Embed(source="../assets/next.png");
+    upArrowDisabledSkin: Embed(source="../assets/prev.png");
+    upArrowDownSkin: Embed(source="../assets/prev_down.png");
+    upArrowOverSkin: Embed(source="../assets/prev.png");
+    upArrowUpSkin: Embed(source="../assets/prev.png");
+}
+    
