@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for change info.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         paddingLeft="15"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            
+            [Bindable]
+            private var detail:Detail;
+            
+            private const year:Number=365 * 24 * 3600000;
+            
+            private const month:Number=30 * 24 * 3600000;
+            
+            private const day:Number=24 * 3600000;
+            
+            private const week:Number=7 * 3600000 * 24;
+            
+            private const hour:Number=3600000;
+            
+            private const min:Number=60000;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                    if (!detail.changed) {
+                        return;
+                    }
+                    var d1:Date=detail.changed;
+                    var time:Number=d1.time;
+                    var d2:Date=new Date();
+                    var now:Number=d2.time;
+                    time=now - time;
+                    var v1:int;
+                    var v2:int;
+                    if (time > year) {
+                        v1=d2.fullYear - d1.fullYear;
+                        v2=d2.month - d1.month;
+                        if (d2.month < d1.month) {
+                            v2+=12;
+                            v1--;
+                        }
+                        if (v2 > 0) {
+                            content.text=v1.toString() + " years, " + v2.toString() + " months ago";
+                        } else {
+                            content.text=v1.toString() + " years ago";
+                        }
+                        return;
+                    }
+                    if (time > month) {
+                        v1=d2.month - d1.month;
+                        if (v1 < 0) {
+                            v1+=12;
+                        }
+                        var d3:Date=new Date(d1);
+                        d3.month=d2.month;
+                        d3.fullYear=d2.fullYear;
+                        if (d3.date > d2.date) {
+                            d3.month++;
+                        }
+                        v2=(d3.date - d2.date) / 7;
+                        if (v2 > 0) {
+                            content.text=v1.toString() + " months, " + v2.toString() + " weeks ago";
+                        } else {
+                            content.text=v1.toString() + " months ago";
+                        }
+                        return;
+                    }
+                    if (time > week) {
+                        v1=time / day;
+                        v2=v1 % 7;
+                        v1=v1 / 7;
+                        if (v2 > 0) {
+                            content.text=v1.toString() + " weeks, " + v2.toString() + " days ago";
+                        } else {
+                            content.text=v1.toString() + " weeks ago";
+                        }
+                        return;
+                    }
+                    if (time > day) {
+                        v1=time / hour;
+                        v2=v1 % 24;
+                        v1=v1 / 24;
+                        if (v2 > 0) {
+                            content.text=v1.toString() + " days, " + v2.toString() + " hours ago";
+                        } else {
+                            content.text=v1.toString() + " days ago";
+                        }
+                        return;
+                    }
+                    content.text="";
+                    return;
+                    
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="content" width="114"
+             styleName="listStyle"
+             textDecoration="underline"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/>
+</mx:VBox>
