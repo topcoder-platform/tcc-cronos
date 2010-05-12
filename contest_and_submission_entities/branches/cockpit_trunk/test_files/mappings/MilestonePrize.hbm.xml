@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+  - Author: pulky
+  - Version: 1.1
+  - Copyright (C) 2001 - 2009 TopCoder Inc., All Rights Reserved.
+  -
+  - Description: Hibernate mapping file for contest milestone prize table
+  -
+  - Version 1.1 (Studio Multi-Rounds Assembly - Launch Contest) changes: updated type mapping.
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.submission">
+  <class name="MilestonePrize" table="contest_milestone_prize"
+    lazy="false">
+    <id name="milestonePrizeId" column="contest_milestone_prize_id"
+      type="long" unsaved-value="-1">
+      <generator class="sequence">
+        <param name="sequence">
+          CONTEST_MILESTONE_PRIZE_SEQ
+        </param>
+      </generator>
+    </id>
+
+    <property name="createDate" update="true" insert="true"
+      column="create_date" not-null="true" />
+
+    <property name="amount" update="true" insert="true"
+      column="amount" not-null="false" />
+
+    <property name="numberOfSubmissions" update="true" insert="true"
+      column="number_of_submissions" not-null="false" />
+
+    <set name="submissions" table="submission_milestone_prize_xref"
+      inverse="false" fetch="select">
+      <key column="contest_milestone_prize_id" />
+      <many-to-many column="submission_id"
+        class="com.topcoder.service.studio.submission.Submission" />
+    </set>
+
+    <many-to-one name="type" column="prize_type_id"
+      class="com.topcoder.service.studio.submission.PrizeType" fetch="select"/>
+  </class>
+
+
+</hibernate-mapping>
+
