@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the my project widget.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Added a button for "Open in New Tab"
+        - Added handler for the same.
+        - Made Model class non singleton.
+        
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        -  BUGR-2135: on refresh previous selected project and view is preserved.
+     Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
+        - Look and feel changed to match the prototype.
+        - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - Add the spec review project id
+     Version 1.0.4 (Cockpit Release Assembly - Contest Repost and New Version 1.0) Notes:
+        - Add two new ws-methods 'repost' and 'create new version'
+
+     @author TCSDEVELOPER, TCSASSEMBLER
+     @since My Project Widget Overhaul
+     @version 1.0.4
+-->
+<tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                            width="100%"
+                            height="100%"
+                            horizontalGap="-1"
+                            creationComplete="init()"
+                            paddingLeft="0"
+                            paddingRight="7"
+                            paddingTop="9"
+                            paddingBottom="11"
+                            xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
+                            xmlns:mxeffects="com.adobe.ac.mxeffects.*"
+			    resizeEffect="{resize}">
+    <mx:Style source="./Style.css"/>
+    <mx:Script>
+        <![CDATA[
+            import mx.events.EffectEvent;
+            import mx.utils.ObjectUtil;
+            import mx.collections.Sort;
+            import com.topcoder.flex.util.date.DateUtil;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+            import mx.controls.Alert;
+            import mx.collections.ArrayCollection;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.events.FaultEvent;
+            import mx.core.Application;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+            import mx.core.UIComponent;
+            import flash.events.Event;
+            import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.utils.Status;
+
+            /**
+             * Moved the magic number 7, project list row size, to a const variable.
+             * 
+             * @since 1.0.1
+             */
+            private static const ProjectListRowSize:int=7;
+
+            /**
+             * Blazed end point application parameter.
+             */
+            [Bindable]
+            private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+
+            /**
+             * Contest service facade url.
+             */
+            [Bindable]
+            private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+            
+            /**
+             * Project service facade url.
+             */ 
+            [Bindable]
+            private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+
+            /**
+             * Index of the currently selected button (Details or Contests).
+             */
+            private var buttonSelectedIndex:int=0;
+
+            /**
+             * Indicates if left project panel is open or closed.
+             */
+            private var open:Boolean=true;
+
+            /**
+             * Timer for flip animation effects.
+             */
+            private var timer:Timer=new Timer(300, 1);
+
+            /**
+             * Animation ui component.
+             */
+            private var coms:UIComponent=null;
+
+            /**
+             * Animation flip direction - top or left/right.
+             */
+            private var _direction:String;
+
+            /**
+             * Temporary variable that gets used during rotate animation.
+             */
+            private var v:Boolean=false;
+
+            /**
+             * Page index for project list pagination.
+             */
+            private var index:int=0;
+            
+            /**
+             * Number of all scheduled contests.
+             */
+            [Bindable]
+            private var scheduledCnt:int = 0;
+            
+            /**
+             * Number of all active contests.
+             */
+            [Bindable]
+            private var activeCnt:int = 0;            
+            
+            /**
+             * Number of all completed contests.
+             */
+            [Bindable]
+            private var completedCnt:int = 0;
+            
+            /**
+             * Number of all action required contests.
+             */
+            [Bindable]
+            private var actionRequiredCnt:int = 0;
+            
+            /**
+             * project name.
+             */
+            [Bindable]
+            private var prjName:String = "";
+
+            //private var _maxWidth:Number=0;
+            //private var _maxHeight:Number=0;
+
+            /**
+             * Retrieves password from blazed data service.
+             */
+            private function getDataService():void {
+                dataservice.getPassword();
+            }
+
+            /**
+             * Webservice handler for password retrieval from blazed data service.
+             *
+             * @param e the webservice result event.
+             */
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    password=e.result.toString();
+
+                }
+
+                initWidget();
+            }
+
+            /**
+             * Initializes the widget.
+             * This gets called on successful password retrieval.
+             */
+            private function initWidget():void {
+                loadData();
+                if (this.contest) {
+                    this.contest.addEventListener("SET_CONTEST_COMPLETE", rotateInEventHandler);
+                }
+                
+                if (this.proDetail) {
+                    this.proDetail.addEventListener("SET_CONTEST_COMPLETE", rotateInEventHandler);
+                }
+                
+                timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
+            }
+
+
+            
+            /**
+             * Calc the number of specified status.
+             */
+            private function getCountByStatus(status:String):int {
+                var rst:int = 0;
+                var curProj:Project=model.currentProj;
+                var contests:ArrayCollection = curProj.contests;
+                for (var cstIndex:int=0; cstIndex < contests.length; cstIndex++) {
+                    if (contests[cstIndex].status == status) {
+                        rst++;
+                    }
+                }
+                return rst;
+            }
+
+            /**
+             * Event handler that gets called after this widget creation completes.
+             * This function initiates data load from webservice and acts as main entry point.
+             */
+            private function init():void {
+                this.contest.parentWidget=this;
+                this.details.parentWidget=this;
+                //getDataService();
+                dummyService.send();
+            }
+            
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+                    getDataService(); 
+            }
+            
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                	getDataService(); 
+            }
+
+            /**
+             * Sets isMax attribute for this widget.
+             *
+             * @param value is max attribute.
+             */
+            [Bindable]
+            public function set isMaxMode(value:Boolean):void {
+                //trace(">>>>>>>> isMaxMode start: " + new Date());
+                model.isMax=value;
+                proList.invalidateSize();
+                viewContainer.invalidateSize();
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>>>> isMax: " + isMaxMode);
+                //trace(">>>>>>>> isMaxMode end: " + new Date());
+            }
+
+            /**
+             * Gets the isMax attribute for this widget.
+             *
+             * @return is max attribute.
+             */
+            public function get isMaxMode():Boolean {
+                return model.isMax;
+            }
+
+            /**
+             * Handles select of project.
+             * This initiates the vertical flip animation.
+             */
+            private function handleSelect():void {
+                //trace(">>>>>>>> handleSelect start: " + new Date());
+                if (proList.selectedItem || (model.proList && proList.selectedIndex >= 0 && proList.selectedIndex < model.proList.length)) {
+                    doFadeOut();
+                    prjName = model.currentProj.name;
+                } else {
+                    return;
+                }
+                
+                //trace(">>>>>>>> handleSelect end: " + new Date());
+            }
+
+            /**
+             * Do the vertical flip animation.
+             */
+            private function doFadeOut():void {
+                //trace(">>>>>>>> doFadeOut start: " + new Date());
+                
+                
+                if (viewContainer.numChildren > 1) {
+                    viewContainer.removeChildAt(1);
+                }
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>> doFadeOut - buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(1): " + stack.width + "," + stack.height);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doFadeOut(2): " + viewContainer.width + "," + viewContainer.height);
+
+                var newWidth:Number=viewContainer.width - 3;
+                var newHeight:Number=viewContainer.height;
+                
+                model.showDateChooser=false;
+                var bm:BitmapData=new BitmapData(newWidth, newHeight);
+                bm.draw(stack);
+                coms=new UIComponent();
+                coms.addChild(new Bitmap(bm));
+                coms.width=newWidth;
+                coms.height=newHeight;
+                coms.x=3;
+                viewContainer.addChildAt(coms, 1);
+                _direction="TOP";
+                v=false;
+                timer.start();
+                
+                //trace(">>>>>>>> doFadeOut end: " + new Date());
+            }
+
+            /**
+             * Initiate horizontal flip animation
+             *
+             * @param event timer event.
+             */
+            private function rotate(event:TimerEvent):void {
+                //trace(">>>>>>>> rotate start: " + new Date());
+                
+                // scroll to zero position so that animation is contained inside viewable area.
+                this.viewContainer.horizontalScrollPosition = 0;
+                
+                if (v) {
+
+                    stack.selectedIndex=buttonSelectedIndex;
+                    if (buttonSelectedIndex == 0) {
+
+                        detailsBtn.label = "Project Info";
+                        detailsBtn.enabled = true;
+                        
+                        _direction="LEFT";
+                    } else {
+
+                        detailsBtn.label = "Contests";
+                        detailsBtn.enabled = true;
+                        _direction="RIGHT";
+                    }
+                    
+                    if (contest) {
+                        contest.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
+                    } else {
+                        details.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
+                    }
+                    
+                } else {
+                    if (proList.selectedItem) {
+                        trace("change item");
+                        model.currentProj=proList.selectedItem as Project;
+                    } else if (model.proList && proList.selectedIndex >= 0 && proList.selectedIndex < model.proList.length) {
+                        model.currentProj=model.proList.getItemAt(proList.selectedIndex) as Project;
+                    }
+                }
+                scheduledCnt = getCountByStatus(Status.SCHEDULED);
+                activeCnt = getCountByStatus(Status.ACTIVE);
+                completedCnt = getCountByStatus(Status.COMPLETED);
+                actionRequiredCnt = getCountByStatus(Status.ACTION_REQUIRED);
+                
+                //trace(">>>>>>>> rotate end: " + new Date());
+            }
+
+            private function rotateInEventHandler(e:Event):void {
+                //trace(">>>>>>>> rotate before play: " + new Date());
+                if (coms) {
+                    flipIn.target=coms;
+                    flipIn.siblings=[stack];
+                    flipIn.direction=_direction;
+                    flipIn.duration=1000;
+                    flipIn.play();
+                }
+            }
+            
+            private function effectEnd(e:EffectEvent):void {
+            }
+            
+            /**
+             * Do the horizontal flip animation.
+             */
+            private function doRotate(event:Event):void {
+                //trace(">>>>>>>> doRotate start: " + new Date());
+                
+                if (event.currentTarget.label == "Project Info") {
+                    buttonSelectedIndex=1;
+                } else {
+                    buttonSelectedIndex=0;
+                }
+                if (buttonSelectedIndex == stack.selectedIndex) {
+                    return;
+                }
+                
+                if (buttonSelectedIndex == 0) {
+                    _direction="left";
+                } else {
+                    _direction="right";
+                }
+                
+                if (viewContainer.numChildren > 1) {
+                    viewContainer.removeChildAt(1);
+                }
+
+                //trace(">>>>>>>>>>>>>>>>>>>>>>> buttonSelectedIndex: " + buttonSelectedIndex + ", isMax: " + isMaxMode);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(1): " + stack.width + "," + stack.height);
+                //trace(">>>>>>>>>>>>>>>>>>>>>>>> doRotate(2): " + viewContainer.width + "," + viewContainer.height);
+
+                var newWidth:Number=viewContainer.width - 3;
+                var newHeight:Number=viewContainer.height;
+
+                model.showDateChooser=false;
+                var bm:BitmapData=new BitmapData(newWidth, newHeight);
+                bm.draw(stack);
+                coms=new UIComponent();
+                coms.addChild(new Bitmap(bm));
+                coms.width=newWidth;
+                coms.height=newHeight;
+                coms.x=3;
+                viewContainer.addChildAt(coms, 1);
+                v=true;
+                timer.start();
+                
+                //trace(">>>>>>>> doRotate end: " + new Date());
+            }
+
+              //
+              // Commented for Version 1.0.1 - no more needed, new implementation does it in different way.
+              //
+              //            /**
+              //             * Sets the project list selected index.
+              //             */
+              //            public function set setList(value:int):void {
+              //                //trace(">>>>>>>> setList start: " + new Date());
+              //                if (proList) {
+              //                    proList.selectedIndex=0;
+              //                }
+              //                
+              //                //trace(">>>>>>>> setList end: " + new Date());
+              //            }
+
+
+            /**
+             * Webservice result event handler for project contest data retrieval.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2135: on refresh previous selected project and view is preserved.
+             *
+             * @param e webservice result event.
+             */
+            private function setProject(e:ResultEvent):void {
+                hideLoadingProgress();
+
+                if (e != null && e.result != null) {
+                    
+                    var selectedProject:Project=model.currentProj;
+                    
+                    var prjArray:ArrayCollection=new ArrayCollection;
+                    if (e.result is ArrayCollection)
+                        prjArray=e.result as ArrayCollection;
+                    else
+                        prjArray.addItem(e.result);
+
+                    //model.proList=new ArrayCollection();
+                    for (var prjIdx:int=0; prjIdx < prjArray.length; ) {
+                        var pname:String=prjArray[prjIdx].pname;
+                        var pdesc:String=prjArray[prjIdx].description;
+                        var projectId:String=prjArray[prjIdx].projectId;
+                        var owner:String=prjArray[prjIdx].createUser;
+                        var contests:ArrayCollection=new ArrayCollection();
+                        for (var i:int=prjIdx; i < prjArray.length; i++) {
+                            if (projectId != prjArray[i].projectId) {
+                                break;
+                            }
+                            if (prjArray[i].contestId != null && prjArray[i].contestId != 0) {
+                                var c:Contest= new Contest(pname,projectId,prjArray[i].contestId, prjArray[i].cname, prjArray[i].startDate,
+                                prjArray[i].endDate, prjArray[i].num_reg, prjArray[i].num_sub, prjArray[i].num_for,
+                                prjArray[i].forumId, prjArray[i].sname, prjArray[i].type, prjArray[i].specReviewStatus, owner,
+                                prjArray[i].milestoneDate, prjArray[i].submissionEndDate, prjArray[i].specReviewProjectId);
+                                c.permission=prjArray[i].cperm;
+                                if (prjArray[i].endDate != null) {
+                                    c.date=DateUtil.parseFromString(prjArray[i].endDate);
+                                }
+                                contests.addItem(c);
+                            }
+
+                        }
+
+                        sortByTime(contests);
+                        
+                        var newp:Project=projectMap[projectId];
+                        if (newp) {
+                            newp.owner=owner;
+                            newp.permission=prjArray[prjIdx].pperm;
+                            
+                            for each (var cont:Contest in contests) {
+                                newp.addContest(cont);
+                            }
+                        }
+			            else {
+                            newp=new Project(projectId.toString(),pname,pdesc,"","",null);
+
+                            model.proList.addItem(newp);
+                            projectMap[projectId]=newp;
+                            newp.owner=owner;
+                            newp.permission=prjArray[prjIdx].pperm;
+                            
+                            for each (var cont:Contest in contests) {
+                                newp.addContest(cont);
+                        }
+				
+			}
+                        
+        			    prjIdx=i;
+                        
+                    }
+
+                    sortByTime(model.proList);
+
+                    //
+                    // Updated for Version 1.0.1 [BUGR-2135]
+                    //
+                    // previous selected project is available in model.currentProj
+                    // use the same to keep the view and project same on refresh.
+                    //
+                    if (model.proList.length > 0) {
+                        var selectedProjectIndex:int=0;
+                        trace("-----------> SetProject selectedProject: " + selectedProject);
+                        if (selectedProject) {
+                            var k:int=0;
+                            for each (var p:Project in model.proList) {
+                                trace("-----------> SetProject if (p.id == selectedProject.id): " + p.id + " == " + selectedProject.id + " = " + (p.id == selectedProject.id));
+                                // id would be same but project instance would be different,
+                                // so we need to found that. 
+                                if (p.id == selectedProject.id) {
+                                    model.currentProj=p;
+                                    selectedProjectIndex=k;
+                                    break;
+                                }
+                                
+                                k++;
+                            }
+                        }
+                        
+                        trace("-----------> SetProject selectedProjectIndex: " + selectedProjectIndex);
+                        
+                        // selected project was not found, so default to first one.
+                        if (!selectedProject || selectedProjectIndex == 0) {
+                            model.currentProj=model.proList.getItemAt(0) as Project;    
+                            selectedProjectIndex=0;
+                        }                
+                        
+                        proList.selectedIndex=selectedProjectIndex;
+                        index=0;
+                        proList.verticalScrollPosition=0;
+                    }
+                }
+                scheduledCnt = getCountByStatus(Status.SCHEDULED);
+                activeCnt = getCountByStatus(Status.ACTIVE);
+                completedCnt = getCountByStatus(Status.COMPLETED);
+                actionRequiredCnt = getCountByStatus(Status.ACTION_REQUIRED);
+                projectName.text = "Project Name: " + model.currentProj.name;
+            }
+
+
+            
+            /**
+             * Sort by the start time.
+             */
+            private function sortByTime(coll:ArrayCollection):void {
+                //trace(">>>>>>>> sortByName start: " + new Date());
+                if (!coll.sort) {
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareTime;
+                    coll.sort=sort;
+                }
+
+                coll.refresh();
+                
+                //trace(">>>>>>>> sortByName end: " + new Date());
+            }
+
+            /**
+             * Callback function on sorting by name.
+             */
+            private function compareTime(a:Object, b:Object, fields:Array=null):int {
+                return -ObjectUtil.stringCompare(a.startDate, b.startDate, true);
+            }
+
+            /**
+             * force widget to a maximized view
+             */
+            public function maximizeScreen():void {
+                //trace(">>>>>>>> maximizeScreen start: " + new Date());
+                if (this.container) {
+                    this.container.startMaximize();
+                }
+                
+                //trace(">>>>>>>> maximizeScreen end: " + new Date());
+            }
+
+            /**
+             * force widget to a restored view
+             */
+            public function restoreScreen():void {
+                if (this.container) {
+                    this.container.startRestore();
+                }
+            }
+            
+            /**
+             * Opens current project in new tab of the cockpit app.
+             *
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            private function openProjectInNewTab():void {
+                var props:Dictionary=new Dictionary();
+
+                props["pid"]=model.currentProj.id;
+                
+                var dict:Dictionary=new Dictionary();
+                dict["name"]=model.currentProj.name;
+                dict["allowclose"]="true";
+                dict["columnNum"]=2;
+                this.widgetFramework.addTabCtlWithProperties(dict);
+                
+                dict["tabName"]=model.currentProj.name;
+                dict["name"]="My Projects";
+                dict["title"]="My Projects";
+                dict["widgetConfig"]=props;
+                this.widgetFramework.addWidgetWithProperties(dict);
+                
+                dict["name"]="Submission Viewer";
+                dict["title"]="Submission Viewer";
+                this.widgetFramework.addWidgetWithProperties(dict);
+                
+                dict["name"]="Contest Monitor";
+                dict["title"]="Contest Monitor";
+                this.widgetFramework.addWidgetWithProperties(dict);
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Binding source="this.isMax"
+                destination="this.isMaxMode"/>
+
+	 <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
+    <mx:WebService id="ContestServiceFacadeBean"
+                   useProxy="true"
+                   destination="contest-facade">
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                    <mx:SecureAMFChannel uri="{blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
+
+        <mx:operation name="getCommonProjectContestData"
+                      resultFormat="object"
+                      result="setProject(event)"
+                      fault="hideLoadingProgress(); Alert.show('getCommonProjectContestData: ' + event.fault.faultString);"/>
+        <mx:operation name="getCommonProjectContestDataByPID"
+                      resultFormat="object"
+                      result="setProject(event)"
+                      fault="hideLoadingProgress(); Alert.show('getCommonProjectContestData: ' + event.fault.faultString);">
+            <mx:request>
+                <arg0>{pid}</arg0>
+            </mx:request>
+        </mx:operation>
+
+        <mx:operation name="createNewVersionForDesignDevContest"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('createNewVersionForDesignDevContest: ' + event.fault.faultString);" />
+
+        <mx:operation name="reOpenSoftwareContest"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('reOpenSoftwareContest: ' + event.fault.faultString);" />
+    </mx:WebService>
+    
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{projectServiceFacadeWsdl}">
+        <mx:operation name="getAllProjects"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Alert.show('getAllProjects: ' + event.fault.faultString);">
+        </mx:operation>
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{blazedsendpoint}"
+                     fault="Alert.show(event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="Alert.show(event.fault.faultString);"/>
+
+    </mx:RemoteObject>
+
+    <!--<mx:Binding source="model.index"
+                destination="setList"/>-->
+    <mx:DefaultTileListEffect id="myDTLE"
+                              fadeInDuration="10"
+                              fadeOutDuration="10"
+                              moveDuration="200"
+                              color="0xffffff"/>
+    <mxeffects:CubeRotate id="flipIn"
+                          duration="1000"
+                          suspendBackgroundProcessing="true"
+                          effectEnd="effectEnd(event)"/>
+    <mx:HDividedBox width="100%" height="100%">
+        <mx:VBox height="100%"
+                 width="160"
+                 paddingLeft="0"
+                 paddingRight="0"
+                 borderSides="right"
+                 backgroundColor="#E6E6E6"
+                 horizontalScrollPolicy="off"
+                 borderStyle="solid"
+                 borderColor="#D5D5D5"
+                 id="left"
+                 horizontalAlign="center">
+            <mx:List id="proList"
+                         width="100%"
+                         height="100%"
+                         variableRowHeight="true"
+                         rowHeight="50"
+                         backgroundColor="#E6E6E6"
+                         rollOverColor="#FAFAFA"
+                         paddingLeft="0"
+                         paddingRight="0"
+                         borderStyle="solid"
+                         rowCount="{ProjectListRowSize}"
+                         selectionColor="#FFFFFF"
+                         dataProvider="{model.proList}"
+                         labelField="name"
+                         wordWrap="true"
+                         allowMultipleSelection="false"
+                         allowDragSelection="false"
+                         useHandCursor="true"
+                         change="handleSelect()"
+                         verticalScrollPolicy="auto"
+                         horizontalScrollPolicy="off"
+                         selectable="true"
+                         styleName="listStyle"
+                         itemsChangeEffect="{myDTLE}"/>
+        </mx:VBox>
+
+        <mx:VBox id="proDetail"
+                 width="100%"
+                 height="100%"
+                 borderColor="#D5D5D5"
+                 verticalGap="0"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 paddingLeft="0"
+                 paddingRight="0">
+            <mx:HBox width="100%">
+                <mx:HBox horizontalAlign="left">
+                    <mx:Text styleName="projectNameStyle"
+                        id="projectName"
+                        text="Project Name: {details.prjName.text}"/>
+                    <mx:LinkButton label="Edit" styleName="linkBtn" />
+                </mx:HBox>
+                <mx:Spacer width="100%"/> 
+                <mx:HBox id="buttonBar"
+                         height="38"
+                         paddingTop="0"
+                         paddingBottom="0"
+                         paddingLeft="0"
+                         paddingRight="0"
+                         horizontalAlign="right">
+                    <mx:Image width="20" height="20" id="videoIcon" source="@Embed('../assets/video.png')"/>
+                    <mx:Spacer width="5"/>
+                    <mx:Button id="detailsBtn"
+                               label="Project Info"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               styleName="button"
+                               buttonMode="true"
+                               click="doRotate(event)"/>
+                    <mx:Spacer width="5"/>
+                    <mx:Button id="openPrjInNewTabBtn"
+                               label="Open in New Tab"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               styleName="button"
+                               buttonMode="true"
+                               click="openProjectInNewTab()"/>
+                </mx:HBox>
+            </mx:HBox>
+            <mx:VBox width="100%"
+                     horizontalAlign="left">
+                <mx:Text styleName="normalStyle"
+                            paddingTop="0"
+                            paddingBottom="0"
+                            height = "10"
+                         text="Scheduled Contests: {scheduledCnt}"/>
+                <mx:Text styleName="normalStyle"
+                         height = "10"
+                         text="Active Contests: {activeCnt}"/>
+                <mx:Text styleName="normalStyle"
+                         height = "10"
+                         text="Completed Contests: {completedCnt}"/>
+                <mx:Text styleName="normalStyle"
+                   
+                         text="Action Required: {actionRequiredCnt}"/>
+             </mx:VBox>
+            <mx:Canvas minHeight="736"
+                       height="100%"
+                       id="viewContainer"
+                       verticalScrollPolicy="off"
+                       width="100%">
+                <mx:ViewStack width="100%"
+                              left="3"
+                              minHeight="736"
+                              height="100%"
+                              backgroundAlpha="1.0"
+                              paddingLeft="12"
+                              paddingRight="0"
+                              paddingTop="0"
+                              paddingBottom="0"
+                              resizeToContent="true"
+                              clipContent="true"
+                              id="stack">
+                    <tc:Contests width="100%" height="100%" id="contest"
+                                 backgroundColor="#ffffff"/>
+                    <tc:ProjectDetails width="100%" height="100%" id="details"
+                                       backgroundColor="#ffffff"/>
+                </mx:ViewStack>
+            </mx:Canvas>
+        </mx:VBox>
+    </mx:HDividedBox>
+    <mx:Resize id="resize" /> 
+</tc:ProjectWidgetCodeBehind>
