@@ -1,0 +1,2833 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+
+<!--
+
+    This mxml component is the main entry point for the launch contest widget.
+
+    Updated for Cockpit Release Assembly 3
+        - save as draft button is not shown in ReadOnlyMode.
+        - next button is not shown on review screen in ReadOnlyMode.
+        - changes for above on previous, next, skipTo methods.
+
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to lead to purchase from Review page for the invoiced contest.
+        - Added webservice operation definition to get contest fees by project.
+
+     Version 1.0.2 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - introduced webservice methods to execute spec review workflow.
+
+     Version 1.0.3 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - New summary box for studio contests.
+        - New multi contest and show summary flags attributes were added.
+
+     Version 1.0.4 (Cockpit Pipeline Release Assembly 2 - Capacity) Change notes:
+        - Added web service support for pipeline service facade bean.
+        - Added event handler for the full capacity dates webservice so that it disables forbidden dates
+          in the start date picker.
+        - Added validation before draft save and activation to see if the choosen start date is not full.
+
+     Version 1.0.5 (Cockpit Release Assembly 11 1.0) Change Notes:
+        - Updated the wsdl operator
+
+     Version 1.0.6 (Cockpit Contest Eligibility) Change Notes:
+        - handle the creation of private contest
+
+     Version 1.0.7 (Cockpit Upload Attachment) Change Notes:
+        - Added requirements specification attachment check (warning) for when the user clicks next or navigates
+          to another step from the attcah files page (software contests)
+        - Added hint for description field in software contests attach files page.
+
+    @author pulky, murphydog
+    @version 1.0.7
+    @since 1.0
+-->
+<tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                           xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*"
+                           styleName="NewWidgetPanel"
+                           xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*"
+                           width="100%"
+                           initialize="initWidget()"
+                           verticalScrollPolicy="off"
+                           horizontalScrollPolicy="off"
+                           resizeEffect="{resize}"
+                           creationComplete="setWidgetReferences();onCreateComplete(1);">
+    <mx:Style source="Style.css"/>
+
+
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
+            import com.topcoder.flex.util.videoPopup.VideoPopupManager;
+            import com.topcoder.flex.widgets.setting.WidgetGlobalSettingManager;
+            import com.topcoder.flex.widgets.setting.WidgetGlobalSetting;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CapacityData;
+            import com.topcoder.flex.model.IWidgetFramework;
+            import mx.rpc.soap.SOAPHeader;
+            import mx.controls.Image;
+            import mx.effects.Resize;
+            import mx.events.ResizeEvent;
+            import mx.events.StateChangeEvent;
+            import mx.events.EffectEvent;
+            import mx.effects.Fade;
+            import mx.containers.HBox;
+            import flash.net.URLLoader;
+            import flash.net.URLRequest;
+            import flash.events.Event;
+            import com.topcoder.flex.Helper;
+            import flash.utils.Timer;
+            import flash.events.TimerEvent;
+            import mx.events.SliderEvent;
+            import mx.core.Application;
+            import mx.rpc.events.ResultEvent;
+            import mx.controls.Alert;
+            import mx.rpc.events.FaultEvent;
+            import mx.rpc.xml.SchemaTypeRegistry;
+            import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import com.topcoder.flex.util.date.DateUtil;
+            import mx.rpc.AbstractOperation;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.SoftwareCompetitionUtils;
+
+            import mx.collections.ArrayCollection;
+            import mx.utils.ObjectUtil;
+            import com.topcoder.flex.util.date.DateUtil;
+
+            /**
+             * Constant to store the "not available" message for the summary box.
+             *
+             * @since 1.0.3
+             */
+            private static const NOT_AVAILABLE_MESSAGE:String="(not available)";
+
+            /**
+             * Constant to store the "none" message for the summary box.
+             *
+             * @since 1.0.3
+             */
+            private static const NONE_MESSAGE:String="none";
+
+            // BUGR-1141
+            [Bindable]
+            private var stepNumber:int=1;
+
+            // BUGR-1067
+            [Bindable]
+            private var totalStepsNumber:int;
+
+            [Embed(source="../assets/done.png")]
+            private var doneImage:Class;
+
+            public var username:String=Application.application.parameters.username;
+            public var password:String="";
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+
+            //
+            // Updated to avoid 'data binding' warning
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            [Bindable]
+            private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+
+            /**
+             * A String representing pipeline service facade wsdl
+             *
+             * @since 1.0.2
+             */
+            [Bindable]
+            private var pipelineServiceFacadeWsdl:String=Application.application.parameters.pipelineServiceFacadeWsdl;
+
+            /**
+             * An array representing the dates that are already at full capacity for the current contest type.
+             *
+             * @since 1.0.2
+             */
+            [Bindable]
+            public var capacityFullDates:Array;
+
+             /**
+             * An array representing the dates that are already at full capacity for the current contest type.
+             *
+             * @since 1.0.2
+             */
+            [Bindable]
+            public var capacityData:ArrayCollection = new ArrayCollection();
+
+        [Bindable]
+        public var header:String = "Create Contest";
+
+
+            //
+            // Introduced to keep a map of step box to step number.
+            // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private var _stepBoxToStepNum:Dictionary=new Dictionary();
+
+            [Bindable]
+            private var isStudioContestType:Boolean=true;
+
+            [Bindable]
+            public function get studioContestType():Boolean {
+                return isStudioContestType;
+            }
+
+            public function set studioContestType(val:Boolean):void {
+                initStepNums(val);
+            }
+
+            /**
+             * A flag indicating whether or not the studio contest is a multi-round contest
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            private var _multiRoundContest:Boolean=false;
+
+            /**
+             * Gets the multi round contest flag
+             *
+             * @return true if the contest is multi round, false otherwise
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            public function get multiRoundContest():Boolean {
+                return _multiRoundContest;
+            }
+
+            /**
+             * Sets the multi round contest flag
+             *
+             * @param val the multi round contest flag value
+             *
+             * @since 1.0.3
+             */
+            public function set multiRoundContest(val:Boolean):void {
+                _multiRoundContest=val;
+            }
+
+            /**
+             * A flag indicating whether or not to show the summary box
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            private var _showSummary:Boolean=false;
+
+            /**
+             * Gets the show summary flag
+             *
+             * @return true if the summary is shown, false otherwise
+             *
+             * @since 1.0.3
+             */
+            [Bindable]
+            public function get showSummary():Boolean {
+                return _showSummary;
+            }
+
+            /**
+             * Sets the show summary flag
+             *
+             * @param val the show summary flag value
+             *
+             * @since 1.0.3
+             */
+            public function set showSummary(val:Boolean):void {
+                _showSummary=val;
+            }
+
+            /**
+             * This method updates the summary box content.
+             *
+             * @since 1.0.3
+             */
+            public function updateSummary():void {
+                var fee:Number=updateContestFee();
+                var prizes:Number=updateContestPrizes();
+
+                if (fee && prizes) {
+                    contestTotalCostTxt.text="$"+(prizes + fee).toString();
+                } else {
+                    contestTotalCostTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                }
+
+                updateContestSchedule();
+            }
+
+            /**
+             * This method calculates the total prize and updates the summary box.
+             *
+             * @return the contest prizes total
+             *
+             * @since 1.0.3
+             */
+            private function updateContestPrizes():Number {
+                var total:Number=0;
+                if (competition && competition.contestData) {
+                    if (competition.contestData.prizes) {
+                        for (var i:int=0; i < competition.contestData.prizes.length; i++) {
+                            var prize:PrizeData=competition.contestData.prizes[i] as PrizeData;
+                            var p:int=prize.place as int;
+                            if (p <= 5) {
+                                total+=prize.amount;
+                            }
+                        }
+                    }
+
+                    // if multi-round, add milestone prizes to the total
+                    if (competition.contestData.multiRound &&
+                        competition.contestData.milestonePrizeData &&
+                        competition.contestData.milestonePrizeData.numberOfSubmissions &&
+                        competition.contestData.milestonePrizeData.amount) {
+                        total+=competition.contestData.milestonePrizeData.numberOfSubmissions *
+                            competition.contestData.milestonePrizeData.amount;
+                    }
+                }
+
+                if (total > 0){
+                    contestPrizesTxt.text="$"+total.toString();
+                    return total;
+                } else {
+                    contestPrizesTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                    return NaN;
+                }
+            }
+
+            /**
+             * This method gets the contest administration fee amount and updates the summary box.
+             *
+             * @return the contest administration fee amount
+             *
+             * @since 1.0.3
+             */
+            private function updateContestFee():Number {
+                if (competition && competition.contestData &&
+                    competition.contestData.contestAdministrationFee) {
+                    contestFeeTxt.text="$"+competition.contestData.contestAdministrationFee.toString();
+                    return competition.contestData.contestAdministrationFee;
+                } else {
+                    contestFeeTxt.text="$0 "+NOT_AVAILABLE_MESSAGE;
+                    return NaN;
+                }
+            }
+
+            /**
+             * This method formats the given date to present it in the summary box
+             *
+             * @param dateStr the date string to re-format
+             *
+             * @return the formatted date
+             *
+             * @since 1.0.3
+             */
+            private function prepareDateForSummary(dateStr:String):String {
+                var dateObj:Date=DateUtil.parseFromString(dateStr);
+                return DateUtil.getDisplayableDateCompFromDate(dateObj) + " " +
+                    DateUtil.getDisplayableTimeCompFromDate(dateObj) + " " +
+                    DateUtil.getDisplayableTimeZoneCompFromDate(dateObj);
+            }
+
+            /**
+             * This method updates schedule information in the summary box
+             *
+             * @since 1.0.3
+             */
+            private function updateContestSchedule():void {
+                if (competition) {
+                    if (competition.startTime) {
+                        contestStartTxt.text=prepareDateForSummary(competition.startTime);
+                    } else {
+                        contestStartTxt.text=NOT_AVAILABLE_MESSAGE;
+                    }
+
+                    if (competition.endTime) {
+                        contestEndTxt.text=prepareDateForSummary(competition.endTime);
+                    } else {
+                        contestEndTxt.text=NOT_AVAILABLE_MESSAGE;
+                    }
+
+                    // if multi-round, show milestone date as well
+                    if (competition.contestData) {
+                        if (!competition.contestData.multiRound) {
+                            contestMilestoneTxt.text=NONE_MESSAGE;
+                        } else {
+                            if (competition.contestData.multiRoundData &&
+                                competition.contestData.multiRoundData.milestoneDate) {
+                                contestMilestoneTxt.text=prepareDateForSummary(competition.contestData.multiRoundData.milestoneDate);
+                            } else {
+                                contestMilestoneTxt.text=NOT_AVAILABLE_MESSAGE;
+                            }
+                           }
+                       }
+                }
+            }
+
+            private function initStepNums(studio:Boolean):void {
+                isStudioContestType=studio;
+                //DETAILS_HEIGHT=(val ? 950 : 1850);
+                //REVIEW_HEIGHT=(val ? 1165 : 1850); // BUGR-1067
+                //OVERVIEW_HEIGHT=(val ? 770 : 630);
+                if(!studio) {
+                    if (competitionType == "CONCEPTUALIZATION" || competitionType == "SPECIFICATION") {
+                        //DETAILS_HEIGHT = 1850;
+                        //details.widgetHeight = 670;
+                    }
+                    else {
+                        //details.widgetHeight = 800;
+                    }
+                    //overView.height = 580;
+                }
+
+                // BUGR-1067
+                stepNumber=1;
+                setStep(step1box);
+                setStep(step2box);
+                setStep(step3box);
+                if (studio) {
+                    setStep(step4box);
+                }
+                setStep(step5box);
+                setStep(step6box);
+                setStep(step7box);
+                setStep(step8box);
+                totalStepsNumber=stepNumber - 1;
+                stepNumber=1;
+
+                if (studio) {
+                    competitionType="STUDIO";
+                }
+            }
+
+            /**
+             * Represents the height of this widget on different states. BUGR-1134
+             */
+            //private var INITIAL_WIDGET_HEIGHT:int=460;
+            //private var CONTEST_SELECTION_HEIGHT:int=840;
+            //private var OVERVIEW_HEIGHT:int=770; // BUGR-1204 was 730
+            //private var DETAILS_HEIGHT:int=950;
+            //private var SPECIFICATIONS_HEIGHT:int=920; // BUGR-1362
+            //private var ATTACH_FILES_HEIGHT:int=660;
+            //private var SCHEDULE_HEIGHT:int=860;
+            //private var REVIEW_HEIGHT:int=1165;
+            //private var ACTIVATE_HEIGHT:int=930;
+
+            private static const WSSE_SECURITY:QName=new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security");
+
+            public function getHeader(username:String, password:String):SOAPHeader {
+               var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+               var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+               <wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+               <wsse:Username>{username}</wsse:Username>
+               <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+               </wsse:UsernameToken>
+               </wsse:Security>;
+
+               var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+               return header;
+             }
+
+            public function closeWidget():void {
+                resetWidget(true);
+                container.startMinimize();
+            }
+
+
+            private function initWidget():void {
+                dummyService.send();
+            }
+
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+
+                    this.currentState="ContestSelectionState";
+                    if (competitionType) {
+                        initStepNums(competitionType.toUpperCase() == "STUDIO");
+                    } else {
+                        initStepNums(true);
+                    }
+
+                    //initStepNums(true);
+                    getDataService();
+            }
+
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+
+                    this.currentState="ContestSelectionState";
+                     if (competitionType) {
+                        initStepNums(isStudioContestType);
+                    } else {
+                        initStepNums(true);
+                    }
+
+                    //initStepNums(true);
+                    getDataService();
+            }
+
+        private function getDataService():void
+        {
+            dataservice.getPassword();
+            dataservice.isSoftwareAdmin.send(); // BUGR-1737
+            dataservice.isAdmin.send(); // BUGR-1737
+        }
+
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    password=e.result.toString();
+
+                }
+
+                initComponent();
+            }
+
+        private function setWidgetReferences():void {
+                contestSelect.mainWidget=this;
+                overView.mainWidget=this;
+                details.mainWidget=this;
+                specf.mainWidget=this;
+                attch.mainWidget=this;
+                sched.mainWidget=this;
+                review.mainWidget=this;
+                activate.mainWidget=this;
+            }
+
+            public function initComponent():void {
+                trace("IN INIT COMPONENT OF LAUNCH WIDGET: " + this + "," + this.competitionType + "," + this.studioContestType);
+                rightPanel.horizontalScrollPolicy="false";
+                mainPanel.horizontalScrollPolicy="false";
+
+                //back.visible=false;
+
+                //read hints.xml data
+                getData(null);
+
+                // initialize web-services
+                initWebServices();
+
+        setWidgetReferences();
+
+                loadCategories();
+                loadMasterTechnologies();
+                requestConfigData.send();
+
+                // BUGR-1235
+                contestSelect.init();
+
+                // BUGR-1141
+                setCurStep(step1box);
+                setNextStep(step2box);
+                setNextStep(step3box);
+                setNextStep(step4box);
+                setNextStep(step5box);
+                setNextStep(step6box);
+                setNextStep(step7box);
+                setNextStep(step8box);
+                stepNumber=1;
+
+                onCreateComplete(2);
+            }
+
+            /**
+             * Private helper function to initialize web services
+             */
+            private function initWebServices():void {
+                var header:SOAPHeader=getHeader(username,password);
+
+                // initialize contest service facade ws.
+                ContestServiceFacadeBean.clearHeaders();
+                ContestServiceFacadeBean.addHeader(header);
+                this._csws=ContestServiceFacadeBean;
+
+                // initialize project service facade ws.
+                ProjectServiceFacadeBean.clearHeaders();
+                ProjectServiceFacadeBean.addHeader(header);
+                this._pws=ProjectServiceFacadeBean;
+
+                // initialize pipeline service facade ws.
+                PipelineServiceFacadeBean.clearHeaders();
+                PipelineServiceFacadeBean.addHeader(header);
+                this._psws=PipelineServiceFacadeBean;
+            }
+
+            private var flag:int = 0;
+
+            public function onCreateComplete(f:int):void {
+                flag = flag + f;
+                trace("IN ON CREATE COMPLETE:: " + this.competition + "," + this.softwareCompetition + "," + this.competitionType + "," + flag);
+
+        // this is late onCreateComplete event.
+                if (flag > 3) {
+                    if (this.competition) {
+                        this.competitionType="STUDIO";
+                        this.studioContestType=true;
+                    } else if (this.softwareCompetition) {
+                        if (this.softwareCompetition.projectHeader && this.softwareCompetition.projectHeader.projectCategory) {
+                            this.competitionType=SoftwareCompetitionUtils.instance().getCompetitionType(this.softwareCompetition.projectHeader.projectCategory.id);
+                        }
+                        this.studioContestType=false;
+                    }
+                }
+                if (flag >= 3) {
+                    if (this.initWidgetCallbackFn!=null) {
+                        initWidgetCallbackFn();
+                        initWidgetCallbackFn=null;
+                    }
+
+                    if (competition && competition.competitionId > 0) {
+                        trace("IN ON CREATE COMPLETE OF STUDIO COMPETITION :: EDIT");
+                        //this.competitionType="STUDIO";
+                        competition.type=this.competitionType;
+                        review.cstTypeStep1=this.competitionType;
+
+                        startLaunchProcess();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
+                    } else if (softwareCompetition) {
+                        trace("IN ON CREATE COMPLETE OF SOFTWARE COMPETITION :: EDIT");
+                        //this.competitionType="DESIGN";
+                        softwareCompetition.type=this.competitionType;
+                        trace("----------------------------------> in edit for s/w contest, competition type: " + this.competitionType);
+                        review.cstTypeStep1=this.competitionType;
+
+                        startLaunchProcess();
+                        // since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+                        //if (this.currentState=="ContestSelectionState") {
+                        //    next();
+                        //}
+                    }
+                }
+            }
+
+
+            /**
+             * This method fetchs general data for this widget
+             *
+             * @param event the corresponding Event
+             */
+            private function getData(event:Event):void {
+                //                var loader:URLLoader = event.target as URLLoader;
+                configurableText=<launch_contest><steps><details><fields><field name="Title"><hint>The title you choose is what competitors will see in the active contests list, so be as detailed as possible. Also, listing the entire prize purse in the title helps draw attention to your contest. For example, "$750 Furniture Wholesale Company Logo Design" works better than simply "New Logo".</hint></field><field name="Introduction"><hint>This short paragraph will serve as the summary at the top of your contest description page. No need to get into full details here; just give an attention-grabbing brief description of the project so members can quickly determine if they are interested.</hint></field><field name="Primary Goal"><hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
+
+                                            <b>What are the Primary Goals for This Contest?</b>
+                                            The more information you can provide about your decision to get this design produced, the better.
+
+                                            <b>Who is Your Target Audience?</b>
+                                            Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50 s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
+
+                                            <b>Does This Project Have Any Branding Guidelines?</b>
+                                            You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements.
+
+                                            <b>Are There Designs, Websites, etc. that You Like or Dislike? Why?</b>
+                                            You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements.
+
+                                            <b>What Criteria Must the Designers Meet to Win This Contest?</b>
+                                            Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology.</hint></field><field name="Target Audience"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Brand Guidelines"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Like and Dislikes"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Criteria"><hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint></field><field name="Colors"><hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you dont have specific branding colors you need to stick to, feel free to give general directions such as, "Please use blue and orange." Or "Please do not use yellow."</hint></field><field name="Fonts"><hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, "Do not use script fonts or anything that looks too feminine." Or "We need a cartoonish font that is kid-friendly."</hint></field><field name="Size"><hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: "The web banner must be exactly 300 pixels wide by 90 pixels tall." Or "The logo must be wider than it is tall. Tall logos wont fit in our websites masthead."</hint></field><field name="Additional Requirements or Restrictions"><hint>List any other instructions here that dont fit in the boxes above. Example: "All text must be surrounded by at least 200 pixels of white space."</hint></field><field name="File Description"><hint>Please provide a short description such as "Our company logo" or "PSD files of our current web site."</hint></field><field name="Software File Description"><hint>Please provide a short description such as "Requirements Specification" or "Activity Diagrams."</hint></field></fields><hints><hint field="Introduction"></hint><hint field="Primary Goals"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint><hint field="Introduction"></hint></hints></details></steps></launch_contest>;
+                details.titleHint=configurableText.steps.details.fields.field.(@name == "Title").hint;
+                details.introductionHint=configurableText.steps.details.fields.field.(@name == "Introduction").hint;
+                details.primaryGoalHint=configurableText.steps.details.fields.field.(@name == "Primary Goal").hint;
+                details.targetAudienceHint=configurableText.steps.details.fields.field.(@name == "Target Audience").hint;
+                details.brandGuidelinesHint=configurableText.steps.details.fields.field.(@name == "Brand Guidelines").hint;
+                details.likeAndDislikesHint=configurableText.steps.details.fields.field.(@name == "Like and Dislikes").hint;
+                details.criteriaHint=configurableText.steps.details.fields.field.(@name == "Criteria").hint;
+                specf.ColorsHint=configurableText.steps.details.fields.field.(@name == "Colors").hint;
+                specf.FontsHint=configurableText.steps.details.fields.field.(@name == "Fonts").hint;
+                specf.SizeHint=configurableText.steps.details.fields.field.(@name == "Size").hint;
+                specf.AdditionalHint=configurableText.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
+                attch.FileDescHint=configurableText.steps.details.fields.field.(@name == "File Description").hint;
+                attch.softwareFileDescHint=configurableText.steps.details.fields.field.(@name == "Software File Description").hint;
+            }
+
+            public function openOverViewPage():void {
+                this.overView.initData();
+                this.currentState="OverViewState";
+                setReadOnlyMode();
+
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+
+                goNext.includeInLayout=goNext.visible=true;
+                goNext.label = "NEXT";
+
+                setReadOnlyMode();
+
+                back.visible=true;
+
+                setPreviousStep(step1box); // BUGR-1141
+                setCurStep(step2box); // BUGR-1141
+            }
+
+            /**
+             * Sets the current state to review screen.
+             * @since Cockpit Launch Contest - Inline Spec Reviews - Part 1
+             */
+            public function openReviewPage():void {
+                this.currentState="ReviewState";
+
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+
+                if (!isNextAllowed()) {
+                    goNext.includeInLayout=goNext.visible=false;
+                } else {
+                    goNext.includeInLayout=goNext.visible=true;
+
+                    if (isInvoicedContest) {
+                        goNext.label="ACTIVATE";
+                    } else {
+                        goNext.label = "NEXT";
+                    }
+                }
+
+                setReadOnlyMode();
+
+                this.review.setAllValues();
+
+                back.visible=true;
+
+                setPreviousStep(step6box);
+                setCurStep(step7box);
+            }
+
+            // BUGR-1445
+            private function validateAndSaveAsDraft():void {
+                if (this.currentState == "ContestSelectionState") {
+                    if (!contestSelect.validateFields())
+                        return;
+
+                    this.addEventListener("OverviewFeesLoaded", saveAfterFeesLoaded);
+                    return;
+
+                    // call validate so default values get set.
+                    //details.initData();
+                    //details.validateFieldsEx2(false,false);
+                } else if (this.currentState == "OverViewState") {
+                    if (!overView.validateFields())
+                        return;
+                    if (!studioContestType) {
+                        setSoftwareDefaultDetails();
+                    }
+                } else if (this.currentState == "DetailsState") {
+                    if (!details.validateFields())
+                        return;
+                } else if (this.currentState == "SpecificationsState") {
+                    if (!specf.validateFields())
+                        return;
+                } else if (this.currentState == "ScheduleState") {
+                    if (!sched.validateFields())
+                        return;
+                }
+
+                // before continue, check start date is not taken
+                validateStartDate(continueSaveDraft);
+            }
+
+            private function saveAfterFeesLoaded(event:Event):void {
+                if (!overView.validateFields())
+                            return;
+
+                if (!studioContestType) {
+                    setSoftwareDefaultDetails();
+                }
+
+                validateStartDate(continueSaveDraft);
+                this.removeEventListener("OverviewFeesLoaded", saveAfterFeesLoaded);
+            }
+
+            private var stateToStepNum:Dictionary=null;
+            private var stepBoxes:ArrayCollection=null;
+
+
+            /**
+             * Handles the click on left hand side step bars.
+             *
+             *
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             *
+             * Updated for Version 1.0.1
+             *    - in case of invoiced contest, changed the name of the 'next' button on review page to 'ACTIVATE'
+             *
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             *
+             * @param step the step number
+             *
+             */
+            private function skipTo(step:int):void {
+
+                if (!stateToStepNum) {
+                    stateToStepNum=new Dictionary();
+                    stateToStepNum["ContestSelectionState"]=1;
+                    stateToStepNum["OverViewState"]=2;
+                    stateToStepNum["DetailsState"]=3;
+                    stateToStepNum["SpecificationsState"]=4;
+                    stateToStepNum["AttachFilesState"]=5;
+                    stateToStepNum["ScheduleState"]=6;
+                    stateToStepNum["ReviewState"]=7;
+                    stateToStepNum["ActivateState"]=8;
+                }
+
+                if (!stepBoxes) {
+                    stepBoxes=new ArrayCollection();
+                    stepBoxes.addItem(step1box);
+                    stepBoxes.addItem(step2box);
+                    stepBoxes.addItem(step3box);
+                    stepBoxes.addItem(step4box);
+                    stepBoxes.addItem(step5box);
+                    stepBoxes.addItem(step6box);
+                    stepBoxes.addItem(step7box);
+                    stepBoxes.addItem(step8box);
+                }
+
+                var currentStep:int=stateToStepNum[this.currentState];
+                var currentStepBox:Box=stepBoxes.getItemAt(currentStep - 1) as Box;
+                var newStepBox:Box=stepBoxes.getItemAt(step - 1) as Box;
+
+                // if we are on same state then do nothing.
+                if (step == currentStep) {
+                    return;
+                }
+
+                // validate that first step is filled.
+                if (step > 1) {
+                    if (contestSelect.validateFields() == false) {
+                        return;
+                    }
+                }
+
+                // validate that 2nd step is also filled.
+                if (step > 2) {
+                    //validate input at overview page.
+                    if (overView.validateFields() == false) {
+                        return;
+                    }
+                }
+
+                var isCurrentStepComplete:Boolean=true;
+                if (currentStep == 3) {
+                    isCurrentStepComplete=details.validateFieldsEx2(false, false);
+                } else if (currentStep == 4) {
+                    isCurrentStepComplete=specf.validateFieldsEx2(false, false);
+                } else if (currentStep == 5) {
+                    // show a warning if it's a software contest and there is no requirements specification attached
+                    attch.checkRequirementSpecWarning();
+                    isCurrentStepComplete= true;
+                } else if (currentStep == 6) {
+                    isCurrentStepComplete=sched.validateFieldsEx2(false, false);
+                } else if (currentStep == 7 || currentStep == 8) {
+                    // if we are going back from review or activate page, then don't mark these complete.
+                    if (step < currentStep) {
+                        isCurrentStepComplete=false;
+                    }
+                }
+
+                if (step >= 8) {
+                    //validate input at details page (3)
+                    if (details.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at specification page. (4)
+                    if (specf.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at schedule page. (6)
+                    if (sched.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+                }
+
+                switch (step) {
+                    case 1:
+
+                        this.currentState="ContestSelectionState";
+                        setReadOnlyMode();
+                        back.visible=false;
+
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+
+                        setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
+                        setCurStep(newStepBox);
+
+                        contestSelect.initData();
+
+                        break;
+                    case 2:
+
+                        this.currentState="OverViewState";
+                        setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+
+                        back.visible=true;
+
+                        setPreviousStepEx2(currentStepBox, isCurrentStepComplete);
+                        setCurStep(newStepBox);
+
+                        result.type = contestSelect.selectContestTypes.selectedItem.data;
+
+                        break;
+                    case 3:
+
+                        this.currentState = "DetailsState";
+            setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+
+                       details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+                        details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                        details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                        details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                        details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                        details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+
+                       if (contestSelect.selectContestTypes.selectedItem.data == "SPECIFICATION" || contestSelect.selectContestTypes.selectedItem.data == "CONCEPTUALIZATION" ){
+                           details.tech1.visible = false;
+                           details.tech2.visible = false;
+                           details.tech1.includeInLayout = false;
+                           details.tech2.includeInLayout = false;
+                        } else {
+                           details.tech1.visible = true;
+                           details.tech2.visible = true;
+                           details.tech1.includeInLayout = true;
+                           details.tech2.includeInLayout = true;
+                        }
+
+                        details.initData();
+                        break;
+                    case 4:
+
+
+                       specf.requestFileTypes.send();
+                       this.currentState = "SpecificationsState";
+                       setReadOnlyMode();
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+
+
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+                        break;
+                    case 5:
+
+                        this.currentState = "AttachFilesState";
+			setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                        
+                       
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+
+                        break;
+                    case 6:
+
+                        //validate input
+                       sched.curContestType = studioContestSubTypeId;
+                       sched.requestSchedule.send();
+    
+                       this.currentState = "ScheduleState";
+                       setReadOnlyMode();
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                       
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+                        break;
+                    case 7:
+
+                       this.currentState = "ReviewState";
+		       setReadOnlyMode();
+                       save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+                        
+                        if (!isNextAllowed()) {
+                            goNext.includeInLayout=goNext.visible=false;
+                        } else {
+                            goNext.includeInLayout=goNext.visible=true;
+                            
+                            if (isInvoicedContest) {
+                                goNext.label="ACTIVATE";
+                            } else {
+                                goNext.label = "NEXT";
+                            }
+                        }
+
+						 // on skip too - set the values. 
+                       review.setAllValues();
+
+    
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+                        break;
+                    case 8:
+
+                        this.currentState = "ActivateState";
+                        setReadOnlyMode();
+                        save.visible = false;
+                        
+                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                        setCurStep(newStepBox);
+                        
+                        setButton(1);
+    
+                        activate.contentTitleStr = review.ctInput.text; // BUGR-1682
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1682
+                        
+                        activate.initData();
+			            break;
+			    }
+			}
+
+            
+            /**
+             * Handler for click on next button.
+             * 
+             *
+             * Updated to remove step number calculation.
+             * and moved assignment to review page in individual widgets.
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             *
+             * Updated for Version 1.0.1
+             *    - in case of invoiced contest, changed the name of the next button to "Activate" on the Review screen.
+             *    - and for invoiced contest directly lead to purchase confirmation screen. 
+             * 
+             * @param event the animation effect event
+             */ 
+            public function next(event:EffectEvent=null):void {
+                if (this.currentState == "ContestSelectionState") {
+                    if (contestSelect.validateFields() == false) {
+                        return;
+                    }
+
+                    this.currentState="OverViewState";
+                    setReadOnlyMode();
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    back.visible=true;
+                    setPreviousStep(step1box); // BUGR-1141
+                    setCurStep(step2box); // BUGR-1141
+                    
+                    result.type=contestSelect.selectContestTypes.selectedItem.data;
+                } else if (this.currentState == "OverViewState") {
+                    //validate input
+                    if (overView.validateFields() == false){
+                        return;
+                    }
+
+                    this.currentState="DetailsState";
+                    setReadOnlyMode();
+
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+
+                    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+                    details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                    details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                    details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                    details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                    details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+
+                   if(getPaidContestFee() > 0 && getExtraContestFee() > 0) {// BUGR-1363 && TCCC-1218
+                           review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')';
+                   }
+                  
+                    setPreviousStep(step2box);
+                    setCurStep(step3box);
+					
+                    if (contestSelect.selectContestTypes.selectedItem.data == "SPECIFICATION" || contestSelect.selectContestTypes.selectedItem.data == "CONCEPTUALIZATION" ){
+                       details.tech1.visible = false;
+                       details.tech2.visible = false;
+                       details.tech1.includeInLayout = false;
+                       details.tech2.includeInLayout = false;
+					} else {
+					   details.tech1.visible = true;
+                       details.tech2.visible = true;
+                       details.tech1.includeInLayout = true;
+                       details.tech2.includeInLayout = true;
+					}
+                    
+                    this.details.initData();
+                    
+                    
+                } else if (this.currentState == "DetailsState") {
+                    //validate input
+                    if (details.validateFields() == false) {
+                        return;
+                    }
+
+                    // BUGR-1067
+                    if (!studioContestType) {
+                        this.currentState="AttachFilesState";
+                        setReadOnlyMode();
+                        setPreviousStep(step3box);
+                        setCurStep(step4box);
+                        setPreviousStep(step4box);
+                        setCurStep(step5box);
+                        return;
+                    }
+
+                    specf.requestFileTypes.send();
+                    this.currentState="SpecificationsState";
+                    setReadOnlyMode();
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setPreviousStep(step3box);
+                    setCurStep(step4box);
+                } else if (this.currentState == "SpecificationsState") {
+                    //validate input
+                    if (specf.validateFields() == false) {
+                        return;
+                    }
+
+                    this.currentState="AttachFilesState";
+                    setReadOnlyMode();
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setPreviousStep(step4box);
+                    setCurStep(step5box);
+                } else if (this.currentState == "AttachFilesState") {
+                    // show a warning if it's a software contest and there is no requirements specification attached
+                    attch.checkRequirementSpecWarning();
+
+                    //validate input
+                    sched.curContestType=studioContestSubTypeId;
+                    sched.requestSchedule.send();
+
+                    this.currentState="ScheduleState";
+                    setReadOnlyMode();
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setPreviousStep(step5box);
+                    setCurStep(step6box);
+                } else if (this.currentState == "ScheduleState") {
+                    if (sched.validateFields() == false) {
+                        return;
+                    }
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    if (!isNextAllowed()) {
+                        goNext.includeInLayout=goNext.visible=false;
+                    } else {
+                        goNext.includeInLayout=goNext.visible=true;
+                        
+                        if (isInvoicedContest) {
+                            goNext.label="ACTIVATE";
+                        } else {
+                            goNext.label = "NEXT";
+                        }
+                    }
+                    
+                    this.currentState="ReviewState";
+                    setReadOnlyMode();
+                    setPreviousStep(step6box);
+                    setCurStep(step7box);
+                } else if (this.currentState == "ReviewState") {
+                    // BUGR-1475
+                    //validate input at details page (3)
+                    if (details.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+
+                    //validate input at specification page. (4)
+                    if (studioContestType && specf.validateFieldsEx2(true, true) == false) { // BUGR-1600.2
+                        return;
+                    }
+
+                    //validate input at schedule page. (6)
+                    if (sched.validateFieldsEx2(true, true) == false) {
+                        return;
+                    }
+                    
+                    if (isInvoicedContest) {
+ 
+                        // before continue, check start date is not taken
+                        validateStartDate(continueActivateNext);
+    
+                        
+                    } else {
+                        this.currentState="ActivateState";
+                        setReadOnlyMode();
+                        save.visible=false;
+                        setPreviousStep(step7box);
+                        setCurStep(step8box);
+                        setButton(1);
+    
+                        activate.contentTitleStr = review.ctInput.text;
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
+    
+                        activate.initData();
+                    }
+                } else if (this.currentState == "ActivateState") {
+                    // before continue, check start date is not taken
+                    validateStartDate(continueActivateNext);
+                    save.visible=false;
+                    var index:int=activate.goToNext();
+                    setButton(index);
+                }
+            }
+ 
+            /**
+             * This method will trigger start date validation when a save draft or activate operation is triggerd.
+             *
+             * @param listener the webservice listener
+             * @since 1.0.2
+             */
+            private function validateStartDate(listener:Function):void {
+                var getCapacityFullDatesOp:AbstractOperation=_psws.getOperation("getCapacityFullDates");
+                getCapacityFullDatesOp.addEventListener("result", listener);
+                
+                if (isStudioContestType) {
+                   getCapacityFullDatesOp.send(competition.contestData.contestTypeId, true);
+                } else {
+                    var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(softwareCompetition.type);
+                    getCapacityFullDatesOp.send(contestType, false);
+                }
+            }
+
+            /**
+             * This method handles start date validation response for activation. It will validate selected start date is ok and 
+             * continue the activation
+             *
+             * @param event the result event
+             * @since 1.0.2
+             */
+            private function continueActivateNext(event:ResultEvent):void {
+                var capacityFullDatesCol = new ArrayCollection()
+
+                var getCapacityFullDatesOp:AbstractOperation=_psws.getOperation("getCapacityFullDates");
+                getCapacityFullDatesOp.removeEventListener(ResultEvent.RESULT, continueActivateNext);
+            
+                if (validateStartDateNotFull(event)) {   
+                    
+                     
+                     if (currentState == "ReviewState") {
+                            // for invoiced contest directly lead to purchase confirmation screen.
+                        this.currentState="ActivateState";
+                        setReadOnlyMode();
+                        save.visible=false;
+                        setPreviousStep(step7box);
+                        setCurStep(step8box);
+                        setButton(3);
+                        
+                        activate.contentTitleStr = review.ctInput.text;
+                        activate.contestTotal = isStudioContestType ? getExtraContestFee().toFixed(2) : getExtraContestFee().toFixed(2); // BUGR-1363, BUGR-1682
+          
+                         activate.initData();
+                         activate.stack.selectedIndex = 2;
+                     }
+
+                     var index:int=activate.goToNext(); 
+                     setButton(index); 
+	            } else {
+                    Helper.showAlertMessage("You must change your start date since it's full.");	            	
+	            }
+            }
+
+            /**
+             * This method handles start date validation response for draft save. It will validate selected start date is ok and 
+             * continue the activation
+             *
+             * @param event the result event
+             * @since 1.0.2
+             */
+            private function continueSaveDraft(event:ResultEvent):void {
+                var capacityFullDatesCol = new ArrayCollection()
+
+                var getCapacityFullDatesOp:AbstractOperation=_psws.getOperation("getCapacityFullDates");
+                getCapacityFullDatesOp.removeEventListener(ResultEvent.RESULT, continueSaveDraft);
+                if (validateStartDateNotFull(event)) {               
+                    saveAsDraft(); 
+                } else {
+                    Helper.showAlertMessage("You must change your start date since it's full.");                    
+                }
+            }
+
+            /**
+             * This method validates that the selected start date is not full and can be selected.
+             *
+             * @param event the result event
+             * @since 1.0.2
+             */
+            private function validateStartDateNotFull(event:ResultEvent):Boolean {
+                var start:String=null;
+                var contestId:Number;
+   
+                if (isStudioContestType) {
+                	start = competition.contestData.launchDateAndTime;
+                    contestId = competition.contestData.contestId;
+                } else {
+                    start = softwareCompetition.assetDTO.productionDate;
+                    contestId = softwareCompetition.projectHeader.id;
+                }
+            	
+                var ok:Boolean=true;
+                  if (start && event && event.result) {
+
+                    var startDate:Date=DateUtil.parseFromString(start);
+
+                    var capArray:ArrayCollection=new ArrayCollection;
+                    if (event.result is ArrayCollection)
+                        capArray=event.result as ArrayCollection;
+                    else
+                        capArray.addItem(event.result);
+
+                    for (var i:int = 0; i < capArray.length && ok; i++) {
+
+                        var fullDate:Date = DateUtil.parseFromString(capArray[i].date);
+                        var contests:ArrayCollection = capArray[i].contests;
+
+                        if (fullDate.getFullYear() == startDate.getFullYear() &&
+                            fullDate.getMonth() == startDate.getMonth() &&
+                            fullDate.getDate() == startDate.getDate() &&
+                            !contests.contains(contestId)) {
+
+                            ok = false;
+                        }
+                    }
+                }
+                return ok;
+            }
+
+            private function handleFault(event:FaultEvent):void {
+                Helper.showAlertMessage(event.fault.faultDetail);
+            }
+
+
+            private function setButton(index:int):void {
+                switch (index) {
+                    case 1:
+                        goNext.label = "CONFIRM ORDER";
+                        goNext.includeInLayout = goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 2:
+                        goNext.label = "SUBMIT FOR PROCESSING";
+                        goNext.includeInLayout = goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 3:
+                        goNext.label = "SUBMIT PURCHASE";
+                        goNext.includeInLayout = goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        goNext.label = "NEXT"; //TCCC-1218
+                        goNext.includeInLayout = goNext.visible = true;
+                        back.visible = true;
+                }       
+            }
+
+            
+            /**
+             * Handler for click on back button.
+             * 
+             *
+             * Updated to remove step number calculation.
+             * This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+             * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+             *
+             * Updated for Cockpit Release Assembly 3
+             * - save as draft button is not shown in ReadOnlyMode.
+             * - next button is not shown on review screen in ReadOnlyMode.
+             * 
+             * Updated for Version 1.0.1
+             *    - if the contest is invoiced then the next button name is changed to "ACTIVATE" on review screen. 
+             */ 
+            private function previous():void {
+                if (this.currentState == "ActivateState") {
+                    var index:int = activate.gotoPrev();
+                    setButton(index);
+                    if (index <= 0) {
+                        this.currentState = "ReviewState";
+                        setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+                    
+                        if (!isNextAllowed()) {
+                            goNext.includeInLayout=goNext.visible=false;
+                        } else {
+                            goNext.includeInLayout=goNext.visible=true;
+                            if (this.isInvoicedContest) {
+                                goNext.label = "ACTIVATE";
+                            } else {
+                                goNext.label = "NEXT";
+                            }
+                        }
+                        
+                       setCurStep(step7box);
+                       setNextStep(step8box); // BUGR-1141
+                    }
+                } else if (this.currentState == "ReviewState") {
+                    this.currentState="ScheduleState";
+                    setReadOnlyMode();
+                    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setCurStep(step6box);
+                    setNextStep(step7box); // BUGR-1141
+                } else if (this.currentState == "ScheduleState") {
+                    this.currentState="AttachFilesState";
+                    setReadOnlyMode();
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setCurStep(step5box);
+                    setNextStep(step6box); // BUGR-1141
+                } else if (this.currentState == "AttachFilesState") {
+                    // BUGR-1067
+                    if (!studioContestType) {
+                        details.ns_detailedRequirements.htmlText = details.ns_detailedRequirements.htmlText; //BUGR-1895
+                        details.ns_submissionDeliverables.htmlText = details.ns_submissionDeliverables.htmlText; //BUGR-1895
+                        details.ns_environmentSetupInstructions.htmlText = details.ns_environmentSetupInstructions.htmlText; //BUGR-1895
+                        details.ns_finalSubmissionGuidelines.htmlText = details.ns_finalSubmissionGuidelines.htmlText; //BUGR-1895
+                        this.currentState="DetailsState";
+                        setReadOnlyMode();
+                        save.includeInLayout=save.visible=!isReadOnlyMode;
+                        if (save.visible) {
+                            save.label=getSaveLabel();
+                        }
+                        
+                        goNext.includeInLayout=goNext.visible=true;
+                        goNext.label = "NEXT";
+                    
+                        setCurStep(step4box);
+                        setNextStep(step5box);
+                        setCurStep(step3box);
+                        setNextStep(step4box);
+                        return;
+                    }
+                    
+					save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    this.currentState="SpecificationsState";
+                    setReadOnlyMode();
+                    setCurStep(step4box);
+                    setNextStep(step5box); // BUGR-1141
+                } else if (this.currentState == "SpecificationsState") {
+                    details.introInput.htmlText = details.introInput.htmlText; //BUGR-1895
+                    details.glsInput.htmlText = details.glsInput.htmlText; //BUGR-1895
+                    this.currentState="DetailsState";
+                    setReadOnlyMode();
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setCurStep(step3box);
+                    setNextStep(step4box); // BUGR-1141
+                } else if (this.currentState == "DetailsState") {
+                    this.currentState="OverViewState";
+                    setReadOnlyMode();
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    setCurStep(step2box);
+                    setNextStep(step3box); // BUGR-1141
+                } else if (this.currentState == "OverViewState") {
+                    this.currentState="ContestSelectionState";
+                    setReadOnlyMode();    
+                    save.includeInLayout=save.visible=!isReadOnlyMode;
+                    if (save.visible) {
+                        save.label=getSaveLabel();
+                    }
+                    
+                    goNext.includeInLayout=goNext.visible=true;
+                    goNext.label = "NEXT";
+                    
+                    back.visible=false;
+
+                    setCurStep(step1box);
+                    setNextStep(step2box); // BUGR-1141
+                    
+                    contestSelect.initData();
+                }
+            }
+            public function goToStep1():void {
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep2():void {
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep3():void {
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep4():void {
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep5():void {
+                previous();
+                previous();
+            }
+            
+            public function goToStep6():void {
+                previous();
+            }
+
+            private function setStep(stepBox:Box):void { // BUGR-1067
+                var label:Label=stepBox.getChildAt(0) as Label;
+                label.text=stepNumber.toString();
+                
+                //
+                // Introduced to keep a map of step box to step number.
+                // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                _stepBoxToStepNum[stepBox]=stepNumber;
+                stepNumber++;
+            }
+
+            /**
+             * This method sets the current step in the launch contest flow
+             *
+             * Note: show summary flag is set to true for studio contests in steps 2-6.
+             *
+             * @param stepBox the step box to set
+             */
+            private function setCurStep(stepBox:Box):void {
+                var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                    var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#CC0000");
+                }
+                box.styleName = "curStepBgr";
+                // BUGR-1141
+                if(box.numChildren == 4) {
+                    box.removeChildAt(box.numChildren - 1);
+                }
+                stepBox.styleName = "curStep";
+                
+                //
+                // Introduced to read step number from step box mapping.
+                // This solves a bug 'step number were not coming correct' which is outside the scope of this assembly
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                stepNumber=_stepBoxToStepNum[stepBox];
+
+                // summary is shown only for studio contests in steps 2-6
+                showSummary=studioContestType && stepNumber > 1 && stepNumber < 7;
+            }
+            
+            private function setNextStep(stepBox:Box):void {  // BUGR-1141
+            	var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                	var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#666666");
+                    var step:Box = box.getChildAt(0) as Box;
+                }
+                box.styleName="prevStepBgr";
+                stepBox.styleName="nextStep";
+            }
+            
+            private function setPreviousStep(stepBox:Box):void {  // BUGR-1141
+            	var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                	var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#666666");
+                    var step:Box = box.getChildAt(0) as Box;
+                }
+				// BUGR-1141
+                box.styleName = "prevStepBgr";
+                
+                if (!box.getChildByName("completedImg")) {
+                    var completed:Image = new Image();
+                    completed.name="completedImg";
+                    completed.source = doneImage;
+                    box.addChild(completed);
+                }
+
+                stepBox.styleName="prevStep";
+            }
+            
+            // BUGR-1475
+            private function setPreviousStepEx2(stepBox:Box, markComplete:Boolean):void {  // BUGR-1141
+                if (markComplete) {
+                	setPreviousStep(stepBox);
+                }
+                else {
+                    setNextStep(stepBox);
+                }
+            }
+            
+            private function showArrow(stepBox:Box):void {
+                var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                    var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#000000");
+                }
+                stepBox.styleName = "curStep";
+            }
+            
+            private function hideArrow(stepBox:Box):void {
+            	var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                	var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#a8a8a8");
+                    var step:Box=box.getChildAt(0) as Box;
+                }
+                stepBox.styleName = "prevStep";
+            }
+
+            public function startLaunchProcess():void {
+                trace("IN START LAUNCH PROCESS: " + this.currentState);
+                launchWdt.percentWidth=100;
+                launchWdt.percentHeight=100;
+                mainPanel.percentWidth=100;
+                mainPanel.percentHeight=100;
+                mainPanel.visible=true;
+                
+                contestSelect.initData();
+                overView.initData();
+                details.initData();
+                
+                //
+                // Specification page is only for studio contest type.
+                // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+                //
+                if (isStudioContestType) {
+                    specf.initData();
+                }
+                
+                attch.initData();
+
+                sched.initData();
+                review.setAllValues();
+                activate.initData();
+                
+                save.includeInLayout=save.visible=!isReadOnlyMode;
+                if (save.visible) {
+                    save.label=getSaveLabel();
+                }
+                
+                if (this.currentState == "ReviewState") {
+                    if (!isNextAllowed()) {
+                        goNext.includeInLayout=goNext.visible=false;
+                    } else {
+                        goNext.includeInLayout=goNext.visible=true;
+                        
+                        if (isInvoicedContest) {
+                            goNext.label="ACTIVATE";
+                        } else {
+                            goNext.label = "NEXT";
+                        }
+                    }
+                }
+                
+                setReadOnlyMode();
+            }
+
+            private function handleError(e:FaultEvent):void {
+                Helper.showAlertMessage(e.fault.faultString);
+            }
+
+            private function cancelBtn():void {
+                var alertDlg:Alert=Alert.show("Are you sure you want to cancel? Please save your work first if you want to keep this contest.", "Confirmation", Alert.YES | Alert.NO, null, doCancel);
+                alertDlg.height=150;
+
+            }
+
+            private function doCancel(event:CloseEvent):void {
+                if (event.detail == Alert.YES) {
+                    resetWidget(true);
+                }
+            }
+            
+            private function showWebserviceError(opName:String, event:FaultEvent):void {
+
+                hideLoadingProgress();
+
+                Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
+            }
+
+            private function goToOverViewPage():void {
+                contestSelect.initData();
+                next();
+            }
+            
+            // BUGR-1737 changed name    
+            private function processAdminRole(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    _isAdmin=e.result as Boolean;
+                }
+            }
+            
+            // BUGR-1737
+            private function processSoftwareAdminRole(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    _isSoftwareAdmin=e.result as Boolean;
+                        // Commented for Cockpit Release Assembly 1 v1.0 [BUGR-1850]
+                        // This need to be commented for testing purpose, otherwise non-admin use case we can not test.
+                        //this.contestSelect.contestType.enabled=isSoftwareAdmin;
+                }
+            }
+            
+            protected override function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+                
+                if (this.currentState == "ContestSelectionState") {
+                    setGoodHeight(this.contestSelect);
+                } else if (this.currentState == "OverViewState") {
+                    setGoodHeight(this.overView);
+                } else if (this.currentState == "DetailsState") {
+                    setGoodHeight(this.details);
+                } else if (this.currentState == "SpecificationsState") {
+                    setGoodHeight(this.specf);
+                } else if (this.currentState == "AttachFilesState") {
+                    setGoodHeight(this.attch);
+                } else if (this.currentState == "ScheduleState") {
+                    setGoodHeight(this.sched);
+                } else if (this.currentState == "ReviewState") {
+                    setGoodHeight(this.review,80);
+                } else if (this.currentState == "ActivateState") {
+                    setGoodHeight(this.activate);
+                }
+            }
+
+            /**
+             * This method sets the correct height for the corresponding page
+             *
+             * Note: if show summary flag is set to true, it's considered in the height
+             *
+             * @param obj the box to update
+             */
+            private function setGoodHeight(obj:Box, addOnHeight:Number=0):void {
+                var footerHeight:Number=100;
+                var minHeight:Number=600;
+                
+                var mh:Number=obj.measuredHeight;
+                if (mh < minHeight) {
+                    mh=minHeight;
+                }
+
+                // adds summaryBox height only if it's shown.
+                this.height=mh+footerHeight+addOnHeight+(showSummary ? summaryBox.height : 0);
+            }
+            
+            /**
+             * A do nothing implementation of xmlSpecialCharsFilter for the webservice.
+             * In many cases webservice does double escaping/quoting - this leads to incorrect cases at server side.
+             * 
+             * By having this we override the behaviour of XMLEncoder and allow only one time encoding.
+             * 
+             * @param input the input object that need to be escaped/quoted.
+             * @return the escaped/quoted object
+             * @since 1.0.1
+             */
+            private function xmlSpecialCharsFilter(input:Object):String {
+                return input.toString();
+            }
+            
+            /**
+             * Gets the label name for save button.
+             * 
+             * @return the label name for save button.
+             * @since 1.0.1
+             */
+            private function getSaveLabel():String {
+                if (!isPaidContest() || getExtraContestFee() > 0) {
+                    return "SAVE AS DRAFT";
+                } 
+                
+                return "SAVE";
+            }
+            
+            /**
+             * Determines whether next is allowed on  particular screen or not.
+             * 
+             * @return true if next is allowed otherwise false.
+             * @since 1.0.1
+             */
+            private function isNextAllowed():Boolean {
+                if ((isPaidContest() && getExtraContestFee() <= 0) || isReadOnlyMode) {
+                    return false;
+                }
+                
+                trace("Is Next Allowed: " + isPaidContest() + ", " + getExtraContestFee() + ", " + isReadOnlyMode);
+                
+                return true;
+            }
+            
+            private function setReadOnlyMode():void {
+                if (isReadOnlyMode && currentState != "ReviewState") {
+                    mainPanel.mouseEnabled=false;
+                    mainPanel.mouseChildren=false;
+                    mainPanel.tabEnabled=false;
+                    mainPanel.tabChildren=false;
+                } else {
+                    mainPanel.mouseEnabled=true;
+                    mainPanel.mouseChildren=true;
+                    mainPanel.tabEnabled=true;
+                    mainPanel.tabChildren=true;
+                }
+            }
+
+         /**
+             * This method handles capacity full dates loading. This webservice will be triggered when
+             * the user changes contest type. (in contest selection or overview page - for studio competitions)
+             *
+             * It will first convert the retrieved dates and assign them to a bindable attribute so that the
+             * start date selection takes into consideration forbidden dates.
+             *
+             * @param event the result event
+             * @since 1.0.2
+             */
+            private function handleGetCapacityFullDatesLoad(event:ResultEvent):void {
+                var capacityFullDatesCol = new ArrayCollection();
+                if (event && event.result) {
+
+                 var capArray:ArrayCollection=new ArrayCollection;
+                    if (event.result is ArrayCollection)
+                        capArray=event.result as ArrayCollection;
+                    else
+                        capArray.addItem(event.result);
+
+                            for (var i:int = 0; i < capArray.length; i++) {
+  
+                                var cap:CapacityData = new CapacityData();
+                                cap.date = DateUtil.parseFromString(capArray[i].date);
+                                cap.contests = capArray[i].contests;
+                                capacityData.addItem(cap);
+                                capacityFullDatesCol.addItem((cap.date));
+
+                           }
+
+                }
+
+                capacityFullDatesCol.addItem({rangeEnd: new Date()});
+                capacityFullDates = capacityFullDatesCol.toArray();
+            }
+
+            private function showHelpVideo():void {
+                var widgetSetting:WidgetGlobalSetting=WidgetGlobalSettingManager.instance().getWidgetGlobalSetting(this.name);
+                if (!widgetSetting) {
+                    return;
+                }
+                
+                var src:String=widgetSetting.settings[this.currentState + ".HelpVideoSource"] as String;
+                var frame:String=widgetSetting.settings[this.currentState + ".HelpVideoFrame"] as String;
+                //trace("Help Video [" + this.currentState + "] == " 
+                 //   + widgetSetting.settings[this.currentState + ".HelpVideoSource"] + "," 
+                 //   + widgetSetting.settings[this.currentState + ".HelpVideoFrame"]);
+                VideoPopupManager.showHelpVideo(this, src, frame);
+            }
+            
+            /**
+             * Handler for loading config data from xml file.
+             * 
+             * @param e the result event. 
+             * @since Cockpit Launch Widget - Update Spec Reviews
+             */
+            private function loadDetailsConfigData(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    detailsConfig=e.result as XML;
+                }
+            }
+            
+            private function setSoftwareDefaultDetails():void {
+                if (!detailsConfig || !this.softwareCompetition) {
+                    return;
+                }
+                
+                var fieldDefaults:Object = detailsConfig.contestType.(@contestTypeId == this.getContestTypeIdByName(competitionType)).fieldDefaults;
+                var ns_detailedRequirements:String=fieldDefaults.field.(@id == 'detailedRequirements');
+                var ns_submissionDeliverables:String=fieldDefaults.field.(@id == 'submissionDeliverables');
+                var ns_environmentSetupInstructions:String=fieldDefaults.field.(@id == 'environmentSetupInstructions');
+                var ns_finalSubmissionGuidelines:String=fieldDefaults.field.(@id == 'finalSubmissionGuidelines');
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec) {
+                    this.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.detailedRequirements 
+                        || this.softwareCompetition.projectHeader.projectSpec.detailedRequirements == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.detailedRequirements=ns_detailedRequirements;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables 
+                        || this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.submissionDeliverables=ns_submissionDeliverables;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions 
+                        || this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.environmentSetupInstructions=ns_environmentSetupInstructions;
+                }
+                
+                if (!this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines 
+                        || this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines == "") {
+                    this.softwareCompetition.projectHeader.projectSpec.finalSubmissionGuidelines=ns_finalSubmissionGuidelines;
+                }
+
+                // for now, also set detailed Reuqirements on function description
+                this.softwareCompetition.assetDTO.detailedDescription=this.softwareCompetition.projectHeader.projectSpec.detailedRequirements;
+            }
+            
+            /**
+             * Gets the contest type id for the given contest type. The id is matching the value defined in the xml file.
+             * 
+             * @param type the contest type
+             * @return the contestTypeId, if not find, return -1
+             * @since TCCC-1591
+             */
+             public function getContestTypeIdByName(type:String):Number {
+            	if (type == "CONCEPTUALIZATION") {
+            		return 23;
+            	} else if (type == "SPECIFICATION") {
+            		return 6;
+            	} else if (type == "ARCHITECTURE") {
+            		return 7;
+            	} else if(type == "DESIGN") {
+            		return 1;
+            	} else if (type == "DEVELOPMENT") {
+            		return 2;
+            	} else if (type == "RIACOMPONENT") {
+            		return 25;
+            	} else if (type == "RIABUILD") {
+            		return 24;
+            	} else if (type == "UIPROTOTYPE") {
+            		return 19;
+            	} else if (type == "ASSEMBLY") {
+            		return 14;
+            	} else if (type == "TESTSUITES") {
+            		return 13;
+            	} else if (type == "TESTSCENARIOS") {
+            		return 26;
+            	}
+            	return -1;
+            }
+        ]]>
+    </mx:Script>
+    
+    <!--
+         Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1896]
+         - Changed the name to more generic 'overview data' rather than 'examples'
+    -->
+    <mx:HTTPService id="requestConfigData"
+                    url="/i/cockpit/data/launch_a_contest/details.xml"
+                    resultFormat="e4x"
+                    result="loadDetailsConfigData(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+
+     <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
+
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{projectServiceFacadeWsdl}">
+        <mx:operation name="createProject"
+                      resultFormat="object"
+                      fault="hideLoadingProgress();Helper.showAlertMessage('Your new project was not able to be saved. Please try again or contact directassist@topcoder.com if the problem continues.');">
+        </mx:operation>
+
+        <mx:operation name="getAllProjects"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllProjects', event);">
+        </mx:operation>
+
+        <mx:operation name="processContestPurchaseOrderPayment"
+                      resultFormat="object"
+                      fault="showWebserviceError('processContestPurchaseOrderPayment', event);">
+        </mx:operation>
+
+        <mx:operation name="getAllDocumentTypes"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllDocumentTypes', event);">
+        </mx:operation>
+
+        <mx:operation name="getClientProjectsByUser"
+                      resultFormat="object"
+                      fault="showWebserviceError('getClientProjectsByUser', event);">
+        </mx:operation>
+
+    </mx:WebService>
+
+     <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
+                    destination="contest-facade"
+                    xmlSpecialCharsFilter="xmlSpecialCharsFilter">
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                <mx:SecureAMFChannel uri="{blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+    </mx:channelSet>
+        <!-- Since version 1.0.5 -->
+        <mx:operation name="getDesignComponents"
+                      resultFormat="object"
+                      fault="showWebserviceError('getDesignCompoennts', event);">
+	      </mx:operation>
+        <!--end since 1.0.5-->
+
+	<mx:operation name="createContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('createContest', event);">
+        </mx:operation>
+
+        <mx:operation name="getContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('getContest', event);">
+        </mx:operation>
+
+        <mx:operation name="processContestCreditCardPayment"
+                      resultFormat="object">
+        </mx:operation>
+
+        <mx:operation name="processContestPurchaseOrderPayment"
+                      resultFormat="object">
+        </mx:operation>
+
+        <mx:operation name="getAllDocumentTypes"
+                      resultFormat="object"
+                      fault="showWebserviceError('getAllDocumentTypes', event);">
+        </mx:operation>
+
+        <mx:operation name="getMimeTypeId"
+                      resultFormat="object"
+                      fault="showWebserviceError('getMimeTypeId', event);">
+        </mx:operation>
+
+        <mx:operation name="updateContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('updateContest', event);">
+        </mx:operation>
+
+        <mx:operation name="uploadDocumentForContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('uploadDocumentForContest', event);">
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+        To retrieve list of catalog names and the categories -->
+        <mx:operation name="getActiveCategories"
+                      resultFormat="object"
+                      fault="showWebserviceError('getActiveCategories', event);">
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To retrieve list of technologies -->
+        <mx:operation name="getActiveTechnologies"
+                      resultFormat="object"
+                      fault="showWebserviceError('getActiveTechnologies', event);">
+        </mx:operation>              
+                      
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To create software contests -->
+        <mx:operation name="createSoftwareContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('createSoftwareContest', event);">              
+        </mx:operation>
+        
+        <!-- since: Flex Cockpit Launch Contest - Integrate Software Contests v1.0 
+        To update software contests -->
+        <mx:operation name="updateSoftwareContest"
+                      resultFormat="object"
+                      fault="showWebserviceError('updateSoftwareContest', event);">              
+        </mx:operation>
+
+        <!--
+             since: Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             webservice operation to fetch software contest data
+        -->
+        <mx:operation name="getSoftwareContestByProjectId"
+                      resultFormat="object"
+                      fault="showWebserviceError('getSoftwareContestByProjectId', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to fetch review specs.
+        -->
+        <mx:operation name="getSpecReviews"
+                      resultFormat="object"
+                      fault="showWebserviceError('getSpecReviews', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to save review comment.
+             
+             Updated for Spec Reviews Finishing Touches v1.0
+                - removed popup on successful save.
+        -->
+        <mx:operation name="saveReviewComment"
+                      resultFormat="object"
+                      fault="showWebserviceError('saveReviewComment', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Launch Contest Widget - Inline Spec Reviews Part 2
+             webservice operation to save review status.
+             
+             Updated for Spec Reviews Finishing Touches v1.0
+                - removed popup on successful save.
+        -->
+        <mx:operation name="saveReviewStatus"
+                      resultFormat="object"
+                      fault="showWebserviceError('saveReviewStatus', event);">
+        </mx:operation>
+        
+        <!--
+             since: Cockpit Release Assembly 5 v1.0
+             webservice operation to getContestFeesByProject
+        -->
+        <mx:operation name="getContestFeesByProject"
+                      resultFormat="object"
+                      fault="showWebserviceError('getContestFeesByProject', event);">
+        </mx:operation>
+          <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to mark ready for review.
+        -->
+        <mx:operation name="markReadyForReview"
+                      resultFormat="object"
+                      fault="showWebserviceError('markReadyForReview', event);">
+        </mx:operation>
+        
+        <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to resubmit for review.
+        -->
+        <mx:operation name="resubmitForReview"
+                      resultFormat="object"
+                      result="hideLoadingProgress();Helper.showAlertMessage('Successfully re-submitted for review');"
+                      fault="showWebserviceError('resubmitForReview', event);">
+        </mx:operation>
+        
+        <!--
+             since: Spec Reviews Finishing Touches v1.0
+             webservice operation to mark review done.
+        -->
+        <mx:operation name="markReviewDone"
+                      resultFormat="object"
+                      result="hideLoadingProgress();Helper.showAlertMessage('Successfully marked review done');"
+                      fault="showWebserviceError('markReviewDone', event);">
+        </mx:operation>
+    </mx:WebService>
+
+    <!-- Since 1.0.2 -->
+    <mx:WebService id="PipelineServiceFacadeBean"
+                   wsdl="{pipelineServiceFacadeWsdl}"
+                   useProxy="false">
+        <mx:operation name="getCapacityFullDates"
+                      resultFormat="object"
+                      result="handleGetCapacityFullDatesLoad(event);"
+                      fault="showWebserviceError('getCapacityFullDates', event);">
+        </mx:operation>
+
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{blazedsendpoint}"
+                     fault="Helper.showAlertMessage(event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="handleError(event)"/>
+
+        <mx:method name="isAdmin"  result="processAdminRole(event)"
+             fault="handleError(event)">
+             </mx:method>
+
+         <mx:method name="isSoftwareAdmin"  result="processSoftwareAdminRole(event)"
+             fault="handleError(event)">
+             </mx:method>             
+    </mx:RemoteObject>
+
+    <mx:HBox id="launchWdt"
+             width="100%"
+             height="100%"
+             horizontalGap="0"
+             paddingLeft="10">
+        <mx:VBox width="210"
+                 height="100%"
+                 paddingTop="0"
+                 verticalGap="0"
+                 horizontalScrollPolicy="off"
+                 styleName="stepsBgr">
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="30"
+                     verticalAlign="middle"
+                     styleName="stepsLabelBgr">
+                <mx:Label width="100%"
+                          height="100%"
+                          textAlign="center"
+                          text="STEP {stepNumber} of {totalStepsNumber}"
+                          styleName="stepsLabel"/>
+
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(1)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step1box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="1"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step1Text"
+                          text="Contest Selection"
+                          fontWeight="bold"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(2)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step2box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="2"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step2Text"
+                          text="Overview"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     click="skipTo(3)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step3box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="3"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step3Text"
+                          text="Details"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     visible="{studioContestType}"
+                     includeInLayout="{studioContestType}"
+                     click="skipTo(4)">
+                <!-- BUGR-1067 -->
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step4box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="4"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step4Text"
+                          text="Specifications"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="prevStepBgr"
+                     click="skipTo(5)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step5box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="5"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step5Text"
+                          text="Attach Files"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(6)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step6box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="6"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step6Text"
+                          text="Schedule"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(7)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step7box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="7"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step7Text"
+                          text="Review"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+            <mx:HBox paddingLeft="10"
+                     paddingRight="5"
+                     width="100%"
+                     horizontalGap="5"
+                     height="40"
+                     verticalAlign="middle"
+                     styleName="nextStepBgr"
+                     click="skipTo(8)">
+                <mx:Box width="30"
+                        height="30"
+                        paddingTop="2"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        left="10"
+                        id="step8box">
+                    <mx:Label width="100%"
+                              height="100%"
+                              textAlign="center"
+                              text="8"
+                              styleName="whiteBoldText"/>
+                </mx:Box>
+                <mx:Label id="step8Text"
+                          text="Activate"
+                          fontWeight="bold"
+                          color="#a8a8a8"
+                          fontFamily="Arial"
+                          fontSize="14"/>
+                <mx:Spacer width="100%"/>
+            </mx:HBox>
+        </mx:VBox>
+        <!--<mx:VRule height="100%" />-->
+        <mx:VBox width="100%"
+                 height="100%"
+                 verticalGap="0"
+                 paddingRight="8"
+                 paddingLeft="20"
+                 id="rightPanel">
+
+            <!-- header section start -->
+            <mx:HBox horizontalAlign="right"
+                 width="100%">
+                <mx:Label text="{header}" width="80%" styleName="sectionTitle" />
+                <mx:Spacer width="100" />
+                <mx:Button id="helpVideoBtn"
+                            styleName="helpVideoIcon"
+                            label=""
+                            toolTip="Show Help"
+                            click="showHelpVideo()" />
+                <mx:Button id="previewContestBtn"
+                            styleName="arrowRightBtnStyle"
+                            labelPlacement="{ButtonLabelPlacement.LEFT}"
+                            label="PREVIEW CONTEST"
+                            click="previewContest()" /> 
+                <mx:Button id="reviewWorkflowButton"
+                       styleName="arrowRightBtnStyle"
+                       labelPlacement="{ButtonLabelPlacement.LEFT}"
+                       label="Submit For Review"
+                       visible="false"
+                       includeInLayout="false"/>
+            </mx:HBox>
+            <!-- header section end -->
+            
+            <mx:Spacer height="5"/>
+            <!-- New summary box - since 1.0.3 -->
+            <mx:VBox width="100%" height="100%" visible="{showSummary}"
+                          includeInLayout="{showSummary}">
+                <mx:HRule width="100%"/>
+                <mx:HBox width="100%"
+                         height="60"
+                         verticalGap="0"
+                         horizontalGap="0"
+                         paddingRight="8"
+                         paddingLeft="20"
+                         id="summaryBox"
+                         verticalScrollPolicy="off"
+                         horizontalScrollPolicy="off"
+                          >
+                         <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Project:" fontWeight="bold"/>
+                                  <mx:Label text="{tcDirectProjectName}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Fee:" fontWeight="bold"/>
+                                  <mx:Label id="contestFeeTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Start date:" fontWeight="bold"/>
+                                  <mx:Label id="contestStartTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                         <mx:VBox width="33%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Type:" fontWeight="bold"/>
+                                  <mx:Label text="{competitionType}"/>
+                                  <mx:Label text="({studioContestSubTypeLabel})"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Prizes:" fontWeight="bold"/>
+                                  <mx:Label id="contestPrizesTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Milestone date:" fontWeight="bold"/>
+                                  <mx:Label id="contestMilestoneTxt" text="{NONE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                         <mx:VBox width="34%" verticalGap="0" horizontalGap="0">
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Status:" fontWeight="bold"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="Contest Total Cost:" fontWeight="bold"/>
+                                  <mx:Label id="contestTotalCostTxt" text="$0 {NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                             <mx:HBox verticalGap="0">
+                                  <mx:Label text="End date:" fontWeight="bold"/>
+                                  <mx:Label id="contestEndTxt" text="{NOT_AVAILABLE_MESSAGE}"/>
+                             </mx:HBox>
+                         </mx:VBox>
+                </mx:HBox>
+                <mx:HRule width="100%"/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <!-- body section start -->
+            <mx:HBox width="100%" height="100%" id="mainPanel">
+                <pages:ContestSelection id="contestSelect"/>
+                <pages:OverView id="overView"/>
+                <pages:Details id="details"/>
+                <pages:Specifications id="specf"/>
+                <pages:AttachFiles id="attch"/>
+                <pages:Schedule id="sched"/>
+                <pages:Review id="review"/>
+                <pages:PaymentContest id="activate"
+                                      width="100%"/>
+            </mx:HBox>
+            <!-- body section end -->
+            <mx:HRule width="100%"/>
+            <mx:Spacer height="5"/>
+            <!-- footer section start -->
+            <!--<mx:HBox id="SaveAndContinueHBox"
+                     visible="{this.currentState == 'ContestSelectionState'}"
+                     height="{this.currentState == 'ContestSelectionState' ? 30 : 0}"
+                     paddingTop="0"
+                     horizontalAlign="right"
+                     width="100%">
+                <mx:Button label="NEXT"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           click="goToOverViewPage()"
+                           buttonMode="true"/>
+            </mx:HBox>-->
+            <mx:HBox id="BtnsHBox"
+                     paddingTop="0"
+                     verticalAlign="top"
+                     horizontalAlign="center"
+                     width="100%">
+        
+                <mx:Button id="back"
+                           label="BACK"
+                           buttonMode="true"
+                           styleName="arrowLeftBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                           click="previous()"/>
+                <mx:Button id="cancel"
+                           label="CANCEL"
+                           buttonMode="true"
+                           styleName="arrowLeftBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                           click="cancelBtn()"/>
+                <mx:HBox horizontalAlign="center" width="100%" id="activateBtnPanel" visible="false" includeInLayout="false">
+                    <mx:Button label="CREATE NEW CONTEST" click="resetWidget(true)" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+                    <mx:Button label="VIEW MY CONTESTS" click="closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                    <mx:Button label="PRINT RECEIPT" click="activate.doPrint()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/>
+                </mx:HBox>
+        
+                <mx:Spacer width="90%"/>
+                <!-- BUGR-1643 -->
+                <mx:Button id="save"
+                           buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           label="SAVE AS DRAFT"
+                           click="validateAndSaveAsDraft()"
+                           includeInLayout="{save.visible}"/>
+        
+                <mx:Button id="goNext"
+                           label="NEXT"
+                           buttonMode="true"
+                           styleName="arrowRightBtnStyle"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           click="next()"/>
+            </mx:HBox>
+        </mx:VBox>
+    </mx:HBox>
+    <mx:Spacer height="5"/>
+    <tc:states>
+        <mx:State name="ContestSelectionState">
+            <mx:SetProperty target="{this}" name="header" value="Create Contest"/>
+            <mx:SetProperty target="{back}" name="visible" value="false"/>
+            <mx:SetProperty target="{back}" name="includeInLayout" value="false"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="false"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="false"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="OverViewState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Overview"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="DetailsState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Details"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="SpecificationsState">
+            <mx:SetProperty target="{this}" name="header" value="Contest Specifications"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="AttachFilesState">
+            <mx:SetProperty target="{this}" name="header" value="Attach Files"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="ScheduleState">
+            <mx:SetProperty target="{this}" name="header" value="Schedule"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="ReviewState">
+            <mx:SetProperty target="{this}" name="header" value="Review"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+                
+        <mx:State name="ActivateState">
+            <mx:SetProperty target="{this}" name="header" value="Activate Your Contest"/>
+            <mx:SetProperty target="{previewContestBtn}" name="visible" value="true"/>
+            <mx:SetProperty target="{previewContestBtn}" name="includeInLayout" value="true"/>
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+        </mx:State>
+    </tc:states>
+  <mx:Resize id="resize"/> 
+</tc:LaunchWidgetCodeBehind>

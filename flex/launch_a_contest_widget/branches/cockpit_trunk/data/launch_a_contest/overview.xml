@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contestTypes>
+	<contestType id="1">	
+		<description>Use this contest type to receive static (non-coded) screens for your website. You can hold contests for your home page, splash screens, or new sections of your web site. It�s best to ask the members to design no more than 10-12 screens at one time. Your prizes and timelines should be tailored to the amount of work involved.</description>
+		<example1>
+			<name>$1000 AOL/TopCoder Sensations Developer Challenge Storyboards</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_web_design_AOL.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/web_design_AOL.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2467</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2467</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2467</winnersLink>
+			<prizes>$1000</prizes>
+			<duration>5 days</duration>
+			<registrants>25</registrants>
+			<submissions>9</submissions>
+		</example1>
+		<example2>
+			<name>Kids Savings Account Storyboard</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_web_design_KIDS.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/web_design_KIDS.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2240</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2240</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2240</winnersLink>
+			<prizes>$1600</prizes>
+			<duration>5 days</duration>
+			<registrants>41</registrants>
+			<submissions>11</submissions>
+		</example2>
+		<minPrize>$350</minPrize>
+		<averagePrize>$1000</averagePrize>
+		<maxExposure>$2000</maxExposure>
+	</contestType>
+	<contestType id="4">	
+		<description>Web elements include banner designs, promos, buttons, navigational pieces, masthead designs and other small elements. For banner designs, it’s best to ask for no more than four banner sizes in one contest.</description>
+		<example1>
+			<name>1 Day Contest - Promo Banner for $100,000 Ribbit Killer App Challenge</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_web_element_design_RIBBIT.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/web_web_element_design_RIBBIT.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000315</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000315</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000315</winnersLink>
+			<prizes>$200</prizes>
+			<duration>1 day</duration>
+			<registrants>10</registrants>
+			<submissions>9</submissions>
+		</example1>
+		<example2>
+			<name>LendingTree 'Join the Network' Banner Contest</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_web_element_design_LENDINGTREE.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/web_element_design_LENDINGTREE.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000362</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000362</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000362</winnersLink>
+			<prizes>$1200</prizes>
+			<duration>5 days</duration>
+			<registrants>31</registrants>
+			<submissions>24</submissions>
+		</example2>
+		<minPrize>$200</minPrize>
+		<averagePrize>$500</averagePrize>
+		<maxExposure>$1200</maxExposure>
+	</contestType>	
+	<contestType id="3">	
+		<description>Your logo is the most important design you’ll use to brand your business. You can also use this category to get logos for products or services. Higher prize amounts will generally give you more quality logos to choose from.</description>
+		<example1>
+			<name>Bandwagon Trivia Game Logo</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_logo_design_BANDWAGON.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/logo_design_BANDWAGON.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000131</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000131</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000131</winnersLink>
+			<prizes>$300</prizes>
+			<duration>7 days</duration>
+			<registrants>19</registrants>
+			<submissions>17</submissions>
+		</example1>
+		<example2>
+			<name>2009 TopCoder High School Logo</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_logo_design_TCHS.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/logo_design_TCHS.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000146</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000146</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000146</winnersLink>
+			<prizes>$500</prizes>
+			<duration>4 days</duration>
+			<registrants>45</registrants>
+			<submissions>36</submissions>
+		</example2>
+		<minPrize>$150</minPrize>
+		<averagePrize>$350</averagePrize>
+		<maxExposure>$1000</maxExposure>
+	</contestType>	
+	<contestType id="12">	
+		<description>Print contests include brochures, flyers, business cards, magazine ads, and all other designs meant to be printed. Prizes widely vary due to project complexity.</description>
+		<example1>
+			<name>Equitrader Mailing Insert</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_print_design_EQUITRADER.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/print_design_EQUITRADER.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2254</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2254</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2254</winnersLink>
+			<prizes>$600</prizes>
+			<duration>2 days</duration>
+			<registrants>21</registrants>
+			<submissions>8</submissions>
+		</example1>
+		<example2>
+			<name>TopCoder Global Platform Brochure Cover</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_print_design_TCBROCHURE.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/print_design_TCBROCHURE.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2262</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2262</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2262</winnersLink>
+			<prizes>$1750</prizes>
+			<duration>7 days</duration>
+			<registrants>50</registrants>
+			<submissions>21</submissions>
+		</example2>
+		<minPrize>$300</minPrize>
+		<averagePrize>$600</averagePrize>
+		<maxExposure>$2000</maxExposure>
+	</contestType>
+	<contestType id="5">	
+		<description>Use this category for any static design that will act as the user interface for desktop applications, flash games, mobile apps, and any other front end designs that do not fall under the Web Design category. It’s best to ask the members to design no more than 10-12 screens at one time. Your prizes and timelines should be tailored to the amount of work involved.</description>
+		<example1>
+			<name>RadioTAGr iPhone Application Storyboards</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_app_design_RADIO.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/app_design_RADIO.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000062</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000062</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000062</winnersLink>
+			<prizes>$600</prizes>
+			<duration>2 days</duration>
+			<registrants>21</registrants>
+			<submissions>8</submissions>
+		</example1>
+		<example2>
+			<name>$1250 Sun Examination Interface Design</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_app_design_SUN.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/app_design_SUN.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2490</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2490</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2490</winnersLink>
+			<prizes>$1250</prizes>
+			<duration>6 days</duration>
+			<registrants>44</registrants>
+			<submissions>19</submissions>
+		</example2>
+		<minPrize>$350</minPrize>
+		<averagePrize>$1000</averagePrize>
+		<maxExposure>$2000</maxExposure>
+	</contestType>
+	<contestType id="21">	
+		<description>This contest type is for all PPT contests. You can ask for a blank template, a redesign of a current PPT or any charts or other graphics that will be used in your presentation.</description>
+		<example1>
+			<name>Studio PPT Slide Background Template and Pie Graphic Design</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_ppt_design_STUDIO.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/ppt_design_STUDIO.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=1000087</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=1000087</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=1000087</winnersLink>
+			<prizes>$200</prizes>
+			<duration>4 days</duration>
+			<registrants>16</registrants>
+			<submissions>4</submissions>
+		</example1>
+		<example2>
+			<name>PowerPoint Redesign</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_ppt_design_REDESIGN.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/ppt_design_REDESIGN.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2227</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2227</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2227</winnersLink>
+			<prizes>$500</prizes>
+			<duration>6 days</duration>
+			<registrants>74</registrants>
+			<submissions>6</submissions>
+		</example2>
+		<minPrize>$200</minPrize>
+		<averagePrize>$400</averagePrize>
+		<maxExposure>$1000</maxExposure>
+	</contestType>
+	<contestType id="14">	
+		<description>Icon design for print, web, mobile or desktop applications. It’s best to ask the members to design no more than 10-15 icons at one time unless the icons are extremely simple. Your prizes and timelines should be tailored to the amount of work involved.</description>
+		<example1>
+			<name>AOL Product Portal Icons</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_icon_design_AOL.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/icon_design_AOL.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2372</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2372</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2372</winnersLink>
+			<prizes>$450</prizes>
+			<duration>4 days</duration>
+			<registrants>19</registrants>
+			<submissions>15</submissions>
+		</example1>
+		<example2>
+			<name>Wivo Media Center Persona Icons</name>
+			<thumbImage>../../assets/overviewImages/thumbs/t_icon_design_WIVO.jpg</thumbImage>
+			<fullsizeImage>../../assets/overviewImages/fullsize_images/icon_design_WIVO.jpg</fullsizeImage>
+			<contestLink>http://studio.topcoder.com/?module=ViewContestDetails&ct=2468</contestLink>
+			<submissionsLink>http://studio.topcoder.com/?module=ViewSubmissions&ct=2468</submissionsLink>
+			<winnersLink>http://studio.topcoder.com/?module=ViewContestResults&ct=2468</winnersLink>
+			<prizes>$600</prizes>
+			<duration>3 days</duration>
+			<registrants>24</registrants>
+			<submissions>5</submissions>
+		</example2>
+		<minPrize>$150</minPrize>
+		<averagePrize>$450</averagePrize>
+		<maxExposure>$1000</maxExposure>
+	</contestType>
+	<contestType id="18">	
+		<description>Only use this category if your static design project clearly does not fit into the other categories. </description>
+		<minPrize>$300</minPrize>
+	</contestType>
+</contestTypes>
