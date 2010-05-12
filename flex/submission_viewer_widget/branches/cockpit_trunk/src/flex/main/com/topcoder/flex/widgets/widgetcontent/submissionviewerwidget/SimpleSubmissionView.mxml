@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for the simple image view of the submission viewer.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1940]
+	    - Do now show full preview link for abandoned contest
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         width="100%"
+         height="100%"
+         paddingTop="0"
+         paddingBottom="0"
+         backgroundColor="#f7f7f7"
+         borderStyle="solid"
+         borderSides="bottom"
+         borderColor="#d6d6d6"
+         paddingLeft="20"
+         horizontalAlign="left">
+    <mx:Script>
+        <![CDATA[
+       	    import mx.core.Application; // BUGR-1664
+
+            /**
+             * Reference to the gallery view model class.
+             */
+            [Bindable]
+            public var model:ThumbnailGalleryDataModel;
+
+
+            /**
+             * Handler for thumb up/down.
+             */
+            private function updateUpDown(up:Boolean):void {
+                if (!model.isRankMode || model.isPermissionReadOnly()) {
+                    return;
+                }
+                
+                data.upDown=(up) ? "up" : "down";
+                if (up) {
+                    downData.selected=false;
+                    upData.selected=true;
+                } else {
+                    upData.selected=false;
+                    downData.selected=true;
+                }
+            }
+
+            /**
+             * Handler for showing/hiding the footer.
+             */
+            private function showHideFooter():void {
+                model.showFooter=!model.showFooter;
+                if (model.showFooter) {
+                    btn.styleName="showHideBtnOpen2";
+                } else {
+                    btn.styleName="showHideBtnClose2";
+                }
+            }
+
+            /**
+             * Overrides the data method, so that caller can the properties on it.
+             *
+             * @param value value from the caller.
+             */
+            override public function set data(value:Object):void {
+                if ((value as int) != -1) {
+                    super.data=null;
+                    super.data=model.getSubmission((value as int));
+                    trace("@@@@@@@@@@@@@ Setting data to:" + super.data.id);
+                } else {
+                    trace("@@@@@@@@@@@@@ Setting data to null.");
+                }
+            }
+
+
+            /**
+             * It adjusts image height & width as per the view and maintains the aspect ratio.
+             */
+            private function adjustImage():void {
+                if (thumbnail.content) {
+                    var h:Number=thumbnail.contentHeight;
+                    var w:Number=thumbnail.contentWidth;
+                    thumbnail.scaleContent=false;
+                    if (635 / w * h > 635) {
+                        // Height is larger:
+                        thumbnail.content.height=635;
+                        thumbnail.content.width=635 / h * w;
+                    } else {
+                        thumbnail.content.width=635;
+                        thumbnail.content.height=635 / w * h;
+                    }
+                    thumbnail.width=thumbnail.content.width;
+                    thumbnail.height=thumbnail.content.height;
+                }
+            }
+            
+			// BUGR-1664
+            private function downloadLinkHandler():void {
+				// Open the link in a new window.
+				navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + data.id), '_blank');
+			}
+			
+			// BUGR-1664
+            private function openSubmissionInNewWindow():void {
+				// Open the link in a new window.
+				navigateToURL(new URLRequest("http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + data.id), '_blank');
+			}   
+
+			 /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens the submission in air viewer or external browser window.
+             * Submission gets opened in air viewer if submission has submissionUrl
+             * else it gets opened in external browser window.
+             *
+             * @param event mouse event.
+             * 
+             * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                if (data.hasOwnProperty("submissionUrl") && data.submissionUrl != "") {
+                    this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
+                } else {
+                    // Open the link in a new window.
+                    navigateToURL(new URLRequest(data.fullsizepreview), '_blank');
+                }
+            }          
+        ]]>
+    </mx:Script>
+    <mx:Binding source="model.activeSubmissionId"
+                destination="data"/>
+    <mx:VBox width="100%"
+             height="100%"
+             verticalAlign="middle">
+        <mx:Box width="100%"
+                horizontalAlign="center"
+                verticalScrollPolicy="off">
+            <mx:Box width="100%"
+                    horizontalAlign="center">
+                <tc:TCImage id="thumbnail"
+                            width="100%"
+                            height="100%"
+                            source="{data.fullsizepreview}"
+                            complete="adjustImage()"
+                            doubleClickEnabled="true"
+                            doubleClick="handleDoubleClick(event)"
+                            />  <!-- BUGR-1664 -->
+            </mx:Box>
+        </mx:Box>
+        <mx:HBox width="100%"
+                 horizontalAlign="center">
+            <mx:Label text="{data.id}"
+                      styleName="normalText"/>
+            <mx:Button id="upData"
+                       styleName="{model.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
+                       click="updateUpDown(true)"
+                       selected="{data.upDown == 'up'}"
+                       toolTip="Feel Good"/>
+            <mx:Button id="downData"
+                       styleName="{model.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
+                       click="updateUpDown(false)"
+                       selected="{data.upDown == 'down'}"
+                       toolTip="Not Interested"/>
+        </mx:HBox>
+        <mx:HBox width="100%" horizontalAlign="center" visible="{model.showDownloadFullPreview}"
+                     includeInLayout="{model.showDownloadFullPreview}">  <!-- BUGR-1664 -->
+    		<mx:LinkButton label="Download Full Preview" click="{downloadLinkHandler()}" />
+    	</mx:HBox>	  
+    </mx:VBox>
+    <mx:Button id="btn"
+               styleName="showHideBtnOpen2"
+               includeInLayout="true"
+               click="showHideFooter()"/>
+</mx:VBox>

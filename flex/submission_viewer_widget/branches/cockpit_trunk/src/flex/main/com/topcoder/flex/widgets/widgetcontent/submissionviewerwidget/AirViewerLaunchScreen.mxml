@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for showing the air viewer launch confirmation screen.
+
+     @author TCSDEVELOPER
+     @since Cockpit Submission Viewer Widget Enhancement Part 1.
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         borderStyle="solid"
+         borderColor="red"
+         verticalAlign="middle"
+         horizontalAlign="center"
+         backgroundColor="white">
+    <mx:Script>
+        <![CDATA[
+            /**
+             * Callback Function to handle launch of Air Viewer.
+             */
+            [Bindable]
+            private var _launchApp:Function;
+
+            /**
+             * Callback Function to handle cancel launch of Air Viewer.
+             */
+            [Bindable]
+            private var _cancelLaunchApp:Function;
+
+            /**
+             * <p>
+             * Simple getter of handler for launch of Air Viewer.
+             * </p>
+             *
+             * @return the handler for launch of Air Viewer.
+             */
+            [Bindable]
+            public function get launchApp():Function {
+                return this._launchApp;
+            }
+
+            /**
+             * <p>
+             * Simple setter of the handler for launch of Air Viewer.
+             * </p>
+             *
+             * @param f the handler for launch of Air Viewer.
+             */
+            public function set launchApp(f:Function):void {
+                this._launchApp=f;
+            }
+
+            /**
+             * <p>
+             * Simple getter of the handler for cancel launch of Air Viewer.
+             * </p>
+             *
+             * @return the handler for cancel launch of Air Viewer.
+             */
+            [Bindable]
+            public function get cancelLaunchApp():Function {
+                return this._cancelLaunchApp;
+            }
+
+            /**
+             * <p>
+             * Simple setter of the handler for cancel launch of Air Viewer.
+             * </p>
+             *
+             * @param f the handler for cancel launch of Air Viewer.
+             */
+            public function set cancelLaunchApp(f:Function):void {
+                this._cancelLaunchApp=f;
+            }
+        ]]>
+    </mx:Script>
+    <mx:VBox id="installerScreen"
+             horizontalAlign="center">
+        <mx:Label text="Do you want to open submission in TopCoder Submission Air Viewer ?"
+                  fontWeight="bold"
+                  fontSize="14"
+                  color="red"/>
+        <mx:Spacer height="10"/>
+        <mx:HBox horizontalAlign="center">
+            <mx:Button label="OK"
+                       click="launchApp(event);"/>
+            <mx:Button label="Cancel"
+                       click="cancelLaunchApp(event);"/>
+        </mx:HBox>
+        <mx:Spacer height="10"/>
+    </mx:VBox>
+</mx:VBox>

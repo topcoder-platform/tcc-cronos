@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for submission checkout page.
+
+     Version 1.0.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - New checkout list was added to make it independent from downloadList.
+
+     @author shailendra_80, pulky
+     @since Submission Viewer Overhaul
+     @version 1.0.1
+-->
+<mx:VBox xmlns="*"
+         xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         width="100%"
+         height="100%"
+         paddingTop="10"
+         paddingBottom="25"
+         paddingLeft="15"
+         paddingRight="15">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.printing.FlexPrintJobScaleType;
+            import mx.printing.FlexPrintJob;
+            import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+
+            private function doPrint():void {
+                // Create an instance of the FlexPrintJob class.
+                var printJob:FlexPrintJob=new FlexPrintJob();
+                printJob.printAsBitmap=false;
+
+                // Start the print job.
+                if (printJob.start() != true)
+                    return;
+
+                tcImageLogo.visible=tcImageLogo.includeInLayout=true;
+                if (pay.selectedIndex == 1) {
+                    sub1.visible=sub1.includeInLayout=false;
+                } else {
+                    sub2.visible=sub2.includeInLayout=false;
+                }
+
+                var oldColor:String=this.mainArea.getStyle("backgroundColor");
+                this.mainArea.setStyle("backgroundColor", "0xffffff");
+
+                this.mainArea.validateNow();
+
+                // Add the object to print. Do not scale it.
+                printJob.addObject(mainArea, FlexPrintJobScaleType.SHOW_ALL);
+
+                // Send the job to the printer.
+                printJob.send();
+
+                if (pay.selectedIndex == 1) {
+                    sub1.visible=sub1.includeInLayout=true;
+                } else {
+                    sub2.visible=sub2.includeInLayout=true;
+                }
+
+                tcImageLogo.visible=tcImageLogo.includeInLayout=false;
+
+                this.mainArea.setStyle("backgroundColor", oldColor ? oldColor : "");
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:HBox id="printReceiptButton"
+             width="100%"
+             horizontalAlign="right"
+             visible="false"
+             includeInLayout="false">
+        <mx:Button label="Print Receipt"
+                   buttonMode="true"
+                   styleName="arrowRightBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.LEFT}"
+                   click="doPrint()"/>
+    </mx:HBox>
+    <mx:VBox width="100%"
+             height="100%"
+             id="mainArea"
+             verticalScrollPolicy="off">
+        <mx:HBox id="tcImageLogo"
+                 width="100%"
+                 horizontalAlign="right"
+                 visible="false"
+                 includeInLayout="false">
+            <mx:Image source="@Embed(source='../assets/direct-header.png')"/>
+        </mx:HBox>
+
+        <mx:Label id="header"
+                  text="Purchase your Submissions"
+                  fontSize="16"
+                  styleName="header"/>
+        <mx:Text id="text1"
+                 width="100%"
+                 styleName="text"
+                 htmlText="Feedback will be here..."/>
+        <tc:GridCanvas width="100%"
+                       height="150"
+                       listData="{this.subViewer.checkoutList}"/>
+        <mx:ViewStack height="100%"
+                      width="100%"
+                      id="pay">
+            <mx:VBox width="100%"
+                     height="100%">
+                <tc:PaymentWF id="wf1"
+                              width="100%"
+                              height="100%"
+                              clientProjectNames="{this.subViewer.clientProjectNames}"/>
+                <mx:HBox width="100%">
+                    <mx:Button buttonMode="true"
+                               styleName="arrowLeftBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                               label="Add/Modify Selections"
+                               click="this.subViewer.gotoContestViewer()"/>
+                    <mx:Spacer width="100%"/>
+                    <mx:Button buttonMode="true"
+                               styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Confirm Order"
+                               click="this.subViewer.gotoPurchase()"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:VBox width="100%"
+                     height="100%">
+                <tc:PaymentWFCf id="wf2"
+                                paddingRight="6"/>
+                <mx:HBox width="100%"
+                         horizontalAlign="right">
+                    <mx:Button buttonMode="true"
+                               id="sub1"
+                               styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Submit Purchase"
+                               click="this.subViewer.gotoPurchase()"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:VBox width="100%"
+                     height="100%">
+                <tc:PaymentWFCfPO id="wf3"
+                                  paddingRight="6"/>
+                <mx:HBox width="100%"
+                         horizontalAlign="right">
+                    <mx:Button buttonMode="true"
+                               id="sub2"
+                               styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Submit Purchase"
+                               click="this.subViewer.gotoPurchase()"/>
+                </mx:HBox>
+            </mx:VBox>
+        </mx:ViewStack>
+    </mx:VBox>
+</mx:VBox>
