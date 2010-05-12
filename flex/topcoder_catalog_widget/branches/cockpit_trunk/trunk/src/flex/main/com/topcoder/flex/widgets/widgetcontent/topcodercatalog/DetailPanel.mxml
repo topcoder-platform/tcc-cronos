@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for the details view of the widget.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.topcodercatalog.vo.TCComponent;
+            import flash.net.navigateToURL;
+            import flash.net.URLRequest;
+
+            /**
+             * Instance of the data model class for this widget.
+             */
+            [Bindable]
+            private var model:Model=Model.instance;
+
+            /**
+             * Calculates the display title for the specified TC Component
+             *
+             * @param coms specified tc component.
+             */
+            private function calculateTitle(coms:TCComponent):String {
+                return "<b><font color='#ea4031' size='14'>" + coms.componentName + "</font><b> | version " + coms.versionText;
+            }
+
+            /**
+             * Calculates the download count for the specified TC Component
+             *
+             * @param coms specified tc component.
+             */
+            private function calculateDown(coms:TCComponent):String {
+                return "<b>" + coms.versionDownloadCount + " times </b>Downloaded."
+            }
+
+            /**
+             * Calculates the more info url for the specified TC Component
+             *
+             * @param coms specified tc component.
+             */
+            private function calculateInfo(coms:TCComponent):String {
+                return "<a href='#'><font color='#387baf'>" + coms.moreInfoURL + "</font></a>";
+            }
+
+            /**
+             * Calculates the released on date for the specified TC Component
+             *
+             * @param coms specified tc component.
+             */
+            private function calculateRelease(coms:TCComponent):String {
+
+                return "Released on <b>" + dateFormatter.format(coms.releaseDate) + "</b>";
+            }
+
+            /**
+             * Click handler for go back click.
+             */
+            public function goBack():void {
+                model.currentMode=model.lastMode;
+            }
+
+            /**
+             * Opens the more info url in another browser window / tab
+             */
+            public function openDetail():void {
+                navigateToURL(new URLRequest(model.currentComponent.moreInfoURL), "_blank");
+            }
+        ]]>
+    </mx:Script>
+    <mx:DateFormatter id="dateFormatter"
+                      formatString="MMM DD, YYYY"/>
+    <mx:Canvas width="100%"
+               backgroundColor="#f0f0f0"
+               height="40"
+               borderStyle="solid"
+               borderColor="#dadada"
+               borderSides="bottom">
+        <mx:Label text="{model.currentComponent.categories}"
+                  styleName="normalLabel"
+                  color="#313131"
+                  fontSize="12"
+                  left="15"
+                  top="0"/>
+        <mx:Label htmlText="{calculateTitle(model.currentComponent)}"
+                  styleName="normalLabel"
+                  color="#313131"
+                  fontSize="12"
+                  left="15"
+                  top="15"/>
+    </mx:Canvas>
+    <mx:VBox width="100%"
+             height="100%"
+             paddingLeft="15"
+             paddingRight="25"
+             horizontalAlign="right">
+        <mx:Label htmlText="{calculateDown(model.currentComponent)}"
+                  styleName="normalLabel"
+                  color="#313131"/>
+        <mx:Text width="100%"
+                 styleName="normalLabel"
+                 color="#939393"
+                 text="{model.currentComponent.longDescription}"/>
+        <mx:HBox width="100%">
+            <mx:Label text="More info: "
+                      styleName="normalLabel"
+                      color="#939393"/>
+            <mx:Label htmlText="{calculateInfo(model.currentComponent)}"
+                      click="openDetail()"
+                      styleName="normalLabel"
+                      color="#939393"
+                      width="100%"/>
+        </mx:HBox>
+        <mx:Spacer height="100%"/>
+        <mx:VBox horizontalAlign="center"
+                 height="66"
+                 styleName="downloadPanel"
+                 paddingTop="0"
+                 paddingLeft="20"
+                 paddingRight="20">
+            <mx:Label top="0"
+                      left="20"
+                      styleName="normalLabel"
+                      color="#313131"
+                      fontSize="12"
+                      htmlText="{calculateRelease(model.currentComponent)}"/>
+            <mx:Button styleName="downloadBtn"
+                       label="DOWNLOAD NOW!"
+                       click="{model.openDownload(model.currentComponent)}"/>
+        </mx:VBox>
+    </mx:VBox>
+    <mx:HBox paddingLeft="15"
+             width="100%"
+             borderStyle="solid"
+             borderColor="#e5e5e5"
+             borderSides="top">
+        <mx:Button width="70"
+                   height="25"
+                   styleName="backBtn"
+                   label="Go Back"
+                   click="goBack()"/>
+    </mx:HBox>
+</mx:VBox>
