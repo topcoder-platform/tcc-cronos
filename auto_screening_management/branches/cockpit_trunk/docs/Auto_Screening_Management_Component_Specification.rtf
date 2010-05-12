@@ -1,0 +1,659 @@
+{\rtf1\ansi\ansicpg936\uc2\deff0\stshfdbch13\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f10\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings;}
+{\f13\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}\'cb\'ce\'cc\'e5{\*\falt SimSun};}{\f14\froman\fcharset136\fprq2{\*\panose 02020300000000000000}PMingLiU{\*\falt PMingLiU};}
+{\f36\froman\fcharset136\fprq2{\*\panose 02020300000000000000}@PMingLiU;}{\f37\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}@\'cb\'ce\'cc\'e5;}{\f92\froman\fcharset238\fprq2 Times New Roman CE;}{\f93\froman\fcharset204\fprq2 Times New Roman Cyr;}
+{\f95\froman\fcharset161\fprq2 Times New Roman Greek;}{\f96\froman\fcharset162\fprq2 Times New Roman Tur;}{\f97\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f98\froman\fcharset178\fprq2 Times New Roman (Arabic);}
+{\f99\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f100\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}{\f102\fswiss\fcharset238\fprq2 Arial CE;}{\f103\fswiss\fcharset204\fprq2 Arial Cyr;}{\f105\fswiss\fcharset161\fprq2 Arial Greek;}
+{\f106\fswiss\fcharset162\fprq2 Arial Tur;}{\f107\fswiss\fcharset177\fprq2 Arial (Hebrew);}{\f108\fswiss\fcharset178\fprq2 Arial (Arabic);}{\f109\fswiss\fcharset186\fprq2 Arial Baltic;}{\f110\fswiss\fcharset163\fprq2 Arial (Vietnamese);}
+{\f112\fmodern\fcharset238\fprq1 Courier New CE;}{\f113\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f115\fmodern\fcharset161\fprq1 Courier New Greek;}{\f116\fmodern\fcharset162\fprq1 Courier New Tur;}
+{\f117\fmodern\fcharset177\fprq1 Courier New (Hebrew);}{\f118\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f119\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f120\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}
+{\f224\fnil\fcharset0\fprq2 SimSun Western{\*\falt SimSun};}{\f234\froman\fcharset0\fprq2 PMingLiU Western{\*\falt PMingLiU};}{\f454\froman\fcharset0\fprq2 @PMingLiU Western;}{\f464\fnil\fcharset0\fprq2 @\'cb\'ce\'cc\'e5 Western;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;
+\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs24\lang1033\langfe1028\loch\f0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 \snext0 Normal;}{\s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 
+\b\fs24\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext0 heading 1;}{\s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 \sbasedon1 \snext0 heading 2;}{\s3\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 \sbasedon1 \snext0 heading 3;}{
+\s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 \sbasedon1 \snext0 
+heading 4;}{\s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0 \fs22\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 
+\sbasedon0 \snext0 heading 5;}{\s6\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl5\outlinelevel5\adjustright\rin0\lin0\itap0 
+\i\fs22\lang1033\langfe1028\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext0 heading 6;}{\s7\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl6\outlinelevel6\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext0 heading 7;}{\s8\ql \li0\ri0\sb240\sa60\sl240\slmult0
+\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl7\outlinelevel7\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext0 heading 8;}{
+\s9\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl8\outlinelevel8\adjustright\rin0\lin0\itap0 \b\i\fs18\lang1033\langfe1028\loch\f1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext0 
+heading 9;}{\*\cs10 \additive \ssemihidden Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{
+\s15\ql \li480\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin480\itap0 \fs24\lang1033\langfe1028\loch\f0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext15 Normal Indent;}{\*\cs16 \additive \ul\cf2 \sbasedon10 Hyperlink;}{
+\s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\f1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext17 Body Text;}{\s18\ql \li720\ri0\sa120\sl240\slmult0
+\nowidctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \i\fs20\cf2\lang1033\langfe1028\loch\f1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext17 \sautoupd InfoBlue;}{
+\s19\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \cbpat9 \fs24\lang1033\langfe1028\loch\f0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 \sbasedon0 \snext19 \ssemihidden \styrsid6362280 Document Map;}}{\*\listtable
+{\list\listtemplateid-985754512{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\s1\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}\s2\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\s3\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\s4
+\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers\'01\'03\'05\'07\'09;}\s5\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\s6\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\s7\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\s8\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\s9\jclisttab\tx0 }{\listname ;}\listid-5}{\list\listtemplateid-160384884{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2520
+\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'05.;}{\levelnumbers\'01;}\fi-180\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'06.;}{\levelnumbers\'01;}\fi-360\li5400
+\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc2\levelnfcn2\leveljc2
+\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'08.;}{\levelnumbers\'01;}\fi-180\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid806357716}{\list\listtemplateid932329388{\listlevel\levelnfc23\levelnfcn23\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}
+\f10\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li3240
+\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fbias0 \fi-360\li6840
+\jclisttab\tx6840\lin6840 }{\listname ;}\listid876431865}}{\*\listoverridetable{\listoverride\listid-5\listoverridecount9{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1
+}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel
+\listoverridestartat\levelstartat1}\ls1}{\listoverride\listid806357716\listoverridecount9{\lfolevel}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel
+\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls2}{\listoverride\listid876431865
+\listoverridecount9{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}\ls3}}{\*\rsidtbl \rsid265350\rsid418783\rsid592560\rsid667780\rsid926894\rsid1532059\rsid1644660\rsid1922385\rsid2191787\rsid3569570
+\rsid3958021\rsid4138659\rsid4273985\rsid4327055\rsid4422678\rsid4673605\rsid5727314\rsid5793054\rsid6362280\rsid9205033\rsid9272489\rsid11798170\rsid11955885\rsid12991694\rsid13046296\rsid13504620\rsid13517085\rsid14120187\rsid14237062\rsid15485601
+\rsid16669209}{\*\generator Microsoft Word 10.0.3416;}{\info{\title <<Component>> <<Version>> Component Specification}{\author gpaul}{\operator chcow}{\creatim\yr2004\mo6\dy16\hr17\min44}{\revtim\yr2006\mo7\dy22\min25}{\version111}{\edmins266}{\nofpages9}
+{\nofwords2832}{\nofchars16148}{\*\company None}{\nofcharsws18943}{\vern16453}}\paperw12240\paperh15840\margl1800\margr1800\margt1440\margb1440\gutter0 
+\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1800\dgvorigin1440\dghshow1\dgvshow1\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\rsidroot11798170 \fet0
+\sectd \linex0\endnhere\sectlinegrid360\sectdefaultcl\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang 
+{\pntxta \dbch .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta \dbch )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}
+{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}
+\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx720\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {
+\fs28\ul\loch\af0\hich\af0\dbch\af0\insrsid3569570 Auto Screening Management 1.0 Component Specification
+\par }\pard\plain \s17\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 
+\par {\listtext\pard\plain\s1 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Design
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+Automated screening is a tool that screens submissions automatically. Submissions are \hich\af1\dbch\af14\loch\f1 
+put in a queue and will be picked up by standalone screening tools that could potentially run from multiple servers. Screening rules are configurable per project category. Once the submission is screened, the results will be logged. This component provide
+\hich\af1\dbch\af14\loch\f1 s\hich\af1\dbch\af14\loch\f1  the management API to initiate screening task and to query screening results. Another component will be developed as the screening tool.
+\par \hich\af1\dbch\af14\loch\f1 The design is pretty straightforward. The }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningTask}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 , }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningStatus}{
+\insrsid3569570 \hich\af1\dbch\af14\loch\f1 , }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningResult}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 , }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningResponse}{\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1  and }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Respo\hich\af1\dbch\af14\loch\f1 nseSeverity}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+ classes represent the data objects associated with the screening management. Each has the default constructor accepting no arguments, as well as getter and setter methods for the attributes in order to be used as bean class. The }{\i\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1 ScreeningManage\hich\af1\dbch\af14\loch\f1 r}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1  is the main interface of the component, and the }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 DefaultDbScreeningManager}{
+\insrsid3569570 \hich\af1\dbch\af14\loch\f1  provides the default implementation for the Informix database persistence. Users will normally acquire an instance of ScreeningManager through the }{\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+ScreeningManagerFactory}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 .
+\par \hich\af1\dbch\af14\loch\f1 The use \hich\af1\dbch\af14\loch\f1 
+of factory design pattern in ScreeningManagerFactory allows the user to acquire ScreeningManager instances in a single place, instead of using the specific constructors. The concrete ScreeningManager to create depends on the configuration using the Object
+\hich\af1\dbch\af14\loch\f1  \hich\af1\dbch\af14\loch\f1 
+Factory. It takes into advantage of the fact that the ScreeningManager implementation has its parameters specified in the constructor. Implementations become easy by making use of the API provided by the Object Factory, instead of parsing the configuratio
+\hich\af1\dbch\af14\loch\f1 n\hich\af1\dbch\af14\loch\f1 
+ properties one by one where some of the properties are optional. In this way, the configuration-related stuffs are centralized in one class, while ScreeningManager implementations do not need to care about configuration support.
+\par \hich\af1\dbch\af14\loch\f1 The setup requirement of t\hich\af1\dbch\af14\loch\f1 
+he DefaultDbScreeningManager is to have an unchanged pending status stored in the persistence for the initiation of screening tasks. Other things such as screening statuses and response severity are not cached, since the screening tool may update these dy
+\hich\af1\dbch\af14\loch\f1 n\hich\af1\dbch\af14\loch\f1 amically in the persistence. All are retrieved on request.
+\par \hich\af1\dbch\af14\loch\f1 Additional flexibility such as configurable table names or SQL statements is not considered here. After all, this is a custom component with the DDL scripts provided in the requirements. Fixing all\hich\af1\dbch\af14\loch\f1 
+ these will make both the implementation and usage simpler.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Design Patterns 
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Factory}{
+\insrsid3569570 \hich\af1\dbch\af14\loch\f1  pattern is used in the ScreeningManagerFactory to create different implementations of ScreeningManager. It shields the caller from the concrete class of the implementa\hich\af1\dbch\af14\loch\f1 tion.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Industry Standards 
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 SQL, JDBC
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Required Algorithms
+\par {\listtext\pard\plain\s3 \i\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Using the Object Factory
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+Here shows how to use the Object Factory to create ScreeningManager instances. It uses ScreeningManager.class as the key to look for. Using such approach, the co\hich\af1\dbch\af14\loch\f1 
+mplexity of instantiating DBConnectionFactory and IDGenerator is hidden.
+\par }\pard \s17\ql \fi-540\li1260\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\f2\fs18\insrsid3569570 \hich\af2\dbch\af14\loch\f2 ObjectFactory objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory(namespace));
+
+\par \hich\af2\dbch\af14\loch\f2 return (ScreeningManager) objectFactory.createObject(ScreeningManager.class);
+\par {\listtext\pard\plain\s3 \i\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.3.2\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Database Operations
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 \hich\f1 
+The tables will be created according to the DDL script provided in \'93\loch\f1 \hich\f1 docs/auto_screening.sql\'94\loch\f1 
+. Database transaction should be used to ensure atomicity. Database connections must not be cached within the component. Connection, PreparedSta\hich\af1\dbch\af14\loch\f1 tement and ResultSet should be created for each operation and closed afterwards.
+
+\par \hich\af1\dbch\af14\loch\f1 \hich\f1 Note that in the following SQL statements, the description behind \'93\loch\f1 \hich\f1 --\'93\loch\f1  is just comment and used for explanation. It should not appear in the actual SQL statement.
+\par {\listtext\pard\plain\s4 \f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.3.2.1\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Init\hich\af1\dbch\af13\loch\f1 
+iating Screening Task
+\par }\pard\plain \s17\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+To retrieve the pending status id, use:
+\par }\trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh1020\trleft630\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth8010\clshdrawnil \cellx8640\pard 
+\s17\ql \li62\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin62 {\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 SELECT}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  screening_status_id
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 FROM}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  screening_status_lu
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 WHERE
+\par }\pard \s17\ql \li62\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin62 {\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 name = ?\tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 
+-- set this parameter to ScreeningStatus.PENDING}{\cf2\insrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\fs20\cf2\insrsid3569570 \trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh1020\trleft630\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth8010\clshdrawnil \cellx8640\row }\pard\plain 
+\s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 
+\par }\pard \s17\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 To check whether a screening task was already initiated with an upload, use:
+\par }\trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh990\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\pard 
+\s17\ql \li47\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 {\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 SELECT}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  upload_id
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 FROM}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  screening_task
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 WHERE
+\par }\pard \s17\ql \li47\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 {\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 upload_id = ?\tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to upload}{
+\cf2\insrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570 \trowd \irow0\irowband0\lastrow 
+\ts11\trgaph28\trrh990\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 
+\par }\pard \s17\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 To insert the screening task into the table, use:
+\par }\trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh3675\trleft660\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7980\clshdrawnil \cellx8640\pard 
+\s17\ql \li32\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin32 {\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 INSERT INTO }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 screening_task
+\par \hich\af2\dbch\af14\loch\f2 (screening_task_id,
+\par \hich\af2\dbch\af14\loch\f2  upload_id,
+\par \hich\af2\dbch\af14\loch\f2  screening_status_id,
+\par \hich\af2\dbch\af14\loch\f2  create_user,
+\par \hich\af2\dbch\af14\loch\f2  create_date,
+\par \hich\af2\dbch\af14\loch\f2  modify_user,
+\par \hich\af2\dbch\af14\loch\f2  modify_date)
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 VALUES
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 (?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to unique id generated}{\insrsid3569570 
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  ?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to upload}{\insrsid3569570 
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  ?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to pendingStatusId}{\insrsid3569570 
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  ?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to operator}{\insrsid3569570 
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  ?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to current time}{\insrsid3569570 
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  \hich\af2\dbch\af14\loch\f2 ?,\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to operator}{\insrsid3569570 
+\par }\pard \s17\ql \li32\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin32 {\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  ?)\tab \tab \tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this parameter to current time}{
+\cf2\insrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570 \trowd \irow0\irowband0\lastrow 
+\ts11\trgaph28\trrh3675\trleft660\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7980\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 
+\par {\listtext\pard\plain\s4 \f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.3.2.2\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Querying Screening Task
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+To retrieve the screening tasks and their associated screening status with uploads, use:
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trrh795\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\pard \s17\ql \li47\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 {
+\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 SELECT
+\par \hich\af2\dbch\af14\loch\f2 a.screening_task_id,
+\par }\pard \s17\ql \li47\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 {\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 a.}{\f2\cf2\insrsid5793054\charrsid3569570 \hich\af2\dbch\af14\loch\f2 upload_id}{
+\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 ,}{\cf2\insrsid3569570\charrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570 \trowd \irow0\irowband0\ts11\trgaph28\trrh795\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\row }\trowd \irow1\irowband1\lastrow \ts11\trgaph28\trrh2805\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv
+\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\pard\plain 
+\s17\ql \li47\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid3569570 
+\par }{\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 a.screening_status_id,
+\par \hich\af2\dbch\af14\loch\f2 a.screener_id,
+\par \hich\af2\dbch\af14\loch\f2 a.start_timestamp,
+\par \hich\af2\dbch\af14\loch\f2 a.create_user,
+\par \hich\af2\dbch\af14\loch\f2 a.create_date,
+\par \hich\af2\dbch\af14\loch\f2 a.modify_user,
+\par \hich\af2\dbch\af14\loch\f2 a.modify_date,
+\par \hich\af2\dbch\af14\loch\f2 b.name
+\par \hich\af2\dbch\af14\loch\f2 FROM screening_task AS a
+\par \hich\af2\dbch\af14\loch\f2 LEFT JOIN screening_status_lu AS b
+\par \hich\af2\dbch\af14\loch\f2 ON a.screening_status_id = b.screening_status_id
+\par \hich\af2\dbch\af14\loch\f2 WHERE
+\par }\pard \s17\ql \li47\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin47 {\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 a.}{\f2\cf2\insrsid4422678\charrsid3569570 \hich\af2\dbch\af14\loch\f2 upload_id}{
+\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2  IN (?\hich\af2\dbch\af14\loch\f2 )}{\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13517085\charrsid3569570 \hich\af2\dbch\af13\loch\f2  }{
+\f2\cf2\insrsid3569570\charrsid3569570 \hich\af2\dbch\af14\loch\f2 -- set this string to uploads joined by comma}{\cf2\insrsid3569570\charrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \trowd \irow1\irowband1\lastrow \ts11\trgaph28\trrh2805\trleft645\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth7995\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf11\insrsid3569570 
+\par }\pard \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+To retrieve the screening results and its associated screening response and response severity with a screening task id, use:
+\par }\trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh3495\trleft675\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7980\clshdrawnil \cellx8655\pard 
+\s17\ql \li17\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin17 {\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 SELECT
+\par }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 a.screening_result_id,
+\par \hich\af2\dbch\af14\loch\f2 a.screening_response_id,
+\par \hich\af2\dbch\af14\loch\f2 a.dynamic_response_text,
+\par \hich\af2\dbch\af14\loch\f2 b.response_severity_id,
+\par \hich\af2\dbch\af14\loch\f2 b.response_code,
+\par \hich\af2\dbch\af14\loch\f2 b.response_text,
+\par \hich\af2\dbch\af14\loch\f2 c.name
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 FROM}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  screening_result }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 AS}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  a
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 LEFT JOIN}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  screening_response_lu }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 AS}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  b
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 ON}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  a.screening_response_id = b.screening_response_id
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 LEFT JOIN }{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 response_severity_lu }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 AS}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  c
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 ON}{\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2  b.response_severity_id = c.response\hich\af2\dbch\af14\loch\f2 _severity_id
+\par }{\f2\cf2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 WHERE
+\par }\pard \s17\ql \li17\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin17 {\f2\insrsid3569570 \hich\af2\dbch\af14\loch\f2 a.screening_task_id = ?\tab }{\f2\cf11\insrsid3569570 \hich\af2\dbch\af14\loch\f2 
+-- set this parameter to screening task id}{\cf2\insrsid3569570 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\fs20\cf2\insrsid3569570 \trowd \irow0\irowband0\lastrow \ts11\trgaph28\trrh3495\trleft675\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth7980\clshdrawnil \cellx8655\row }\pard\plain 
+\s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.4\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Component Class Overview
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningManagerFactory
+}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This is a factory class that creates instances of ScreeningManager. The use of factory design pattern allows the user to acquire ScreeningManager instances in a single place, instead of using the specific constructors.
+\par \hich\af1\dbch\af14\loch\f1 The concrete ScreeningManager to crea\hich\af1\dbch\af14\loch\f1 
+te depends on the configuration using the Object Factory. It takes into advantage of the fact that the ScreeningManager implementation has its parameters specified in the constructor. In this way, the configuration-related stuffs are centralized in one cl
+\hich\af1\dbch\af14\loch\f1 a\hich\af1\dbch\af14\loch\f1 
+ss. Implementations become easy by making use of the API provided by the Object Factory (instead of parsing the configuration properties one by one). ScreeningManager implementations do not need to care about configuration support.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningManager (interf\hich\af1\dbch\af14\loch\f1 ace)}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 
+This interface defines the contract for managing screening tasks. It provides the methods to initiate a screening task, and query the screening task and its details. Details refer to the screening results here. Normally, one upload is used to initiat
+\hich\af1\dbch\af14\loch\f1 e one screening task.
+\par \hich\af1\dbch\af14\loch\f1 
+In a sense, implementations should rely on some kind of persistence in order to perform the above tasks. Note that the update of screening task in the persistence (e.g. add/remove screening results, update screening status, etc) is pr
+\hich\af1\dbch\af14\loch\f1 ovided by another component. These two should work together on the same persistence.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 DbScreeningManager (abstract class)}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class abstracts the screening manager that uses database as the persistence for the screening tasks. The database connection is m\hich\af1\dbch\af14\loch\f1 
+ade configurable by using the DB Connection Factory component. The connection-related parameters should be provided in the constructor in order to be used by the Object Factory.
+\par \hich\af1\dbch\af14\loch\f1 Under this abstraction, subclasses don't need to care about how the database c\hich\af1\dbch\af14\loch\f1 onnection is specified. Rather, they can just focus on the persistence logic for the operations.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 DefaultDbScreeningManager}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 The default implementation of the screening manager that uses Informix database as the persistence for the screening tasks. The tabl\hich\af1\dbch\af14\loch\f1 
+e structures are provided in the ddl script at "docs/auto_screening.sql".
+\par \hich\af1\dbch\af14\loch\f1 The implementation uses the ID Generator component to generate unique ids for the initiation of screening tasks. As such, the IDGenerator should be provided in the constructor in ord\hich\af1\dbch\af14\loch\f1 
+er to be used by the Object Factory.
+\par \hich\af1\dbch\af14\loch\f1 The setup requirement of this screening manager is to have an unchanged pending status in the screening_status_lu table (for the initiation of screening tasks too). Other things such as screening statuses and response s
+\hich\af1\dbch\af14\loch\f1 everity are not cached, since the other component (using the same persistence) may update these dynamically. All are retrieved on request.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningTask}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class encapsulates the task of screening an uploaded submission by a screener. Each screening task is identified by a unique id.
+\par \hich\af1\dbch\af14\loch\f1 When the screening proceeds, the screening task can have its status changed. Screening results can be added or removed dep\hich\af1\dbch\af14\loch\f1 ending on the screener. The auditing fields should be updated accordingly.
+
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningStatus}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class represents the screening status of the screening task. Each screening status is identified by a unique id. Each screening task is associated with a scree\hich\af1\dbch\af14\loch\f1 ning status.
+\par \hich\af1\dbch\af14\loch\f1 When the screening task is first initiated, its screening status is set to PENDING.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningResult}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class represents a piece of screening result of the screening task. Each screening result is identified by a unique id. Each screening ta\hich\af1\dbch\af14\loch\f1 sk is associated with multiple screening results.
+\par \hich\af1\dbch\af14\loch\f1 When the screening task is first initiated, it contains no screening results. Screening results are normally entered by the screener, consisting of the screening response and dynamic text.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningResponse}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class represents the screening response associated with a screening result. Each screening response is identified by a unique id. Each screening result is associated with a screening response.
+\par \hich\af1\dbch\af14\loch\f1 When the submission is being screened, screening respons\hich\af1\dbch\af14\loch\f1 e is normally entered by the screener, consisting of response severity, response code and fixed response text.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ResponseSeverity}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This class represents the response severity of the screening response. Each response severity is identified by a unique id. Eac\hich\af1\dbch\af14\loch\f1 h screening response is associated with a response severity.
+\par \hich\af1\dbch\af14\loch\f1 Response severity indicates how serious the response is on the submission. Examples of response severity include "fatal", "warning", etc.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.5\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Component Exception Definitions
+
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningManagementEx
+\hich\af1\dbch\af14\loch\f1 ception}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This is the base exception of this component. All other exceptions should extend from it.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ConfigurationException}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This exception indicates any error related to configuration, such as missing properties, invalid property values, etc. It is thrown f\hich\af1\dbch\af14\loch\f1 rom the ScreeningManagerFactory methods.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 PersistenceException}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This exception indicates any error related to persistence. It is used to wrap exceptions such as SQLException and IOException. It is thrown from the ScreeningManager methods.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningTaskAlrea\hich\af1\dbch\af14\loch\f1 dyExistsException}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This exception indicates that a screening task was already initiated with the upload id, when trying to initiate a screening task with it. It is thrown from the initiate method of the ScreeningManager.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ScreeningTaskDoesNotExistException}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This exception indicates that the screening task was not initiated with the upload id, when trying to query the screening task with it. It is thrown from the query methods of the ScreeningManager.
+\par }{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 IllegalArgumentException}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 :
+\par \hich\af1\dbch\af14\loch\f1 This exception can be thrown by \hich\af1\dbch\af14\loch\f1 methods of all classes when invalid inputs are passed to them, such as null or empty string. Normally an empty string is checked with trimmed result.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 1.6\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Thread Safety
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+This component is thread-safe in this release. The DefaultDbScreeningManager is made thr\hich\af1\dbch\af14\loch\f1 
+ead safe by using JDBC transactions. That means enclosing all the JDBC operations done within a method in a transaction. It will be then the responsibility of the database to ensure concurrent access. The component will be able to run even in a distribute
+\hich\af1\dbch\af14\loch\f1 d\hich\af1\dbch\af14\loch\f1  environment.
+\par \hich\af1\dbch\af14\loch\f1 
+The ScreeningManagerFactory is thread-safe by being stateless. It supports concurrent creation of ScreeningManager instances. The mutable data objects including ScreeningTask, ScreeningStatus, ScreeningResult, ScreeningResponse and ResponseSe
+\hich\af1\dbch\af14\loch\f1 verity are not thread-safe themselves, but will be used by the component in a thread-safe manner. The DefaultDbScreeningManager just creates the objects and sets the attributes one by one.
+\par {\listtext\pard\plain\s1 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 2.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Environment Requirements\tab 
+\tab 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 2.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Environment
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Java 1.4
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 2.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 TopCoder
+\hich\af1\dbch\af13\loch\f1  Software Components
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}\pard\plain \s17\qj \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Object Factory 2.0}{\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1  is used to create instances of ScreeningManager from configuration namespace. Implementations of ScreeningManager do not need to care about configuration support.
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 DB Connection Factory 1.0 }{\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1 is\hich\af1\dbch\af14\loch\f1  used to create database connections for persistence operations.
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 ID Generator 3.0}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+ is used to generate unique ids for the initiation of screening tasks.
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Base Exception 1.0 }{\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1 is used as a base class for all exceptions. It provides a consistent way to handl\hich\af1\dbch\af14\loch\f1 e the cause exception.
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}{\b\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Configuration Manager 2.1.4 }{\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1 is used as a dependency of the above components.
+\par }\pard \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\i\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+NOTE: The default location for TopCoder Software component jars is ../lib/tcs/COMPONENT_NAME/COMPONENT_VERSION relative to the component installation.}{\i\cf1\insrsid3569570 \hich\af1\dbch\af14\loch\f1   Se\hich\af1\dbch\af14\loch\f1 
+tting the tcs_libdir property in topcoder_global.properties will overwrite this default location.}{\i\insrsid3569570 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 2.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Third Party Components
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 None
+\par {\listtext\pard\plain\s1 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 3.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Installation and Configuration
+
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 3.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Package Name
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+com.cronos.onlinereview.autoscreening.management}{\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid667780 {\insrsid667780 \hich\af1\dbch\af14\loch\f1 com.cronos.onlinereview.au}{\insrsid5727314 \hich\af1\dbch\af14\loch\f1 toscreening.managemen}{
+\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid5727314 \hich\af1\dbch\af13\loch\f1 t.db}{\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid667780\charrsid5727314 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid667780\charrsid667780 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 3.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Configuration Parameters
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 \hich\f1 
+The configuration follows the structure defined in the Object Factory component. No custom property is introduced here. A sample configuration file is provided in \'93\loch\f1 \hich\f1 docs/config.xml\'94\loch\f1 .
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 3.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Dependencies C
+\hich\af1\dbch\af13\loch\f1 onfiguration
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+DB Connection Factory and ID Generator require its own configuration.
+\par {\listtext\pard\plain\s1 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Usage Notes
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 
+Required steps to test the component
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}}\pard\plain \s17\ql \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Extract the component distribution.
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}\hich\af1\dbch\af14\loch\f1 Follow }{\field\fldedit{\*\fldinst {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+ HYPERLINK "C:\\filez\\work\\tc\\tcs_corp\\templates\\component\\" \\\hich\af1\dbch\af14\loch\f1 l "_Dependencies_Configuration" }{\fs24\insrsid13504620 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000010000000303000000000000c00000000000004600002900000066696c657a776f726b74637463735f636f727074656d706c61746573636f6d706f6e656e7422206c00ffffadde0000000000000000000000000000000000000000000000000000000000000000770000
+00}}}{\fldrslt {\cs16\ul\cf2\insrsid3569570 \hich\af1\dbch\af14\loch\f1 Dependencies Configuration}}}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1 .
+\par {\listtext\pard\plain\s17 \fs20\lang1033\langfe1028\loch\af3\hich\af3\dbch\af14\langfenp1028\insrsid3569570 \loch\af3\dbch\af14\hich\f3 \'b7\tab}\hich\af1\dbch\af14\loch\f1 Execute \hich\f1 \lquote \loch\f1 ant test\hich\f1 \rquote \loch\f1 
+ within the directory that the distribution was extracted to.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 
+Required steps to use the component
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 None
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Demo
+\par }\pard\plain \s17\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 \hich\f1 
+Assume the configuration namespaces in \'93\loch\f1 \hich\f1 docs/config.xml\'94\loch\f1  \hich\af1\dbch\af14\loch\f1 are loaded, and these records are present in the tables. Only relevant columns are shown for demonstration purpose.
+\par 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_task}{\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 :
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_task_id\cell 
+\hich\af1\dbch\af14\loch\f1 upload_id\cell \hich\af1\dbch\af14\loch\f1 screening_status_id\cell \hich\af1\dbch\af14\loch\f1 screener_id\cell \hich\af1\dbch\af14\loch\f1 start_timestamp\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\row }\pard\plain 
+\s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid13046296\charrsid5793054 
+\hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid13046296\charrsid5793054 \hich\af1\dbch\af13\loch\f1 51}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid13046296\charrsid5793054 \hich\af1\dbch\af13\loch\f1 6}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid11955885 \hich\af1\dbch\af13\loch\f1 2}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 81}{
+\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 2006-07-11 13:27:39}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow1\irowband1\lastrow 
+\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid3569570\charrsid5793054 
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 create_user\cell \hich\af1\dbch\af14\loch\f1 create_date\cell \hich\af1\dbch\af14\loch\f1 modify_user\cell \hich\af1\dbch\af14\loch\f1 modify_date\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_task_create_user_1}{\cf2\insrsid3569570\charrsid5793054 \cell }{
+\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 2006-07-11 13:45:59}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 
+screening_task_modify_user_1}{\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid13046296\charrsid5793054 \hich\af1\dbch\af14\loch\f1 2006-07-11 14:04:19}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell 
+}\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow1\irowband1\lastrow 
+\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid5793054 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_status_lu}{\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 :
+
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_status_id\cell 
+\hich\af1\dbch\af14\loch\f1 name\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 
+\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid926894\charrsid5793054 \hich\af1\dbch\af13\loch\f1 61}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid3569570\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 Pending\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 
+\trowd \irow1\irowband1\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid4327055 \hich\af1\dbch\af13\loch\f1 62}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid4327055\charrsid5793054 \cell }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid4327055 
+\hich\af1\dbch\af13\loch\f1 Screening}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid4327055\charrsid4327055 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid4327055\charrsid5793054 \trowd \irow2\irowband2\lastrow \ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\row }\pard\plain 
+\s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid5793054 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_result}{\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 :
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 screening_result_id\cell \hich\af1\dbch\af14\loch\f1 scre\hich\af1\dbch\af14\loch\f1 ening_task_id\cell \hich\af1\dbch\af14\loch\f1 screening_response_id\cell \hich\af1\dbch\af14\loch\f1 dynamic_response_text\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid2191787\charrsid5793054 \hich\af1\dbch\af14\loch\f1 111}{\cf2\insrsid3569570\charrsid5793054 \cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid2191787\charrsid5793054 \hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid2191787\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 101}{\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid1922385\charrsid5793054 \hich\af1\dbch\af14\loch\f1 dynamic_response_text1}{\cf2\insrsid3569570\charrsid5793054 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow1\irowband1\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid9272489\charrsid5793054 \hich\af1\dbch\af14\loch\f1 11}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 
+\hich\af1\dbch\af13\loch\f1 2\cell }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14237062\charrsid5793054 \hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{
+\cf2\insrsid3958021\charrsid5793054 \hich\af1\dbch\af14\loch\f1 10}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3958021\charrsid5793054 \hich\af1\dbch\af13\loch\f1 2}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{\cf2\insrsid14120187\charrsid5793054 \hich\af1\dbch\af14\loch\f1 dynamic_response_text}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14120187\charrsid5793054 
+\hich\af1\dbch\af13\loch\f1 2}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid9272489\charrsid5793054 \trowd \irow2\irowband2\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid9272489\charrsid5793054 \hich\af1\dbch\af14\loch\f1 11}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \hich\af1\dbch\af13\loch\f1 3\cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14237062\charrsid5793054 \hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{\cf2\insrsid3958021\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 10}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3958021\charrsid5793054 \hich\af1\dbch\af13\loch\f1 3}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{
+\cf2\insrsid14120187\charrsid5793054 \hich\af1\dbch\af14\loch\f1 dynamic_response_text}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14120187\charrsid5793054 \hich\af1\dbch\af13\loch\f1 3}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid9272489\charrsid5793054 \trowd \irow3\irowband3\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid9272489\charrsid5793054 \hich\af1\dbch\af14\loch\f1 11}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \hich\af1\dbch\af13\loch\f1 4\cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14237062\charrsid5793054 \hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{\cf2\insrsid3958021\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 10}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3958021\charrsid5793054 \hich\af1\dbch\af13\loch\f1 4}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{
+\cf2\insrsid14120187\charrsid5793054 \hich\af1\dbch\af14\loch\f1 dynamic_response_text}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14120187\charrsid5793054 \hich\af1\dbch\af13\loch\f1 4}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid9272489\charrsid5793054 \trowd \irow4\irowband4\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid9272489\charrsid5793054 \hich\af1\dbch\af14\loch\f1 11}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \hich\af1\dbch\af13\loch\f1 5\cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14237062\charrsid5793054 \hich\af1\dbch\af13\loch\f1 71}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{\cf2\insrsid3958021\charrsid5793054 
+\hich\af1\dbch\af14\loch\f1 10}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3958021\charrsid5793054 \hich\af1\dbch\af13\loch\f1 5}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }{
+\cf2\insrsid14120187\charrsid5793054 \hich\af1\dbch\af14\loch\f1 dynamic_response_text}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid14120187\charrsid5793054 \hich\af1\dbch\af13\loch\f1 5}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid9272489\charrsid5793054 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid9272489\charrsid5793054 \trowd \irow5\irowband5\lastrow \ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid3569570\charrsid5793054 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_response_lu}{\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 :
+
+\par }\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 screening_response_id\cell \hich\af1\dbch\af14\loch\f1 response_severity_id\cell 
+\hich\af1\dbch\af14\loch\f1 response_code\cell \hich\af1\dbch\af14\loch\f1 response_text\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid265350\charrsid5793054 \hich\af1\dbch\af14\loch\f1 101}{\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid265350\charrsid5793054 \hich\af1\dbch\af14\loch\f1 91}{\cf2\insrsid3569570\charrsid5793054 \cell }{
+\cf2\insrsid265350\charrsid5793054 \hich\af1\dbch\af14\loch\f1 response_code_1}{\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid265350\charrsid5793054 \hich\af1\dbch\af14\loch\f1 response_text1}{\cf2\insrsid3569570\charrsid5793054 \cell 
+}\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow1\irowband1\lastrow 
+\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid5793054 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 response_severity_lu}{\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 :
+
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid5793054 \hich\af1\dbch\af14\loch\f1 response_severity_id\cell 
+\hich\af1\dbch\af14\loch\f1 name\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 
+\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\insrsid1532059\charrsid5793054 \hich\af1\dbch\af14\loch\f1 91}{\cf2\insrsid3569570\charrsid5793054 \cell }{\cf2\insrsid1532059\charrsid5793054 \hich\af1\dbch\af14\loch\f1 response_severity_lu_name_1}{\cf2\insrsid3569570\charrsid5793054 \cell 
+}\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid5793054 \trowd \irow1\irowband1\lastrow 
+\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3934\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\insrsid3569570 
+\par {\listtext\pard\plain\s3 \i\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Initiating Screening Task
+\par }\pard\plain \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid592560 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2         \hich\af2\dbch\af13\loch\f2 // create the ScreeningManager instance with concrete namespace
+\par \hich\af2\dbch\af13\loch\f2         ScreeningManager manager = ScreeningManagerFactory
+\par }\pard \ql \fi-2500\li3940\ri0\nowidctlpar\faauto\rin0\lin3940\itap0\cufi-1250\culi600\pararsid592560 {\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2                 .}{
+\i\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2 createScreeningManager}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2 ("com.cronos.onlinereview.autoscreening.management");
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid592560 {\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 
+\par }\pard \ql \fi-1300\li1300\ri0\nowidctlpar\faauto\rin0\lin1300\itap0\cufi-650\pararsid4273985 {\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2 
+        // or you can create the Screen\hich\af2\dbch\af13\loch\f2 ingManager instance with default namespace
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid592560 {\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2         manager = ScreeningManagerFactory.}{
+\i\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2 createScreeningManager}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2 ();
+\par 
+\par \hich\af2\dbch\af13\loch\f2         // initiate screening task with upload
+\par }\pard\plain \s17\ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid592560 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid592560\charrsid4273985 \hich\af2\dbch\af13\loch\f2   manager.initiateScreening(100, "Operator");}{\cf2\insrsid3569570\charrsid4273985 
+\par }\pard \s17\ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid3569570 
+\par 
+\par }\pard \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 This will insert a row simila\hich\af1\dbch\af14\loch\f1 r to the following in the }{\b\insrsid3569570 
+\hich\af1\dbch\af14\loch\f1 screening_task}{\insrsid3569570 \hich\af1\dbch\af14\loch\f1  table:
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid592560 \hich\af1\dbch\af14\loch\f1 screening_task_id\cell 
+\hich\af1\dbch\af14\loch\f1 upload_id\cell \hich\af1\dbch\af14\loch\f1 screening_status_id\cell \hich\af1\dbch\af14\loch\f1 screener_id\cell \hich\af1\dbch\af14\loch\f1 start_timestamp\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid592560 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\row }\pard\plain 
+\s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\lang1033\langfe2052\loch\af13\hich\af13\dbch\af13\langfenp2052\insrsid6362280\charrsid592560 \hich\af13\dbch\af13\loch\f13 A unique id\cell }{\cf2\insrsid3569570\charrsid592560 \hich\af1\dbch\af14\loch\f1 100\cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid418783\charrsid592560 \hich\af1\dbch\af13\loch\f1 1}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid592560 \cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid15485601\charrsid592560 \hich\af1\dbch\af13\loch\f1 null}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid592560 \cell }{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid15485601\charrsid592560 \hich\af1\dbch\af13\loch\f1 null}{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid592560 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid592560 \trowd \irow1\irowband1\lastrow \ts11\trgaph28\trleft772
+\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx2345\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx3919
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1573\clshdrawnil \cellx5492\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx7066\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1574\clshdrawnil \cellx8640\row }\pard\plain 
+\s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid592560 
+\par }\trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\pard \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\b\cf2\insrsid3569570\charrsid592560 
+\hich\af1\dbch\af14\loch\f1 create_user\cell \hich\af1\dbch\af14\loch\f1 create_date\cell \hich\af1\dbch\af14\loch\f1 modify_user\cell \hich\af1\dbch\af14\loch\f1 modify_date\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid592560 \trowd \irow0\irowband0\ts11\trgaph28\trleft772\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row }\pard\plain \s17\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\cf2\insrsid3569570\charrsid592560 \hich\af1\dbch\af14\loch\f1 Operator\cell \hich\af1\dbch\af14\loch\f1 6/22/2006 09:00}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid592560 
+\par }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid1644660\charrsid592560 \hich\af1\dbch\af13\loch\f1 (current date)\cell }{\cf2\insrsid3569570\charrsid592560 \hich\af1\dbch\af14\loch\f1 Operator\cell \hich\af1\dbch\af14\loch\f1 6/22/2006 09:00}{
+\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid3569570\charrsid592560 
+\par }{\cf2\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid1644660\charrsid592560 \hich\af1\dbch\af13\loch\f1 (current date)\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\cf2\insrsid3569570\charrsid592560 \trowd \irow1\irowband1\lastrow \ts11\trgaph28\trleft772\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 
+\trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth1\trpaddl28\trpaddr28\trpaddfl3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx2739\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx4706\clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx6673\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth1967\clshdrawnil \cellx8640\row {\listtext\pard\plain\s3 \i\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.3.2\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 
+Querying Screening Tasks Without Details
+\par }\pard\plain \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0\culi300\pararsid4273985 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 // create the ScreeningManager instance with default namespace
+\par \hich\af2\dbch\af13\loch\f2         ScreeningManager manager = ScreeningManagerFactory.}{\i\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 createScreeningManager}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 ();
+\par \hich\af2\dbch\af13\loch\f2 // query screening tasks with\hich\af2\dbch\af13\loch\f2 out details
+\par \hich\af2\dbch\af13\loch\f2         ScreeningTask[] screeningTasks = manager.getScreeningTasks(}{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 new}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2  }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\hich\af2\dbch\af13\loch\f2 long}{\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 [] \{51\});
+\par \hich\af2\dbch\af13\loch\f2 // the screening task id should be 71
+\par \hich\af2\dbch\af13\loch\f2         }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 long}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2  taskid = screeningTasks[0].getId();
+\par \hich\af2\dbch\af13\loch\f2 // the upload id should be 51
+\par \hich\af2\dbch\af13\loch\f2         }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 long}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2  upload = screeningTasks[0].ge\hich\af2\dbch\af13\loch\f2 tUpload();
+\par \hich\af2\dbch\af13\loch\f2 // the screener id should be 81
+\par \hich\af2\dbch\af13\loch\f2         }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 long}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2  screener = screeningTasks[0].getScreener();
+\par \hich\af2\dbch\af13\loch\f2 // the start timestamp should be "2006-07-11 13:27:39"
+\par \hich\af2\dbch\af13\loch\f2         Date startTimestamp = screeningTasks[0].getStartTimestamp();
+\par \hich\af2\dbch\af13\loch\f2 // the cr\hich\af2\dbch\af13\loch\f2 eation user should be "screening_task_create_user_1"
+\par \hich\af2\dbch\af13\loch\f2         String creationUser = screeningTasks[0].getCreationUser();
+\par \hich\af2\dbch\af13\loch\f2 // the creation timestamp should be "2006-07-11 13:45:59"
+\par \hich\af2\dbch\af13\loch\f2         Date creationTimestamp = screeningTasks[0].getCreationTimestamp();
+\par \hich\af2\dbch\af13\loch\f2 // \hich\af2\dbch\af13\loch\f2 the modification user should be "screening_task_modify_user_1"
+\par \hich\af2\dbch\af13\loch\f2         String modificationUser = screeningTasks[0].getModificationUser();
+\par \hich\af2\dbch\af13\loch\f2 // the modification timestamp should be "2006-07-11 14:04:19"
+\par \hich\af2\dbch\af13\loch\f2         Date modificationTimestamp = screeningTasks[0].g\hich\af2\dbch\af13\loch\f2 etModificationTimestamp();
+\par \hich\af2\dbch\af13\loch\f2 // get the screening status of the screening task
+\par \hich\af2\dbch\af13\loch\f2         ScreeningStatus screeningStatus = screeningTasks[0].getScreeningStatus();
+\par \hich\af2\dbch\af13\loch\f2 // the screening status id should be }{\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4673605 \hich\af2\dbch\af13\loch\f2 62}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\par }{\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2         }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\hich\af2\dbch\af13\loch\f2 long}{\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2  statusid = screeningStatus.getId();
+\par \hich\af2\dbch\af13\loch\f2 // the screening status name should be "Pending"
+\par \hich\af2\dbch\af13\loch\f2         String name = screeningStatus.getName();
+\par \hich\af2\dbch\af13\loch\f2 // no results should be returned in this mode, should be an empty array
+\par \hich\af2\dbch\af13\loch\f2         ScreeningResult[] screeningResults = screeningTasks[0].getAllScreeningResults(\hich\af2\dbch\af13\loch\f2 );
+\par \hich\af2\dbch\af13\loch\f2 // query non-existent screening tasks without details,
+\par \hich\af2\dbch\af13\loch\f2 // the returned array should contain null element
+\par }\pard\plain \s17\ql \fi-540\li1980\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1980\itap0\culi600\pararsid4273985 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2   screeningTasks = manager.getScreeningTasks(}{
+\b\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 new}{\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\hich\af2\dbch\af13\loch\f2  }{\b\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 long}{
+\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 [] \{1000\}, }{\b\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\hich\af2\dbch\af13\loch\f2 true}{\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 \hich\af2\dbch\af13\loch\f2 );}{\lang1033\langfe2052\dbch\af13\langfenp2052\insrsid4273985\charrsid4273985 
+\par {\listtext\pard\plain\s3 \i\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 4.3.3\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af13\loch\f1 
+Querying Screening Task With Details
+\par }\pard\plain \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0\culi300\pararsid13046296 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2 // create the ScreeningManager ins\hich\af2\dbch\af13\loch\f2 tance with default namespace
+\par \hich\af2\dbch\af13\loch\f2         ScreeningManager manager = ScreeningManagerFactory.}{\i\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2 createScreeningManager}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2 ();
+\par \hich\af2\dbch\af13\loch\f2 // query screening task with details
+\par \hich\af2\dbch\af13\loch\f2         ScreeningTask screeningTask = manager.getScreeningDetails(51);
+\par \hich\af2\dbch\af13\loch\f2 // the screening results should be of length 5
+\par \hich\af2\dbch\af13\loch\f2         ScreeningResult[] screeningResults = screeningTask.getAllScreeningResults();
+\par \hich\af2\dbch\af13\loch\f2 // the screening result id should be 111
+\par \hich\af2\dbch\af13\loch\f2         }{\b\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2 long}{
+\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2  id = screeningResults[0].getId();
+\par \hich\af2\dbch\af13\loch\f2 // the dynamic text should be "dynam\hich\af2\dbch\af13\loch\f2 ic_response_text1"
+\par \hich\af2\dbch\af13\loch\f2         String text = screeningResults[0].getDynamicText();
+\par \hich\af2\dbch\af13\loch\f2 // get the screening response of screening result
+\par \hich\af2\dbch\af13\loch\f2         ScreeningResponse screeningResponse = screeningResults[0].getScreeningResponse();
+\par \hich\af2\dbch\af13\loch\f2 // the screening response id should b\hich\af2\dbch\af13\loch\f2 e 101
+\par \hich\af2\dbch\af13\loch\f2         id = screeningResponse.getId();
+\par \hich\af2\dbch\af13\loch\f2 // the response code should be "response_code_1"
+\par \hich\af2\dbch\af13\loch\f2         String code = screeningResponse.getResponseCode();
+\par \hich\af2\dbch\af13\loch\f2 // the response text should be "response_text1"
+\par \hich\af2\dbch\af13\loch\f2         text = screeningResponse.getResponseText();
+\par \hich\af2\dbch\af13\loch\f2 //\hich\af2\dbch\af13\loch\f2  get the response severity of screening response
+\par \hich\af2\dbch\af13\loch\f2         ResponseSeverity responseSeverity = screeningResponse.getResponseSeverity();
+\par \hich\af2\dbch\af13\loch\f2 // the response severity id should be 91
+\par \hich\af2\dbch\af13\loch\f2         id = responseSeverity.getId();
+\par \hich\af2\dbch\af13\loch\f2 // the response severity name should be "r\hich\af2\dbch\af13\loch\f2 esponse_severity_lu_name_1"
+\par }\pard \ql \fi-540\li1980\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1980\itap0\culi600\pararsid13046296 {\fs20\cf2\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\langfenp2052\insrsid13046296\charrsid13046296 \hich\af2\dbch\af13\loch\f2 
+        String name = responseSeverity.getName();}{\fs20\cf2\insrsid3569570\charrsid13046296 
+\par {\listtext\pard\plain\s1 \b\f1\fs20\lang1033\langfe1028\langfenp1028\insrsid3569570 \hich\af1\dbch\af13\loch\f1 5.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1028\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 \hich\af1\dbch\af13\loch\f1 Future Enhancements
+\par }\pard\plain \s17\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1028\loch\af1\hich\af1\dbch\af14\cgrid\langnp1033\langfenp1028 {\insrsid3569570 \hich\af1\dbch\af14\loch\f1 
+None anticipated in the future.
+\par }\pard \s17\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid3569570 
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1028\loch\af0\hich\af0\dbch\af14\cgrid\langnp1033\langfenp1028 {\fs20\insrsid3569570 
+\par }}
