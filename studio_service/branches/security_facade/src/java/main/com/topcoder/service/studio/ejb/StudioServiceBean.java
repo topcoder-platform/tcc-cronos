@@ -1646,6 +1646,10 @@ public class StudioServiceBean implements StudioService {
         }
 
         contestData.setStatusId(unbox(contest.getStatusId()));
+		//TCCC-1879
+		for (ContestRegistration contestRegistration : contest.getContestRegistrations()) {
+		    contestData.getContestRegistrations.add((ContestRegistration)(contestRegistration.clone()));
+		}
         contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
         if (contest.isLaunchImmediately() != null) {
             contestData.setLaunchImmediately(contest.isLaunchImmediately());

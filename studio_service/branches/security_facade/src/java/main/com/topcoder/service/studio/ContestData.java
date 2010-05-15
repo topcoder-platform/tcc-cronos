@@ -388,6 +388,12 @@ public class ContestData implements Serializable {
      * creation.
      */
     private boolean launchImmediately;
+	
+    /**
+     * Represents ContestRegistration list.
+	 * @since TCCC-1879
+     */
+    private Set<ContestRegistration> contestRegistrations = new HashSet<ContestRegistration>();	
 
     /**
      * <p>
@@ -1342,4 +1348,23 @@ public class ContestData implements Serializable {
     public void setNonWinningSubmissionsPurchased(boolean nonWinningSubmissionsPurchased) {
         this.nonWinningSubmissionsPurchased = nonWinningSubmissionsPurchased;
     }
+    /**
+     * Sets contestRegistrations.
+     *
+     * @param contestRegistrations the contestRegistrations to set.
+	 * @since TCCC-1879
+     */
+    public void setContestRegistrations(Set<ContestRegistration> contestRegistrations) {
+        this.contestRegistrations = contestRegistrations;
+    }
+
+    /**
+     * Returns contestRegistrations.
+     *
+     * @return the contestRegistrations.
+	 * @since TCCC-1879
+     */
+    public Set<ContestRegistration> getContestRegistrations() {
+        return contestRegistrations;
+    }	
 }
