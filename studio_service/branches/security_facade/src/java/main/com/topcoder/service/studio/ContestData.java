@@ -6,6 +6,8 @@ package com.topcoder.service.studio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -393,7 +395,7 @@ public class ContestData implements Serializable {
      * Represents ContestRegistration list.
 	 * @since TCCC-1879
      */
-    private Set<ContestRegistration> contestRegistrations = new HashSet<ContestRegistration>();	
+    private Set<ContestRegistrationData> contestRegistrations = new HashSet<ContestRegistrationData>();	
 
     /**
      * <p>
@@ -1354,7 +1356,7 @@ public class ContestData implements Serializable {
      * @param contestRegistrations the contestRegistrations to set.
 	 * @since TCCC-1879
      */
-    public void setContestRegistrations(Set<ContestRegistration> contestRegistrations) {
+    public void setContestRegistrations(Set<ContestRegistrationData> contestRegistrations) {
         this.contestRegistrations = contestRegistrations;
     }
 
@@ -1364,7 +1366,7 @@ public class ContestData implements Serializable {
      * @return the contestRegistrations.
 	 * @since TCCC-1879
      */
-    public Set<ContestRegistration> getContestRegistrations() {
+    public Set<ContestRegistrationData> getContestRegistrations() {
         return contestRegistrations;
     }	
 }
