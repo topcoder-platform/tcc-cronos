@@ -2138,12 +2138,14 @@ public class ProjectServicesImpl implements ProjectServices {
 
             long screenTemplateId = 0L;
             long reviewTemplateId = 0L;
+            long approvalTemplateId = 0L;
             long projectTypeId = projectHeader.getProjectCategory().getId();
 
             try
             {
                 screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
                 reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             }
             catch (Exception e)
             {
@@ -2151,6 +2153,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
                 screenTemplateId = projectManager.getScorecardId(6, 1);
                 reviewTemplateId = projectManager.getScorecardId(6, 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             }
 
             // Start BUGR-3616
@@ -2223,6 +2226,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
                     else if (p.getPhaseType().getName().equals("Approval"))
                     {
+                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
                        p.setAttribute("Reviewer Number", "1");
                     }
             }
