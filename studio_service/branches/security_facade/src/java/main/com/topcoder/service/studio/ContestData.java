@@ -57,7 +57,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
         "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
         "requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants",
         "payments", "tcDirectProjectName", "billingProject", "multiRound", "milestonePrizeData", "multiRoundData",
-        "generalInfo", "specifications", "nonWinningSubmissionsPurchased, contestRegistrations"})
+        "generalInfo", "specifications", "nonWinningSubmissionsPurchased", "contestRegistrations"})
 public class ContestData implements Serializable {
     /**
      * Default serial version id.
