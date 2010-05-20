@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     This mxml component renders the type.
+
+     Version 1.0.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Added support for milestone prizes.
+
+     @author pulky
+     @version 1.0.1
+     @since 1.0
+-->
+<mx:Label xmlns:mx="http://www.adobe.com/2006/mxml" styleName="middle" text="{setText(data)}"
+        fontWeight="bold" color="#797979">
+    <mx:Script>
+        <![CDATA[
+            private function setText(dat:Object):String {
+                if (dat.hasOwnProperty("add")) {
+                    return dat.add;
+                }
+                if (dat.hasOwnProperty("rank") && dat.rank != null && dat.rank > 0) {
+                    return "Prize Placement";
+                } else {
+                    if (dat.hasOwnProperty("awardMilestonePrize") && dat.awardMilestonePrize) {
+                       return "Milestone Prize";
+                    } else {
+                       return "Additional Purchase";
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+</mx:Label>

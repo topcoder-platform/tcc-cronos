@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	<mx:Label id="content" text="{data.name}" truncateToFit="true" width="{this.width * 0.95}"/>
+</mx:HBox>

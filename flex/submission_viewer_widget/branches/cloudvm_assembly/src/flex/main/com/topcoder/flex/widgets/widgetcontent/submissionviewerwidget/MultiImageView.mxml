@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for multi image gallery view of the submission viewer.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1913]
+     	- added support for vertical pagination of right side thumbnail.
+     	
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change Notes:
+        - Provides method to refresh images.
+
+     @author snow01
+     @since Submission Viewer Overhaul
+     @version 1.0.1
+-->
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         width="100%"
+         height="100%"
+         paddingTop="10"
+         paddingBottom="0"
+         paddingLeft="20"
+         paddingRight="12"
+         backgroundColor="#f7f7f7"
+         borderStyle="solid"
+         borderSides="bottom"
+         borderColor="#d6d6d6"
+         horizontalAlign="left"
+         creationComplete="init()">
+    <mx:Script>
+        <![CDATA[
+            import mx.collections.ArrayCollection;
+            import mx.events.ListEvent;
+	    import mx.core.Application; 
+        import com.topcoder.flex.Helper;
+
+            /**
+             * Reference to the gallery view model class.
+             */
+            [Bindable]
+            public var model:ThumbnailGalleryDataModel;
+            
+	    /**
+	     * Load the data upon initialization of this control
+	     * @since Cockpit Release Assembly 2
+	     */
+            private function init():void {
+                if (model && model.activeSubmissionId > 0) {
+                    this.data=model.activeSubmissionId;
+                }
+            }
+            
+	    /**
+	     * Current page index for pagination of the images.
+	     * @since Cockpit Release Assembly 2
+	     */
+            [Bindable]
+            private var _currentThumbPage:int=0;
+            
+	    /**
+	     * Gets the current page index for pagination of the images.
+	     *
+	     * @return the current page index for pagination of the images.
+	     * @since Cockpit Release Assembly 2
+	     */
+            [Bindable]
+            public function get currentThumbPage():int {
+                return this._currentThumbPage;
+            }
+            
+	    /**
+	     * Sets the current page index for pagination of the images.
+	     *
+	     * @param i the current page index for pagination of the images.
+	     * @since Cockpit Release Assembly 2
+	     */
+            public function set currentThumbPage(i:int):void {
+                this._currentThumbPage=i;
+                this.thumbnailImageList=new ArrayCollection(model.imageList.toArray().slice(this._currentThumbPage * 6, this._currentThumbPage * 6 + 6));
+            }
+            
+            /**
+             * Image list for the thumbnails.
+             *
+             * This list is a sublist of size of the image list available in model.imageList.
+             * This is to support pagination of thumbnails.
+             *
+             * @since Cockpit Release Assembly 2
+             */
+            [Bindable]
+            private var _thumbnailImageList:ArrayCollection=null;
+            
+	    /**
+	     * Get the image list for the thumbnails
+	     *
+	     * @return the image list for the thumbnails.
+	     * @since Cockpit Release Assembly 2
+	     */
+            [Bindable]
+            public function get thumbnailImageList():ArrayCollection {
+                return this._thumbnailImageList;
+            }
+            
+	    /**
+	     * Set the image list for the thumbnails
+	     *
+	     * @param l the image list for the thumbnails.
+	     * @since Cockpit Release Assembly 2
+	     */
+            public function set thumbnailImageList(l:ArrayCollection):void {
+                this._thumbnailImageList=l;
+            }
+            
+            /**
+             * Handler for thumb up/down.
+             */
+            private function updateUpDown(up:Boolean):void {
+                if (!model.isRankMode || model.isPermissionReadOnly()) {
+                    return;
+                }
+                
+                data.upDown=(up) ? "up" : "down";
+                if (up)
+                {
+                    downData.selected=false;
+                    upData.selected=true;
+                } else
+                {
+                    upData.selected=false;
+                    downData.selected=true;
+                }
+            }
+
+            /**
+             * Handler for showing/hiding the footer.
+             */
+            private function showHideFooter():void {
+                model.showFooter=!model.showFooter;
+                if (model.showFooter)
+                {
+                    btn.styleName="showHideBtnOpen2";
+                } else
+                {
+                    btn.styleName="showHideBtnClose2";
+                }
+            }
+
+            /**
+             * Overrides the data method, so that caller can the properties on it.
+             *
+             * <p>
+             * Changed for Cockpit Submission Viewer Widget Enhancement Part 1:
+             *    Data is set for the given submission-id rather than submission-index.
+             * </p>
+	     *
+	     * <p>
+	     * Updated for Cockpit Release Assembly 2
+	     *		- have the page size as 6 only.
+	     * </p>
+             *
+             * @param value value from the caller.
+             */
+            override public function set data(value:Object):void {
+                if ((value as int) != -1) {
+                    super.data=null;
+                    super.data=model.getSubmission((value as int));                    
+                     thumbnailImageList=new ArrayCollection(super.data.fullsizepreviewList.toArray().slice(0, 6));
+                     if (thumbnailImageList.length > 0) {
+                         model.selectedImage=thumbnailImageList.getItemAt(0) as String;
+                     } else {
+                         model.selectedImage="";
+                     }
+
+                    trace("--------------- MultiImageView:: Setting data to:" + super.data.id + ", -----> " + thumbnailImageList.length);
+                } else {
+                    trace("--------------- MultiImageView:: Setting data to null.");
+                }
+            }
+            
+            /**
+             * Refreshes the images.
+             * 
+             * @since 1.0.1
+             */ 
+            public function refreshImages():void {
+                trace("MultiImageView:: refreshImages -----------> " + model.imageList);
+                thumbnailImageList=new ArrayCollection(model.imageList.toArray().slice(0, 6));
+            }
+
+            /**
+             * Handler for image change.
+             */
+            public function handleChange(event:ListEvent):void {
+                var item:String=list.selectedItem as String;
+                model.selectedImage=item;
+            }
+
+            /**
+             * It adjusts image height & width as per the view and maintains the aspect ratio.
+             */
+            private function adjustImage():void {
+                if (thumbnail.content) {
+                    var h:Number=thumbnail.contentHeight;
+                    var w:Number=thumbnail.contentWidth;
+                    thumbnail.scaleContent=false;
+                    if (635 / w * h > 635) {
+                        // Height is larger:
+                        thumbnail.content.height=635;
+                        thumbnail.content.width=635 / h * w;
+                    } else {
+                        thumbnail.content.width=635;
+                        thumbnail.content.height=635 / w * h;
+                    }
+                    thumbnail.width=thumbnail.content.width;
+                    thumbnail.height=thumbnail.content.height;
+                }
+            }
+
+            /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens the submission in air viewer or external browser window.
+             * Submission gets opened in air viewer if submission has submissionUrl
+             * else it gets opened in external browser window.
+             *
+             * @param event mouse event.
+             *
+             * @since Cockpit Submission Viewer Widget Enhancement Part 1.
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                if (data.hasOwnProperty("submissionUrl") && data.submissionUrl != "") {
+                    //this.model.subViewer.airViewer.openSubmission(data.submissionUrl, data.id);
+                } else {
+                    // Open the link in a new window.
+                    navigateToURL(new URLRequest(model.selectedImage), '_blank');
+                }
+            }
+
+	    private function downloadLinkHandler():void {
+		// Open the link in a new window.
+		navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + data.id), '_blank');
+	   }
+        ]]>
+    </mx:Script>
+
+    <mx:Binding source="model.activeSubmissionId"
+                destination="data"/>
+    <mx:DefaultTileListEffect id="myDTLE"
+                              fadeInDuration="10"
+                              fadeOutDuration="10"
+                              moveDuration="200"
+                              color="0xffffff"/>
+    <mx:VBox width="100%"
+             height="100%">
+        <mx:VBox width="100%"
+                 height="100%"
+                 verticalAlign="middle">
+            <mx:Box width="100%"
+                    horizontalAlign="center">
+                <tc:TCImage id="thumbnail"
+                            width="100%"
+                            height="100%"
+                            source="{model.selectedImage}"
+                            complete="adjustImage()"
+			    doubleClick="handleDoubleClick(event)"
+                            doubleClickEnabled="true"
+                            autoLoad="true"/>
+            </mx:Box>
+            <mx:HBox width="100%"
+                     horizontalAlign="center">
+                <mx:Label text="{data.id}"
+                          styleName="normalText"/>
+                <mx:Button id="upData"
+                           styleName="{model.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
+                           click="updateUpDown(true)"
+                           selected="{data.upDown == 'up'}"
+                           toolTip="Feel Good"/>
+                <mx:Button id="downData"
+                           styleName="{model.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
+                           click="updateUpDown(false)"
+                           selected="{data.upDown == 'down'}"
+                           toolTip="Not Interested"/>
+            </mx:HBox>
+            <mx:HBox width="100%"
+                     horizontalAlign="center"
+                     visible="{model.showDownloadFullPreview}"
+                     includeInLayout="{model.showDownloadFullPreview}">
+                <!-- BUGR-1664 -->
+                <mx:LinkButton label="Download Full Preview"
+                               click="{downloadLinkHandler()}"/>
+            </mx:HBox>
+
+        </mx:VBox>
+        <mx:Button id="btn"
+                   styleName="showHideBtnOpen2"
+                   includeInLayout="true"
+                   click="showHideFooter()"/>
+    </mx:VBox>
+
+    <mx:VBox horizontalAlign="center"
+             width="100">
+        <mx:Button id="prev"
+                   styleName="up"
+                   visible="{currentThumbPage > 0}"
+                   includeInLayout="{prev.visible}"
+                   click="{currentThumbPage--}"/>
+        <mx:TileList id="list"
+                     selectionColor="#f7f7f7"
+                     rollOverColor="#f7f7f7"
+                     backgroundAlpha="0"
+                     columnCount="1"
+                     columnWidth="75"
+                     rowHeight="75"
+                     selectionDuration="0"
+                     itemsChangeEffect="{myDTLE}"
+                     dataProvider="{thumbnailImageList}"
+                     itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.renderer.ImageRenderer"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     maxRows="6"
+                     borderStyle="none"
+                     allowMultipleSelection="false"
+                     allowDragSelection="true"
+                     selectable="true"
+                     change="handleChange(event)"
+                     rowCount="6"/>
+        <mx:Button id="next"
+                   styleName="down"
+                   visible="{model.imageList.length - currentThumbPage * 6 - 6 > 0}"
+                   includeInLayout="{next.visible}"
+                   click="{currentThumbPage++}"/>
+    </mx:VBox>
+</mx:HBox>

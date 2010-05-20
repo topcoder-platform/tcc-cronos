@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This is item renderer for multiple images of the multi image viewer..
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml">
+    <mx:Script>
+        <![CDATA[
+            /**
+             * Overrides the data method, so that caller can the properties on it.
+             *
+             * @param value value from the caller.
+             */
+            override public function set data(value:Object):void {
+                if (img) {
+                    img.source=value as String;
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Image width="100%"
+              height="100%"
+              id="img"/>
+</mx:Box>
