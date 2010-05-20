@@ -69,7 +69,7 @@ public class DBComponentManagerAccTests extends BaseTestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void testAddComponents() throws Exception {
+    public void ttestAddComponents() throws Exception {
         instance.addComponents(BaseTestCase.ACCURACY + "addComponents.xls");
 
         Component component = instance.retrieveComponent("Junit", "3.8.2");

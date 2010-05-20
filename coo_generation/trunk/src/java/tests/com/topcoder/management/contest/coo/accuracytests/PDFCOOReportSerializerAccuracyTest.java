@@ -227,8 +227,8 @@ public class PDFCOOReportSerializerAccuracyTest extends TestCase {
         COOReport report = TestHelper.getCOOReport(1);
         report.getContestData().setDevelopmentProjectId("67890");
         instance.serializeCOOReportToFile(report, output);
-        //the postfix should be changed to rtf
-        String expectFilePath = "test_files/accuracy/test_serializeCOOReportToFile_custon_outputFile.rtf";
+        //the postfix should be changed to pdf, the generation of configured option only works for the ctor
+        String expectFilePath = "test_files/accuracy/test_serializeCOOReportToFile_custon_outputFile.pdf";
         assertTrue("The file should exist.", new File(expectFilePath).isFile());
         if (deleteOutput) {
             new File(expectFilePath).delete();

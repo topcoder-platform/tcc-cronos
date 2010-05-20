@@ -8,17 +8,18 @@ import com.topcoder.configuration.defaults.DefaultConfigurationObject;
 import com.topcoder.management.contest.coo.impl.DefaultCOOReportGenerator;
 import com.topcoder.management.contest.coo.serializer.XMLCOOReportSerializer;
 
-
 /**
- * <p>Accuracy test case for {@link XMLCOOReportSerializer} class.</p>
- *
+ * <p>
+ * Accuracy test case for {@link XMLCOOReportSerializer} class.
+ * </p>
+ * 
  * @author myxgyy
  * @version 1.0
  */
 public class XMLCOOReportSerializerAccTests extends BaseTestCase {
     /** Result file. */
     private static final String OUTPUT_FILE = BaseTestCase.ACCURACY
-        + "output.xml";
+            + "output.xml";
 
     /** Target. */
     private XMLCOOReportSerializer instance;
@@ -27,37 +28,56 @@ public class XMLCOOReportSerializerAccTests extends BaseTestCase {
     private DefaultCOOReportGenerator generator;
 
     /**
-     * <p>set up test environment.</p>
-     *
-     * @throws Exception to JUNIT.
+     * <p>
+     * set up test environment.
+     * </p>
+     * 
+     * @throws Exception
+     *             to JUNIT.
      */
     protected void setUp() throws Exception {
         super.setUp();
-
+        ConfigurationObject kk = new DefaultConfigurationObject("default");
         ConfigurationObject config = new DefaultConfigurationObject("default");
-        config.setPropertyValue("templateFilename", BaseTestCase.ACCURACY + "template.xml");
+        config.setPropertyValue("templateFilename", BaseTestCase.ACCURACY
+                + "template.xml");
+        kk.addChild(config);
+
+        // ConfigurationObject config = new
+        // DefaultConfigurationObject("default");
+        // config.setPropertyValue("templateFilename", BaseTestCase.ACCURACY +
+        // "template.xml");
         generator = new DefaultCOOReportGenerator(BaseTestCase
                 .getConfigurationObject(BaseTestCase.ACCURACY + "Config.xml"));
-        instance = new XMLCOOReportSerializer(config);
+        instance = new XMLCOOReportSerializer(kk);
     }
 
     /**
-     * <p>tear down test environment.</p>
-     *
-     * @throws Exception to JUnit.
+     * <p>
+     * tear down test environment.
+     * </p>
+     * 
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
     /**
-     * <p>Accuracy test case for
-     * <code>serializeCOOReportToByteArray()</code> method.</p>
-     *  <p>Check the result by eye.</p>
-     *
-     * @throws Exception to JUNIT.
+     * <p>
+     * Accuracy test case for <code>serializeCOOReportToByteArray()</code>
+     * method.
+     * </p>
+     * <p>
+     * Check the result by eye.
+     * </p>
+     * 
+     * @throws Exception
+     *             to JUNIT.
      */
     public void testSerializeCOOReport() throws Exception {
-        instance.serializeCOOReportToFile(generator.generateCOOReport(13), OUTPUT_FILE);
+        instance.serializeCOOReportToFile(generator.generateCOOReport(1L),
+                OUTPUT_FILE);
     }
 }
