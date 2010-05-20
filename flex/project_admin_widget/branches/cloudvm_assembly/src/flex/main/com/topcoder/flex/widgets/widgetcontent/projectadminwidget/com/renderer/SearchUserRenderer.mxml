@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for search results.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         creationComplete="init()"
+         paddingTop="5"
+         paddingBottom="5"
+         paddingLeft="5"
+         paddingRight="5"
+         mouseOver="handleMouseOver()"
+         mouseOut="handleMouseOut()"
+         backgroundColor="#ffffff"
+         width="100%"
+         click="handleClick()"
+         minHeight="20"
+         styleName="researchBox">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Project;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.User;
+
+            /**
+             * User data for current search result of the user.
+             */
+            [Bindable]
+            private var userData:User;
+
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Mouse over handler to set the underline effects on name.
+             */
+            private function handleMouseOver():void {
+                this.setStyle("backgroundColor", 0xe6e6e6);
+                nameLabel.setStyle("textDecoration", "underline");
+            }
+
+            /**
+             * Mouse out handler to un-set the underline effects on name.
+             */
+            private function handleMouseOut():void {
+                this.setStyle("backgroundColor", 0xffffff);
+                nameLabel.setStyle("textDecoration", "none");
+            }
+
+            /**
+             * Handle click on the user result.
+             */
+            private function handleClick():void {
+                if (userData) {
+                    parentWidget.model.currentUser=userData;
+                    parentWidget.model.selectedIndex=2;
+                    parentWidget.model.refresh=!parentWidget.model.refresh;
+                }
+            }
+
+            /**
+             * Handler for initializing this component.
+             */
+            private function init():void {
+                if (userData) {
+                    proj.htmlText=getContent(userData);
+                }
+            }
+
+            /**
+             * Sets the user data for this component.
+             *
+             * @param value the user data value.
+             */
+            override public function set data(value:Object):void {
+                if (value is User) {
+                    userData=value as User;
+                }
+                super.data=value;
+            }
+
+            /**
+             * Gets the content text for this user.
+             *
+             * @param user user for which to get the content.
+             */
+            private function getContent(user:User):String {
+                if (user) {
+                    var result:String="";
+                    if (user.projects.length > 1) {
+                        result="<b>Active Projects: </b>";
+                    } else {
+                        result="<b>Active Project: </b>";
+                    }
+                    var re:Array=[];
+                    for each (var pro:Project in user.projects) {
+                        re.push(pro.name);
+                    }
+                    return result + re.join(" | ");
+                }
+                return "";
+            }
+
+            /**
+             * Set / unset the highlight of search terms.
+             *
+             * @param value true if highlight, else false.
+             */
+            public function set setHighLight(value:Boolean):void {
+                if (initialized && userData && userData.name) {
+                    if (value) {
+                        var reg:RegExp=new RegExp(parentWidget.model.keyWords, "ig");
+                        nameLabel.htmlText=userData.name.replace(reg, "<font color=\"#ff0000\">$&</font>");
+                    } else {
+                        nameLabel.htmlText=userData.name;
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="parentWidget.model.highLight"
+                destination="setHighLight"/>
+    <mx:Label width="100%"
+              id="nameLabel"
+              styleName="headerText"
+              text="{userData.name}"
+              textAlign="left"
+              selectable="false"
+              useHandCursor="true"
+              buttonMode="true"
+              mouseChildren="false"/>
+    <mx:Text width="100%"
+             minWidth="30"
+             id="proj"
+             htmlText="{getContent(userData)}"
+             fontWeight="normal"
+             styleName="normalText"
+             textAlign="left"
+             selectable="false"/>
+</mx:VBox>
