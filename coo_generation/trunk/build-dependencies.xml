@@ -95,9 +95,9 @@
 
 	<path id="component.3rdParty-dependencies">
         <fileset dir="${openoffice.dir}">
-            <include name="**/unoil.jar"/>
+            <include name="program/classes/unoil.jar"/>
           <!--   <include name="**/officebean.jar"/>-->
-         <include name="**/juh.jar"/>
+         <include name="program/classes/juh.jar"/>
         </fileset>
 	</path>
 
