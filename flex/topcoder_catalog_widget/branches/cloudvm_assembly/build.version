@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=TopCoder Catalog Widget
+component.distfilename=topcoder_catalog_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.topcodercatalog
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/topcodercatalog
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
