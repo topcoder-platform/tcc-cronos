@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+<!--
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Added new section "Invoice Me".
+        - Whether contest is invoiced or not is correctly set.
+       
+    Version 1.0.2 (Cockpit Release Assembly 7 v1.0) Change Notes:
+        - Gets manualPrizeSetting for ClientProject.
+
+     Version 1.0.3 (Cockpit Release Assembly 11 v1.0) Change Notes:
+        - Select design contest for development contest
+    
+    Version 1.0.4 (Cockpit Contest Eligibility) Change Notes:
+        - Handle creating private contest.
+    
+	@author TCSASSEMBLER
+    @version 1.0.4
+    @since 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+xmlns:hc="com.hillelcoren.components.*"	
+           width="100%"
+           height="100%"
+           horizontalScrollPolicy="off"
+           verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidgetCodeBehind;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.catalog.SoftwareCategory;
+            import com.topcoder.flex.util.date.DateUtil;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectSpec;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectCategory;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResourceRole;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.resource.SoftwareResource;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.project.SoftwareProjectHeader;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareAssetDTO;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.software.SoftwareCompetition;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DesignComponents;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import mx.events.ItemClickEvent;
+
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import mx.collections.IList;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.WebService;
+            import mx.collections.ArrayCollection;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import mx.utils.ObjectUtil;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.AbstractOperation;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501	
+            import mx.controls.Alert;
+            import flash.events.Event;
+            import com.topcoder.flex.Helper;
+            
+            import flash.geom.Point;
+            
+            private static const ETtoUTC:int=1000 * 60 * 60 * 5;
+            
+        private static const OneHour:Number=1000 * 60 * 60;
+        //All design components with id
+        private var designComponentsWithID:ArrayCollection;
+        //All design components(only text)
+        [Bindable]
+        public var designComponents:ArrayCollection = new ArrayCollection();
+        
+            
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection=new ArrayCollection([{label: "Please select an existing project", data: -1, desc: ""}]);
+
+            [Bindable]
+            private var projectArray:ArrayCollection=new ArrayCollection([{label: "Please select an existing project", data: -1, desc: ""}]);
+            
+            [Bindable]
+            private var contestTypes:ArrayCollection=new ArrayCollection([{label: "Please select a contest type", data: null, desc: ""}, {label: "Studio", data: "STUDIO", desc: ""}, {label: "Software Conceptualization", data: "CONCEPTUALIZATION", desc: ""}, {label: "Software Specification", data: "SPECIFICATION", desc: ""}, {label: "Architecture", data: "ARCHITECTURE", desc: ""}, {label: "Component Design", data: "DESIGN", desc: ""}, {label: "Component Development", data: "DEVELOPMENT", desc: ""}, {label: "RIA Component", data: "RIACOMPONENT", desc: ""}, {label: "RIA Build", data: "RIABUILD", desc: ""}, {label: "UI Prototype", data: "UIPROTOTYPE", desc: ""}, {label: "Software Assembly", data: "ASSEMBLY", desc: ""}, {label: "Test Suites", data: "TESTSUITES", desc: ""}, {label: "Test Scenarios", data: "TESTSCENARIOS", desc: ""},]);
+            
+            [Bindable]
+            private var studioContestSubTypes:ArrayCollection=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
+            
+            [Bindable]
+            private var _rangeStartDate:Date;
+            
+            private var _currentHelpPopup:String;
+
+    	//The selected design component
+        //@since 1.2
+        private var correspondingDesignComponent:SoftwareCompetition = null;
+
+        //Handler for select check box dev only
+        private function handleDevOnly():void {
+            contestNameInput.text = "";
+            autoComplete.selectedItem = null;
+            if (selectDevOnly.selected) {
+                autoComplete.percentWidth = 0;
+                contestNameInput.percentWidth = 100;
+            } else {
+                autoComplete.width = 250;
+                contestNameInput.width = 0;
+            }
+        }
+
+	        private function handleSelectContestType(event:Event):void {
+                if (!event) {
+                    return;
+                }
+                
+                var competionType:String="";
+                correspondingDesignComponent = null;
+                
+                if (selectContestTypes.selectedItem.data) {
+                    competionType=selectContestTypes.selectedItem.data;
+                } else {
+                    return;
+        }
+
+        //since 1.2
+        if (competionType == "DEVELOPMENT") {
+            selectDevOnly.visible = true;
+            lblDevOnly.visible = true;
+            autoComplete.width = 250;
+            autoComplete.visible = true;
+            contestNameInput.width = 0;
+        } else {
+            selectDevOnly.visible = false;
+            lblDevOnly.visible = false;
+            autoComplete.width = 0;
+            autoComplete.visible = false;
+            contestNameInput.percentWidth = 100;
+        }
+
+                
+                if (mainWidget.isEditMode && (mainWidget.studioContestType != (competionType == "STUDIO"))) {
+                    Helper.showAlertMessage("Can not change contest type from Studio to Software, and vice versa");
+                    selectContestType(mainWidget.competitionType);
+                    return;
+                }
+                
+                if (mainWidget && mainWidget.competitionType) {
+                    mainWidget.competitionType=competionType;
+                }
+                
+                // BUGR-1067
+                mainWidget.studioContestType=(competionType == "STUDIO");
+                if (mainWidget.studioContestType) {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
+                    
+                    if (studioContestSubTypes.length <= 1) {
+                        // get the data here.
+                        requestContestTypes.send();
+                    } else {
+                        trace("Un setting sub type to 0");
+                        selectContestSubTypes.selectedIndex=0;
+                    }
+                } else {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=false;
+                }
+                
+                dfStart.selectedDate=null;
+
+                // for studio - it will happen in sub type selection
+                if (!mainWidget.studioContestType) {
+                    // recalculate start date forbidden dates
+                    var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(contestType, false);
+                }
+            }
+            
+            private function handleSelectContestSubType(event:Event):void {
+                if (!event) {
+                    return;
+                }
+                correspondingDesignComponent = null;
+                mainWidget.studioContestSubTypeId=selectContestSubTypes.selectedItem.data;
+                mainWidget.studioContestSubTypeLabel=selectContestSubTypes.selectedItem.label;
+                
+                dfStart.selectedDate=null;        
+
+                // recalculate start date forbidden dates
+                var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                getCapacityFullDatesOp.send(mainWidget.studioContestSubTypeId, true);
+            }
+            
+            
+            // TCCC-1023
+            public function init():void {
+                var hourData:Array=new Array();
+                for (var i:Number=0; i <= 23; i++) {
+                    var o:Object=new Object();
+                    o.label=i.toString();
+                    o.data=i;
+                    hourData.push(o);
+                }
+                var minuteData:Array=new Array();
+                for (i=0; i <= 45; i+=15) {
+                    var o1:Object=new Object();
+                    if (i < 10)
+                        o1.label='0' + i.toString();
+                    else
+                        o1.label=i.toString();
+                    o1.data=i;
+                    minuteData.push(o1);
+                }
+                
+                CmbHourStart.dataProvider=hourData;
+                CmbMinuteStart.dataProvider=minuteData;
+                
+                mainWidget.showLoadingProgress();
+                
+                var getAllProjectsOp:AbstractOperation=mainWidget._pws.getOperation("getAllProjects");
+                getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+                getAllProjectsOp.send();
+                //Get all design components
+                var getDesignComponentsOp:AbstractOperation=mainWidget._csws.getOperation("getDesignComponents");
+                getDesignComponentsOp.addEventListener("result", getDesignComponentsHandler);
+                getDesignComponentsOp.send();
+
+                
+                getClientProjectsByUser();
+                
+                selectProjects.dataProvider=projectArray;
+                
+                // default to studio
+                if (mainWidget) {
+                    mainWidget.competitionType="STUDIO";
+                    
+                    mainWidget.studioContestType=true;
+
+                        if (mainWidget.competition) {
+                            mainWidget.competition.type="STUDIO";
+                        }
+                    } 
+                }
+            //Handler for all design components
+            //Since 1.2
+            private function getDesignComponentsHandler(e:ResultEvent):void {
+                if (e && e.result) {
+                     if (e.result is ArrayCollection)
+                        designComponentsWithID=ObjectTranslatorUtils.translateCollection(e.result, DesignComponents);
+                    else {
+                        designComponentsWithID = new ArrayCollection();
+                        designComponentsWithID.addItem(e.result);
+                    }
+                    designComponents = new  ArrayCollection();
+                    for (var i:int = 0; i < designComponentsWithID.length; i++) {
+                        designComponents.addItem(designComponentsWithID[i].text);
+                    }
+                }
+            }
+
+
+            // TCCC-1023
+            private function getAllProjectsHandler(e:ResultEvent):void{
+                mainWidget.hideLoadingProgress();
+                
+                if(e && e.result){
+                    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
+                    if(!projects.sort) {
+                        var sort:Sort = new Sort();   
+                        sort.compareFunction = compareName;
+                        projects.sort = sort;
+                    }
+                    
+                    projects.refresh();
+                    
+                    for each (var prj:ProjectData in projects) {
+                        projectArray.addItem({label: prj.name, data: prj.projectId, desc: prj.description});
+                    }
+
+                    if (mainWidget && mainWidget.tcDirectProjectId)
+                    {   
+                        selectTCProject(mainWidget.tcDirectProjectId);
+
+                    }
+                }
+            }
+
+        /**
+         * Gets the client billing project from web service.
+         * 
+         * Updated for Version 1.0.1
+         *    - the default label is "Select a Billing Account"
+         */ 
+	    private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="Select a Billing Account";
+			    item.data=null;
+			    mainWidget.clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+				getClientProjectsByUserOp.send();
+				
+				mainWidget.showLoadingProgress();
+			    }
+	    }
+			
+    	    /**
+    	     * Handles the load of client billing project from backend web-service.
+    	     * 
+    	     * Updated for Version 1.0.1
+    	     *    - the client projects are assigned to Billing Project combo box in ContestSelection page rather than activate page.
+    	     * 
+    	     * Updated for Version 1.0.2
+    	     *    - gets manualPrizeSetting for the ClientProject.
+    	     * 
+    	     * @param e the webservice result event.
+    	     */ 
+	        private function getClientProjectsHandler(e:ResultEvent):void {			    
+			    mainWidget.hideLoadingProgress();
+			    
+            	if(!e || !e.result) {
+            		return;
+            	}
+        	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+        	    trace("getClientProjectsHandler:: projects: " + projects);
+        	    
+        	    if (projects && projects.length > 0) {
+        	        for (var i:int = 0; i < projects.length; i++) {
+        	            var project:ClientProject = projects[i] as ClientProject;        	            
+        	            trace("Adding client project name: " + project.name + ", manualPrizeSetting :" + project.manualPrizeSetting);
+        	            // add client project name
+            	        var item:Object = new Object();
+			            item.label= project.name;
+			            item.data = new Object();
+			            item.data.poNumber = project.pOBoxNumber;
+			            item.data.projectName = project.name;
+			            item.data.projectId = project.id;
+			            item.data.clientId = project.client.id;
+			            item.data.clientName = project.client.name;
+			            item.data.manualPrizeSetting = project.manualPrizeSetting;
+            	        mainWidget.clientProjectNames.addItem(item);
+        	        }
+        	    }
+        	    
+        	    if (mainWidget.studioContestType && mainWidget.competition) {
+        	        selectBillingProject(mainWidget.competition.contestData.billingProject);
+        	    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
+        	        var billingAccount:String=SoftwareCompetitionUtils.instance().getBillingProjectProp(mainWidget.softwareCompetition);
+        	        if (billingAccount) {
+        	            selectBillingProject(new Number(billingAccount));
+        	        }
+        	    }
+	        }
+            
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
+            }
+
+            
+            //
+            // Updated so that it refers to mainWidget.competitionType variable rather than mainWidget.competition.type.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            public function initData():void {
+                if (mainWidget && selectContestTypes != null && mainWidget.competitionType != null) {
+                    selectContestType(mainWidget.competitionType)    
+                }
+                
+                if (selectProjects.dataProvider) {
+                    selectTCProject(mainWidget.tcDirectProjectId);
+                }
+                
+                var startDate:Date=null;
+                var startTime:Object=null;
+                
+                if (mainWidget.competition) {
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=true;
+                    
+                    // set contest name.
+                    // set start date.
+                    contestNameInput.text=this.mainWidget.competition.contestData.name;
+                    mainWidget.studioContestType = true;
+                    
+                    if (studioContestSubTypes.length <= 1) {
+                        // get the data here.
+                        requestContestTypes.send();
+                    } else {
+                        // default select as zero.
+                        if (mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
+                            mainWidget.studioContestSubTypeId=mainWidget.competition.contestData.contestTypeId;
+                            
+                            var i:int=0;
+                            for each (var item:Object in studioContestSubTypes) {
+                                if (item.data == mainWidget.studioContestSubTypeId) {
+                                    trace("Setting studio sub type to: " + i);
+                                    selectContestSubTypes.selectedItem=item;
+                                    selectContestSubTypes.selectedIndex=i;
+                                    break;
+                                } 
+                                
+                                i++;
+                            }
+                        }
+                        
+                        mainWidget.studioContestSubTypeLabel = selectContestSubTypes.selectedItem.label;
+                    }
+                    
+                    startTime=mainWidget.competition.startTime;
+                } else if (mainWidget.softwareCompetition) {
+                    // set contest name.
+                    // set start date.
+                    contestNameInput.text=this.mainWidget.softwareCompetition.assetDTO.name;
+                    mainWidget.studioContestType = false;
+                    
+                    startTime=mainWidget.softwareCompetition.assetDTO.productionDate;
+                    
+                    selectContestSubTypes.visible=selectContestSubTypes.includeInLayout=false;
+                }
+                
+                var dataStrArr:Array=null;
+                var timeStrArray:Array=null;
+                var timeStr:String=null;
+                
+                if (startTime != null) {
+                    var startDateStr:String=startTime as String;
+                    
+                    if (startDateStr != null) {
+                        startDate=DateUtil.parseFromString(startDateStr);
+                        dataStrArr=startDateStr.split("T");
+                        timeStrArray=dataStrArr[1].split(".");
+                        timeStr=timeStrArray[1];
+                        if (timeStr) {
+                            timezoneStart.text="ET (GMT" + timeStr.substr(3, 3) + timeStr.substr(7, 2) + ")";
+                        }
+                    }
+                }
+                
+                dfStart.selectedDate=startDate;
+                setTimeControl(CmbHourStart, CmbMinuteStart, startDate);
+                
+                // in edit mode, set terms & agreement.
+                if (mainWidget.isEditMode) {
+                    termCheckBox.selected=true;
+                }
+                
+                // we also init overview to have default prizes.
+                //mainWidget.overView.initData();
+		
+		        if (!mainWidget._psws) {
+		            return;
+		        }
+		        
+    		    if (mainWidget.studioContestType && mainWidget.competition && mainWidget.competition.contestData) {
+    		        // recalculate start date forbidden dates
+        	        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+        	        getCapacityFullDatesOp.send(mainWidget.competition.contestData.contestTypeId, true);
+    		    } else if (!mainWidget.studioContestType && mainWidget.softwareCompetition) {
+        		    // recalculate start date forbidden dates
+        	        var currentContestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(mainWidget.competitionType);
+        	        var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+        	        getCapacityFullDatesOp.send(currentContestType, false);
+        	    }
+            }
+            
+            public function validateFields():Boolean {
+                return validateFieldsEx2(true, false);
+            }
+            
+            public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+                if (!selectContestTypes.selectedItem || !selectContestTypes.selectedItem.data) {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please select a Contest Type" + (showPageName ? " at Create Contest Page" : ""));
+                    }
+                    return false;
+                }
+                
+                if (selectContestSubTypes.visible 
+                        && selectContestSubTypes.includeInLayout 
+                        && (selectContestSubTypes.selectedItem == null || selectContestSubTypes.selectedItem.data == null)) {
+                    Helper.showAlertMessage("Contest sub type not selected");
+                    return false;
+                }
+                
+                if (!contestNameInput.text || contestNameInput.text == "") {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Contest Name should have a valid value" + (showPageName ? " at Create Contest Page" : ""));
+                    }
+                    return false;
+                }
+                
+                if (selectProjects.selectedItem == null || selectProjects.selectedItem.data == -1) {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Project Name must have a value" + (showPageName ? " at Create Contest Page" : ""));
+                    }
+                    return false;
+                }
+                
+                
+                
+                if (dfStart.selectedDate == null) {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Start date not selected" + (showPageName ? " at Create Contest Page" : ""));
+                    }
+                    return false;
+                }
+                
+                
+                if (termCheckBox.selected == false) {
+                    if (showMsg) {
+                        Helper.showAlertMessage("Please agree to TopCoder Direct Terms" + (showPageName ? " at Create Contest Page" : ""));
+                    }
+                    return false;
+                }
+                
+                updateData();
+                return true;
+            }
+            
+            private function updateData():void {
+                mainWidget.tcDirectProjectId=selectProjects.selectedItem.data;
+                mainWidget.tcDirectProjectName=selectProjects.selectedItem.label;
+                
+                var competionType:String="";
+                
+                competionType=selectContestTypes.selectedItem.data;
+                if (mainWidget && competionType) {
+                    mainWidget.competitionType=competionType;
+                }
+                
+                mainWidget.studioContestType=(competionType == "STUDIO");
+                trace("In ContestSelection updateData - MainWidget.studioContestType: " + mainWidget.studioContestType);
+
+                if (mainWidget.studioContestType) {
+                    if (!mainWidget.competition) {
+                        // create new.
+                        initializeStudioContest(new Number(mainWidget.tcDirectProjectId));
+                    }
+                    
+                    // set contest name.
+                    this.mainWidget.competition.contestData.name=contestNameInput.text;
+                    
+                    // set contest start date.
+                    var startDate:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
+                    mainWidget.competition.startTime=startDate;
+                    var startDt:Date=DateUtil.parseFromString(startDate);
+
+
+                    trace("In ContestSelection. startDate as Date type: " + endDt);
+                    // set default date as start + 7 days.
+                    if (!mainWidget.competition.contestData.durationInHours || mainWidget.competition.contestData.durationInHours == 0) {
+                        var endDt:Date=new Date(startDt.getTime() + 7 * 24 * OneHour);
+                        mainWidget.competition.endTime=DateUtil.toString(endDt);
+                        mainWidget.competition.contestData.durationInHours=Number(((endDt.time - startDt.time) / 3600000).toFixed(2));
+                    }
+
+                    
+                    mainWidget.competition.contestData.launchDateAndTime=startDate;
+                    
+                    // set billing project
+                    mainWidget.competition.contestData.billingProject=mainWidget.invoicedProjectId;
+                    
+                } else {
+                    if (!mainWidget.softwareCompetition) {
+                        // create new.
+                        initializeSoftwareContest(new Number(mainWidget.tcDirectProjectId));
+                    }
+                    
+                    mainWidget.softwareCompetition.type=competionType;
+                    mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
+                    mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
+                    
+                    // set contest name.
+                    this.mainWidget.softwareCompetition.assetDTO.name=contestNameInput.text;
+                    
+                    // shannon: please have a look into this code block. i believe the next block that has date set should happen after capacity
+                    // data is available.
+                    // 
+                    // recalculate start date forbidden dates
+                    var contestType:int = SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                    var getCapacityFullDatesOp:AbstractOperation=mainWidget._psws.getOperation("getCapacityFullDates");
+                    getCapacityFullDatesOp.send(contestType, false);
+                    
+                    // set the default root catalog and category.
+                    if (!this.mainWidget.softwareCompetition.assetDTO.rootCategory) {
+                        if (mainWidget.isDesOrDevContestType()) {
+                            this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.notSetCatalog;
+                            this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.notSetCategory);
+                        } else {
+                            this.mainWidget.softwareCompetition.assetDTO.rootCategory=LaunchWidgetCodeBehind.applicationCatalog;
+                            this.mainWidget.softwareCompetition.assetDTO.categories=new Array();
+                            this.mainWidget.softwareCompetition.assetDTO.categories.push(LaunchWidgetCodeBehind.businessLayerApplicationCategory);
+                        }
+                    }
+                    
+                    // set contest start date.
+                    var start:String=getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);
+                    mainWidget.softwareCompetition.assetDTO.productionDate=start;
+                    
+                    // set billing project
+                    if (mainWidget.invoicedProjectId == 0) {
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
+                    } else {
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
+                }
+                //Set corresponding fields 
+                if (correspondingDesignComponent != null) {
+                    mainWidget.softwareCompetition.assetDTO= correspondingDesignComponent.assetDTO;
+                    mainWidget.softwareCompetition.assetDTO.technologies=correspondingDesignComponent.assetDTO.technologies;
+                    mainWidget.softwareCompetition.assetDTO.rootCategory=correspondingDesignComponent.assetDTO.rootCategory;
+                    mainWidget.softwareCompetition.assetDTO.categories=correspondingDesignComponent.assetDTO.categories;
+                    mainWidget.softwareCompetition.projectHeader.projectSpec=correspondingDesignComponent.projectHeader.projectSpec;
+                    mainWidget.softwareCompetition.projectHeader.projectSpec.projectSpecId=0;
+                }
+
+            }
+                
+                mainWidget.startLaunchProcess();
+            }
+            
+            private function getAssembleDateToString(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox):String {
+                var result:Date=dateField.selectedDate;
+                var hour:Number=Number(hourComb.value);
+                
+                var resultstr:String="";
+                resultstr=resultstr + DateUtil.formatString(result.getFullYear(), 4) + "-";
+                resultstr=resultstr + DateUtil.formatString(result.getMonth() + 1, 2) + "-";
+                resultstr=resultstr + DateUtil.formatString(result.getDate(), 2) + "T";
+                resultstr=resultstr + DateUtil.formatString(hour, 2) + ":";
+                resultstr=resultstr + DateUtil.formatString(Number(minuteComb.value), 2) + ":00";
+                
+                return resultstr;
+            }
+
+            /**
+             * This method sets time control
+             *
+             * @param hourComb the hour combo box
+             * @param minuteComb the minute combo box
+             * @param date the date with the information
+             */
+            private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, date:Date):void {
+                if (date == null) {
+                    hourComb.selectedIndex=0;
+                    minuteComb.selectedIndex=0;
+                    return;
+                }
+
+                var hour:int=date.getHours();
+                var am:Boolean=true;
+
+
+                hourComb.selectedIndex=hour;
+                var minute:int=date.getMinutes();
+                minuteComb.selectedIndex=minute / 15;
+            }
+            
+            //
+            // It finds the competition type from combo box selectedItem value.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function getCompetitionType():String {
+                return selectContestTypes.selectedItem.data;
+            }
+
+            //
+            // Name changed for integration with software contests.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function initializeStudioContest(tcDirectProjectId:Number):void {
+                mainWidget.competition=new StudioCompetition();
+                mainWidget.competition.competitionId=-1;
+                mainWidget.competition.id=-1;
+                mainWidget.competition.adminFee=20;
+                mainWidget.competition.eligibility="some text";
+
+                mainWidget.competition.contestData=new ContestData();
+                mainWidget.competition.contestData.contestAdministrationFee=20;
+                mainWidget.competition.creatorUserId=3;
+                mainWidget.competition.drPoints=100;
+                mainWidget.competition.contestData.drPoints=100;
+                mainWidget.competition.contestData.prizes=new Array();
+                
+                mainWidget.competition.contestData.tcDirectProjectId=tcDirectProjectId;
+                mainWidget.competition.contestData.tcDirectProjectName=mainWidget.tcDirectProjectName;
+                mainWidget.competition.contestData.contestId=-1;
+                mainWidget.competition.contestData.creatorUserId=3;
+                mainWidget.competition.contestData.statusId=5;
+                mainWidget.competition.contestData.forumId=-1;
+                mainWidget.competition.contestData.forumPostCount=0;
+                mainWidget.competition.contestData.requiresPreviewImage=true;
+                mainWidget.competition.contestData.requiresPreviewFile=false;
+                mainWidget.competition.contestData.maximumSubmissions=3;
+                mainWidget.competition.contestData.submissionCount=0;
+                mainWidget.competition.contestData.contestChannelId=2;
+                mainWidget.competition.contestData.eligibility="some text";
+                mainWidget.competition.contestData.media=new Array();
+
+                mainWidget.competition.contestData.numberOfRegistrants=0;
+                var competionType:String=getCompetitionType();
+                mainWidget.competition.type=competionType;
+            }
+
+            //
+            // Method to initialize software competition dto.
+            // @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+            //
+            private function initializeSoftwareContest(tcDirectProjectId:Number):void {
+                mainWidget.softwareCompetition=new SoftwareCompetition();
+                
+                var competionType:String=getCompetitionType();
+                mainWidget.softwareCompetition.type=competionType;
+                
+                // initialize asset dto.
+                mainWidget.softwareCompetition.assetDTO=new SoftwareAssetDTO();
+                mainWidget.softwareCompetition.assetDTO.versionNumber=SoftwareCompetitionUtils.instance().getAssetVersionNumber();
+                mainWidget.softwareCompetition.assetDTO.versionText=SoftwareCompetitionUtils.instance().getAssetVersionText();
+                mainWidget.softwareCompetition.assetDTO.documentation=new Array();
+                mainWidget.softwareCompetition.assetDTO.dependencies=new Array();
+                
+                // For Cockpit Launch Contest - Update for Spec Creation v1.0 - save some dummy text for now.
+                // later it need to be removed from catalog service.
+                mainWidget.softwareCompetition.assetDTO.shortDescription="NA";                
+		
+		        this.mainWidget.softwareCompetition.assetDTO.technologies=new Array();
+                
+                // initialize project header.
+                mainWidget.softwareCompetition.projectHeader=new SoftwareProjectHeader();
+
+                // added for Cockpit Launch Contest - Update for Spec Creation v1.0
+                mainWidget.softwareCompetition.projectHeader.projectSpec=new SoftwareProjectSpec();
+                
+                mainWidget.softwareCompetition.projectHeader.tcDirectProjectId=tcDirectProjectId;
+                
+                mainWidget.softwareCompetition.projectHeader.properties=SoftwareCompetitionUtils.instance().getProjectDefaultProperties();
+                
+                mainWidget.softwareCompetition.projectHeader.projectCategory=new SoftwareProjectCategory();
+                mainWidget.softwareCompetition.projectHeader.projectCategory.id=SoftwareCompetitionUtils.instance().getProjectCategoryId(competionType);
+                mainWidget.softwareCompetition.projectHeader.projectCategory.name=competionType;
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType=new SoftwareProjectType();
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.id=SoftwareCompetitionUtils.instance().getProjectTypeId(competionType);
+                mainWidget.softwareCompetition.projectHeader.projectCategory.projectType.name=SoftwareCompetitionUtils.instance().getProjectTypeName(competionType);;
+                mainWidget.softwareCompetition.projectHeader.projectStatus=SoftwareCompetitionUtils.instance().getDefaultProjectStatus();
+                
+                // initialize project resources.
+                var resource:SoftwareResource = new SoftwareResource();
+                var resourceRole:SoftwareResourceRole = new SoftwareResourceRole();
+                resourceRole.id=SoftwareCompetitionUtils.instance().getResourceRoleId();
+                resource.id=SoftwareCompetitionUtils.instance().getUnsetId();
+                resource.resourceRole=resourceRole;
+                resource.properties=new Array();
+                resource.properties.push(SoftwareCompetitionUtils.instance().getResourceRoleProperty(this.mainWidget.username));
+                
+                resource.submissions=new Array();
+                mainWidget.softwareCompetition.projectResources=new Array();
+                mainWidget.softwareCompetition.projectResources.push(resource);
+                
+                // initialize project phases.
+                mainWidget.softwareCompetition.projectPhases=SoftwareCompetitionUtils.instance().getDefaultPhases();        
+            }
+            
+            private function createProjectHandler(e:ResultEvent):void {
+                mainWidget.hideLoadingProgress();
+                
+                if(e && e.result) {
+                    var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
+                    mainWidget.tcDirectProjectId=projectData.projectId.toString();
+                    mainWidget.tcDirectProjectName=projectData.name;
+                    //createContestAndContinue(projectData.projectId);
+                    
+                    // add to the list.
+                    projectArray.addItem({label: projectData.name, data: projectData.projectId, desc: projectData.description});
+                    selectTCProject(projectData.projectId.toFixed(0));
+                    
+                    hideCreateProjectPopup();
+                    
+                    //mark refresh of my project.
+            	    mainWidget.notifyMyProjectWidget();
+                }
+            }
+            
+            public function selectBillingProject(billingProject:Number):void {
+                trace("To select billing project: " + billingProject);
+                if (mainWidget && mainWidget.clientProjectNames && mainWidget.clientProjectNames.length > 0) {
+                    trace("Client Project Names: " + mainWidget.clientProjectNames);
+                    var index:int=0;
+                    var found:Boolean = false;
+                    for each (var o:Object in mainWidget.clientProjectNames) {
+                        if (o.data && o.data.projectId == billingProject) {
+                            found = true;
+                            trace("Selecting project: " + o + " at index: " + index);
+                            selectBillingAccount.selectedItem=o;
+                            selectBillingAccount.selectedIndex=index;
+                            if (mainWidget) {
+                                setBillingProjectProperties(o);
+                            }
+                            var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                            getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                            getEligibilityNameOp.send(billingProject);
+                            mainWidget.showLoadingProgress();
+                            break;
+                        }
+                        
+                        index++;
+                    }
+
+                    // create a place holder
+                    if (!found && billingProject > 0)
+                    {
+                        var item:Object = new Object();
+			            item.label= "<<hidden>>";
+			            item.data = new Object();
+			            item.data.poNumber = "<<hidden>>";
+			            item.data.projectName = "<<hidden>>";
+			            item.data.projectId = billingProject;
+			            item.data.clientId = 0;
+			            item.data.clientName = "<<hidden>>";
+			            item.data.manualPrizeSetting = false;
+            	        mainWidget.clientProjectNames.addItem(item);
+                        selectBillingAccount.selectedItem=item;
+                        selectBillingAccount.selectedIndex=index;
+                        if (mainWidget) {
+                                setBillingProjectProperties(item);
+                            }
+                            var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                            getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                            getEligibilityNameOp.send(billingProject);
+                            mainWidget.showLoadingProgress();
+                    }
+                } 
+            }
+
+
+            public function selectTCProject(tcProjectId:String):void {
+                trace("To select billing project: " + tcProjectId);
+
+                var index:int=0;
+                if (projectArray && projectArray.length > 0) {
+                    
+                    // set the project id.
+                    for each (var p:Object in projectArray) {
+                        
+                        if (p.data == tcProjectId) {
+                            // select the project.
+                            selectProjects.selectedItem=p;
+                            selectProjects.selectedIndex=index;
+                            break;
+                        }
+                        index++;
+                    }
+                    
+                }
+            }
+            
+            public function selectContestType(type:String):void {
+                var index:int=0;
+                if (contestTypes && contestTypes.length > 0) {
+                    
+                    // set the project id.
+                    for each (var p:Object in contestTypes) {
+                        
+                        if (p.data == type) {
+                            selectContestTypes.selectedItem=p;
+                            selectContestTypes.selectedIndex=index;
+                            break;
+                        }
+                        index++;
+                    }
+                    
+                } 
+            }
+            
+            /**
+             * Handle the change of billing account in combo box.
+             * 
+             * @param e the change event.
+             * @since 1.0.1
+             */ 
+            private function handleBillingAccountChange(e:Event):void {
+                if (mainWidget) {
+                    var val:Object=selectBillingAccount.selectedItem;
+                    setBillingProjectProperties(val);
+                    
+                    if (val != null && val.data != null) {
+                        var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                        getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                        getEligibilityNameOp.send(val.data.projectId);
+                        mainWidget.showLoadingProgress();
+                	} else {
+                		lblLCCOnly.text = "";
+                	}
+             }
+	    }
+
+            private function getEligibilityNameOpHandler(e:ResultEvent):void {
+            	mainWidget.hideLoadingProgress();
+                if (e && e.result.length != 0) {
+                	//this means it is
+                    lblLCCOnly.text = e.result + " Only";
+                } else {
+                	lblLCCOnly.text = "";
+                }
+            }
+
+            
+            /**
+             * Sets billing project related properties.
+             * 
+             * Updated for Version 1.0.2
+             *    - manualPrizeSetting value is set corresponding to the selected billing project.
+             * 
+             * @param val billing project data object.
+             */ 
+            private function setBillingProjectProperties(val:Object):void {
+                if (val == null || val.data == null) {
+                    mainWidget.isInvoicedContest=false;
+                    mainWidget.invoicedProjectId=0;
+                    mainWidget.invoicedProjectData=null;
+                    mainWidget.manualPrizeSetting=false;
+                    Model.instance.purchaseOrder=null;
+                } else {
+                    mainWidget.isInvoicedContest=true;
+                    mainWidget.invoicedProjectId=val.data.projectId;
+                    mainWidget.invoicedProjectData=val.data;
+                    mainWidget.manualPrizeSetting=val.data.manualPrizeSetting;
+                    Model.instance.purchaseOrder=mainWidget.invoicedProjectData;
+                }
+                
+                trace("Invoiced Project Id: " + mainWidget.invoicedProjectId);
+                trace("Invoiced Project Data: " + mainWidget.invoicedProjectData);
+                
+                if (mainWidget.competitionType != "STUDIO" && mainWidget.softwareCompetition) {
+                    if (mainWidget.invoicedProjectId == 0) {
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, '0');
+                    } else {
+                        SoftwareCompetitionUtils.instance().addBillingProjectProp(mainWidget.softwareCompetition, mainWidget.invoicedProjectId.toString());
+                    }   
+                }
+                else if (mainWidget.competitionType == "STUDIO" && mainWidget.competition) {
+                    mainWidget.competition.contestData.billingProject = mainWidget.invoicedProjectId;
+                }
+            }
+            
+            private function startDateOpen():void {
+                var currentTime:Date=new Date();
+                //change current time to UMT-5
+                var tzOffHours:Number=currentTime.timezoneOffset / 60;
+                currentTime.setTime(currentTime.getTime() - (5 - tzOffHours) * OneHour);
+                // disable those days before the current day for studio contests
+                //disable current day - 14 days for software contests
+                var currentDayBegin:Date=new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
+                //BUGR-1789
+                if (mainWidget.studioContestType) {
+                    _rangeStartDate=new Date(currentDayBegin.getTime() - 1);
+                } else {
+                    _rangeStartDate=new Date(currentDayBegin.getTime() + 14 * 24 * OneHour - 1);
+                }
+            }
+            
+            /**
+             * End effect handler for help popup hide.
+             */
+            private function handleHideHelpPopupEffect():void {
+                helpPopup.visible=false;
+            }
+            
+            /**
+             * End effect handler for help popup hide.
+             */
+            private function handleHideCreateProjectPopupEffect():void {
+                createProjectPopup.visible=false;
+            }
+            
+            /**
+             * Opens the help popup modal window.
+             *
+             * @param event the mouse click event.
+             * @param helpStr the specified help text
+             * @since
+             */
+            private function showHideHelpPopup(event:MouseEvent, helpPopupName:String, helpStr:String):void {
+                if (helpPopup.visible && _currentHelpPopup && _currentHelpPopup==helpPopupName) {
+                    helpPopupFadeOut.play();
+                    return;
+                }
+                
+                _currentHelpPopup=helpPopupName;
+                
+                helpText.htmlText=helpStr;
+                
+                var globalPt:Point=event.target.contentToGlobal(new Point(0, 0));
+                
+                globalPt.x=globalPt.x - 300;
+                globalPt.y=globalPt.y - 107;
+                
+                var newPoint:Point=helpPopupContainer.globalToContent(globalPt);
+                
+                helpPopup.x=newPoint.x;
+                helpPopup.y=newPoint.y;
+                
+                helpPopup.visible=true;
+                helpPopupFadeIn.play();
+            }
+            
+            private function createNewProject():void {
+                var createProjectOp:AbstractOperation=mainWidget._pws.getOperation("createProject");
+                createProjectOp.addEventListener("result", createProjectHandler);
+                
+                var projectData:ProjectData=new ProjectData();
+                mainWidget.tcDirectProjectName=prjInput.text;
+                projectData.name=prjInput.text;
+                projectData.description=introInput.text;
+                
+                createProjectOp.send(projectData);
+                
+                mainWidget.showLoadingProgress();
+            }
+            
+            private function cancelProjectCreate():void {
+                hideCreateProjectPopup();
+            }
+            
+            private function showCreateProject(event:MouseEvent):void {
+                prjInput.text="";
+                introInput.text="";
+                
+                var globalPt:Point=event.target.contentToGlobal(new Point(0, 0));
+                
+                globalPt.x=globalPt.x - 300;
+                globalPt.y=globalPt.y - 127;
+                
+                var newPoint:Point=createProjectPopupContainer.globalToContent(globalPt);
+                
+                createProjectPopup.x=newPoint.x;
+                createProjectPopup.y=newPoint.y;
+                
+                mainContainer.tabChildren=false;
+                mainContainer.tabEnabled=false;
+                mainContainer.mouseChildren=false;
+                mainContainer.mouseEnabled=false;
+                createProjectPopup.visible=true;
+                createProjectPopupFadeIn.play();
+            }
+            
+            private function hideCreateProjectPopup():void {
+                mainContainer.tabChildren=true;
+                mainContainer.tabEnabled=true;
+                mainContainer.mouseChildren=true;
+                mainContainer.mouseEnabled=true;
+                createProjectPopupFadeOut.play();
+            }
+
+            private function gotoContestHelp():void {
+                navigateToURL(new URLRequest('http://www.topcoder.com/wiki/display/DIRECT/Contest+Types+-+Help+Me+Choose'), "_blank");
+            }
+            
+            /**
+             * Loads the contest sub types.
+             * 
+             * Updated for Version 1.0.1
+             *    - for contest sub type use type name instead of id.
+             * 
+             * @param e the webservice result event.
+             */  
+            private function preprocessTypes(e:ResultEvent):void {
+                var selectedContestTypeId:String="";
+                if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.contestTypeId) {
+                    selectedContestTypeId=mainWidget.competition.contestData.contestTypeId.toString();
+                    trace("In preprocessTypes - SelectedContestTypeId: " + selectedContestTypeId);
+                } 
+                
+                var subTypes:ArrayCollection=new ArrayCollection([{label: "Please select a studio contest type", data: null, desc: ""}]);
+                var selectedValueIndex:Number=0;
+                var selectedItem:Object=subTypes.getItemAt(0);
+    
+                if (e != null && e.result != null && e.result is XMLNode) {
+                    var root:XMLNode=e.result as XMLNode;
+                    for (var i:int=0; i < root.childNodes.length; i++) {
+                        var label:String=root.childNodes[i].attributes.description;
+                        var value:String=root.childNodes[i].attributes.contestTypeId;
+                        
+                        var item:Object=new Object();
+                        item.label=label;
+                        item.data=value;
+                        item.description="";
+                        
+                        subTypes.addItem(item);
+                        
+                        trace("In preprocessTypes - value,selectedContestTypeId: " + value + "," + selectedContestTypeId + "," + i);
+
+                        if (value == selectedContestTypeId) {
+                            selectedValueIndex=i+1;
+                            selectedItem=item;
+                        }
+                    }
+                }
+                
+                trace("In preprocessTypes - selectedValueIndex: " + selectedValueIndex);
+                
+                studioContestSubTypes=subTypes;
+                selectContestSubTypes.dataProvider=studioContestSubTypes;
+                
+                if (selectedItem) {
+                    selectContestSubTypes.selectedItem=studioContestSubTypes.getItemAt(selectedValueIndex);
+                    selectContestSubTypes.selectedIndex=selectedValueIndex;
+                    mainWidget.studioContestSubTypeId = selectedItem.data;
+                    mainWidget.studioContestSubTypeLabel = selectedItem.label;
+                    trace("In preprocessTypes: " + selectContestSubTypes.selectedIndex + "," +  selectContestSubTypes.selectedItem + "," + selectedItem.data + "," + selectedItem.label); 
+                    
+                }
+	    }
+
+        //Handler for all dsign components
+        private function handleDesignComponents():void {
+            var item:Object = autoComplete.selectedItem;
+            if (item != null) {
+                contestNameInput.text = item.toString();
+                for (var i:int = 0; i < designComponentsWithID.length; i++) {
+                    if (designComponentsWithID[i].text == item.toString()) {
+                        mainWidget.showLoadingProgress();
+                        var getSWContestOp:AbstractOperation=mainWidget._csws.getOperation("getSoftwareContestByProjectId");
+                        getSWContestOp.addEventListener("result", getDesignComponentsDetailHandler);
+                        getSWContestOp.send(parseInt(designComponentsWithID[i].projectId));
+                        break;
+                    }
+                }
+            }
+        }
+        //Handler for the select design components' detail
+        private function getDesignComponentsDetailHandler(e:ResultEvent):void {
+            if (e && e.result) {
+                mainWidget.hideLoadingProgress();
+                correspondingDesignComponent = ObjectTranslatorUtils.translate(e.result, SoftwareCompetition) as SoftwareCompetition;
+            }
+        }
+
+        ]]>
+    </mx:Script>
+    
+    <mx:HTTPService id="requestContestTypes"
+                    url="/i/cockpit/data/launch_a_contest/contestTypes.xml"
+                    resultFormat="xml"
+                    result="preprocessTypes(event)">
+    </mx:HTTPService>
+    
+    <mx:VBox width="100%"
+             id="mainContainer"
+             styleName="boxStyle">
+
+        <mx:Label text="What Type of Contest do you want to run?"
+                  fontWeight="bold"/>
+        <mx:HBox>
+            <mx:Label text="Contest Type:"/>
+            <mx:ComboBox id="selectContestTypes"
+                         dataProvider="{contestTypes}"
+                         change="handleSelectContestType(event)"
+                         width="100%"/>
+            <mx:ComboBox id="selectContestSubTypes"
+                         dataProvider="{studioContestSubTypes}"
+                         change="handleSelectContestSubType(event)"
+                         visible="{mainWidget.studioContestType &amp;&amp; selectContestTypes.selectedItem &amp;&amp; selectContestTypes.selectedItem.data}"
+                         includeInLayout="{mainWidget.studioContestType &amp;&amp; selectContestTypes.selectedItem &amp;&amp; selectContestTypes.selectedItem.data}"
+                         width="100%"/>
+
+            <mx:LinkButton label="Help me choose"
+                           click="gotoContestHelp();"/>
+        </mx:HBox>
+        <mx:Spacer height="5"/>
+
+	<mx:HBox>
+            <mx:Label text="Give your contest a name."
+                      fontWeight="bold"/>
+            <mx:Text text="This will appear to competitors in a list of active contests."/>
+        </mx:HBox>
+        <mx:HBox>
+            <mx:Label text="Contest Name:"/>
+            <mx:TextInput id="contestNameInput"
+                          maxChars="255"
+                          width="100%"/>
+        <hc:AutoComplete id="autoComplete" dataProvider="{designComponents}" labelField="name" matchType="anyPart" 
+            prompt="Please choose corresponding design component." width="250" change="handleDesignComponents()"
+            allowNewValues="false" selectedItemStyleName="none"
+            allowDuplicates="false" allowMultipleSelection="false"
+            allowEditingNewValues="false"
+            visible="false"/>
+        <mx:Spacer width="10"/>
+        <mx:CheckBox id="selectDevOnly" visible="false" click="handleDevOnly();"/>
+        <mx:Spacer width="5"/>
+        <mx:Label id="lblDevOnly" text="Dev Only"  visible="false"/>
+    </mx:HBox>
+        <mx:Spacer height="5"/>
+
+        <mx:HBox>
+            <mx:Label text="Assign your contest to a project."
+                      fontWeight="bold"/>
+            <mx:Text text="You can assign related contests to the same project to help you stay organized."/>
+        </mx:HBox>
+        <mx:HBox>
+            <mx:Label text="Project Name:"/>
+            <mx:ComboBox id="selectProjects"
+                         width="100%"/>
+            <mx:LinkButton label="Add New"
+                           click="showCreateProject(event);"/>
+        </mx:HBox>
+        <mx:Spacer height="5"/>
+
+        <mx:HBox>
+            <mx:Label text="Schedule the start of your contest."
+                      fontWeight="bold"/>
+            <mx:Text text="You will set the contest duration later."/>
+        </mx:HBox>
+        <mx:HBox>
+            <mx:Label text="Start Date:"/>
+            <mx:DateField id="dfStart"
+                          yearNavigationEnabled="true"
+                          width="116"
+                          disabledRanges="{mainWidget.capacityFullDates}"
+                          open="startDateOpen()"/>
+            <mx:Spacer width="10"/>
+
+            <mx:Label text="Hour:"/>
+            <mx:ComboBox id="CmbHourStart"
+                         width="57"/>
+            <mx:Label text="Minute:"/>
+            <mx:ComboBox id="CmbMinuteStart"
+                         width="57"/>
+
+            <mx:Text id="timezoneStart"
+                     text="ET"/>
+        </mx:HBox>
+
+        <mx:Spacer height="5"/>
+        <mx:HRule width="100%"/>
+        <mx:Spacer height="5"/>
+
+        <mx:Label text="Payment Method"
+                  width="100%"
+                  styleName="sectionTitle"/>
+        <mx:HBox>
+            <mx:VBox>
+                <mx:Label text="Credit Card"
+                          fontWeight="bold"/>
+                <mx:Text text="You will be asked for your credit card information during the activation process."/>
+            </mx:VBox>
+            <mx:VRule height="100%"/>
+            <mx:VBox>
+                <mx:Label text="Billing Account"
+                          fontWeight="bold"/>
+                <mx:Text text="Enterprise customers can choose to be invoiced to a billing account in the dropdown below."/>
+
+                <mx:HBox width="100%">
+                    <mx:ComboBox id="selectBillingAccount"
+                                 width="100%"
+                                 dataProvider="{mainWidget.clientProjectNames}"
+                                 change="handleBillingAccountChange(event)"/>
+                    <mx:Label id="lblLCCOnly" text="" />
+                    <!-- <mx:LinkButton label="Help me choose"
+                                   click="showHideHelpPopup(event, 'billingAccount', 'Help for Billing Projects');"/> -->
+                </mx:HBox>
+            </mx:VBox>
+        </mx:HBox>
+        <mx:Label text="Terms and Conditions"
+                  width="100%"
+                  styleName="sectionTitle"/>
+        <mx:Text text="Please read TopCoder's Term &amp; Conditions and indicate that you understand and agree."/>
+        <mx:TextArea width="100%"
+                     height="120">
+            <mx:htmlText>
+<![CDATA[<font color="#000000" size="13">TopCoder Direct Terms</font>
+These TopCoder Direct Terms ("Agreement") are an agreement between you and TopCoder, Inc. ("TopCoder," "we," "us," or "our"). You means either yourself personally, or the company on the behalf of whom you are requesting Competition Services (defined below). Each of you and TopCoder are a party to this Agreement and TopCoder and you are the parties. This Agreement governs your use of the TopCoder Direct service ("Service"). This Agreement is in addition to the Terms of Use applicable to the TopCoder website.
+The Service allows customers to hold competitions for the development of graphics and design-related material. TopCoder makes no guarantee about the reliability, quality, performance, accuracy, or timeliness of the Service or the results obtained from the Service. You understand that any security mechanisms provided by the Service have inherent limitations and that you are responsible for determining whether the Service meets your needs.
+You represent that you are at least 18 years old. Your use of the Service is conditioned on your acceptance without modification of all of the terms and conditions, rules, conditions, and notices on the TopCoder website, including without limitation this Agreement, as may be modified by TopCoder. TopCoder reserves the right, in its discretion, to change or modify all or any part of this Agreement at any time, effective immediately upon publish to the TopCoder website. The most current version of this Agreement can be viewed by clicking on the "Terms of Use" link on the TopCoder Direct web site. If at any time you do not agree to accept and abide by this Agreement, you should not access or use the Service.
+PRIVACY
+In order to operate and provide the Service, we collect certain information about you. We use and protect that information as described in the TopCoder Privacy Policy, available at: http://www.topcoder.com/tc?module=Static&d1=about&d2=privacy
+1. SERVICES.
+1.1 Custom Competitions. TopCoder will conduct online competitions for you among members of TopCoder’s community as designed by you on the TopCoder web site and as approved and agreed to by TopCoder (“Competition Services”). TopCoder shall have the right, but not the obligation, to review all competition documents (e.g., specifications, contest rules and requirements, prizes, etc.) and may require that you make such changes as TopCoder deems necessary in TopCoder’s sole discretion to maintain the integrity of the competitions and the platform. TopCoder reserves the right to terminate any online competition, for any reason or no reason, in its sole discretion, whether or not TopCoder has reviewed the competition documents.
+1.2 Your Use of the Competition Services. In addition to the restrictions provided in the TopCoder Terms of Use, You agree that you will not:
+Fail to pay for competitions initiated by you or for content used by you;
+Manipulate the prize for a competition;
+Circumvent or manipulate the fee structure, billing process or fees owed to TopCoder;
+Transfer your account to another party without TopCoder’s prior written consent;
+Copy, modify, or transfer content from the Service or any information protected by copyright and/or trademark laws except as explicitly permitted under this Agreement;
+Use any Third Party Content in the Service which is protected by copyright and/or trademark laws unless you are able to demonstrate the possession of the necessary rights and/or licenses to such content;
+Take any action that imposes or may impose (in our sole discretion) an unreasonable or disproportionately large load on our infrastructure;
+Interfere or attempt to interfere with the proper working of the Competition Services or any activity conducted on the web site;
+Harvest or otherwise collect information about users without the consent of TopCoder and the users.
+Engage or act in a dishonest or unfair manner, or in bad faith.
+Modify, publish, transmit, transfer or sell, reproduce, create derivative works from, distribute, perform, display, reverse engineer or in any way exploit any of the content on the web site or as part of the Competition Services except as explicitly permitted under this Agreement.
+1.3 Transfer of Deliverables. Upon payment in full of all outstanding invoices, all work product other than Third-Party Content and Licensed Content, developed in the course of Competition Services and Consulting Services and delivered to you under this Agreement (“Deliverables”) shall be owned by you. TopCoder agrees to assign to you all of its right, title, and interest in and to such Deliverables, subject to payment of all fees.
+1.4 Licensed Content. In the event you use or require content or software designated by TopCoder as owned or licensed by TopCoder (“Licensed Content”), whether from a TopCoder software component, widget, photo, or design catalog or otherwise, in any competition, such Licensed Content shall be licensed (and not assigned) to you in accordance with the terms of this Section 1.4. Subject to full payment of all amounts owed and this Agreement, TopCoder grants to you a non-exclusive, non-transferable license under TopCoder’s copyrights in the Licensed Content to copy, modify, prepare derivative works, distribute, publicly perform and publicly display the Licensed Content; provided, however, that you may not may not sublicense, distribute or resell the Licensed Content to any third party separate from or for use other than as incorporated into the Deliverables. TopCoder retains all right, title and interest in and to the Licensed Content. Any use of the Licensed Content beyond the scope of the licenses expressly granted herein is prohibited. You shall retain all copyright notices and authorship credits for the Licensed Content in the Deliverable and associated documentation. Nothing in this Agreement shall be construed so as to prohibit TopCoder from reusing any Licensed Content, whether existing before or developed during or after Deliverables.
+1.5 Third-Party Content. If you request that the Deliverables interface with, accompany, or include content or material not developed or licensed by TopCoder (“Third-Party Content”), any such Third-Party Content shall be subject to its own terms and conditions, and shall not be considered part of the Deliverables under this Agreement. You represent that you have all rights in the Third-Party Content specified or provided by you that are necessary to authorize its use in Competition Services and incorporation into the Deliverables. You agree to indemnify TopCoder for any breach of this indemnification.
+2. DISCLAIMER OF WARRANTIES. To the extent permitted by law, the Deliverables and all TopCoder services are provided AS IS, WITH ALL FAULTS, and TOPCODER MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, STATUTORY OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE, TITLE, OR NONINFRINGEMENT. No statement by TopCoder’s personnel or otherwise shall be deemed to be a warranty by TopCoder for any purpose or to give rise to any liability on the part of TopCoder unless contained in this Agreement. The parties acknowledge and agree that the fees charged by TopCoder under this Agreement reflect the allocation of risks provided by the foregoing warranty, the limitations of liability, and other terms set forth in this Agreement, and any modification of the allocation of risks would affect the fees charged.
+3. PAYMENT. Payment will be required upon execution of a request for Competition Services. In the event that payment does not go through (for example, if a credit card payment is rejected) TopCoder may charge interest on overdue amounts at the rate of 1.5% per month or the highest lawful rate, whichever is less. You agree to pay to TopCoder all costs of collection of overdue amounts incurred by TopCoder. You shall be responsible for all taxes under this Agreement, except those taxes based on TopCoder’s income or payroll.
+4. TERM AND TERMINATION. The Competition Services may be terminated by TopCoder at any time, and for any reason. Notwithstanding any termination of this Agreement, you shall remain obligated to pay all fees for competitions launched and services rendered prior to termination. Section 2 (Disclaimer of Warranties), Section 3 (Payment), Section 4 (Term and Termination), Section 5 (Limitation of Liability), Section 7 (Arbitration), Section 8 (Promotion), and Section 9 (General) of this Agreement shall survive any termination.
+5. LIMITATION OF LIABILITY. NEITHER PARTY SHALL BE LIABLE TO THE OTHER, UNDER THIS AGREEMENT OR OTHERWISE FOR ANY CLAIM ARISING OUT OF OR RELATED TO A PARTY’S PERFORMANCE OF ITS OBLIGATIONS HEREUNDER, FOR ANY INCIDENTAL, PUNITIVE, SPECIAL, CONSEQUENTIAL OR OTHER INDIRECT DAMAGES, LOSS OF PROFITS, LOSS OF DATA OR USE OF DATA OR INTERRUPTION OF BUSINESS, EVEN IF SUCH PARTY OR ITS REPRESENTATIVE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSS. IN NO EVENT SHALL TOPCODER’S LIABILITY UNDER THIS AGREEMENT EXCEED THE FEES DUE OR PAYABLE UNDER THIS AGREEMENT FOR THE SERVICE GIVING RISE TO THE CLAIM.
+6. CLAIMS OF INFRINGEMENT. If TopCoder becomes aware or reasonably believes that a Deliverable provided to you is or is likely to become, the subject of a claim of infringement, then TopCoder shall, at its option and expense either (i) procure for you the right to use the Deliverable or portion thereof, or (ii) replace or modify the Deliverable or portion thereof to make it non-infringing, or (iii) at TopCoder’s option, accept the return of the Deliverable (or the portion thereof), and refund the undepreciated portion of the fees paid by you for that Deliverable, assuming a 12-month straight-line depreciation schedule. THIS SECTION 6 STATES THE ENTIRE LIABILITY OF TOPCODER WITH RESPECT TO INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS RELATED TO THE DELIVERABLES, LICENSED CONTENT OR THEIR USE.
+7. ARBITRATION OPTION. For any claim arising out of the services under this Agreement (excluding claims for injunctive or other equitable relief) where the total amount of the award sought is less than $10,000, the party requesting relief may elect to resolve the dispute in a cost effective manner through non-appearance-based arbitration. In the event a party elects arbitration, they shall initiate such arbitration through an established alternative dispute resolution (“ADR”) provider mutually agreed upon by the parties (such agreement not to be unreasonably withheld). The ADR provider and the parties must comply with the following rules: (i) the arbitration shall be conducted by telephone, online and/or be solely based on written submissions, the specific manner shall be chosen by the party initiating the arbitration; (ii) the arbitration shall not involve any personal appearance by the parties or witnesses unless mutually agreed by the parties; and (iii) any judgment on the award rendered by the arbitrator may be entered in any court of competent jurisdiction. All claims brought against TopCoder must be resolved in accordance with this section. All claims filed or brought contrary to this section shall be considered improperly filed and may be dismissed for failure to abide by the procedures set forth herein.
+8. PROMOTION. You agree to be identified as a customer of TopCoder and grant TopCoder permission to refer to you or Your company by name, tradename and/or trademark, if applicable, and to briefly describe Your business in TopCoder’s marketing material, press releases and on its websites for the purpose of promoting Your relationship with TopCoder. The undersigned represents and warrants that s/he has the right to grant such permission, and that s/he is a duly authorized representative of and such company, and s/he is able to enter into and perform this Agreement.
+9. GENERAL. This Agreement shall be governed in all respects by the laws of the State of Connecticut, USA without giving effect to principles of conflict of laws. The parties agree to submit to the jurisdiction of the Connecticut state and federal courts located in Hartford County, Connecticut for any claim relating to this Agreement which is not brought for arbitration pursuant to Section 7 above. The United Nations Convention for the International Sale of Goods shall not apply to this Agreement. All notices under this Agreement shall be in writing and shall be deemed to be made when delivered by overnight courier service to the Legal Department of such party at the address set forth on the first page of this Agreement, or to such other address as either party may specify by notice. If one party fails to enforce a provision of this Agreement, it shall not be precluded from enforcing the same provision at another time. If any provision of this Agreement is deemed unenforceable or invalid by law or by a court decision, the provision shall be changed and interpreted if possible to accomplish the intent of the provision within the constraints of the law. In the event the provision may not be so changed or interpreted, then only that provision, and not the entire agreement, shall be invalidated. Notwithstanding any provision to the contrary in this Agreement, if either party is prevented from complying, either totally or in part, with any of its obligations under this Agreement because of matters outside such party’s reasonable control (i.e., a force majeure event), then upon written notice to the other party, such obligations will be suspended during the period of such disability. Nothing contained in this Agreement shall be construed as creating any agency, partnership, or other form of joint enterprise between the parties. You may not assign this Agreement in whole or in part without the prior written consent of TopCoder. Subject to the foregoing, this Agreement shall be binding on the parties and their permitted assigns. Each party represents to the other party that it has the full corporate right, power and authority to enter into this Agreement and perform its obligations hereunder; and that when executed and delivered, this Agreement will constitute its legal, valid and binding obligation enforceable against it in accordance with its terms.]]>
+            </mx:htmlText>
+        </mx:TextArea>
+        <mx:CheckBox id="termCheckBox"
+                     label="I have read and agree to these terms."/>
+    </mx:VBox>
+
+    <mx:Canvas id="helpPopupContainer">
+        <mx:TitleWindow includeInLayout="false"
+                        visible="false"
+                        id="helpPopup"
+                        width="332"
+                        height="249"
+                        horizontalAlign="left"
+                        styleName="helpPopupWindow"
+                        showCloseButton="false"
+                        borderStyle="none"
+                        borderThickness="3"
+                        headerHeight="0"
+                        verticalGap="0"
+                        horizontalScrollPolicy="off"
+                        verticalScrollPolicy="off"
+                        xmlns:filters="flash.filters.*">
+            <mx:filters>
+                <mx:DropShadowFilter distance="10"
+                                     angle="45"
+                                     alpha="0.3"/>
+            </mx:filters>
+            <mx:VBox width="274"
+                     height="220"
+                     id="helpPopupInnerBox"
+                     horizontalScrollPolicy="off"
+                     verticalScrollPolicy="auto">
+                <mx:Text id="helpText"/>
+            </mx:VBox>
+        </mx:TitleWindow>
+    </mx:Canvas>
+
+    <mx:Canvas id="createProjectPopupContainer">
+        <mx:TitleWindow includeInLayout="false"
+                        visible="false"
+                        id="createProjectPopup"
+                        width="332"
+                        height="289"
+                        horizontalAlign="left"
+                        styleName="helpPopupWindow"
+                        showCloseButton="false"
+                        borderStyle="none"
+                        borderThickness="3"
+                        headerHeight="0"
+                        verticalGap="0"
+                        horizontalScrollPolicy="off"
+                        verticalScrollPolicy="off"
+                        xmlns:filters="flash.filters.*">
+            <mx:filters>
+                <mx:DropShadowFilter distance="10"
+                                     angle="45"
+                                     alpha="0.3"/>
+            </mx:filters>
+            <mx:VBox width="274"
+                     height="260"
+                     id="createProjectPopupInnerBox"
+                     horizontalScrollPolicy="off"
+                     verticalScrollPolicy="auto">
+                <mx:Label text="Create New Project"
+                          width="100%"
+                          styleName="sectionTitle"/>
+                <mx:HBox width="100%">
+                    <mx:Label text="Name:"/>
+                    <mx:TextInput id="prjInput"
+                                  width="100%"/>
+                </mx:HBox>
+
+                <mx:HBox width="100%">
+                    <mx:Label text="Description:"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:TextArea id="introInput"
+                                 width="100%"
+                                 height="120"/>
+                </mx:HBox>
+
+                <mx:HBox width="100%"
+                         horizontalAlign="right">
+                    <mx:Button styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Save"
+                               click="createNewProject()"/>
+                    <mx:Button styleName="arrowRightBtnStyle"
+                               labelPlacement="{ButtonLabelPlacement.LEFT}"
+                               label="Cancel"
+                               click="cancelProjectCreate()"/>
+                </mx:HBox>
+            </mx:VBox>
+        </mx:TitleWindow>
+    </mx:Canvas>
+
+    <mx:Fade id="helpPopupFadeIn"
+             alphaFrom="0.0"
+             alphaTo="1.0"
+             duration="500"
+             target="{helpPopup}"/>
+    <mx:Fade id="helpPopupFadeOut"
+             alphaFrom="1.0"
+             alphaTo="0.0"
+             duration="500"
+             target="{helpPopup}"
+             effectEnd="handleHideHelpPopupEffect()"/>
+    <mx:Fade id="createProjectPopupFadeIn"
+             alphaFrom="0.0"
+             alphaTo="1.0"
+             duration="500"
+             target="{createProjectPopup}"/>
+    <mx:Fade id="createProjectPopupFadeOut"
+             alphaFrom="1.0"
+             alphaTo="0.0"
+             duration="500"
+             target="{createProjectPopup}"
+             effectEnd="handleHideCreateProjectPopupEffect()"/>
+
+</mx:VBox>
