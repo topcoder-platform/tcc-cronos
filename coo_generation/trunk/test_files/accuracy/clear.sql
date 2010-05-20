@@ -1,5 +1,9 @@
-DELETE FROM project_info;
-DELETE FROM submission_review;
-DELETE FROM project;
-DELETE FROM third_party_library;
-DELETE FROM project_result;
+delete from comp_catalog;
+delete from project_info;
+delete from project_phase;
+delete from project;
+delete from categories;
+delete from project_category_lu;
+delete from user;
+delete from resource_info;
+delete from resource;

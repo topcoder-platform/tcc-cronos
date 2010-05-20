@@ -174,3 +174,21 @@ Serialize COOReport to PDF byte array for 20 times in 2 thread, cost 20,328 mill
 Serialize COOReport to XML byte array for 20 times in 2 thread, cost 1,578 milliseconds
 2010-04-21 18:07:41.843
 Add component to database for 400 times in 1 thread, cost 73,937 milliseconds
+2010-05-20 14:00:01.265
+Generate COOReport for 20 times in 2 thread, cost 16,906 milliseconds
+2010-05-20 14:01:12.75
+Add component to database for 400 times in 1 thread, cost 70,875 milliseconds
+2010-05-20 14:01:21.187
+Serialize COOReport to PDF byte array for 20 times in 2 thread, cost 7,672 milliseconds
+2010-05-20 14:01:22.937
+Serialize COOReport to XML byte array for 20 times in 2 thread, cost 1,109 milliseconds
+2010-05-20 14:22:08.406
+Generate COOReport for 20 times in 2 thread, cost 16,438 milliseconds
+2010-05-20 14:24:27.234
+Generate COOReport for 20 times in 2 thread, cost 17,203 milliseconds
+2010-05-20 14:25:50.484
+Add component to database for 400 times in 1 thread, cost 82,531 milliseconds
+2010-05-20 14:25:58.0
+Serialize COOReport to PDF byte array for 20 times in 2 thread, cost 6,954 milliseconds
+2010-05-20 14:26:00.296
+Serialize COOReport to XML byte array for 20 times in 2 thread, cost 1,843 milliseconds

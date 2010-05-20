@@ -18,7 +18,7 @@
 						</Property>
 						<Property name="parameters">
 							<Property name="jdbc_url">
-								<Value>jdbc:informix-sqli://192.168.1.2:1526/sysadmin:INFORMIXSERVER=tc;user=informix;password=111111</Value>
+								<Value>jdbc:informix-sqli://192.168.1.4:1526/sysadmin:INFORMIXSERVER=tc;user=informix;password=111111</Value>
 							</Property>
 							<Property name="jdbc_driver">
 								<Value>com.informix.jdbc.IfxDriver</Value>
