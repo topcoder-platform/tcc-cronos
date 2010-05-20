@@ -1,0 +1,113 @@
+<report>
+<contestdata>
+	<projectId>1</projectId>
+	<componentName>HBS Singleton Process Manager 1.0.0</componentName>
+	<contestEndDate>2010-05-20</contestEndDate>
+	<designWinner>N/A</designWinner>
+	<designSecondPlace>N/A</designSecondPlace>
+	<designReviewer1>N/A</designReviewer1>
+	<designReviewer2>N/A</designReviewer2>
+	<designReviewer3>N/A</designReviewer3>
+	<developmentWinner>sparemax</developmentWinner>
+	<developmentSecondPlace>EveningSun</developmentSecondPlace>
+	<developmentReviewer1>Veloerien</developmentReviewer1>
+	<developmentReviewer2>FireIce</developmentReviewer2>
+	<developmentReviewer3>bbxiong</developmentReviewer3>
+</contestdata>
+<hasdependency>
+Yes
+</hasdependency>
+<dependencies>
+
+<dependency>
+	<name>log4j</name>
+	<version>1.2.15</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>sqljdbc</name>
+	<version>2.0</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>junit</name>
+	<version>4.6</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+</dependencies>
+<dependencies-external>
+
+<dependency>
+	<name>log4j</name>
+	<version>1.2.15</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>sqljdbc</name>
+	<version>2.0</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>junit</name>
+	<version>4.6</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+</dependencies-external>
+<dependencies-internal>
+
+</dependencies-internal>
+<dependencies-compile-external>
+
+<dependency>
+	<name>log4j</name>
+	<version>1.2.15</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+<dependency>
+	<name>sqljdbc</name>
+	<version>2.0</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+</dependencies-compile-external>
+<dependencies-compile-internal>
+
+</dependencies-compile-internal>
+<dependencies-external-test>
+
+<dependency>
+	<name>junit</name>
+	<version>4.6</version>
+	<description>N/A</description>
+	<url>N/A</url>
+	<license>N/A</license>
+</dependency>
+
+</dependencies-external-test>
+<dependencies-internal-test>
+
+</dependencies-internal-test>
+</report>
