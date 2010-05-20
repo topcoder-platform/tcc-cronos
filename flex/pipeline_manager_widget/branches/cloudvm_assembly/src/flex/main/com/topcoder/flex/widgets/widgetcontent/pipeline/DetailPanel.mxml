@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is details panel for the widget
+     
+     Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
+        - defines the click handler for RSS and ICAL feeds.
+        
+      Version 1.0.2 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - update some scroll bar setting and performance issue   
+     
+     @author snow01, TCSASSEMBLER
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.2
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" verticalGap="1"
+		xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*" horizontalScrollPolicy="auto">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.component.WeekPanel;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+			import mx.collections.ArrayCollection;
+			import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+			
+			import flash.net.URLRequest;
+			
+			[Bindable]
+			private var model:Model;
+			[Bindable]
+			private var _puid:String;
+			public function set puid(value:String):void {
+				model = Model.getInstance(value);
+				_puid = value;
+			}
+			[Bindable]
+			private var _list:ArrayCollection;
+			
+			public function set list(value:ArrayCollection):void {
+				var start:Date = new Date();
+				_list = new ArrayCollection();
+				var total:Summary = new Summary(null);
+				total.isTotal = true;
+				for each (var wk:Summary in model.weekList) {
+					total.fee += wk.fee;
+					total.cost += wk.cost;
+					total.actualA += wk.actualA;
+					total.actualB += wk.actualB;
+					_list.addItem(wk);
+				}
+				_list.addItem(total);
+				var end:Date = new Date();
+				trace("Used in set of list costs:" + (end.getTime()-start.getTime())/1000 + "seconds");
+			}
+			private function expandAll():void {
+				for (var i:int = 0; i < numChildren; i++) {
+					var child:WeekPanel = this.getChildAt(i) as WeekPanel;
+					if (child) {
+						child.doOpen(true);
+					}
+				}
+				
+			}
+			private function CollapseAll():void {
+				for (var i:int = 0; i < numChildren; i++) {
+					var child:WeekPanel = this.getChildAt(i) as WeekPanel;
+					if (child) {
+						child.doOpen(false);
+					}
+				}
+			}
+
+			
+			/**
+			  * Opens the RSS feed url in new window.
+			  * 
+			  * @since 1.0.1
+			  */  
+			private function openRSSFeed():void {
+			    var url:String=model.createRssFeedURL();
+			    gotoURL(url);
+			}
+			
+
+			
+			/**
+			  * Opens the specified url in new window.
+			  * 
+			  * @param url the url to open.
+			  * @since 1.0.1
+			  */  
+			private function gotoURL(url:String):void {
+			    // Open the link in a new window.
+                navigateToURL(new URLRequest(url), '_blank');
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Binding source="model.weekList" destination="list" />
+
+	<mx:HBox width="100%" height="45" id="content">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Pipeline Summary" />
+		<mx:Spacer width="100%" />
+		<mx:Button label="View Change History" styleName="btn" click="model.navigateToMode('DATE')" />
+		<mx:Button label="View Breakdown" styleName="btn" click="model.navigateToMode('BREAK')" />
+		<mx:Button label="Feed RSS/Atom Feed" styleName="btn" click="openRSSFeed()"/>
+	</mx:HBox>
+	<mx:DataGrid id="grid"  width="100%" borderStyle="solid" borderSides="left top right" styleName="grid"
+			verticalGridLines="false" rowCount="{_list.length}" resizableColumns="true"
+			headerColors="[#FF0000, #FF0000]" dataProvider="{_list}" verticalScrollPolicy="off">
+		<mx:columns>
+			<mx:DataGridColumn sortable="false" headerText="Week" headerStyleName="headerStyle" id="wcid" width="90"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.WeekRenderer" />
+			<mx:DataGridColumn sortable="false" headerText="Member Costs" headerStyleName="headerStyle" id="mcid" width="115"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CostRenderer" />
+			<mx:DataGridColumn sortable="false" headerText="Contest Fee" headerStyleName="headerStyle" id="cfid" width="115"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.FeeRenderer" />
+            <mx:DataGridColumn sortable="false" headerText="All" headerStyleName="headerStyle" 
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AllStatusRenderer" />
+			<mx:DataGridColumn sortable="false" headerText="Launched" headerStyleName="headerStyle" id="aid"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ActualRenderer" />
+
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<tccomp:ClientList width="100%" id="client" puid="{_puid}" />
+	
+	<tccomp:ProjectList width="100%" id="project" puid="{_puid}" />
+	
+	<mx:Spacer width="100%" height="10" />
+	
+	<mx:HBox width="100%" height="45" horizontalAlign="left">
+		<mx:Label styleName="listStyle" fontSize="14" color="#ff0404" text="Pipeline Details" />		
+	</mx:HBox>
+	
+	<mx:Repeater dataProvider="{model.weekList}" id="rpt" width="100%">
+	    <tccomp:WeekPanel week="{rpt.currentItem}" width="100%" puid="{_puid}"/>		
+	</mx:Repeater>	
+</mx:VBox>
