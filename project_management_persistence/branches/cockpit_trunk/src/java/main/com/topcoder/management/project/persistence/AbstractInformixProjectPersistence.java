@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.management.project.BillingProjectConfigType;
+import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.DesignComponents;
@@ -590,8 +592,35 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query all project types.
      */
-    private static final DataType[] QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+    private static final DataType[] QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+    /**
+     * Represents the SQL statement to query all billing project configuration types.
+     */
+    private static final String QUERY_ALL_BILLING_PROJECT_CONFIG_TYPES_SQL = "SELECT "
+            + "client_billing_config_type_id, name, description FROM client_billing_config_type_lu";
+
+    /**
+     * Represents the column types for the result set which is returned by executing the SQL
+     * statement to query all billing project configuration types.
+     */
+    private static final DataType[] QUERY_ALL_BILLING_PROJECT_CONFIG_TYPES_COLUMN_TYPES = new DataType[] {
+            Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+    /**
+     * Represents the SQL statement to query the billing project configurations for a billing
+     * project.
+     */
+    private static final String QUERY_ALL_BILLING_PROJECT_CONFIGS_SQL = "SELECT "
+            + "client_billing_config_type_id, value FROM client_billing_config where client_billing_id=?";
+
+    /**
+     * Represents the column types for the result set which is returned by executing the SQL
+     * statement to query billing project configurations for the specified billing project id.
+     */
+    private static final DataType[] QUERY_ALL_BILLING_PROJECT_CONFIGS_SQL_COLUMN_TYPES = new DataType[] {
+            Helper.LONG_TYPE, Helper.STRING_TYPE };
 
     /**
      * Represents the sql statement to query the sale status via id.
@@ -5722,5 +5751,136 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             closeConnection(conn);
         }
+    }
+
+     /**
+     * Gets an array of all billing project configuration types in the persistence. The billing
+     * project configuration types are stored in 'client_billing_config_type_lu' table.
+     * 
+     * @return An array of all BillingProjectConfigTypes in the persistence.
+     * @throws PersistenceException if error occurred while accessing the database.
+     */
+    public BillingProjectConfigType[] getAllBillingProjectConfigTypes() throws PersistenceException {
+        getLogger().log(Level.INFO, new LogMessage(null, null, "Enter getAllBillingProjectConfigTypes method."));
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            BillingProjectConfigType[] billingProjectConfigTypes = getAllBillingProjectConfigTypes(conn);
+            closeConnection(conn);
+            return billingProjectConfigTypes;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to getAllBillingProjectConfigTypes.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Gets an array of all billing project configuration types in the persistence. The project
+     * property types are stored in 'client_billing_config_type_lu' table.
+     * 
+     * @param conn the database connection
+     * @return An array of all BillingProjectConfigTypes in the persistence.
+     * @throws PersistenceException if error occurred while accessing the database.
+     */
+    private BillingProjectConfigType[] getAllBillingProjectConfigTypes(Connection conn) throws PersistenceException {
+
+        Object[][] rows = Helper.doQuery(conn, QUERY_ALL_BILLING_PROJECT_CONFIG_TYPES_SQL, new Object[] {},
+                QUERY_ALL_BILLING_PROJECT_CONFIG_TYPES_COLUMN_TYPES);
+
+        BillingProjectConfigType[] billingProjectConfigTypes = new BillingProjectConfigType[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create a new instance of BillingProjectConfigType class
+            billingProjectConfigTypes[i] = new BillingProjectConfigType(((Long) row[0]).longValue(), (String) row[1],
+                    (String) row[2]);
+        }
+
+        return billingProjectConfigTypes;
+    }
+
+    /**
+     * Gets an array of all the billing project configurations in the persistence. The billing
+     * project configurations are stored in 'client_billing_config' table.
+     * 
+     * 
+     * @param billingProjectId the id of the billing project.
+     * @return an array of all BillingProjectConfiguration.
+     * @throws PersistenceException if error occurred while accessing the database.
+     */
+    public BillingProjectConfiguration[] getAllBillingProjectConfigs(long billingProjectId) throws PersistenceException {
+        getLogger().log(Level.INFO, new LogMessage(null, null, "Enter getAllBillingProjectConfigs method."));
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            BillingProjectConfiguration[] billingProjectConfigs = getAllBillingProjectConfigs(conn, billingProjectId);
+            closeConnection(conn);
+            return billingProjectConfigs;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to getAllBillingProjectConfigs.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Gets an array of all the billing project configurations in the persistence. The billing
+     * project configurations are stored in 'client_billing_config' table.
+     * 
+     * @param conn the database connection.
+     * @param billingProjectId the ID of the billing project.
+     * @return an array of retrieved BillingProjectConfigurations
+     * @throws PersistenceException if any error occurred while accessing database.
+     */
+    private BillingProjectConfiguration[] getAllBillingProjectConfigs(Connection conn, long billingProjectId)
+            throws PersistenceException {
+        // find all billing project configs in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_ALL_BILLING_PROJECT_CONFIGS_SQL,
+                new Object[] { billingProjectId }, QUERY_ALL_BILLING_PROJECT_CONFIGS_SQL_COLUMN_TYPES);
+
+        BillingProjectConfigType[] allTypes = getAllBillingProjectConfigTypes();
+
+        BillingProjectConfiguration[] result = new BillingProjectConfiguration[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            long configTypeId = ((Long) row[0]).longValue();
+
+            // create a new instance of ProjectPropertyType class
+            result[i] = new BillingProjectConfiguration(getBillingProjectConfigType(allTypes, configTypeId),
+                    (String) row[1]);
+        }
+
+        return result;
+    }
+
+    /**
+     * Utility method to retrieve a BillingProjectConfigType from all the config types with a ID.
+     * 
+     * @param allTypes the array which contains all the config types.
+     * @param typeId the id of the billing project config type.
+     * @return the retrieved BillingProjectConfigType instance.
+     */
+    private BillingProjectConfigType getBillingProjectConfigType(BillingProjectConfigType[] allTypes, long typeId) {
+        for (BillingProjectConfigType type : allTypes) {
+            if (type.getId() == typeId) {
+                return type;
+            }
+        }
+
+        return null;
     }
 }
