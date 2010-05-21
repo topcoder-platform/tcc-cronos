@@ -247,6 +247,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
        
     }
 
@@ -395,6 +399,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -422,6 +430,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new ContestServiceException(e.getMessage(), e);
         }
         catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (PermissionServiceException e)
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -453,6 +465,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new ContestServiceException(e.getMessage(), e);
         }
         catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (PermissionServiceException e)
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -504,6 +520,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -938,6 +958,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -991,7 +1015,7 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
-        
+
     }
 
     /**
@@ -1014,6 +1038,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new ContestServiceException(e.getMessage(), e);
         }
         catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (PermissionServiceException e)
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -1134,6 +1162,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new ContestServiceException(e.getMessage(), e);
         }
         catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (PermissionServiceException e)
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -1447,6 +1479,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
         
     }
 
@@ -1609,6 +1645,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -1767,6 +1807,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
         
     }
@@ -1795,6 +1839,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new ContestServiceException(e.getMessage(), e);
         }
         catch (GeneralSecurityException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
+        catch (PermissionServiceException e)
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
@@ -1829,7 +1877,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
-        
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
     }
 
     /**
@@ -1859,6 +1910,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
        
     }
 
@@ -1884,6 +1939,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -1929,6 +1988,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -1970,6 +2033,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2003,6 +2070,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2031,6 +2102,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2056,6 +2131,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2089,6 +2168,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2114,6 +2197,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2169,6 +2256,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
         
     }
 
@@ -2199,6 +2290,7 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+
         
     }
 
@@ -2225,6 +2317,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2258,6 +2354,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2407,6 +2507,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+           throw new ContestServiceException(e.getMessage(), e);
+        }
         
     }
 
@@ -2435,6 +2539,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2458,6 +2566,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2490,6 +2602,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
         
     }
 
@@ -2514,6 +2630,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2549,6 +2669,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2636,6 +2760,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new ContestServiceException(e.getMessage(), e);
         }
+        catch (PermissionServiceException e)
+        {
+            throw new ContestServiceException(e.getMessage(), e);
+        }
         
     }
 
@@ -2664,6 +2792,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
+        catch (PermissionServiceException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
         
     }
 
@@ -2689,6 +2821,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
@@ -2721,6 +2857,10 @@ public class ContestServiceFacadeWebServiceBean implements ContestServiceFacadeW
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }
         catch (GeneralSecurityException e)
+        {
+            throw new PersistenceException(e.getMessage(), e, e.getMessage());
+        }
+        catch (PermissionServiceException e)
         {
             throw new PersistenceException(e.getMessage(), e, e.getMessage());
         }

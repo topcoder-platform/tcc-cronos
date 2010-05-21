@@ -1228,7 +1228,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if specified <code>contestId</code> is negative.
      */
     public StudioCompetition getContest(TCSubject tcSubject, long contestId) throws PersistenceException,
-            ContestNotFoundException {
+            ContestNotFoundException, PermissionServiceException {
         logger.debug("getContest (" + tcSubject + "," + contestId + ")");
 
         this.checkStudioContestPermission(tcSubject, contestId, true);
@@ -1255,11 +1255,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException fail to check or does not have the given permission
      */
     private void checkStudioContestPermission(TCSubject tcSubject, long contestId, boolean readonly)
-            throws PersistenceException {
+            throws PermissionServiceException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
 
             if (!studioService.checkContestPermission(contestId, readonly, tcSubject.getUserId())) {
-                throw new PersistenceException("No " + (readonly ? "Read" : "write") + "permission on contest");
+                throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
             }
         }
     }
@@ -1427,7 +1427,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if any of specified IDs is negative.
      */
     public void updateContestStatus(TCSubject tcSubject, long contestId, long newStatusId) throws PersistenceException,
-            StatusNotAllowedException, StatusNotFoundException, ContestNotFoundException {
+            StatusNotAllowedException, StatusNotFoundException, ContestNotFoundException, PermissionServiceException {
         logger.debug("updateContestStatus (" + tcSubject + "," + contestId + "," + newStatusId + ")");
 
         checkStudioContestPermission(tcSubject, contestId, false);
@@ -1498,7 +1498,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if any of specified IDs is negative.
      */
     public void addDocumentToContest(TCSubject tcSubject, long documentId, long contestId) throws PersistenceException,
-            ContestNotFoundException {
+            ContestNotFoundException, PermissionServiceException {
         logger.debug("addDocumentToContest (" + tcSubject + "," + documentId + "," + contestId + ")");
 
         checkStudioContestPermission(tcSubject, contestId, false);
@@ -1522,7 +1522,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if the specified argument is <code>null</code>.
      */
     public void removeDocumentFromContest(TCSubject tcSubject, UploadedDocument document) throws PersistenceException,
-            DocumentNotFoundException {
+            DocumentNotFoundException, PermissionServiceException {
         logger.debug("removeDocumentToContest (" + tcSubject + "," + document.getDocumentId() + ")");
 
         checkStudioContestPermission(tcSubject, document.getContestId(), false);
@@ -1548,7 +1548,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if the specified ID is negative.
      */
     public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject, long contestId)
-            throws PersistenceException, ContestNotFoundException {
+            throws PersistenceException, ContestNotFoundException, PermissionServiceException {
         logger.debug("retrieveSubmissionsForContest (" + tcSubject + "," + contestId + ")");
 
         checkStudioContestPermission(tcSubject, contestId, true);
@@ -1566,11 +1566,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException fail to check or does not have the given permission
      */
     private void checkStudioSubmissionPermission(TCSubject tcSubject, long submissionId, boolean readonly)
-            throws PersistenceException {
+            throws PermissionServiceException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
 
             if (!studioService.checkSubmissionPermission(submissionId, false, tcSubject.getUserId())) {
-                throw new PersistenceException("No " + (readonly ? "Read" : "write") + "permission on contest");
+                throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
             }
         }
     }
@@ -1588,7 +1588,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
      * @throws IllegalArgumentWSException if the specified argument is <code>null</code>.
      */
-    public void updateSubmission(TCSubject tcSubject, SubmissionData submission) throws PersistenceException {
+    public void updateSubmission(TCSubject tcSubject, SubmissionData submission) throws PersistenceException, PermissionServiceException {
         logger.debug("updateSubmission (" + tcSubject + "," + submission.getSubmissionId() + ")");
 
         checkStudioSubmissionPermission(tcSubject, submission.getSubmissionId(), false);
@@ -1610,7 +1610,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws UserNotAuthorizedException if the caller is not authorized to call this operation.
      * @throws IllegalArgumentWSException if the <code>submissionId</code> is negative.
      */
-    public void removeSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException {
+    public void removeSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException, PermissionServiceException {
         logger.debug("removeSubmission (" + tcSubject + "," + submissionId + ")");
 
         checkStudioSubmissionPermission(tcSubject, submissionId, false);
@@ -1826,7 +1826,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *         <code>null</code> if such a submission is not found.
      * @throws PersistenceException if any error occurs during the retrieval.
      */
-    public SubmissionData retrieveSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException {
+    public SubmissionData retrieveSubmission(TCSubject tcSubject, long submissionId) throws PersistenceException, PermissionServiceException {
         logger.debug("retrieveSubmission");
 
         checkStudioSubmissionPermission(tcSubject, submissionId, true);
@@ -1906,7 +1906,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      */
     public void purchaseSubmission(TCSubject tcSubject, long submissionId, SubmissionPaymentData submissionPaymentData,
-            String securityToken) throws PersistenceException {
+            String securityToken) throws PersistenceException, PermissionServiceException {
         logger.debug("purchaseSubmission");
 
         checkStudioSubmissionPermission(tcSubject, submissionId, false);
@@ -1951,7 +1951,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when getting contest.
      */
     private List<ContestPaymentData> getContestPayments(TCSubject tcSubject, long contestId)
-            throws PersistenceException {
+            throws PersistenceException, PermissionServiceException {
         logger.debug("getContestPayments");
 
         this.checkStudioContestPermission(tcSubject, contestId, true);
@@ -1972,7 +1972,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when updating contest.
      * @throws IllegalArgumentException if the specified argument is <code>null</code>.
      */
-    private void editContestPayment(TCSubject tcSubject, ContestPaymentData contestPayment) throws PersistenceException {
+    private void editContestPayment(TCSubject tcSubject, ContestPaymentData contestPayment) throws PersistenceException, PermissionServiceException {
         logger.debug("editContestPayments");
 
         this.checkStudioContestPermission(tcSubject, contestPayment.getContestId(), false);
@@ -1992,7 +1992,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return <code>true</code> if requested contest payment was removed successfully; <code>false</code> otherwise.
      * @throws PersistenceException if any error occurs when removing contest.
      */
-    public boolean removeContestPayment(TCSubject tcSubject, long contestId) throws PersistenceException {
+    public boolean removeContestPayment(TCSubject tcSubject, long contestId) throws PersistenceException, PermissionServiceException {
         logger.debug("removeContestPayments");
 
         this.checkStudioContestPermission(tcSubject, contestId, false);
@@ -2030,7 +2030,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when setting placement.
      */
     public void setSubmissionPlacement(TCSubject tcSubject, long submissionId, int placement)
-            throws PersistenceException {
+            throws PersistenceException, PermissionServiceException {
         logger.debug("setSubmissionPlacement");
 
         this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
@@ -2051,7 +2051,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param prizeId a <code>long</code> providing the ID of a prize.
      * @throws PersistenceException if any error occurs when setting submission prize.
      */
-    public void setSubmissionPrize(TCSubject tcSubject, long submissionId, long prizeId) throws PersistenceException {
+    public void setSubmissionPrize(TCSubject tcSubject, long submissionId, long prizeId) throws PersistenceException, PermissionServiceException {
         logger.debug("setSubmissionPrize");
 
         this.checkStudioSubmissionPermission(tcSubject, submissionId, true);
@@ -2071,7 +2071,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param submissionId a <code>long</code> providing the ID of a submission to be marked for purchase.
      * @throws PersistenceException if any error occurs when marking for purchase.
      */
-    public void markForPurchase(TCSubject tcSubject, long submissionId) throws PersistenceException {
+    public void markForPurchase(TCSubject tcSubject, long submissionId) throws PersistenceException, PermissionServiceException {
         logger.debug("markForPurchase");
 
         this.checkStudioSubmissionPermission(tcSubject, submissionId, false);
@@ -2144,7 +2144,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param contestId a <code>long</code> providing the ID of a contest to delete.
      * @throws PersistenceException if any other error occurs.
      */
-    public void deleteContest(TCSubject tcSubject, long contestId) throws PersistenceException {
+    public void deleteContest(TCSubject tcSubject, long contestId) throws PersistenceException, PermissionServiceException {
         logger.debug("deleteContest");
 
         this.checkStudioContestPermission(tcSubject, contestId, false);
@@ -2186,7 +2186,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param contestId a <code>long</code> providing the ID of a contest to process missing payments for.
      * @throws PersistenceException if any error occurs when processing a payment.
      */
-    public void processMissingPayments(TCSubject tcSubject, long contestId) throws PersistenceException {
+    public void processMissingPayments(TCSubject tcSubject, long contestId) throws PersistenceException, PermissionServiceException {
         logger.debug("processMissingPayments");
 
         this.checkStudioContestPermission(tcSubject, contestId, false);
@@ -2537,7 +2537,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(TCSubject tcSubject, StudioCompetition competition,
-            CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
+            CreditCardPaymentData paymentData) 
+            throws PersistenceException, PaymentException, ContestNotFoundException, PermissionServiceException {
         logger.debug("processContestCreditCardPayment");
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
@@ -2577,7 +2578,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(TCSubject tcSubject, StudioCompetition competition,
-            TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
+            TCPurhcaseOrderPaymentData paymentData) 
+            throws PersistenceException, PaymentException, PermissionServiceException,
             ContestNotFoundException {
         logger.debug("processContestPurchaseOrderPayment");
         logger.info("StudioCompetition: " + competition);
@@ -2594,10 +2596,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
     private void checkBillingProjectPoNumberPermission(TCSubject tcSubject, String poNumber)
-            throws ContestServiceException, DAOException {
+            throws PermissionServiceException, ContestServiceException, DAOException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             if (!billingProjectDAO.checkPoNumberPermission(getUserName(tcSubject), poNumber)) {
-                throw new ContestServiceException("No permission on poNumber " + poNumber);
+                throw new PermissionServiceException("No permission on poNumber " + poNumber);
             }
         }
     }
@@ -2633,7 +2635,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     private ContestPaymentResult processContestPaymentInternal(TCSubject tcSubject, StudioCompetition competition,
-            PaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
+            PaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException, PermissionServiceException {
         logger.info("StudioCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.info("tcSubject: " + tcSubject.getUserId());
@@ -2847,7 +2849,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
-            SoftwareCompetition competition, CreditCardPaymentData paymentData) throws ContestServiceException {
+            SoftwareCompetition competition, CreditCardPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processContestCreditCardSale");
 
         return processContestSaleInternal(tcSubject, competition, paymentData);
@@ -2869,7 +2871,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1682 changed return value
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
-            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException {
+            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processPurchaseOrderSale");
 
         return processContestSaleInternal(tcSubject, competition, paymentData);
@@ -2899,7 +2901,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1682 changed return value
      */
     private SoftwareContestPaymentResult processContestSaleInternal(TCSubject tcSubject,
-            SoftwareCompetition competition, PaymentData paymentData) throws ContestServiceException {
+            SoftwareCompetition competition, PaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.info("tcSubject: " + tcSubject.getUserId());
@@ -3171,7 +3173,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public PaymentResult processSubmissionCreditCardPayment(TCSubject tcSubject,
             CompletedContestData completedContestData, CreditCardPaymentData paymentData) throws PaymentException,
-            PersistenceException {
+            PersistenceException, PermissionServiceException {
         logger.debug("processSubmissionCreditCardPayment");
 
         return processSubmissionPaymentInternal(tcSubject, completedContestData, paymentData);
@@ -3203,7 +3205,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public PaymentResult processSubmissionPurchaseOrderPayment(TCSubject tcSubject,
             CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
-            PersistenceException {
+            PersistenceException, PermissionServiceException {
         logger.debug("processSubmissionPurchaseOrderPayment");
 
         return processSubmissionPaymentInternal(tcSubject, completedContestData, paymentData);
@@ -3244,7 +3246,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private PaymentResult processSubmissionPaymentInternal(TCSubject tcSubject,
             CompletedContestData completedContestData, PaymentData paymentData) throws PaymentException,
-            PersistenceException {
+            PersistenceException, PermissionServiceException {
         PaymentResult result = null;
 
         try {
@@ -3399,7 +3401,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return a <code>boolean</code> true if successful, else false.
      * @throws PersistenceException if any error occurs when retrieving/updating the data.
      */
-    public boolean rankSubmissions(TCSubject tcSubject, long[] submissionIdsInRankOrder) throws PersistenceException {
+    public boolean rankSubmissions(TCSubject tcSubject, long[] submissionIdsInRankOrder) throws PersistenceException, PermissionServiceException {
         logger.debug("rankSubmissions");
 
         try {
@@ -3430,7 +3432,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when retrieving/updating the data.
      */
     public boolean updateSubmissionsFeedback(TCSubject tcSubject, SubmissionFeedback[] feedbacks)
-            throws PersistenceException {
+            throws PersistenceException, PermissionServiceException {
         logger.debug("updateSubmissionsFeedback");
 
         try {
@@ -3670,7 +3672,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since TopCoder Service Layer Integration 3 Assembly
      */
-    public SoftwareCompetition getFullProjectData(TCSubject tcSubject, long projectId) throws ContestServiceException {
+    public SoftwareCompetition getFullProjectData(TCSubject tcSubject, long projectId) throws ContestServiceException, PermissionServiceException {
         logger.debug("getFullProjectData");
 
         try {
@@ -3706,10 +3708,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
     private void checkSoftwareProjectPermission(TCSubject tcSubject, long tcDirectProjectId, boolean readOnly)
-            throws ContestServiceException {
+            throws PermissionServiceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             if (!projectServices.checkProjectPermission(tcDirectProjectId, readOnly, tcSubject.getUserId())) {
-                throw new ContestServiceException("No " + (readOnly ? "read" : "write") + " permission on project");
+                throw new PermissionServiceException("No " + (readOnly ? "read" : "write") + " permission on project");
             }
         }
     }
@@ -3721,10 +3723,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param tcDirectProjectId the project id
      * @throws PersistenceException if user(not admin) does not have the permission
      */
-    private void checkStudioProjectPermission(TCSubject tcSubject, long tcDirectProjectId) throws PersistenceException {
+    private void checkStudioProjectPermission(TCSubject tcSubject, long tcDirectProjectId) throws PermissionServiceException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             if (!studioService.checkProjectPermission(tcDirectProjectId, true, tcSubject.getUserId())) {
-                throw new PersistenceException("No read permission on project");
+                throw new PermissionServiceException("No read permission on project");
             }
         }
     }
@@ -3736,13 +3738,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
     private void checkSoftwareContestPermission(TCSubject tcSubject, long contestId, boolean readOnly)
-            throws ContestServiceException {
+            throws PermissionServiceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             if (!projectServices.checkContestPermission(contestId, readOnly, tcSubject.getUserId())) {
                 if (readOnly) {
-                    throw new ContestServiceException("No read permission on project");
+                    throw new PermissionServiceException("No read permission on project");
                 } else {
-                    throw new ContestServiceException("No write permission on project");
+                    throw new PermissionServiceException("No write permission on project");
                 }
             }
         }
@@ -3757,13 +3759,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws DAOException fail to checking permission
      */
     private void checkStudioBillingProjectPermission(TCSubject tcSubject, ContestData contestData)
-            throws PersistenceException, DAOException, ContestNotFoundException {
+            throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             String userName;
             try {
                 userName = getUserName(tcSubject);
             } catch (ContestServiceException e) {
-                throw new PersistenceException("Fail to get user-handle");
+                throw new PermissionServiceException("Fail to get user-handle");
             }
            if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
       
@@ -3774,7 +3776,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
 
                 if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
-                    throw new PersistenceException("No permission on billing project " + contestData.getBillingProject());
+                    throw new PermissionServiceException("No permission on billing project " + contestData.getBillingProject());
                 }
            }
         }
@@ -3788,7 +3790,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if user(not admin) does not have the permission
      */
     private void checkBillingProjectPermission(TCSubject tcSubject, SoftwareCompetition contest)
-            throws ContestServiceException, DAOException {
+            throws PermissionServiceException, DAOException, ContestServiceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
 
@@ -3807,7 +3809,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
                 long clientProjectId = Long.parseLong(billingProject);
                 if (!billingProjectDAO.checkClientProjectPermission(getUserName(tcSubject), clientProjectId)) {
-                    throw new ContestServiceException("No permission on billing project " + clientProjectId);
+                    throw new PermissionServiceException("No permission on billing project " + clientProjectId);
                 }
             }
         }
@@ -3862,7 +3864,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId) throws ContestServiceException {
+            long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
         logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject.getUserId() + ", tcDirectProjectId ="
                 + tcDirectProjectId + "]");
 
@@ -4068,7 +4070,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if any error occurs
      */
     private void autoCreateDevContest(TCSubject tcSubject, SoftwareCompetition designContest, long tcDirectProjectId,
-            SoftwareCompetition devContest) throws DatatypeConfigurationException, ContestServiceException {
+            SoftwareCompetition devContest) throws DatatypeConfigurationException, ContestServiceException, PermissionServiceException {
         devContest.setAssetDTO(designContest.getAssetDTO());
         devContest.getProjectHeader().getProperties().putAll(
                 designContest.getDevelopmentProjectHeader().getProperties());
@@ -4219,7 +4221,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId) throws ContestServiceException {
+            long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
         logger.debug("updateSoftwareContest");
 
         try {
@@ -4630,7 +4632,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since TCCC-1219
      */
     public boolean updateSubmissionUserRank(TCSubject tcSubject, long submissionId, int rank, Boolean isRankingMilestone)
-            throws PersistenceException {
+            throws PersistenceException, PermissionServiceException {
         logger.debug("updateSubmissionUserRank (tcSubject = " + tcSubject.getUserId() + ", " + submissionId + "," + rank + "," + isRankingMilestone + ")");
 
         try {
@@ -4952,7 +4954,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BURG-1716
      */
     public SoftwareCompetition getSoftwareContestByProjectId(TCSubject tcSubject, long projectId)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException {
         logger.debug("getSoftwareContestByProjectId (tcSubject = " + tcSubject.getUserId() + ", " + projectId + ")");
 
         SoftwareCompetition contest = new SoftwareCompetition();
@@ -6028,7 +6030,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.1
      */
     public List<SubmissionData> getMilestoneSubmissionsForContest(TCSubject tcSubject, long contestId)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException {
         String methodName = "getMilestoneSubmissionsForContest";
         logger.info("Enter: " + methodName);
 
@@ -6068,7 +6070,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.1
      */
     public List<SubmissionData> getFinalSubmissionsForContest(TCSubject tcSubject, long contestId)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException{
         String methodName = "getFinalSubmissionsForContest";
         logger.info("Enter: " + methodName);
 
@@ -6109,7 +6111,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.1
      */
     public void setSubmissionMilestonePrize(TCSubject tcSubject, long submissionId, long milestonePrizeId)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException {
         String methodName = "setSubmissionMilestonePrize";
         logger.info("Enter: " + methodName);
 
@@ -6744,7 +6746,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private long createNewVersionForDesignDevContest(TCSubject tcSubject, long projectId, long tcDirectProjectId,
             boolean autoDevCreating, XMLGregorianCalendar startDate, boolean minorVersion)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException {
         try {
             //0.check the permission first
             checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
@@ -6860,7 +6862,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if any error occurs
      */
     public long createNewVersionForDesignDevContest(TCSubject tcSubject, long projectId, long tcDirectProjectId,
-            boolean autoDevCreating, boolean minorVersion) throws ContestServiceException {
+            boolean autoDevCreating, boolean minorVersion) throws ContestServiceException, PermissionServiceException {
         logger.debug("createNewVersionForDesignDevContest with parameter [TCSubject " + tcSubject.getUserId() + ", projectId =" + projectId
                      + ", tcDirectProjectId =" +tcDirectProjectId+", autoDevCreating="+ autoDevCreating +"].");
 
@@ -6885,7 +6887,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException if any error occurs during repost
      */
     public long reOpenSoftwareContest(TCSubject tcSubject, long projectId, long tcDirectProjectId)
-            throws ContestServiceException {
+            throws ContestServiceException, PermissionServiceException {
         logger.debug("reOpenSoftwareContest with parameter [TCSubject " + tcSubject.getUserId() + ", projectId =" + projectId + ", tcDirectProjectId =" +tcDirectProjectId+"].");
 
         long reOpenContestId = 0;
