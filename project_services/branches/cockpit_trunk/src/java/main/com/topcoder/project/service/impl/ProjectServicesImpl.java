@@ -2138,12 +2138,14 @@ public class ProjectServicesImpl implements ProjectServices {
 
             long screenTemplateId = 0L;
             long reviewTemplateId = 0L;
+            long approvalTemplateId = 0L;
             long projectTypeId = projectHeader.getProjectCategory().getId();
 
             try
             {
                 screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
                 reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             }
             catch (Exception e)
             {
@@ -2151,8 +2153,40 @@ public class ProjectServicesImpl implements ProjectServices {
                 Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
                 screenTemplateId = projectManager.getScorecardId(6, 1);
                 reviewTemplateId = projectManager.getScorecardId(6, 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             }
 
+            // Start BUGR-3616
+            // get billing project id from the project information
+            String billingProject = projectHeader.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+            long billingProjectId = 0;
+
+            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
+                billingProjectId = Long.parseLong(billingProject);
+            }
+
+            // check whether billing project id requires approval phase
+            boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+
+            if (!requireApproval) {
+                // remove the approval phase from the end if not required
+                Phase lastPhase = newProjectPhases.getAllPhases()[newProjectPhases.getAllPhases().length - 1];
+
+                if (lastPhase.getPhaseType().getName().equalsIgnoreCase("Approval")) {
+
+                    newProjectPhases.removePhase(lastPhase);
+
+                    Util.log(logger, Level.DEBUG, "Approval phase is removed since Approval required is"
+                            + requireApproval);
+
+                }
+            }
+
+            // set the project info of type "Approval Required"
+            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
+                    .valueOf(requireApproval));
+            // End BUGR-3616
 
             for (Phase p : newProjectPhases.getAllPhases()) {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -2189,6 +2223,11 @@ public class ProjectServicesImpl implements ProjectServices {
                     else if (p.getPhaseType().getName().equals("Appeals"))
                     {
                         p.setAttribute("View Response During Appeals", "No");
+                    }
+                    else if (p.getPhaseType().getName().equals("Approval"))
+                    {
+                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
+                       p.setAttribute("Reviewer Number", "1");
                     }
             }
 
