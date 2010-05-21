@@ -2216,9 +2216,9 @@ public class StudioServiceBean implements StudioService {
             }
         } catch (IllegalArgumentException e) {
             // do not reproduce any errors here
-            logError(e);
+            handlePersistenceError("Error in uploading docuemtn.", e);
         } catch (ContestManagementException e) {
-            logError(e);
+            handlePersistenceError("Error in uploading docuemtn.", e);
         }
 
         // return uploaded document
