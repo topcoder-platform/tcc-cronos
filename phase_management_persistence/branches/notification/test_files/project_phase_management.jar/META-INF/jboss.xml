@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<jboss>
+  <enterprise-beans>
+    <session>
+        <ejb-name>Phase</ejb-name>
+        <jndi-name>PhaseHome</jndi-name>
+    </session>
+  </enterprise-beans>
+</jboss>
