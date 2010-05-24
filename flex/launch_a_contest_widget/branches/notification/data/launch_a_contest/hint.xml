@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch_contest>
+  <steps>
+    <details>
+      <fields>
+        <field name="Title">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Introduction">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Primary Goal">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Target Audience">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Brand Guidelines">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Like and Dislikes">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Criteria">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Colors">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Fonts">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Size">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Additional Requirements or Restrictions">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="File Description">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+      </fields>
+      <hints>
+        <hint field="Introduction"></hint>
+        <hint field="Primary Goals"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+      </hints>
+    </details>
+  </steps>
+</launch_contest>
