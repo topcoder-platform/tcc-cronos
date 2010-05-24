@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This is item renderer for submission list on the gallery view.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4) Change Notes:
+        - BUGR-2134: for multi submission MultiImageView is opened rather than MultiSubmissionView.
+
+     @author snow01, TCSASSEMBLER
+     @since Submission Viewer Overhaul
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="180"
+         height="206"
+         doubleClick="handleDoubleClick(event)"
+         doubleClickEnabled="true"
+         paddingLeft="14"
+         paddingRight="15"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
+    <mx:Script>
+        <![CDATA[
+            import mx.collections.ArrayCollection;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ThumbnailGalleryDataModel;
+
+            /**
+             * Reference to the gallery view model class.
+             */
+            //[Bindable]
+            //private var model:ThumbnailGalleryDataModel=ThumbnailGalleryDataModel.instance;
+
+            /**
+             * Event handler for double click on submission.
+             *
+             * Double click opens another view depending on the type of desired view.
+             * 
+             * Updated for Version 1.0.1
+             *    - BUGR-2134: for multi image submission, we first show MultiImageView rather than MultiSubmissionView
+             *
+             * @param event mouse event.
+             */
+            private function handleDoubleClick(event:MouseEvent):void {
+                data.parentModel.setCurrentSubmission(data.id);
+                if (data.hasOwnProperty("multi") && data.multi == true) {
+                    data.parentModel.selectedIndex=2;
+                    data.parentModel.imageList=data.fullsizepreviewList as ArrayCollection;
+                    if (data.parentModel.imageList && data.parentModel.imageList.length > 0) {
+                        data.parentModel.selectedImage=data.parentModel.imageList.getItemAt(0) as String;
+                    } else {
+                        data.parentModel.selectedImage="";
+                    }
+                    
+                } else {
+                    data.parentModel.selectedIndex=1;
+                }
+            }
+
+            /**
+             * Handler for showing preview of this submission.
+             */
+            private function handleShowPrev():void {
+                data.parentModel.selectedSubmission=this.data;
+            }
+
+            /**
+             * Handler for hiding preview of this submission.
+             */
+            private function handleHidePrev():void {
+                data.parentModel.selectedSubmission=null;
+            }
+
+            /**
+             * Handler for thumb up/down.
+             */
+            private function updateUpDown(up:Boolean):void {
+                if (!data.parentModel.isRankMode || data.parentModel.isPermissionReadOnly()) {
+                    return;
+                }
+                
+                if (data.hasOwnProperty("upDown")) {
+                    if (data.upDown == "up" && up) {
+                        upData.selected=false;
+                        data.upDown="";
+                        return;
+                    } else if (data.upDown == "down" && !up) {
+                        downData.selected=false;
+                        data.upDown="";
+                        return;
+                    }
+                }
+
+                data.upDown=(up) ? "up" : "down";
+                if (up) {
+                    downData.selected=false;
+                    upData.selected=true;
+                } else {
+                    upData.selected=false;
+                    downData.selected=true;
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Canvas width="151"
+               height="151"
+               borderStyle="solid">
+        <tc:TCImage id="thumbnail"
+               width="100%"
+               height="100%"
+               source="{data.thumbnail}"/>
+        <!--<mx:Canvas id="thumbnail"
+                   width="100%"
+                   height="100%"
+                   backgroundImage="{data.thumbnail}"
+                   backgroundSize="100%"/>-->
+        <mx:Canvas width="18"
+                   height="19"
+                   backgroundSize="100%"
+                   bottom="0"
+                   left="130"
+                   visible="{data.purchased == true}"
+                   styleName="purchaseLogo"/>
+    </mx:Canvas>
+    <mx:HBox width="100%"
+             horizontalAlign="center">
+        <mx:Label text="{data.id}"
+                  styleName="normalText"/>
+        <mx:Button id="upData"
+                   styleName="{data.parentModel.isRankMode ? 'upThumb' : 'upThumbDisabled'}"
+                   click="updateUpDown(true)"
+                   selected="{data.upDown == 'up'}"
+                   toolTip="Feel Good"/>
+        <mx:Button id="downData"
+                   styleName="{data.parentModel.isRankMode ? 'downThumb' : 'downThumbDisabled'}"
+                   click="updateUpDown(false)"
+                   selected="{data.upDown == 'down'}"
+                   toolTip="Not Interested"/>
+        <mx:Button id="showPrev"
+                   styleName="showPrev"
+                   mouseOver="handleShowPrev()"
+                   mouseOut="handleHidePrev()"/>
+    </mx:HBox>
+</mx:VBox>
