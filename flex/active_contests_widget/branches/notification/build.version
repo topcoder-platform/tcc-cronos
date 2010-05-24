@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Active Contents Widget
+component.distfilename=active_contests_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.studioactivecontests
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/studioactivecontests
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
