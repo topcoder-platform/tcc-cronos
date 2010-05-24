@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the item renderer for contest group.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           creationComplete="init()"
+           minWidth="390"
+           dragExit="cleanMark(event)"
+           dragEnter="checkDrag(event)"
+           mouseUp="handleMouseUp(event)"
+           dragComplete="dragComplete(event)"
+           dragDrop="handleDrop(event)"
+           horizontalScrollPolicy="off"
+           xmlns:renderer="com.topcoder.flex.widgets.widgetcontent.projectwidget.renderer.*"
+           xmlns:flex="com.topcoder.flex.widgets.widgetcontent.projectwidget.*">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
+            import mx.containers.VBox;
+            import mx.effects.Tween;
+            import mx.core.UIComponent;
+            import mx.core.DragSource;
+            import mx.controls.TileList;
+            import mx.managers.DragManager;
+            import mx.events.DragEvent;
+
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var _parentWidget:ProjectWidget=null;
+            
+            /**
+             * Gets the reference to the instance of the parent Project Widget class.
+             * 
+             * @return  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public function get parentWidget():ProjectWidget {
+                return this._parentWidget;
+            }
+            
+            /**
+             * Sets the reference to the instance of the parent Project Widget class.
+             * 
+             * It additionally sets the parentWidget instance to the child elements.
+             * 
+             * @param p  the reference to the instance of the parent Project Widget class.
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            public function set parentWidget(p:ProjectWidget):void {
+                this._parentWidget=p;
+                
+                if (this.shower) {
+                    this.shower.parentWidget=this._parentWidget;
+                }
+            }
+
+            /**
+             * Contest group for this renderer.
+             */
+            [Bindable]
+            private var cate:Cate;
+
+            /**
+             * + icon for expanding the contest group.
+             */
+            [Embed(source="../../assets/image/winMax.png")]
+            [Bindable]
+            private var winMax:Class;
+
+            /**
+             * - icon for collapsing the contest group.
+             */
+            [Embed(source="../../assets/image/winMin.png")]
+            [Bindable]
+            private var winMin:Class;
+
+            /**
+             * True if contest group is expanded else false.
+             */
+            [Bindable]
+            private var open:Boolean=true;
+
+            /**
+             * Original height of the contest group.
+             */
+            private var orgHeight:Number;
+
+            /**
+             * Indicates if contest group is getting dragged.
+             */
+            public var isDrag:Boolean=false;
+
+            /**
+             * Indices if drag is going to start.
+             */
+            private var onDrag:Boolean=false;
+
+            /**
+             * Indicates whether contest group was last open.
+             */
+            private var lastOpen:Boolean=false;
+
+            /**
+             * Handler that gets called on initialization of this contest group.
+             */
+            private function init():void {
+                shower.parentWidget=parentWidget;
+                this.orgHeight=shower.height;
+            }
+
+            /**
+             * Sets the data for this contest group.
+             */
+            override public function set data(value:Object):void {
+                if (value is Cate) {
+                    cate=value as Cate;
+                } else {
+                    cate=new Cate();
+                }
+                super.data=value;
+            }
+
+            /**
+             * Event handler for mouse down on contest group.
+             *
+             * @param event mouse event.
+             */
+            public function down(event:MouseEvent):void {
+                onDrag=true;
+            }
+
+            /**
+             * Event handler for drag of contest group.
+             *
+             * @param event mouse event.
+             */
+            private function doDrag(event:MouseEvent):void {
+                var par:ContestRenderer=event.currentTarget.parent as ContestRenderer;
+
+                if (event.buttonDown && par && onDrag) {
+                    var idx:int=parentWidget.model.getListIndex(data);
+                    if (idx != -1) {
+                        if (!parentWidget.model.doDrag) {
+                            parentWidget.model.dragSourceIdx=idx;
+                            parentWidget.model.doDrag=true;
+                            parentWidget.model.closeAll=!parentWidget.model.closeAll;
+                        } else {
+                            return;
+                        }
+                        //						trace("drag source is:" + parentWidget.model.dragSourceIdx);
+                        var ds:DragSource=new DragSource();
+
+                        var bm:BitmapData=new BitmapData(this.width, this.height);
+                        bm.draw(this);
+                        var image:UIComponent=new UIComponent();
+                        image.addChild(new Bitmap(bm));
+
+                        ds.addData(this, 'contest');
+                        DragManager.doDrag(this, ds, event, image);
+                    }
+                }
+            }
+
+            /**
+             * Clears the drag mark if any.
+             *
+             * @param event drag event.
+             */
+            private function cleanMark(event:DragEvent):void {
+                if (event.currentTarget == event.dragInitiator && event.dragSource && event.dragSource.hasFormat('contest')) {
+                    this.alpha=0.2;
+                }
+                arrow.visible=false;
+            }
+
+            /**
+             * Handle drop of this contest group.
+             *
+             * @param event drag event.
+             */
+            private function handleDrop(event:DragEvent):void {
+                if (event.dragSource && event.dragSource.hasFormat('contest')) {
+                    var source:ContestRenderer=event.dragInitiator as ContestRenderer;
+                    parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
+                    if (source && source.data != data) {
+                        var i:int=parentWidget.model.getListIndex(data);
+                        if (i >= 0 && i < parentWidget.model.dragSourceIdx) {
+                            parentWidget.model.adjustList(source.data, data, true);
+                        } else if (i > parentWidget.model.dragSourceIdx) {
+                            parentWidget.model.adjustList(source.data, data, false);
+                        }
+
+                    }
+                }
+
+                parentWidget.model.doDrag=false;
+            }
+
+            /**
+             * Handler for drag complete event.
+             *
+             * @param event drag event.
+             */
+            private function dragComplete(event:DragEvent):void {
+                parentWidget.model.doDrag=false;
+                parentWidget.model.stopDrag=!parentWidget.model.stopDrag;
+            }
+
+            /**
+             * Event handler that gets called during the drag.
+             *
+             * @param event drag event.
+             */
+            private function checkDrag(event:DragEvent):void {
+                if (event.dragSource && event.dragSource.hasFormat('contest') && event.currentTarget != event.dragInitiator) {
+                    DragManager.acceptDragDrop(this);
+                    DragManager.showFeedback("move");
+                    parentWidget.model.canShowArrow=!parentWidget.model.canShowArrow;
+                    var i:int=parentWidget.model.getListIndex(data);
+                    if (i >= 0 && i < parentWidget.model.dragSourceIdx) {
+                        arrow.y=-6;
+                    } else if (i > parentWidget.model.dragSourceIdx) {
+                        arrow.y=height - 6;
+                    }
+
+                    arrow.visible=true;
+                }
+            }
+
+            /**
+             * Sets the arrow visibility to false.
+             *
+             * @param nouse parameter not in use.
+             */
+            public function set setArrow(nouse:Boolean):void {
+                this.arrow.visible=false;
+            }
+
+            /**
+             * Event handler for contest group bar click.
+             */
+            public function handleClick():void {
+                if (parentWidget.model.doDrag) {
+                    return;
+                }
+                open=!open;
+                winCtrlBut.source=(open) ? winMin : winMax;
+
+                if (open) {
+                    shower.includeInLayout=true;
+                    shower.visible=true;
+                    shower.parentWidget=parentWidget;
+                    openEffect.heightTo=orgHeight;
+                    openEffect.play();
+                } else {
+                    var h2:Number=shower.height;
+                    closeEffect.heightFrom=h2;
+                    closeEffect.play();
+                }
+
+                var parents:VBox=this.parent as VBox;
+                parents.invalidateSize();
+            }
+
+            /**
+             * Animation effect event handler for hide of contest group - basically collapse of contest group.
+             */
+            public function handleEffectHide():void {
+                shower.includeInLayout=false;
+                shower.visible=false;
+            }
+
+            /**
+             * Closes the contest group.
+             *
+             * @param value not in use param.
+             */
+            public function set setCloseAll(value:Boolean):void {
+                lastOpen=open;
+                open=false;
+                winCtrlBut.source=winMax;
+                shower.includeInLayout=false;
+                shower.visible=false;
+            }
+
+            /**
+             * Event handler for drag interrupt.
+             *
+             * @param value parameter not in use.
+             */
+            public function set stop(value:Boolean):void {
+                open=!lastOpen;
+                onDrag=false;
+                handleClick();
+            }
+
+            /**
+             * Event handler for mouse up on contest group.
+             *
+             * @param event mouse event.
+             */
+            public function handleMouseUp(event:MouseEvent):void {
+                parentWidget.model.doDrag=false;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="parentWidget.model.canShowArrow"
+                destination="setArrow"/>
+    <mx:Binding source="parentWidget.model.closeAll"
+                destination="setCloseAll"/>
+    <mx:Binding source="parentWidget.model.stopDrag"
+                destination="stop"/>
+    <mx:Resize target="{shower}"
+               heightFrom="1"
+               duration="500"
+               id="openEffect"/>
+    <mx:Resize target="{shower}"
+               heightTo="1"
+               duration="500"
+               id="closeEffect"
+               effectEnd="handleEffectHide()"/>
+    <mx:HBox styleName="titleBar"
+             width="100%"
+             height="27"
+             mouseMove="doDrag(event)"
+             mouseDown="down(event)"
+             backgroundSize="100%"
+             id="title"
+             verticalScrollPolicy="off"
+             horizontalScrollPolicy="off"
+             buttonMode="true"
+             click="handleClick()">
+        <mx:Image width="16"
+                  height="16"
+                  id="winCtrlBut"
+                  source="{winMin}"
+                  buttonMode="true"
+                  useHandCursor="true"/>
+        <mx:Label text="{cate.label}"
+                  id="projectName"
+                  styleName="nameLabel"/>
+        <mx:Spacer width="100%"/>
+    </mx:HBox>
+    <flex:ContestShower x="0"
+                        y="30"
+                        width="100%"
+                        height="100%"
+                        id="shower"
+                        verticalScrollPolicy="off"
+                        paddingLeft="3"
+                        paddingRight="2"
+                        dataProvider="{cate.contests}"
+                        includeInLayout="true"
+                        visible="true"
+                        isTabMode="false"/>
+    <mx:Canvas width="11"
+               height="11"
+               id="arrow"
+               x="-11"
+               y="-6"
+               styleName="arrow"
+               visible="false"
+               includeInLayout="false"/>
+</mx:Canvas>

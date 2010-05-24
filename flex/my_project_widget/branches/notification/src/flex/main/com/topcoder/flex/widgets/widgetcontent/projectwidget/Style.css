@@ -1,0 +1,355 @@
+/* CSS file */
+.arrowBtnStyle {
+	skin: Embed("../assets/tab-slide-open.png");
+	up-skin: Embed("../assets/tab-slide-open.png");
+	over-skin: Embed("../assets/tab-slide-open-hover.png");
+	down-skin: Embed("../assets/tab-slide-open.png");
+	selected-up-skin: Embed("../assets/tab-slide-close.png");
+	selected-over-skin: Embed("../assets/tab-slide-close-hover.png");
+	selected-down-skin: Embed("../assets/tab-slide-close.png");
+}
+.button {
+	icon: Embed("../assets/arrow_right_icon.png");
+	font-weight: bold;
+	font-size: 11;
+	font-family: Arial;
+    themeColor: #AAAAAA;
+}
+.arrow {
+	background-image: Embed("../assets/arrow.png");
+	background-size: "100%";
+}
+
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Semibold.otf");
+	fontFamily: "Myriad Pro Semibold";    
+	fontWeight: bold;    
+	advancedAntiAliasing: true;
+}
+.ContestRowStyle
+{
+	border-style: none;
+	verticalGap: 0;
+	background-color: #ffffff;
+	/* background-image: Embed(source="../assets/image/contentBG.png",scaleGridTop="2",scaleGridLeft="2",scaleGridRight="260",scaleGridBottom="91"); */
+	paddingLeft: 7;
+	paddingRight: 7;
+	paddingTop: 2;
+	paddingBottom: 3;
+}
+.standerd {
+	color: #ff0000;
+	text-roll-over-color: #ff0000;
+	text-selected-color: #ff0000;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+.active {
+	icon: Embed(source="../assets/icon/active.png");
+	color: #95E840;
+	text-roll-over-color: #95E840;
+	text-selected-color: #95E840;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+
+.terminated {
+	icon: Embed(source="../assets/icon/terminated.png");
+	color: #000000;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+
+.completed {
+	icon: Embed(source="../assets/icon/completed.png");
+	color: #607FB2;
+	text-roll-over-color: #607FB2;
+	text-selected-color: #607FB2;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+
+.draft {
+	icon: Embed(source="../assets/icon/draft.png");
+	color: #ADADAD;
+	text-roll-over-color: #ADADAD;
+	text-selected-color: #ADADAD;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+.scheduled {
+	icon: Embed(source="../assets/icon/scheduled.png");
+	color: #9579C2;
+	text-roll-over-color: #9579C2;
+	text-selected-color: #9579C2;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+
+.danger {
+	icon: Embed(source="../assets/icon/in_danger.png");
+	color: #ff5F50;
+	text-roll-over-color: #ff5F50;
+	text-selected-color: #ff5F50;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	text-align: center;
+	padding-top: 5;
+	padding-bottom: 5;
+}
+
+
+.rowContent {
+	horizontal-gap: 0;
+	vertical-align: middle;
+	padding-top: 0; 
+}
+
+.linkBtn {
+	text-decoration: underline;
+	text-align: left;
+	color: #666666;
+	textRollOverColor: #ff0000;
+	font-family: "Myriad Pro Semibold";
+	font-size: 11;
+	font-weight: bold;
+	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	padding-left: 0;
+}
+
+.rowContentLabel {
+	font-size: 11;
+	text-align: center;
+	color: #1a1a1a;
+	font-family: "Myriad Pro Regular";
+}
+
+.rowContentLink {
+  text-align: center;
+  color: #666666;
+  font-family: "Myriad Pro Semibold";
+  font-size: 11;
+  font-weight: bold;
+  skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  padding-top: 0;
+  padding-bottom: 0;
+  textRollOverColor: #ff0000;
+}
+
+.bottomAlign {
+	vertical-align: bottom;
+	horizontal-align: center;
+}
+.title {
+	horizontal-gap: 0;
+	background-color: #ff0000;
+	color: #ffffff;
+	font-size: 11;
+	font-family: "Myriad Pro Semibold";
+	font-weight: bold;
+}
+
+.titleBar {
+	vertical-align: middle;
+	horizontal-gap: 10;
+	padding-left: 8;
+	padding-right: 11;
+	background-image:Embed(source="../assets/image/titleBG.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="257",scaleGridBottom="17"); 
+}
+.nameLabel {
+	padding-top: 0;
+	padding-left: 0;
+	color: #000000;
+	font-size: 15;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+
+.listStyle {
+	color: #000000;
+	font-size: 13;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+
+.projectNameStyle {
+	color: #000000;
+	font-size: 18;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+
+.normalStyle {
+    color: #000000;
+    font-size: 11;
+    font-weight: normal;
+    fontFamily: "Myriad Pro Regular";
+}
+
+.arrowRightBtnStyle{
+    icon: Embed(source="../assets/arrow_right_icon.png");
+    color: #000000;
+    font-size: 13;
+    font-weight: normal;
+    fontFamily: "Myriad Pro Regular";
+}
+
+.greyBtn {
+	skin: Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	over-skin: Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	up-skin:  Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	down-skin:  Embed(source="../assets/arrow-right-button.png",scaleGridTop="5",scaleGridLeft="4",scaleGridRight="121",scaleGridBottom="25");
+	font-family: "Myriad Pro Regular";
+	font-size: 11;
+	font-weight: normal;
+	color: #1a1a1a;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	padding-left: 5;
+	padding-right: 24;
+}
+
+.up {
+    skin: Embed("../assets/btn_top_arrow.png");
+    over-skin: Embed("../assets/btn_top_arrow_hover.png");
+    down-skin: Embed("../assets/btn_top_arrow_hover.png");   
+}
+
+.down {
+    skin: Embed("../assets/btn_bottom_arrow.png");
+    over-skin: Embed("../assets/btn_bottom_arrow_hover.png");
+    down-skin: Embed("../assets/btn_bottom_arrow_hover.png");    
+}
+.miniButton {
+    skin: Embed("../assets/date_chooser_icon.png");
+}
+.editBtn
+{
+	up-skin: Embed("../assets/image/EditButton_Up.png");
+	over-skin: Embed("../assets/image/EditButton_Up.png");
+	down-skin: Embed("../assets/image/EditButton_Up.png");
+}
+.rowContentBtn {
+  icon: Embed(source="../assets/icon/arrow_right_icon.png");
+  fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+  themeColor: #bbbbbb;
+  font-family: "Arial";
+  font-size: 11;
+  font-weight: bold;
+  color: #666666;
+  text-roll-over-color: #000000;
+  text-selected-color: #000000;
+  padding-left: 5;
+  padding-right: 12;
+  horizontal-gap: 4;
+}
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewPassedIcon {
+	skin: Embed("../assets/icon-review-passed.png");
+	up-skin: Embed("../assets/icon-review-passed.png");
+	over-skin: Embed("../assets/icon-review-passed.png");
+	down-skin: Embed("../assets/icon-review-passed.png");
+}
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewFailedIcon {
+	skin: Embed("../assets/icon-review-failed.png");
+	up-skin: Embed("../assets/icon-review-failed.png");
+	over-skin: Embed("../assets/icon-review-failed.png");
+	down-skin: Embed("../assets/icon-review-failed.png");
+}
+
+/**
+ * @since Spec Reviews Finishing Touches v1.0
+ */
+.reviewNeededIcon {
+	skin: Embed("../assets/icon-review-needed.png");
+	up-skin: Embed("../assets/icon-review-needed.png");
+	over-skin: Embed("../assets/icon-review-needed.png");
+	down-skin: Embed("../assets/icon-review-needed.png");
+}
+
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.assigningSpecReviewer {
+	color : #C1A100;
+}
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.passSpecReview {
+	color : #479B55;
+}
+/**
+ * @since Cockpit Spec Review - Stage 2 
+ */
+.failSpecReview {
+	color : #FF0000;
+}

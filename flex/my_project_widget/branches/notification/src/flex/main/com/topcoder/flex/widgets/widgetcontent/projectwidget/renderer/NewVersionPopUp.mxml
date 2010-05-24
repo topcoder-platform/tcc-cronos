@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow  xmlns:mx="http://www.adobe.com/2006/mxml"  title="Choose Versions" close="close()"
+	             layout="vertical" width="600" height="250" showCloseButton="true">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			[Bindable]private var __isDesignComponent:Boolean = false;
+			public function set isDesignComponent(value:Boolean):void {
+				__isDesignComponent = value;
+			}
+			public var createFunction :Function;
+			
+			private var minorVersion:Boolean = true;
+			private function change():void {
+				minorVersion = (versionsButtonGroup.selectedValue == "MINOR");
+			}
+			
+			private function close():void {
+				PopUpManager.removePopUp(this);
+			}
+			
+			private function create():void {
+				createFunction.call(this, __autoCreateDev, minorVersion);
+				close();
+			}
+			
+			private var __autoCreateDev:Boolean = false;
+			private function markAutoCreateDev():void {
+				__autoCreateDev = ckb.selected;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:RadioButtonGroup id="versionsButtonGroup" change="change();"/>
+	
+	<mx:VBox paddingLeft="20">
+		<mx:HBox>
+			<mx:RadioButton label="Minor: Choose this if you are doing a minor upgrade to the component.  For example, version 1.1 to 1.2." value="MINOR" group="{versionsButtonGroup}" selected="true"/>			
+		</mx:HBox>
+		<mx:HBox>
+			<mx:RadioButton label="Major: Choose this if you are doing a minor upgrade to the component.  For example, version 1.1 to 2.0." value="MAJOR" group="{versionsButtonGroup}" labelPlacement="right"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:CheckBox label="Create Corresponding Development contest?" id="ckb"
+				includeInLayout="{__isDesignComponent}" visible="{__isDesignComponent}" click="markAutoCreateDev()" />
+		</mx:HBox>
+	</mx:VBox>
+	
+	
+	<mx:ControlBar height="43" verticalAlign="middle" horizontalAlign="right">
+        <mx:Button label="Create Now" click="create();"/>
+        <mx:Button label="Cancel" click="close();" />
+    </mx:ControlBar>
+</mx:TitleWindow>
