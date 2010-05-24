@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The filter shower.
+     
+     Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Add logic to filter 'excluded status'
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         verticalGap="0"
+         creationComplete="init()">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.NumbericFilter;
+            import mx.containers.HBox;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.FilterCriteria;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.FilterPanel;
+            
+            private var model:Model;
+            
+            private var _puid:String;
+
+            public var filterPanel:FilterPanel;
+            
+            public function set puid(value:String):void {
+                _puid=value;
+                model=Model.getInstance(value);
+                model.addEventListener("updated", updateFilter);
+                model.navigateToMode(model.mode);
+            }
+            
+            private function init():void {
+                if (!model && _puid && _puid.length > 0) {
+                    puid=_puid;
+                }
+            }
+            
+            private function updateFilter(event:Event):void {
+                while (numChildren > 1) {
+                    removeChildAt(1);
+                }
+                var filter:FilterCriteria=model.filter;
+                if (filter.type && filter.type != model.typeValues[0]) {
+                    createFilterLabel("Type", filter.typeLabel, removeType);
+                }
+                if (filter.confidence && filter.confidence.length > 0 && !(filter.co[0] == 1 && filter.co[1] == 1 && filter.co[2] == 1) && !(filter.co[0] == 0 && filter.co[1] == 0 && filter.co[2] == 0)) {
+                    var word:String="Contests with confidence that is ";
+                    if (filter.co[0] == 1) {
+                        word+="equal ";
+                    }
+                    if (filter.co[1] == 1) {
+                        word+="lesser ";
+                    }
+                    if (filter.co[2] == 1) {
+                        word+="greater ";
+                    }
+                    word+="than/to " + filter.confidence;
+                    createFilterLabel("Confidence Filter", word, removeConfidence);
+                }
+                if (filter.excludeClients.length > 0) {
+                    var w:String=filter.excludeClients.join(", ");
+                    createFilterLabel("Exclude Client", w, removeClients);
+                }
+                if (filter.numFilter.length > 0) {
+                    for each (var nf:NumbericFilter in filter.numFilter) {
+                        var i:int=model.itemList.indexOf(nf.field);
+                        var f:String=model.fieldList[i] as String;
+                        var k:String=f + " Numeric Filter";
+                        var v:String=nf.minValue.toString() + " <= " + f + " <= " + nf.maxValue.toString();
+                        createFilterLabel(k, v, removeField);
+                    }
+                }
+                if (filter.project != null && filter.project.length > 0) {
+                    createFilterLabel("Project", filter.project, removeProject);
+                }
+                if (filter.client != null && filter.client.length > 0) {
+                    createFilterLabel("Client", filter.client, removeClient);
+                }
+                if (filter.resourceItem && filter.resourceItem.length > 0 && filter.resourceName && filter.resourceName.length > 0) {
+                    createFilterLabel(filter.resourceItem, filter.resourceName, removeResource);
+                }
+                if (filter.status != null && filter.status.length > 0) {
+                    createFilterLabel("Status", filter.status, removeStatus);
+                }
+                if (filter.category != null && filter.category.length > 0) {
+                    createFilterLabel("Category", filter.category, removeCategory);
+                }
+                  if (filter.cpname != null && filter.cpname.length > 0) {
+                    createFilterLabel("Billing", filter.cpname, removeBilling);
+                }
+
+                if (filter.name != null && filter.name.length > 0) {
+                    createFilterLabel("Name", filter.name, removeName);
+                }
+                if (filter.ca != null && filter.ca != "N/A") {
+                    createFilterLabel("Client Approval", filter.ca, removeCA);
+                }
+                if (filter.pa != null && filter.pa != "N/A") {
+                    createFilterLabel("Pricing Approval", filter.pa, removePA);
+                }
+                if (filter.psr != null && filter.psr != "N/A") {
+                    createFilterLabel("Passed Spec Review", filter.psr, removePSR);
+                }
+                if (filter.dc != null && filter.dc != "N/A") {
+                    createFilterLabel("Dependent Competitions", filter.dc, removeDC);
+                }
+                if (filter.repost != null && filter.repost != "N/A") {
+                    createFilterLabel("Repost", filter.repost, removeREPOST);
+                }
+                if (filter.ws != null && filter.ws != "N/A") {
+                    createFilterLabel("Wiki Specification", filter.ws, removeWS);
+                }
+                if (filter.excludedStatus && filter.excludedStatus.length > 0) {
+                	var st:String = "";
+                	for each(var s:String in filter.excludedStatus) {
+                		st += s + " ";
+                	}
+                	createFilterLabel("Exclude Status", st, removeECS);
+                }
+                title.visible=(numChildren > 1);
+	               if (filterPanel) filterPanel.updateView();
+            }
+            
+            private function removeProject(event:MouseEvent):void {
+                model.filter.project=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeResource(event:MouseEvent):void {
+                model.filter.resourceItem=null;
+                model.filter.resourceName=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeClient(event:MouseEvent):void {
+                model.filter.client=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeCategory(event:MouseEvent):void {
+                model.filter.category=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            private function removeBilling(event:MouseEvent):void {
+                model.filter.cpname=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+
+            private function removeStatus(event:MouseEvent):void {
+                model.filter.status=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeName(event:MouseEvent):void {
+                model.filter.name=null;
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeCA(event:MouseEvent):void {
+                model.filter.ca="N/A";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removePA(event:MouseEvent):void {
+                model.filter.pa="N/A";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removePSR(event:MouseEvent):void {
+                model.filter.psr="N/A";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeDC(event:MouseEvent):void {
+                model.filter.dc="N/A";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeREPOST(event:MouseEvent):void {
+                model.filter.repost="N/A";
+                
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function removeWS(event:MouseEvent):void {
+                model.filter.ws="N/A";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            private function createFilterLabel(lb1:String, lb2:String, removeAction:Function):void {
+                var hbox:HBox=new HBox();
+                hbox.styleName="normalBox";
+                var lb:Label=new Label();
+                lb.styleName="listStyle";
+                lb.text=lb1 + "    " + lb2 + "[";
+                var link:Label=new Label();
+                link.styleName="linkBtn";
+                link.text="remove filter";
+                link.data=lb1;
+                link.addEventListener(MouseEvent.CLICK, removeAction);
+                link.buttonMode=true;
+                link.mouseChildren=false;
+                link.useHandCursor=true;
+                var lbe:Label=new Label();
+                lbe.styleName="listStyle";
+                lbe.text="]";
+                hbox.addChild(lb);
+                hbox.addChild(link);
+                hbox.addChild(lbe);
+                this.addChild(hbox);
+            }
+            
+            public function removeType(event:MouseEvent):void {
+                model.filter.type=model.typeValues[0];
+                model.filter.typeLabel=model.typeLabels[0];
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            public function removeConfidence(event:MouseEvent):void {
+                model.filter.confidence="";
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            public function removeClients(event:MouseEvent):void {
+                model.filter.excludeClients=[];
+		if (filterPanel) filterPanel.updateView();
+                model.filterDetail();
+            }
+            
+            public function removeField(event:MouseEvent):void {
+                var f:String=event.currentTarget.data as String;
+                if (f) {
+                    f=f.substr(0, f.length - 15);
+                    for (var j:int=0; j < model.filter.numFilter.length; j++) {
+                        var nf:NumbericFilter=model.filter.numFilter[j] as NumbericFilter;
+                        if (model.itemList.indexOf(nf.field) == model.fieldList.indexOf(f)) {
+                            model.filter.numFilter.splice(j, 1);
+			    if (filterPanel) filterPanel.updateView();
+                            model.filterDetail();
+                        }
+                    }
+                }
+            }
+            public function removeECS(event:MouseEvent):void {
+            	model.filter.excludedStatus.removeAll();
+				if (filterPanel) filterPanel.updateView();
+                model.filterDetail();            
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Label id="title"
+              text="Additional Filters"
+              styleName="listStyleBold"
+              fontSize="14"/>
+</mx:VBox>

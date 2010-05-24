@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for date.
+     
+     Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+     
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         verticalScrollPolicy="off" horizontalScrollPolicy="off" >
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            
+            [Bindable]
+            private var detail:Detail;
+            
+            private var model:Model;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                    content.text=formatter.format(detail.date);
+                    model=Model.getInstance(detail.uid);
+                }
+            }
+            
+            private function filterDate():void {
+                if (model) {
+                    model.filter.start=detail.date;
+                    model.filter.end=detail.date;
+                    model.filter.startAdd=null;
+                    model.filter.endAdd=null;
+                    model.filterDetail();
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:DateFormatter formatString="YYYY-MM-DD (EEE)" id="formatter"/>
+    
+    <mx:Label id="content"
+              styleName="listStyle"
+              textDecoration="underline" click="filterDate()"
+              buttonMode="true" useHandCursor="true"  mouseChildren="false"/>
+</mx:VBox>
