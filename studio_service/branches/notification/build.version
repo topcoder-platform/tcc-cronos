@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Studio Service
+component.distfilename=studio_service
+component.package=com.topcoder.service.studio
+component.packagedir=com/topcoder/service/studio
+component.version.major=1
+component.version.minor=3
+component.version.micro=0
+component.version.build=1
