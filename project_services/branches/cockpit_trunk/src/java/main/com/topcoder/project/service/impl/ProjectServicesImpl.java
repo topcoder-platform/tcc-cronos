@@ -2950,7 +2950,7 @@ public class ProjectServicesImpl implements ProjectServices {
                           project.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
             projectHeader.setProperty(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "0");
             projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
-            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
+            
 
             projectHeader.setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "Contest Detail: http://www.topcoder.com/tc?module=ProjectDetail&pj="+projectId);
 
@@ -2987,6 +2987,8 @@ public class ProjectServicesImpl implements ProjectServices {
             // create spec review project
             projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources,
                 operator);
+
+            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
 
             // link it to the original project
             projectLinkManager.addProjectLink(projectId, projectData.getProjectHeader().getId(),
