@@ -1,0 +1,53 @@
+CREATE TABLE time_oltp:user_account (
+	user_account_id int NOT NULL,
+	company_id int,
+	account_status_id int NOT NULL,
+	user_name varchar(64) NOT NULL,
+	password varchar(64) NOT NULL,
+	creation_date datetime NOT NULL,
+	creation_user varchar(64) NOT NULL,
+	modification_date datetime NOT NULL,
+	modification_user varchar(64) NOT NULL,
+	user_status_id int,
+	user_type_id int,
+	billable_type int,
+	PRIMARY KEY (user_account_id)
+);
+ 
+ALTER TABLE time_oltp:user_account
+	ADD CONSTRAINT FOREIGN KEY (account_status_id) 
+	REFERENCES time_oltp:informix.account_status (account_status_id);
+ 
+ALTER TABLE time_oltp:user_account
+	ADD CONSTRAINT FOREIGN KEY (company_id) 
+	REFERENCES time_oltp:informix.company (company_id);
+ 
+ALTER TABLE time_oltp:user_account
+	ADD CONSTRAINT FOREIGN KEY (user_status_id) 
+	REFERENCES time_oltp:informix.user_status (user_status_id);
+ 
+ALTER TABLE time_oltp:user_account
+	ADD CONSTRAINT FOREIGN KEY (user_type_id) 
+	REFERENCES time_oltp:informix.user_type (user_type_id);
+ 
+ 
+CREATE TABLE time_oltp:project_manager (
+	project_id int NOT NULL,
+	user_account_id int NOT NULL,
+	pay_rate decimal(9,2),
+	cost decimal(5,2) NOT NULL,
+	active smallint NOT NULL,
+	creation_date datetime NOT NULL,
+	creation_user varchar(64) NOT NULL,
+	modification_date datetime NOT NULL,
+	modification_user varchar(64) NOT NULL,
+	PRIMARY KEY (project_id,user_account_id)
+);
+ 
+ALTER TABLE time_oltp:project_manager
+	ADD CONSTRAINT FOREIGN KEY (project_id) 
+	REFERENCES time_oltp:informix.project (project_id);
+ 
+ALTER TABLE time_oltp:project_manager
+	ADD CONSTRAINT FOREIGN KEY (user_account_id) 
+	REFERENCES time_oltp:informix.user_account (user_account_id);
