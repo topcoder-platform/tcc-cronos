@@ -769,7 +769,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         // add user to terms group
         addUserToTermsGroup(user, termsAgreedDate, warnings, methodName);
         // add user to jira
-        addUserToJira(user, tcsubject, warnings, methodName);
+        //addUserToJira(user, tcsubject, warnings, methodName);
         result.setWarnings(warnings);
 
         logExit(methodName);
